@@ -146,9 +146,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="281"/>
-      <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
+      <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Piste laitetaan objektin SijoitusKohtaan. Toimii objekteissa, joissa on sijoituksia ja ellipsin/parabolin/hyperbolin reunat.</translation>
+      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -570,13 +570,13 @@
       <location filename="../../AttacherTexts.cpp" line="145"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY samaan suuntaan, kuin taso</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</translation>
+      <translation>X' Y' taso on samansuuntainen tasoon nähden (valitun objektin XY) ja menee valitun pisteen läpi</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="148"/>
@@ -779,13 +779,13 @@
       <location filename="../../AttacherTexts.cpp" line="67"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY samaan suuntaan, kuin taso</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</translation>
+      <translation>X' Y' taso on samansuuntainen tasoon nähden (valitun objektin XY) ja menee valitun pisteen läpi.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="70"/>
@@ -1360,7 +1360,7 @@
     <message>
       <location filename="../../Command.cpp" line="735"/>
       <source>Compound tools</source>
-      <translation type="unfinished">Compound tools</translation>
+      <translation>Yhdistelmämuotojen työkalut</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="736"/>
@@ -1419,7 +1419,7 @@
     <message>
       <location filename="../../Command.cpp" line="618"/>
       <source>Shape splitting and Compsolid creation tools.</source>
-      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
+      <translation>Muodon katkaisu- ja yhdistelmämuodon luontityökalut.</translation>
     </message>
   </context>
   <context>
@@ -1561,8 +1561,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
-      <source>Export CAD...</source>
-      <translation>Vie CAD...</translation>
+      <source>Export CAD file...</source>
+      <translation type="unfinished">Export CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1633,8 +1633,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
-      <source>Import CAD...</source>
-      <translation>Tuo CAD...</translation>
+      <source>Import CAD file...</source>
+      <translation type="unfinished">Import CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -1801,7 +1801,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Luo valittavissa olevia pisteiobjekteja valitusta geometrisesta objektista</translation>
     </message>
   </context>
   <context>
@@ -1840,10 +1840,7 @@
 onto a face of another object.
 The camera view determines the direction
 of projection.</source>
-      <translation type="unfinished">Project edges, wires, or faces of one object
-onto a face of another object.
-The camera view determines the direction
-of projection.</translation>
+      <translation>Luo projektio objektin reunoista, viivoista tai tasopinnoista toiseen objektin. Näkymän suunta määrittelee projektion suunnan.</translation>
     </message>
   </context>
   <context>
@@ -1946,7 +1943,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2200"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation type="unfinished">Creates a persistent section cut of visible part objects</translation>
+      <translation>Luo pysyvä halkaisukuvanto objektin näkyvästä osasta</translation>
     </message>
   </context>
   <context>
@@ -2099,12 +2096,12 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="297"/>
       <source>Create transformed copy</source>
-      <translation type="unfinished">Create transformed copy</translation>
+      <translation>Luo muunnneltavissa oleva kopio</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="298"/>
       <source>Create a non-parametric copy with transformed placement</source>
-      <translation type="unfinished">Create a non-parametric copy with transformed placement</translation>
+      <translation>Luo ei-parametrinen kopio muutettavissa olevalla sijainnilla</translation>
     </message>
   </context>
   <context>
@@ -2118,7 +2115,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Part Cut</source>
-      <translation type="unfinished">Part Cut</translation>
+      <translation>Osan leikkaus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
@@ -2128,7 +2125,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Fusion</source>
-      <translation type="unfinished">Fusion</translation>
+      <translation>Yhdistäminen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="876"/>
@@ -2143,7 +2140,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="973"/>
       <source>Import Part</source>
-      <translation type="unfinished">Import Part</translation>
+      <translation>Tuo ulkoinen osa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1080"/>
@@ -2158,22 +2155,22 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1348"/>
       <source>Make face</source>
-      <translation type="unfinished">Make face</translation>
+      <translation>Tee pintataso</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1648"/>
       <source>Make Offset</source>
-      <translation type="unfinished">Make Offset</translation>
+      <translation>Tee siirtymä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1706"/>
       <source>Make 2D Offset</source>
-      <translation type="unfinished">Make 2D Offset</translation>
+      <translation>Tee 2D siirtymä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1886"/>
       <source>Make Thickness</source>
-      <translation type="unfinished">Make Thickness</translation>
+      <translation>Tee paksuus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2038"/>
@@ -2598,24 +2595,24 @@ Note: The placement is expressed in local space of object being attached.</trans
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="72"/>
-      <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
+      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExportStep.ui" line="88"/>
+      <source>Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</source>
+      <translation type="unfinished">Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="75"/>
       <source>Export invisible objects</source>
       <translation>Vie näkymättömät objektit</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
-      <source>Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="94"/>
@@ -2887,10 +2884,14 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <translation>Ei valintaa</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.ui" line="51"/>
       <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
       <translation>Pyöristysparametri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.ui" line="51"/>
+      <source>Parameters</source>
+      <translation>Muuttujat</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -2919,8 +2920,8 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
-      <source>Fillet type:</source>
-      <translation>Pyöristystyyppi:</translation>
+      <source>Type:</source>
+      <translation>Tyyppi:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
@@ -2936,11 +2937,6 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
       <source>Radius:</source>
       <translation>Säde:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
-      <source>Chamfer Parameter</source>
-      <translation type="unfinished">Chamfer Parameter</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -2966,6 +2962,11 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation type="unfinished">Equal distance</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <source>Chamfer Parameters</source>
+      <translation type="unfinished">Chamfer Parameters</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3078,8 +3079,8 @@ Ole hyvä valitse yksi tai useampi reuna kokonaisuus.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
-      <source>Write solids and shells as</source>
-      <translation>Tallenna kiintomuodot ja kuoret</translation>
+      <source>Export solids and shells as</source>
+      <translation type="unfinished">Export solids and shells as</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3209,8 +3210,8 @@ during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
-      <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation type="unfinished">Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</translation>
+      <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
+      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3384,8 +3385,8 @@ during file reading (slower but higher details).</translation>
     <name>PartGui::DlgPartImportStep</name>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
-      <source>Step input file</source>
-      <translation>Step-syöttötiedosto</translation>
+      <source>STEP input file</source>
+      <translation type="unfinished">STEP input file</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4235,11 +4236,11 @@ during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
-      <source>Bottom side of surface will be rendered the same way than top.
+      <source>The bottom side of the surface will be rendered the same way as the top.
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">Bottom side of surface will be rendered the same way than top.
+      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</translation>
@@ -4497,8 +4498,8 @@ the sketch plane's normal vector will be used</translation>
     <name>PartGui::SectionCut</name>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
-      <source>Permanent Section Cutting</source>
-      <translation type="unfinished">Permanent Section Cutting</translation>
+      <source>Persistent Section Cutting</source>
+      <translation type="unfinished">Persistent Section Cutting</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5006,11 +5007,6 @@ of object being attached.</translation>
       <translation>Asetukset</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
-      <source>Skip settings page</source>
-      <translation type="unfinished">Skip settings page</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation type="unfinished">Skip this settings page and run the geometry check automatically.</translation>
@@ -5136,6 +5132,11 @@ Individual boolean operation checks:</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <source>Skip this settings page</source>
+      <translation type="unfinished">Skip this settings page</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5563,13 +5564,13 @@ Haluatko jatkaa?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Valitse vähintään kaksi muotoa. Tai valitse yksi yhdistelmämuoto, joka sisältää vähintään kaksi muotoa, jotta voidaan laskea niiden välinen leikkaus.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Valitse vähintään kaksi muotoa. Tai valitse yksi yhdistelmämuoto, joka sisältää vähintään kaksi muotoa, jotta voidaan liittää ne yhteen.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6775,8 +6776,15 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
-      <source>Custom Appearance</source>
-      <translation type="unfinished">Custom Appearance</translation>
+      <source>Custom appearance:</source>
+      <translation type="unfinished">Custom appearance:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="97"/>
+      <source>When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</source>
+      <translation type="unfinished">When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>
@@ -6787,13 +6795,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
       <location filename="../../TaskFaceAppearances.ui" line="90"/>
       <source>Set to default</source>
       <translation>Aseta oletusarvoon</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceAppearances.ui" line="97"/>
-      <source>When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>

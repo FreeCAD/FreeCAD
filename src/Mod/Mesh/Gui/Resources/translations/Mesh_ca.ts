@@ -1489,7 +1489,7 @@ Amb un ombrejat pla, les normals de la superfície no es defineixen per vèrtex 
  If face angle &lt; crease angle, smooth shading is used</source>
       <translation>L’angle de plec és un angle llindar entre dues cares.
 
-Si l'angle de la cara ≥ l'angle de plec, s'utilitza l'ombrejat de facetes
+Si l'angle de la cara ≥ l'angle de plec, s'utilitza l'ombrejat de facetes 
 Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translation>
     </message>
   </context>
@@ -2014,7 +2014,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Nombre de facetes:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="77"/>

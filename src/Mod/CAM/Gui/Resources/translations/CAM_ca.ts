@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
-      <translation type="unfinished">Creates a feature area from selected objects</translation>
+      <translation>Crea una àrea característica dels objectes seleccionats</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
-      <translation type="unfinished">Area workplane</translation>
+      <translation>Pla de treball de l'àrea</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>Selecciona un pla de treball per a una FeatureArea</translation>
     </message>
   </context>
   <context>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected toolpaths</source>
-      <translation type="unfinished">Creates a compound from selected toolpaths</translation>
+      <translation>Crea un compost a partir dels camins d'eina seleccionats</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>CAM</source>
-      <translation type="unfinished">CAM</translation>
+      <translation>CAM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Creates a toolpath from a selected shape</source>
-      <translation type="unfinished">Creates a toolpath from a selected shape</translation>
+      <translation>Crea un camí d'eina a partir d'una forma seleccionada</translation>
     </message>
   </context>
   <context>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation type="unfinished">Select Base Models</translation>
+      <translation>Seleccioneu models base</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -141,17 +141,17 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
       <source>Base Models</source>
-      <translation type="unfinished">Base Models</translation>
+      <translation>Models base</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation type="unfinished">Job Template Export</translation>
+      <translation>Exportació de la plantilla del treball</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
       <source>Post Processing</source>
-      <translation type="unfinished">Post Processing</translation>
+      <translation>Postprocessament</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -161,56 +161,56 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="75"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>Full de configuració</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>If enabled include all post processing settings in the template.</source>
-      <translation type="unfinished">If enabled include all post processing settings in the template.</translation>
+      <translation>Si està actiu, inclou totes les opcions de postprocessament en la plantilla.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>Hint about the current post processing configuration.</source>
-      <translation type="unfinished">Hint about the current post processing configuration.</translation>
+      <translation>Pista sobre la configuració actual de postprocessament.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>If enabled tool controller definitions are stored in the template.</source>
-      <translation type="unfinished">If enabled tool controller definitions are stored in the template.</translation>
+      <translation>Si el controlador de l'eina està actiu, les definicions es guarden en la plantilla.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>Check all tool controllers which should be included in the template.</source>
-      <translation type="unfinished">Check all tool controllers which should be included in the template.</translation>
+      <translation>Comprova tots els controladors d'eina que s'haurien d'incloure en la plantilla.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation type="unfinished">Enable to include values of the SetupSheet in the template.
+      <translation>Activa per incloure valors del full de configuració en la plantilla.
 
-Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</translation>
+Qualsevol valor del full de configuració diferent del valor per defecte està seleccionat. Si aquest camp se selecciona, el full de configuració actual no ha sigut modificat.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="84"/>
       <source>Enable to include the default heights for operations in the template.</source>
-      <translation type="unfinished">Enable to include the default heights for operations in the template.</translation>
+      <translation>Activa per incloure totes les alçades per defecte per les operacions en la plantilla.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="87"/>
       <source>Operation Heights</source>
-      <translation type="unfinished">Operation Heights</translation>
+      <translation>Alçades de la tasca</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="97"/>
       <source>Operation Depths</source>
-      <translation type="unfinished">Operation Depths</translation>
+      <translation>Profunditats de la tasca</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="107"/>
       <source>Enable to include the default rapid tool speeds in the template.</source>
-      <translation type="unfinished">Enable to include the default rapid tool speeds in the template.</translation>
+      <translation>Activa per incloure la velocitat d'eina dels ràpids en la plantilla.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="120"/>
@@ -501,11 +501,6 @@ For stock from the Base object&apos;s bounding box it means the extra material i
   <context>
     <name>DlgJobChooser</name>
     <message>
-      <location filename="../../DlgJobChooser.ui" line="17"/>
-      <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
-    </message>
-    <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
       <translation type="unfinished">Choose a Tool Controller</translation>
@@ -524,6 +519,11 @@ For stock from the Base object&apos;s bounding box it means the extra material i
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
       <source>Destination</source>
       <translation>Destinació</translation>
+    </message>
+    <message>
+      <location filename="../../DlgJobChooser.ui" line="17"/>
+      <source>Choose a CAM Job</source>
+      <translation type="unfinished">Choose a CAM Job</translation>
     </message>
   </context>
   <context>
@@ -941,11 +941,6 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <source>Coolant Mode</source>
       <translation type="unfinished">Coolant Mode</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
-      <source>G Gode</source>
-      <translation type="unfinished">G Gode</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
@@ -2338,6 +2333,11 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <source>Tag Generation</source>
       <translation type="unfinished">Tag Generation</translation>
     </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
+      <source>G-Code</source>
+      <translation type="unfinished">G-Code</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsPath</name>
@@ -2403,59 +2403,6 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <translation type="unfinished">Default Path</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="188"/>
-      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
-    </message>
-    <message>
       <location filename="../preferences/PathJob.ui" line="230"/>
       <source>File Save Policy</source>
       <translation type="unfinished">File Save Policy</translation>
@@ -2511,6 +2458,59 @@ If left empty no template will be preselected.</source>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</translation>
+    </message>
+    <message>
+      <location filename="../preferences/PathJob.ui" line="188"/>
+      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+See the file save policy below on how to deal with name conflicts.</source>
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -3028,8 +3028,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3388,13 +3388,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
-      <source>Launch Camotics</source>
-      <translation type="unfinished">Launch Camotics</translation>
+      <source>Launch CAMotics</source>
+      <translation type="unfinished">Launch CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
-      <source>Make Camotics File</source>
-      <translation type="unfinished">Make Camotics File</translation>
+      <source>Make CAMotics File</source>
+      <translation type="unfinished">Make CAMotics File</translation>
     </message>
   </context>
   <context>
@@ -3568,6 +3568,59 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <translation type="unfinished">Output File</translation>
     </message>
     <message>
+      <location filename="../panels/PathEdit.ui" line="141"/>
+      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</source>
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</translation>
+    </message>
+    <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
       <source>Processor</source>
       <translation type="unfinished">Processor</translation>
@@ -3617,9 +3670,9 @@ Ordering by operation will do each operation in all coordinate systems before mo
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3859,59 +3912,6 @@ Default: &quot;5mm&quot;</translation>
       <location filename="../panels/PathEdit.ui" line="1069"/>
       <source>Final Depth</source>
       <translation type="unfinished">Final Depth</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="141"/>
-      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
@@ -4160,8 +4160,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
-      <source>Camotics Project (*.camotics)</source>
-      <translation type="unfinished">Camotics Project (*.camotics)</translation>
+      <source>CAMotics Project (*.camotics)</source>
+      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4178,7 +4178,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="748"/>
       <source>Tool number</source>
-      <translation type="unfinished">Tool number</translation>
+      <translation>Número d'eina</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="751"/>
@@ -4194,11 +4194,6 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Main/Gui/Job.py" line="757"/>
       <source>Spindle RPM</source>
       <translation type="unfinished">Spindle RPM</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="548"/>
@@ -4229,6 +4224,11 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Deburr.py" line="183"/>
       <source>Conventional</source>
       <translation type="unfinished">Conventional</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
+      <source>Choose a CAM Job</source>
+      <translation type="unfinished">Choose a CAM Job</translation>
     </message>
   </context>
   <context>
@@ -5208,8 +5208,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
-      <source>Maximum distance before a miter join is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter join is truncated</translation>
+      <source>Maximum distance before a miter joint is truncated</source>
+      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5298,8 +5298,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
-      <source>For arcs/circlular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circlular edges, offset the radius for the toolpath.</translation>
+      <source>For arcs/circular edges, offset the radius for the toolpath.</source>
+      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5914,8 +5914,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
-      <source>No JOB</source>
-      <translation type="unfinished">No JOB</translation>
+      <source>No job</source>
+      <translation type="unfinished">No job</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -6341,8 +6341,8 @@ Aborting op creation</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
-      <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <source>Invalid G-code line: %s</source>
+      <translation type="unfinished">Invalid G-code line: %s</translation>
     </message>
   </context>
   <context>
@@ -7022,19 +7022,6 @@ For example:
     </message>
   </context>
   <context>
-    <name>CAM_Camotics</name>
-    <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
-      <source>Camotics</source>
-      <translation type="unfinished">Camotics</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
-      <source>Simulate using Camotics</source>
-      <translation type="unfinished">Simulate using Camotics</translation>
-    </message>
-  </context>
-  <context>
     <name>CAM_Fixture</name>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="153"/>
@@ -7173,9 +7160,19 @@ For example:
       <translation type="unfinished">Manufacturer</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
+      <source>Output (G-code)</source>
+      <translation type="unfinished">Output (G-code)</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
       <source>Part Number</source>
       <translation type="unfinished">Part Number</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
+      <source>Surface Speed HSS</source>
+      <translation type="unfinished">Surface Speed HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -7218,19 +7215,9 @@ For example:
       <translation type="unfinished">Setup Report for CAM Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
-      <source>Output (Gcode)</source>
-      <translation type="unfinished">Output (Gcode)</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Surface Speed Carbide</source>
       <translation type="unfinished">Surface Speed Carbide</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
-      <source>Surace Speed HSS</source>
-      <translation type="unfinished">Surace Speed HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
@@ -8551,8 +8538,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
-      <source>Camotics tooltable (*.json)</source>
-      <translation type="unfinished">Camotics tooltable (*.json)</translation>
+      <source>CAMotics tooltable (*.json)</source>
+      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8625,6 +8612,19 @@ For example:
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="480"/>
       <source>No library selected</source>
       <translation type="unfinished">No library selected</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Camotics</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
+      <source>CAMotics</source>
+      <translation type="unfinished">CAMotics</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
+      <source>Simulate using CAMotics</source>
+      <translation type="unfinished">Simulate using CAMotics</translation>
     </message>
   </context>
 </TS>

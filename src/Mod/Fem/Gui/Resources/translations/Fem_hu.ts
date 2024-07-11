@@ -301,7 +301,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Select a single FEM Mesh, please.</source>
-      <translation type="unfinished">Select a single FEM Mesh, please.</translation>
+      <translation>Válasszon egyetlen VEM hálót, kérem.</translation>
     </message>
   </context>
   <context>
@@ -692,12 +692,12 @@
     <message>
       <location filename="../../Command.cpp" line="1352"/>
       <source>Edit Elements set</source>
-      <translation type="unfinished">Edit Elements set</translation>
+      <translation>Elemkészlet szerkesztése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Create Elements set</source>
-      <translation type="unfinished">Create Elements set</translation>
+      <translation>Elemkészlet létrehozása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1850"/>
@@ -941,19 +941,9 @@
       <translation>Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles</source>
-      <translation>Orsóegyenletek Sooples megoldója</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Iteratív megoldó méretezése</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
-      <source>Iterative Cholesky</source>
-      <translation>Cholesky iteratív megoldó</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
@@ -1019,6 +1009,16 @@
       <translation>Iterációk maximális száma</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <source>Spooles equation solver</source>
+      <translation type="unfinished">Spooles equation solver</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <source>Cholesky iterative solver</source>
+      <translation type="unfinished">Cholesky iterative solver</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
       <source>Time Minimum Step</source>
       <translation>Idő minimális lépése</translation>
@@ -1070,7 +1070,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1106,8 +1106,8 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-      <source>Multi-CPU core support:</source>
-      <translation>Többmagos CPU-k támogatása:</translation>
+      <source>Multi-core CPU support:</source>
+      <translation type="unfinished">Multi-core CPU support:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1172,7 +1172,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1261,7 +1261,7 @@ Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
       <translation>A hálócsoportok is exportálásra kerülnek.
-Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll,
+Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll, 
 ahol
 a kényszerítést vagy az anyagot alkalmazzák.</translation>
     </message>
@@ -1275,8 +1275,8 @@ a kényszerítést vagy az anyagot alkalmazzák.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation>Munkakönyvtár a Gmsh rácsozásához és elemzés megoldáshoz</translation>
+      <source>Working directory for solving analysis and Gmsh meshing</source>
+      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1371,8 +1371,8 @@ az eredmények párbeszédpanel megnyitásakor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-      <source>Hide analysis features when open result dialog</source>
-      <translation>Elemzési funkciók elrejtése az eredmény párbeszédpanel megnyitásakor</translation>
+      <source>Hide analysis features when opening result dialog</source>
+      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1421,8 +1421,8 @@ elemzési konténer hozzáadásakor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
-      <source>Leave blank to use default gmsh binary file</source>
-      <translation>Hagyja üresen az alapértelmezett a Gmsh bináris fájl használatához</translation>
+      <source>Leave blank to use default Gmsh binary file</source>
+      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1435,7 +1435,7 @@ elemzési konténer hozzáadásakor</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1545,7 +1545,7 @@ FreeCAD eredménytárgy: Az importált adatok FreeCAD VEM eredménytárgyá alak
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1575,8 +1575,8 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-      <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation>Hagyja üresen az alapértelmezett Z88, z88r bináris fájl használatához</translation>
+      <source>Leave blank to use default Z88, z88r binary file</source>
+      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1640,8 +1640,8 @@ that "MAXKOI" needs to be increased.</source>
 (csomópontok száma elemenként szorozva
  véges elemek száma)
 
-Előfordulhat, hogy növelnie kell ezt a paramétert, ha
-egy iteratív megoldó használata esetén a "MAXKOI" paraméter
+Előfordulhat, hogy növelnie kell ezt a paramétert, ha 
+egy iteratív megoldó használata esetén a "MAXKOI" paraméter 
 értékét növelni kell hibaüzenet jelenik meg.</translation>
     </message>
     <message>
@@ -1655,7 +1655,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott z88r végrehajtható
+      <translation>A megadott z88r végrehajtható 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -2000,7 +2000,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
-      <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Elemzési jellemzőnként csak egyféle kijelölés (csúcs, felület vagy él) megengedett!</translation>
     </message>
   </context>
@@ -2067,8 +2067,8 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
-      <source>Length Scale[m]</source>
-      <translation>Hosszskála [m]</translation>
+      <source>Length Scale [m]</source>
+      <translation type="unfinished">Length Scale [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2626,13 +2626,13 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
-      <source>use FreeCAD material editor</source>
-      <translation>használja a FreeCAD anyag szerkesztőt</translation>
+      <source>Use FreeCAD material editor</source>
+      <translation type="unfinished">Use FreeCAD material editor</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
-      <source>use this task panel</source>
-      <translation>használja ezt a munkaablakot</translation>
+      <source>Use this task panel</source>
+      <translation type="unfinished">Use this task panel</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2686,8 +2686,13 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
-      <source>Thermal  Properties</source>
-      <translation>Termikus tulajdonságok</translation>
+      <source>Thermal Properties</source>
+      <translation type="unfinished">Thermal Properties</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="497"/>
+      <source>Specific Heat Capacity:</source>
+      <translation type="unfinished">Specific Heat Capacity:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -2709,11 +2714,6 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
       <translation>0 m/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="497"/>
-      <source>Specific Heat:</source>
-      <translation>Fajlagos hő:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
@@ -2866,6 +2866,11 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <translation>Kimeneti tömegáram</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="651"/>
+      <source>Head Loss [mm]</source>
+      <translation type="unfinished">Head Loss [mm]</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
       <location filename="../ui/ElementFluid1D.ui" line="415"/>
@@ -2914,11 +2919,6 @@ Kérjük, adjon meg egy másik fájlt.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
       <translation>Áramlási sebesség [mm^3/s]</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="651"/>
-      <source>Head Loss[mm]</source>
-      <translation>Nyomásesés [mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3447,7 +3447,7 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
       <source>Heat Source</source>
-      <translation type="unfinished">Heat Source</translation>
+      <translation>Hőforrás</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
@@ -3457,12 +3457,12 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="45"/>
       <source>Total Power:</source>
-      <translation type="unfinished">Total Power:</translation>
+      <translation>Teljes teljesítmény:</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
       <source>Dissipation Rate:</source>
-      <translation type="unfinished">Dissipation Rate:</translation>
+      <translation>Szétszóródási arány:</translation>
     </message>
   </context>
   <context>
@@ -3474,8 +3474,8 @@ Megjegyzés: 2D esetén csak az x beállítása lehetséges,
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameter</source>
-      <translation>VEM háló paraméter</translation>
+      <source>FEM Mesh Parameters</source>
+      <translation type="unfinished">FEM Mesh Parameters</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -4406,6 +4406,11 @@ az áramlás által generált
       <translation>Típus</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
+      <source>Temperature [K]</source>
+      <translation type="unfinished">Temperature [K]</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
@@ -4436,11 +4441,6 @@ vektorát használják irányként</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
       <translation>Fül 2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
-      <source>Temperature[K]</source>
-      <translation>Hőmérséklet[K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
@@ -4746,7 +4746,7 @@ az Elmer megoldóhoz</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="110"/>
       <source>System Rotation</source>
-      <translation type="unfinished">System Rotation</translation>
+      <translation>Rendszerforgatás</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="116"/>
@@ -5114,13 +5114,13 @@ az Elmer megoldóhoz</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
-      <source>Nbr. Segs per Edge:</source>
-      <translation>Élenkénti szakaszok száma:</translation>
+      <source>Number of Segments per Edge:</source>
+      <translation type="unfinished">Number of Segments per Edge:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
-      <source>Nbr. Segs per Radius:</source>
-      <translation>Sugáronkénti szakaszok száma:</translation>
+      <source>Number of Segments per Radius:</source>
+      <translation type="unfinished">Number of Segments per Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5458,10 +5458,8 @@ az Elmer megoldóhoz</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
-      <source>Creates a FEM equation for
- elasticity (stress)</source>
-      <translation>VEM egyenletet hoz létre a
- rugalmasságra (feszültség)</translation>
+      <source>Creates a FEM equation for elasticity (stress)</source>
+      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
     </message>
   </context>
   <context>
@@ -5866,7 +5864,7 @@ az Elmer megoldóhoz</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
+      <translation>Referenciák hozzáadása: jelölje ki a 3D nézetben, és kattintson a "Hozzáadás" gombra.</translation>
     </message>
   </context>
   <context>
@@ -6020,10 +6018,8 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
-      <source>Creates a FEM equation for
- 2D magnetodynamic forces</source>
-      <translation>Létrehozza a VEM egyenletet a
-2D mágnes dinamikai erők</translation>
+      <source>Creates a FEM equation for 2D magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6049,9 +6045,8 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
-      <source>Creates a FEM equation for
- magnetodynamic forces</source>
-      <translation>Létrehoz egy VEM egyenletet a mágnes dinamikus erők számára</translation>
+      <source>Creates a FEM equation for magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6130,10 +6125,8 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
-      <source>Creates a FEM equation for
- deformation (nonlinear elasticity)</source>
-      <translation>VEM egyenletet hoz létre a
- deformációra (nemlineáris rugalmasság)</translation>
+      <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
+      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
     </message>
   </context>
   <context>
@@ -6536,8 +6529,8 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation>Kényszerítésenként csak egy típusú kijelölés (csúcs, arc vagy él) megengedett!</translation>
+      <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
     </message>
   </context>
   <context>
@@ -6563,7 +6556,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase Elements by Polygon</source>
-      <translation type="unfinished">Erase Elements by Polygon</translation>
+      <translation>Elemek törlése sokszög által</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -6573,7 +6566,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
       <source>Delete New Meshes</source>
-      <translation type="unfinished">Delete New Meshes</translation>
+      <translation>Új hálók törlése</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="70"/>
@@ -6583,7 +6576,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="77"/>
       <source>Copy Result Mesh</source>
-      <translation type="unfinished">Copy Result Mesh</translation>
+      <translation>Eredmény háló másolása</translation>
     </message>
   </context>
   <context>
@@ -6600,29 +6593,29 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="232"/>
       <source>Can't copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Can't copy ResultMesh to ResultMesh</translation>
+      <translation>Nem lehet másolni az Eredményhálót Eredményhálóba</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
       <source>Mesh must be a Results mesh</source>
-      <translation type="unfinished">Mesh must be a Results mesh</translation>
+      <translation>A hálónak eredményhálónak kell lennie</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="564"/>
       <source>No Data To Restore
 </source>
-      <translation type="unfinished">No Data To Restore
+      <translation>Nincs visszaállítandó adat
 </translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="759"/>
       <source>Erased Elements</source>
-      <translation type="unfinished">Erased Elements</translation>
+      <translation>Törölt elemek</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="760"/>
       <source>All Elements Erased - no mesh generated.</source>
-      <translation type="unfinished">All Elements Erased - no mesh generated.</translation>
+      <translation>Minden elem törölve - nem generál hálót.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
@@ -6632,12 +6625,12 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <translation>Elemek törlése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Creates a FEM mesh elements set</source>
-      <translation type="unfinished">Creates a FEM mesh elements set</translation>
+      <translation>Létrehoz egy VEM hálóelemkészletet</translation>
     </message>
   </context>
   <context>
@@ -6645,7 +6638,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="441"/>
       <source>Elements set</source>
-      <translation type="unfinished">Elements set</translation>
+      <translation>Elemek készlet</translation>
     </message>
   </context>
   <context>
@@ -6658,13 +6651,13 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../../Command.cpp" line="1282"/>
       <source>Element set by poly</source>
-      <translation type="unfinished">Element set by poly</translation>
+      <translation>Sokszög által meghatározott elem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1283"/>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Create Element set by Poly</source>
-      <translation type="unfinished">Create Element set by Poly</translation>
+      <translation>Elemkészlet létrehozása sokszögek szerint</translation>
     </message>
   </context>
 </TS>

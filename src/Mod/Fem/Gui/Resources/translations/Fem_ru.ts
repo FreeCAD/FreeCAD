@@ -940,19 +940,9 @@
       <translation>Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles</source>
-      <translation>SPOOLES</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Итеративное масштабирование</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
-      <source>Iterative Cholesky</source>
-      <translation>Интерактивное разложение Холецкого</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
@@ -1018,6 +1008,16 @@
       <translation>Максимальное количество итераций</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <source>Spooles equation solver</source>
+      <translation type="unfinished">Spooles equation solver</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <source>Cholesky iterative solver</source>
+      <translation type="unfinished">Cholesky iterative solver</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
       <source>Time Minimum Step</source>
       <translation>Минимальное время шага</translation>
@@ -1069,7 +1069,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1105,8 +1105,8 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-      <source>Multi-CPU core support:</source>
-      <translation>Поддержка многопроцессорных ядер:</translation>
+      <source>Multi-core CPU support:</source>
+      <translation type="unfinished">Multi-core CPU support:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1171,7 +1171,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1275,8 +1275,8 @@ the constraint or material is applied.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation>Рабочий каталог для анализа решений и построения сетки Gmsh</translation>
+      <source>Working directory for solving analysis and Gmsh meshing</source>
+      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1371,8 +1371,8 @@ when the results dialog is opened</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-      <source>Hide analysis features when open result dialog</source>
-      <translation>Скрывать функции анализа при открытии диалогового окна результатов</translation>
+      <source>Hide analysis features when opening result dialog</source>
+      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1421,8 +1421,8 @@ adding an analysis container</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
-      <source>Leave blank to use default gmsh binary file</source>
-      <translation>Оставьте поле пустым, чтобы использовать исполняемый файл gmsh по умолчанию</translation>
+      <source>Leave blank to use default Gmsh binary file</source>
+      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1435,7 +1435,7 @@ adding an analysis container</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1545,7 +1545,7 @@ exported from FreeCAD.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый
+      <translation>Указанный исполняемый 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -1575,8 +1575,8 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-      <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation>Оставьте поле пустым, чтобы использовать исполняемый файл Z88 z88r по умолчанию</translation>
+      <source>Leave blank to use default Z88, z88r binary file</source>
+      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1656,7 +1656,7 @@ that "MAXKOI" needs to be increased.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Указанный исполняемый файл z88r
+      <translation>Указанный исполняемый файл z88r 
 '%1'
  не существует!
 Укажите другой файл, пожалуйста.</translation>
@@ -2001,7 +2001,7 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
-      <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Допускается только один тип выделения (вершина, грань или ребро) для каждого объекта анализа!</translation>
     </message>
   </context>
@@ -2068,8 +2068,8 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
-      <source>Length Scale[m]</source>
-      <translation>Масштаб длины [м]</translation>
+      <source>Length Scale [m]</source>
+      <translation type="unfinished">Length Scale [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2627,13 +2627,13 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
-      <source>use FreeCAD material editor</source>
-      <translation>открыть редактор материалов</translation>
+      <source>Use FreeCAD material editor</source>
+      <translation type="unfinished">Use FreeCAD material editor</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
-      <source>use this task panel</source>
-      <translation>использовать эту панель</translation>
+      <source>Use this task panel</source>
+      <translation type="unfinished">Use this task panel</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2687,8 +2687,13 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
-      <source>Thermal  Properties</source>
-      <translation>Тепловые свойства</translation>
+      <source>Thermal Properties</source>
+      <translation type="unfinished">Thermal Properties</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="497"/>
+      <source>Specific Heat Capacity:</source>
+      <translation type="unfinished">Specific Heat Capacity:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -2710,11 +2715,6 @@ Specify another file please.</source>
       <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
       <translation>0 м/м/К</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="497"/>
-      <source>Specific Heat:</source>
-      <translation>Удельная теплоёмкость:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
@@ -2867,6 +2867,11 @@ Specify another file please.</source>
       <translation>Процент массового потока на выходе</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="651"/>
+      <source>Head Loss [mm]</source>
+      <translation type="unfinished">Head Loss [mm]</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
       <location filename="../ui/ElementFluid1D.ui" line="415"/>
@@ -2915,11 +2920,6 @@ Specify another file please.</source>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
       <translation>Скорость потока [мм^3/с]</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="651"/>
-      <source>Head Loss[mm]</source>
-      <translation>Потери напора [mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3370,7 +3370,7 @@ Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
       <translation>Действительная часть x-компоненты комплексного потенциала
-Примечание: если была выбрана грань, то это будет значение
+Примечание: если была выбрана грань, то это будет значение 
 в направлении перпендикулярном грани
 параметры для y и z будут проигнорированы</translation>
     </message>
@@ -3381,7 +3381,7 @@ Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
       <translation>Мнимая часть x-компоненты комплексного потенциала
-Примечание: если была выбрана грань, то это будет значение
+Примечание: если была выбрана грань, то это будет значение 
 в направлении перпендикулярном грани
 параметры для y и z будут проигнорированы</translation>
     </message>
@@ -3390,7 +3390,7 @@ Note: if a face was selected this will be the value
       <source>Real part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation>Действительная часть y-компоненты комплексного потенциала
+      <translation>Действительная часть y-компоненты комплексного потенциала 
 Примечание: для 2D возможна настройка только для x,
 настройка для y будет проигнорирована</translation>
     </message>
@@ -3399,7 +3399,7 @@ Note: for 2D only setting for x is possible,
       <source>Imaginary part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation>Мнимая часть y-компоненты комплексного потенциала
+      <translation>Мнимая часть y-компоненты комплексного потенциала 
 Примечание: для 2D возможна настройка только для x,
 настройка для y будет проигнорирована</translation>
     </message>
@@ -3475,8 +3475,8 @@ Note: for 2D only setting for x is possible,
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameter</source>
-      <translation>Параметр FEM сетки</translation>
+      <source>FEM Mesh Parameters</source>
+      <translation type="unfinished">FEM Mesh Parameters</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -4408,6 +4408,11 @@ generated by the flow
       <translation>Тип</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
+      <source>Temperature [K]</source>
+      <translation type="unfinished">Temperature [K]</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
@@ -4438,11 +4443,6 @@ normal vector of the face is used as direction</source>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
       <translation>Tab 2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
-      <source>Temperature[K]</source>
-      <translation>Температура[K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
@@ -5116,13 +5116,13 @@ used for the Elmer solver</source>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
-      <source>Nbr. Segs per Edge:</source>
-      <translation>Количество сегментов на грань:</translation>
+      <source>Number of Segments per Edge:</source>
+      <translation type="unfinished">Number of Segments per Edge:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
-      <source>Nbr. Segs per Radius:</source>
-      <translation>Количество сегментов на радиус:</translation>
+      <source>Number of Segments per Radius:</source>
+      <translation type="unfinished">Number of Segments per Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5460,9 +5460,8 @@ used for the Elmer solver</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
-      <source>Creates a FEM equation for
- elasticity (stress)</source>
-      <translation>Создает уравнение МКЭ для расчета упругости (напряжения)</translation>
+      <source>Creates a FEM equation for elasticity (stress)</source>
+      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
     </message>
   </context>
   <context>
@@ -6021,10 +6020,8 @@ Please select a result type first.</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
-      <source>Creates a FEM equation for
- 2D magnetodynamic forces</source>
-      <translation>Создает уравнение МКЭ для
-магнитодинамических сил</translation>
+      <source>Creates a FEM equation for 2D magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6050,10 +6047,8 @@ Please select a result type first.</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
-      <source>Creates a FEM equation for
- magnetodynamic forces</source>
-      <translation>Создает уравнение МКЭ для
-магнитодинамических сил</translation>
+      <source>Creates a FEM equation for magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6132,10 +6127,8 @@ Please select a result type first.</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
-      <source>Creates a FEM equation for
- deformation (nonlinear elasticity)</source>
-      <translation>Создать FEM уравнение для
- деформации (нелинейная эластичность)</translation>
+      <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
+      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
     </message>
   </context>
   <context>
@@ -6538,8 +6531,8 @@ Please select a result type first.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation>Допускается только один тип выделения (вершина, грань или ребро) для каждого ограничения!</translation>
+      <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
     </message>
   </context>
   <context>

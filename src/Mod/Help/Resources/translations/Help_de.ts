@@ -86,53 +86,58 @@ oder &apos;Pandoc&apos; installiert sein.</translation>
       <translation>Anzeige</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="192"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+      <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
+      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="202"/>
       <source>In a FreeCAD tab</source>
       <translation>In einem FreeCAD-Tab</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in your default web browser.</source>
       <translation>Die Dokumentation wird im voreingestellten Webbrowser geöffnet.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
       <translation>Die Dokumentation wird in einem andockbaren Dialog innerhalb des FreeCAD-Fensters geöffnet,
 dadurch kann der Dialog geöffnet bleiben, während man in der 3D-Ansicht weiterarbeitet. Dies erfordert die PySide-Komponente QtWebengineWidgets</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="246"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation>Hier können Sie den Pfad zu einer alternativen CSS-Datei angeben, mit der Sie die Markdown-Seiten mit
-gestalten können. Dies funktioniert nur, wenn Sie die obige
-Markdown Version ausgewählt haben.</translation>
+      <translation>Hier kann den Pfad zu einer alternativen CSS-Datei angeben werden, mit der die Markdown-Seiten 
+gestalten sein sollen. Dies funktioniert nur, wenn die obige
+Markdown Version ausgewählt ist.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="173"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In your default web browser</source>
-      <translation>In deinem voreingestellten Webbrowser</translation>
+      <translation>In dem Standard-Webbrowser</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="189"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation>Die Dokumentation wird in einem neuen Tab innerhalb der FreeCAD-Schnittstelle geöffnet. Dies erfordert die PySide QtWebengineWidgets-Komponente</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="215"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="225"/>
       <source>In a separate, embeddable dialog</source>
       <translation>In einem separaten, einbettbaren Dialog</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="231"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="241"/>
       <source>Options</source>
       <translation>Optionen</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="239"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>      Custom stylesheet:</source>
       <translation>      Benutzerdefiniertes Stylesheet:</translation>
     </message>
@@ -142,12 +147,12 @@ Markdown Version ausgewählt haben.</translation>
     <message>
       <location filename="../../Help.py" line="72"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Inhalte für diese Seite konnten nicht abgerufen werden. Bitte überprüfen Sie die Einstellungen im Menü Bearbeiten -&gt; Einstellungen -&gt; Allgemein -&gt; Hilfe</translation>
+      <translation>Inhalte für diese Seite konnten nicht abgerufen werden. Bitte die Einstellungen im Menü Bearbeiten -&gt; Einstellungen -&gt; Allgemein -&gt; Hilfe überprüfen</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="76"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Der Speicherort der Hilfedateien konnte nicht ermittelt werden. Bitte überprüfen Sie die Einstellungen im Menü Bearbeiten -&gt; Einstellungen -&gt; Allgemein -&gt; Hilfe</translation>
+      <translation>Der Speicherort der Hilfedateien konnte nicht ermittelt werden. Bitte die Einstellungen im Menü Bearbeiten -&gt; Einstellungen -&gt; Allgemein -&gt; Hilfe überprüfen</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="80"/>
@@ -156,8 +161,8 @@ Markdown Version ausgewählt haben.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="84"/>
-      <source>There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.</source>
-      <translation>Es ist kein Markdown-Renderer auf deinem System installiert, daher wird diese Hilfeseite so dargestellt, wie sie ist. Bitte installiere die Markdown- oder Pandoc-Python-Module, um die Darstellung dieser Seite zu verbessern.</translation>
+      <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
+      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

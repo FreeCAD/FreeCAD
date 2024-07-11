@@ -86,24 +86,24 @@ de manera que s'evita l'autointersecció.</translation>
       <translation>Nombre de dents de l'engranatge</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="101"/>
-      <source>Modules of the gear</source>
-      <translation>Mòdul de l'engranatge</translation>
-    </message>
-    <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
       <translation>Angle de pressió de l'engranatge</translation>
     </message>
     <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Module of the gear</source>
+      <translation type="unfinished">Module of the gear</translation>
+    </message>
+    <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
-      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
-      <translation>Cert=2 corbes amb 3 punts de control cadascuna Fals=1 corba amb 4 punts de control.</translation>
+      <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
-      <source>True=external Gear False=internal Gear</source>
-      <translation>Cert=Engranatge extern Fals=Engranatge intern</translation>
+      <source>True=external Gear, False=internal Gear</source>
+      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -916,8 +916,8 @@ de manera que s'evita l'autointersecció.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="434"/>
-      <source>Migrate legacy part design features to Bodies</source>
-      <translation>Migreu les funcions de disseny de peces heretades a Bodies</translation>
+      <source>Migrate legacy Part Design features to Bodies</source>
+      <translation type="unfinished">Migrate legacy Part Design features to Bodies</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="579"/>
@@ -3881,13 +3881,13 @@ This feature is broken and can't be edited.</source>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
-      <source>One transformed shape does not intersect support</source>
-      <translation>Una forma transformada no intersecta suport</translation>
+      <source>One transformed shape does not intersect the support</source>
+      <translation type="unfinished">One transformed shape does not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
-      <source>%1 transformed shapes do not intersect support</source>
-      <translation>1% transformat formes no es creuen suport</translation>
+      <source>%1 transformed shapes do not intersect the support</source>
+      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3983,8 +3983,8 @@ Tot i que podreu migrar en qualsevol moment més tard amb 'Disseny de peces -&gt
     <name>SprocketParameter</name>
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
-      <source>Sprocket parameter</source>
-      <translation>Paràmetre de la roda dentada</translation>
+      <source>Sprocket parameters</source>
+      <translation type="unfinished">Sprocket parameters</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4163,8 +4163,8 @@ Tot i que podreu migrar en qualsevol moment més tard amb 'Disseny de peces -&gt
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
-      <source>Tooth Width</source>
-      <translation>Amplada de les dents</translation>
+      <source>Tooth Width:</source>
+      <translation type="unfinished">Tooth Width:</translation>
     </message>
   </context>
   <context>
@@ -4973,8 +4973,8 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="128"/>
-      <source>Error: Pitch too small</source>
-      <translation type="unfinished">Error: Pitch too small</translation>
+      <source>Error: Pitch too small!</source>
+      <translation type="unfinished">Error: Pitch too small!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>

@@ -296,7 +296,7 @@
     <message>
       <location filename="../../Command.cpp" line="1226"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Wählen Sie ein einzelnes FEM-Netz oder einen Knotensatz.</translation>
+      <translation>Ein einzelnes FEM-Netz oder einen Knotensatz auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="2064"/>
       <source>Cut the data along an implicit function</source>
-      <translation>Schneiden Sie die Daten entlang einer impliziten Funktion</translation>
+      <translation>Die Daten entlang einer impliziten Funktion schneiden</translation>
     </message>
   </context>
   <context>
@@ -940,19 +940,9 @@
       <translation>Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles</source>
-      <translation>SPOOLES</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Iterative Skalierung</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
-      <source>Iterative Cholesky</source>
-      <translation>Iterativer Cholesky</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
@@ -1016,6 +1006,16 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
       <source>Maximum number of iterations</source>
       <translation>Maximale Anzahl an Iterationen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <source>Spooles equation solver</source>
+      <translation type="unfinished">Spooles equation solver</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <source>Cholesky iterative solver</source>
+      <translation type="unfinished">Cholesky iterative solver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
@@ -1105,8 +1105,8 @@ Bitte eine andere Datei angeben.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-      <source>Multi-CPU core support:</source>
-      <translation>Unterstützung für mehrere CPU-Kerne:</translation>
+      <source>Multi-core CPU support:</source>
+      <translation type="unfinished">Multi-core CPU support:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1276,8 +1276,8 @@ besteht aus zwei Netzgruppen, Flächen und Knoten, auf die die Beschränkung ode
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation>Arbeitsverzeichnis für das Berechnen der Analyse und der Vernetzung mit Gmsh</translation>
+      <source>Working directory for solving analysis and Gmsh meshing</source>
+      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1371,8 +1371,8 @@ ausgeblendet, wenn der Ergebnisdialog geöffnet ist</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-      <source>Hide analysis features when open result dialog</source>
-      <translation>Analyseelemente beim Öffnen des Ergebnisdialogs ausblenden</translation>
+      <source>Hide analysis features when opening result dialog</source>
+      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1421,8 +1421,8 @@ ein Analysebehälter angelegt wird</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
-      <source>Leave blank to use default gmsh binary file</source>
-      <translation>Freilassen, um die Standard-gmsh-Binärdatei zu verwenden</translation>
+      <source>Leave blank to use default Gmsh binary file</source>
+      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1575,8 +1575,8 @@ Bitte eine andere Datei angeben.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-      <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation>Freilassen, um die Standard-Z88 z88r-Binärdatei zu verwenden</translation>
+      <source>Leave blank to use default Z88, z88r binary file</source>
+      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1637,7 +1637,7 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Maximale Plätze im Zufallsvektor.
-(Anzahl der Knoten pro Element multipliziert
+(Anzahl der Knoten pro Element multipliziert 
 mit Anzahl der Finiten Elementen)
 
 Eventuell ist eine Erweiterung der Plätze nötig, wenn ein
@@ -1658,7 +1658,7 @@ Specify another file please.</source>
       <translation>Die angegebene Datei z88r
 '%1'
  existiert nicht!
-Geben Sie bitte eine andere Datei an.</translation>
+Bitte eine andere Datei angeben.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="120"/>
@@ -1669,12 +1669,12 @@ Geben Sie bitte eine andere Datei an.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="121"/>
       <source>You must specify the path to the z88r.exe!</source>
-      <translation>Sie müssen den Pfad zu z88r.exe angeben!</translation>
+      <translation>Den Pfad zu z88r.exe angeben!</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="126"/>
       <source>You must specify the path to the z88r!</source>
-      <translation>Du musst den Pfad zu z88r angeben!</translation>
+      <translation>Den Pfad zu z88r angeben!</translation>
     </message>
   </context>
   <context>
@@ -1704,7 +1704,7 @@ Geben Sie bitte eine andere Datei an.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="218"/>
       <source>You must specify at least one reference</source>
-      <translation>Sie müssen mindestens eine Referenz angeben</translation>
+      <translation>Mindestens eine Referenz angeben</translation>
     </message>
   </context>
   <context>
@@ -1868,7 +1868,7 @@ Geben Sie bitte eine andere Datei an.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="172"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Bitte verwenden Sie nur eine einzige Referenz für die Lagerrandbedingung</translation>
+      <translation>Bitte nur eine einzige Referenz für die Lagerrandbedingung verwenden</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
@@ -2000,8 +2000,8 @@ Geben Sie bitte eine andere Datei an.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
-      <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
-      <translation>Pro Analyseelement darf nur ein Objekttyp (Punkt, Fläche oder Kante) ausgewählt werden!</translation>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
+      <translation>Pro Analyseelement darf nur eine Objektart (Knoten, Fläche oder Kante) ausgewählt werden!</translation>
     </message>
   </context>
   <context>
@@ -2067,8 +2067,8 @@ Geben Sie bitte eine andere Datei an.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
-      <source>Length Scale[m]</source>
-      <translation>Längenmaßstab in m</translation>
+      <source>Length Scale [m]</source>
+      <translation type="unfinished">Length Scale [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2400,7 +2400,7 @@ Geben Sie bitte eine andere Datei an.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="202"/>
       <source>Analysis feature update error</source>
-      <translation>Fehler beim Aktualisieren der Analysefunktion</translation>
+      <translation>Fehler beim Aktualisieren des Analyseelements</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="203"/>
@@ -2626,13 +2626,13 @@ Geben Sie bitte eine andere Datei an.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
-      <source>use FreeCAD material editor</source>
-      <translation>FreeCAD Material-Editor benutzen</translation>
+      <source>Use FreeCAD material editor</source>
+      <translation type="unfinished">Use FreeCAD material editor</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
-      <source>use this task panel</source>
-      <translation>diesen Aufgabenbereich benutzen</translation>
+      <source>Use this task panel</source>
+      <translation type="unfinished">Use this task panel</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2686,8 +2686,13 @@ Geben Sie bitte eine andere Datei an.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
-      <source>Thermal  Properties</source>
-      <translation>Thermische Eigenschaften</translation>
+      <source>Thermal Properties</source>
+      <translation type="unfinished">Thermal Properties</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="497"/>
+      <source>Specific Heat Capacity:</source>
+      <translation type="unfinished">Specific Heat Capacity:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -2709,11 +2714,6 @@ Geben Sie bitte eine andere Datei an.</translation>
       <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
       <translation>0 m/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="497"/>
-      <source>Specific Heat:</source>
-      <translation>Spezifische Wärme:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
@@ -2866,6 +2866,11 @@ Geben Sie bitte eine andere Datei an.</translation>
       <translation>Auslass-Massenstrom</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="651"/>
+      <source>Head Loss [mm]</source>
+      <translation type="unfinished">Head Loss [mm]</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
       <location filename="../ui/ElementFluid1D.ui" line="415"/>
@@ -2914,11 +2919,6 @@ Geben Sie bitte eine andere Datei an.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
       <translation>Fließrate [mm^3/s]</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="651"/>
-      <source>Head Loss[mm]</source>
-      <translation>Druckverlust in mm</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3474,8 +3474,8 @@ Hinweis: Für 2D ist nur für x möglich,
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameter</source>
-      <translation>FEM-Netzparameter</translation>
+      <source>FEM Mesh Parameters</source>
+      <translation type="unfinished">FEM Mesh Parameters</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -3560,7 +3560,7 @@ Hinweis: Für 2D ist nur für x möglich,
     <message>
       <location filename="../../Command.cpp" line="77"/>
       <source>You need to create or activate a Analysis</source>
-      <translation>Sie müssen eine Analyse erstellen oder aktivieren</translation>
+      <translation>Eine Analyse erstellen oder aktivieren</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
@@ -3638,7 +3638,7 @@ Hinweis: Für 2D ist nur für x möglich,
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="332"/>
       <source>Are you sure you want to continue?</source>
-      <translation>Sind Sie sicher, dass Sie fortfahren möchten?</translation>
+      <translation>Wirklich fortfahren?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="159"/>
@@ -3781,7 +3781,7 @@ und färbt das Ergebnisnetz dementsprechend ein</translation>
       <location filename="../ui/ResultShow.ui" line="355"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
-      <translation>Geben Sie hier eine zu berechnende Gleichung ein.
+      <translation>Eine zu berechnende Gleichung eingeben.
 Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     </message>
     <message>
@@ -4359,7 +4359,7 @@ zu ermitteln, die durch der Strömung erzeugt wurde
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wählen Sie mehrere Flächen, klicken Sie auf Hinzufügen oder Entfernen</translation>
+      <translation>Fläche(n) auswählen, dann auf Hinzufügen oder Entfernen klicken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -4389,7 +4389,7 @@ zu ermitteln, die durch der Strömung erzeugt wurde
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="239"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation>Wählen Sie eine planare Kante oder Fläche, dann drücken Sie diesen Knopf</translation>
+      <translation>Eine planare Kante oder Fläche auswählen, dann diese Schaltfläche drücken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="242"/>
@@ -4405,6 +4405,11 @@ zu ermitteln, die durch der Strömung erzeugt wurde
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="394"/>
       <source>Type</source>
       <translation>Typ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
+      <source>Temperature [K]</source>
+      <translation type="unfinished">Temperature [K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
@@ -4437,11 +4442,6 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
       <translation>Tab 2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
-      <source>Temperature[K]</source>
-      <translation>Temperatur in K</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
@@ -4489,7 +4489,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation>Wählen Sie eine planare Kante oder Fläche, dann drücken Sie diesen Knopf</translation>
+      <translation>Eine planare Kante oder Fläche auswählen, dann diese Schaltfläche drücken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="120"/>
@@ -4603,7 +4603,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
-      <translation>Wählen Sie eine einzelne Fläche und drücken Sie Hinzufügen oder Entfernen</translation>
+      <translation>Eine einzelne Fläche auswählen und Hinzufügen oder Entfernen drücken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4732,7 +4732,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select a face, click Add or Remove</source>
-      <translation>Wählen Sie eine Fläche und drücken Sie Hinzufügen oder Entfernen</translation>
+      <translation>Eine Fläche auswählen und Hinzufügen oder Entfernen drücken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -5115,13 +5115,13 @@ used for the Elmer solver</source>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
-      <source>Nbr. Segs per Edge:</source>
-      <translation>Anz. Segmente pro Kante:</translation>
+      <source>Number of Segments per Edge:</source>
+      <translation type="unfinished">Number of Segments per Edge:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
-      <source>Nbr. Segs per Radius:</source>
-      <translation>Anz. Segmente pro Radius:</translation>
+      <source>Number of Segments per Radius:</source>
+      <translation type="unfinished">Number of Segments per Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5459,10 +5459,8 @@ used for the Elmer solver</source>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
-      <source>Creates a FEM equation for
- elasticity (stress)</source>
-      <translation>Erstellt eine FEM-Gleichung für
- Elastizität (Spannung)</translation>
+      <source>Creates a FEM equation for elasticity (stress)</source>
+      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
     </message>
   </context>
   <context>
@@ -5880,7 +5878,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation>Wählen Sie Elemente aus dem Festkörper aus, der der Liste hinzugefügt werden sollen. Um den Festkörper hinzuzufügen, auf "Hinzufügen" klicken.</translation>
+      <translation>Elemente des Festkörpers auswählen, die der Liste hinzugefügt werden sollen. Um den Festkörper hinzuzufügen, auf "Hinzufügen" klicken.</translation>
     </message>
   </context>
   <context>
@@ -5988,7 +5986,7 @@ used for the Elmer solver</source>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>Kein Histogramm verfügbar.
-Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
+Bitte zuerst einen Ergebnistyp auswählen.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="546"/>
@@ -6021,10 +6019,8 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
-      <source>Creates a FEM equation for
- 2D magnetodynamic forces</source>
-      <translation>Erstellt eine FEM-Gleichung für
- 2D magnetodynamische Kräfte</translation>
+      <source>Creates a FEM equation for 2D magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6050,10 +6046,8 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
-      <source>Creates a FEM equation for
- magnetodynamic forces</source>
-      <translation>Erstellt eine FEM-Gleichung für
- magnetodynamische Kräfte</translation>
+      <source>Creates a FEM equation for magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6132,10 +6126,8 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
-      <source>Creates a FEM equation for
- deformation (nonlinear elasticity)</source>
-      <translation>Erstellt eine FEM-Gleichung für
- Verformung (nichtlineare Elastizität)</translation>
+      <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
+      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
     </message>
   </context>
   <context>
@@ -6538,8 +6530,8 @@ Bitte wählen Sie zuerst einen Ergebnistyp.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation>Nur eine Art der Auswahl (Knoten, Fläche oder Kante) pro Randbedingung erlaubt!</translation>
+      <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
     </message>
   </context>
   <context>

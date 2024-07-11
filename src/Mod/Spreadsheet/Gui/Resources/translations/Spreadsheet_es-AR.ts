@@ -433,7 +433,7 @@
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Dirección de celda inicial a vincular.
+      <translation>Dirección de celda inicial a vincular. 
 Escriba '=' si desea utilizar una expresión.
 La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
@@ -663,8 +663,8 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Cadena de unidad</translation>
+      <source>Text for the unit</source>
+      <translation type="unfinished">Text for the unit</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>

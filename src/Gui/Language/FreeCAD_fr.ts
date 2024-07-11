@@ -6,17 +6,17 @@
     <message>
       <location filename="../DlgLocationAngle.ui" line="22"/>
       <source>A:</source>
-      <translation>A:</translation>
+      <translation>A :</translation>
     </message>
     <message>
       <location filename="../DlgLocationAngle.ui" line="43"/>
       <source>B:</source>
-      <translation>B:</translation>
+      <translation>B :</translation>
     </message>
     <message>
       <location filename="../DlgLocationAngle.ui" line="64"/>
       <source>C:</source>
-      <translation>C:</translation>
+      <translation>C :</translation>
     </message>
     <message>
       <location filename="../DlgLocationAngle.ui" line="86"/>
@@ -587,8 +587,8 @@
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
-      <source>Scroll middle mouse button</source>
-      <translation>Faire défiler la molette de la souris</translation>
+      <source>Scroll mouse wheel</source>
+      <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
   </context>
   <context>
@@ -4548,8 +4548,8 @@ les petites fonctions difficiles, voire impossible à sélectionner.</translatio
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
-      <source>Units calculator</source>
-      <translation>Convertisseur d'unités</translation>
+      <source>Units converter</source>
+      <translation type="unfinished">Units converter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -5184,8 +5184,8 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
-      <source>Rotation axis with angle</source>
-      <translation>Axe de rotation et angle</translation>
+      <source>Rotation axis and angle</source>
+      <translation type="unfinished">Rotation axis and angle</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5884,13 +5884,13 @@ Voulez enregistrer les modifications ?</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Faites glisser l'écran avec un doigt OU appuyez sur le bouton gauche de la souris. Dans Sketcher et d'autres modes d'édition, maintenez la touche Alt enfoncée en plus.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pincer (placer deux doigts sur l'écran et les glisser en les écartant l'un de l'autre ou en les rapprochant l'un de l'autre) OU faire défiler la la molette de la souris OU PgPréc/PgSuiv au clavier.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -6841,8 +6841,8 @@ Do you want to specify another directory?</source>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="318"/>
-      <source>Automatic python modules documentation</source>
-      <translation>Documentation automatique des modules en Python</translation>
+      <source>Automatic Python modules documentation</source>
+      <translation type="unfinished">Automatic Python modules documentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="319"/>
@@ -7409,8 +7409,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3274"/>
-      <source>Create group...</source>
-      <translation>Créer un groupe...</translation>
+      <source>Create group</source>
+      <translation>Créer un groupe</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3275"/>
@@ -8579,8 +8579,8 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'importer tous les liens</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="99"/>
-      <location filename="../DlgAddProperty.cpp" line="112"/>
+      <location filename="../DlgAddProperty.cpp" line="105"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="285"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="295"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="317"/>
@@ -8588,7 +8588,7 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Nom incorrect</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="100"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="286"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
@@ -8596,19 +8596,19 @@ underscore, and must not start with a digit.</source>
 des traits de soulignement et ne doit pas commencer par un chiffre.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="113"/>
+      <location filename="../DlgAddProperty.cpp" line="119"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="296"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation>La propriété "%1" existe déjà dans "%2"</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="136"/>
+      <location filename="../DlgAddProperty.cpp" line="142"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="248"/>
       <source>Add property</source>
       <translation>Ajouter une propriété</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="137"/>
+      <location filename="../DlgAddProperty.cpp" line="143"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="249"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Impossible d'ajouter la propriété à "%1" : %2</translation>
@@ -8894,7 +8894,7 @@ Remarquer que toute modification apportée à la copie en cours sera perdue.</tr
       <location filename="../DlgAddPropertyVarSet.cpp" line="318"/>
       <source>The group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation>Le nom du groupe ne doit contenir que des caractères alphanumériques, des traits de soulignement et ne doit pas commencer par un chiffre.</translation>
+      <translation>Le nom du groupe ne doit contenir que des caractères alphanumériques, des underscores et ne doit pas commencer par un chiffre.</translation>
     </message>
   </context>
   <context>
@@ -10483,20 +10483,6 @@ création d'assemblages complexes.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUnitsCalculator</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="778"/>
-      <source>&amp;Units calculator...</source>
-      <translation>Convertir des &amp;unités...</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="779"/>
-      <location filename="../CommandStd.cpp" line="781"/>
-      <source>Start the units calculator</source>
-      <translation>Démarrer le convertisseur d'unités</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdUserEditMode</name>
     <message>
       <location filename="../CommandStd.cpp" line="814"/>
@@ -11805,10 +11791,10 @@ after FreeCAD launches</source>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez réorganiser les ateliers en les glissant-déposant. Vous pouvez également les trier en cliquant droit sur n'importe lequel et en sélectionnant &lt;span style="  font-weight:600; font-style:italic;"&gt;"Trier par ordre alphabétique"&lt;/span&gt;.
-Des ateliers additionnels peuvent être installés à l'aide du gestionnaire d'extension.&lt;/p&gt;&lt;p&gt;
+      <translation>Vous pouvez réorganiser les ateliers en les glissant-déposant. Vous pouvez également les trier par un clic droit sur n'importe lequel et en sélectionnant &lt;span style="  font-weight:600; font-style:italic;"&gt;"Trier par ordre alphabétique"&lt;/span&gt;.
+D'autres ateliers peuvent être installés à l'aide du gestionnaire des extensions.
 
-En ce moment, votre système dispose des ateliers suivants&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+En ce moment, votre système dispose des ateliers suivants :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
@@ -11971,8 +11957,8 @@ En ce moment, votre système dispose des ateliers suivants&lt;/p&gt;&lt;/body&gt
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
-      <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>Ceci est l'atelier de démarrage actuel et doit être activé. Voir Préférences/Général/Chargement automatique pour en changer.</translation>
+      <source>This is the current startup module, and must be enabled.</source>
+      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -11991,8 +11977,8 @@ En ce moment, votre système dispose des ateliers suivants&lt;/p&gt;&lt;/body&gt
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
-      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation>Il s'agit de l'atelier de démarrage, qui doit être chargé automatiquement. Voir Préférences/Général/Chargement automatique pour changer.</translation>
+      <source>This is the current startup module, and must be autoloaded.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -12494,7 +12480,7 @@ de macro où un point sera toujours affiché.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Vous cherchez davantage de thèmes ? Vous pouvez les obtenir en utilisant le &lt;a href="freecad:Std_AddonMgr"&gt;gestionnaire des extensions&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
@@ -12511,7 +12497,7 @@ selon la taille de votre écran ou vos préférences personnelles.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="271"/>
       <source>Tree view and Property view mode:</source>
-      <translation>Mode de vue en arborescence et vue des propriétés:</translation>
+      <translation>Mode de vue en arborescence et vue des propriétés :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
@@ -12521,8 +12507,8 @@ selon la taille de votre écran ou vos préférences personnelles.</translation>
 'Independent': split Tree view and Property view into separate panels.</source>
       <translation>Personnaliser l'affichage de l'arborescence dans le panneau (redémarrage requis).
 
-'Vue combinée' : combine la vue en arborescence et l'éditeur de propriétés en un seul panneau.
-'Arborescence et Propriétés' : partage la vue en arborescence et l'éditeur de propriétés en deux panneaux distincts.</translation>
+"Combiné" : combine la vue en arborescence et l'éditeur de propriétés en un seul panneau.
+"Indépendant" : sépare la vue en arborescence et l'éditeur de propriétés en deux panneaux distincts.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="288"/>
@@ -13000,8 +12986,8 @@ Cela permet aux fenêtres ancrées de rester transparentes en permanence.</trans
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3716"/>
-      <source>Toggle transparent</source>
-      <translation>Activer/désactiver la transparence</translation>
+      <source>Toggle transparent mode</source>
+      <translation>Activer/désactiver le mode transparent</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
@@ -13342,8 +13328,8 @@ Mettre à zéro pour remplir l'espace.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
-      <source>Locks toolbar so they are no longer moveable</source>
-      <translation>Verrouiller les barres d'outils pour qu'elles ne soient plus déplaçables.</translation>
+      <source>Lock toolbars so they are no longer moveable</source>
+      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
     </message>
   </context>
   <context>
@@ -13532,12 +13518,6 @@ Mettre à zéro pour remplir l'espace.</translation>
       <translation>Personnalisation du thème</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
-      <source>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation>Cette page vous permet de personnaliser votre thème actuel.
-Les paramètres proposés sont facultatifs pour les développeurs de thèmes et peuvent donc avoir ou non un effet sur votre thème actuel.</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
       <source>Accent color 1</source>
       <translation>Couleur d'accentuation 1</translation>
@@ -13612,17 +13592,22 @@ Les paramètres proposés sont facultatifs pour les développeurs de thèmes et 
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="267"/>
       <source>Icon size</source>
-      <translation>Taille d'icône</translation>
+      <translation>Taille des icônes</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="277"/>
       <source>Additional spacing for tree view rows. Bigger values will increase row item heights.</source>
-      <translation>Espacement supplémentaire pour les lignes de la vue arborescente. Des valeurs plus élevées augmenteront la hauteur des éléments.</translation>
+      <translation>Écartement supplémentaire pour les lignes de la vue en arborescence. Des valeurs plus élevées augmenteront la hauteur des éléments des lignes.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
+      <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
-      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</source>
-      <translation>Si cette option est cochée, une icône en forme d'œil apparaît devant les éléments de l'arborescence, indiquant la visibilité des éléments. Lorsque l'on clique sur l'icône, la visibilité est modifiée.</translation>
+      <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
+      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
@@ -13652,7 +13637,7 @@ Les paramètres proposés sont facultatifs pour les développeurs de thèmes et 
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="344"/>
       <source>Hide column with object description in tree view.</source>
-      <translation>Cacher la colonne contenant la description de l'objet dans l'arborescence.</translation>
+      <translation>Masquer la colonne contenant la description de l'objet dans l'arborescence.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="347"/>
@@ -13697,7 +13682,7 @@ Les paramètres proposés sont facultatifs pour les développeurs de thèmes et 
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="417"/>
       <source>Automatically hide overlayed dock panels when in non 3D view (like TechDraw or Spreadsheet).</source>
-      <translation>Masquer automatiquement les panneaux de dock superposés en mode non 3D (comme TechDraw ou Spreadsheet).</translation>
+      <translation>Masquer automatiquement les panneaux ancrables superposés lorsqu'on est dans une vue non 3D (comme TechDraw ou Spreadsheet).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="420"/>
@@ -13736,6 +13721,20 @@ Les paramètres proposés sont facultatifs pour les développeurs de thèmes et 
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
       <translation>Un jeu de variables est un objet qui maintient un ensemble de propriétés à utiliser comme variables.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="778"/>
+      <source>&amp;Units converter...</source>
+      <translation type="unfinished">&amp;Units converter...</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="779"/>
+      <location filename="../CommandStd.cpp" line="781"/>
+      <source>Start the units converter</source>
+      <translation type="unfinished">Start the units converter</translation>
     </message>
   </context>
 </TS>

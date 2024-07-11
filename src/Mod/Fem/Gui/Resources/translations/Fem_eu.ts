@@ -941,19 +941,9 @@ hasierako tenperatura:</translation>
       <translation type="unfinished">Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles</source>
-      <translation>Spoolak</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Eskalatze iteratiboa</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
-      <source>Iterative Cholesky</source>
-      <translation>Cholesky iteratiboa</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
@@ -1017,6 +1007,16 @@ hasierako tenperatura:</translation>
       <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
       <source>Maximum number of iterations</source>
       <translation>Iterazio kopuru maximoa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <source>Spooles equation solver</source>
+      <translation type="unfinished">Spooles equation solver</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <source>Cholesky iterative solver</source>
+      <translation type="unfinished">Cholesky iterative solver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
@@ -1106,8 +1106,8 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-      <source>Multi-CPU core support:</source>
-      <translation>PUZ anitzeko nukleoen euskarria:</translation>
+      <source>Multi-core CPU support:</source>
+      <translation type="unfinished">Multi-core CPU support:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1265,7 +1265,7 @@ Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
       <translation>Amaraun-taldeak ere esportatzen dira.
-Analisi-elementu guztiak eta, material desberdinak badaude, material
+Analisi-elementu guztiak eta, material desberdinak badaude, material 
 guztiak ere, bi amaraun-taldez, aurpegiz eta nodoz osatuta daude,
 non murrizketa edo materiala aplikatzen den.</translation>
     </message>
@@ -1279,8 +1279,8 @@ non murrizketa edo materiala aplikatzen den.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation>Analisiak ebazteko eta gmsh amaraunetarako laneko direktorioa</translation>
+      <source>Working directory for solving analysis and Gmsh meshing</source>
+      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1375,8 +1375,8 @@ analisi-elementu guztiak ezkutatuta daude eredu-bistan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-      <source>Hide analysis features when open result dialog</source>
-      <translation>Ezkutatu analisi-elementuak emaitzen elkarrizketa-koadroa irekitzean</translation>
+      <source>Hide analysis features when opening result dialog</source>
+      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1425,8 +1425,8 @@ gehituko den ebazle lehenetsia</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
-      <source>Leave blank to use default gmsh binary file</source>
-      <translation>Utzi hutsik gmsh fitxategi bitar lehenetsia erabiltzeko</translation>
+      <source>Leave blank to use default Gmsh binary file</source>
+      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1584,8 +1584,8 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-      <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation>Utzi hutsik Z88 z88r fitxategi bitar lehenetsia erabiltzeko</translation>
+      <source>Leave blank to use default Z88, z88r binary file</source>
+      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1666,7 +1666,7 @@ mezu bat jaso daiteke.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Zehaztutako z88r exekutagarria:
+      <translation>Zehaztutako z88r exekutagarria: 
 '%1'
 ez da existitzen.
 Zehaztu beste fitxategi bat.</translation>
@@ -2011,7 +2011,7 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
-      <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da analisi-elementu bakoitzeko</translation>
     </message>
   </context>
@@ -2078,8 +2078,8 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
-      <source>Length Scale[m]</source>
-      <translation>Luzera-eskala [m]</translation>
+      <source>Length Scale [m]</source>
+      <translation type="unfinished">Length Scale [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2637,13 +2637,13 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
-      <source>use FreeCAD material editor</source>
-      <translation>Erabili FreeCADen material-editorea</translation>
+      <source>Use FreeCAD material editor</source>
+      <translation type="unfinished">Use FreeCAD material editor</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
-      <source>use this task panel</source>
-      <translation>Erabili ataza-panel hau</translation>
+      <source>Use this task panel</source>
+      <translation type="unfinished">Use this task panel</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2697,8 +2697,13 @@ Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
-      <source>Thermal  Properties</source>
-      <translation>Propietate termikoak</translation>
+      <source>Thermal Properties</source>
+      <translation type="unfinished">Thermal Properties</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="497"/>
+      <source>Specific Heat Capacity:</source>
+      <translation type="unfinished">Specific Heat Capacity:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -2720,11 +2725,6 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
       <translation>0 m/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="497"/>
-      <source>Specific Heat:</source>
-      <translation>Bero espezifikoa:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
@@ -2877,6 +2877,11 @@ Zehaztu beste fitxategi bat.</translation>
       <translation>Irteerako masa-emaria</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="651"/>
+      <source>Head Loss [mm]</source>
+      <translation type="unfinished">Head Loss [mm]</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
       <location filename="../ui/ElementFluid1D.ui" line="415"/>
@@ -2925,11 +2930,6 @@ Zehaztu beste fitxategi bat.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
       <translation>Emaria [mm^3/s]</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="651"/>
-      <source>Head Loss[mm]</source>
-      <translation>Buru hidraulikoaren galera [mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3485,8 +3485,8 @@ Oharra: 2D kasuetan soilik, X-en ezarpena posible da,
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameter</source>
-      <translation>FEM amaraunaren parametroa</translation>
+      <source>FEM Mesh Parameters</source>
+      <translation type="unfinished">FEM Mesh Parameters</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -4418,6 +4418,11 @@ fluxuak sortutako gainazal-indarra
       <translation>Mota</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
+      <source>Temperature [K]</source>
+      <translation type="unfinished">Temperature [K]</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
@@ -4448,11 +4453,6 @@ norabidea erabiliko da norabide gisa</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
       <translation>2. fitxa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
-      <source>Temperature[K]</source>
-      <translation>Tenperatura [K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
@@ -5126,13 +5126,13 @@ Elmer ebazlean</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
-      <source>Nbr. Segs per Edge:</source>
-      <translation>Segmentu kopurua ertzeko:</translation>
+      <source>Number of Segments per Edge:</source>
+      <translation type="unfinished">Number of Segments per Edge:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
-      <source>Nbr. Segs per Radius:</source>
-      <translation>Segmentu kopurua erradioko:</translation>
+      <source>Number of Segments per Radius:</source>
+      <translation type="unfinished">Number of Segments per Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5470,10 +5470,8 @@ Elmer ebazlean</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
-      <source>Creates a FEM equation for
- elasticity (stress)</source>
-      <translation>FEM ekuazio bat sortzen du
-elastikotasunerako (estreserako)</translation>
+      <source>Creates a FEM equation for elasticity (stress)</source>
+      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
     </message>
   </context>
   <context>
@@ -6032,10 +6030,8 @@ Hasteko, hautatu emaitza mota bat.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
-      <source>Creates a FEM equation for
- 2D magnetodynamic forces</source>
-      <translation>FEM ekuazio bat sortzen du
-2D indar magnetodinamikoetarako</translation>
+      <source>Creates a FEM equation for 2D magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6061,10 +6057,8 @@ Hasteko, hautatu emaitza mota bat.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
-      <source>Creates a FEM equation for
- magnetodynamic forces</source>
-      <translation>FEM ekuazio bat sortzen du
-indar magnetodinamikoetarako</translation>
+      <source>Creates a FEM equation for magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6143,10 +6137,8 @@ indar magnetodinamikoetarako</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
-      <source>Creates a FEM equation for
- deformation (nonlinear elasticity)</source>
-      <translation>FEM ekuazio bat sortzen du
-deformaziorako (elastikotasun ez linealerako)</translation>
+      <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
+      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
     </message>
   </context>
   <context>
@@ -6549,8 +6541,8 @@ deformaziorako (elastikotasun ez linealerako)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
     </message>
   </context>
   <context>

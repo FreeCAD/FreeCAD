@@ -231,8 +231,8 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Fügt ein Symbol aus einer SVG-Datei in der aktiven Zeichnung ein</translation>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
     </message>
   </context>
   <context>
@@ -337,7 +337,7 @@
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Der Drucker verwendet eine andere Ausrichtung als die Zeichnung.
-Möchten Sie fortfahren?</translation>
+Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="605"/>
@@ -675,7 +675,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="72"/>
       <location filename="../../Command.cpp" line="640"/>
       <source>Choose an SVG file to open</source>
-      <translation>Wählen Sie eine SVG-Datei zum Öffnen aus</translation>
+      <translation>Eine SVG-Datei zum Öffnen auswählen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="74"/>
@@ -696,7 +696,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="332"/>
       <source>Select a Part object.</source>
-      <translation>Wählen Sie ein Teile-Objekt aus..</translation>
+      <translation>Ein Bauteil auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -716,18 +716,18 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="633"/>
       <location filename="../../Command.cpp" line="831"/>
       <source>Create a page first.</source>
-      <translation>Erstellen Sie zunächst eine Seite.</translation>
+      <translation>Zuerst eine Seite erstellen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
-      <translation>Wählen Sie genau ein Teil-Objekt.</translation>
+      <translation>Genau ein Bauteil-Objekt auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <location filename="../../Command.cpp" line="698"/>
       <source>Select one Page object.</source>
-      <translation>Wählen Sie ein Page-Objekt aus.</translation>
+      <translation>Ein Zeichnungsblatt auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="704"/>
@@ -742,7 +742,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Wählen Sie genau ein Kalkulationstabellen-Objekt.</translation>
+      <translation>Genau ein Kalkulationstabellen-Objekt auswählen.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="47"/>

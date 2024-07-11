@@ -11,12 +11,12 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material card</source>
-      <translation>Tarjeta de Material</translation>
+      <translation>Tarjeta de material</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation>Abre la URL de producto de este material en un navegador externo</translation>
+      <translation>Abre la URL del producto de este material en un navegador externo</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add / remove parameter</source>
-      <translation>Agregar / eliminar parámetro</translation>
+      <translation>Añadir / quitar parámetro</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../MaterialEditor.py" line="310"/>
       <source>Product URL</source>
-      <translation>URL de producto</translation>
+      <translation>URL del producto</translation>
     </message>
     <message>
       <location filename="../../MaterialEditor.py" line="398"/>
@@ -430,28 +430,36 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../Gui/MaterialsEditor.ui" line="202"/>
-      <source>*</source>
-      <translation type="unfinished">*</translation>
+      <source>Add to favorites</source>
+      <translation type="unfinished">Add to favorites</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="212"/>
+      <location filename="../../Gui/MaterialsEditor.ui" line="236"/>
+      <source>Add physical model</source>
+      <translation type="unfinished">Add physical model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="246"/>
+      <source>Delete physical model</source>
+      <translation type="unfinished">Delete physical model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="286"/>
+      <source>Add appearance model</source>
+      <translation type="unfinished">Add appearance model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="296"/>
+      <source>Delete appearance model</source>
+      <translation type="unfinished">Delete appearance model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
       <translation type="unfinished">Physical</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="233"/>
-      <location filename="../../Gui/MaterialsEditor.ui" line="277"/>
-      <source>+</source>
-      <translation type="unfinished">+</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="240"/>
-      <location filename="../../Gui/MaterialsEditor.ui" line="284"/>
-      <source>-</source>
-      <translation type="unfinished">-</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="253"/>
+      <location filename="../../Gui/MaterialsEditor.ui" line="262"/>
       <source>Appearance</source>
       <translation>Apariencia</translation>
     </message>
@@ -568,11 +576,6 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../Gui/ModelSelect.ui" line="159"/>
       <source>Add to favorites</source>
       <translation type="unfinished">Add to favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="162"/>
-      <source>*</source>
-      <translation type="unfinished">*</translation>
     </message>
     <message>
       <location filename="../../Gui/ModelSelect.ui" line="172"/>
@@ -873,8 +876,8 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="372"/>
-      <source>Custom Appearance</source>
-      <translation type="unfinished">Custom Appearance</translation>
+      <source>Custom appearance:</source>
+      <translation type="unfinished">Custom appearance:</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="382"/>

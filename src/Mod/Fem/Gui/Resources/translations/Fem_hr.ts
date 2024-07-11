@@ -942,19 +942,9 @@
       <translation>Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles</source>
-      <translation>Špule</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Iteracijsko skaliranje</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
-      <source>Iterative Cholesky</source>
-      <translation>Iteracijsko Cholesky</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
@@ -1018,6 +1008,16 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
       <source>Maximum number of iterations</source>
       <translation>Maksimalni broj ponavljanja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <source>Spooles equation solver</source>
+      <translation type="unfinished">Spooles equation solver</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <source>Cholesky iterative solver</source>
+      <translation type="unfinished">Cholesky iterative solver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
@@ -1107,8 +1107,8 @@ Navedi drugu datoteku.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-      <source>Multi-CPU core support:</source>
-      <translation>Podrška za višeprocesorsku arhitekturu:</translation>
+      <source>Multi-core CPU support:</source>
+      <translation type="unfinished">Multi-core CPU support:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1283,8 +1283,8 @@ ograničenje ili materijal primijenjeno.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation>Radni direktorij za rješavanje analize i gmsh mreženja</translation>
+      <source>Working directory for solving analysis and Gmsh meshing</source>
+      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1364,7 +1364,7 @@ dok ne budu prepisani novim pokretanjem rješavača</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation>Rezultati će se otvoriti u dijalogu
+      <translation>Rezultati će se otvoriti u dijalogu 
 sa posljednjim korištenim postavkama dijaloga</translation>
     </message>
     <message>
@@ -1381,8 +1381,8 @@ when the results dialog is opened</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-      <source>Hide analysis features when open result dialog</source>
-      <translation>Sakrij svojstva analize  kada se otvori dijalog rezultata</translation>
+      <source>Hide analysis features when opening result dialog</source>
+      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1398,7 +1398,7 @@ when the results dialog is opened</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Zadani alat za rješavanje koji će biti dodan kada
+      <translation>Zadani alat za rješavanje koji će biti dodan kada 
 se dodaje kontejner za analizu</translation>
     </message>
     <message>
@@ -1431,8 +1431,8 @@ se dodaje kontejner za analizu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
-      <source>Leave blank to use default gmsh binary file</source>
-      <translation>Ostavite prazno za korištenje zadane gmsh binarne datoteke</translation>
+      <source>Leave blank to use default Gmsh binary file</source>
+      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1504,7 +1504,7 @@ Objekt FreeCAD rezultata: Uvezeni podaci bit će pretvoreni u FreeCAD FEM objekt
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
       <source>FreeCAD result object</source>
-      <translation>FreeCAD Objekt rezultata
+      <translation>FreeCAD Objekt rezultata 
 </translation>
     </message>
   </context>
@@ -1586,8 +1586,8 @@ Navedi drugu datoteku.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-      <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation>Ostavite prazno za korištenje zadane Z88 z88r binarne datoteke</translation>
+      <source>Leave blank to use default Z88, z88r binary file</source>
+      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1631,8 +1631,8 @@ You might need to increase this when using the
 Cholesky solver and you get the error message
 that "MAXGS" needs to be increased.</source>
       <translation>Maksimalan broj mjesta u matrici krutosti.
-Možda ćete to morati povećati kada koristite
-Choleskyov rješavač i dobijete poruku o pogrešci
+Možda ćete to morati povećati kada koristite 
+Choleskyov rješavač i dobijete poruku o pogrešci 
 da se "MAXGS" mora povećati."</translation>
     </message>
     <message>
@@ -1649,12 +1649,12 @@ da se "MAXGS" mora povećati."</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation>Maksimalan broj mjesta u vektoru koincidencije.
+      <translation>Maksimalan broj mjesta u vektoru koincidencije. 
 (broj čvorova po elementu množeno sa
  broj konačnih elementa)
 
-Možda ćete to morati povećati kada koristite
-iterativni rješavač i dobijete poruku o pogrešci
+Možda ćete to morati povećati kada koristite 
+iterativni rješavač i dobijete poruku o pogrešci 
 da se "MAXKOI" mora povećati</translation>
     </message>
     <message>
@@ -2013,8 +2013,8 @@ Navedi drugu datoteku molim.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
-      <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
-      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po svojstvu analize dopuštena!</translation>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
+      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) je dopuštena po elementu analize!</translation>
     </message>
   </context>
   <context>
@@ -2043,7 +2043,7 @@ Navedi drugu datoteku molim.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="158"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) je dopuštena po elementu analize!</translation>
+      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po svojstvu analize dopuštena!</translation>
     </message>
   </context>
   <context>
@@ -2080,8 +2080,8 @@ Navedi drugu datoteku molim.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
-      <source>Length Scale[m]</source>
-      <translation>Skala dužine [m]</translation>
+      <source>Length Scale [m]</source>
+      <translation type="unfinished">Length Scale [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2172,7 +2172,7 @@ Navedi drugu datoteku molim.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po svojstvu analize dopuštena!</translation>
+      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) je dopuštena po elementu analize!</translation>
     </message>
   </context>
   <context>
@@ -2639,13 +2639,13 @@ Navedi drugu datoteku molim.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
-      <source>use FreeCAD material editor</source>
-      <translation>Otvara FreeCAD editor materijala</translation>
+      <source>Use FreeCAD material editor</source>
+      <translation type="unfinished">Use FreeCAD material editor</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
-      <source>use this task panel</source>
-      <translation>koristi ovau ploču zadataka</translation>
+      <source>Use this task panel</source>
+      <translation type="unfinished">Use this task panel</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2699,8 +2699,13 @@ Navedi drugu datoteku molim.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
-      <source>Thermal  Properties</source>
-      <translation>Toplinska svojstva</translation>
+      <source>Thermal Properties</source>
+      <translation type="unfinished">Thermal Properties</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="497"/>
+      <source>Specific Heat Capacity:</source>
+      <translation type="unfinished">Specific Heat Capacity:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -2722,11 +2727,6 @@ Navedi drugu datoteku molim.</translation>
       <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
       <translation>0 m/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="497"/>
-      <source>Specific Heat:</source>
-      <translation>Specifična toplina:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
@@ -2879,6 +2879,11 @@ Navedi drugu datoteku molim.</translation>
       <translation>Maseni protok ispusta</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="651"/>
+      <source>Head Loss [mm]</source>
+      <translation type="unfinished">Head Loss [mm]</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
       <location filename="../ui/ElementFluid1D.ui" line="415"/>
@@ -2927,11 +2932,6 @@ Navedi drugu datoteku molim.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
       <translation>Protok [mm^3/s]</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="651"/>
-      <source>Head Loss[mm]</source>
-      <translation>Gubitak tlaka [mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3095,7 +3095,7 @@ Navedi drugu datoteku molim.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Imaginarni dio se koristi samo za jednadžbe
+      <translation>Imaginarni dio se koristi samo za jednadžbe 
 s harmoničnim/oscilirajućim pogonskim silom.</translation>
     </message>
     <message>
@@ -3159,14 +3159,14 @@ s harmoničnim/oscilirajućim pogonskim silom.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne x-komponente
+      <translation>Realni dio potencijalne x-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne x-komponente
+      <translation>Imaginarni dio potencijalne x-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3180,14 +3180,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne -komponente
+      <translation>Realni dio potencijalne -komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne y-komponente
+      <translation>Imaginarni dio potencijalne y-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3201,14 +3201,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne z-komponente
+      <translation>Realni dio potencijalne z-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne z-komponente
+      <translation>Imaginarni dio potencijalne z-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3488,8 +3488,8 @@ Napomena: u 2D je moguće samo podešavanje za x
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameter</source>
-      <translation>FEM mreža Parametar</translation>
+      <source>FEM Mesh Parameters</source>
+      <translation type="unfinished">FEM Mesh Parameters</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -4308,9 +4308,9 @@ for the Elmer solver</source>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>Rješavanje protoka se koristi
+      <translation>Rješavanje protoka se koristi 
 za određivanje površinske sile
- (i time pomaka) generirane strujom
+ (i time pomaka) generirane strujom 
 (Opcija vrijedi samo za Elmerov rješavač)</translation>
     </message>
     <message>
@@ -4420,10 +4420,15 @@ za određivanje površinske sile
       <translation>Tip</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
+      <source>Temperature [K]</source>
+      <translation type="unfinished">Temperature [K]</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog
+      <translation>Smjer ruba ili smjer normalnog 
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4450,11 +4455,6 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
       <translation>Kartica 2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
-      <source>Temperature[K]</source>
-      <translation>Temperatura[K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
@@ -4513,7 +4513,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog
+      <translation>Smjer ruba ili smjer normalnog 
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4688,7 +4688,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Koja krutost bi se trebala
+      <translation>Koja krutost bi se trebala 
 koristiti za Elmerov rješavač</translation>
     </message>
     <message>
@@ -5128,13 +5128,13 @@ koristiti za Elmerov rješavač</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
-      <source>Nbr. Segs per Edge:</source>
-      <translation>Broj segmenata po rubu:</translation>
+      <source>Number of Segments per Edge:</source>
+      <translation type="unfinished">Number of Segments per Edge:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
-      <source>Nbr. Segs per Radius:</source>
-      <translation>Broj segmenata po polumjeru:</translation>
+      <source>Number of Segments per Radius:</source>
+      <translation type="unfinished">Number of Segments per Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5472,10 +5472,8 @@ koristiti za Elmerov rješavač</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
-      <source>Creates a FEM equation for
- elasticity (stress)</source>
-      <translation>Stvara FEM jednadžbe za
- elastičnost (naprezanje)</translation>
+      <source>Creates a FEM equation for elasticity (stress)</source>
+      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
     </message>
   </context>
   <context>
@@ -6035,10 +6033,8 @@ Molimo odaberite vrstu rezultata prvo.
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
-      <source>Creates a FEM equation for
- 2D magnetodynamic forces</source>
-      <translation>Stvara FEM jednadžbu za
-2D magnetodinamičke sile</translation>
+      <source>Creates a FEM equation for 2D magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6064,10 +6060,8 @@ Molimo odaberite vrstu rezultata prvo.
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
-      <source>Creates a FEM equation for
- magnetodynamic forces</source>
-      <translation>Stvara FEM jednadžbu za
-magnetodinamičke sile</translation>
+      <source>Creates a FEM equation for magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6146,10 +6140,8 @@ magnetodinamičke sile</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
-      <source>Creates a FEM equation for
- deformation (nonlinear elasticity)</source>
-      <translation>Stvara FEM jednadžbu za
- deformaciju (nelinearni elasticitet)</translation>
+      <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
+      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
     </message>
   </context>
   <context>
@@ -6552,8 +6544,8 @@ magnetodinamičke sile</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
     </message>
   </context>
   <context>

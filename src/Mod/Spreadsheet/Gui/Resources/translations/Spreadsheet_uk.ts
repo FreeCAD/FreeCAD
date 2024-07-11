@@ -506,10 +506,10 @@ by that property.
       <translation>Початкова адреса комірки.
 
 Передбачається, що перший стовпець діапазону містить список імен конфігурації,
-які будуть використовуватися для створення списку рядків та привʼязки до цієї
+які будуть використовуватися для створення списку рядків та привʼязки до цієї 
 властивості, щоб користувач міг динамічно перемикати конфігурації.
 
-Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо),
+Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо), 
 обраного за допомогою цієї властивості.
 </translation>
     </message>
@@ -527,10 +527,10 @@ by that property.
       <translation>Кінцева адреса комірки.
 
 Передбачається, що перший стовпець діапазону містить список імен конфігурації,
-які будуть використовуватися для створення списку рядків та привʼязки до цієї
+які будуть використовуватися для створення списку рядків та привʼязки до цієї 
 властивості, щоб користувач міг динамічно перемикати конфігурації.
 
-Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо),
+Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо), 
 обраного за допомогою цієї властивості.
 </translation>
     </message>
@@ -543,7 +543,7 @@ by that property.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Введіть вираз, щоб вказати назву обʼєкта та властивості, щоб динамічно
+      <translation>Введіть вираз, щоб вказати назву обʼєкта та властивості, щоб динамічно 
 змінювати конфігурацію проєкту. Якщо властивість не існує, вона буде створена.</translation>
     </message>
     <message>
@@ -662,8 +662,8 @@ switch the design configuration. The property will be created if not exist.</sou
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Одиниця вимірювання</translation>
+      <source>Text for the unit</source>
+      <translation type="unfinished">Text for the unit</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -952,17 +952,17 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
+      <translation>Символ розділювача:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
+      <translation>Символ цитати:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <translation>Символ пропуску:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>

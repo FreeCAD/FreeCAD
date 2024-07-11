@@ -1598,6 +1598,7 @@ contenant des définitions de motifs à ajouter aux motifs standard.</translatio
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <location filename="../ui/preferences-dxf.ui" line="167"/>
       <source>Texts and dimensions</source>
       <translation>Textes et dimensions</translation>
     </message>
@@ -2008,21 +2009,11 @@ Note: C++ importer is faster, but is not as featureful yet</source>
 Remarque : l'outil d'importation de C++ est plus rapide, mais n'est pas encore aussi fonctionnel</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
-      <source>Use legacy python importer</source>
-      <translation>Utiliser l'outil historique d'importation de Python</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-dxf.ui" line="74"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>L’outil d'exportation de Python est utilisé, sinon le nouvel outil d'exportation de C++ est utilisé.
 Remarque : l’outil d'exportation de C++ est plus rapide, mais n'est pas encore aussi fonctionnel</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
-      <source>Use legacy python exporter</source>
-      <translation>Utiliser l'outil historique d'exportation de Python</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="99"/>
@@ -2056,11 +2047,6 @@ des extensions.</translation>
       <translation>Si cette option n'est pas cochée, les textes/méta-textes ne seront pas importés.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
-      <source>texts and dimensions</source>
-      <translation>Textes et dimensions</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-dxf.ui" line="180"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Si cette option n'est pas cochée, les points ne seront pas importés.</translation>
@@ -2074,11 +2060,6 @@ des extensions.</translation>
       <location filename="../ui/preferences-dxf.ui" line="196"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Si cette option est cochée, les objets paper space seront également importés.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
-      <source>layouts</source>
-      <translation>Mises en page</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="212"/>
@@ -2099,11 +2080,6 @@ des extensions.</translation>
       <location filename="../ui/preferences-dxf.ui" line="245"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Seuls les objets Part standards seront créés (le plus rapide)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
-      <source>simple Part shapes</source>
-      <translation>Formes simples de Part</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="267"/>
@@ -2172,9 +2148,29 @@ Dans le cas contraire, les couleurs par défaut seront appliquées.</translation
       <translation>Mise à jour automatique (ancien outil importateur/exportateur uniquement)</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <source>Use legacy Python importer</source>
+      <translation type="unfinished">Use legacy Python importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <source>Use legacy Python exporter</source>
+      <translation type="unfinished">Use legacy Python exporter</translation>
+    </message>
+    <message>
       <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Some options are not yet available for the new importer</source>
       <translation>Certaines options ne sont pas encore disponibles pour le nouvel importateur</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <source>Layouts</source>
+      <translation type="unfinished">Layouts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <source>Simple Part shapes</source>
+      <translation>Formes simples de Part</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="362"/>
@@ -3436,21 +3432,6 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
       <translation>Les formes sélectionnées doivent définir un plan</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>Les bibliothèques d'importation/exportation DXF nécessaires à FreeCAD pour manipuler le format DXF n'ont pas été trouvées sur ce système. Autoriser FreeCAD à télécharger les bibliothèques :
-  1 - Soit  en chargeant l'atelier Draft,
-  2 - Soit par le menu Édition → Préférences → Importer/Exporter → DXF → Permettre à FreeCAD de télécharger...
-  3 - Soit télécharger ces bibliothèques manuellement, comme expliqué sur https://github.com/yorikvanhavre/Draft-dxf-importer pour permettre à FreeCAD de télécharger ces bibliothèques, choisir "Oui".</translation>
-    </message>
-    <message>
       <location filename="../../WorkingPlane.py" line="1296"/>
       <location filename="../../WorkingPlane.py" line="1297"/>
       <location filename="../../WorkingPlane.py" line="1566"/>
@@ -4092,11 +4073,6 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <translation>Inverser le texte de la dimension</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>L'esquisse est trop complexe pour être modifiée : il est préférable d'utiliser l'éditeur par défaut de Sketcher</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Rayon du congé</translation>
@@ -4325,8 +4301,8 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>L'extrémité de la courbe de Bézier ne peut pas être lissée</translation>
+      <source>Endpoint of Bézier curve can't be smoothed</source>
+      <translation type="unfinished">Endpoint of Bézier curve can't be smoothed</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -5577,6 +5553,30 @@ des objets existants dans tous les documents ouverts ?</translation>
       <source>updated view properties</source>
       <translation>propriétés de la vue mises à jour</translation>
     </message>
+    <message>
+      <location filename="../../importDXF.py" line="143"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
+      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6409,10 +6409,11 @@ Ctrl pour aimanter, Maj pour contraindre.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
       <source>Edits the active object.
-Press E or ALT+LeftClick to display context menu
+Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
-      <translation>Modifier l'objet actif
-Appuyer sur E ou Alt + clic gauche pour afficher le menu contextuel sur les nœuds et les objets pris en charge</translation>
+      <translation type="unfinished">Edits the active object.
+Press E or ALT + Left Click to display context menu
+on supported nodes and on supported objects.</translation>
     </message>
   </context>
   <context>
@@ -6515,8 +6516,8 @@ Pour les objets non groupés sélectionnés, le contenu du groupe dans lequel il
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
-      <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Sélectionner un groupe auquel ajouter tous les objets Draft et Arch.</translation>
+      <source>Select a group to add all Draft and BIM objects to.</source>
+      <translation type="unfinished">Select a group to add all Draft and BIM objects to.</translation>
     </message>
   </context>
   <context>

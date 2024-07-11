@@ -940,19 +940,9 @@
       <translation>Pardiso</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-      <source>Spooles</source>
-      <translation>Spooles</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
       <source>Iterative Scaling</source>
       <translation>Escalado iterativo</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
-      <source>Iterative Cholesky</source>
-      <translation>Cholesky iterativo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="376"/>
@@ -1018,6 +1008,16 @@
       <translation>Número máximo de iteraciones</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+      <source>Spooles equation solver</source>
+      <translation type="unfinished">Spooles equation solver</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+      <source>Cholesky iterative solver</source>
+      <translation type="unfinished">Cholesky iterative solver</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
       <source>Time Minimum Step</source>
       <translation type="unfinished">Time Minimum Step</translation>
@@ -1069,7 +1069,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado
+      <translation>El ejecutable especificado 
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1105,8 +1105,8 @@ Por favor, especifique otro archivo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-      <source>Multi-CPU core support:</source>
-      <translation>Soporte para núcleo multi-CPU:</translation>
+      <source>Multi-core CPU support:</source>
+      <translation type="unfinished">Multi-core CPU support:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1171,7 +1171,7 @@ se fusionarán para que los límites de volumen sean invisibles.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado
+      <translation>El ejecutable especificado 
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1277,8 +1277,8 @@ the constraint or material is applied.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-      <source>Working directory for solving analysis and gmsh meshing</source>
-      <translation>Directorio funcionando para resolver el análisis y el mallado gmsh</translation>
+      <source>Working directory for solving analysis and Gmsh meshing</source>
+      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1373,8 +1373,8 @@ when the results dialog is opened</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-      <source>Hide analysis features when open result dialog</source>
-      <translation type="unfinished">Hide analysis features when open result dialog</translation>
+      <source>Hide analysis features when opening result dialog</source>
+      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1390,7 +1390,7 @@ when the results dialog is opened</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Solver por defecto a ser añadido al
+      <translation>Solver por defecto a ser añadido al 
 añadir un contenedor de análisis</translation>
     </message>
     <message>
@@ -1423,8 +1423,8 @@ añadir un contenedor de análisis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
-      <source>Leave blank to use default gmsh binary file</source>
-      <translation>Dejar en blanco para usar el archivo binario por defecto de gmsh</translation>
+      <source>Leave blank to use default Gmsh binary file</source>
+      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1437,7 +1437,7 @@ añadir un contenedor de análisis</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado
+      <translation>El ejecutable especificado 
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1552,7 +1552,7 @@ exportados desde FreeCAD.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable especificado
+      <translation>El ejecutable especificado 
 '%1'
  no existe!
 Por favor, especifique otro archivo.</translation>
@@ -1582,8 +1582,8 @@ Por favor, especifique otro archivo.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-      <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation>Dejar en blanco para usar el archivo binario Z88 z88r por defecto</translation>
+      <source>Leave blank to use default Z88, z88r binary file</source>
+      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1664,7 +1664,7 @@ de que "MAXKOI" necesita ser aumentado.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>El ejecutable z88r especificado
+      <translation>El ejecutable z88r especificado 
 '%1'
  no existe!
 Especifique otro archivo, por favor.</translation>
@@ -2009,8 +2009,8 @@ Especifique otro archivo, por favor.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
-      <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per analysis feature allowed!</translation>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
     </message>
   </context>
   <context>
@@ -2076,8 +2076,8 @@ Especifique otro archivo, por favor.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
-      <source>Length Scale[m]</source>
-      <translation>Escala de longitud [m]</translation>
+      <source>Length Scale [m]</source>
+      <translation type="unfinished">Length Scale [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2635,13 +2635,13 @@ Especifique otro archivo, por favor.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
-      <source>use FreeCAD material editor</source>
-      <translation>Usar el editor de materiales de FreeCAD</translation>
+      <source>Use FreeCAD material editor</source>
+      <translation type="unfinished">Use FreeCAD material editor</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
-      <source>use this task panel</source>
-      <translation>Usar este panel de tareas</translation>
+      <source>Use this task panel</source>
+      <translation type="unfinished">Use this task panel</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2695,8 +2695,13 @@ Especifique otro archivo, por favor.</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
-      <source>Thermal  Properties</source>
-      <translation>Propiedades térmicas</translation>
+      <source>Thermal Properties</source>
+      <translation type="unfinished">Thermal Properties</translation>
+    </message>
+    <message>
+      <location filename="../ui/Material.ui" line="497"/>
+      <source>Specific Heat Capacity:</source>
+      <translation type="unfinished">Specific Heat Capacity:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -2718,11 +2723,6 @@ Especifique otro archivo, por favor.</translation>
       <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
       <translation>0 m/m/K</translation>
-    </message>
-    <message>
-      <location filename="../ui/Material.ui" line="497"/>
-      <source>Specific Heat:</source>
-      <translation>Calor específico:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
@@ -2875,6 +2875,11 @@ Especifique otro archivo, por favor.</translation>
       <translation>Tasa de Flujo de Masa Saliente</translation>
     </message>
     <message>
+      <location filename="../ui/ElementFluid1D.ui" line="651"/>
+      <source>Head Loss [mm]</source>
+      <translation type="unfinished">Head Loss [mm]</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <location filename="../ui/ElementFluid1D.ui" line="369"/>
       <location filename="../ui/ElementFluid1D.ui" line="415"/>
@@ -2923,11 +2928,6 @@ Especifique otro archivo, por favor.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
       <translation>Caudal [mm^3/s]</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="651"/>
-      <source>Head Loss[mm]</source>
-      <translation>Pérdida de Cabezal Hidráulico[mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3483,8 +3483,8 @@ Nota: para 2D solo la configuración para x es posible,
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
-      <source>FEM Mesh Parameter</source>
-      <translation>Parámetro de malla MEF</translation>
+      <source>FEM Mesh Parameters</source>
+      <translation type="unfinished">FEM Mesh Parameters</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -4304,7 +4304,7 @@ para el solver Elmer</translation>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>La solución de flujo se utiliza para determinar
+      <translation>La solución de flujo se utiliza para determinar 
 la fuerza de superficie (y por lo tanto el desplazamiento)
 generada por el flujo
 (la opción solo se aplica para el solver Elmer)</translation>
@@ -4416,6 +4416,11 @@ generada por el flujo
       <translation>Tipo</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
+      <source>Temperature [K]</source>
+      <translation type="unfinished">Temperature [K]</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
@@ -4446,11 +4451,6 @@ normal de la cara se utiliza como dirección</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
       <translation>Tab 2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
-      <source>Temperature[K]</source>
-      <translation>Temperatura[K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
@@ -5124,13 +5124,13 @@ usada por el solver Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
-      <source>Nbr. Segs per Edge:</source>
-      <translation>Nº de segmentos por arista:</translation>
+      <source>Number of Segments per Edge:</source>
+      <translation type="unfinished">Number of Segments per Edge:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
-      <source>Nbr. Segs per Radius:</source>
-      <translation>Nº de segmentos por radio:</translation>
+      <source>Number of Segments per Radius:</source>
+      <translation type="unfinished">Number of Segments per Radius:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5468,10 +5468,8 @@ usada por el solver Elmer</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
-      <source>Creates a FEM equation for
- elasticity (stress)</source>
-      <translation>Crea una ecuación FEM para
-elasticidad (estrés)</translation>
+      <source>Creates a FEM equation for elasticity (stress)</source>
+      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
     </message>
   </context>
   <context>
@@ -6030,10 +6028,8 @@ Por favor, primero seleccione un tipo de resultado.</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
-      <source>Creates a FEM equation for
- 2D magnetodynamic forces</source>
-      <translation>Crea una ecuación FEM
-para fuerzas magnetodinámicas 2D</translation>
+      <source>Creates a FEM equation for 2D magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6059,10 +6055,8 @@ para fuerzas magnetodinámicas 2D</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
-      <source>Creates a FEM equation for
- magnetodynamic forces</source>
-      <translation>Crea una ecuación FEM para
-fuerzas magnetodinámicas</translation>
+      <source>Creates a FEM equation for magnetodynamic forces</source>
+      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
     </message>
   </context>
   <context>
@@ -6141,10 +6135,8 @@ fuerzas magnetodinámicas</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
-      <source>Creates a FEM equation for
- deformation (nonlinear elasticity)</source>
-      <translation>Crea una ecuación FEM para
-deformación (elasticidad no lineal)</translation>
+      <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
+      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
     </message>
   </context>
   <context>
@@ -6547,8 +6539,8 @@ deformación (elasticidad no lineal)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
+      <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
     </message>
   </context>
   <context>

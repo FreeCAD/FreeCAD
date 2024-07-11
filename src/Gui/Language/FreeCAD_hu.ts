@@ -361,7 +361,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="38"/>
       <source>Variable Sets</source>
-      <translation type="unfinished">Variable Sets</translation>
+      <translation>Változó készletek</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="49"/>
@@ -371,22 +371,22 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="75"/>
       <source>Variable Set:</source>
-      <translation type="unfinished">Variable Set:</translation>
+      <translation>Változó készlet:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="85"/>
       <source>Info:</source>
-      <translation type="unfinished">Info:</translation>
+      <translation>Információ:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="92"/>
       <source>New Property:</source>
-      <translation type="unfinished">New Property:</translation>
+      <translation>Új tulajdonság:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="114"/>
       <source>Show variable sets</source>
-      <translation type="unfinished">Show variable sets</translation>
+      <translation>Változó készletek megjelenítése</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="149"/>
@@ -462,7 +462,7 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceAppearances command</translation>
+      <translation>Az adott tárgy egyes felületeinek színe az Alkatrész FaceAppearances paranccsal lesz szerkeszthető</translation>
     </message>
   </context>
   <context>
@@ -587,8 +587,8 @@
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
-      <source>Scroll middle mouse button</source>
-      <translation>Görgesse a középső egérgombot</translation>
+      <source>Scroll mouse wheel</source>
+      <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
   </context>
   <context>
@@ -4386,7 +4386,7 @@ Nagyobb érték megkönnyíti a kiválasztást, de lehetetlenné teheti a kis el
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="205"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Az adott tárgy előválasztása a 3D nézetben, amikor a kurzort a faelem fölé helyezi</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="218"/>
@@ -4558,8 +4558,8 @@ Nagyobb érték megkönnyíti a kiválasztást, de lehetetlenné teheti a kis el
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
-      <source>Units calculator</source>
-      <translation>Mennyiségi egységek számítása</translation>
+      <source>Units converter</source>
+      <translation type="unfinished">Units converter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -5194,8 +5194,8 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
-      <source>Rotation axis with angle</source>
-      <translation>Tengely körüli elforgatás szöggel</translation>
+      <source>Rotation axis and angle</source>
+      <translation type="unfinished">Rotation axis and angle</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5894,13 +5894,13 @@ El akarja menteni a változásokat?</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Húzza a képernyőt egy ujjal vagy nyomja meg az egér bal gombját. A vázlatkészítő &amp;&amp; egyéb szerkesztési módokban, tartsa lenyomva az ALT billentyűt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Csípje (helyezze két ujját a képernyőn &amp;&amp; húzza őket egymáshoz || el egymástól) VAGY görgesse a középső egér gombot VAGY a billentyűzet PgUp/PgDown gombjával.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -6856,8 +6856,8 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="318"/>
-      <source>Automatic python modules documentation</source>
-      <translation>Automatikus python modulok dokumentáció</translation>
+      <source>Automatic Python modules documentation</source>
+      <translation type="unfinished">Automatic Python modules documentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="319"/>
@@ -7365,22 +7365,22 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <message>
       <location filename="../Tree.cpp" line="1111"/>
       <source>Show description</source>
-      <translation type="unfinished">Show description</translation>
+      <translation>Leírás megjelenítése</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1112"/>
       <source>Show internal name</source>
-      <translation type="unfinished">Show internal name</translation>
+      <translation>Belső név megjelenítése</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1113"/>
       <source>Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation type="unfinished">Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</translation>
+      <translation>A tételek leíró oszlopának megjelenítése. Egy elem leírása az F2 (vagy az operációs rendszer szerkesztőgombjának) megnyomásával vagy a 'label2' tulajdonság szerkesztésével állítható be.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1128"/>
       <source>Show an internal name column for items.</source>
-      <translation type="unfinished">Show an internal name column for items.</translation>
+      <translation>Belső név oszlop megjelenítése az elemekhez.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1169"/>
@@ -7400,7 +7400,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <message>
       <location filename="../Tree.cpp" line="3266"/>
       <source>Internal name</source>
-      <translation type="unfinished">Internal name</translation>
+      <translation>Belső név</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3268"/>
@@ -7424,8 +7424,8 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3274"/>
-      <source>Create group...</source>
-      <translation>Csoport létrehozása...</translation>
+      <source>Create group</source>
+      <translation>Csoport létrehozása</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3275"/>
@@ -8595,8 +8595,8 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>Összes hivatkozás importálása sikertelen</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="99"/>
-      <location filename="../DlgAddProperty.cpp" line="112"/>
+      <location filename="../DlgAddProperty.cpp" line="105"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="285"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="295"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="317"/>
@@ -8604,7 +8604,7 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>Érvénytelen név</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="100"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="286"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
@@ -8612,19 +8612,19 @@ underscore, and must not start with a digit.</source>
 és nem kezdődhet számjegyekkel.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="113"/>
+      <location filename="../DlgAddProperty.cpp" line="119"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="296"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation>A(z) '%1' tulajdonság már létezik a következőben: '%2'</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="136"/>
+      <location filename="../DlgAddProperty.cpp" line="142"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="248"/>
       <source>Add property</source>
       <translation>Tulajdonság hozzáadása</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="137"/>
+      <location filename="../DlgAddProperty.cpp" line="143"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="249"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Nem sikerült tulajdonságot hozzáadni a következőhöz: '%1': %2</translation>
@@ -8914,8 +8914,8 @@ az aktuális példány elveszik.
       <location filename="../DlgAddPropertyVarSet.cpp" line="318"/>
       <source>The group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>A csoportnév csak alfanumerikus számokat és aláhúzást tartalmazhat
+és nem kezdődhet számmal.</translation>
     </message>
   </context>
   <context>
@@ -10501,20 +10501,6 @@ underscore, and must not start with a digit.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUnitsCalculator</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="778"/>
-      <source>&amp;Units calculator...</source>
-      <translation>Mennyiségi egységek számítása...</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="779"/>
-      <location filename="../CommandStd.cpp" line="781"/>
-      <source>Start the units calculator</source>
-      <translation>Mennyiségi egységek számításának elindítása</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdUserEditMode</name>
     <message>
       <location filename="../CommandStd.cpp" line="814"/>
@@ -11097,7 +11083,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3488"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Az adott tárgy előválasztása a 3D nézetben, amikor a kurzort a faelem fölé helyezi</translation>
     </message>
   </context>
   <context>
@@ -11467,7 +11453,7 @@ Még mindig fojtatni szeretné?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1252"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation type="unfinished">Hide extra tree view column - Internal Names.</translation>
+      <translation>Extra fa nézet oszlop elrejtése - Belső nevek.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1280"/>
@@ -11987,8 +11973,8 @@ Jelenleg a rendszerében a következő munkafelületek vannak:&lt;/p&gt;&lt;/bod
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
-      <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>Ez az aktuális indítómodul, és engedélyezni kell. A módosításhoz lásd a Beállítások/Általános/Autobetöltés menüpontot.</translation>
+      <source>This is the current startup module, and must be enabled.</source>
+      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -12007,8 +11993,8 @@ Jelenleg a rendszerében a következő munkafelületek vannak:&lt;/p&gt;&lt;/bod
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
-      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation>Ez az aktuális indítási modul, és automatikusan be kell tölteni. Ennek módosításához lásd a Beállítások/Általános/Automatikus betöltés lehetőséget.</translation>
+      <source>This is the current startup module, and must be autoloaded.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -12511,7 +12497,7 @@ pont/pont mindig ki lesz nyomtatva.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>További témákat keres? Ezeket a &lt;a href="freecad:Std_AddonMgr"&gt;Kiegészítő kezelő&lt;/a&gt; segítségével szerezheti be.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
@@ -13023,8 +13009,8 @@ Ezáltal a dokkolt ablakok mindig átlátszóak maradnak.</translation>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3716"/>
-      <source>Toggle transparent</source>
-      <translation>Átláthatóság kapcsolása</translation>
+      <source>Toggle transparent mode</source>
+      <translation>Átláthatóság mód kapcsolása</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
@@ -13366,8 +13352,8 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
-      <source>Locks toolbar so they are no longer moveable</source>
-      <translation>Zárolja az eszköztárat, így azok többé nem mozgathatóak</translation>
+      <source>Lock toolbars so they are no longer moveable</source>
+      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
     </message>
   </context>
   <context>
@@ -13535,7 +13521,7 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="58"/>
       <source>Add another</source>
-      <translation type="unfinished">Add another</translation>
+      <translation>Még egyet hozzáadni</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="65"/>
@@ -13554,11 +13540,6 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="20"/>
       <source>Theme customization</source>
       <translation>Téma testreszabás</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
-      <source>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation>Ebben a részben testre szabhatja az aktuális témát. A felkínált beállítások a témafejlesztők számára választhatók, így lehet, hogy hatással lesznek a jelenlegi témádra, vagy nem.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
@@ -13610,7 +13591,7 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="209"/>
       <source>Hide Internal Names</source>
-      <translation type="unfinished">Hide Internal Names</translation>
+      <translation>Belső nevek elrejtése</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="222"/>
@@ -13643,9 +13624,14 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
       <translation>További távolságtartás a fa nézet soraihoz. A nagyobb értékek növelik a sorelemek magasságát.</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
+      <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
-      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</source>
-      <translation>Ha engedélyezett, a fa nézet elemei előtt megjelenik egy szem ikon, amely az elemek láthatósági állapotát mutatja. Kattintásra a láthatóság változik.</translation>
+      <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
+      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
@@ -13753,12 +13739,26 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="139"/>
       <source>Create a variable set</source>
-      <translation type="unfinished">Create a variable set</translation>
+      <translation>Változókészlet létrehozása</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
-      <translation type="unfinished">A Variable Set is an object that maintains a set of properties to be used as variables.</translation>
+      <translation>A változókészlet egy olyan tárgy, amely a változóként használható tulajdonságok készletét tartja fenn.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="778"/>
+      <source>&amp;Units converter...</source>
+      <translation type="unfinished">&amp;Units converter...</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="779"/>
+      <location filename="../CommandStd.cpp" line="781"/>
+      <source>Start the units converter</source>
+      <translation type="unfinished">Start the units converter</translation>
     </message>
   </context>
 </TS>

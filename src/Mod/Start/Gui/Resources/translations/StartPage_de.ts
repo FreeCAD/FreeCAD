@@ -66,7 +66,7 @@
     <message>
       <location filename="../../StartView.cpp" line="180"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation>Erstelle eine neue, leere FreeCAD-Datei</translation>
+      <translation>Erstellt eine neue, leere FreeCAD-Datei</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="182"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../StartView.cpp" line="189"/>
       <source>Create an assembly project</source>
-      <translation>Baugruppe erstellen</translation>
+      <translation>Eine Baugruppe erstellen</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="191"/>
@@ -167,12 +167,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="156"/>
       <source>Theme</source>
-      <translation>Aussehen</translation>
+      <translation>Theme</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="157"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Auf der Suche nach weiteren Themen? Du kannst sie über den &lt;a href="freecad:Std_AddonMgr"&gt;Erweiterungsverwalter&lt;/a&gt; erhalten.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="159"/>

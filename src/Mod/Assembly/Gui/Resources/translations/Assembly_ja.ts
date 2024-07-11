@@ -17,17 +17,17 @@
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="76"/>
+      <location filename="../../../CommandCreateJoint.py" line="79"/>
       <source>Create a Fixed Joint</source>
       <translation>固定ジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="86"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
       <translation>1 - アセンブリがアクティブな場合: ジョイントを作成し、2つのパーツを合わせて永続的に固定し、運動や回転を防止します。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="89"/>
+      <location filename="../../../CommandCreateJoint.py" line="92"/>
       <source>2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</source>
       <translation>2 - パーツがアクティブな場合: 選択した座標系に一致するサブパーツを配置。選択した2つ目のパーツは移動します。</translation>
     </message>
@@ -35,12 +35,12 @@
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="111"/>
+      <location filename="../../../CommandCreateJoint.py" line="114"/>
       <source>Create Revolute Joint</source>
       <translation>回転ジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="118"/>
+      <location filename="../../../CommandCreateJoint.py" line="121"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
       <translation>回転ジョイントを作成: 選択した部品間の単一軸を中心に回転できます。</translation>
     </message>
@@ -48,12 +48,12 @@
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="139"/>
+      <location filename="../../../CommandCreateJoint.py" line="142"/>
       <source>Create Cylindrical Joint</source>
       <translation>円筒ジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="146"/>
+      <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
       <translation>円筒ジョイントの作成: 組み立て部品間で同じ軸に沿って移動を許可しながら、1つの軸に沿って回転できます。</translation>
     </message>
@@ -61,12 +61,12 @@
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="165"/>
+      <location filename="../../../CommandCreateJoint.py" line="168"/>
       <source>Create Slider Joint</source>
       <translation>スライダージョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="172"/>
+      <location filename="../../../CommandCreateJoint.py" line="175"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
       <translation>スライダージョイントを作成: 1つの軸に沿って線形移動を可能にしますが、選択した部品間の回転は制限されます。</translation>
     </message>
@@ -74,12 +74,12 @@
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="191"/>
+      <location filename="../../../CommandCreateJoint.py" line="194"/>
       <source>Create Ball Joint</source>
       <translation>ボールジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="198"/>
+      <location filename="../../../CommandCreateJoint.py" line="201"/>
       <source>Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</source>
       <translation>ボールジョイントを作成: 複数パーツを1点で接続し、接点が接触している限りは自由な運動を許容します。</translation>
     </message>
@@ -87,17 +87,17 @@
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="217"/>
+      <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Create Distance Joint</source>
       <translation>距離ジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="224"/>
+      <location filename="../../../CommandCreateJoint.py" line="227"/>
       <source>Create a Distance Joint: Fix the distance between the selected objects.</source>
       <translation>距離ジョイントを作成: 選択したオブジェクト間の距離を固定します。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="230"/>
+      <location filename="../../../CommandCreateJoint.py" line="233"/>
       <source>Create one of several different joints based on the selection.For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
       <translation>選択に基づいて複数の異なるジョイントのいずれかを作成します。例えば平面と円筒の間の距離を0とするには正接ジョイントを作成します。平面の間の距離を0とするとそれらを同一平面上します。</translation>
     </message>
@@ -105,12 +105,12 @@
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="496"/>
+      <location filename="../../../CommandCreateJoint.py" line="499"/>
       <source>Toggle grounded</source>
       <translation>接地状態の切り替え</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="503"/>
+      <location filename="../../../CommandCreateJoint.py" line="506"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation>パーツを接地するとアセンブリ内の位置が恒久的に固定され、任意の動きや回転を防止します。アセンブルを開始する前に少なくとも1つの接地パーツが必要です。</translation>
     </message>
@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1530"/>
+      <location filename="../../../JointObject.py" line="1533"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1532"/>
+      <location filename="../../../JointObject.py" line="1535"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -270,12 +270,12 @@
       <translation>2つの別々の部品から2つの要素を選択する必要があります。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1534"/>
+      <location filename="../../../JointObject.py" line="1537"/>
       <source>Radius 1</source>
       <translation>半径 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1536"/>
+      <location filename="../../../JointObject.py" line="1539"/>
       <source>Pitch radius</source>
       <translation>ピッチ半径</translation>
     </message>
@@ -426,8 +426,8 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="294"/>
-      <source>This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears and Belt(radius1)</source>
-      <translation>ジョイントの距離。距離ジョイント、ラックピニオン (ピッチ半径)、スクリューとギアとベルト (半径1) でだけ使用されます。</translation>
+      <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
+      <translation type="unfinished">This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="305"/>
@@ -601,22 +601,22 @@
       <translation>パーツを検索...</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyInsertLink.ui" line="32"/>
+      <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
       <source>Don't find your part? </source>
       <translation>パーツが見つかりませんか？ </translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
+      <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
       <source>Open file</source>
       <translation>ファイルを開く</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyInsertLink.ui" line="48"/>
+      <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
       <source>If checked, the list will show only Parts.</source>
       <translation>チェックされている場合、リストにはパーツだけが表示されます。</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyInsertLink.ui" line="51"/>
+      <location filename="../panels/TaskAssemblyInsertLink.ui" line="58"/>
       <source>Show only parts</source>
       <translation>パーツのみ表示</translation>
     </message>
@@ -635,8 +635,8 @@
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
-      <source>Esc leave edit mode</source>
-      <translation>Esc で編集モードを終了</translation>
+      <source>Esc leaves edit mode</source>
+      <translation type="unfinished">Esc leaves edit mode</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
@@ -687,17 +687,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="331"/>
+      <location filename="../../../CommandCreateJoint.py" line="334"/>
       <source>Create Rack and Pinion Joint</source>
       <translation>ラックとピニオンのジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="338"/>
+      <location filename="../../../CommandCreateJoint.py" line="341"/>
       <source>Create a Rack and Pinion Joint: Links a part with a sliding joint with a part with a revolute joint.</source>
       <translation>ラックとピニオンのジョイントを作成: スライドジョイントを設定されたパーツと回転ジョイントを設定されたパーツをリンクします。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="343"/>
+      <location filename="../../../CommandCreateJoint.py" line="346"/>
       <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</source>
       <translation>回転ジョイントとスライドジョイントと同じ座標系を選択します。ピッチ半径によってラックとピニオンの間の移動比が定義されます。</translation>
     </message>
@@ -705,23 +705,23 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="362"/>
+      <location filename="../../../CommandCreateJoint.py" line="365"/>
       <source>Create Screw Joint</source>
       <translation>スクリュージョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="369"/>
+      <location filename="../../../CommandCreateJoint.py" line="372"/>
       <source>Create a Screw Joint: Links a part with a sliding joint with a part with a revolute joint.</source>
       <translation>スクリュージョイントを作成: スライドジョイントを設定されたパーツと回転ジョイントを設定されたパーツをリンクします。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="374"/>
+      <location filename="../../../CommandCreateJoint.py" line="377"/>
       <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</source>
       <translation>回転ジョイントとスライドジョイントと同じ座標系を選択します。ピッチ半径によって回転スクリューとスライドするパーツの間の移動比が定義されます。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="405"/>
-      <location filename="../../../CommandCreateJoint.py" line="436"/>
+      <location filename="../../../CommandCreateJoint.py" line="408"/>
+      <location filename="../../../CommandCreateJoint.py" line="439"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>回転ジョイントと同じ座標系を選択してください。</translation>
     </message>
@@ -729,12 +729,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="393"/>
+      <location filename="../../../CommandCreateJoint.py" line="396"/>
       <source>Create Gears Joint</source>
       <translation>ギアジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="400"/>
+      <location filename="../../../CommandCreateJoint.py" line="403"/>
       <source>Create a Gears Joint: Links two rotating gears together. They will have inverse rotation direction.</source>
       <translation>ギアジョイントを作成: 2つの回転ギアをリンクします。ギアは互いに逆の回転方向になります。</translation>
     </message>
@@ -742,12 +742,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="424"/>
+      <location filename="../../../CommandCreateJoint.py" line="427"/>
       <source>Create Belt Joint</source>
       <translation>ベルトジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="431"/>
+      <location filename="../../../CommandCreateJoint.py" line="434"/>
       <source>Create a Belt Joint: Links two rotating objects together. They will have the same rotation direction.</source>
       <translation>ベルトジョイントを作成: 2つの回転オブジェクトをリンクします。オブジェクトは同じ回転方向になります。</translation>
     </message>
@@ -755,17 +755,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="456"/>
+      <location filename="../../../CommandCreateJoint.py" line="459"/>
       <source>Create Gear/Belt Joint</source>
       <translation>ギア/ベルトジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="462"/>
+      <location filename="../../../CommandCreateJoint.py" line="465"/>
       <source>Create a Gears/Belt Joint: Links two rotating gears together.</source>
       <translation>ギア/ベルトジョイントの作成: 2つの回転ギアをリンクします。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="467"/>
+      <location filename="../../../CommandCreateJoint.py" line="470"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>回転ジョイントと同じ座標系を選択してください。</translation>
     </message>
@@ -878,12 +878,12 @@ Press ESC to cancel.</source>
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="249"/>
+      <location filename="../../../CommandCreateJoint.py" line="252"/>
       <source>Create Parallel Joint</source>
       <translation>平行ジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="256"/>
+      <location filename="../../../CommandCreateJoint.py" line="259"/>
       <source>Create an Parallel Joint: Make the Z axis of selected coordinate systems parallel.</source>
       <translation>平行ジョイントを作成: 選択した座標系のZ軸を平行にします。</translation>
     </message>
@@ -891,12 +891,12 @@ Press ESC to cancel.</source>
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="277"/>
+      <location filename="../../../CommandCreateJoint.py" line="280"/>
       <source>Create Perpendicular Joint</source>
       <translation>直角ジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="284"/>
+      <location filename="../../../CommandCreateJoint.py" line="287"/>
       <source>Create an Perpendicular Joint: Make the Z axis of selected coordinate systems perpendicular.</source>
       <translation>直角ジョイントを作成: 選択した座標系のZ軸を直角にします。</translation>
     </message>
@@ -904,12 +904,12 @@ Press ESC to cancel.</source>
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="303"/>
+      <location filename="../../../CommandCreateJoint.py" line="306"/>
       <source>Create Angle Joint</source>
       <translation>角度ジョイントを作成</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="310"/>
+      <location filename="../../../CommandCreateJoint.py" line="313"/>
       <source>Create an Angle Joint: Fix the angle between the Z axis of selected coordinate systems.</source>
       <translation>角度ジョイントを作成: 選択した座標系のZ軸間の角度を固定します。</translation>
     </message>

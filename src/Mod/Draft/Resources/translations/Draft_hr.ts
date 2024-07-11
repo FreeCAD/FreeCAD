@@ -1623,6 +1623,7 @@ sadrže definicije uzoraka koje će se dodati standardnim uzorcima</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <location filename="../ui/preferences-dxf.ui" line="167"/>
       <source>Texts and dimensions</source>
       <translation>Tekstovi i dimenzije</translation>
     </message>
@@ -2033,21 +2034,11 @@ Note: C++ importer is faster, but is not as featureful yet</source>
 Napomena: C ++ uvoznik  je brži, ali još nije tako dobro dorađen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
-      <source>Use legacy python importer</source>
-      <translation>Korištenje naslijeđenog python uvoznika</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-dxf.ui" line="74"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Koristi se Python izvoznik, a inače se koristi noviji C ++.
 Napomena: C ++ izvoznik je brži, ali još nije tako dobro dorađen</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
-      <source>Use legacy python exporter</source>
-      <translation>Korištenje naslijeđenog python izvoznika</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="99"/>
@@ -2081,11 +2072,6 @@ iz Upravitelja dodataka.</translation>
       <translation>Ako je ovo isključeno, neće se uvesti tekstovi i mtekstovi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
-      <source>texts and dimensions</source>
-      <translation>tekstovi i dimenzije</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-dxf.ui" line="180"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Ako nije označeno, točke se neće uvesti</translation>
@@ -2099,11 +2085,6 @@ iz Upravitelja dodataka.</translation>
       <location filename="../ui/preferences-dxf.ui" line="196"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Ako je označeno, papir objekta prostora se isto uvozi</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
-      <source>layouts</source>
-      <translation>Izgledi stranice</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="212"/>
@@ -2125,11 +2106,6 @@ iz Upravitelja dodataka.</translation>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Stvorit će se samo standardni objekti (najbrže)
 </translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
-      <source>simple Part shapes</source>
-      <translation>jednostavan dio oblika</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="267"/>
@@ -2201,9 +2177,29 @@ Inače će se primijeniti zadane boje.</translation>
       <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <source>Use legacy Python importer</source>
+      <translation type="unfinished">Use legacy Python importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <source>Use legacy Python exporter</source>
+      <translation type="unfinished">Use legacy Python exporter</translation>
+    </message>
+    <message>
       <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Some options are not yet available for the new importer</source>
       <translation type="unfinished">Some options are not yet available for the new importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <source>Layouts</source>
+      <translation type="unfinished">Layouts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <source>Simple Part shapes</source>
+      <translation>Dijelovi jednostavnog oblika</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="362"/>
@@ -3473,25 +3469,6 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
       <translation>Odabrani oblici moraju definirati ravninu</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>DXF uvoz/izvoz biblioteke koje trebaju FreeCAD
-DXF formatu nisu pronađene na ovom sustavu.
-Omogućite FreeCAD za preuzimanje ovih biblioteka:
-  1 - Učitaj "Nacrt" Radni stol
-  2 - Izbornik  Uređivanja&gt; Postavke &gt; Uvoz-Izvoz &gt; DXF &gt; Omogućavanje preuzimanja
-Ili ručno instalirati biblioteku dxf-Library, kao što je objašnjeno na 
-https://github.com/yorikvanhavre/Draft-dxf-importer
-Da bi odobrio FreeCAD-u  preuzimanje ove biblioteke, odgovori sa Da (Yes).</translation>
-    </message>
-    <message>
       <location filename="../../WorkingPlane.py" line="1296"/>
       <location filename="../../WorkingPlane.py" line="1297"/>
       <location filename="../../WorkingPlane.py" line="1566"/>
@@ -4135,11 +4112,6 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
       <translation>Preokreni dimenziju</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Skica je previše složena za uređivanje: predlaže se korištenje zadanog uređivača skice</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Polumjer Zaobljenja</translation>
@@ -4370,8 +4342,8 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>Krajnja točka Bezierove krivulje ne može se izgladiti</translation>
+      <source>Endpoint of Bézier curve can't be smoothed</source>
+      <translation type="unfinished">Endpoint of Bézier curve can't be smoothed</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -5626,6 +5598,30 @@ postojećih objekata u svim otvorenim dokumentima?</translation>
       <source>updated view properties</source>
       <translation type="unfinished">updated view properties</translation>
     </message>
+    <message>
+      <location filename="../../importDXF.py" line="143"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
+      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6460,11 +6456,11 @@ CTRL za prikvači, SHIFT za ograničiti.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
       <source>Edits the active object.
-Press E or ALT+LeftClick to display context menu
+Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
-      <translation>Uređuje aktivni objekt.
-Pritisnite E ili ALT+lijevi klik za prikaz kontekstnog izbornika
-na podržanim čvorovima i na podržanim objektima.</translation>
+      <translation type="unfinished">Edits the active object.
+Press E or ALT + Left Click to display context menu
+on supported nodes and on supported objects.</translation>
     </message>
   </context>
   <context>
@@ -6566,8 +6562,8 @@ Prvo stvorite grupu da biste koristili ovaj alat.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
-      <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Odaberite grupu u koju želite dodati sve objekte Nacrt i Luk.</translation>
+      <source>Select a group to add all Draft and BIM objects to.</source>
+      <translation type="unfinished">Select a group to add all Draft and BIM objects to.</translation>
     </message>
   </context>
   <context>

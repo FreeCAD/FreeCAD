@@ -231,8 +231,8 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>활성화된 드로잉에 SVG파일로부터 심벌을 추가</translation>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
     </message>
   </context>
   <context>

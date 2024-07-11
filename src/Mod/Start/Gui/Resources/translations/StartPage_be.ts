@@ -172,7 +172,8 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="157"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Патрэбныя яшчэ тэмы?
+Вы можаце атрымаць іх з &lt;a href="freecad:Std_AddonMgr"&gt;Кіравання дадаткамі&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="159"/>
