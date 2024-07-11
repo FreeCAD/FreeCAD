@@ -940,18 +940,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
-        <source>Spooles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
         <source>Iterative Scaling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
-        <source>Iterative Cholesky</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1015,6 +1005,16 @@
     <message>
         <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
         <source>Maximum number of iterations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
+        <source>Spooles equation solver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
+        <source>Cholesky iterative solver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1102,7 +1102,7 @@ Specify another file please.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
-        <source>Multi-CPU core support:</source>
+        <source>Multi-core CPU support:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1259,7 +1259,7 @@ the constraint or material is applied.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
-        <source>Working directory for solving analysis and gmsh meshing</source>
+        <source>Working directory for solving analysis and Gmsh meshing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1352,7 +1352,7 @@ when the results dialog is opened</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-        <source>Hide analysis features when open result dialog</source>
+        <source>Hide analysis features when opening result dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1401,7 +1401,7 @@ adding an analysis container</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
-        <source>Leave blank to use default gmsh binary file</source>
+        <source>Leave blank to use default Gmsh binary file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1545,7 +1545,7 @@ Specify another file please.</source>
     </message>
     <message>
         <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
-        <source>Leave blank to use default Z88 z88r binary file</source>
+        <source>Leave blank to use default Z88, z88r binary file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1960,7 +1960,7 @@ Specify another file please.</source>
     </message>
     <message>
         <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
-        <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
+        <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2027,7 +2027,7 @@ Specify another file please.</source>
     </message>
     <message>
         <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
-        <source>Length Scale[m]</source>
+        <source>Length Scale [m]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2586,12 +2586,12 @@ Specify another file please.</source>
     </message>
     <message>
         <location filename="../ui/Material.ui" line="107"/>
-        <source>use FreeCAD material editor</source>
+        <source>Use FreeCAD material editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/Material.ui" line="123"/>
-        <source>use this task panel</source>
+        <source>Use this task panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2646,7 +2646,12 @@ Specify another file please.</source>
     </message>
     <message>
         <location filename="../ui/Material.ui" line="392"/>
-        <source>Thermal  Properties</source>
+        <source>Thermal Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/Material.ui" line="497"/>
+        <source>Specific Heat Capacity:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2668,11 +2673,6 @@ Specify another file please.</source>
         <location filename="../ui/Material.ui" line="472"/>
         <location filename="../ui/Material.ui" line="566"/>
         <source>0 m/m/K</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/Material.ui" line="497"/>
-        <source>Specific Heat:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2826,6 +2826,11 @@ Specify another file please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/ElementFluid1D.ui" line="651"/>
+        <source>Head Loss [mm]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/ElementFluid1D.ui" line="64"/>
         <location filename="../ui/ElementFluid1D.ui" line="369"/>
         <location filename="../ui/ElementFluid1D.ui" line="415"/>
@@ -2873,11 +2878,6 @@ Specify another file please.</source>
     <message>
         <location filename="../ui/ElementFluid1D.ui" line="646"/>
         <source>Flow rate [mm^3/s]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/ElementFluid1D.ui" line="651"/>
-        <source>Head Loss[mm]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3417,7 +3417,7 @@ Note: for 2D only setting for x is possible,
     </message>
     <message>
         <location filename="../ui/MeshGmsh.ui" line="26"/>
-        <source>FEM Mesh Parameter</source>
+        <source>FEM Mesh Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4343,6 +4343,11 @@ generated by the flow
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
+        <source>Temperature [K]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
         <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
@@ -4371,11 +4376,6 @@ normal vector of the face is used as direction</source>
     <message>
         <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
         <source>Tab 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
-        <source>Temperature[K]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5048,12 +5048,12 @@ used for the Elmer solver</source>
     </message>
     <message>
         <location filename="../../TaskTetParameter.ui" line="129"/>
-        <source>Nbr. Segs per Edge:</source>
+        <source>Number of Segments per Edge:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskTetParameter.ui" line="146"/>
-        <source>Nbr. Segs per Radius:</source>
+        <source>Number of Segments per Radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5392,8 +5392,7 @@ used for the Elmer solver</source>
     </message>
     <message>
         <location filename="../../../femcommands/commands.py" line="410"/>
-        <source>Creates a FEM equation for
- elasticity (stress)</source>
+        <source>Creates a FEM equation for elasticity (stress)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5952,8 +5951,7 @@ Please select a result type first.</source>
     </message>
     <message>
         <location filename="../../../femcommands/commands.py" line="501"/>
-        <source>Creates a FEM equation for
- 2D magnetodynamic forces</source>
+        <source>Creates a FEM equation for 2D magnetodynamic forces</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5980,8 +5978,7 @@ Please select a result type first.</source>
     </message>
     <message>
         <location filename="../../../femcommands/commands.py" line="485"/>
-        <source>Creates a FEM equation for
- magnetodynamic forces</source>
+        <source>Creates a FEM equation for magnetodynamic forces</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6061,8 +6058,7 @@ Please select a result type first.</source>
     </message>
     <message>
         <location filename="../../../femcommands/commands.py" line="397"/>
-        <source>Creates a FEM equation for
- deformation (nonlinear elasticity)</source>
+        <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6466,7 +6462,7 @@ Please select a result type first.</source>
     </message>
     <message>
         <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
-        <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
+        <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
