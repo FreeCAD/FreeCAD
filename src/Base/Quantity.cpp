@@ -253,7 +253,7 @@ QString Quantity::getSafeUserString() const
         auto feedbackQty = parse(retString);
         auto feedbackVal = feedbackQty.getValue();
         if (feedbackVal == 0) {
-            retString = QStringLiteral("%1 %2").arg(this->myValue).arg(this->getUnit().getString());
+            retString = QStringLiteral("%1 %2").arg(this->myValue).arg(QString::fromStdString(this->getUnit().getString()));
         }
     }
     retString =
