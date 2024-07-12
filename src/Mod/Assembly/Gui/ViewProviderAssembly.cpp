@@ -150,10 +150,10 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
     Gui::Command::openCommand(tr("Delete associated joints").toStdString().c_str());
     for (auto joint : allJoints) {
         // getLinkObjFromProp returns nullptr if the property doesn't exist.
-        App::DocumentObject* obj1 = AssemblyObject::getObjFromProp(joint, "Object1");
-        App::DocumentObject* obj2 = AssemblyObject::getObjFromProp(joint, "Object2");
-        App::DocumentObject* part1 = AssemblyObject::getObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = AssemblyObject::getObjFromProp(joint, "Part2");
+        App::DocumentObject* obj1 = AssemblyObject::getObjFromRef(joint, "Reference1");
+        App::DocumentObject* obj2 = AssemblyObject::getObjFromRef(joint, "Reference2");
+        App::DocumentObject* part1 = assemblyPart->getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = assemblyPart->getMovingPartFromRef(joint, "Reference2");
         App::DocumentObject* obj3 = AssemblyObject::getObjFromProp(joint, "ObjectToGround");
         if (obj == obj1 || obj == obj2 || obj == part1 || obj == part2 || obj == obj3) {
             if (!prompted) {
@@ -353,12 +353,12 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
         }
 
 
-        for (auto& pair : docsToMove) {
-            App::DocumentObject* obj = pair.first;
+        for (auto& objToMove : docsToMove) {
+            App::DocumentObject* obj = objToMove.obj;
             auto* propPlacement =
                 dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
             if (propPlacement) {
-                Base::Placement plc = pair.second;
+                Base::Placement plc = objToMove.plc;
                 // Base::Console().Warning("newPos %f %f %f\n", newPos.x, newPos.y, newPos.z);
 
                 if (dragMode == DragMode::RotationOnPlane) {
@@ -515,7 +515,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
 
             std::vector<std::string> objsSubNames = selObj.getSubNames();
             for (auto& subNamesStr : objsSubNames) {
-                std::vector<std::string> subNames = parseSubNames(subNamesStr);
+                std::vector<std::string> subNames = AssemblyObject::splitSubName(subNamesStr);
                 if (subNames.empty()) {
                     continue;
                 }
@@ -523,7 +523,8 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     continue;
                 }
 
-                App::DocumentObject* obj = getObjectFromSubNames(subNames);
+                App::DocumentObject* selRoot = selObj.getObject();
+                App::DocumentObject* obj = assemblyPart->getMovingPartFromRef(selRoot, subNamesStr);
 
                 if (!canDragObjectIn3d(obj)) {
                     continue;
@@ -531,7 +532,10 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
 
                 auto* pPlc =
                     dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-                docsToMove.emplace_back(obj, pPlc->getValue());
+
+                MovingObject movingObj(obj, pPlc->getValue(), selRoot, subNamesStr);
+
+                docsToMove.emplace_back(movingObj);
             }
         }
     }
@@ -543,15 +547,15 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
         // Base::Console().Warning("Gui::Selection().getPreselection().pSubName %s\n",
         //                         Gui::Selection().getPreselection().pSubName);
 
-        std::string subNamesStr = Gui::Selection().getPreselection().pSubName;
-        std::vector<std::string> subNames = parseSubNames(subNamesStr);
+        App::DocumentObject* selRoot = Gui::Selection().getPreselection().Object.getObject();
+        std::string sub = Gui::Selection().getPreselection().pSubName;
 
-        App::DocumentObject* obj = getObjectFromSubNames(subNames);
+        App::DocumentObject* obj = assemblyPart->getMovingPartFromRef(selRoot, sub);
         if (canDragObjectIn3d(obj)) {
 
             bool alreadyIn = false;
-            for (auto& pair : docsToMove) {
-                App::DocumentObject* obji = pair.first;
+            for (auto& movingObj : docsToMove) {
+                App::DocumentObject* obji = movingObj.obj;
                 if (obji == obj) {
                     alreadyIn = true;
                     break;
@@ -565,7 +569,9 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                     Gui::Selection().clearSelection();
                     docsToMove.clear();
                 }
-                docsToMove.emplace_back(obj, pPlc->getValue());
+                MovingObject movingObj(obj, pPlc->getValue(), selRoot, sub);
+
+                docsToMove.emplace_back(movingObj);
             }
         }
     }
@@ -573,88 +579,12 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
     return !docsToMove.empty();
 }
 
-std::vector<std::string> ViewProviderAssembly::parseSubNames(std::string& subNamesStr)
-{
-    std::vector<std::string> subNames;
-    std::string subName;
-    std::istringstream subNameStream(subNamesStr);
-    while (std::getline(subNameStream, subName, '.')) {
-        subNames.push_back(subName);
-    }
-
-    // Check if the last character of the input string is the delimiter.
-    // If so, add an empty string to the subNames vector.
-    // Because the last subname is the element name and can be empty.
-    if (!subNamesStr.empty() && subNamesStr.back() == '.') {
-        subNames.push_back("");  // Append empty string for trailing dot.
-    }
-
-    return subNames;
-}
-
-App::DocumentObject* ViewProviderAssembly::getObjectFromSubNames(std::vector<std::string>& subNames)
-{
-    App::Document* appDoc = getObject()->getDocument();
-
-    std::string objName;
-    if (subNames.size() < 2) {
-        return nullptr;
-    }
-    else if (subNames.size() == 2) {
-        // If two subnames then it can't be a body and the object we want is the first one
-        // For example we want box in "box.face1"
-        // "assembly.part.box.face1"
-        // "p.fcstd.assembly.LinkToPart.box.face1"
-        // "p2.fcstd.Part.box."
-        return appDoc->getObject(subNames[0].c_str());
-    }
-
-    // From here subnames is at least 3 and can be more. There are several cases to consider :
-    //  bodyOrLink.pad.face1  -> bodyOrLink should be the moving  entity
-    // partOrLink.bodyOrLink.pad.face1  -> partOrLink should be the moving entity
-    // partOrLink.box.face1  -> partOrLink should be the moving entity
-    // partOrLink1...ParOrLinkn.bodyOrLink.pad.face1    -> partOrLink1 should be the moving entity
-    // assembly1.partOrLink1...ParOrLinkn.bodyOrLink.pad.face1 -> partOrLink1 should be the moving
-    // entity assembly1.boxOrLink1.face1 -> boxOrLink1 should be the moving entity
-
-    for (auto objName : subNames) {
-        App::DocumentObject* obj = appDoc->getObject(objName.c_str());
-        if (!obj) {
-            continue;
-        }
-
-        if (obj->getTypeId().isDerivedFrom(AssemblyObject::getClassTypeId())) {
-            continue;
-        }
-        else if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())
-                 || obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            return obj;
-        }
-        else if (obj->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
-            App::Link* link = dynamic_cast<App::Link*>(obj);
-
-            App::DocumentObject* linkedObj = link->getLinkedObject(true);
-            if (!linkedObj) {
-                continue;
-            }
-
-            if (linkedObj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())
-                || linkedObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                return obj;
-            }
-        }
-    }
-
-    return nullptr;
-}
-
 ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
     if (docsToMove.size() == 1) {
         auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
-        std::string partPropName;
-        movingJoint =
-            assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].first, partPropName);
+        std::string pName;
+        movingJoint = assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].obj, pName);
 
         if (!movingJoint) {
             return DragMode::Translation;
@@ -665,45 +595,69 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             // If fixed joint we need to find the upstream joint to find move mode.
             // For example : Gnd -(revolute)- A -(fixed)- B : if user try to move B, then we should
             // actually move A
-            App::DocumentObject* upstreamPart =
-                assemblyPart->getUpstreamMovingPart(docsToMove[0].first);
-            docsToMove.clear();
-            if (!upstreamPart) {
-                return DragMode::None;
-            }
-
-            auto* propPlacement =
-                dynamic_cast<App::PropertyPlacement*>(upstreamPart->getPropertyByName("Placement"));
-            if (propPlacement) {
-                docsToMove.emplace_back(upstreamPart, propPlacement->getValue());
-            }
-
-            movingJoint =
-                assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].first, partPropName);
+            auto* upPart =
+                assemblyPart->getUpstreamMovingPart(docsToMove[0].obj, movingJoint, pName);
             if (!movingJoint) {
                 return DragMode::Translation;
             }
+            docsToMove.clear();
+            if (!upPart) {
+                return DragMode::None;
+            }
+
+            auto* pPlc =
+                dynamic_cast<App::PropertyPlacement*>(upPart->getPropertyByName("Placement"));
+            if (pPlc) {
+                auto* ref = dynamic_cast<App::PropertyXLinkSub*>(
+                    movingJoint->getPropertyByName(pName.c_str()));
+
+                App::DocumentObject* selRoot = ref->getValue();
+                if (!selRoot) {
+                    return DragMode::None;
+                }
+                std::vector<std::string> subs = ref->getSubValues();
+                if (subs.empty()) {
+                    return DragMode::None;
+                }
+
+                docsToMove.emplace_back(upPart, pPlc->getValue(), selRoot, subs[0]);
+            }
+
             jointType = AssemblyObject::getJointType(movingJoint);
         }
 
-        const char* plcPropName = (partPropName == "Part1") ? "Placement1" : "Placement2";
-        const char* objPropName = (partPropName == "Part1") ? "Object1" : "Object2";
+        const char* plcPropName = (pName == "Reference1") ? "Placement1" : "Placement2";
 
         // jcsPlc is relative to the Object
         jcsPlc = AssemblyObject::getPlacementFromProp(movingJoint, plcPropName);
 
         // Make jcsGlobalPlc relative to the origin of the doc
-        Base::Placement global_plc =
-            AssemblyObject::getGlobalPlacement(movingJoint, objPropName, partPropName.c_str());
+        auto* ref =
+            dynamic_cast<App::PropertyXLinkSub*>(movingJoint->getPropertyByName(pName.c_str()));
+        if (!ref) {
+            return DragMode::Translation;
+        }
+        auto* obj = assemblyPart->getObjFromRef(movingJoint, pName.c_str());
+        Base::Placement global_plc = AssemblyObject::getGlobalPlacement(obj, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
-        auto downstreamParts = assemblyPart->getDownstreamParts(docsToMove[0].first, movingJoint);
-        for (auto part : downstreamParts) {
-            auto* propPlacement =
-                dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
-            if (propPlacement) {
-                docsToMove.emplace_back(part, propPlacement->getValue());
+        auto downstreamParts = assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
+        for (auto partRef : downstreamParts) {
+            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(
+                partRef.first->getPropertyByName("Placement"));
+            if (pPlc) {
+                App::DocumentObject* selRoot = partRef.second->getValue();
+                if (!selRoot) {
+                    return DragMode::None;
+                }
+                std::vector<std::string> subs = partRef.second->getSubValues();
+                if (subs.empty()) {
+                    return DragMode::None;
+                }
+
+
+                docsToMove.emplace_back(partRef.first, pPlc->getValue(), selRoot, subs[0]);
             }
         }
 
@@ -789,15 +743,15 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
     if (solveOnMove) {
         objectMasses.clear();
-        for (auto& pair : docsToMove) {
-            objectMasses.push_back({pair.first, 10.0});
+        for (auto& movingObj : docsToMove) {
+            objectMasses.push_back({movingObj.obj, 10.0});
         }
 
         auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         assemblyPart->setObjMasses(objectMasses);
         std::vector<App::DocumentObject*> dragParts;
-        for (auto& pair : docsToMove) {
-            dragParts.push_back(pair.first);
+        for (auto& movingObj : docsToMove) {
+            dragParts.push_back(movingObj.obj);
         }
         assemblyPart->preDrag(dragParts);
     }
@@ -840,13 +794,17 @@ void ViewProviderAssembly::initMoveDragger()
     setDraggerVisibility(true);
 
     // find the placement for the dragger.
-    App::DocumentObject* obj = docsToMove[0].first;
-    draggerInitPlc = AssemblyObject::getGlobalPlacement(obj, obj);
+    App::DocumentObject* part = docsToMove[0].obj;
+
+    draggerInitPlc =
+        AssemblyObject::getGlobalPlacement(part, docsToMove[0].rootObj, docsToMove[0].sub);
     std::vector<App::DocumentObject*> listOfObjs;
-    for (auto& pair : docsToMove) {
-        listOfObjs.push_back(pair.first);
+    std::vector<App::PropertyXLinkSub*> listOfRefs;
+    for (auto& movingObj : docsToMove) {
+        listOfObjs.push_back(movingObj.obj);
+        listOfRefs.push_back(movingObj.ref);
     }
-    Base::Vector3d pos = getCenterOfBoundingBox(listOfObjs, listOfObjs);
+    Base::Vector3d pos = getCenterOfBoundingBox(docsToMove);
     draggerInitPlc.setPosition(pos);
 
     setDraggerPlacement(draggerInitPlc);
@@ -869,12 +827,12 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
     Base::Placement draggerPlc = sudoThis->getDraggerPlacement();
     Base::Placement movePlc = draggerPlc * sudoThis->draggerInitPlc.inverse();
 
-    for (auto& pair : sudoThis->docsToMove) {
-        App::DocumentObject* obj = pair.first;
+    for (auto& movingObj : sudoThis->docsToMove) {
+        App::DocumentObject* obj = movingObj.obj;
 
-        auto* propPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-        if (propPlc) {
-            propPlc->setValue(movePlc * pair.second);
+        auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        if (pPlc) {
+            pPlc->setValue(movePlc * movingObj.plc);
         }
     }
 }
@@ -1004,14 +962,14 @@ PyObject* ViewProviderAssembly::getPyObject()
 
 // UTILS
 Base::Vector3d
-ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<App::DocumentObject*>& objs,
-                                             const std::vector<App::DocumentObject*>& parts)
+ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& movingObjs)
 {
     int count = 0;
-    Base::Vector3d center;
+    Base::Vector3d center;  // feujhzef
 
-    for (size_t i = 0; i < objs.size(); ++i) {
-        Gui::ViewProvider* viewProvider = Gui::Application::Instance->getViewProvider(objs[i]);
+    for (auto& movingObj : movingObjs) {
+        Gui::ViewProvider* viewProvider =
+            Gui::Application::Instance->getViewProvider(movingObj.obj);
         if (!viewProvider) {
             continue;
         }
@@ -1023,17 +981,16 @@ ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<App::DocumentObje
 
         Base::Vector3d bboxCenter = boundingBox.GetCenter();
 
-        if (parts[i] != objs[i]) {
-            // bboxCenter does not take into account obj global placement
-            Base::Placement plc(bboxCenter, Base::Rotation());
-            // Change plc to be relative to the object placement.
-            Base::Placement objPlc = AssemblyObject::getPlacementFromProp(objs[i], "Placement");
-            plc = objPlc.inverse() * plc;
-            // Change plc to be relative to the origin of the document.
-            Base::Placement global_plc = AssemblyObject::getGlobalPlacement(objs[i], parts[i]);
-            plc = global_plc * plc;
-            bboxCenter = plc.getPosition();
-        }
+        // bboxCenter does not take into account obj global placement
+        Base::Placement plc(bboxCenter, Base::Rotation());
+        // Change plc to be relative to the object placement.
+        Base::Placement objPlc = AssemblyObject::getPlacementFromProp(movingObj.obj, "Placement");
+        plc = objPlc.inverse() * plc;
+        // Change plc to be relative to the origin of the document.
+        Base::Placement global_plc =
+            AssemblyObject::getGlobalPlacement(movingObj.obj, movingObj.rootObj, movingObj.sub);
+        plc = global_plc * plc;
+        bboxCenter = plc.getPosition();
 
         center += bboxCenter;
         ++count;
