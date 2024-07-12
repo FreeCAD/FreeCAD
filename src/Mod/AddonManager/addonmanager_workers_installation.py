@@ -207,10 +207,9 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
     def _ensure_string(self, arbitrary_data, addon_name, file_name) -> str:
         if isinstance(arbitrary_data, str):
             return arbitrary_data
-        elif isinstance(arbitrary_data, QtCore.QByteArray):
+        if isinstance(arbitrary_data, QtCore.QByteArray):
             return self._decode_data(arbitrary_data.data(), addon_name, file_name)
-        else:
-            return self._decode_data(arbitrary_data, addon_name, file_name)
+        return self._decode_data(arbitrary_data, addon_name, file_name)
 
     def _decode_data(self, byte_data, addon_name, file_name) -> str:
         """UTF-8 decode data, and print an error message if that fails"""
