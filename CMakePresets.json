@@ -163,6 +163,14 @@
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad"
           },
+          "CMAKE_INSTALL_RPATH": {
+            "type": "FILEPATH",
+            "value": "@loader_path/../lib/"
+          },
+          "CMAKE_MACOSX_RPATH": {
+            "type": "BOOL",
+            "value": "ON"
+          },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad/include/opencascade"
