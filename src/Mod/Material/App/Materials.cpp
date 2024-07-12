@@ -179,7 +179,7 @@ QString MaterialProperty::getDictionaryString() const
         auto quantity = getValue().value<Base::Quantity>();
         auto string = QString(QLatin1String("%1 %2"))
                           .arg(quantity.getValue(), 0, 'g', MaterialValue::PRECISION)
-                          .arg(quantity.getUnit().getString());
+                          .arg(QString::fromStdString(quantity.getUnit().getString()));
         return string;
     }
     if (getType() == MaterialValue::Float) {

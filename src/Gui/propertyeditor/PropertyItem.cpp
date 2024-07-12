@@ -1186,8 +1186,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
     if (!hasExpression() && value.canConvert<Base::Quantity>()) {
         const Base::Quantity& val = value.value<Base::Quantity>();
         Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-        QString unit = Base::UnitsApi::toString(val, format);
-        setPropertyValue(unit);
+        setPropertyValue(Base::UnitsApi::toString(val, format));
     }
 }
 
@@ -1801,11 +1800,11 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
 
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    QString data = QString::fromLatin1("(%1, %2, %3)")
-                       .arg(Base::UnitsApi::toNumber(x, format),
-                            Base::UnitsApi::toNumber(y, format),
-                            Base::UnitsApi::toNumber(z, format));
-    setPropertyValue(data);
+    std::string val = fmt::format("({}, {}, {})",
+                                  Base::UnitsApi::toNumber(x, format),
+                                  Base::UnitsApi::toNumber(y, format),
+                                  Base::UnitsApi::toNumber(z, format));
+    setPropertyValue(val);
 }
 
 void PropertyVectorDistanceItem::setEditorData(QWidget* editor, const QVariant& data) const
@@ -2557,12 +2556,12 @@ void PropertyRotationItem::setValue(const QVariant& value)
     double angle {};
     h.getValue(axis, angle);
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    QString data = QString::fromLatin1("App.Rotation(App.Vector(%1,%2,%3),%4)")
-                       .arg(Base::UnitsApi::toNumber(axis.x, format),
-                            Base::UnitsApi::toNumber(axis.y, format),
-                            Base::UnitsApi::toNumber(axis.z, format),
-                            Base::UnitsApi::toNumber(angle, format));
-    setPropertyValue(data);
+    std::string val = fmt::format("App.Rotation(App.Vector({},{},{}),{})",
+                                  Base::UnitsApi::toNumber(axis.x, format),
+                                  Base::UnitsApi::toNumber(axis.y, format),
+                                  Base::UnitsApi::toNumber(axis.z, format),
+                                  Base::UnitsApi::toNumber(angle, format));
+    setPropertyValue(val);
 }
 
 QWidget* PropertyRotationItem::createEditor(QWidget* parent,
@@ -2872,17 +2871,17 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     h.getValue(axis, angle);
 
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
-    QString data = QString::fromLatin1("App.Placement("
-                                       "App.Vector(%1,%2,%3),"
-                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                       .arg(Base::UnitsApi::toNumber(pos.x, format),
-                            Base::UnitsApi::toNumber(pos.y, format),
-                            Base::UnitsApi::toNumber(pos.z, format),
-                            Base::UnitsApi::toNumber(axis.x, format),
-                            Base::UnitsApi::toNumber(axis.y, format),
-                            Base::UnitsApi::toNumber(axis.z, format),
-                            Base::UnitsApi::toNumber(angle, format));
-    setPropertyValue(data);
+    std::string str = fmt::format("App.Placement("
+                                  "App.Vector({},{},{}),"
+                                  "App.Rotation(App.Vector({},{},{}),{}))",
+                                  Base::UnitsApi::toNumber(pos.x, format),
+                                  Base::UnitsApi::toNumber(pos.y, format),
+                                  Base::UnitsApi::toNumber(pos.z, format),
+                                  Base::UnitsApi::toNumber(axis.x, format),
+                                  Base::UnitsApi::toNumber(axis.y, format),
+                                  Base::UnitsApi::toNumber(axis.z, format),
+                                  Base::UnitsApi::toNumber(angle, format));
+    setPropertyValue(str);
 }
 
 QWidget* PropertyPlacementItem::createEditor(QWidget* parent,

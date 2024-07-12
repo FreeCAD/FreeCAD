@@ -42,7 +42,7 @@ std::string QuantityPy::representation() const
     Py::Float flt(val);
     ret << static_cast<std::string>(flt.repr());
     if (!unit.isEmpty()) {
-        ret << " " << unit.getString().toUtf8().constData();
+        ret << " " << unit.getString();
     }
 
     return ret.str();
@@ -63,7 +63,7 @@ PyObject* QuantityPy::toStr(PyObject* args)
     ret.setf(std::ios::fixed, std::ios::floatfield);
     ret << val;
     if (!unit.isEmpty()) {
-        ret << " " << unit.getString().toUtf8().constData();
+        ret << " " << unit.getString();
     }
 
     return Py_BuildValue("s", ret.str().c_str());
