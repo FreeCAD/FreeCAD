@@ -617,7 +617,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity& quant, double& factor, Q
     }
     else {
         // default action for all cases without special treatment:
-        unitString = quant.getUnit().getString();
+        unitString = QString::fromStdString(quant.getUnit().getString());
         factor = 1.0;
     }
 

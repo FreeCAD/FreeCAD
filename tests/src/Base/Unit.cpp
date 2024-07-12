@@ -6,7 +6,7 @@
 TEST(Unit, TestString)
 {
     auto toString = [](const Base::Unit& unit) {
-        return unit.getString().toStdString();
+        return unit.getString();
     };
     EXPECT_EQ(toString(Base::Unit(0, 0, 0, 0, 0, 0, 0, 0)), "");
     EXPECT_EQ(toString(Base::Unit(1, 0, 0, 0, 0, 0, 0, 0)), "mm");
@@ -24,7 +24,7 @@ TEST(Unit, TestString)
 TEST(Unit, TestTypeString)
 {
     auto toString = [](const Base::Unit& unit) {
-        return unit.getTypeString().toStdString();
+        return unit.getTypeString();
     };
     EXPECT_EQ(toString(Base::Unit::Acceleration), "Acceleration");
     EXPECT_EQ(toString(Base::Unit::AmountOfSubstance), "AmountOfSubstance");
@@ -83,14 +83,14 @@ TEST(Unit, TestTypeString)
 }
 TEST(Unit, strings)
 {
-    EXPECT_STREQ(Base::Unit::Acceleration.getString().toStdString().c_str(), "mm/s^2");
-    EXPECT_STREQ(Base::Unit::AmountOfSubstance.getString().toStdString().c_str(), "mol");
-    EXPECT_STREQ(Base::Unit::Angle.getString().toStdString().c_str(), "deg");
-    EXPECT_STREQ(Base::Unit::AngleOfFriction.getString().toStdString().c_str(), "deg");
-    EXPECT_STREQ(Base::Unit::Area.getString().toStdString().c_str(), "mm^2");
-    EXPECT_STREQ(Base::Unit::CurrentDensity.getString().toStdString().c_str(), "A/mm^2");
-    EXPECT_STREQ(Base::Unit::Density.getString().toStdString().c_str(), "kg/mm^3");
-    EXPECT_STREQ(Base::Unit::DissipationRate.getString().toStdString().c_str(), "mm^2/s^3");
+    EXPECT_STREQ(Base::Unit::Acceleration.getString().c_str(), "mm/s^2");
+    EXPECT_STREQ(Base::Unit::AmountOfSubstance.getString().c_str(), "mol");
+    EXPECT_STREQ(Base::Unit::Angle.getString().c_str(), "deg");
+    EXPECT_STREQ(Base::Unit::AngleOfFriction.getString().c_str(), "deg");
+    EXPECT_STREQ(Base::Unit::Area.getString().c_str(), "mm^2");
+    EXPECT_STREQ(Base::Unit::CurrentDensity.getString().c_str(), "A/mm^2");
+    EXPECT_STREQ(Base::Unit::Density.getString().c_str(), "kg/mm^3");
+    EXPECT_STREQ(Base::Unit::DissipationRate.getString().c_str(), "mm^2/s^3");
 }
 
 TEST(Unit, TestEqual)

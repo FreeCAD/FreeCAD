@@ -123,7 +123,7 @@ UnitsSchemaImperial1::schemaTranslate(const Quantity& quant, double& factor, QSt
     }
     else {
         // default action for all cases without special treatment:
-        unitString = quant.getUnit().getString();
+        unitString = QString::fromStdString(quant.getUnit().getString());
         factor = 1.0;
     }
 
@@ -184,7 +184,7 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
     }
     else {
         // default action for all cases without special treatment:
-        unitString = quant.getUnit().getString();
+        unitString = QString::fromStdString(quant.getUnit().getString());
         factor = 1.0;
     }
 
@@ -312,7 +312,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
         factor = 25.4 / 60;
     }
     else {
-        unitString = quant.getUnit().getString();
+        unitString = QString::fromStdString(quant.getUnit().getString());
         factor = 1.0;
     }
 
@@ -392,11 +392,11 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant,
         //            output << std::setprecision(Base::UnitsApi::getDecimals()) << std::fixed <<
         //                      rawSeconds << secondString.toStdString();
         //        }
-        return QString::fromUtf8(output.str().c_str());
+        return QString::fromStdString(output.str());
     }
     else {
         // default action for all cases without special treatment:
-        unitString = quant.getUnit().getString();
+        unitString = QString::fromStdString(quant.getUnit().getString());
         factor = 1.0;
     }
 
