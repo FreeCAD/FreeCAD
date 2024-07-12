@@ -14,19 +14,19 @@ mamba create --copy -c conda-forge -y -p ${conda_env} \
     calculix \
     coin3d \
     docutils \
+    fmt==10.2.1 \
     freetype \
     gmsh \
     graphviz \
     hdf5 \
-    ifcopenshell \
     jinja2 \
     lark \
+    libboost \
     lxml \
     matplotlib-base \
     nine \
     numpy \
-    numpy \
-    occt \
+    occt==7.6.3 \
     olefile \
     opencamlib \
     opencv \
@@ -46,10 +46,11 @@ mamba create --copy -c conda-forge -y -p ${conda_env} \
     vtk==9.2.6 \
     xerces-c \
     xlutils \
+    yaml-cpp \
     zlib
 
 mamba list -p ${conda_env} > FreeCAD.app/Contents/packages.txt
-sed -i "" "1s/.*/\nLIST OF PACKAGES:/"  FreeCAD.app/Contents/packages.txt
+sed -i "1s/.*/\nLIST OF PACKAGES:/"  FreeCAD.app/Contents/packages.txt
 
 cmake --install ../../../build/debug
 
@@ -94,7 +95,8 @@ find . -name "*.pyc" -type f -delete
 # fix problematic rpaths and reexport_dylibs for signing
 # see https://github.com/FreeCAD/FreeCAD/issues/10144#issuecomment-1836686775
 # and https://github.com/FreeCAD/FreeCAD-Bundle/pull/203
-mamba run -p ${conda_env} python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib
+mamba run -p ${conda_env} python ../scripts/fix_macos_lib_paths.py ${conda_env}/bin -r
+mamba run -p ${conda_env} python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib -r
 
 # create the dmg
 pip3 install --break-system-packages "dmgbuild[badge_icons]>=1.6.0,<1.7.0"
