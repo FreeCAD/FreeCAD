@@ -51,6 +51,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include <OndselSolver/CREATE.h>
 #include <OndselSolver/ASMTSimulationParameters.h>
@@ -434,18 +435,18 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::Docum
         if (!joint) {
             continue;
         }
-        App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
         if (!part1 || !part2) {
             continue;
         }
 
-        if (part == part1 && isJointConnectingPartToGround(joint, "Part1")) {
-            name = "Part1";
+        if (part == part1 && isJointConnectingPartToGround(joint, "Reference1")) {
+            name = "Reference1";
             return joint;
         }
-        if (part == part2 && isJointConnectingPartToGround(joint, "Part2")) {
-            name = "Part2";
+        if (part == part2 && isJointConnectingPartToGround(joint, "Reference2")) {
+            name = "Reference2";
             return joint;
         }
     }
@@ -507,8 +508,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool
             continue;
         }
 
-        auto* part1 = getObjFromProp(joint, "Part1");
-        auto* part2 = getObjFromProp(joint, "Part2");
+        auto* part1 = getMovingPartFromRef(joint, "Reference1");
+        auto* part2 = getMovingPartFromRef(joint, "Reference2");
         if (!part1 || !part2 || part1->getFullName() == part2->getFullName()) {
             // Remove incomplete joints. Left-over when the user deletes a part.
             // Remove incoherent joints (self-pointing joints)
@@ -571,8 +572,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
-        App::DocumentObject* obj1 = getObjFromProp(joint, "object1");
-        App::DocumentObject* obj2 = getObjFromProp(joint, "Object2");
+        App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
+        App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
         if (obj == obj1 || obj == obj2) {
             jointsOf.push_back(obj);
         }
@@ -587,8 +588,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
-        App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
         if (part == part1 || part == part2) {
             jointsOf.push_back(joint);
         }
@@ -674,11 +675,7 @@ bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, c
         return false;
     }
 
-    auto* propPart = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(propname));
-    if (!propPart) {
-        return false;
-    }
-    App::DocumentObject* part = propPart->getValue();
+    App::DocumentObject* part = getMovingPartFromRef(joint, propname);
 
     // Check if the part is grounded.
     bool isGrounded = isPartGrounded(part);
@@ -727,14 +724,26 @@ bool AssemblyObject::isJointTypeConnecting(App::DocumentObject* joint)
         && jointType != JointType::Gears && jointType != JointType::Belt;
 }
 
+
+bool AssemblyObject::isObjInSetOfObjRefPairs(App::DocumentObject* obj,
+                                             const std::set<ObjRefPair>& set)
+{
+    for (const auto& pair : set) {
+        if (pair.first == obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
                                              std::vector<App::DocumentObject*> groundedObjs)
 {
-    std::set<App::DocumentObject*> connectedParts;
+    std::set<ObjRefPair> connectedParts;
 
     // Initialize connectedParts with groundedObjs
     for (auto* groundedObj : groundedObjs) {
-        connectedParts.insert(groundedObj);
+        connectedParts.insert({groundedObj, nullptr});
     }
 
     // Perform a traversal from each grounded object
@@ -747,11 +756,11 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
         std::remove_if(
             joints.begin(),
             joints.end(),
-            [&connectedParts](App::DocumentObject* joint) {
-                App::DocumentObject* obj1 = getObjFromProp(joint, "Part1");
-                App::DocumentObject* obj2 = getObjFromProp(joint, "Part2");
-                if ((connectedParts.find(obj1) == connectedParts.end())
-                    || (connectedParts.find(obj2) == connectedParts.end())) {
+            [&](App::DocumentObject* joint) {
+                App::DocumentObject* obj1 = getMovingPartFromRef(joint, "Reference1");
+                App::DocumentObject* obj2 = getMovingPartFromRef(joint, "Reference2");
+                if (!isObjInSetOfObjRefPairs(obj1, connectedParts)
+                    || !isObjInSetOfObjRefPairs(obj2, connectedParts)) {
                     Base::Console().Warning(
                         "%s is unconnected to a grounded part so it is ignored.\n",
                         joint->getFullName());
@@ -763,36 +772,47 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
 }
 
 void AssemblyObject::traverseAndMarkConnectedParts(App::DocumentObject* currentObj,
-                                                   std::set<App::DocumentObject*>& connectedParts,
+                                                   std::set<ObjRefPair>& connectedParts,
                                                    const std::vector<App::DocumentObject*>& joints)
 {
     // getConnectedParts returns the objs connected to the currentObj by any joint
     auto connectedObjs = getConnectedParts(currentObj, joints);
-    for (auto* nextObj : connectedObjs) {
-        if (connectedParts.find(nextObj) == connectedParts.end()) {
-            connectedParts.insert(nextObj);
-            traverseAndMarkConnectedParts(nextObj, connectedParts, joints);
+    for (auto nextObjRef : connectedObjs) {
+        if (!isObjInSetOfObjRefPairs(nextObjRef.first, connectedParts)) {
+            // Create a new ObjRefPair with the nextObj and a nullptr for PropertyXLinkSub*
+            connectedParts.insert(nextObjRef);
+            traverseAndMarkConnectedParts(nextObjRef.first, connectedParts, joints);
         }
     }
 }
 
-std::vector<App::DocumentObject*>
+std::vector<ObjRefPair>
 AssemblyObject::getConnectedParts(App::DocumentObject* part,
                                   const std::vector<App::DocumentObject*>& joints)
 {
-    std::vector<App::DocumentObject*> connectedParts;
+    std::vector<ObjRefPair> connectedParts;
     for (auto joint : joints) {
         if (!isJointTypeConnecting(joint)) {
             continue;
         }
 
-        App::DocumentObject* obj1 = getObjFromProp(joint, "Part1");
-        App::DocumentObject* obj2 = getObjFromProp(joint, "Part2");
+        App::DocumentObject* obj1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* obj2 = getMovingPartFromRef(joint, "Reference2");
         if (obj1 == part) {
-            connectedParts.push_back(obj2);
+            auto* ref =
+                dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference2"));
+            if (!ref) {
+                continue;
+            }
+            connectedParts.push_back({obj2, ref});
         }
         else if (obj2 == part) {
-            connectedParts.push_back(obj1);
+            auto* ref =
+                dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference1"));
+            if (!ref) {
+                continue;
+            }
+            connectedParts.push_back({obj1, ref});
         }
     }
     return connectedParts;
@@ -816,11 +836,11 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
     std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
     std::vector<App::DocumentObject*> joints = getJoints(false);
 
-    std::set<App::DocumentObject*> connectedParts;
+    std::set<ObjRefPair> connectedParts;
 
     // Initialize connectedParts with groundedObjs
     for (auto* groundedObj : groundedObjs) {
-        connectedParts.insert(groundedObj);
+        connectedParts.insert({groundedObj, nullptr});
     }
 
     // Perform a traversal from each grounded object
@@ -828,8 +848,8 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
         traverseAndMarkConnectedParts(groundedObj, connectedParts, joints);
     }
 
-    for (auto part : connectedParts) {
-        if (obj == part) {
+    for (auto objRef : connectedParts) {
+        if (obj == objRef.first) {
             return true;
         }
     }
@@ -928,10 +948,10 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObj
 {
     DistanceType type = getDistanceType(joint);
 
-    const char* elt1 = getElementFromProp(joint, "Object1");
-    const char* elt2 = getElementFromProp(joint, "Object2");
-    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
-    auto* obj2 = getLinkedObjFromProp(joint, "Object2");
+    const char* elt1 = getElementFromProp(joint, "Reference1");
+    const char* elt2 = getElementFromProp(joint, "Reference2");
+    auto* obj1 = getLinkedObjFromRef(joint, "Reference1");
+    auto* obj2 = getLinkedObjFromRef(joint, "Reference2");
 
     if (type == DistanceType::PointPoint) {
         // Point to point distance, or ball joint if distance=0.
@@ -1130,8 +1150,8 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
         getRackPinionMarkers(joint, fullMarkerNameI, fullMarkerNameJ);
     }
     else {
-        fullMarkerNameI = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
-        fullMarkerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+        fullMarkerNameI = handleOneSideOfJoint(joint, "Reference1", "Placement1");
+        fullMarkerNameJ = handleOneSideOfJoint(joint, "Reference2", "Placement2");
     }
     if (fullMarkerNameI == "" || fullMarkerNameJ == "") {
         return {};
@@ -1246,16 +1266,15 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
 }
 
 std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
-                                                 const char* propObjName,
-                                                 const char* propPartName,
+                                                 const char* propRefName,
                                                  const char* propPlcName)
 {
-    App::DocumentObject* part = getObjFromProp(joint, propPartName);
-    App::DocumentObject* obj = getObjFromProp(joint, propObjName);
+    App::DocumentObject* part = getMovingPartFromRef(joint, propRefName);
+    App::DocumentObject* obj = getObjFromRef(joint, propRefName);
 
     if (!part || !obj) {
-        Base::Console().Warning("The property %s of Joint %s is empty.",
-                                obj ? propPartName : propObjName,
+        Base::Console().Warning("The property %s of Joint %s is bad.",
+                                propRefName,
                                 joint->getFullName());
         return "";
     }
@@ -1269,10 +1288,15 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
         // Make plc relative to the containing part
         // plc = objPlc * plc; // this would not work for nested parts.
 
-        Base::Placement obj_global_plc = getGlobalPlacement(obj, part);
+        auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
+        if (!ref) {
+            return "";
+        }
+
+        Base::Placement obj_global_plc = getGlobalPlacement(obj, ref);
         plc = obj_global_plc * plc;
 
-        Base::Placement part_global_plc = getGlobalPlacement(part);
+        Base::Placement part_global_plc = getGlobalPlacement(part, ref);
         plc = part_global_plc.inverse() * plc;
     }
 
@@ -1302,29 +1326,31 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
         swapJCS(joint);  // make sure that rack is first.
     }
 
-    App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
-    App::DocumentObject* obj1 = getObjFromProp(joint, "Object1");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
     Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
 
-    App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
-    App::DocumentObject* obj2 = getObjFromProp(joint, "Object2");
+    App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
-        Base::Console().Warning("The property %s of Joint %s is empty.",
-                                obj1 ? "Part1" : "Object1",
-                                joint->getFullName());
+        Base::Console().Warning("Reference1 of Joint %s is bad.", joint->getFullName());
         return;
     }
 
     // For the pinion nothing special needed :
-    markerNameJ = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
+    markerNameJ = handleOneSideOfJoint(joint, "Reference2", "Placement2");
 
     // For the rack we need to change the placement :
     // make the pinion plc relative to the rack placement.
-    Base::Placement pinion_global_plc = getGlobalPlacement(obj2, part2);
+    auto* ref1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference1"));
+    auto* ref2 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference2"));
+    if (!ref1 || !ref2) {
+        return;
+    }
+    Base::Placement pinion_global_plc = getGlobalPlacement(obj2, ref2);
     plc2 = pinion_global_plc * plc2;
-    Base::Placement rack_global_plc = getGlobalPlacement(obj1, part1);
+    Base::Placement rack_global_plc = getGlobalPlacement(obj1, ref1);
     plc2 = rack_global_plc.inverse() * plc2;
 
     // The rot of the rack placement should be the same as the pinion, but with X axis along the
@@ -1356,7 +1382,7 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
     if (obj1->getNameInDocument() != part1->getNameInDocument()) {
         plc1 = rack_global_plc * plc1;
 
-        Base::Placement part_global_plc = getGlobalPlacement(part1);
+        Base::Placement part_global_plc = getGlobalPlacement(part1, ref1);
         plc1 = part_global_plc.inverse() * plc1;
     }
 
@@ -1370,21 +1396,21 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
 
 int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
 {
-    App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
-    App::DocumentObject* obj1 = getObjFromProp(joint, "Object1");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
     boost::ignore_unused(obj1);
     Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
 
-    App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
-    App::DocumentObject* obj2 = getObjFromProp(joint, "Object2");
+    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
+    App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
     boost::ignore_unused(obj2);
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     int slidingFound = 0;
     for (auto* jt : getJoints(false, false)) {
         if (getJointType(jt) == JointType::Slider) {
-            App::DocumentObject* jpart1 = getObjFromProp(jt, "Part1");
-            App::DocumentObject* jpart2 = getObjFromProp(jt, "Part2");
+            App::DocumentObject* jpart1 = getMovingPartFromRef(jt, "Reference1");
+            App::DocumentObject* jpart2 = getMovingPartFromRef(jt, "Reference2");
             int found = 0;
             Base::Placement plcjt, plci;
             if (jpart1 == part1 || jpart1 == part2) {
@@ -1489,8 +1515,8 @@ std::shared_ptr<ASMTMarker> AssemblyObject::makeMbdMarker(std::string& name, Bas
     return mbdMarker;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::DocumentObject* part,
-                                                                     App::DocumentObject* joint)
+std::vector<std::pair<App::DocumentObject*, App::PropertyXLinkSub*>>
+AssemblyObject::getDownstreamParts(App::DocumentObject* part, App::DocumentObject* joint)
 {
     // First we deactivate the joint
     bool state = getJointActivated(joint);
@@ -1498,12 +1524,13 @@ std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::Docume
 
     std::vector<App::DocumentObject*> joints = getJoints(false);
 
-    std::set<App::DocumentObject*> connectedParts = {part};
+    std::set<std::pair<App::DocumentObject*, App::PropertyXLinkSub*>> connectedParts = {
+        {part, nullptr}};
     traverseAndMarkConnectedParts(part, connectedParts, joints);
 
-    std::vector<App::DocumentObject*> downstreamParts;
+    std::vector<std::pair<App::DocumentObject*, App::PropertyXLinkSub*>> downstreamParts;
     for (auto parti : connectedParts) {
-        if (!isPartConnected(parti) && (parti != part)) {
+        if (!isPartConnected(parti.first) && (parti.first != part)) {
             downstreamParts.push_back(parti);
         }
     }
@@ -1527,8 +1554,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::Docume
     auto it = std::remove(jointsOfPart.begin(), jointsOfPart.end(), connectingJoint);
     jointsOfPart.erase(it, jointsOfPart.end());
     for (auto joint : jointsOfPart) {
-        App::DocumentObject* part1 = getObjFromProp(joint, "Part1");
-        App::DocumentObject* part2 = getObjFromProp(joint, "Part2");
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
         bool firstIsDown = part->getFullName() == part2->getFullName();
         App::DocumentObject* downstreamPart = firstIsDown ? part1 : part2;
 
@@ -1574,30 +1601,30 @@ std::vector<App::DocumentObject*> AssemblyObject::getUpstreamParts(App::Document
     std::string name;
     App::DocumentObject* connectingJoint = getJointOfPartConnectingToGround(part, name);
     App::DocumentObject* upPart =
-        getObjFromProp(connectingJoint, name == "Part1" ? "Part2" : "Part1");
+        getMovingPartFromRef(connectingJoint, name == "Reference1" ? "Reference2" : "Reference1");
 
     std::vector<App::DocumentObject*> upstreamParts = getUpstreamParts(upPart, limit);
     upstreamParts.push_back(part);
     return upstreamParts;
 }
 
-App::DocumentObject* AssemblyObject::getUpstreamMovingPart(App::DocumentObject* part)
+App::DocumentObject* AssemblyObject::getUpstreamMovingPart(App::DocumentObject* part,
+                                                           App::DocumentObject*& joint,
+                                                           std::string& name)
 {
     if (isPartGrounded(part)) {
         return nullptr;
     }
 
-    std::string name;
-    App::DocumentObject* connectingJoint = getJointOfPartConnectingToGround(part, name);
-    JointType jointType = getJointType(connectingJoint);
+    joint = getJointOfPartConnectingToGround(part, name);
+    JointType jointType = getJointType(joint);
     if (jointType != JointType::Fixed) {
         return part;
     }
 
-    App::DocumentObject* upPart =
-        getObjFromProp(connectingJoint, name == "Part1" ? "Part2" : "Part1");
+    part = getMovingPartFromRef(joint, name == "Reference1" ? "Reference2" : "Reference1");
 
-    return getUpstreamMovingPart(upPart);
+    return getUpstreamMovingPart(part, joint, name);
 }
 
 double AssemblyObject::getObjMass(App::DocumentObject* obj)
@@ -1659,32 +1686,23 @@ void AssemblyObject::updateGroundedJointsPlacements()
 
 void AssemblyObject::swapJCS(App::DocumentObject* joint)
 {
-    auto propPlacement1 =
-        dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
-    auto propPlacement2 =
-        dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement2"));
-    if (propPlacement1 && propPlacement2) {
-        auto temp = propPlacement1->getValue();
-        propPlacement1->setValue(propPlacement2->getValue());
-        propPlacement2->setValue(temp);
+    auto pPlc1 = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
+    auto pPlc2 = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement2"));
+    if (pPlc1 && pPlc2) {
+        auto temp = pPlc1->getValue();
+        pPlc1->setValue(pPlc2->getValue());
+        pPlc2->setValue(temp);
     }
-    auto propObject1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Object1"));
-    auto propObject2 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Object2"));
-    if (propObject1 && propObject2) {
-        auto temp = propObject1->getValue();
-        auto subs1 = propObject1->getSubValues();
-        auto subs2 = propObject2->getSubValues();
-        propObject1->setValue(propObject2->getValue());
-        propObject1->setSubValues(std::move(subs2));
-        propObject2->setValue(temp);
-        propObject2->setSubValues(std::move(subs1));
-    }
-    auto propPart1 = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Part1"));
-    auto propPart2 = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Part2"));
-    if (propPart1 && propPart2) {
-        auto temp = propPart1->getValue();
-        propPart1->setValue(propPart2->getValue());
-        propPart2->setValue(temp);
+    auto pRef1 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference1"));
+    auto pRef2 = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference2"));
+    if (pRef1 && pRef2) {
+        auto temp = pRef1->getValue();
+        auto subs1 = pRef1->getSubValues();
+        auto subs2 = pRef2->getSubValues();
+        pRef1->setValue(pRef2->getValue());
+        pRef1->setSubValues(std::move(subs2));
+        pRef2->setValue(temp);
+        pRef2->setSubValues(std::move(subs1));
     }
 }
 
@@ -1761,12 +1779,12 @@ double AssemblyObject::getEdgeRadius(App::DocumentObject* obj, const char* elt)
 
 DistanceType AssemblyObject::getDistanceType(App::DocumentObject* joint)
 {
-    std::string type1 = getElementTypeFromProp(joint, "Object1");
-    std::string type2 = getElementTypeFromProp(joint, "Object2");
-    std::string elt1 = getElementFromProp(joint, "Object1");
-    std::string elt2 = getElementFromProp(joint, "Object2");
-    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
-    auto* obj2 = getLinkedObjFromProp(joint, "Object2");
+    std::string type1 = getElementTypeFromProp(joint, "Reference1");
+    std::string type2 = getElementTypeFromProp(joint, "Reference2");
+    std::string elt1 = getElementFromProp(joint, "Reference1");
+    std::string elt2 = getElementFromProp(joint, "Reference2");
+    auto* obj1 = getLinkedObjFromRef(joint, "Reference1");
+    auto* obj2 = getLinkedObjFromRef(joint, "Reference2");
 
     if (type1 == "Vertex" && type2 == "Vertex") {
         return DistanceType::PointPoint;
@@ -2002,115 +2020,53 @@ Base::Placement AssemblyObject::getPlacementFromProp(App::DocumentObject* obj, c
     return plc;
 }
 
-bool AssemblyObject::getTargetPlacementRelativeTo(Base::Placement& foundPlc,
-                                                  App::DocumentObject* targetObj,
-                                                  App::DocumentObject* part,
-                                                  App::DocumentObject* container,
-                                                  bool inContainerBranch,
-                                                  bool ignorePlacement)
-{
-    inContainerBranch = inContainerBranch || (!ignorePlacement && part == container);
-
-    if (targetObj == part && inContainerBranch && !ignorePlacement) {
-        foundPlc = getPlacementFromProp(targetObj, "Placement");
-        return true;
-    }
-
-    if (part->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-        for (auto& obj : part->getOutList()) {
-            bool found = getTargetPlacementRelativeTo(foundPlc,
-                                                      targetObj,
-                                                      obj,
-                                                      container,
-                                                      inContainerBranch,
-                                                      ignorePlacement);
-            if (found) {
-                return true;
-            }
-        }
-    }
-    else if (part->isDerivedFrom(Assembly::AssemblyObject::getClassTypeId())
-             || part->isDerivedFrom(App::Part::getClassTypeId())
-             || part->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        for (auto& obj : part->getOutList()) {
-            bool found = getTargetPlacementRelativeTo(foundPlc,
-                                                      targetObj,
-                                                      obj,
-                                                      container,
-                                                      inContainerBranch);
-            if (!found) {
-                continue;
-            }
-
-            if (!ignorePlacement) {
-                foundPlc = getPlacementFromProp(part, "Placement") * foundPlc;
-            }
-
-            return true;
-        }
-    }
-    else if (auto link = dynamic_cast<App::Link*>(part)) {
-        auto linked_obj = link->getLinkedObject();
-
-        if (dynamic_cast<App::Part*>(linked_obj) || dynamic_cast<AssemblyObject*>(linked_obj)) {
-            for (auto& obj : linked_obj->getOutList()) {
-                bool found = getTargetPlacementRelativeTo(foundPlc,
-                                                          targetObj,
-                                                          obj,
-                                                          container,
-                                                          inContainerBranch);
-                if (!found) {
-                    continue;
-                }
-
-                foundPlc = getPlacementFromProp(link, "Placement") * foundPlc;
-                return true;
-            }
-        }
-
-        bool found = getTargetPlacementRelativeTo(foundPlc,
-                                                  targetObj,
-                                                  linked_obj,
-                                                  container,
-                                                  inContainerBranch,
-                                                  true);
-
-        if (found) {
-            if (!ignorePlacement) {
-                foundPlc = getPlacementFromProp(link, "Placement") * foundPlc;
-            }
-
-            return true;
-        }
-    }
-
-    return false;
-}
 
 Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetObj,
-                                                   App::DocumentObject* container)
+                                                   App::DocumentObject* rootObj,
+                                                   const std::string& sub)
 {
-    bool inContainerBranch = (container == nullptr);
-    auto rootObjects = App::GetApplication().getActiveDocument()->getRootObjectsIgnoreLinks();
-    for (auto& part : rootObjects) {
-        Base::Placement foundPlc;
-        bool found =
-            getTargetPlacementRelativeTo(foundPlc, targetObj, part, container, inContainerBranch);
-        if (found) {
-            return foundPlc;
+    if (!targetObj || !rootObj || sub == "") {
+        return Base::Placement();
+    }
+    std::vector<std::string> names = splitSubName(sub);
+
+    App::Document* doc = rootObj->getDocument();
+    Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
+
+    for (auto& name : names) {
+        App::DocumentObject* obj = doc->getObject(name.c_str());
+        if (!obj) {
+            return Base::Placement();
+        }
+
+        plc = plc * getPlacementFromProp(obj, "Placement");
+
+        if (obj == targetObj) {
+            return plc;
+        }
+        if (obj->isDerivedFrom<App::Link>()) {
+            // Update doc in case its an external link.
+            doc = obj->getLinkedObject()->getDocument();
         }
     }
 
+    // If targetObj has not been found there's a problem
     return Base::Placement();
 }
 
-Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* joint,
-                                                   const char* targetObj,
-                                                   const char* container)
+Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetObj,
+                                                   App::PropertyXLinkSub* prop)
 {
-    App::DocumentObject* obj = getObjFromProp(joint, targetObj);
-    App::DocumentObject* part = getObjFromProp(joint, container);
-    return getGlobalPlacement(obj, part);
+    if (!targetObj || !prop) {
+        return Base::Placement();
+    }
+
+    std::vector<std::string> subs = prop->getSubValues();
+    if (subs.empty()) {
+        return Base::Placement();
+    }
+
+    return getGlobalPlacement(targetObj, prop->getValue(), subs[0]);
 }
 
 double AssemblyObject::getJointDistance(App::DocumentObject* joint)
@@ -2149,19 +2105,57 @@ JointType AssemblyObject::getJointType(App::DocumentObject* joint)
     return jointType;
 }
 
-const char* AssemblyObject::getElementFromProp(App::DocumentObject* obj, const char* propName)
+std::vector<std::string> AssemblyObject::getSubAsList(App::PropertyXLinkSub* prop)
 {
-    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(propName));
     if (!prop) {
-        return "";
+        return {};
     }
 
-    auto subs = prop->getSubValues();
+    std::vector<std::string> subs = prop->getSubValues();
     if (subs.empty()) {
+        return {};
+    }
+
+    return splitSubName(subs[0]);
+}
+
+std::vector<std::string> AssemblyObject::getSubAsList(App::DocumentObject* obj, const char* pName)
+{
+    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(pName));
+
+    return getSubAsList(prop);
+}
+
+std::vector<std::string> AssemblyObject::splitSubName(const std::string& sub)
+{
+    // Turns 'Part.Part001.Body.Pad.Edge1'
+    // Into ['Part', 'Part001','Body','Pad','Edge1']
+    std::vector<std::string> subNames;
+    std::string subName;
+    std::istringstream subNameStream(sub);
+    while (std::getline(subNameStream, subName, '.')) {
+        subNames.push_back(subName);
+    }
+
+    // Check if the last character of the input string is the delimiter.
+    // If so, add an empty string to the subNames vector.
+    // Because the last subname is the element name and can be empty.
+    if (!sub.empty() && sub.back() == '.') {
+        subNames.push_back("");  // Append empty string for trailing dot.
+    }
+
+    return subNames;
+}
+
+const char* AssemblyObject::getElementFromProp(App::DocumentObject* obj, const char* pName)
+{
+    std::vector<std::string> names = getSubAsList(obj, pName);
+
+    if (names.empty()) {
         return "";
     }
 
-    return subs[0].c_str();
+    return names.back().c_str();
 }
 
 std::string AssemblyObject::getElementTypeFromProp(App::DocumentObject* obj, const char* propName)
@@ -2185,10 +2179,157 @@ App::DocumentObject* AssemblyObject::getObjFromProp(App::DocumentObject* joint, 
     return propObj->getValue();
 }
 
-App::DocumentObject* AssemblyObject::getLinkedObjFromProp(App::DocumentObject* joint,
-                                                          const char* pObj)
+App::DocumentObject* AssemblyObject::getObjFromRef(App::PropertyXLinkSub* prop)
 {
-    auto* obj = getObjFromProp(joint, pObj);
+    if (!prop) {
+        return nullptr;
+    }
+
+    App::Document* doc = prop->getValue()->getDocument();
+    std::vector<std::string> names = getSubAsList(prop);
+
+    // Lambda function to check if the typeId is a BodySubObject
+    auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
+        // PartDesign::Point + Line + Plane + CoordinateSystem
+        // getViewProviderName instead of isDerivedFrom to avoid dependency on sketcher
+        return (strcmp(obj->getViewProviderName(), "SketcherGui::ViewProviderSketch") == 0
+                || obj->isDerivedFrom<PartApp::Datum>());
+    };
+
+    // Helper function to handle PartDesign::Body objects
+    auto handlePartDesignBody = [&](App::DocumentObject* obj,
+                                    std::vector<std::string>::iterator it) -> App::DocumentObject* {
+        auto nextIt = std::next(it);
+        if (nextIt != names.end()) {
+            for (auto* obji : obj->getOutList()) {
+                if (*nextIt == obji->getNameInDocument()) {
+                    if (isBodySubObject(obji)) {
+                        return obji;
+                    }
+                }
+            }
+        }
+        return obj;
+    };
+
+
+    for (auto it = names.begin(); it != names.end(); ++it) {
+        App::DocumentObject* obj = doc->getObject(it->c_str());
+        if (!obj) {
+            return nullptr;
+        }
+
+        // The last but one name should be the selected
+        if (std::next(it) == std::prev(names.end())) {
+            return obj;
+        }
+
+        if (obj->isDerivedFrom<App::Part>()) {
+            continue;
+        }
+        else if (obj->isDerivedFrom<PartDesign::Body>()) {
+            return handlePartDesignBody(obj, it);
+        }
+        else if (obj->isDerivedFrom<PartApp::Feature>()) {
+            // Primitive, fastener, gear, etc.
+            return obj;
+        }
+        else if (obj->isDerivedFrom<App::Link>()) {
+            App::DocumentObject* linked_obj = obj->getLinkedObject();
+            if (linked_obj->isDerivedFrom<PartDesign::Body>()) {
+                auto* retObj = handlePartDesignBody(linked_obj, it);
+                return retObj == linked_obj ? obj : retObj;
+            }
+            else if (linked_obj->isDerivedFrom<PartApp::Feature>()) {
+                return obj;
+            }
+            else {
+                doc = linked_obj->getDocument();
+                continue;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* joint, const char* pName)
+{
+    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(pName));
+
+    return getObjFromRef(prop);
+}
+
+App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* obj,
+                                                          std::string& sub)
+{
+    if (!obj) {
+        return nullptr;
+    }
+
+    App::Document* doc = obj->getDocument();
+
+    std::vector<std::string> names = splitSubName(sub);
+    names.insert(names.begin(), obj->getNameInDocument());
+
+    bool assemblyPassed = false;
+
+    for (const auto& objName : names) {
+        obj = doc->getObject(objName.c_str());
+        if (!obj) {
+            continue;
+        }
+
+        if (obj->isDerivedFrom<App::Link>()) {  // update the document if necessary for next object
+            doc = obj->getLinkedObject()->getDocument();
+        }
+
+        if (obj == this) {
+            // We make sure we pass the assembly for cases like part.assembly.part.body
+            assemblyPassed = true;
+            continue;
+        }
+        if (!assemblyPassed) {
+            continue;
+        }
+
+        return obj;
+    }
+
+    return nullptr;
+}
+
+App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::PropertyXLinkSub* prop)
+{
+    if (!prop) {
+        return nullptr;
+    }
+
+    App::DocumentObject* obj = prop->getValue();
+    if (!obj) {
+        return nullptr;
+    }
+
+    std::vector<std::string> subs = prop->getSubValues();
+    if (subs.empty()) {
+        return nullptr;
+    }
+
+    return getMovingPartFromRef(obj, subs[0]);
+}
+
+App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* joint,
+                                                          const char* pName)
+{
+    auto* prop = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(pName));
+
+    return getMovingPartFromRef(prop);
+}
+
+App::DocumentObject* AssemblyObject::getLinkedObjFromRef(App::DocumentObject* joint,
+                                                         const char* pObj)
+{
+    auto* obj = getObjFromRef(joint, pObj);
     if (obj) {
         return obj->getLinkedObject(true);
     }

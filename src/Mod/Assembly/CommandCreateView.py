@@ -227,39 +227,72 @@ class ExplodedViewStep:
     def __init__(self, evStep, type_index=0):
         evStep.Proxy = self
 
-        # we cannot use "App::PropertyLinkList" for objs because they can be external
-        evStep.addProperty(
-            "App::PropertyStringList",
-            "ObjNames",
-            "Exploded Move",
-            QT_TRANSLATE_NOOP("App::Property", "The object moved by the move"),
-        )
+        self.createProperties(evStep)
 
-        evStep.addProperty(
-            "App::PropertyLinkList",
-            "Parts",
-            "Exploded Move",
-            QT_TRANSLATE_NOOP("App::Property", "The containing parts of objects moved by the move"),
-        )
-
-        evStep.addProperty(
-            "App::PropertyPlacement",
-            "MovementTransform",
-            "Exploded Move",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "This is the movement of the move. The end placement is the result of the start placement * this placement.",
-            ),
-        )
-
-        evStep.addProperty(
-            "App::PropertyEnumeration",
-            "MoveType",
-            "Exploded Move",
-            QT_TRANSLATE_NOOP("App::Property", "The type of the move"),
-        )
         evStep.MoveType = ExplodedViewStepTypes  # sets the list
         evStep.MoveType = ExplodedViewStepTypes[type_index]  # set the initial value
+
+    def onDocumentRestored(self, evStep):
+        self.createProperties(evStep)
+
+    def createProperties(self, evStep):
+        self.migrationScript(evStep)
+
+        if not hasattr(evStep, "References"):
+            evStep.addProperty(
+                "App::PropertyXLinkSubHidden",
+                "References",
+                "Exploded Move",
+                QT_TRANSLATE_NOOP("App::Property", "The objects moved by the move"),
+            )
+
+        if not hasattr(evStep, "MovementTransform"):
+            evStep.addProperty(
+                "App::PropertyPlacement",
+                "MovementTransform",
+                "Exploded Move",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the movement of the move. The end placement is the result of the start placement * this placement.",
+                ),
+            )
+
+        if not hasattr(evStep, "MoveType"):
+            evStep.addProperty(
+                "App::PropertyEnumeration",
+                "MoveType",
+                "Exploded Move",
+                QT_TRANSLATE_NOOP("App::Property", "The type of the move"),
+            )
+
+    def migrationScript(self, evStep):
+        if hasattr(evStep, "Parts"):
+            objNames = evStep.ObjNames
+            parts = evStep.Parts
+
+            evStep.removeProperty("ObjNames")
+            evStep.removeProperty("Parts")
+
+            evStep.addProperty(
+                "App::PropertyXLinkSubHidden",
+                "References",
+                "Exploded Move",
+                QT_TRANSLATE_NOOP("App::Property", "The objects moved by the move"),
+            )
+
+            rootObj = None
+            paths = []
+
+            for objName, part in zip(objNames, parts):
+                # now we need to get the 'selection-root-obj' and the global path
+                obj = UtilsAssembly.getObjectInPart(objName, part)
+                rootObj, path = UtilsAssembly.getRootPath(obj, part)
+                if rootObj is None:
+                    continue
+                paths.append(path)
+                # Note: all the parts should have the same rootObj.
+
+            evStep.References = [rootObj, paths]
 
     def dumps(self):
         return None
@@ -267,7 +300,7 @@ class ExplodedViewStep:
     def loads(self, state):
         return None
 
-    def onChanged(self, joint, prop):
+    def onChanged(self, evStep, prop):
         """Do something when a property has changed"""
         pass
 
@@ -277,20 +310,23 @@ class ExplodedViewStep:
         pass
 
     def applyStep(self, move, com=App.Vector(), size=100):
+        if not UtilsAssembly.isRefValid(move.References, 1):
+            return
+
         positions = []
         if move.MoveType == "Radial":
             distance = move.MovementTransform.Base.Length
             factor = 4 * distance / size
 
-        for objName, part in zip(move.ObjNames, move.Parts):
-            if not objName:
-                continue
-            obj = UtilsAssembly.getObjectInPart(objName, part)
+        subs = move.References[1]
+        for sub in subs:
+            ref = [move.References[0], [sub]]
+            obj = UtilsAssembly.getObject(ref)
             if not obj:
                 continue
 
             if move.ViewObject:
-                startPos = UtilsAssembly.getCenterOfBoundingBox([obj], [part])
+                startPos = UtilsAssembly.getCenterOfBoundingBox([obj], [ref])
 
             if move.MoveType == "Radial":
                 objCom, objSize = UtilsAssembly.getComAndSize(obj)
@@ -300,21 +336,13 @@ class ExplodedViewStep:
                 obj.Placement = move.MovementTransform * obj.Placement
 
             if move.ViewObject:
-                endPos = UtilsAssembly.getCenterOfBoundingBox([obj], [part])
+                endPos = UtilsAssembly.getCenterOfBoundingBox([obj], [ref])
                 positions.append([startPos, endPos])
 
         if move.ViewObject:
             move.ViewObject.Proxy.redrawLines(move, positions)
 
         return positions
-
-    def getMovingobjects(self, move):
-        movingObjs = []
-        for objName, part in zip(move.ObjNames, move.Parts):
-            obj = UtilsAssembly.getObjectInPart(objName, part)
-            if obj is not None:
-                movingObjs.append(obj)
-        return movingObjs
 
 
 class ViewProviderExplodedViewStep:
@@ -485,7 +513,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
 
         self.selectingFeature = False
         self.form.LabelAlignDragger.setVisible(False)
-        self.preselection_dict = None
+        self.presel_ref = None
 
         self.blockSetDragger = False
         self.blockDraggerMove = True
@@ -532,8 +560,8 @@ class TaskAssemblyCreateView(QtCore.QObject):
             return
 
         self.dismissCurrentStep()
+        self.selectedRefs = []
         self.selectedObjs = []
-        self.selectedParts = []  # containing parts
         self.selectedObjsInitPlc = []
         selection = Gui.Selection.getSelectionEx("*", 0)
         if not selection:
@@ -549,39 +577,33 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 continue
 
             for sub_name in sel.SubElementNames:
-                # Only objects within the assembly.
-                objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(
-                    sel.ObjectName, sub_name
-                )
-                if self.assembly.Name not in objs_names:
+                ref = [sel.Object, [sub_name]]
+                obj = UtilsAssembly.getObject(ref)
+                moving_part = UtilsAssembly.getMovingPart(self.assembly, ref)
+                element_name = UtilsAssembly.getElementName(sub_name)
+
+                # Only objects within the assembly, not the assembly and not elements.
+                if obj is None or moving_part is None or obj == self.assembly or element_name != "":
                     Gui.Selection.removeSelection(sel.Object, sub_name)
                     continue
 
-                obj_name = sel.ObjectName
-                full_obj_name = UtilsAssembly.getFullObjName(obj_name, sub_name)
-                full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-                selected_object = UtilsAssembly.getObject(full_element_name)
-                if selected_object is None:
-                    continue
-                element_name = UtilsAssembly.getElementName(full_element_name)
-                part = UtilsAssembly.getContainingPart(
-                    full_element_name, selected_object, self.assembly
-                )
+                partAsSolid = self.form.CheckBox_PartsAsSingleSolid.isChecked()
+                if partAsSolid:
+                    obj = moving_part
 
-                if selected_object == self.assembly or element_name != "":
-                    # do not accept selection of assembly itself or elements
-                    Gui.Selection.removeSelection(sel.Object, sub_name)
-                    continue
+                # truncate the sub name at obj.Name
+                if partAsSolid:
+                    # We handle both cases separately because with external files there
+                    # can be several times the same name. For containing part we are sure it's
+                    # the first instance, for the object we are sure it's the last.
+                    ref[1][0] = UtilsAssembly.truncateSubAtLast(ref[1][0], obj.Name)
+                else:
+                    ref[1][0] = UtilsAssembly.truncateSubAtFirst(ref[1][0], obj.Name)
 
-                if self.form.CheckBox_PartsAsSingleSolid.isChecked():
-                    selected_object = part
-
-                if not selected_object in self.selectedObjs and hasattr(
-                    selected_object, "Placement"
-                ):
-                    self.selectedObjs.append(selected_object)
-                    self.selectedParts.append(part)
-                    self.selectedObjsInitPlc.append(App.Placement(selected_object.Placement))
+                if not obj in self.selectedObjs and hasattr(obj, "Placement"):
+                    self.selectedRefs.append(ref)
+                    self.selectedObjs.append(obj)
+                    self.selectedObjsInitPlc.append(App.Placement(obj.Placement))
 
         if len(self.selectedObjs) != 0:
             self.enableDragger(True)
@@ -658,11 +680,11 @@ class TaskAssemblyCreateView(QtCore.QObject):
         if self.alignMode == "Custom":
             self.initialDraggerPlc = App.Placement(self.assembly.ViewObject.DraggerPlacement)
         else:
-            plc = UtilsAssembly.getGlobalPlacement(self.selectedObjs[0], self.selectedParts[0])
+            plc = UtilsAssembly.getGlobalPlacement(self.selectedRefs[0], self.selectedObjs[0])
             self.initialDraggerPlc = App.Placement(plc)
             if self.alignMode == "Center":
                 self.initialDraggerPlc.Base = UtilsAssembly.getCenterOfBoundingBox(
-                    self.selectedObjs, self.selectedParts
+                    self.selectedObjs, self.selectedRefs
                 )
 
     def setDraggerObjectPlc(self):
@@ -684,18 +706,19 @@ class TaskAssemblyCreateView(QtCore.QObject):
         ExplodedViewStep(self.currentStep, moveType_index)
         ViewProviderExplodedViewStep(self.currentStep.ViewObject)
 
+        self.currentStep.MovementTransform = App.Placement()
+
+        # Note: the rootObj of all our refs must be the same since all the
+        # objects are within assembly. So we put all the sub in a single ref.
+        listOfSubs = []
+        for ref in self.selectedRefs:
+            listOfSubs.append(ref[1][0])
+        self.currentStep.References = [self.selectedRefs[0][0], listOfSubs]
+
         # Note: self.viewObj.Moves.append(self.currentStep) does not work
         listOfMoves = self.viewObj.Moves
         listOfMoves.append(self.currentStep)
         self.viewObj.Moves = listOfMoves
-
-        objNames = []
-        for obj in self.selectedObjs:
-            objNames.append(obj.Name)
-
-        self.currentStep.MovementTransform = App.Placement()
-        self.currentStep.ObjNames = objNames
-        self.currentStep.Parts = self.selectedParts
 
     def dismissCurrentStep(self):
         if self.currentStep is None:
@@ -728,12 +751,12 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.currentStep.Proxy.applyStep(self.currentStep, self.com, self.size)
 
     def draggerFinished(self, event):
-        if self.currentStep.MoveType == "Radial":
-            self.currentStep = None
+        isRadial = self.currentStep.MoveType == "Radial"
+        self.currentStep = None
+
+        if isRadial:
             Gui.Selection.clearSelection()
             return
-
-        self.currentStep = None
 
         # Reset the initial placements
         self.findDraggerInitialPlc()
@@ -748,29 +771,23 @@ class TaskAssemblyCreateView(QtCore.QObject):
         view = Gui.activeDocument().activeView()
         cursor_info = view.getObjectInfo(view.getCursorPos())
 
-        if not cursor_info or not self.preselection_dict:
+        if not cursor_info or not self.presel_ref:
             self.assembly.ViewObject.DraggerVisibility = False
             return
 
-        newPos = App.Vector(cursor_info["x"], cursor_info["y"], cursor_info["z"])
-        self.preselection_dict["mouse_pos"] = newPos
+        ref = self.presel_ref
+        element_name = UtilsAssembly.getElementName(ref[1][0])
 
-        if self.preselection_dict["element_name"] == "":
-            self.preselection_dict["vertex_name"] = ""
+        if element_name == "":
+            vertex_name = ""
         else:
-            self.preselection_dict["vertex_name"] = UtilsAssembly.findElementClosestVertex(
-                self.preselection_dict
-            )
+            newPos = App.Vector(cursor_info["x"], cursor_info["y"], cursor_info["z"])
+            vertex_name = UtilsAssembly.findElementClosestVertex(self.assembly, ref, newPos)
 
-        obj = self.preselection_dict["object"]
-        part = self.preselection_dict["part"]
-        plc = UtilsAssembly.findPlacement(
-            obj,
-            part,
-            self.preselection_dict["element_name"],
-            self.preselection_dict["vertex_name"],
-        )
-        global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
+        ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
+
+        plc = UtilsAssembly.findPlacement(ref)
+        global_plc = UtilsAssembly.getGlobalPlacement(ref)
         plc = global_plc * plc
 
         self.blockDraggerMove = True
@@ -827,22 +844,23 @@ class TaskAssemblyCreateView(QtCore.QObject):
             return
 
         else:
-            full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-            selected_object = UtilsAssembly.getObject(full_element_name)
-            if selected_object is None:
+            ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
+            obj = UtilsAssembly.getObject(ref)
+            moving_part = UtilsAssembly.getMovingPart(self.assembly, ref)
+
+            if obj is None or moving_part is None:
                 return
 
-            element_name = UtilsAssembly.getElementName(full_element_name)
-            part = UtilsAssembly.getContainingPart(
-                full_element_name, selected_object, self.assembly
-            )
+            if self.form.CheckBox_PartsAsSingleSolid.isChecked():
+                part = moving_part
+            else:
+                part = obj
 
-            if not self.form.CheckBox_PartsAsSingleSolid.isChecked():
-                part = selected_object
+            element_name = UtilsAssembly.getElementName(sub_name)
 
             if element_name != "":
                 # When selecting, we do not want to select an element, but only the containing part.
-                Gui.Selection.removeSelection(selected_object, element_name)
+                Gui.Selection.removeSelection(doc_name, obj_name, sub_name)
                 if Gui.Selection.isSelected(part, ""):
                     Gui.Selection.removeSelection(part, "")
                 else:
@@ -857,31 +875,17 @@ class TaskAssemblyCreateView(QtCore.QObject):
             self.findDraggerInitialPlc()
             return
 
-        full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-        element_name = UtilsAssembly.getElementName(full_element_name)
+        element_name = UtilsAssembly.getElementName(sub_name)
         if element_name == "":
             self.setDragger()
             pass
 
     def setPreselection(self, doc_name, obj_name, sub_name):
         if not self.selectingFeature or not sub_name:
-            self.preselection_dict = None
+            self.presel_ref = None
             return
 
-        full_obj_name = UtilsAssembly.getFullObjName(obj_name, sub_name)
-        full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-        selected_object = UtilsAssembly.getObject(full_element_name)
-        element_name = UtilsAssembly.getElementName(full_element_name)
-        part = UtilsAssembly.getContainingPart(full_element_name, selected_object, self.assembly)
-
-        self.preselection_dict = {
-            "object": selected_object,
-            "part": part,
-            "sub_name": sub_name,
-            "element_name": element_name,
-            "full_element_name": full_element_name,
-            "full_obj_name": full_obj_name,
-        }
+        self.presel_ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
 
     def clearSelection(self, doc_name):
         self.form.stepList.clearSelection()
