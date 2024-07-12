@@ -221,6 +221,5 @@ PyObject* UnitsApi::sToNumber(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    QString string = toNumber(value, qf);
-    return Py::new_reference_to(Py::String(string.toStdString()));
+    return Py::new_reference_to(Py::String(toNumber(value, qf)));
 }

@@ -25,7 +25,7 @@
 #define BASE_Unit_H
 
 #include <cstdint>
-#include <QString>
+#include <string>
 #include <FCGlobal.h>
 
 namespace Base
@@ -49,7 +49,7 @@ public:
     Unit();
     Unit(const Unit&) = default;
     Unit(Unit&&) = default;
-    explicit Unit(const QString& expr);
+    explicit Unit(const std::string& expr);
     /// Destruction
     ~Unit() = default;
 
@@ -81,9 +81,9 @@ public:
     int angle() const;
     bool isEmpty() const;
 
-    QString getString() const;
+    std::string getString() const;
     /// get the type as an string such as "Area", "Length" or "Pressure".
-    QString getTypeString() const;
+    std::string getTypeString() const;
 
     /** Predefined Unit types. */
     //@{
