@@ -165,7 +165,7 @@ Base::Type DlgExpressionInput::determineTypeVarSet()
     // varset.  Since unit properties are derived from App::PropertyFloat, it
     // allows us to create a property and set the value.
 
-    std::string unitTypeString = impliedUnit.getTypeString().toStdString();
+    std::string unitTypeString = impliedUnit.getTypeString();
     if (unitTypeString.empty()) {
         // no type was provided
         return Base::Type::badType();
@@ -178,7 +178,7 @@ Base::Type DlgExpressionInput::determineTypeVarSet()
 
 bool DlgExpressionInput::typeOkForVarSet()
 {
-    std::string unitType = impliedUnit.getTypeString().toStdString();
+    std::string unitType = impliedUnit.getTypeString();
     return determineTypeVarSet() != Base::Type::badType();
 }
 

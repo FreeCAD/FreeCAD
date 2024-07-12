@@ -80,7 +80,7 @@ TEST_F(PropertyExpressionEngineTest, executeCrossPropertyReference)
     ASSERT_TRUE(target_entry.type() == typeid(Base::Quantity));
     auto target_quant = App::any_cast<Base::Quantity>(target_entry);
     auto target_value = target_quant.getValue();
-    auto target_unit = target_quant.getUnit().getString().toStdString();
+    auto target_unit = target_quant.getUnit().getString();
 
     auto verify_quant = Base::Quantity::parse(QString::fromStdString(target_text));
 

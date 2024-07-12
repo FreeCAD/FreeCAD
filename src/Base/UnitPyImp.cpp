@@ -38,7 +38,7 @@ std::string UnitPy::representation() const
     Unit* self = getUnitPtr();
 
     ret << "Unit: ";
-    ret << self->getString().toUtf8().constData() << " (";
+    ret << self->getString() << " (";
     ret << (*self)[0] << ",";
     ret << (*self)[1] << ",";
     ret << (*self)[2] << ",";
@@ -48,7 +48,7 @@ std::string UnitPy::representation() const
     ret << (*self)[6] << ",";
     ret << (*self)[7] << ")";
 
-    std::string type = self->getTypeString().toUtf8().constData();
+    std::string type = self->getTypeString();
     if (!type.empty()) {
         ret << " [" << type << "]";
     }
@@ -207,7 +207,7 @@ PyObject* UnitPy::richCompare(PyObject* v, PyObject* w, int op)
 
 Py::String UnitPy::getType() const
 {
-    return {getUnitPtr()->getTypeString().toUtf8(), "utf-8"};
+    return {getUnitPtr()->getTypeString(), "utf-8"};
 }
 
 Py::Tuple UnitPy::getSignature() const

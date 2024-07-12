@@ -127,10 +127,10 @@ Unit::Unit() //NOLINT
     Val = 0;
 }
 
-Unit::Unit(const QString& expr)  // NOLINT
+Unit::Unit(const std::string& expr)  // NOLINT
 {
     try {
-        *this = Quantity::parse(expr).getUnit();
+        *this = Quantity::parse(QString::fromStdString(expr)).getUnit();
     }
     catch (const Base::ParserError&) {
         Val = 0;
@@ -312,7 +312,7 @@ Unit Unit::operator /(const Unit &right) const
     return result;
 }
 
-QString Unit::getString() const
+std::string Unit::getString() const
 {
     std::stringstream ret;
 
@@ -537,10 +537,10 @@ QString Unit::getString() const
         }
     }
 
-    return QString::fromUtf8(ret.str().c_str());
+    return ret.str();
 }
 
-QString Unit::getTypeString() const
+std::string Unit::getTypeString() const
 {
     std::array<std::pair<Unit, std::string>, 55> unitSpecs {{
         { Unit::Acceleration, "Acceleration" },
@@ -605,9 +605,9 @@ QString Unit::getTypeString() const
         });
 
     if (spec == std::end(unitSpecs))
-        return QString();
+        return "";
 
-    return QString::fromStdString(spec->second);
+    return spec->second;
 }
 
 // SI base units

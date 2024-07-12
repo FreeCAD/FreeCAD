@@ -143,7 +143,7 @@ QString UnitsApi::toString(const Base::Quantity& quantity, const QuantityFormat&
 {
     QString value = QString::fromLatin1("'%1 %2'")
                         .arg(quantity.getValue(), 0, format.toFormat(), format.precision)
-                        .arg(quantity.getUnit().getString());
+                        .arg(QString::fromStdString(quantity.getUnit().getString()));
     return value;
 }
 
