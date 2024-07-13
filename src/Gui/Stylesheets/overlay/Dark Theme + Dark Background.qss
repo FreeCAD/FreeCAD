@@ -2,9 +2,10 @@ QFrame {
   border: none;
 }
  QTabWidget::pane{
-   background-color: rgba(0, 0, 0, 0.01);
+   background-color: transparent;
    border: transparent;
  }
+
  QAbstractItemView {
    alternate-background-color: rgba(0, 0, 0, 0.119);
    color: White;
@@ -14,12 +15,12 @@ QFrame {
 
  Gui--OverlayTitleBar,
  Gui--OverlaySplitterHandle {
-   background-color: #252525;
-  }
+   background-color: transparent;
+ }
 
  Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
   color: #ffffff;
-}
+ }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
   color: #ffffff;
@@ -55,6 +56,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
    qproperty-effectHeight: 1;
    qproperty-enableEffect: 1;
  }
+
   Gui--OverlayTabWidget#OverlayBottom {
    qproperty-effectColor: rgba(100, 100, 100, 220);
    qproperty-effectBlurRadius: 5;
@@ -64,6 +66,10 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
    qproperty-effectHeight: 1;
    qproperty-enableEffect: 1;
  }
+
+ Gui--PropertyEditor--PropertyEditor {
+  qproperty-itemBackground: #333333;
+}
 
  Gui--OverlayTabWidget::pane {
    background-color: transparent;
@@ -117,36 +123,43 @@ Gui--OverlayToolButton:checked:hover {
   border: 0.5px solid #f5f5f5;
 }
 
- Gui--OverlayToolButton[objectName="OBTN Transparent"]:!hover {
-   image: url(qss:images_classic/transparent-lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN Transparent"] {
+  image: url(qss:overlay/icons/mode_lighter.svg);
+
  }
 
  Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-   image: url(qss:images_classic/transparent-white.png);
+  image: url(qss:overlay/icons/mode_lighter.svg);
+
  }
 
- Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover  {
-   image: url(qss:images_classic/overlay-lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN Overlay"]  {
+  image: url(qss:overlay/icons/mode_lighter.svg);
+
  }
 
  Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-   image: url(qss:images_classic/overlay-white.png);
+  image: url(qss:overlay/icons/mode_lighter.svg);
+
  }
 
- Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!hover  {
-   image: url(qss:images_classic/mode-lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN AutoMode"]  {
+  image: url(qss:overlay/icons/mode_lighter.svg);
+
  }
 
  Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-   image: url(qss:images_classic/mode-white.png);
+  image: url(qss:overlay/icons/mode_lighter.svg);
+
  }
 
  Gui--OverlaySplitterHandle Gui--OverlayToolButton,
- Gui--OverlayToolButton[objectName="OBTN Float"]:!hover  {
-   image: url(qss:images_classic/float-lightgray.png);
+ Gui--OverlayToolButton[objectName="OBTN Float"]  {
+  image: url(qss:overlay/icons/mode_lighter.svg);
+
  }
 
  Gui--OverlaySplitterHandle Gui--OverlayToolButton:hover,
  Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
-   image: url(qss:images_classic/float-white.png);
+   image: url(qss:overlay/icons/mode_lighter.svg);
  }

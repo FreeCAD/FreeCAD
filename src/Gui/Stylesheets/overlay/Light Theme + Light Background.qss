@@ -3,14 +3,18 @@ QFrame {
 }
 
 QTabWidget::pane{
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: transparent;
   border: transparent;
 }
 QAbstractItemView {
-  alternate-background-color: rgba(255, 255, 255, 0.13);
+  alternate-background-color: #f0f0f0;
   color: #000000;
   border: transparent;
   padding-right: 5px;
+}
+
+Gui--PropertyEditor--PropertyEditor {
+  qproperty-itemBackground: #ffffff;
 }
 
 Gui--OverlayTitleBar,

@@ -3,7 +3,7 @@ QFrame {
 }
 
 QTabWidget::pane{
-  background-color: rgba(0, 0, 0, 0.01);
+  background-color: transparent;
   border: transparent;
 }
 
@@ -36,6 +36,10 @@ QTreeView::item {
 
 QTreeView:disabled  {
   color: #696968;
+}
+
+Gui--PropertyEditor--PropertyEditor {
+  qproperty-itemBackground: #333333;
 }
 
 Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
