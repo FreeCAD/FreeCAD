@@ -239,19 +239,13 @@ Quantity Quantity::operator-() const
 
 std::string Quantity::getUserString(double& factor, std::string& unitString) const
 {
-    QString str = QString::fromStdString(unitString);
-    QString ret = Base::UnitsApi::schemaTranslate(*this, factor, str);
-    unitString = str.toStdString();
-    return ret.toStdString();
+    return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
 }
 
 std::string
 Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
-    QString str = QString::fromStdString(unitString);
-    QString ret = schema->schemaTranslate(*this, factor, str);
-    unitString = str.toStdString();
-    return ret.toStdString();
+    return schema->schemaTranslate(*this, factor, unitString);
 }
 
 std::string Quantity::getSafeUserString() const
