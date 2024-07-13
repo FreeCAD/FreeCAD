@@ -87,10 +87,10 @@ PyObject* UnitsApi::sParseQuantity(PyObject* /*self*/, PyObject* args)
     }
 
     Quantity rtn;
-    QString qstr = QString::fromUtf8(pstr);
+    std::string str(pstr);
     PyMem_Free(pstr);
     try {
-        rtn = Quantity::parse(qstr);
+        rtn = Quantity::parse(str);
     }
     catch (const Base::ParserError&) {
         PyErr_Format(PyExc_ValueError, "invalid unit expression \n");

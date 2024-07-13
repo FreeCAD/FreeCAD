@@ -1840,7 +1840,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     asQuantity.setValue(totalArea);
     asQuantity.setUnit(Base::Unit::Area);
 
-    QString qUserString = asQuantity.getUserString();
+    QString qUserString = QString::fromStdString(asQuantity.getUserString());
     if (qUserString.endsWith(QString::fromUtf8("^2"))) {
         qUserString.chop(2);
         qUserString.append(QString::fromUtf8("²"));
