@@ -152,7 +152,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
         }
         else {  // the unit is valid and has the same type
             double convertValue =
-                Base::Quantity::parse(QString::fromLatin1("1") + ui->UnitInput->text()).getValue();
+                Base::Quantity::parse("1" + ui->UnitInput->text().toStdString()).getValue();
             // we got now e.g. for "1 in" the value '25.4' because 1 in = 25.4 mm
             // the result is now just quant / convertValue because the input is always in a base
             // unit (an input of "1 cm" will immediately be converted to "10 mm" by Gui::InputField

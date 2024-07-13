@@ -2294,7 +2294,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         return Py::String(args[0]->getPyValue().as_string());
     case PARSEQUANT: {
         auto quantity_text = args[0]->getPyValue().as_string();
-        auto quantity_object =  Quantity::parse(QString::fromStdString(quantity_text));
+        auto quantity_object =  Quantity::parse(quantity_text);
         return Py::asObject(new QuantityPy(new Quantity(quantity_object)));
     }
     case TRANSLATIONM: {

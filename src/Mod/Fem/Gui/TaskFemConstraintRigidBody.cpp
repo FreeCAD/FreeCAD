@@ -116,7 +116,7 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     Base::Vector3d rotDir;
     double rotAngleRad;
     pcConstraint->Rotation.getValue().getValue(rotDir, rotAngleRad);
-    Base::Quantity rotAngle(rotAngleRad, QString::fromUtf8("rad"));
+    Base::Quantity rotAngle(rotAngleRad, "rad");
     Base::Quantity forceX = pcConstraint->ForceX.getQuantityValue();
     Base::Quantity forceY = pcConstraint->ForceY.getQuantityValue();
     Base::Quantity forceZ = pcConstraint->ForceZ.getQuantityValue();
@@ -581,18 +581,18 @@ Base::Rotation TaskFemConstraintRigidBody::getRotation() const
 
 std::vector<std::string> TaskFemConstraintRigidBody::getForce() const
 {
-    std::string x = ui->qsb_force_x->value().getSafeUserString().toStdString();
-    std::string y = ui->qsb_force_y->value().getSafeUserString().toStdString();
-    std::string z = ui->qsb_force_z->value().getSafeUserString().toStdString();
+    std::string x = ui->qsb_force_x->value().getSafeUserString();
+    std::string y = ui->qsb_force_y->value().getSafeUserString();
+    std::string z = ui->qsb_force_z->value().getSafeUserString();
 
     return {x, y, z};
 }
 
 std::vector<std::string> TaskFemConstraintRigidBody::getMoment() const
 {
-    std::string x = ui->qsb_moment_x->value().getSafeUserString().toStdString();
-    std::string y = ui->qsb_moment_y->value().getSafeUserString().toStdString();
-    std::string z = ui->qsb_moment_z->value().getSafeUserString().toStdString();
+    std::string x = ui->qsb_moment_x->value().getSafeUserString();
+    std::string y = ui->qsb_moment_y->value().getSafeUserString();
+    std::string z = ui->qsb_moment_z->value().getSafeUserString();
 
     return std::vector<std::string>({x, y, z});
 }

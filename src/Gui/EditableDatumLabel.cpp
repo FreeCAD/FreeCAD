@@ -180,10 +180,10 @@ void EditableDatumLabel::stopEdit()
         Base::Quantity quantity = spinBox->value();
 
         double factor{};
-        QString unitStr;
-        QString valueStr;
+        std::string unitStr;
+        std::string valueStr;
         valueStr = quantity.getUserString(factor, unitStr);
-        label->string = SbString(valueStr.toUtf8().constData());
+        label->string = SbString(valueStr.c_str());
 
         spinBox->deleteLater();
         spinBox = nullptr;

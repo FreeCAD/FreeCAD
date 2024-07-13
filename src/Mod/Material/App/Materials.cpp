@@ -125,7 +125,7 @@ QString MaterialProperty::getString() const
     }
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
-        return quantity.getUserString();
+        return QString::fromStdString(quantity.getUserString());
     }
     if (getType() == MaterialValue::Float) {
         auto value = getValue();
@@ -266,7 +266,7 @@ QVariant MaterialProperty::getColumnNull(int column) const
 
     switch (valueType) {
         case MaterialValue::Quantity: {
-            Base::Quantity quant = Base::Quantity(0, getColumnUnits(column));
+            Base::Quantity quant = Base::Quantity(0, getColumnUnits(column).toStdString());
             return QVariant::fromValue(quant);
         }
 
@@ -306,7 +306,7 @@ void MaterialProperty::setValue(const QString& value)
     }
     else if (_valuePtr->getType() == MaterialValue::Quantity) {
         try {
-            setQuantity(Base::Quantity::parse(value));
+            setQuantity(Base::Quantity::parse(value.toStdString()));
         }
         catch (const Base::ParserError& e) {
             Base::Console().Log("MaterialProperty::setValue Error '%s' - '%s'\n",
@@ -392,12 +392,12 @@ void MaterialProperty::setQuantity(const Base::Quantity& value)
 
 void MaterialProperty::setQuantity(double value, const QString& units)
 {
-    setQuantity(Base::Quantity(value, units));
+    setQuantity(Base::Quantity(value, units.toStdString()));
 }
 
 void MaterialProperty::setQuantity(const QString& value)
 {
-    setQuantity(Base::Quantity::parse(value));
+    setQuantity(Base::Quantity::parse(value.toStdString()));
 }
 
 void MaterialProperty::setList(const QList<QVariant>& value)
@@ -1038,7 +1038,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
             if (value.isNull()) {
                 return {};
             }
-            return value.value<Base::Quantity>().getUserString();
+            return QString::fromStdString(value.value<Base::Quantity>().getUserString());
         }
         if (property->getType() == MaterialValue::Float) {
             auto value = property->getValue();

@@ -338,7 +338,7 @@ void TaskFemConstraintForce::onCheckReverse(const bool pressed)
 
 const std::string TaskFemConstraintForce::getForce() const
 {
-    return ui->spinForce->value().getSafeUserString().toStdString();
+    return ui->spinForce->value().getSafeUserString();
 }
 
 const std::string TaskFemConstraintForce::getReferences() const

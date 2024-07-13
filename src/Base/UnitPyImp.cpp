@@ -84,10 +84,10 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     // get string
     char* string {};
     if (PyArg_ParseTuple(args, "et", "utf-8", &string)) {
-        QString qstr = QString::fromUtf8(string);
+        std::string str(string);
         PyMem_Free(string);
         try {
-            *self = Quantity::parse(qstr).getUnit();
+            *self = Quantity::parse(str).getUnit();
             return 0;
         }
         catch (const Base::ParserError& e) {
