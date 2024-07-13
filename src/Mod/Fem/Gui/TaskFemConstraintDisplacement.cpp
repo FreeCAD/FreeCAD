@@ -378,32 +378,32 @@ const std::string TaskFemConstraintDisplacement::getReferences() const
 
 std::string TaskFemConstraintDisplacement::get_spinxDisplacement() const
 {
-    return ui->spinxDisplacement->value().getSafeUserString().toStdString();
+    return ui->spinxDisplacement->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinyDisplacement() const
 {
-    return ui->spinyDisplacement->value().getSafeUserString().toStdString();
+    return ui->spinyDisplacement->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinzDisplacement() const
 {
-    return ui->spinzDisplacement->value().getSafeUserString().toStdString();
+    return ui->spinzDisplacement->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinxRotation() const
 {
-    return ui->spinxRotation->value().getSafeUserString().toStdString();
+    return ui->spinxRotation->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinyRotation() const
 {
-    return ui->spinyRotation->value().getSafeUserString().toStdString();
+    return ui->spinyRotation->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_spinzRotation() const
 {
-    return ui->spinzRotation->value().getSafeUserString().toStdString();
+    return ui->spinzRotation->value().getSafeUserString();
 }
 
 std::string TaskFemConstraintDisplacement::get_xFormula() const
