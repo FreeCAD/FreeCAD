@@ -174,13 +174,13 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
     }
 
     double factor {};
-    QString uus;
-    QString uss = schema->schemaTranslate(quant, factor, uus);
+    std::string uus;
+    std::string uss = schema->schemaTranslate(quant, factor, uus);
 
     Py::Tuple res(3);
-    res[0] = Py::String(uss.toUtf8(), "utf-8");
+    res[0] = Py::String(uss, "utf-8");
     res[1] = Py::Float(factor);
-    res[2] = Py::String(uus.toUtf8(), "utf-8");
+    res[2] = Py::String(uus, "utf-8");
 
     return Py::new_reference_to(res);
 }
