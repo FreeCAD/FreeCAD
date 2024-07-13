@@ -108,7 +108,7 @@ class Arch_PipeConnector:
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-    
+
 
 class Arch_PipeGroupCommand:
 

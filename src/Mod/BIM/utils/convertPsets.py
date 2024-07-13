@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""This script converts a xml file containing pset definitions to a csv file. 
+"""This script converts a xml file containing pset definitions to a csv file.
 Python3 only!! (py2 csv doesn't support utf8"""
 
 import xml.sax, os
