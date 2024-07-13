@@ -72,7 +72,7 @@ class Arch_Add:
 
 class Arch_Remove:
     "the Arch Add command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Remove',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Remove","Remove component"),
@@ -110,7 +110,7 @@ class Arch_Remove:
 
 class Arch_SplitMesh:
     "the Arch SplitMesh command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_SplitMesh',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_SplitMesh","Split Mesh"),
@@ -138,7 +138,7 @@ class Arch_SplitMesh:
 
 class Arch_MeshToShape:
     "the Arch MeshToShape command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_MeshToShape',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_MeshToShape","Mesh to Shape"),
@@ -302,7 +302,7 @@ class Arch_ToggleIfcBrepFlag:
 
 class Arch_Component:
     "the Arch Component command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Component',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Component","Component"),
@@ -329,7 +329,7 @@ class Arch_Component:
 
 class Arch_CloneComponent:
     "the Arch Clone Component command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Component_Clone',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_CloneComponent","Clone component"),
@@ -356,7 +356,7 @@ class Arch_CloneComponent:
 
 class Arch_IfcSpreadsheet:
     "the Arch Schedule command definition"
-    
+
     def GetResources(self):
         return {'Pixmap': 'Arch_Schedule',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Create IFC spreadsheet..."),
@@ -383,7 +383,7 @@ class Arch_IfcSpreadsheet:
 
 class Arch_ToggleSubs:
     "the ToggleSubs command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_ToggleSubs',
                 'Accel'   : 'Ctrl+Space',

@@ -71,7 +71,7 @@ class BIM_TogglePanels:
             if togglebutton:
                 togglebutton.setChecked(False)
         else:
-            widgets = PARAMS.GetString("HiddenWidgets", 
+            widgets = PARAMS.GetString("HiddenWidgets",
                 "Python console;;Report view;;Selection view;;"
             )
             widgets = [mw.findChild(QtGui.QWidget, w) for w in widgets.split(";;") if w]

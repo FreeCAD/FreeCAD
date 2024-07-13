@@ -164,8 +164,8 @@ class IFC_UpdateIOS:
 
         # code from https://www.geeksforgeeks.org/compare-two-version-numbers
 
-        arr1 = v1.replace("v","").split(".") 
-        arr2 = v2.replace("v","").split(".") 
+        arr1 = v1.replace("v","").split(".")
+        arr2 = v2.replace("v","").split(".")
         n = len(arr1)
         m = len(arr2)
         arr1 = [int(i) for i in arr1]
