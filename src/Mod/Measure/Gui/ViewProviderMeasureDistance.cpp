@@ -235,7 +235,7 @@ SbMatrix ViewProviderMeasureDistance::getMatrix() {
     if (!pcObject) {
         return {};
     }
-    
+
     auto prop1 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
     auto prop2 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
 
@@ -431,7 +431,7 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     if (!pcObject) {
         return;
     }
-    
+
     auto prop1 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
     auto prop2 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
 
@@ -449,20 +449,20 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     fieldDistance = (vec2 - vec1).Length();
 
     auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
-    setLabelValue(propDistance->getQuantityValue().getUserString());
+    setLabelValue(QString::fromStdString(propDistance->getQuantityValue().getUserString()));
 
     // Set delta distance
     auto propDistanceX = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceX"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
-        ->text.setValue("Δx: " + propDistanceX->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue(("Δx: " + propDistanceX->getQuantityValue().getUserString()).c_str());
 
     auto propDistanceY = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceY"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
-        ->text.setValue("Δy: " + propDistanceY->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue(("Δy: " + propDistanceY->getQuantityValue().getUserString()).c_str());
 
     auto propDistanceZ = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceZ"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
-        ->text.setValue("Δz: " + propDistanceZ->getQuantityValue().getUserString().toUtf8());
+        ->text.setValue(("Δz: " + propDistanceZ->getQuantityValue().getUserString()).c_str());
 
     // Set matrix
     SbMatrix matrix = getMatrix();
@@ -486,7 +486,6 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop) {
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
         static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
     }
-    
 
     ViewProviderMeasureBase::onChanged(prop);
 }

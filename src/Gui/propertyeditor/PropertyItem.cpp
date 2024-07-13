@@ -859,7 +859,7 @@ QWidget* PropertyStringItem::createEditor(QWidget* parent, const std::function<v
         le->bind(getPath());
         le->setAutoApply(autoApply());
     }
-        
+
     return le;
 }
 
@@ -1173,7 +1173,7 @@ PropertyUnitItem::PropertyUnitItem() = default;
 QVariant PropertyUnitItem::toString(const QVariant& prop) const
 {
     const Base::Quantity& unit = prop.value<Base::Quantity>();
-    QString string = unit.getUserString();
+    QString string = QString::fromStdString(unit.getUserString());
     if (hasExpression()) {
         string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     }
@@ -1210,14 +1210,13 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent, const std::function<voi
     infield->setFrame(false);
     infield->setMinimumHeight(0);
     infield->setReadOnly(isReadOnly());
-    
+
     //if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
         infield->bind(getPath());
         infield->setAutoApply(autoApply());
     }
 
-    
     QObject::connect(infield, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), method);
     return infield;
 }
@@ -1388,7 +1387,7 @@ PropertyBoolItem::PropertyBoolItem() = default;
 QVariant PropertyBoolItem::value(const App::Property* prop) const
 {
     assert(prop && prop->isDerivedFrom<App::PropertyBool>());
-    
+
     bool value = static_cast<const App::PropertyBool*>(prop)->getValue();
     return {value};
 }
@@ -1781,10 +1780,11 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QString::fromLatin1("[") + 
-           Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
-           Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
-           Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
+    std::string str = "[" +
+           Base::Quantity(value.x, Base::Unit::Length).getUserString() + "  " +
+           Base::Quantity(value.y, Base::Unit::Length).getUserString() + "  " +
+           Base::Quantity(value.z, Base::Unit::Length).getUserString() + "]";
+    QString data = QString::fromStdString(str);
     if (hasExpression()) {
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     }
@@ -2513,6 +2513,13 @@ QVariant PropertyRotationItem::value(const App::Property* prop) const
     return QVariant::fromValue<Base::Rotation>(value);
 }
 
+static QString angleStr(double angle)
+{
+    angle = Base::toDegrees<double>(angle);
+
+    return QString::fromStdString(Base::Quantity(angle, Base::Unit::Angle).getUserString());
+}
+
 QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
 {
     assert(prop && prop->isDerivedFrom<App::PropertyRotation>());
@@ -2521,7 +2528,6 @@ QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
     double angle {};
     Base::Vector3d dir;
     p.getRawValue(dir, angle);
-    angle = Base::toDegrees<double>(angle);
 
     QLocale loc;
     QString data = QString::fromUtf8("Axis: (%1 %2 %3)\n"
@@ -2529,7 +2535,7 @@ QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
                        .arg(loc.toString(dir.x, 'f', decimals()),
                             loc.toString(dir.y, 'f', decimals()),
                             loc.toString(dir.z, 'f', decimals()),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString());
+                            angleStr(angle));
     return {data};
 }
 
@@ -2539,14 +2545,13 @@ QVariant PropertyRotationItem::toString(const QVariant& prop) const
     double angle {};
     Base::Vector3d dir;
     p.getRawValue(dir, angle);
-    angle = Base::toDegrees<double>(angle);
 
     QLocale loc;
     QString data = QString::fromUtf8("[(%1 %2 %3); %4]")
                        .arg(loc.toString(dir.x, 'f', lowPrec),
                             loc.toString(dir.y, 'f', lowPrec),
                             loc.toString(dir.z, 'f', lowPrec),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString());
+                            angleStr(angle));
     return {data};
 }
 
@@ -2832,10 +2837,10 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
                        .arg(loc.toString(dir.x, 'f', decimals()),
                             loc.toString(dir.y, 'f', decimals()),
                             loc.toString(dir.z, 'f', decimals()),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString(),
-                            Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.z, Base::Unit::Length).getUserString());
+                            angleStr(angle),
+                            QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
+                            QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
+                            QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString()));
     return {data};
 }
 
@@ -2854,10 +2859,10 @@ QVariant PropertyPlacementItem::toString(const QVariant& prop) const
                        .arg(loc.toString(dir.x, 'f', lowPrec),
                             loc.toString(dir.y, 'f', lowPrec),
                             loc.toString(dir.z, 'f', lowPrec),
-                            Base::Quantity(angle, Base::Unit::Angle).getUserString(),
-                            Base::Quantity(pos.x, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.y, Base::Unit::Length).getUserString(),
-                            Base::Quantity(pos.z, Base::Unit::Length).getUserString());
+                            angleStr(angle),
+                            QString::fromStdString(Base::Quantity(pos.x, Base::Unit::Length).getUserString()),
+                            QString::fromStdString(Base::Quantity(pos.y, Base::Unit::Length).getUserString()),
+                            QString::fromStdString(Base::Quantity(pos.z, Base::Unit::Length).getUserString()));
     return {data};
 }
 
@@ -4561,7 +4566,7 @@ void LinkSelection::select()
 
 LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     : QWidget(parent), objProp(prop), dlg(nullptr)
-{   
+{
     auto layout = new QHBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(1);
@@ -4582,9 +4587,9 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
 
     this->setFocusPolicy(Qt::StrongFocus);
     this->setFocusProxy(label);
-    
+
     // setLayout(layout);
-    
+
     connect(label, &QLabel::linkActivated,
             this, &LinkLabel::onLinkActivated);
     connect(editButton, &QPushButton::clicked,

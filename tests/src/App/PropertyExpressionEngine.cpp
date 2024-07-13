@@ -82,7 +82,7 @@ TEST_F(PropertyExpressionEngineTest, executeCrossPropertyReference)
     auto target_value = target_quant.getValue();
     auto target_unit = target_quant.getUnit().getString();
 
-    auto verify_quant = Base::Quantity::parse(QString::fromStdString(target_text));
+    auto verify_quant = Base::Quantity::parse(target_text);
 
     EXPECT_EQ(target_quant, verify_quant) << ""
         "expecting equal: source_text='" + source_text + "' target_text='" + target_text + "'"
