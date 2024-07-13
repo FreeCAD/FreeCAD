@@ -21,29 +21,31 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifdef __GNUC__
-#include <unistd.h>
-#endif
-
-#include <QLocale>
-#include <QString>
+#include <iomanip>
+#include <sstream>
 
 #include "UnitsSchema.h"
 
-
 using namespace Base;
 
-QString
-UnitsSchema::toLocale(const Base::Quantity& quant, double factor, const QString& unitString) const
+std::string UnitsSchema::toLocale(const Base::Quantity& quant,
+                                  double factor,
+                                  const std::string& unitString) const
 {
-    QLocale Lc;
+    std::stringstream ss;
     const QuantityFormat& format = quant.getFormat();
-    if (format.option != QuantityFormat::None) {
-        int opt = format.option;
-        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
-    }
 
-    QString Ln = Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision);
-    return QString::fromUtf8("%1 %2").arg(Ln, unitString);
+    switch (format.format) {
+        case QuantityFormat::Fixed:
+            ss << std::fixed;
+            break;
+        case QuantityFormat::Scientific:
+            ss << std::scientific;
+            break;
+        default:
+            break;
+    }
+    ss << std::setprecision(format.precision) << quant.getValue() / factor;
+
+    return ss.str() + ' ' + unitString;
 }

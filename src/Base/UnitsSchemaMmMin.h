@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_UNITSSCHEMAMMMIN_H
 #define BASE_UNITSSCHEMAMMMIN_H
 
-#include <QString>
 #include "UnitsSchema.h"
-
 
 namespace Base
 {
-
 
 /*  Metric units schema intended for design of small parts and for CNC
  *  Lengths are always in mm.
@@ -40,12 +36,10 @@ namespace Base
 class UnitsSchemaMmMin: public UnitsSchema
 {
 public:
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
 };
 
-
 }  // namespace Base
-
 
 #endif  // BASE_UNITSSCHEMAMMMIN_H
