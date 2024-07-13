@@ -176,7 +176,8 @@ std::string UnitsApi::getBasicLengthUnit()
 
 // === static translation methods ==========================================
 
-QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString)
+std::string
+UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString)
 {
     return UserPrefSystem->schemaTranslate(quant, factor, unitString);
 }
