@@ -83,7 +83,11 @@ from urllib.parse import quote_plus
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import urlretrieve
-from PySide2 import QtCore
+
+try:
+    from PySide6 import QtCore
+except ImportError:
+    from PySide2 import QtCore
 
 TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
