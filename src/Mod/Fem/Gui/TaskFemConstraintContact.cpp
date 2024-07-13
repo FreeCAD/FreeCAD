@@ -473,12 +473,12 @@ const std::string TaskFemConstraintContact::getReferences() const
 
 const std::string TaskFemConstraintContact::getSlope() const
 {
-    return ui->spbSlope->value().getSafeUserString().toStdString();
+    return ui->spbSlope->value().getSafeUserString();
 }
 
 const std::string TaskFemConstraintContact::getAdjust() const
 {
-    return ui->spbAdjust->value().getSafeUserString().toStdString();
+    return ui->spbAdjust->value().getSafeUserString();
 }
 
 bool TaskFemConstraintContact::getFriction() const
@@ -493,7 +493,7 @@ double TaskFemConstraintContact::getFrictionCoeff() const
 
 const std::string TaskFemConstraintContact::getStickSlope() const
 {
-    return ui->spbStickSlope->value().getSafeUserString().toStdString();
+    return ui->spbStickSlope->value().getSafeUserString();
 }
 
 void TaskFemConstraintContact::changeEvent(QEvent*)

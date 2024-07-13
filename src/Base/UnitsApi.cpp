@@ -184,7 +184,7 @@ QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, Q
 double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
 {
     if (PyUnicode_Check(args)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
+        std::string str(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u) {
@@ -207,7 +207,7 @@ Quantity UnitsApi::toQuantity(PyObject* args, const Base::Unit& u)
 {
     double d {};
     if (PyUnicode_Check(args)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
+        std::string str(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         d = q.getValue();
