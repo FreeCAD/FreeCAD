@@ -728,9 +728,9 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 
     // find the unit of measure
     double factor = 1.0;
-    QString qUnitString;
-    QString qtranslate = Base::UnitsApi::schemaTranslate(asQuantity, factor, qUnitString);
-    QString unitPart = QString::fromUtf8(" ") + qUnitString;
+    std::string qUnitString;
+    std::string qtranslate = Base::UnitsApi::schemaTranslate(asQuantity, factor, qUnitString);
+    std::string unitPart = " " + qUnitString;
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
@@ -747,7 +747,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
         if (hideUnits()) {
             return Base::Tools::toStdString(matched);
         }
-        return Base::Tools::toStdString(matched + unitPart);
+        return Base::Tools::toStdString(matched) + unitPart;
     }
 
     // real number
@@ -766,7 +766,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     if (hideUnits()) {
         return Base::Tools::toStdString(numericPart);
     }
-    return Base::Tools::toStdString(numericPart + unitPart);
+    return Base::Tools::toStdString(numericPart) + unitPart;
 }
 
 // convert value to display format %0.[digits]f. Units are always displayed for

@@ -120,7 +120,7 @@ public:
                 result = quantity;
 
                 // Now translate the quantity into its string representation using the user-defined unit system
-                input = Base::UnitsApi::schemaTranslate(result);
+                input = QString::fromStdString(Base::UnitsApi::schemaTranslate(result));
             }
         }
 

@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_UNITSSCHEMAMKS_H
 #define BASE_UNITSSCHEMAMKS_H
 
-#include <QString>
 #include "UnitsSchema.h"
-
 
 namespace Base
 {
-
 
 /**
  * The UnitSchema class
@@ -38,12 +34,10 @@ namespace Base
 class UnitsSchemaMKS: public UnitsSchema
 {
 public:
-    QString
-    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) override;
+    std::string
+    schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString) override;
 };
 
-
 }  // namespace Base
-
 
 #endif  // BASE_UNITSSCHEMAMKS_H
