@@ -190,10 +190,10 @@ TEST_F(Quantity, TestSchemeImperialTwo)
     Base::Quantity quantity {1.0, Base::Unit::Length};
 
     double factor {};
-    QString unitString;
+    std::string unitString;
     auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
-    QString result = scheme->schemaTranslate(quantity, factor, unitString);
-    EXPECT_EQ(result.toStdString(), "0.04 in");
+    std::string result = scheme->schemaTranslate(quantity, factor, unitString);
+    EXPECT_EQ(result, "0.04 in");
 }
 
 TEST_F(Quantity, TestSchemeImperialOne)
@@ -205,11 +205,11 @@ TEST_F(Quantity, TestSchemeImperialOne)
     quantity.setFormat(format);
 
     double factor {};
-    QString unitString;
+    std::string unitString;
     auto scheme = Base::UnitsApi::createSchema(Base::UnitSystem::ImperialDecimal);
-    QString result = scheme->schemaTranslate(quantity, factor, unitString);
+    std::string result = scheme->schemaTranslate(quantity, factor, unitString);
 
-    EXPECT_EQ(result.toStdString(), "0.0 in");
+    EXPECT_EQ(result, "0.0 in");
 }
 
 TEST_F(Quantity, TestSafeUserString)

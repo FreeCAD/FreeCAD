@@ -727,9 +727,9 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 
     // find the unit of measure
     double factor = 1.0;
-    QString qUnitString;
-    QString qtranslate = Base::UnitsApi::schemaTranslate(asQuantity, factor, qUnitString);
-    QString unitPart = QString::fromUtf8(" ") + qUnitString;
+    std::string unitString;
+    std::string translate = Base::UnitsApi::schemaTranslate(asQuantity, factor, unitString);
+    std::string unitPart = " " + unitString;
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
@@ -745,7 +745,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     if (dpPos < 0) {
         // no decimal separator (ie an integer), return all the digits
         if (!hideUnits()) {
-            smatched.append(unitPart.toStdString());
+            smatched.append(unitPart);
         }
         return smatched;
     }
@@ -764,7 +764,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     }
     auto numericPart = matched.left(requiredLength).toStdString();
     if (!hideUnits()) {
-        numericPart.append(unitPart.toStdString());
+        numericPart.append(unitPart);
     }
     return numericPart;
 }
