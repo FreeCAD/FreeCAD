@@ -128,7 +128,7 @@ Unit::Unit() //NOLINT
 Unit::Unit(const std::string& expr)  // NOLINT
 {
     try {
-        *this = Quantity::parse(QString::fromStdString(expr)).getUnit();
+        *this = Quantity::parse(expr).getUnit();
     }
     catch (const Base::ParserError&) {
         Val = 0;
