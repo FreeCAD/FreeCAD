@@ -110,7 +110,7 @@
 #include "SuppressibleExtension.h"
 #include "SuppressibleExtensionPy.h"
 #include "Part.h"
-#include "PartPy.h"
+#include "GeoFeaturePy.h"
 #include "Placement.h"
 #include "ProgramOptionsUtilities.h"
 #include "Property.h"
@@ -330,7 +330,6 @@ void Application::setupPythonTypes()
     Base::Interpreter().addType(&App::DocumentObjectPy::Type, pAppModule, "DocumentObject");
     Base::Interpreter().addType(&App::DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
     Base::Interpreter().addType(&App::GeoFeaturePy::Type, pAppModule, "GeoFeature");
-    Base::Interpreter().addType(&App::PartPy::Type, pAppModule, "Part");
 
     // Add extension types
     Base::Interpreter().addType(&App::ExtensionPy::Type, pAppModule, "Extension");
