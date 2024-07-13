@@ -348,9 +348,11 @@ void MillSimulation::RenderBaseShape()
         return;
     }
     simDisplay.StartDepthPass();
-
-    simDisplay.StartCloserGeometryPass(baseShapeColor);
+    glPolygonOffset(0, -2);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    simDisplay.StartGeometryPass(baseShapeColor, false);
     mBaseShape.render();
+    glDisable(GL_POLYGON_OFFSET_FILL);
 }
 
 void MillSimulation::Render()
@@ -585,6 +587,18 @@ void MillSimulation::MousePress(int button, bool isPressed, int px, int py)
         mLastMouseY = py;
     }
     guiDisplay.MousePressed(button, isPressed, mSimPlaying);
+}
+
+void MillSimulation::UpdateWindowScale(int width, int height)
+{
+    if (width == gWindowSizeW && height == gWindowSizeH) {
+        return;
+    }
+    gWindowSizeW = width;
+    gWindowSizeH = height;
+    simDisplay.UpdateWindowScale();
+    guiDisplay.UpdateWindowScale();
+    simDisplay.updateDisplay = true;
 }
 
 

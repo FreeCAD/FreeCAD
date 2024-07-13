@@ -111,7 +111,7 @@ void SimDisplay::CreateDisplayFbos()
     // a color texture for the frame buffer
     glGenTextures(1, &mFboColTexture);
     glBindTexture(GL_TEXTURE_2D, mFboColTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, WINDSIZE_W, WINDSIZE_H, 0, GL_RGBA, GL_UBYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, gWindowSizeW, gWindowSizeH, 0, GL_RGBA, GL_UBYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mFboColTexture, 0);
@@ -119,7 +119,7 @@ void SimDisplay::CreateDisplayFbos()
     // a position texture for the frame buffer
     glGenTextures(1, &mFboPosTexture);
     glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WINDSIZE_W, WINDSIZE_H, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, gWindowSizeW, gWindowSizeH, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mFboPosTexture, 0);
@@ -127,7 +127,7 @@ void SimDisplay::CreateDisplayFbos()
     // a normal texture for the frame buffer
     glGenTextures(1, &mFboNormTexture);
     glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WINDSIZE_W, WINDSIZE_H, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, gWindowSizeW, gWindowSizeH, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mFboNormTexture, 0);
@@ -143,8 +143,8 @@ void SimDisplay::CreateDisplayFbos()
     glRenderbufferStorage(
         GL_RENDERBUFFER,
         GL_DEPTH24_STENCIL8,
-        WINDSIZE_W,
-        WINDSIZE_H);  // use a single renderbuffer object for both a depth AND stencil buffer.
+        gWindowSizeW,
+        gWindowSizeH);  // use a single renderbuffer object for both a depth AND stencil buffer.
     glFramebufferRenderbuffer(GL_FRAMEBUFFER,
                               GL_DEPTH_STENCIL_ATTACHMENT,
                               GL_RENDERBUFFER,
@@ -169,7 +169,7 @@ void SimDisplay::CreateSsaoFbos()
     // SSAO color buffer
     glGenTextures(1, &mFboSsaoTexture);
     glBindTexture(GL_TEXTURE_2D, mFboSsaoTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, WINDSIZE_W, WINDSIZE_H, 0, GL_RED, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, gWindowSizeW, gWindowSizeH, 0, GL_RED, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mFboSsaoTexture, 0);
@@ -183,7 +183,7 @@ void SimDisplay::CreateSsaoFbos()
     glBindFramebuffer(GL_FRAMEBUFFER, mSsaoBlurFbo);
     glGenTextures(1, &mFboSsaoBlurTexture);
     glBindTexture(GL_TEXTURE_2D, mFboSsaoBlurTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, WINDSIZE_W, WINDSIZE_H, 0, GL_RED, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, gWindowSizeW, gWindowSizeH, 0, GL_RED, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER,
@@ -262,24 +262,30 @@ void SimDisplay::InitGL()
     displayInitiated = true;
 }
 
-void SimDisplay::CleanGL()
+void SimDisplay::CleanFbos()
 {
     // cleanup frame buffers
     GLDELETE_FRAMEBUFFER(mFbo);
     GLDELETE_FRAMEBUFFER(mSsaoFbo);
     GLDELETE_FRAMEBUFFER(mSsaoBlurFbo);
 
-    // cleanup textures;
+    // cleanup fbo textures
     GLDELETE_TEXTURE(mFboColTexture);
     GLDELETE_TEXTURE(mFboPosTexture);
     GLDELETE_TEXTURE(mFboNormTexture);
     GLDELETE_TEXTURE(mFboSsaoTexture);
     GLDELETE_TEXTURE(mFboSsaoBlurTexture);
     GLDELETE_TEXTURE(mFboSsaoNoiseTexture);
+    GLDELETE_RENDERBUFFER(mRboDepthStencil);
+}
+
+void SimDisplay::CleanGL()
+{
+    CleanFbos();
 
     // cleanup geometry
     GLDELETE_VERTEXARRAY(mFboQuadVAO);
-    GLDELETE_RENDERBUFFER(mFboQuadVBO);
+    GLDELETE_BUFFER(mFboQuadVBO);
 
     // cleanup shaders
     shader3D.Destroy();
@@ -518,11 +524,20 @@ void SimDisplay::UpdateEyeFactor(float factor)
     eye[1] = -factor * maxFar;
 }
 
+void SimDisplay::UpdateWindowScale()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+    CleanFbos();
+    CreateDisplayFbos();
+    CreateSsaoFbos();
+    UpdateProjection();
+}
+
 void SimDisplay::UpdateProjection()
 {
     // Setup projection
     mat4x4 projmat;
-    mat4x4_perspective(projmat, 0.7f, 4.0f / 3.0f, 1.0f, maxFar);
+    mat4x4_perspective(projmat, 0.7f, (float)gWindowSizeW / gWindowSizeH, 1.0f, maxFar);
     // mat4x4_perspective(projmat, 0.7f, 4.0f / 3.0f, 1, 100);
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);

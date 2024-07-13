@@ -26,6 +26,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "TextureLoader.h"
+#include "GlUtils.h"
 
 namespace MillSim
 {
@@ -60,6 +61,21 @@ struct GuiItem
     unsigned int flags;
     bool mouseOver;
     TextureItem texItem;
+
+    int posx() {
+        return sx >= 0 ? sx : gWindowSizeW + sx;
+    }
+    int posy() {
+        return sy >= 0 ? sy : gWindowSizeH + sy;
+    }
+    void setPosx(int x)
+    {
+        sx = sx >= 0 ? x : x - gWindowSizeW;
+    }
+    void setPosy(int y)
+    {
+        sy = sy >= 0 ? y : y - gWindowSizeH;
+    }
 };
 
 #define GUIITEM_CHECKABLE     0x01
@@ -91,11 +107,13 @@ public:
     void UpdateSimSpeed(int speed);
     void HandleKeyPress(int key);
     bool IsChecked(eGuiItems item);
+    void UpdateWindowScale();
 
 public:
     bool guiInitiated = false;
 
 private:
+    void UpdateProjection();
     bool GenerateGlItem(GuiItem* guiItem);
     void DestroyGlItem(GuiItem* guiItem);
     void RenderItem(int itemId);

@@ -90,6 +90,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent* ev) override;
     void wheelEvent(QWheelEvent* ev) override;
     void hideEvent(QHideEvent* ev) override;
+    void resizeEvent(QResizeEvent* event) override;
     void GetMeshData(const Part::TopoShape& tshape,
                      float resolution,
                      std::vector<MillSim::Vertex>& verts,

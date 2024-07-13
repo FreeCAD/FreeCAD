@@ -44,6 +44,7 @@ public:
     ~SimDisplay();
     void InitGL();
     void CleanGL();
+    void CleanFbos();
     void PrepareDisplay(vec3 objCenter);
     void PrepareFrameBuffer();
     void StartDepthPass();
@@ -59,6 +60,7 @@ public:
     void RotateEye(float rotStep);
     void MoveEye(float x, float z);
     void UpdateEyeFactor(float factor);
+    void UpdateWindowScale();
 
     void UpdateProjection();
     float GetEyeFactor()

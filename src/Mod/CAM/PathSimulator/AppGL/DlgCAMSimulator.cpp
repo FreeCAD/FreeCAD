@@ -131,6 +131,21 @@ void DlgCAMSimulator::hideEvent(QHideEvent* ev)
     mInstance = nullptr;
 }
 
+void DlgCAMSimulator::resizeEvent(QResizeEvent* event)
+{
+    if (!mContext) {
+        return;
+    }
+    QSize newSize = event->size();
+    int newWidth = newSize.width();
+    int newHeight = newSize.height();
+    if (mMillSimulator != nullptr) {
+        mMillSimulator->UpdateWindowScale(newWidth, newHeight);
+    }
+    const qreal retinaScale = devicePixelRatio();
+    glViewport(0, 0, newWidth * retinaScale, newHeight * retinaScale);
+}
+
 void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
                                   float resolution,
                                   std::vector<Vertex>& verts,
@@ -283,8 +298,10 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         format.setStencilBufferSize(8);
         mInstance = new DlgCAMSimulator();
         mInstance->setFormat(format);
-        mInstance->resize(800, 600);
+        mInstance->resize(MillSim::gWindowSizeW, MillSim::gWindowSizeH);
         mInstance->setModality(Qt::ApplicationModal);
+        mInstance->setMinimumWidth(700);
+        mInstance->setMinimumHeight(400);
     }
     return mInstance;
 }

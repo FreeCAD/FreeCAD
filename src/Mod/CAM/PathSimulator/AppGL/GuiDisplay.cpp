@@ -24,26 +24,25 @@
 #include "OpenGlWrapper.h"
 #include "MillSimulation.h"
 #include <cstddef>
-#include "GlUtils.h"
 #include <stdlib.h>
 
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {eGuiItemSlider,          0, 0, 270, 564, 0},
-    {eGuiItemThumb,           0, 0, 358, 550, 1},
-    {eGuiItemPause,           0, 0, 70, 550, 'P', true},
-    {eGuiItemPlay,            0, 0, 70, 550, 'S', false},
-    {eGuiItemSingleStep,      0, 0, 110, 550, 'T'},
-    {eGuiItemFaster,          0, 0, 150, 550, 'F'},
-    {eGuiItemRotate,          0, 0, 630, 550, ' ', false, GUIITEM_CHECKABLE},
-    {eGuiItemCharXImg,        0, 0, 190, 550, 0, false, 0},  // 620
-    {eGuiItemChar0Img,        0, 0, 230, 550, 0, false, 0},
-    {eGuiItemChar1Img,        0, 0, 215, 550, 0, false, 0},
-    {eGuiItemChar4Img,        0, 0, 210, 550, 0, true, 0},
-    {eGuiItemPath,            0, 0, 670, 550, 'L', false, GUIITEM_CHECKABLE},
-    {eGuiItemAmbientOclusion, 0, 0, 710, 550, 'A', false, GUIITEM_CHECKABLE},
-    {eGuiItemView,            0, 0, 590, 550, 'V', false},
+    {eGuiItemSlider,          0, 0, 240, -36, 0},
+    {eGuiItemThumb,           0, 0, 328, -50, 1},
+    {eGuiItemPause,           0, 0, 40, -50, 'P', true},
+    {eGuiItemPlay,            0, 0, 40, -50, 'S', false},
+    {eGuiItemSingleStep,      0, 0, 80, -50, 'T'},
+    {eGuiItemFaster,          0, 0, 120, -50, 'F'},
+    {eGuiItemRotate,          0, 0, -140, -50, ' ', false, GUIITEM_CHECKABLE},
+    {eGuiItemCharXImg,        0, 0, 160, -50, 0, false, 0},  // 620
+    {eGuiItemChar0Img,        0, 0, 200, -50, 0, false, 0},
+    {eGuiItemChar1Img,        0, 0, 185, -50, 0, false, 0},
+    {eGuiItemChar4Img,        0, 0, 180, -50, 0, true, 0},
+    {eGuiItemPath,            0, 0, -100, -50, 'L', false, GUIITEM_CHECKABLE},
+    {eGuiItemAmbientOclusion, 0, 0, -60, -50, 'A', false, GUIITEM_CHECKABLE},
+    {eGuiItemView,            0, 0, -180, -50, 'V', false},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -63,6 +62,15 @@ std::vector<std::string> guiFileNames = {"Slider.png",
                                          "Path.png",
                                          "AmbientOclusion.png",
                                          "View.png"};
+
+void GuiDisplay::UpdateProjection()
+{
+    mat4x4 projmat;
+    // mat4x4 viewmat;
+    mat4x4_ortho(projmat, 0, gWindowSizeW, gWindowSizeH, 0, -1, 1);
+    mShader.Activate();
+    mShader.UpdateProjectionMat(projmat);
+}
 
 bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
 {
@@ -101,7 +109,7 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
     return true;
 }
 
-void MillSim::GuiDisplay::DestroyGlItem(GuiItem* guiItem)
+void GuiDisplay::DestroyGlItem(GuiItem* guiItem)
 {
     GLDELETE_BUFFER((guiItem->vbo));
     GLDELETE_VERTEXARRAY((guiItem->vao));
@@ -128,18 +136,15 @@ bool GuiDisplay::InitGui()
         GenerateGlItem(&(guiItems[i]));
     }
 
-    mThumbStartX = guiItems[eGuiItemSlider].sx - guiItems[eGuiItemThumb].texItem.w / 2;
+    mThumbStartX = guiItems[eGuiItemSlider].posx() - guiItems[eGuiItemThumb].texItem.w / 2;
     mThumbMaxMotion = (float)guiItems[eGuiItemSlider].texItem.w;
 
-    UpdateSimSpeed(1);
-
-    // shader
-    mat4x4 projmat;
-    // mat4x4 viewmat;
-    mat4x4_ortho(projmat, 0, WINDSIZE_W, WINDSIZE_H, 0, -1, 1);
+    // init shader
     mShader.CompileShader((char*)VertShader2DTex, (char*)FragShader2dTex);
     mShader.UpdateTextureSlot(0);
-    mShader.UpdateProjectionMat(projmat);
+
+    UpdateSimSpeed(1);
+    UpdateProjection();
     guiInitiated = true;
     return true;
 }
@@ -162,7 +167,7 @@ void GuiDisplay::RenderItem(int itemId)
         return;
     }
     mat4x4 model;
-    mat4x4_translate(model, (float)item->sx, (float)item->sy, 0);
+    mat4x4_translate(model, (float)item->posx(), (float)item->posy(), 0);
     mShader.UpdateModelMat(model, nullptr);
     if (item == mPressedItem) {
         mShader.UpdateObjColor(mPressedColor);
@@ -193,8 +198,9 @@ void GuiDisplay::MouseCursorPos(int x, int y)
         if (g->actionKey == 0) {
             continue;
         }
-        g->mouseOver = !g->hidden &&
-            (x > g->sx && y > g->sy && x < (g->sx + g->texItem.w) && y < (g->sy + g->texItem.h));
+        g->mouseOver = !g->hidden
+            && (x > g->posx() && y > g->posy() && x < (g->posx() + g->texItem.w)
+                && y < (g->posy() + g->texItem.h));
         if (g->mouseOver) {
             mMouseOverItem = g;
         }
@@ -226,7 +232,7 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
         {
             UpdatePlayState(isSimRunning);
             if (mPressedItem != nullptr) {
-                MouseCursorPos(mPressedItem->sx + 1, mPressedItem->sy + 1);
+                MouseCursorPos(mPressedItem->posx() + 1, mPressedItem->posy() + 1);
                 mPressedItem = nullptr;
             }
         }
@@ -239,16 +245,16 @@ void GuiDisplay::MouseDrag(int buttons, int dx, int dy)
         return;
     }
     if (mPressedItem->name == eGuiItemThumb) {
-        int newx = mPressedItem->sx + dx;
+        int newx = mPressedItem->posx() + dx;
         if (newx < mThumbStartX) {
             newx = mThumbStartX;
         }
         if (newx > ((int)mThumbMaxMotion + mThumbStartX)) {
             newx = (int)mThumbMaxMotion + mThumbStartX;
         }
-        if (newx != mPressedItem->sx) {
+        if (newx != mPressedItem->posx()) {
             mMillSim->SetSimulationStage((float)(newx - mThumbStartX) / mThumbMaxMotion);
-            mPressedItem->sx = newx;
+            mPressedItem->setPosx(newx);
         }
     }
 }
@@ -281,10 +287,15 @@ bool MillSim::GuiDisplay::IsChecked(eGuiItems item)
     return (guiItems[item].flags & GUIITEM_CHECKED) != 0;
 }
 
+void MillSim::GuiDisplay::UpdateWindowScale()
+{
+    UpdateProjection();
+}
+
 void GuiDisplay::Render(float progress)
 {
     if (mPressedItem == nullptr || mPressedItem->name != eGuiItemThumb) {
-        guiItems[eGuiItemThumb].sx = (int)(mThumbMaxMotion * progress) + mThumbStartX;
+        guiItems[eGuiItemThumb].setPosx((int)(mThumbMaxMotion * progress) + mThumbStartX);
     }
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);

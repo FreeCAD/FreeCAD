@@ -78,6 +78,8 @@ public:
     void MouseScroll(float dy);
     void MouseHover(int px, int py);
     void MousePress(int button, bool isPressed, int px, int py);
+    void UpdateWindowScale(int width, int height);
+
 
 
 protected:

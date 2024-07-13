@@ -69,6 +69,7 @@ extern QOpenGLContext* gOpenGlContext;
 #define glTexParameteri gSimWindow->glTexParameteri
 #define glTexImage2D gSimWindow->glTexImage2D
 #define glDeleteTextures gSimWindow->glDeleteTextures
+#define glPolygonOffset gSimWindow->glPolygonOffset
 
 #define glBindFramebuffer gSimWindow->glBindFramebuffer
 #define glUniform1f gSimWindow->glUniform1f
