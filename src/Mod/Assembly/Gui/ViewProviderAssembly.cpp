@@ -239,7 +239,7 @@ void ViewProviderAssembly::setDragger()
     asmDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
                               Gui::ViewParams::instance()->getAxisYColor(),
                               Gui::ViewParams::instance()->getAxisZColor());
-    asmDragger->draggerSize.setValue(0.05f);
+    asmDragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
 
     asmDraggerSwitch = new SoSwitch(SO_SWITCH_NONE);
     asmDraggerSwitch->addChild(asmDragger);
