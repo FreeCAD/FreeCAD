@@ -720,10 +720,10 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     asQuantity.setUnit(Base::Unit::Length);
-    QString qUserString = asQuantity.getUserString();
+    std::string qUserString = asQuantity.getUserString();
     if (Base::UnitsApi::isMultiUnitLength() || (!hideUnits() && useSystemDecimals())) {
         // just return the user string
-        return Base::Tools::toStdString(qUserString);
+        return qUserString;
     }
 
     // find the unit of measure
@@ -735,10 +735,10 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
         QString::fromUtf8("(.*) \\D*$"));  // text before space + any non digits at end of string
-    QRegularExpressionMatch match = rxNoUnits.match(qUserString);
+    QRegularExpressionMatch match = rxNoUnits.match(Base::Tools::fromStdString(qUserString));
     if (!match.hasMatch()) {
         // no units in userString?
-        return Base::Tools::toStdString(qUserString);
+        return qUserString;
     }
     QString matched = match.captured(1);  // matched is the numeric part of user string
     int dpPos = matched.indexOf(QLocale().decimalPoint());
@@ -747,9 +747,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
         if (hideUnits()) {
             return Base::Tools::toStdString(matched);
         }
-        else {
-            return Base::Tools::toStdString(matched + unitPart);
-        }
+        return Base::Tools::toStdString(matched + unitPart);
     }
 
     // real number
@@ -781,7 +779,7 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     Base::Quantity asQuantity;
     asQuantity.setValue(value);
     asQuantity.setUnit(Base::Unit::Angle);
-    QString qUserString = asQuantity.getUserString();
+    QString qUserString = Base::Tools::fromStdString(asQuantity.getUserString());
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string
         // Coin SbString doesn't handle utf8 well, so we convert to ascii
