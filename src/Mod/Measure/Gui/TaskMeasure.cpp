@@ -30,12 +30,12 @@
 
 #include "TaskMeasure.h"
 
-#include "Control.h"
-#include "MainWindow.h"
-#include "Application.h"
-#include "App/Document.h"
-#include "App/DocumentObjectGroup.h"
+#include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
 
 #include <QFormLayout>
 #include <QPushButton>
