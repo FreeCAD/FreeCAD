@@ -234,7 +234,7 @@ void MaterialTreeWidget::updateMaterial(const QString& uuid)
     try {
         material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
     }
-    catch (Materials::ModelNotFound const&) {
+    catch (Materials::MaterialNotFound const&) {
         Base::Console().Log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
     }
 
@@ -361,7 +361,7 @@ void MaterialTreeWidget::setActiveFilter(const QString& name)
 
                 // Save the library/folder expansion state
                 saveMaterialTree();
-                
+
                 updateMaterialTree();
                 return;
             }
