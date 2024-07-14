@@ -1,6 +1,6 @@
 
 SET(Stylesheets_Files
-    "FreeCAD Dark.qss"
+    	"FreeCAD Dark.qss"
 	"FreeCAD Light.qss"
 )
 
