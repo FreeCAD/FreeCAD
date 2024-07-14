@@ -587,8 +587,8 @@
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
-      <source>Scroll middle mouse button</source>
-      <translation>マウスの中ボタンをスクロールする</translation>
+      <source>Scroll mouse wheel</source>
+      <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
   </context>
   <context>
@@ -4534,8 +4534,8 @@ Larger value eases to pick things, but can make small features impossible to sel
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
-      <source>Units calculator</source>
-      <translation>単位計算</translation>
+      <source>Units converter</source>
+      <translation type="unfinished">Units converter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -5170,8 +5170,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
-      <source>Rotation axis with angle</source>
-      <translation>回転軸と角度</translation>
+      <source>Rotation axis and angle</source>
+      <translation type="unfinished">Rotation axis and angle</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5869,13 +5869,13 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>画面を1本の指でドラッグするか、マウス左ボタンを押します。スケッチャーなどの編集モードではさらにALTキーを押しっぱなしにします。</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>ピンチ（スクリーンに二本の指を置き、互いに離すようにドラッグ）、または中マウスボタンをスクロール、またはキーボードのPgUp/PgDownキーを押す。</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -6827,8 +6827,8 @@ Do you want to specify another directory?</source>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="318"/>
-      <source>Automatic python modules documentation</source>
-      <translation>Python モジュールのマニュアル</translation>
+      <source>Automatic Python modules documentation</source>
+      <translation type="unfinished">Automatic Python modules documentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="319"/>
@@ -7395,8 +7395,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3274"/>
-      <source>Create group...</source>
-      <translation>グループを作成...</translation>
+      <source>Create group</source>
+      <translation>グループの作成</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3275"/>
@@ -8566,8 +8566,8 @@ Choose 'Abort' to abort</source>
       <translation>すべてのリンクのインポートに失敗</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="99"/>
-      <location filename="../DlgAddProperty.cpp" line="112"/>
+      <location filename="../DlgAddProperty.cpp" line="105"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="285"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="295"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="317"/>
@@ -8575,26 +8575,26 @@ Choose 'Abort' to abort</source>
       <translation>無効な名前</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="100"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="286"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation>プロパティ名またはグループ名には、半角英数字のみ用いることができ、なおかつアンダースコアを含める必要があり、数字から始めることはできません。</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="113"/>
+      <location filename="../DlgAddProperty.cpp" line="119"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="296"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation>プロパティ '%1' は、 '%2' において既に存在します</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="136"/>
+      <location filename="../DlgAddProperty.cpp" line="142"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="248"/>
       <source>Add property</source>
       <translation>プロパティの追加</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="137"/>
+      <location filename="../DlgAddProperty.cpp" line="143"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="249"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>'%1' へプロパティの追加に失敗しました: %2</translation>
@@ -10466,20 +10466,6 @@ underscore, and must not start with a digit.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdUnitsCalculator</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="778"/>
-      <source>&amp;Units calculator...</source>
-      <translation>単位計算(&amp;U)</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="779"/>
-      <location filename="../CommandStd.cpp" line="781"/>
-      <source>Start the units calculator</source>
-      <translation>単位計算機を表示します。</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdUserEditMode</name>
     <message>
       <location filename="../CommandStd.cpp" line="814"/>
@@ -11951,8 +11937,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
-      <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>これは現在の起動モジュールであり、有効化されます。変更するには環境設定/一般/自動ロードを参照してください。</translation>
+      <source>This is the current startup module, and must be enabled.</source>
+      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -11971,8 +11957,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
-      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation>これは現在の起動モジュールであり、自動ロードする必要があります。変更するには環境設定/一般/自動ロードを参照してください。</translation>
+      <source>This is the current startup module, and must be autoloaded.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -12472,7 +12458,7 @@ dot/period will always be printed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>さらに多くのテーマをお探しですか？ &lt;a href="freecad:Std_AddonMgr"&gt;アドオン・マネージャー&lt;/a&gt;を使用して取得できます。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
@@ -12979,8 +12965,8 @@ This makes the docked windows stay transparent at all times.</source>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3716"/>
-      <source>Toggle transparent</source>
-      <translation>透明度を切り替え</translation>
+      <source>Toggle transparent mode</source>
+      <translation>透明モードの切り替え</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
@@ -13317,8 +13303,8 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
-      <source>Locks toolbar so they are no longer moveable</source>
-      <translation>ツールバーを固定して移動できなくします。</translation>
+      <source>Lock toolbars so they are no longer moveable</source>
+      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
     </message>
   </context>
   <context>
@@ -13507,11 +13493,6 @@ the region are non-opaque.</source>
       <translation>テーマのカスタマイズ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
-      <source>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation>このセクションでは現在のテーマをカスタマイズできます。テーマ開発者のために用意された設定は選択可能なため、現在のテーマに変化があるかどうかはわかりません。</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
       <source>Accent color 1</source>
       <translation>アクセントカラー 1</translation>
@@ -13594,9 +13575,14 @@ the region are non-opaque.</source>
       <translation>ツリービューの行間隔を増やします。値を大きくすると行アイテム高さが増えます。</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
+      <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
-      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</source>
-      <translation>有効にするとツリービューのアイテムの前に目のアイコンを表示し、アイテムの表示状態を示します。クリックすると表示状態が切り替わります。</translation>
+      <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
+      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
@@ -13710,6 +13696,20 @@ the region are non-opaque.</source>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
       <translation>変数セットは、変数として使用する一揃いのプロパティを保持するオブジェクトです。</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="778"/>
+      <source>&amp;Units converter...</source>
+      <translation type="unfinished">&amp;Units converter...</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="779"/>
+      <location filename="../CommandStd.cpp" line="781"/>
+      <source>Start the units converter</source>
+      <translation type="unfinished">Start the units converter</translation>
     </message>
   </context>
 </TS>

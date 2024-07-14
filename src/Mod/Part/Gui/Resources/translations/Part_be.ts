@@ -146,9 +146,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="281"/>
-      <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
+      <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Кропка змяшчаецца ў становішча размяшчэння аб'екта. Працуе на аб'ектах з размяшчэннямі і рэбрамі эліпса/парабалы/гіпербалы.</translation>
+      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -1561,8 +1561,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
-      <source>Export CAD...</source>
-      <translation>Экспартаваць у CAD...</translation>
+      <source>Export CAD file...</source>
+      <translation type="unfinished">Export CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1633,8 +1633,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
-      <source>Import CAD...</source>
-      <translation>Імпартаваць з CAD...</translation>
+      <source>Import CAD file...</source>
+      <translation type="unfinished">Import CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2598,24 +2598,24 @@ Note: The placement is expressed in local space of object being attached.</sourc
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="72"/>
-      <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation>Зняць птушку, каб прапусціць нябачны аб'ект пры экспартаванні, што карысна ў праграмах CAD, для выпадкаў, калі не падтрыманы стыль нябачнасці STEP.</translation>
+      <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
+      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExportStep.ui" line="88"/>
+      <source>Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</source>
+      <translation type="unfinished">Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="75"/>
       <source>Export invisible objects</source>
       <translation>Экспартаваць нябачныя аб'екты</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
-      <source>Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</source>
-      <translation>Птушка, каб захаваць інфармацыю аб размяшчэнні пры экспартаванні
-асобнага аб'екта. Калі ласка, звярніце ўвагу, што пры зваротным імпартаванні файла STEP
-размяшчэнне будзе закадавана ў геаметрыі фігуры, але не будзе змешчаная
-ўнутры ўласцівасці Размяшчэнне.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="94"/>
@@ -2886,10 +2886,14 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Не абрана</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.ui" line="51"/>
       <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
       <translation>Налада акруглення</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.ui" line="51"/>
+      <source>Parameters</source>
+      <translation>Налады</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -2918,8 +2922,8 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
-      <source>Fillet type:</source>
-      <translation>Тып акруглення:</translation>
+      <source>Type:</source>
+      <translation>Тып:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
@@ -2935,11 +2939,6 @@ If both lengths are zero, magnitude of direction is used.</source>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
       <source>Radius:</source>
       <translation>Радыус:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
-      <source>Chamfer Parameter</source>
-      <translation>Налада фаскі</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -2965,6 +2964,11 @@ If both lengths are zero, magnitude of direction is used.</source>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation>Аднолькавыя адлегласці</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <source>Chamfer Parameters</source>
+      <translation type="unfinished">Chamfer Parameters</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3077,8 +3081,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
-      <source>Write solids and shells as</source>
-      <translation>Запісаць суцэльнае цела і абалонку як</translation>
+      <source>Export solids and shells as</source>
+      <translation type="unfinished">Export solids and shells as</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3207,8 +3211,8 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
-      <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation>Не ўжываць імя асобніка. Карысна для некаторых састарэлых файлаў STEP з бессэнсоўнымі аўтаматычна згенераванымі імёнамі асобнікаў.</translation>
+      <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
+      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3382,8 +3386,8 @@ during file reading (slower but higher details).</source>
     <name>PartGui::DlgPartImportStep</name>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
-      <source>Step input file</source>
-      <translation>Уваходны файл STEP</translation>
+      <source>STEP input file</source>
+      <translation type="unfinished">STEP input file</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4233,12 +4237,14 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
-      <source>Bottom side of surface will be rendered the same way than top.
+      <source>The bottom side of the surface will be rendered the same way as the top.
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation>Ніжні бок паверхні будзе адлюстроўвацца так жа, як і верхні.
-Калі не птушка, гэта залежыць ад налады "Колер асвятлення" (падзел пераваг Праецыраванне - &gt; Трохмернае прадстаўленне); будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
+      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
+If not checked, it depends on the option "Backlight color"
+(preferences section Display -&gt; 3D View); either the backlight color
+will be used or black.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4493,8 +4499,8 @@ the sketch plane's normal vector will be used</source>
     <name>PartGui::SectionCut</name>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
-      <source>Permanent Section Cutting</source>
-      <translation>Зрэз пастаяннага перасеку</translation>
+      <source>Persistent Section Cutting</source>
+      <translation type="unfinished">Persistent Section Cutting</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4998,11 +5004,6 @@ of object being attached.</source>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
-      <source>Skip settings page</source>
-      <translation>Прапусціць налады старонкі</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Прапусціць налады старонкі і выканаць праверку геаметрыі аўтаматычна.</translation>
@@ -5129,6 +5130,11 @@ Individual boolean operation checks:</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Праверыць на няправільныя тыпы аргументаў. Першапачаткова: true</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <source>Skip this settings page</source>
+      <translation type="unfinished">Skip this settings page</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5557,13 +5563,13 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Абярыце, калі ласка, дзве фігуры ці болей. Альбо абярыце адно злучэнне, якое змяшчае дзве ці болей фігуры, каб вылічыць агульнае паміж імі.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Абярыце, калі ласка, дзве фігуры ці болей. Альбо абярыце адно злучэнне, якое змяшчае дзве ці болей фігуры, каб аб'яднаць іх.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6770,8 +6776,15 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
-      <source>Custom Appearance</source>
-      <translation>Нестандартны знешні выгляд</translation>
+      <source>Custom appearance:</source>
+      <translation type="unfinished">Custom appearance:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="97"/>
+      <source>When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</source>
+      <translation type="unfinished">When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>
@@ -6782,13 +6795,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <location filename="../../TaskFaceAppearances.ui" line="90"/>
       <source>Set to default</source>
       <translation>Задаць першапачатковым</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceAppearances.ui" line="97"/>
-      <source>When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</source>
-      <translation>Калі птушка, вы можаце абраць некалькі граняў,
-калі перацягнеце прастакутнік вылучэння ў трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>

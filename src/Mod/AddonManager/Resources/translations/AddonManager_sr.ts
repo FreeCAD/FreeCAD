@@ -612,8 +612,8 @@ installed addons will be checked for available updates</source>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="353"/>
-      <source>Path to git executable (optional):</source>
-      <translation>Стаза ка извршној git датотеци (необавезно):</translation>
+      <source>Path to Git executable (optional):</source>
+      <translation type="unfinished">Path to Git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="372"/>
@@ -1211,9 +1211,14 @@ installed addons will be checked for available updates</source>
       <translation>Алати за програмере...</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="106"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
       <translation>Примени %n доступних ажурирања</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
+      <source>No updates available</source>
+      <translation type="unfinished">No updates available</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="826"/>
@@ -1249,18 +1254,18 @@ installed addons will be checked for available updates</source>
       <translation>Чини се да је ово први пут да је ова верзија Python-а коришћена са Менаџером додатака. Да ли желиш за њега да инсталираш исте аутоматски инсталиране зависности?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="199"/>
+      <location filename="../../manage_python_dependencies.py" line="198"/>
       <source>Processing, please wait...</source>
       <translation>Обрађује се, сачекај...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="247"/>
+      <location filename="../../manage_python_dependencies.py" line="246"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>Ажурирање</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="341"/>
+      <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
       <translation>Ажурирање...</translation>
     </message>
@@ -1290,7 +1295,7 @@ installed addons will be checked for available updates</source>
       <translation>Менаџер додатака: Неочекивани {} одговор од сервера</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="512"/>
+      <location filename="../../NetworkManager.py" line="511"/>
       <source>Error with encrypted connection</source>
       <translation>Грешка шифроване везе</translation>
     </message>
@@ -1434,7 +1439,7 @@ installed addons will be checked for available updates</source>
       <translation>Овај Додатак ће бити онемогућен следећи пут када поново покренеш FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="477"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../addonmanager_package_details_controller.py" line="245"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
@@ -1619,11 +1624,6 @@ installed addons will be checked for available updates</source>
       <translation>Остало...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="153"/>
-      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation>Овај Додатак захтева Python пакете који нису инсталирани и не могу се инсталирати аутоматски. Да би користио ово радно окружење, мораш ручно да инсталираш следеће Python пакете:</translation>
-    </message>
-    <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
       <translation>Превише их је да би се излистали</translation>
@@ -1654,122 +1654,127 @@ installed addons will be checked for available updates</source>
       <translation>Притисни У реду да би ипак инсталирао.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="243"/>
+      <location filename="../../addonmanager_installer_gui.py" line="242"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="189"/>
       <source>Incompatible Python version</source>
       <translation>Некомпатибилна верзија Python-а</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="247"/>
-      <source>This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation>Овај Додатак (или једна од његових зависности) захтева Python {}.{}, а твој систем ради на {}.{}. Инсталација је прекинута.</translation>
+      <location filename="../../addonmanager_installer_gui.py" line="153"/>
+      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
+      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="268"/>
+      <location filename="../../addonmanager_installer_gui.py" line="246"/>
+      <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
+      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="267"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
       <translation>Необавезна зависност од {} се занемарује јер се не налази на листи дозвољених</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_installer_gui.py" line="313"/>
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
-      <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
       <translation>Инсталирање зависности</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="340"/>
+      <location filename="../../addonmanager_installer_gui.py" line="339"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
       <translation>Није могуће извршити Python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="345"/>
+      <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
       <translation>Аутоматско проналажење извршне датотеке Python-а није успело, или је путања погрешно задата. Провери исправност ове путање у подешавањима за Менаџер додатака.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="349"/>
+      <location filename="../../addonmanager_installer_gui.py" line="348"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
       <translation>Зависности се не могу инсталирати. Желиш ли ипак наставити са инсталацијом {}?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="364"/>
+      <location filename="../../addonmanager_installer_gui.py" line="363"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="86"/>
       <source>Cannot execute pip</source>
       <translation>Није могуће извршити pip</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="370"/>
+      <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
       <translation>Извршавање pip-а није успело, изгледа да он недостаје у твојој Python инсталацији. Увери се да твој систем има инсталиран pip и покушај поново. Неуспела команда је била:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="374"/>
-      <location filename="../../addonmanager_installer_gui.py" line="399"/>
+      <location filename="../../addonmanager_installer_gui.py" line="373"/>
+      <location filename="../../addonmanager_installer_gui.py" line="398"/>
       <source>Continue with installation of {} anyway?</source>
       <translation>Желиш ли ипак наставити са инсталацијом {}?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="391"/>
+      <location filename="../../addonmanager_installer_gui.py" line="390"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
       <translation>Инсталирање пакета није успело</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="395"/>
+      <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
       <translation>Погледај Прегледач објава за детаљан дневник грешака.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="436"/>
+      <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
       <translation>Инсталирање Додатка</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="437"/>
+      <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
       <translation>Инсталирање FreeCAD Додатка &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="451"/>
+      <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
       <translation>Отказивање</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="452"/>
+      <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
       <translation>Отказивање од инсталације &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="478"/>
+      <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <source>{} was installed successfully</source>
       <translation>{} је успешно инсталиран</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="490"/>
+      <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
       <translation>Инсталација није успела</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="491"/>
+      <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
       <translation>Инсталирање {} није успело</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="608"/>
-      <location filename="../../install_to_toolbar.py" line="96"/>
+      <location filename="../../addonmanager_installer_gui.py" line="605"/>
+      <location filename="../../install_to_toolbar.py" line="94"/>
       <source>Create new toolbar</source>
       <translation>Направи нову палету са алаткама</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="734"/>
-      <location filename="../../install_to_toolbar.py" line="253"/>
+      <location filename="../../addonmanager_installer_gui.py" line="731"/>
+      <location filename="../../install_to_toolbar.py" line="251"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
       <translation>Макро инсталиран са FreeCAD Менаџером додатака</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="736"/>
-      <location filename="../../install_to_toolbar.py" line="255"/>
+      <location filename="../../addonmanager_installer_gui.py" line="733"/>
+      <location filename="../../install_to_toolbar.py" line="253"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
       <translation>Покрени</translation>
@@ -2037,39 +2042,39 @@ installed addons will be checked for available updates</source>
       <translation>Филтер</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="87"/>
+      <location filename="../../change_branch.py" line="86"/>
       <source>DANGER: Developer feature</source>
       <translation>ОПАСНОСТ: Функција за програмере</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="94"/>
+      <location filename="../../change_branch.py" line="93"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation>ОПАСНОСТ: Пребацивање грана је намењено програмерима и бета тестерима и може да доведе до оштећених докумената који нису компатибилни уназад, нестабилности, кварова и/или прераног топлотног колапса универзума. Да ли си сигуран да желиш да наставиш?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="103"/>
+      <location filename="../../change_branch.py" line="102"/>
       <source>There are local changes</source>
       <translation>Постоје локалне промене</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="108"/>
+      <location filename="../../change_branch.py" line="107"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation>УПОЗОРЕЊЕ: Ово спремиште има неповезане локалне промене. Да ли си сигуран да желиш да промениш гране (доносећи промене са собом)?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="207"/>
+      <location filename="../../change_branch.py" line="206"/>
       <source>Local</source>
       <comment>Table header for local git ref name</comment>
       <translation>Локално</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="213"/>
+      <location filename="../../change_branch.py" line="212"/>
       <source>Remote tracking</source>
       <comment>Table header for git remote tracking branch name</comment>
       <translation>Даљинско праћење</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="219"/>
+      <location filename="../../change_branch.py" line="218"/>
       <source>Last Updated</source>
       <comment>Table header for git update date</comment>
       <translation>Последње ажурирано</translation>
@@ -2391,12 +2396,12 @@ installed addons will be checked for available updates</source>
       <translation>Неуспешно</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="198"/>
       <source>Update was cancelled</source>
       <translation>Ажурирање је отказано</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="200"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>some addons may have been updated</source>
       <translation>неки додаци су можда ажурирани</translation>
     </message>
@@ -2490,7 +2495,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Addons installer</name>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="193"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="192"/>
       <source>Finished updating the following addons</source>
       <translation>Завршено је ажурирање следећих додатака</translation>
     </message>
@@ -2498,7 +2503,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="653"/>
+      <location filename="../../addonmanager_installer_gui.py" line="650"/>
       <source>Auto-Created Macro Toolbar</source>
       <translation>Аутоматски направљена Макро палета алатки</translation>
     </message>

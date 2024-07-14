@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="106"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation type="unfinished">To get started, set your basic configuration options below.</translation>
+      <translation>Щоб розпочати, встановіть основні параметри конфігурації нижче.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="107"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
+      <translation>Ці параметри (і багато інших) можна змінити пізніше в Налаштуваннях.</translation>
     </message>
   </context>
   <context>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start in an MDI view</source>
-      <translation type="unfinished">Displays the Start in an MDI view</translation>
+      <translation>Відображає Початок у поданні MDI</translation>
     </message>
   </context>
   <context>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../StartView.cpp" line="185"/>
       <source>Parametric Part</source>
-      <translation type="unfinished">Parametric Part</translation>
+      <translation>Параметрична деталь</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="186"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>Створіть деталь за допомогою робочої області Part Design</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="188"/>
@@ -101,17 +101,17 @@
     <message>
       <location filename="../../StartView.cpp" line="191"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2D креслення</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="192"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D Draft with the Draft workbench</translation>
+      <translation>Створити 2D-креслення за допомогою робочої області Draft</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="194"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
+      <translation>BIM/Архітектура</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="195"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../StartView.cpp" line="443"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
+      <translation>Не показувати цю початкову сторінку знову (почати з чистого екрану)</translation>
     </message>
   </context>
   <context>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
       <source>Dark theme</source>
-      <translation type="unfinished">Dark theme</translation>
+      <translation>Темна тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>Light theme</source>
-      <translation type="unfinished">Light theme</translation>
+      <translation>Світла тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="156"/>
@@ -172,25 +172,25 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="157"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Шукаєте більше тем? Ви можете отримати їх за допомогою &lt;a href="freecad:Std_AddonMgr"&gt;Менеджеру додатків&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="159"/>
       <source>Dark theme</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark theme</translation>
+      <translation>Темна тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="160"/>
       <source>Light theme</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Light theme</translation>
+      <translation>Світла тема</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="161"/>
       <source>Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Classic</translation>
+      <translation>Класична</translation>
     </message>
   </context>
 </TS>

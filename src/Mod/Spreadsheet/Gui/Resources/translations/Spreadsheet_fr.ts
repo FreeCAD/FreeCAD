@@ -662,8 +662,8 @@ créée si elle n'existe pas.</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Texte pour l'unité</translation>
+      <source>Text for the unit</source>
+      <translation type="unfinished">Text for the unit</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>

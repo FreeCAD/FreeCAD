@@ -376,7 +376,7 @@ def updateqrc(qrcpath, lncode):
     # inserting new entry just after the last one
     line = resources[pos]
     if ".qm" in line:
-        line = re.sub("_.*\.qm", "_" + lncode + ".qm", line)
+        line = re.sub(r"_.*\.qm", "_" + lncode + ".qm", line)
     else:
         modname = os.path.splitext(os.path.basename(qrcpath))[0]
         line = "        <file>translations/" + modname + "_" + lncode + ".qm</file>\n"

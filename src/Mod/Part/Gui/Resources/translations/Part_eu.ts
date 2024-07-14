@@ -146,9 +146,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="281"/>
-      <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
+      <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Puntua objektuaren Placement.Position gunean kokatzen da. Kokapena duten objektuekin eta elipseen/parabolen/hiperbolen ertzekin funtzionatzen du.</translation>
+      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -1561,8 +1561,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
-      <source>Export CAD...</source>
-      <translation>Esportatu CADa...</translation>
+      <source>Export CAD file...</source>
+      <translation type="unfinished">Export CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1633,8 +1633,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
-      <source>Import CAD...</source>
-      <translation>Inportatu CADa...</translation>
+      <source>Import CAD file...</source>
+      <translation type="unfinished">Import CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2598,24 +2598,24 @@ Oharra: Kokapena eransten den objektuaren espazio lokalean adierazten da.</trans
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="72"/>
-      <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation>Desmarkatu hau objektu ikusezinak saltatzeko esportatzean. STEP estiloen ikusezintasuna onartzen ez duten CADetan erabilgarria da.</translation>
+      <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
+      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExportStep.ui" line="88"/>
+      <source>Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</source>
+      <translation type="unfinished">Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="75"/>
       <source>Export invisible objects</source>
       <translation>Esportatu objektu ikusezinak</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
-      <source>Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</source>
-      <translation>Markatu aukera hau kokapen-informazioari eusteko objektu bakar bat
-esportatzean. Kontuan izan, STEP fitxategia berriro inportatzen bada,
-kokapena forma-geometriaren barruan kodetuko dela, 'Kokapena'
-propietatean egon ordez.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="94"/>
@@ -2885,10 +2885,14 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
       <translation>Hautapenik ez</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.ui" line="51"/>
       <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
       <translation>Biribiltze-parametroa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.ui" line="51"/>
+      <source>Parameters</source>
+      <translation>Parametroak</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -2917,8 +2921,8 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
-      <source>Fillet type:</source>
-      <translation>Biribiltze mota:</translation>
+      <source>Type:</source>
+      <translation>Mota:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
@@ -2934,11 +2938,6 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
       <source>Radius:</source>
       <translation>Erradioa:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
-      <source>Chamfer Parameter</source>
-      <translation>Alakatze-parametroa</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -2964,6 +2963,11 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation>Distantzia berdina</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <source>Chamfer Parameters</source>
+      <translation type="unfinished">Chamfer Parameters</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3076,8 +3080,8 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
-      <source>Write solids and shells as</source>
-      <translation>Idatzi solidoak eta oskolak honela:</translation>
+      <source>Export solids and shells as</source>
+      <translation type="unfinished">Export solids and shells as</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3207,8 +3211,8 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
-      <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation>Ez erabili instantzia-izena. Automatikoki sortutako instantzia-izen zentzugabeak dituzten zenbait STEP fitxategi zaharretan da erabilgarria aukera hau.</translation>
+      <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
+      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3382,8 +3386,8 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     <name>PartGui::DlgPartImportStep</name>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
-      <source>Step input file</source>
-      <translation>Step sarrera-fitxategia</translation>
+      <source>STEP input file</source>
+      <translation type="unfinished">STEP input file</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4233,14 +4237,14 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
-      <source>Bottom side of surface will be rendered the same way than top.
+      <source>The bottom side of the surface will be rendered the same way as the top.
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation>Gainazalaren beheko aldeako goiko aldearen modu berean errendatuko da.
-Markatzen ez bada "Atzeko argiaren kolorea" aukeraren araberakoa izango da
-('Bistaratu -&gt; 3D bista' hobespenen atalean); atzeko argiaren kolorea edo
-beltza erabiliko da.</translation>
+      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
+If not checked, it depends on the option "Backlight color"
+(preferences section Display -&gt; 3D View); either the backlight color
+will be used or black.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4495,8 +4499,8 @@ bestela krokisaren planoren bektore normala erabiliko da</translation>
     <name>PartGui::SectionCut</name>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
-      <source>Permanent Section Cutting</source>
-      <translation>Sekzio-mozte iraunkorra</translation>
+      <source>Persistent Section Cutting</source>
+      <translation type="unfinished">Persistent Section Cutting</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5002,11 +5006,6 @@ koordenatu-sistema lokalean adierazten da.</translation>
       <translation>Ezarpenak</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
-      <source>Skip settings page</source>
-      <translation>Saltatu ezarpenen orria</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Saltatu ezarpenen orri hau eta exekutatu geometria-egiaztatzea automatikoki.</translation>
@@ -5132,6 +5131,11 @@ Eragiketa boolearren banakako egiaztatzeak:</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Egiaztatu argumentu mota okerrak. Lehenetsia: egia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <source>Skip this settings page</source>
+      <translation type="unfinished">Skip this settings page</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5558,13 +5562,13 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Hautatu bi forma edo gehiago. Edo hautatu bi forma edo gehiago dituen konposatu bat, bien arteko zati komuna kalkulatzeko.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Hautatu bi forma edo gehiago, Edo hautatu bi forma edo gehiago dituen konposatu bat, fusionatuak izan daitezen.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6769,8 +6773,15 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
-      <source>Custom Appearance</source>
-      <translation type="unfinished">Custom Appearance</translation>
+      <source>Custom appearance:</source>
+      <translation type="unfinished">Custom appearance:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="97"/>
+      <source>When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</source>
+      <translation type="unfinished">When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>
@@ -6781,13 +6792,6 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
       <location filename="../../TaskFaceAppearances.ui" line="90"/>
       <source>Set to default</source>
       <translation>Ezarri lehenetsietara</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceAppearances.ui" line="97"/>
-      <source>When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</source>
-      <translation>Markatuta badago, aurpegi anitz hautatu daitezke
-hatapen-laukizuzen bat arrastatuta 3D bistan</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>

@@ -86,24 +86,24 @@ az önmetszés elkerülése érdekében.</translation>
       <translation>Fogaskerék fogak száma</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="101"/>
-      <source>Modules of the gear</source>
-      <translation>Hajtómű modulja</translation>
-    </message>
-    <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
       <translation>Fogaskerék fogainak nyomási szöge</translation>
     </message>
     <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Module of the gear</source>
+      <translation type="unfinished">Module of the gear</translation>
+    </message>
+    <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
-      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
-      <translation>Igaz=2 görbe, mindegyik 3 kontrollponttal Hamis=1 görbe 4 kontrollponttal.</translation>
+      <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
-      <source>True=external Gear False=internal Gear</source>
-      <translation>Igaz=külső fogaskerék Hamis=belső fogaskerék</translation>
+      <source>True=external Gear, False=internal Gear</source>
+      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -916,8 +916,8 @@ az önmetszés elkerülése érdekében.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="434"/>
-      <source>Migrate legacy part design features to Bodies</source>
-      <translation>Az örökölt alkatrész tervezési jellemzőinek átvitele testekbe</translation>
+      <source>Migrate legacy Part Design features to Bodies</source>
+      <translation type="unfinished">Migrate legacy Part Design features to Bodies</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="579"/>
@@ -1751,7 +1751,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
       <source>Click on a shape in the model</source>
-      <translation type="unfinished">Click on a shape in the model</translation>
+      <translation>Kattintson egy alakzatra a modellben</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
@@ -2304,7 +2304,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Alakot formáz</translation>
     </message>
   </context>
   <context>
@@ -2332,19 +2332,19 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="130"/>
       <source>Select shape</source>
-      <translation type="unfinished">Select shape</translation>
+      <translation>Alak kiválasztása</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="148"/>
       <source>Select all faces</source>
-      <translation type="unfinished">Select all faces</translation>
+      <translation>Összes felület kijelölése</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="170"/>
       <source>Click button to enter selection mode,
          click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-         click again to end selection</translation>
+      <translation>Kattintson a gombra a kiválasztási módba való belépéshez,
+         kattintson újra a kiválasztás befejezéséhez</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
@@ -2730,7 +2730,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Alakot formáz</translation>
     </message>
   </context>
   <context>
@@ -3107,12 +3107,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="35"/>
       <source>Transform body</source>
-      <translation type="unfinished">Transform body</translation>
+      <translation>Test átalakítása</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="48"/>
       <source>Transform tool shapes</source>
-      <translation type="unfinished">Transform tool shapes</translation>
+      <translation>Szerszámformák átalakítása</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
@@ -3877,13 +3877,13 @@ Ez a funkció sérült, és nem szerkeszthető.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
-      <source>One transformed shape does not intersect support</source>
-      <translation>Egy átalakított alakzat nem nem támogatja az egymás metszését</translation>
+      <source>One transformed shape does not intersect the support</source>
+      <translation type="unfinished">One transformed shape does not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
-      <source>%1 transformed shapes do not intersect support</source>
-      <translation>%1 átalakított alakzatok nem támogatják az egymás metszését</translation>
+      <source>%1 transformed shapes do not intersect the support</source>
+      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3979,8 +3979,8 @@ Viszont később is bármikor migrálhat a "Alkatrész Tervezés -&gt; Migrálá
     <name>SprocketParameter</name>
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
-      <source>Sprocket parameter</source>
-      <translation>Fogaskerék tervezés</translation>
+      <source>Sprocket parameters</source>
+      <translation type="unfinished">Sprocket parameters</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4159,8 +4159,8 @@ Viszont később is bármikor migrálhat a "Alkatrész Tervezés -&gt; Migrálá
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
-      <source>Tooth Width</source>
-      <translation>Fog szélesség</translation>
+      <source>Tooth Width:</source>
+      <translation type="unfinished">Tooth Width:</translation>
     </message>
   </context>
   <context>
@@ -4215,12 +4215,12 @@ Megjegyzés: a számítás eltarthat egy ideig</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="470"/>
       <source>Update thread view</source>
-      <translation type="unfinished">Update thread view</translation>
+      <translation>Menet nézet frissítése</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="486"/>
       <source>Custom Clearance</source>
-      <translation type="unfinished">Custom Clearance</translation>
+      <translation>Testre szabott biztonsági távolság</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="499"/>
@@ -4286,7 +4286,7 @@ Csak menet nélküli furatokhoz érhető el</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="692"/>
       <source>Drill Point</source>
-      <translation type="unfinished">Drill Point</translation>
+      <translation>Fúrási pont</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="134"/>
@@ -4352,7 +4352,7 @@ a csavar teteje a felszín alatt</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="530"/>
       <source>Hole Cut Type</source>
-      <translation type="unfinished">Hole Cut Type</translation>
+      <translation>Furat vágás típusa</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
@@ -4914,7 +4914,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="598"/>
       <source>Extrude: Can only offset one face</source>
-      <translation type="unfinished">Extrude: Can only offset one face</translation>
+      <translation>Kiterjesztés: Csak egy felületet lehet eltolni</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
@@ -4969,8 +4969,8 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="128"/>
-      <source>Error: Pitch too small</source>
-      <translation>Hiba: Túl kicsi a lejtés</translation>
+      <source>Error: Pitch too small!</source>
+      <translation type="unfinished">Error: Pitch too small!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>

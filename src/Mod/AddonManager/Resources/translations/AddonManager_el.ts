@@ -612,8 +612,8 @@ installed addons will be checked for available updates</source>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="353"/>
-      <source>Path to git executable (optional):</source>
-      <translation>Διαδρομή προς το εκτελέσιμο git (προαιρετικό):</translation>
+      <source>Path to Git executable (optional):</source>
+      <translation type="unfinished">Path to Git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="372"/>
@@ -1212,9 +1212,14 @@ installed addons will be checked for available updates</source>
       <translation>Εργαλεία για προγραμματιστές...</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="106"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
       <translation>Εφαρμογή %n διαθέσιμων ενημερώσεων(ων)</translation>
+    </message>
+    <message>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
+      <source>No updates available</source>
+      <translation type="unfinished">No updates available</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="826"/>
@@ -1250,18 +1255,18 @@ installed addons will be checked for available updates</source>
       <translation>Αυτή φαίνεται να είναι η πρώτη φορά που αυτή η έκδοση της Python χρησιμοποιείται με το Διαχειριστή Προσθέτων. Θέλετε να εγκαταστήσετε τις ίδιες αυτόματο-εγκατεστημένες εξαρτήσεις?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="199"/>
+      <location filename="../../manage_python_dependencies.py" line="198"/>
       <source>Processing, please wait...</source>
       <translation>Γίνεται επεξεργασία, παρακαλώ περιμένετε...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="247"/>
+      <location filename="../../manage_python_dependencies.py" line="246"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>Ενημέρωση</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="341"/>
+      <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
       <translation>Ενημέρωση...</translation>
     </message>
@@ -1291,7 +1296,7 @@ installed addons will be checked for available updates</source>
       <translation>Διαχειριστής Πρόσθετων: Μη αναμενόμενη απάντηση {} από τον διακομιστή</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="512"/>
+      <location filename="../../NetworkManager.py" line="511"/>
       <source>Error with encrypted connection</source>
       <translation>Σφάλμα με κρυπτογραφημένη σύνδεση</translation>
     </message>
@@ -1435,7 +1440,7 @@ installed addons will be checked for available updates</source>
       <translation>Αυτό το πρόσθετο θα ενεργοποιηθεί την επόμενη φορά που θα κάνετε επανεκκίνηση του FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="477"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../addonmanager_package_details_controller.py" line="245"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
@@ -1619,11 +1624,6 @@ installed addons will be checked for available updates</source>
       <translation>Άλλο...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="153"/>
-      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation>Αυτό το πρόσθετο απαιτεί πακέτα Python που δεν είναι εγκατεστημένα και δεν μπορούν να εγκατασταθούν αυτόματα. Για να χρησιμοποιήσετε αυτόν τον πάγκο εργασίας, πρέπει να εγκαταστήσετε τα ακόλουθα πακέτα Python με μη αυτόματο τρόπο:</translation>
-    </message>
-    <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
       <translation>Πάρα πολλά στη λίστα</translation>
@@ -1654,122 +1654,127 @@ installed addons will be checked for available updates</source>
       <translation>Πατήστε OK για εγκατάσταση.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="243"/>
+      <location filename="../../addonmanager_installer_gui.py" line="242"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="189"/>
       <source>Incompatible Python version</source>
       <translation>Μη συμβατή έκδοση Python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="247"/>
-      <source>This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation>Αυτό το Πρόσθετο (ή τα εξαρτήματά του) απαιτεί Python {}.{}, και το σύστημά σας εκτελείται {}.{}. Η εγκατάσταση ακυρώθηκε.</translation>
+      <location filename="../../addonmanager_installer_gui.py" line="153"/>
+      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
+      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="268"/>
+      <location filename="../../addonmanager_installer_gui.py" line="246"/>
+      <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
+      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="267"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
       <translation>Η προαιρετική εξάρτηση από {} αγνοήθηκε επειδή δεν είναι στη λίστα επιτρεπτών</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_installer_gui.py" line="313"/>
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
-      <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
       <translation>Εγκατάσταση εξαρτήσεων</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="340"/>
+      <location filename="../../addonmanager_installer_gui.py" line="339"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
       <translation>Αδυναμία εκτέλεσης Python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="345"/>
+      <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
       <translation>Απέτυχε ο αυτόματος εντοπισμός του εκτελέσιμου αρχείου Python ή η διαδρομή έχει οριστεί εσφαλμένα. Ελέγξτε τη ρύθμιση προτιμήσεων του Διαχειριστή Προσθέτων για τη διαδρομή προς την Python.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="349"/>
+      <location filename="../../addonmanager_installer_gui.py" line="348"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
       <translation>Δεν ήταν δυνατή η εγκατάσταση των εξαρτήσεων. Θέλετε να συνεχίστε με την εγκατάσταση της {};</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="364"/>
+      <location filename="../../addonmanager_installer_gui.py" line="363"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="86"/>
       <source>Cannot execute pip</source>
       <translation>Αδυναμία εκτέλεσης pip</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="370"/>
+      <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
       <translation>Αποτυχία εκτέλεσης του pip, το οποίο μπορεί να λείπει από την εγκατάσταση της Python. Βεβαιωθείτε ότι το σύστημά σας έχει εγκατασταθεί το pip, προσπαθήστε ξανά. Η αποτυχημένη εντολή ήταν:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="374"/>
-      <location filename="../../addonmanager_installer_gui.py" line="399"/>
+      <location filename="../../addonmanager_installer_gui.py" line="373"/>
+      <location filename="../../addonmanager_installer_gui.py" line="398"/>
       <source>Continue with installation of {} anyway?</source>
       <translation>Θέλετε οπωσδήποτε να συνεχίσετε με την εγκατάσταση του {} ;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="391"/>
+      <location filename="../../addonmanager_installer_gui.py" line="390"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
       <translation>Η εγκατάσταση του πακέτου απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="395"/>
+      <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
       <translation>Δείτε την Αναφορά Προβολής για λεπτομερή καταγραφή αποτυχίας.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="436"/>
+      <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
       <translation>Εγκατάσταση Πρόσθετου</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="437"/>
+      <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
       <translation>Εγκατάσταση Πρόσθετου FreeCAD &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="451"/>
+      <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
       <translation>Ακύρωση</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="452"/>
+      <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
       <translation>Ακύρωση εγκατάστασης &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="478"/>
+      <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <source>{} was installed successfully</source>
       <translation>εγκαταστάθηκε επιτυχώς</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="490"/>
+      <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
       <translation>Η εγκατάσταση απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="491"/>
+      <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
       <translation>Αποτυχία εγκατάστασης</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="608"/>
-      <location filename="../../install_to_toolbar.py" line="96"/>
+      <location filename="../../addonmanager_installer_gui.py" line="605"/>
+      <location filename="../../install_to_toolbar.py" line="94"/>
       <source>Create new toolbar</source>
       <translation>Δημιουργία νέας γραμμής εργαλείων</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="734"/>
-      <location filename="../../install_to_toolbar.py" line="253"/>
+      <location filename="../../addonmanager_installer_gui.py" line="731"/>
+      <location filename="../../install_to_toolbar.py" line="251"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
       <translation>Μια μακροεντολή που έχει εγκατασταθεί με το FreeCAD Διαχειριστή Προσθέτων</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="736"/>
-      <location filename="../../install_to_toolbar.py" line="255"/>
+      <location filename="../../addonmanager_installer_gui.py" line="733"/>
+      <location filename="../../install_to_toolbar.py" line="253"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
       <translation>Εκτέλεση</translation>
@@ -2037,40 +2042,40 @@ installed addons will be checked for available updates</source>
       <translation>Φίλτρο</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="87"/>
+      <location filename="../../change_branch.py" line="86"/>
       <source>DANGER: Developer feature</source>
       <translation>ΚΙΝΔΥΝΟΣ: Λειτουργία προγραμματιστή</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="94"/>
+      <location filename="../../change_branch.py" line="93"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation>ΚΙΝΔΥΝΟΣ: Η εναλλαγή τμημάτων προορίζεται για προγραμματιστές και δοκιμαστές beta, αυτό μπορεί να έχει ως αποτέλεσμα σπασμένα έγγραφα, μη συμβατά, αστάθεια, σφάλματα ή/και ξαφνική απώλεια.
 Είσαι σίγουρος ότι θέλεις να συνεχίσεις;</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="103"/>
+      <location filename="../../change_branch.py" line="102"/>
       <source>There are local changes</source>
       <translation>Υπάρχουν τοπικές αλλαγές</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="108"/>
+      <location filename="../../change_branch.py" line="107"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation>ΠΡΟΣΟΧΗ: Αυτό το repo έχει τοπικές αλλαγές που δεν έχουν πραγματοποιηθεί. Είστε σίγουροι ότι θέλετε να αλλάξετε κλάδο (φέρνοντας τις αλλαγές μαζί σας);</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="207"/>
+      <location filename="../../change_branch.py" line="206"/>
       <source>Local</source>
       <comment>Table header for local git ref name</comment>
       <translation>Τοπικό</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="213"/>
+      <location filename="../../change_branch.py" line="212"/>
       <source>Remote tracking</source>
       <comment>Table header for git remote tracking branch name</comment>
       <translation>Απομακρυσμένη παρακολούθηση</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="219"/>
+      <location filename="../../change_branch.py" line="218"/>
       <source>Last Updated</source>
       <comment>Table header for git update date</comment>
       <translation>Τελευταία Ενημέρωση</translation>
@@ -2392,12 +2397,12 @@ installed addons will be checked for available updates</source>
       <translation>Απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="198"/>
       <source>Update was cancelled</source>
       <translation>Ακύρωση Ενημέρωσης</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="200"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>some addons may have been updated</source>
       <translation>κάποια πρόσθετα μπορεί να έχουν ενημερωθεί</translation>
     </message>
@@ -2491,7 +2496,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Addons installer</name>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="193"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="192"/>
       <source>Finished updating the following addons</source>
       <translation>Ολοκληρώθηκε η ενημέρωση των ακόλουθων Πρόσθετων</translation>
     </message>
@@ -2499,7 +2504,7 @@ installed addons will be checked for available updates</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="653"/>
+      <location filename="../../addonmanager_installer_gui.py" line="650"/>
       <source>Auto-Created Macro Toolbar</source>
       <translation>Γραμμή εργαλείων μακροεντολών που δημιουργήθηκε αυτόματα</translation>
     </message>

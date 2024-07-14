@@ -662,8 +662,8 @@ switch the design configuration. The property will be created if not exist.</sou
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Nazwa jednostki</translation>
+      <source>Text for the unit</source>
+      <translation type="unfinished">Text for the unit</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>

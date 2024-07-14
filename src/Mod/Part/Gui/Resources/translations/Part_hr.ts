@@ -146,9 +146,9 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="281"/>
-      <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
+      <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Točka je stavljena na poziciju položaja objekta. Radi na objektima sa položajem, i sa rubovima elipse/parabole/hiperbole.</translation>
+      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -1562,8 +1562,8 @@ Zakosi odabrane rubove oblika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1010"/>
-      <source>Export CAD...</source>
-      <translation>Izvezi CAD ...</translation>
+      <source>Export CAD file...</source>
+      <translation type="unfinished">Export CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,8 +1634,8 @@ Zakosi odabrane rubove oblika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
-      <source>Import CAD...</source>
-      <translation>Učitaj CAD ...</translation>
+      <source>Import CAD file...</source>
+      <translation type="unfinished">Import CAD file...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2606,24 +2606,24 @@ predmeta koji se pridružuje.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="72"/>
-      <source>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation>Poništite ovo da biste preskočili nevidljivi objekt prilikom izvoza, što je korisno za CAD-ove koji ne podržavaju STEP stiliziranje nevidljivosti .</translation>
+      <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
+      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExportStep.ui" line="88"/>
+      <source>Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</source>
+      <translation type="unfinished">Check this option to keep the placement information when exporting
+a single object. Please note that when importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the Placement property.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="75"/>
       <source>Export invisible objects</source>
       <translation>Izvezi nevidljive objekte</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
-      <source>Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</source>
-      <translation>Označite ovu opciju kako biste zadržali informacije o položaju prilikom izvoza
-pojedinačnog objekta. Imajte na umu da kada vratite STEP datoteku,
-položaj će biti kodiran u geometriju oblika, umjesto da se zadrži
-to unutar svojstva položaja.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="94"/>
@@ -2898,10 +2898,14 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>Nema odabira</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.ui" line="51"/>
       <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
       <translation>Parametar zaobljenja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.ui" line="51"/>
+      <source>Parameters</source>
+      <translation>Parametara</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -2930,8 +2934,8 @@ If both lengths are zero, magnitude of direction is used.</source>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
-      <source>Fillet type:</source>
-      <translation>Tip zaobljenja:</translation>
+      <source>Type:</source>
+      <translation>Vrsta:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
@@ -2947,11 +2951,6 @@ If both lengths are zero, magnitude of direction is used.</source>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
       <source>Radius:</source>
       <translation>Polumjer:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
-      <source>Chamfer Parameter</source>
-      <translation>Parametar Fasete</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -2977,6 +2976,11 @@ If both lengths are zero, magnitude of direction is used.</source>
       <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Equal distance</source>
       <translation>Ista udaljenost</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="269"/>
+      <source>Chamfer Parameters</source>
+      <translation type="unfinished">Chamfer Parameters</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3087,8 +3091,8 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
-      <source>Write solids and shells as</source>
-      <translation>Pisati čvrsto tijelo i ljuske kao</translation>
+      <source>Export solids and shells as</source>
+      <translation type="unfinished">Export solids and shells as</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3218,8 +3222,8 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
-      <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation>Nemojte koristiti naziv instance. Korisno za neke naslijeđene STEP datoteke s nesmislenim automatski generiranim nazivima instanci.</translation>
+      <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
+      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3393,8 +3397,8 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <name>PartGui::DlgPartImportStep</name>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
-      <source>Step input file</source>
-      <translation>STEP ulazna datoteka</translation>
+      <source>STEP input file</source>
+      <translation type="unfinished">STEP input file</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4245,14 +4249,14 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
-      <source>Bottom side of surface will be rendered the same way than top.
+      <source>The bottom side of the surface will be rendered the same way as the top.
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation>Donja strana površine bit će prikazana na isti način kao gornja.
-Ako nije označeno, ovisi o opciji "Boja pozadinskog osvjetljenja"
-(odjeljak postavki Prikaz -&gt; 3D prikaz); koristit će se boja pozadinskog osvjetljenja
-ili crna.</translation>
+      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
+If not checked, it depends on the option "Backlight color"
+(preferences section Display -&gt; 3D View); either the backlight color
+will be used or black.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4509,8 +4513,8 @@ u suprotnom koristit će se normalni vektor ravnine skice
     <name>PartGui::SectionCut</name>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
-      <source>Permanent Section Cutting</source>
-      <translation>Trajno rezanje presjeka</translation>
+      <source>Persistent Section Cutting</source>
+      <translation type="unfinished">Persistent Section Cutting</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5022,11 +5026,6 @@ predmeta koji se pridružuje.</translation>
       <translation>Postavke</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
-      <source>Skip settings page</source>
-      <translation>Preskoči stranicu postavki</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
       <translation>Preskoči ovu stranicu postavki i automatski pokreni provjeru geometrije</translation>
@@ -5151,6 +5150,11 @@ Individual boolean operation checks:</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Provjerava pogrešni argument vrste. Zadano:istina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <source>Skip this settings page</source>
+      <translation type="unfinished">Skip this settings page</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5579,13 +5583,13 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Odaberite dva oblika ili više oblika, ili odaberite jedan spojeni dio koji sadrži dva ili više oblika od kojih se izračuna presjek između njih.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Odaberite dva oblika ili više oblika, ili odaberite jedan spojeni dio koji sadrži dva ili više oblika koji če se spojiti.</translation>
+      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6812,8 +6816,15 @@ Skalira odabrani oblik</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
-      <source>Custom Appearance</source>
-      <translation type="unfinished">Custom Appearance</translation>
+      <source>Custom appearance:</source>
+      <translation type="unfinished">Custom appearance:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="97"/>
+      <source>When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</source>
+      <translation type="unfinished">When checked, you can select multiple faces
+by dragging a selection rectangle in the 3D view</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>
@@ -6826,13 +6837,6 @@ Skalira odabrani oblik</translation>
       <location filename="../../TaskFaceAppearances.ui" line="90"/>
       <source>Set to default</source>
       <translation>Postavi na zadanu vrijednost</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceAppearances.ui" line="97"/>
-      <source>When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</source>
-      <translation>Kada je označeno, možete odabrati više lica
-povlačenjem pravokutnika odabira u 3D prikazu</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>

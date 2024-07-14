@@ -503,11 +503,6 @@ For stock from the Base object&apos;s bounding box it means the extra material i
   <context>
     <name>DlgJobChooser</name>
     <message>
-      <location filename="../../DlgJobChooser.ui" line="17"/>
-      <source>Choose a Path Job</source>
-      <translation>Izaberi posao Staze</translation>
-    </message>
-    <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
       <translation>Izaberi kontroler Alata</translation>
@@ -526,6 +521,11 @@ For stock from the Base object&apos;s bounding box it means the extra material i
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
       <source>Destination</source>
       <translation>Odredište</translation>
+    </message>
+    <message>
+      <location filename="../../DlgJobChooser.ui" line="17"/>
+      <source>Choose a CAM Job</source>
+      <translation type="unfinished">Choose a CAM Job</translation>
     </message>
   </context>
   <context>
@@ -945,11 +945,6 @@ Resetiranje briše sve trenutne stavke s popisa i popunjava popis svim okruglim 
       <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <source>Coolant Mode</source>
       <translation>Način rada rashladnog sredstva</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
-      <source>G Gode</source>
-      <translation>G Gode</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
@@ -2348,6 +2343,11 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <source>Tag Generation</source>
       <translation>Stvaranje potpornih mostića</translation>
     </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
+      <source>G-Code</source>
+      <translation type="unfinished">G-Code</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsPath</name>
@@ -2413,59 +2413,6 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <translation>Zadana staza</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="188"/>
-      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</source>
-      <translation>Navedite putanju i opcionalno ime datoteke (pogledajte dolje) koja će se koristiti kao zadano za izvoz Naknadne obrade.
-Prije razrješenja naziva u vrijeme Naknadne obrade vrše se sljedeće zamjene:
-Zamjena omogućuje sljedeće:
-%D ... direktorij aktivnog dokumenta
-%d ... ime aktivnog dokumenta (s ekstenzijom)
-%M ... korisnički direktorij makro naredbi
-%j ... ime aktivnog objekta posla
-
-Sljedeće se može koristiti ako je izlaz podijeljen. Ako izlaz nije podijeljen,
-ovo će biti zanemareno.
-%T ... Akatni broj
-%t ... Oznaka kontrolera alata
-
-%W ... Radni koordinatni sustav
-%O ... Oznaka operacije
-
-Prilikom dijeljenja izlaza uvijek će se dodati sekvencijski broj.
-
-Ako je uključen %S, možete odrediti gdje se broj pojavljuje. Bez njega, broj će se dodati na kraj stringa.
-
-%S ... Sekvencijski broj
-
-Sljedeći primjer pohranjuje sve datoteke s istim imenom kao dokument u direktorij /home/freecad (molimo uklonite navodnike):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-Pogledajte politiku spremanja datoteka u nastavku kako biste saznali kako se nositi s sukobima dodavanja imena.</translation>
-    </message>
-    <message>
       <location filename="../preferences/PathJob.ui" line="230"/>
       <source>File Save Policy</source>
       <translation>Pravilnik spremanja Datoteka</translation>
@@ -2521,6 +2468,59 @@ If left empty no template will be preselected.</source>
 To može biti korisno kada su gotovo svi poslovi obrađeni istim strojem sa sličnim postavkama. 
 
 Ako se ostavi prazno, nijedan predložak neće biti unaprijed odabran.</translation>
+    </message>
+    <message>
+      <location filename="../preferences/PathJob.ui" line="188"/>
+      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+See the file save policy below on how to deal with name conflicts.</source>
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -3038,8 +3038,8 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3398,13 +3398,13 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
-      <source>Launch Camotics</source>
-      <translation>Pokreni Camotics</translation>
+      <source>Launch CAMotics</source>
+      <translation type="unfinished">Launch CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
-      <source>Make Camotics File</source>
-      <translation>Napravi Camotics datoteku</translation>
+      <source>Make CAMotics File</source>
+      <translation type="unfinished">Make CAMotics File</translation>
     </message>
   </context>
   <context>
@@ -3578,6 +3578,59 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
       <translation>Ispisna datoteka</translation>
     </message>
     <message>
+      <location filename="../panels/PathEdit.ui" line="141"/>
+      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</source>
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</translation>
+    </message>
+    <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
       <source>Processor</source>
       <translation>Procesor</translation>
@@ -3627,9 +3680,9 @@ Ordering by operation will do each operation in all coordinate systems before mo
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3869,59 +3922,6 @@ Default: &quot;5mm&quot;</translation>
       <location filename="../panels/PathEdit.ui" line="1069"/>
       <source>Final Depth</source>
       <translation>Konačna Dubina</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="141"/>
-      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
@@ -4170,8 +4170,8 @@ Zadano: "3mm"</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
-      <source>Camotics Project (*.camotics)</source>
-      <translation>Projekt Camotics (*.camotics)</translation>
+      <source>CAMotics Project (*.camotics)</source>
+      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4206,11 +4206,6 @@ Zadano: "3mm"</translation>
       <translation>Brzina vretena Obr./min</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <source>Choose a Path Job</source>
-      <translation>Izaberi posao Staze</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="548"/>
       <source>Selected tool is not a drill</source>
       <translation>Odabrani alat nije za bušenje</translation>
@@ -4239,6 +4234,11 @@ Zadano: "3mm"</translation>
       <location filename="../../../Path/Op/Deburr.py" line="183"/>
       <source>Conventional</source>
       <translation>Konvencionalno</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
+      <source>Choose a CAM Job</source>
+      <translation type="unfinished">Choose a CAM Job</translation>
     </message>
   </context>
   <context>
@@ -5228,8 +5228,8 @@ Visina potpornih mostića.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
-      <source>Maximum distance before a miter join is truncated</source>
-      <translation>Maksimalna udaljenost prije nego što se spoj s obližnjim uglovima odsječe</translation>
+      <source>Maximum distance before a miter joint is truncated</source>
+      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5320,8 +5320,8 @@ Visina potpornih mostića.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
-      <source>For arcs/circlular edges, offset the radius for the toolpath.</source>
-      <translation>Za lukove / kružne rubove pomaknite polumjer staze obrade.</translation>
+      <source>For arcs/circular edges, offset the radius for the toolpath.</source>
+      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5938,8 +5938,8 @@ Staza obrade koju treba kopirati</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
-      <source>No JOB</source>
-      <translation>Bez POSLA</translation>
+      <source>No job</source>
+      <translation type="unfinished">No job</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -6375,8 +6375,8 @@ Prekidam OP-stvaranje.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
-      <source>Invalid Gcode line: %s</source>
-      <translation>Nevažeća Gcode linija: %s</translation>
+      <source>Invalid G-code line: %s</source>
+      <translation type="unfinished">Invalid G-code line: %s</translation>
     </message>
   </context>
   <context>
@@ -7054,19 +7054,6 @@ For example:
     </message>
   </context>
   <context>
-    <name>CAM_Camotics</name>
-    <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
-      <source>Camotics</source>
-      <translation>Camotics</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
-      <source>Simulate using Camotics</source>
-      <translation>Simuliraj sa Camotics</translation>
-    </message>
-  </context>
-  <context>
     <name>CAM_Fixture</name>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="153"/>
@@ -7204,9 +7191,19 @@ For example:
       <translation>Proizvođač</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
+      <source>Output (G-code)</source>
+      <translation type="unfinished">Output (G-code)</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
       <source>Part Number</source>
       <translation>Broj Djela</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
+      <source>Surface Speed HSS</source>
+      <translation type="unfinished">Surface Speed HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -7249,19 +7246,9 @@ For example:
       <translation type="unfinished">Setup Report for CAM Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
-      <source>Output (Gcode)</source>
-      <translation type="unfinished">Output (Gcode)</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Surface Speed Carbide</source>
       <translation type="unfinished">Surface Speed Carbide</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
-      <source>Surace Speed HSS</source>
-      <translation type="unfinished">Surace Speed HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
@@ -8590,8 +8577,8 @@ Razmotrite specificiranje Materijala obrade</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
-      <source>Camotics tooltable (*.json)</source>
-      <translation>Camotics Tabela alata (*.json)</translation>
+      <source>CAMotics tooltable (*.json)</source>
+      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8664,6 +8651,19 @@ Razmotrite specificiranje Materijala obrade</translation>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="480"/>
       <source>No library selected</source>
       <translation type="unfinished">No library selected</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Camotics</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
+      <source>CAMotics</source>
+      <translation type="unfinished">CAMotics</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
+      <source>Simulate using CAMotics</source>
+      <translation type="unfinished">Simulate using CAMotics</translation>
     </message>
   </context>
 </TS>

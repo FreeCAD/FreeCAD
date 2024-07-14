@@ -587,8 +587,8 @@
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
-      <source>Scroll middle mouse button</source>
-      <translation>Deruleaza folosind butonul din mijloc al mouse-ului</translation>
+      <source>Scroll mouse wheel</source>
+      <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
   </context>
   <context>
@@ -4561,8 +4561,8 @@ Valoare mai mare se ușurează să aleagă lucruri, dar poate face imposibilă s
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
-      <source>Units calculator</source>
-      <translation>Calculator de unități</translation>
+      <source>Units converter</source>
+      <translation type="unfinished">Units converter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -5195,8 +5195,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
-      <source>Rotation axis with angle</source>
-      <translation>Axa de rotație și unghiul</translation>
+      <source>Rotation axis and angle</source>
+      <translation type="unfinished">Rotation axis and angle</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5894,13 +5894,13 @@ Doriți să salvați modificările?</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Glisați un singur deget pe ecran SAU apăsați butonul stâng al mouse-ului. În Sketcher și în alte moduri de editare, țineți și tasta Alt apăsată.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Ciupiți (puneți două degete pe ecran și glisați-le divergent). Sau scroll cu rotița din mijloc de la mouse. Sau apăsați PgUp/PgDown pe tastatură.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -6854,8 +6854,8 @@ Doriţi să specificaţi un alt director?</translation>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="318"/>
-      <source>Automatic python modules documentation</source>
-      <translation>Documentație automată a modulelor python</translation>
+      <source>Automatic Python modules documentation</source>
+      <translation type="unfinished">Automatic Python modules documentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="319"/>
@@ -7422,8 +7422,8 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3274"/>
-      <source>Create group...</source>
-      <translation>Creazã grup...</translation>
+      <source>Create group</source>
+      <translation>Creați grupul</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3275"/>
@@ -8593,8 +8593,8 @@ Alege 'Abandonează' pentru a abandona</translation>
       <translation>Importul tuturor legăturilor a eșuat</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="99"/>
-      <location filename="../DlgAddProperty.cpp" line="112"/>
+      <location filename="../DlgAddProperty.cpp" line="105"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="285"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="295"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="317"/>
@@ -8602,7 +8602,7 @@ Alege 'Abandonează' pentru a abandona</translation>
       <translation>Nume invalid</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="100"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="286"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
@@ -8610,19 +8610,19 @@ underscore, and must not start with a digit.</source>
 liniuță jos și nu trebuie să înceapă cu o cifră.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="113"/>
+      <location filename="../DlgAddProperty.cpp" line="119"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="296"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation>Proprietatea '%1' există deja în '%2'</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="136"/>
+      <location filename="../DlgAddProperty.cpp" line="142"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="248"/>
       <source>Add property</source>
       <translation>Adăugaţi o proprietate</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="137"/>
+      <location filename="../DlgAddProperty.cpp" line="143"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="249"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Nu am putut adăuga proprietatea la '%1': %2</translation>
@@ -10503,20 +10503,6 @@ underscore, and must not start with a digit.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUnitsCalculator</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="778"/>
-      <source>&amp;Units calculator...</source>
-      <translation>&amp;calculator de unități...</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="779"/>
-      <location filename="../CommandStd.cpp" line="781"/>
-      <source>Start the units calculator</source>
-      <translation>Pornește calculatorul de unități</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdUserEditMode</name>
     <message>
       <location filename="../CommandStd.cpp" line="814"/>
@@ -11989,8 +11975,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
-      <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>Acesta este modulul curent de pornire, și trebuie să fie activat. Vezi Preferințe/Generale/Autoîncărcate pentru modificare.</translation>
+      <source>This is the current startup module, and must be enabled.</source>
+      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -12009,8 +11995,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
-      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation>Acesta este modulul curent de pornire și trebuie să fie încărcat automat. Vezi Preferințe/Generale/Autoîncărcate pentru modificare.</translation>
+      <source>This is the current startup module, and must be autoloaded.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -13026,8 +13012,8 @@ Acest lucru face ca ferestrele andocate să rămână transparente în orice mom
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3716"/>
-      <source>Toggle transparent</source>
-      <translation>Comută transparent</translation>
+      <source>Toggle transparent mode</source>
+      <translation>Comută modul transparent</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
@@ -13367,8 +13353,8 @@ regiunea nu este opacă.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
-      <source>Locks toolbar so they are no longer moveable</source>
-      <translation>Blochează bara de instrumente astfel încât acestea să nu mai fie mobile</translation>
+      <source>Lock toolbars so they are no longer moveable</source>
+      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
     </message>
   </context>
   <context>
@@ -13557,11 +13543,6 @@ regiunea nu este opacă.</translation>
       <translation type="unfinished">Theme customization</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
-      <source>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
       <source>Accent color 1</source>
       <translation>Accent culoare 1</translation>
@@ -13646,9 +13627,14 @@ regiunea nu este opacă.</translation>
       <translation type="unfinished">Additional spacing for tree view rows. Bigger values will increase row item heights.</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
+      <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
-      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</translation>
+      <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
+      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
@@ -13762,6 +13748,20 @@ regiunea nu este opacă.</translation>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
       <translation type="unfinished">A Variable Set is an object that maintains a set of properties to be used as variables.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="778"/>
+      <source>&amp;Units converter...</source>
+      <translation type="unfinished">&amp;Units converter...</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="779"/>
+      <location filename="../CommandStd.cpp" line="781"/>
+      <source>Start the units converter</source>
+      <translation type="unfinished">Start the units converter</translation>
     </message>
   </context>
 </TS>

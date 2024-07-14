@@ -80,7 +80,7 @@ Tento příkaz funguje pouze se 'síťovým' objektem.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>

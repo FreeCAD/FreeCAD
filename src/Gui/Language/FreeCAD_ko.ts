@@ -588,8 +588,8 @@
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
-      <source>Scroll middle mouse button</source>
-      <translation>가운데 마우스 버튼 스크롤</translation>
+      <source>Scroll mouse wheel</source>
+      <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
   </context>
   <context>
@@ -4559,8 +4559,8 @@ Larger value eases to pick things, but can make small features impossible to sel
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
-      <source>Units calculator</source>
-      <translation>단위 계산기</translation>
+      <source>Units converter</source>
+      <translation type="unfinished">Units converter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -5195,8 +5195,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
-      <source>Rotation axis with angle</source>
-      <translation>각도 회전 축</translation>
+      <source>Rotation axis and angle</source>
+      <translation type="unfinished">Rotation axis and angle</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5895,13 +5895,13 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>한 손가락으로 화면을 드래그하거나 마우스 왼쪽 버튼을 누릅니다. 스케쳐 &amp;&amp; 다른 편집 모드에서 Alt 키를 추가로 누릅니다.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>핀치(화면을 엄지와 검지로 벌리듯 확대하거나 조이듯 축소하는 기능) 또는 마우스 가운데 버튼으로 스크롤 또는 키보드의 PgUp/PgDown 키를 누릅니다.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -6856,8 +6856,8 @@ Do you want to specify another directory?</source>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="318"/>
-      <source>Automatic python modules documentation</source>
-      <translation>자동 Python 모듈 문서</translation>
+      <source>Automatic Python modules documentation</source>
+      <translation type="unfinished">Automatic Python modules documentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="319"/>
@@ -7424,8 +7424,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3274"/>
-      <source>Create group...</source>
-      <translation>그룹 만들기...</translation>
+      <source>Create group</source>
+      <translation>그룹 만들기</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3275"/>
@@ -8593,8 +8593,8 @@ Choose 'Abort' to abort</source>
       <translation>모든 링크를 가져오지 못했습니다</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="99"/>
-      <location filename="../DlgAddProperty.cpp" line="112"/>
+      <location filename="../DlgAddProperty.cpp" line="105"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="285"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="295"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="317"/>
@@ -8602,26 +8602,26 @@ Choose 'Abort' to abort</source>
       <translation>잘못된 이름</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="100"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="286"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
       <translation>속성 또는 그룹에 이름을 지정할 때 규칙은 첫글자는 숫자가 아니어야 하고, 알파벳, 밑줄, 숫자들로 되어 있어야 하는 것입니다.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="113"/>
+      <location filename="../DlgAddProperty.cpp" line="119"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="296"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation type="unfinished">The property '%1' already exists in '%2'</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="136"/>
+      <location filename="../DlgAddProperty.cpp" line="142"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="248"/>
       <source>Add property</source>
       <translation>속성 추가하기</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="137"/>
+      <location filename="../DlgAddProperty.cpp" line="143"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="249"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>'%1'에 속성을 추가하지 못했습니다: %2</translation>
@@ -10495,20 +10495,6 @@ underscore, and must not start with a digit.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUnitsCalculator</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="778"/>
-      <source>&amp;Units calculator...</source>
-      <translation>단위 계산기(&amp;U)...</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="779"/>
-      <location filename="../CommandStd.cpp" line="781"/>
-      <source>Start the units calculator</source>
-      <translation>단위 계산기 시작하기</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdUserEditMode</name>
     <message>
       <location filename="../CommandStd.cpp" line="814"/>
@@ -11977,8 +11963,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
-      <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation type="unfinished">This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</translation>
+      <source>This is the current startup module, and must be enabled.</source>
+      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -11997,8 +11983,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
-      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation>이것은 현재 시작 모듈이며 자동으로 불러오기되어야 합니다. 변경하려면 환경설정/일반/자동으로 불러오기를 참조하십시오.</translation>
+      <source>This is the current startup module, and must be autoloaded.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -13007,8 +12993,8 @@ This makes the docked windows stay transparent at all times.</translation>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3716"/>
-      <source>Toggle transparent</source>
-      <translation type="unfinished">Toggle transparent</translation>
+      <source>Toggle transparent mode</source>
+      <translation type="unfinished">Toggle transparent mode</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
@@ -13348,8 +13334,8 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
-      <source>Locks toolbar so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbar so they are no longer moveable</translation>
+      <source>Lock toolbars so they are no longer moveable</source>
+      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
     </message>
   </context>
   <context>
@@ -13538,11 +13524,6 @@ the region are non-opaque.</translation>
       <translation type="unfinished">Theme customization</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
-      <source>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
       <source>Accent color 1</source>
       <translation type="unfinished">Accent color 1</translation>
@@ -13625,9 +13606,14 @@ the region are non-opaque.</translation>
       <translation type="unfinished">Additional spacing for tree view rows. Bigger values will increase row item heights.</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
+      <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
-      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</translation>
+      <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
+      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
@@ -13741,6 +13727,20 @@ the region are non-opaque.</translation>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
       <translation type="unfinished">A Variable Set is an object that maintains a set of properties to be used as variables.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="778"/>
+      <source>&amp;Units converter...</source>
+      <translation type="unfinished">&amp;Units converter...</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="779"/>
+      <location filename="../CommandStd.cpp" line="781"/>
+      <source>Start the units converter</source>
+      <translation type="unfinished">Start the units converter</translation>
     </message>
   </context>
 </TS>

@@ -85,24 +85,24 @@ so that self intersection is avoided.</source>
       <translation>歯数</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="101"/>
-      <source>Modules of the gear</source>
-      <translation>歯車のモジュール</translation>
-    </message>
-    <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
       <translation>歯の圧力角</translation>
     </message>
     <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Module of the gear</source>
+      <translation type="unfinished">Module of the gear</translation>
+    </message>
+    <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
-      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
-      <translation>True=それぞれ3つの制御点を持つ2曲線 False=4つの制御点を持つ1曲線</translation>
+      <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
-      <source>True=external Gear False=internal Gear</source>
-      <translation>True=外歯車 False=内歯車</translation>
+      <source>True=external Gear, False=internal Gear</source>
+      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -338,7 +338,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1267"/>
       <source>Groove a selected sketch</source>
-      <translation>選択されたスケッチに溝を作成</translation>
+      <translation>選択したスケッチに溝を作成</translation>
     </message>
   </context>
   <context>
@@ -915,8 +915,8 @@ so that self intersection is avoided.</source>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="434"/>
-      <source>Migrate legacy part design features to Bodies</source>
-      <translation>従来の部品設計フィーチャをボディーに移行</translation>
+      <source>Migrate legacy Part Design features to Bodies</source>
+      <translation type="unfinished">Migrate legacy Part Design features to Bodies</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="579"/>
@@ -3878,13 +3878,13 @@ This feature is broken and can't be edited.</source>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
-      <source>One transformed shape does not intersect support</source>
-      <translation>変換形状の1つが支持体積と交差していません</translation>
+      <source>One transformed shape does not intersect the support</source>
+      <translation type="unfinished">One transformed shape does not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
-      <source>%1 transformed shapes do not intersect support</source>
-      <translation>%1 つの変換形状が支持体積と交差していません</translation>
+      <source>%1 transformed shapes do not intersect the support</source>
+      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3978,8 +3978,8 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <name>SprocketParameter</name>
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
-      <source>Sprocket parameter</source>
-      <translation>スプロケットパラメーター</translation>
+      <source>Sprocket parameters</source>
+      <translation type="unfinished">Sprocket parameters</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4158,8 +4158,8 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
-      <source>Tooth Width</source>
-      <translation>歯の幅</translation>
+      <source>Tooth Width:</source>
+      <translation type="unfinished">Tooth Width:</translation>
     </message>
   </context>
   <context>
@@ -4966,8 +4966,8 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="128"/>
-      <source>Error: Pitch too small</source>
-      <translation>エラー: ピッチが小さすぎます。</translation>
+      <source>Error: Pitch too small!</source>
+      <translation type="unfinished">Error: Pitch too small!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>

@@ -872,19 +872,19 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Linhas principais a cada</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="209"/>
       <location filename="../ui/TaskSelectPlane.ui" line="229"/>
       <source> squares</source>
-      <translation type="unfinished"> squares</translation>
+      <translation> quadrados</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
       <location filename="../ui/TaskSelectPlane.ui" line="226"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>O número de quadrados na direção X e Y da grade</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="219"/>
@@ -1231,7 +1231,7 @@ de anotação. Se a escala for de 1:100, o multiplicador será de 100.</translat
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
       <source>Ext line length</source>
-      <translation type="unfinished">Ext line length</translation>
+      <translation>Comprimento da linha</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
@@ -1239,10 +1239,10 @@ de anotação. Se a escala for de 1:100, o multiplicador será de 100.</translat
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</source>
-      <translation type="unfinished">The length of extension lines. Use 0 for full extension lines. A negative value
-defines the gap between the ends of the extension lines and the measured points.
-A positive value defines the maximum length of the extension lines. Only used
-for linear dimensions.</translation>
+      <translation>O comprimento das linhas de extensão. Use 0 para linhas de extensão completas. Um valor negativo
+define o intervalo entre os fins das linhas de extensão e os pontos de medida.
+Um valor positivo define o comprimento máximo das linhas de extensão. Usado
+apenas para dimensões linear.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
@@ -1252,7 +1252,7 @@ for linear dimensions.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
       <source>The length of extension lines above the dimension line</source>
-      <translation type="unfinished">The length of extension lines above the dimension line</translation>
+      <translation>Comprimento da linha de extensão acima da linha de cota</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
@@ -1262,12 +1262,12 @@ for linear dimensions.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
       <source>Apply the above style to selected object(s)</source>
-      <translation type="unfinished">Apply the above style to selected object(s)</translation>
+      <translation>Aplicar o estilo acima ao(s) objeto(s) selecionado(s)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
-      <translation type="unfinished">Apply the above style to all annotations (texts, dimensions and labels)</translation>
+      <translation>Aplicar o estilo acima a todas as anotações (textos, dimensões e etiquetas)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
@@ -1332,8 +1332,8 @@ for linear dimensions.</translation>
       <location filename="../ui/preferences-draft.ui" line="39"/>
       <source>The number of decimals used in internal coordinate operations (for example 3 = 0.001).
 Values between 6 and 8 are usually considered the best trade-off.</source>
-      <translation type="unfinished">The number of decimals used in internal coordinate operations (for example 3 = 0.001).
-Values between 6 and 8 are usually considered the best trade-off.</translation>
+      <translation>O número de decimais usados nas operações internas de coordenadas (por exemplo, 3 = 0.001).
+Os valores entre 6 e 8 são geralmente considerados como a melhor troca de troca.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="73"/>
@@ -1341,10 +1341,10 @@ Values between 6 and 8 are usually considered the best trade-off.</translation>
 will automatically align with the current view whenever a command is started.
 Additionally it will align to preselected planar faces, or when points on planar
 faces are picked during commands.</source>
-      <translation type="unfinished">The default working plane for new views. If set to "Automatic" the working plane
-will automatically align with the current view whenever a command is started.
-Additionally it will align to preselected planar faces, or when points on planar
-faces are picked during commands.</translation>
+      <translation>O plano de trabalho padrão para novas visualizações. Se definido como "Automático" o plano
+funcionará irá se alinhar automaticamente com a vista atual sempre que um comando for iniciado.
+Além disso, irá alinhar com faces planas pré-selecionadas, ou quando pontos em faces
+planar forem escolhidos durante os comandos.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
@@ -1365,25 +1365,24 @@ faces are picked during commands.</translation>
       <location filename="../ui/preferences-draft.ui" line="112"/>
       <source>If checked, a widget indicating the current working
 plane orientation appears when picking points</source>
-      <translation type="unfinished">If checked, a widget indicating the current working
-plane orientation appears when picking points</translation>
+      <translation>Se marcada, uma widget indicando o plano
+trabalho atual de orientação aparece quando escolhe pontos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
       <source>Show working plane tracker</source>
-      <translation type="unfinished">Show working plane tracker</translation>
+      <translation>Mostrar rastreador plano de trabalho</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="129"/>
       <source>If checked, the layers drop-down list also includes groups.
 Objects can then automatically be added to groups as well.</source>
-      <translation type="unfinished">If checked, the layers drop-down list also includes groups.
-Objects can then automatically be added to groups as well.</translation>
+      <translation>Se marcada, a lista suspensa de camadas também inclui grupos. Objetos podem ser adicionados automaticamente aos grupos também.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="133"/>
       <source>Include groups in layer list</source>
-      <translation type="unfinished">Include groups in layer list</translation>
+      <translation>Incluir grupos na lista de camadas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
@@ -1393,62 +1392,60 @@ Objects can then automatically be added to groups as well.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report view when using Draft commands</source>
-      <translation type="unfinished">If checked, instructions are displayed in the Report view when using Draft commands</translation>
+      <translation>Se marcada, as instruções são exibidas na Vista de Relatório ao usar comandos de Rascunho</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
       <source>Show prompts in the Report view</source>
-      <translation type="unfinished">Show prompts in the Report view</translation>
+      <translation>Mostrar avisos na visualização de relatório</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="171"/>
       <source>If checked, Length input, instead of the X coordinate, will have the initial focus.
 This allows to indicate a direction and then type a distance.</source>
-      <translation type="unfinished">If checked, Length input, instead of the X coordinate, will have the initial focus.
-This allows to indicate a direction and then type a distance.</translation>
+      <translation>Se marcada, a entrada de comprimento, em vez da coordenada X, será o foco inicial. Isto permite indicar uma direção e então digitar uma distância.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="188"/>
       <source>If checked, base objects, instead of created copies, are selected after copying</source>
-      <translation type="unfinished">If checked, base objects, instead of created copies, are selected after copying</translation>
+      <translation>Se selecionado, objetos base, em vez de cópias criadas, são selecionados após a cópia</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="204"/>
       <source>If checked, Draft commands will create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many objects will not be editable with
 Draft modification commands.</source>
-      <translation type="unfinished">If checked, Draft commands will create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many objects will not be editable with
-Draft modification commands.</translation>
+      <translation>Forçar as ferramentas de traço a criar primitivas Part em vez de objetos Draft.
+Note que isto não é suportado por todas as ferramentas, e muitos objetos não serão editáveis com ferramentas de edição.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="209"/>
       <source>Create Part primitives if possible</source>
-      <translation type="unfinished">Create Part primitives if possible</translation>
+      <translation>Criar peças primitivas se possível</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="222"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face colors.
 Only for the splitFaces and makeShell options.</source>
-      <translation type="unfinished">If checked, Draft Downgrade and Draft Upgrade will keep face colors.
-Only for the splitFaces and makeShell options.</translation>
+      <translation>Se marcado, o Downgrade e a Melhoria do Rascunho manterão as cores do rosto.
+somente para as opções splitFaces e makeShell.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="226"/>
       <source>Keep face colors during downgrade/upgrade</source>
-      <translation type="unfinished">Keep face colors during downgrade/upgrade</translation>
+      <translation>Manter cores da face durante downgrade/upgrade</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="239"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face names.
 Only for the splitFaces and makeShell options.</source>
-      <translation type="unfinished">If checked, Draft Downgrade and Draft Upgrade will keep face names.
-Only for the splitFaces and makeShell options.</translation>
+      <translation>Se marcado, o Downgrade e a Melhoria do Rascunho manterão as cores do rosto.
+somente para as opções splitFaces e makeShell.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="243"/>
       <source>Keep face names during downgrade/upgrade</source>
-      <translation type="unfinished">Keep face names during downgrade/upgrade</translation>
+      <translation>Mantenha os nomes das faces durante o downgrade/upgrade</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="263"/>
@@ -1457,51 +1454,47 @@ manually in any of the coordinate fields. Setting this to 0 disables the delay.
 If a delay of 1 is set, after entering a numeric value, the mouse will not
 update the field anymore during one second, to avoid moving the mouse
 accidentally and modifying the entered value.</source>
-      <translation type="unfinished">This is a delay during which the mouse is inactive, after entering numbers
-manually in any of the coordinate fields. Setting this to 0 disables the delay.
-If a delay of 1 is set, after entering a numeric value, the mouse will not
-update the field anymore during one second, to avoid moving the mouse
-accidentally and modifying the entered value.</translation>
+      <translation>Isto define um atraso após o qual o mouse fica inativo depois de introduzir manualmente numeros como coordenadas. Se o valor for 0, não terá atraso. Se o valor for de 1, depois de introduzir alguma coordenada numérica, o mouse não atualizará mais a área durante um segundo para prevenir que mover o mouse acidentalmente modifique a coordenada introduzida. Se um valor muito alto for introduzido, por ex. , o mouse será desativado até o comando acabar.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="296"/>
       <source>Max. number of editable objects</source>
-      <translation type="unfinished">Max. number of editable objects</translation>
+      <translation>Número máximo de objetos editáveis</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="328"/>
       <source>Edit node pick radius</source>
-      <translation type="unfinished">Edit node pick radius</translation>
+      <translation>Editar raio de seleção do nó</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="335"/>
       <source>The pick radius of edit nodes</source>
-      <translation type="unfinished">The pick radius of edit nodes</translation>
+      <translation>Controla o raio de escolha dos nós de edição</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="357"/>
       <source>Label prefix for clones</source>
-      <translation type="unfinished">Label prefix for clones</translation>
+      <translation>Prefixo do rótulo para os clones</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="370"/>
       <source>The default prefix added to the label of new clones</source>
-      <translation type="unfinished">The default prefix added to the label of new clones</translation>
+      <translation>O prefixo padrão adicionado à etiqueta de novos clones</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="386"/>
       <source>Construction group label</source>
-      <translation type="unfinished">Construction group label</translation>
+      <translation>Nome do grupo de construção</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="399"/>
       <source>The default label for the construction geometry group</source>
-      <translation type="unfinished">The default label for the construction geometry group</translation>
+      <translation>O rótulo padrão para o grupo de geometria de construção</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="422"/>
       <source>The default color for Draft objects in construction mode</source>
-      <translation type="unfinished">The default color for Draft objects in construction mode</translation>
+      <translation>A cor padrão para objetos Rascunhos no modo de construção</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="26"/>
@@ -1599,6 +1592,7 @@ a serem adicionadas aos padrões de base</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <location filename="../ui/preferences-dxf.ui" line="167"/>
       <source>Texts and dimensions</source>
       <translation>Textos e cotas</translation>
     </message>
@@ -2008,21 +2002,11 @@ Note: C++ importer is faster, but is not as featureful yet</source>
 Nota: O importador C++ é mais rápido, mas não tem muitos recursos ainda</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
-      <source>Use legacy python importer</source>
-      <translation>Use o antigo importador em python</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-dxf.ui" line="74"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>O exportador Python é usado, caso contrário, o exportador C++ mais recente é utilizado.
 Nota: O exportador C++ é mais rápido, mas não tem muitos recursos ainda</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
-      <source>Use legacy python exporter</source>
-      <translation>Use o importador python antigo (legacy)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="99"/>
@@ -2056,11 +2040,6 @@ do Gerenciador de Complementos.</translation>
       <translation>Se desmarcado, textos e mtexts não serão importados</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
-      <source>texts and dimensions</source>
-      <translation>textos e cotas</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-dxf.ui" line="180"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Se desmarcado, os pontos não serão importados</translation>
@@ -2074,11 +2053,6 @@ do Gerenciador de Complementos.</translation>
       <location filename="../ui/preferences-dxf.ui" line="196"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Se marcado, objetos do paper space serão importados também</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
-      <source>layouts</source>
-      <translation>layouts</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="212"/>
@@ -2099,11 +2073,6 @@ do Gerenciador de Complementos.</translation>
       <location filename="../ui/preferences-dxf.ui" line="245"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Apenas objetos Peça padrão serão criados (mais rápido)</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
-      <source>simple Part shapes</source>
-      <translation>peças simples</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="267"/>
@@ -2173,9 +2142,29 @@ Otherwise default colors will be applied.</translation>
       <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <source>Use legacy Python importer</source>
+      <translation type="unfinished">Use legacy Python importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <source>Use legacy Python exporter</source>
+      <translation type="unfinished">Use legacy Python exporter</translation>
+    </message>
+    <message>
       <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Some options are not yet available for the new importer</source>
       <translation type="unfinished">Some options are not yet available for the new importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <source>Layouts</source>
+      <translation type="unfinished">Layouts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <source>Simple Part shapes</source>
+      <translation>Formas simples de Peça (Part)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="362"/>
@@ -2316,7 +2305,7 @@ Isto pode falhar para modelos DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="133"/>
       <source>Major lines every</source>
-      <translation type="unfinished">Major lines every</translation>
+      <translation>Linhas principais a cada</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
@@ -2329,12 +2318,12 @@ Major grid lines are thicker than minor grid lines.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="150"/>
       <location filename="../ui/preferences-draftsnap.ui" line="221"/>
       <source> squares</source>
-      <translation type="unfinished"> squares</translation>
+      <translation> quadrados</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="218"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>O número de quadrados na direção X e Y da grade</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="394"/>
@@ -3432,24 +3421,6 @@ Tente mover o arquivo DWG para um caminho de diretório sem espaços e caractere
       <translation>As formas selecionadas devem definir um plano</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>As bibliotecas de importação/exportação DXF necessárias para o FreeCAD manusear o formato DXF não foram encontradas neste sistema.
-Por favor permita o FreeCAD para baixar estas bibliotecas:
-  1 - Carregue a bancada de trabalho 'Draft'
-  2 - Menu Editar &gt; Preferências &gt; Importar-Exportar &gt; DXF &gt; Ativar Downloads
-Ou faça o download destas bibliotecas manualmente, como explicado em
-https://github.com/yorikvanhavre/Draft-dxf-importer
-Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.</translation>
-    </message>
-    <message>
       <location filename="../../WorkingPlane.py" line="1296"/>
       <location filename="../../WorkingPlane.py" line="1297"/>
       <location filename="../../WorkingPlane.py" line="1566"/>
@@ -4090,11 +4061,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Inverter dimensão</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Este esboço é muito complexo para editar: é sugerido usar o editor padrão do esboço</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Raio do arredondamento</translation>
@@ -4323,8 +4289,8 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>O ponto final desta curva não pode ser suavizado</translation>
+      <source>Endpoint of Bézier curve can't be smoothed</source>
+      <translation type="unfinished">Endpoint of Bézier curve can't be smoothed</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -5575,6 +5541,30 @@ dos objetos existentes em todos os documentos abertos?</translation>
       <source>updated view properties</source>
       <translation type="unfinished">updated view properties</translation>
     </message>
+    <message>
+      <location filename="../../importDXF.py" line="143"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
+      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6408,11 +6398,11 @@ CTRL para ajustar, SHIFT para restringir.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
       <source>Edits the active object.
-Press E or ALT+LeftClick to display context menu
+Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
-      <translation>Edita o objeto ativo.
-Pressione E ou ALT+Clique esquerdo para exibir o menu de contexto
-em nós suportados e em objetos suportados.</translation>
+      <translation type="unfinished">Edits the active object.
+Press E or ALT + Left Click to display context menu
+on supported nodes and on supported objects.</translation>
     </message>
   </context>
   <context>
@@ -6514,8 +6504,8 @@ Crie um grupo primeiro para usar esta ferramenta.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
-      <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Escolha um grupo para adicionar todos os objetos do tipo Esboço e Arco.</translation>
+      <source>Select a group to add all Draft and BIM objects to.</source>
+      <translation type="unfinished">Select a group to add all Draft and BIM objects to.</translation>
     </message>
   </context>
   <context>
