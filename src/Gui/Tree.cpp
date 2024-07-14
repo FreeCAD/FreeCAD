@@ -1675,6 +1675,9 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
     QTreeWidget::mousePressEvent(event);
 
+    // Suppress selection change when right-clicking on an item
+    suppressSelectionChange = event->button() == Qt::RightButton ? true : false;
+    
     // Handle the visibility icon after the normal event processing to not interfere with
     // the selection logic.
     if (isVisibilityIconEnabled()) {
@@ -3363,6 +3366,10 @@ void TreeWidget::changeEvent(QEvent* e)
 
 void TreeWidget::onItemSelectionChanged()
 {
+    if (suppressSelectionChange) {
+        return;
+    }
+
     if (!this->isSelectionAttached()
         || this->isSelectionBlocked()
         || updateBlocked)
