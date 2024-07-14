@@ -147,7 +147,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
 
         if (isExplodedView) {
             Py::Object explodedViewPy = proxy->getValue();
-            
+
             Py::Object attr = explodedViewPy.getAttr("restoreAssembly");
             if (attr.ptr() && attr.isCallable()) {
                 Py::Tuple args(1);

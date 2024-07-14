@@ -87,7 +87,7 @@ private:
     bool isSupportedType(std::string& type);
     void createProperty(std::string& name, std::string& group);
 
-    void onNamePropertyDetermined();
+    void onNamePropertyDetermined(const QString& text);
     void onGroupDetermined();
     void onTypePropertyDetermined();
 

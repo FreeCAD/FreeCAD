@@ -37,7 +37,7 @@ class BIM_Project:
         return {
             "Pixmap": "BIM_Project",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Project", "Project"),
-            "ToolTip": QT_TRANSLATE_NOOP("BIM_Project", 
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Project",
                                          "Create an empty NativeIFC project"),
         }
 

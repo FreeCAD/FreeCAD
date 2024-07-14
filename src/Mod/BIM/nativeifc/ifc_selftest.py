@@ -54,7 +54,7 @@ SDU = int(SINGLEDOC)  # number of objects is different in singledoc
 """
 unit tests for the NativeIFC functionality. To run the tests, either:
 - in terminal mode: FreeCAD -t ifc_selftest
-- in the FreeCAD UI: Switch to Test Framework workbench, press "Self test" and 
+- in the FreeCAD UI: Switch to Test Framework workbench, press "Self test" and
   choose ifc_selftest in the list
 """
 

@@ -209,7 +209,6 @@ class AddonInstallerGUI(QtCore.QObject):
         self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "dependency_resolution_dialog.ui")
         )
-        self.dependency_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         for addon in missing.external_addons:
             self.dependency_dialog.listWidgetAddons.addItem(addon)
@@ -555,7 +554,6 @@ class MacroInstallerGUI(QtCore.QObject):
             add_toolbar_button_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "add_toolbar_button_dialog.ui")
             )
-            add_toolbar_button_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
             add_toolbar_button_dialog.buttonYes.clicked.connect(self._install_toolbar_button)
             add_toolbar_button_dialog.buttonNever.clicked.connect(
                 lambda: self.addon_params.SetBool("dontShowAddMacroButtonDialog", True)
@@ -591,7 +589,6 @@ class MacroInstallerGUI(QtCore.QObject):
             select_toolbar_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "select_toolbar_dialog.ui")
             )
-            select_toolbar_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
             select_toolbar_dialog.comboBox.clear()
 
