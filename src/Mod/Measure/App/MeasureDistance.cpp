@@ -150,7 +150,6 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     }
 
     auto handler = getGeometryHandler(mod);
-    std::string obName = static_cast<std::string>(ob->getNameInDocument());
     App::SubObjectT subject{ob, subName.c_str()};
     auto info = handler(subject);
     if (!info->valid) {
@@ -158,7 +157,7 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     }
     auto distanceInfo = std::dynamic_pointer_cast<Part::MeasureDistanceInfo>(info);
 
-    rShape = *distanceInfo->getShape();
+    rShape = distanceInfo->getShape();
     return true;
 }
 
