@@ -719,8 +719,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ExportDependencyGraph"
           << "Std_ProjectUtil"
           << "Separator"
-          << "Std_Measure"
-          << "Separator"
           << "Std_TextDocument"
           << "Separator"
           << "Std_DemoMode"
@@ -803,8 +801,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
-          << "Separator" << "Std_Measure";
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);

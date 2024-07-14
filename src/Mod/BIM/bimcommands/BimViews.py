@@ -76,7 +76,7 @@ class BIM_Views:
             self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogViews.ui")
             vm.setWidget(self.dialog)
             vm.tree = self.dialog.tree
-            
+
             # set context menu
             self.dialog.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 
@@ -252,7 +252,7 @@ class BIM_Views:
                 sortLvItems = [item[0] for item in sortLvHold]
                 treeViewItems = treeViewItems + sortLvItems + soloProxyHold
                 vm.tree.addTopLevelItems(treeViewItems)
-                
+
                 # add views
                 ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
                 views = self.getViews()
@@ -445,10 +445,10 @@ class BIM_Views:
                 if getattr(v, "Source", None):
                     views.append(v.Source)
         return views
-        
+
     def getPages(self):
         """Returns a list of TD pages"""
-        return [o for o in FreeCAD.ActiveDocument.Objects if o.isDerivedFrom('TechDraw::DrawPage')]                
+        return [o for o in FreeCAD.ActiveDocument.Objects if o.isDerivedFrom('TechDraw::DrawPage')]
 
 
 # These functions need to be localized outside the command class, as they are used outside this module

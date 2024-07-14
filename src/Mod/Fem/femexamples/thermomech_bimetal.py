@@ -23,7 +23,7 @@
 # ***************************************************************************
 # to run the example use:
 """
-from femexamples.thermomech_bimetall import setup
+from femexamples.thermomech_bimetal import setup
 setup()
 
 """
@@ -45,7 +45,7 @@ from .manager import init_doc
 
 def get_information():
     return {
-        "name": "Thermomech Bimetall",
+        "name": "Thermomech Bimetal",
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "initial temperature", "temperature"],
@@ -61,14 +61,14 @@ def get_explanation(header=""):
         + """
 
 To run the example from Python console use:
-from femexamples.thermomech_bimetall import setup
+from femexamples.thermomech_bimetal import setup
 setup()
 
 
 See forum topic post:
 https://forum.freecad.org/viewtopic.php?f=18&t=43040&start=10#p366664
 
-thermomechanical bimetall
+thermomechanical bimetal
 analytical solution 7.05 mm deflection in the invar material direction
 see post in the forum link
 this file has 7.15 mm max deflection
@@ -204,7 +204,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_temp)
 
     # mesh
-    from .meshes.mesh_thermomech_bimetall_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_thermomech_bimetal_tetra10 import create_nodes, create_elements
 
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)

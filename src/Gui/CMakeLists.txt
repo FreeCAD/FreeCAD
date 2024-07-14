@@ -466,7 +466,6 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
-    TaskMeasure.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
     DlgAddPropertyVarSet.cpp
@@ -507,7 +506,6 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
-    TaskMeasure.h
     DlgObjectSelection.h
     DlgAddProperty.h
     DlgAddPropertyVarSet.h

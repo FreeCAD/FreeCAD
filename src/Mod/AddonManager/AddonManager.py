@@ -731,7 +731,7 @@ class CommandAddonManager(QtCore.QObject):
         self.do_next_startup_phase()
 
     def show_python_updates_dialog(self) -> None:
-        if not hasattr(self, "manage_python_packages_dialog"):
+        if not self.manage_python_packages_dialog:
             self.manage_python_packages_dialog = PythonPackageManager(self.item_model.repos)
         self.manage_python_packages_dialog.show()
 

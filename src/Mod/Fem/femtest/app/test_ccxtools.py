@@ -330,8 +330,8 @@ class TestCcxTools(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_thermomech_bimetall(self):
-        from femexamples.thermomech_bimetall import setup
+    def test_thermomech_bimetal(self):
+        from femexamples.thermomech_bimetal import setup
 
         setup(self.document, "ccxtools")
         self.input_file_writing_test(get_namefromdef("test_"))

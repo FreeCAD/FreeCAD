@@ -410,8 +410,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
 
     // return a persistent copy of the TopoDS_Shape here as shape will go out of scope at end
     BRepBuilderAPI_Copy copy(shape);
-    const TopoDS_Shape* newShape = new TopoDS_Shape(copy.Shape());
-    return std::make_shared<MeasureDistanceInfo>(true, newShape);
+    return std::make_shared<MeasureDistanceInfo>(true, copy.Shape());
 }
 
 

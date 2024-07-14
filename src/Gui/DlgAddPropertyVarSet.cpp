@@ -154,7 +154,7 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
 
     connect(this, &QDialog::finished,
             this, [viewProvider](int result) { viewProvider->onFinished(result); });
-    connect(ui->lineEditName, &QLineEdit::editingFinished,
+    connect(ui->lineEditName, &QLineEdit::textChanged,
             this, &DlgAddPropertyVarSet::onNamePropertyDetermined);
 
     std::string title = "Add a property to " + varSet->getFullName();
@@ -179,7 +179,9 @@ void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
 
 void DlgAddPropertyVarSet::clearEditors()
 {
+    bool beforeBlocked = ui->lineEditName->blockSignals(true);
     ui->lineEditName->clear();
+    ui->lineEditName->blockSignals(beforeBlocked);
     removeEditor();
     setOkEnabled(false);
     namePropertyToAdd.clear();
@@ -269,14 +271,26 @@ void DlgAddPropertyVarSet::createProperty(std::string& name, std::string& group)
     setOkEnabled(true);
 }
 
-void DlgAddPropertyVarSet::onNamePropertyDetermined()
+void DlgAddPropertyVarSet::onNamePropertyDetermined(const QString& text)
 {
     if (!namePropertyToAdd.empty()) {
-        // we were already adding a name, so remove that property
+        // We were already adding a property with this name.  We have to remove
+        // the property, the editor because it is associated with the property,
+        // and we have to abort the transaction.
         varSet->removeDynamicProperty(namePropertyToAdd.c_str());
+        removeEditor();
+        App::Document* doc = varSet->getDocument();
+        if (doc->hasPendingTransaction()) {
+            doc->abortTransaction();
+        }
+        namePropertyToAdd.clear();
     }
-    QString nameProperty = ui->lineEditName->text();
-    std::string name = nameProperty.toUtf8().constData();
+    if (text.isEmpty()) {
+        // We can not define a property, so we should not have an editor for the value.
+        clearEditors();
+        return;
+    }
+    std::string name = text.toUtf8().constData();
     std::string group = comboBoxGroup.currentText().toUtf8().constData();
     if(name.empty() || group.empty()
        || name != Base::Tools::getIdentifier(name)

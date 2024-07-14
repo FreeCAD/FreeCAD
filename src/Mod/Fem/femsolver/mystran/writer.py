@@ -38,7 +38,7 @@ try:
     from pyNastran.bdf.bdf import BDF
 except Exception:
     FreeCAD.Console.PrintError(
-        "Module pyNastran not found. Writing Mystran solver input will not be work.\n"
+        "Module pyNastran not found. Writing Mystran solver input will not work.\n"
     )
 
 from . import add_mesh
