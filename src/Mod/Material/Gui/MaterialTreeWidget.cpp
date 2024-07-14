@@ -361,7 +361,7 @@ void MaterialTreeWidget::setActiveFilter(const QString& name)
 
                 // Save the library/folder expansion state
                 saveMaterialTree();
-                
+
                 updateMaterialTree();
                 return;
             }
