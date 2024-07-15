@@ -611,11 +611,4 @@ double Preferences::SnapLimitFactor()
     return getPreferenceGroup("General")->GetFloat("SnapLimitFactor", 0.05);
 }
 
-//! limit in degress that a section view can be out of alignment before being
-//! automatically snapped into line.
-double Preferences::SnapLimitSection()
-{
-    return getPreferenceGroup("General")->GetFloat("SnapLimitSection", 10);
-}
-
 

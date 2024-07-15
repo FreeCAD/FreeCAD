@@ -141,7 +141,6 @@ public:
 
     static bool SnapViews();
     static double SnapLimitFactor();
-    static double SnapLimitSection();
 };
 
 
