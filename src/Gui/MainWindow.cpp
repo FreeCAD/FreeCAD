@@ -1556,16 +1556,16 @@ void MainWindow::hideEvent(QHideEvent* e)
     QMainWindow::hideEvent(e);
 }
 
-void MainWindow::processMessages(const QList<QByteArray> & msg)
+void MainWindow::processMessages(const QList<QString> & msg)
 {
     // handle all the messages to open files
     try {
         WaitCursor wc;
         std::list<std::string> files;
-        QByteArray action("OpenFile:");
+        QString action = QString::fromStdString("OpenFile:");
         for (const auto & it : msg) {
             if (it.startsWith(action))
-                files.emplace_back(it.mid(action.size()).constData());
+                files.emplace_back(it.mid(action.size()).toStdString());
         }
         files = App::Application::processFiles(files);
         for (const auto & file : files) {

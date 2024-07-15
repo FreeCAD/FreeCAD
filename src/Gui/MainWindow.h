@@ -350,7 +350,7 @@ private Q_SLOTS:
     /**
      * \internal
      */
-    void processMessages(const QList<QByteArray> &);
+    void processMessages(const QList<QString> &);
     /**
      * \internal
      */

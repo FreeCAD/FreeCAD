@@ -247,8 +247,8 @@ void StartupPostProcess::setWindowTitle()
 void StartupPostProcess::setProcessMessages()
 {
     if (!loadFromPythonModule) {
-        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
-                         mainWindow, SLOT(processMessages(const QList<QByteArray> &)));
+        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QString> &)),
+                         mainWindow, SLOT(processMessages(const QList<QString> &)));
     }
 }
 
