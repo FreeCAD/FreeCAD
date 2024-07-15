@@ -2865,9 +2865,9 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             cube->depth = length;
 
             viewer->setupEditingRoot(group,&dragCtx->preTransform);
-        }else{
+        } else {
             auto dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->draggerSize.setValue(0.05f);
+            dragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
             dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
             viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
 

@@ -1489,7 +1489,7 @@ public:
             updateDistanceType(onSketchPos);
 
         //Move constraints
-        if (cstrIndexes.size() > 0) {
+        if (!cstrIndexes.empty()) {
             bool oneMoved = false;
             const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
             int lastConstrIndex = static_cast<int>(ConStr.size()) - 1;
@@ -1609,6 +1609,18 @@ public:
             sketchgui->draw(false, false); // Redraw
         }
         return true;
+    }
+
+    void quit() override
+    {
+        if (!cstrIndexes.empty()) {
+            // if a constraint is being made, then we cancel the dimension but not the tool.
+            resetTool();
+            sketchgui->draw(false, false); // Redraw
+        }
+        else {
+            DrawSketchHandler::quit();
+        }
     }
 protected:
     SpecialConstraint specialConstraint;
@@ -2712,6 +2724,7 @@ protected:
 
     void resetTool()
     {
+        Gui::Command::abortCommand();
         Gui::Selection().clearSelection();
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
         cstrIndexes.clear();

@@ -232,10 +232,8 @@ public:
                 drawEdit(EditCurve);
             }
             int curveId = getPreselectCurve();
-            if (BaseGeoId != curveId
-                && seekAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(SugConstr);
-                return;
+            if (BaseGeoId != curveId) {
+                seekAndRenderAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f, 0.f));
             }
         }
     }

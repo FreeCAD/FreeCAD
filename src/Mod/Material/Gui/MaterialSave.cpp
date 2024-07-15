@@ -87,7 +87,7 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
             &MaterialSave::onContextMenu);
 
     _deleteAction.setText(tr("Delete"));
-    _deleteAction.setShortcut(Qt::Key_Delete);
+    _deleteAction.setShortcut(QKeySequence::Delete);
     connect(&_deleteAction, &QAction::triggered, this, &MaterialSave::onDelete);
     ui->treeMaterials->addAction(&_deleteAction);
 
@@ -525,9 +525,6 @@ void MaterialSave::onContextMenu(const QPoint& pos)
 {
     QMenu contextMenu(tr("Context menu"), this);
 
-    // QAction action1(tr("Delete"), this);
-    // action1.setShortcut(Qt::Key_Delete);
-    // connect(&action1, &QAction::triggered, this, &MaterialSave::onDelete);
     contextMenu.addAction(&_deleteAction);
 
     contextMenu.exec(ui->treeMaterials->mapToGlobal(pos));
@@ -542,10 +539,7 @@ void MaterialSave::onDelete(bool checked)
         return;
     }
 
-    int res = confirmDelete(this);
-    if (res == QMessageBox::Cancel) {
-        return;
-    }
+    confirmDelete(this);
 }
 
 int MaterialSave::confirmDelete(QWidget* parent)

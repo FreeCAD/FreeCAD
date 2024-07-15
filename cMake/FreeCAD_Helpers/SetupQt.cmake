@@ -1,9 +1,7 @@
 # -------------------------------- Qt --------------------------------
 
 set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
-if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
-    list (APPEND FREECAD_QT_COMPONENTS XmlPatterns)
-elseif (FREECAD_QT_MAJOR_VERSION EQUAL 6)
+if (FREECAD_QT_MAJOR_VERSION EQUAL 6)
     set (Qt6Core_MOC_EXECUTABLE Qt6::moc)
 endif()
 

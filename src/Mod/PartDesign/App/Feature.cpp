@@ -57,6 +57,7 @@ Feature::Feature()
     ADD_PROPERTY(BaseFeature,(nullptr));
     ADD_PROPERTY_TYPE(_Body,(nullptr),"Base",(App::PropertyType)(
                 App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
+    ADD_PROPERTY(SuppressedShape,(TopoShape()));
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 
@@ -68,6 +69,37 @@ Feature::Feature()
 
 App::DocumentObjectExecReturn* Feature::recompute()
 {
+#ifdef FC_USE_TNP_FIX
+    SuppressedShape.setValue(TopoShape());
+
+    if (!Suppressed.getValue()) {
+        return Part::Feature::recompute();
+    }
+
+    bool failed = false;
+    try {
+        std::unique_ptr<App::DocumentObjectExecReturn> ret(Part::Feature::recompute());
+        if (ret) {
+            throw Base::RuntimeError(ret->Why);
+        }
+    }
+    catch (Base::AbortException&) {
+        throw;
+    }
+    catch (Base::Exception& e) {
+        failed = true;
+        e.ReportException();
+        FC_ERR("Failed to recompute suppressed feature " << getFullName());
+    }
+
+    if (!failed) {
+        updateSuppressedShape();
+    }
+    else {
+        Shape.setValue(getBaseTopoShape(true));
+    }
+    return App::DocumentObject::StdReturn;
+#else
     try {
         auto baseShape = getBaseTopoShape();
         if (Suppressed.getValue()) {
@@ -81,6 +113,31 @@ App::DocumentObjectExecReturn* Feature::recompute()
     }
 
     return DocumentObject::recompute();
+#endif
+}
+
+void Feature::updateSuppressedShape()
+{
+    auto baseShape = getBaseTopoShape(true);
+    TopoShape res(getID());
+    TopoShape shape = Shape.getShape();
+    shape.setPlacement(Base::Placement());
+    std::vector<TopoShape> generated;
+    if(!shape.isNull()) {
+        unsigned count = shape.countSubShapes(TopAbs_FACE);
+        for(unsigned i=1; i<=count; ++i) {
+            Data::MappedName mapped = shape.getMappedName(
+                    Data::IndexedName::fromConst("Face", i));
+            if(mapped && shape.isElementGenerated(mapped))
+                generated.push_back(shape.getSubTopoShape(TopAbs_FACE, i));
+        }
+    }
+    if(!generated.empty()) {
+        res.makeElementCompound(generated);
+        res.setPlacement(Placement.getValue());
+    }
+    Shape.setValue(baseShape);
+    SuppressedShape.setValue(res);
 }
 
 short Feature::mustExecute() const

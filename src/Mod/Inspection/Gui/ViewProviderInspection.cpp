@@ -115,9 +115,7 @@ ViewProviderInspection::~ViewProviderInspection()
     pcCoords->unref();
     pcMatBinding->unref();
     pcColorMat->unref();
-    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
-    pcColorBar->Detach(this);
-    pcColorBar->unref();
+    deleteColorBar();
     pcLinkRoot->unref();
     pcPointStyle->unref();
 }
@@ -148,6 +146,13 @@ void ViewProviderInspection::show()
 {
     inherited::show();
     pcColorStyle->style = SoDrawStyle::FILLED;
+}
+
+void ViewProviderInspection::deleteColorBar()
+{
+    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
+    pcColorBar->Detach(this);
+    pcColorBar->unref();
 }
 
 void ViewProviderInspection::attach(App::DocumentObject* pcFeat)
@@ -185,8 +190,7 @@ void ViewProviderInspection::attach(App::DocumentObject* pcFeat)
         pcBar->ref();
         pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        pcColorBar->Detach(this);
-        pcColorBar->unref();
+        deleteColorBar();
         pcColorBar = pcBar;
     }
 

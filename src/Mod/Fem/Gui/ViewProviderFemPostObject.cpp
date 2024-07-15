@@ -276,11 +276,16 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     m_material->unref();
     m_matPlainEdges->unref();
     m_switchMatEdges->unref();
+    deleteColorBar();
+    m_colorStyle->unref();
+    m_colorRoot->unref();
+}
+
+void ViewProviderFemPostObject::deleteColorBar()
+{
     Gui::SoFCColorBarNotifier::instance().detach(m_colorBar);
     m_colorBar->Detach(this);
     m_colorBar->unref();
-    m_colorStyle->unref();
-    m_colorRoot->unref();
 }
 
 void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
@@ -319,8 +324,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
         pcBar->ref();
         pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        m_colorBar->Detach(this);
-        m_colorBar->unref();
+        deleteColorBar();
         m_colorBar = pcBar;
     }
 
