@@ -329,8 +329,9 @@ void DlgSettingsGeneral::loadSettings()
     }
 
     QAbstractItemModel* model = ui->Languages->model();
-    if (model)
+    if (model) {
         model->sort(0);
+    }
 
     addIconSizes(getCurrentIconSize());
 
@@ -435,7 +436,7 @@ void DlgSettingsGeneral::loadThemes()
     QString currentStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet", "").c_str());
     QFileInfo fi(currentStyleSheet);
     currentStyleSheet = fi.baseName();
-    QString themeClassic = QString::fromStdString("classic");  // handle the upcoming name change
+    QString themeClassic = QStringLiteral("classic");  // handle the upcoming name change
     QString similarTheme;
     QString packName;
     for (const auto& pack : packs) {
