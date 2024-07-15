@@ -145,8 +145,8 @@ locations = [
     ],
     [
         "Material",
-        "../Mod/Material/Resources/translations",
-        "../Mod/Material/Resources/Material.qrc",
+        "../Mod/Material/Gui/Resources/translations",
+        "../Mod/Material/Gui/Resources/Material.qrc",
     ],
     [
         "Mesh",
