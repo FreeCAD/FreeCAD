@@ -59,7 +59,9 @@ MaterialTreeWidget::MaterialTreeWidget(const std::shared_ptr<Materials::Material
                                        QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
+    , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
     , _filter(filter)
+    , _recentMax(defaultRecents)
 {
     setup();
 }
@@ -69,8 +71,10 @@ MaterialTreeWidget::MaterialTreeWidget(
     QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
+    , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
     , _filter(std::make_shared<Materials::MaterialFilter>())
     , _filterList(filterList)
+    , _recentMax(defaultRecents)
 {
     setup();
 }
@@ -78,7 +82,9 @@ MaterialTreeWidget::MaterialTreeWidget(
 MaterialTreeWidget::MaterialTreeWidget(QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
+    , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
     , _filter(std::make_shared<Materials::MaterialFilter>())
+    , _recentMax(defaultRecents)
 {
     setup();
 }
@@ -102,6 +108,30 @@ MaterialTreeWidget::~MaterialTreeWidget()
     saveMaterialTree();
 }
 
+QSize MaterialTreeWidget::sizeHint() const
+{
+    if (!m_expanded) {
+        // When not expanded, the size height is the same as m_material
+        QSize size = m_material->sizeHint();
+        size.setWidth(minimumWidth);
+        return size;
+    }
+    return QWidget::sizeHint();
+}
+
+QSize MaterialTreeWidget::treeSizeHint() const
+{
+    return m_treeSizeHint;
+}
+
+void MaterialTreeWidget::setTreeSizeHint(const QSize& hint)
+{
+    m_treeSizeHint = hint;
+    m_materialTree->setMinimumSize(m_treeSizeHint);
+    m_materialTree->adjustSize();
+    adjustSize();
+}
+
 void MaterialTreeWidget::createLayout()
 {
     m_material = new QLineEdit(this);
@@ -111,12 +141,15 @@ void MaterialTreeWidget::createLayout()
     m_filterCombo = new QComboBox(this);
     m_editor = new QPushButton(tr("Launch editor"), this);
 
+    m_materialTree->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    m_materialTree->setMinimumSize(m_treeSizeHint);
     m_materialTree->setSelectionMode(QAbstractItemView::SingleSelection);
     m_materialTree->setSelectionBehavior(QAbstractItemView::SelectItems);
 
     auto materialLayout = new QHBoxLayout();
     materialLayout->addWidget(m_material);
     materialLayout->addWidget(m_expand);
+    // materialLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
     auto treeLayout = new QHBoxLayout();
     treeLayout->addWidget(m_materialTree);
@@ -132,6 +165,8 @@ void MaterialTreeWidget::createLayout()
     layout->addItem(treeLayout);
     layout->addItem(buttonLayout);
     setLayout(layout);
+
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
 
     // Set the filter if using a filter list
     if (hasMultipleFilters()) {
@@ -169,6 +204,10 @@ void MaterialTreeWidget::setExpanded(bool open)
     else {
         m_expand->setIcon(style()->standardIcon(QStyle::SP_TitleBarUnshadeButton));
     }
+
+    // m_materialTree->adjustSize();
+    adjustSize();
+    Q_EMIT onExpanded(m_expanded);
 }
 
 void MaterialTreeWidget::setFilterVisible(bool open)
@@ -234,7 +273,7 @@ void MaterialTreeWidget::updateMaterial(const QString& uuid)
     try {
         material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
     }
-    catch (Materials::ModelNotFound const&) {
+    catch (Materials::MaterialNotFound const&) {
         Base::Console().Log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
     }
 
@@ -404,7 +443,7 @@ void MaterialTreeWidget::getRecents()
 
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Recent");
-    _recentMax = static_cast<int>(param->GetInt("RecentMax", 5));
+    _recentMax = static_cast<int>(param->GetInt("RecentMax", defaultRecents));
     auto count = param->GetInt("Recent", 0);
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("MRU%1").arg(i);

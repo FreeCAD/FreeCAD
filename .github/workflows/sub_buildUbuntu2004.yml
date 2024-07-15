@@ -108,7 +108,6 @@ jobs:
                             libqt5opengl5-dev                           \
                             libqt5svg5-dev                              \
                             libqt5x11extras5-dev                        \
-                            libqt5xmlpatterns5-dev                      \
                             libshiboken2-dev                            \
                             libspnav-dev                                \
                             libvtk7-dev                                 \

@@ -54,6 +54,7 @@
 
 #include <Python.h>
 #include <QFileInfo>
+#include <QStandardPaths>
 
 // Salomesh
 #include <SMDSAbs_ElementType.hxx>
