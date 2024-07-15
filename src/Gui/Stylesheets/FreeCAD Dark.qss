@@ -41,6 +41,8 @@ Resetting everything helps to unify styles across different operating systems
   border-style: none;
   border-image: none;
   outline: 0;
+  color: White;
+  selection-background-color: @ThemeAccentColor1;
 }
 
 /* specific reset for elements inside QToolBar */
@@ -117,16 +119,16 @@ Gui--NavigationIndicatorGui--BlenderNavigationStyle {
 }
 
 /* QWidget ----------------------------------------------------------------
-
+This causes much load time.
 --------------------------------------------------------------------------- */
-QWidget {
+/* QWidget { */
   /* background-color: #444444; */
-  border: 0px solid #020202;
+  /* border: 0px solid #020202;
   padding: 0px;
-  color: White;
-  selection-background-color: @ThemeAccentColor1;
+  color: White; */
+  /* selection-background-color: @ThemeAccentColor1; */
   /* selection-color: White; */
-}
+/* } */
 
 QWidget:disabled {
   color: #adadad;
@@ -195,8 +197,8 @@ QToolTip {
   /* If you remove the border property, background stops working on Windows */
   border: none;
   font-weight:bolder;
-  border-top-width: 0.5px;
-  border-left-width: 0.5px;
+  border-top-width: 1px;
+  border-left-width: 1px;
   border-right-width: 1.5px;
   border-bottom-width: 1.5px;
   border-style: solid;
@@ -252,7 +254,7 @@ QCheckBox {
 }
 
 QCheckBox:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QCheckBox QWidget:disabled {
@@ -264,13 +266,13 @@ QCheckBox::indicator {
   background-color: #252525;
   width: 12px;
   height: 12px;
-  border: 0.5px solid #f0f0f0;
+  border: 1px solid #f0f0f0;
   /* image:url(qss:images_classic/checkbox-Empty-white.png); */
 }
 
 QCheckBox::indicator:unchecked {
   background-color: #252525;
-  border: 0.5px solid #f0f0f0;
+  border: 1px solid #f0f0f0;
   /* image:url(qss:images_classic/checkbox-Empty-white.png); */
 }
 
@@ -455,7 +457,7 @@ QMenuBar {
 }
 
 QMenuBar:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QMenuBar::item {
@@ -678,8 +680,8 @@ QScrollBar:horizontal {
   height: 14px;
   border-right: 14px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #020202, stop:0.1 #303030, stop:0.9 #353535, stop:1 #020202);
   border-left: 14px solid qlineargradient(x1:1, y1:0, x2:0, y2:0, stop:0 #020202, stop:0.1 #303030, stop:0.9 #353535, stop:1 #020202);
-  border-top: 0.5px solid #020202;
-  border-bottom: 0.5px solid #020202;
+  border-top: 1px solid #020202;
+  border-bottom: 1px solid #020202;
   background-color: #202020;
 }
 
@@ -688,8 +690,8 @@ QScrollBar:vertical {
   width: 14px;
   border-top: 14px solid qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 #020202, stop:0.1 #303030, stop:0.9 #353535, stop:1 #020202);
   border-bottom: 14px solid qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #020202, stop:0.1 #303030, stop:0.9 #353535, stop:1 #020202);
-  border-left: 0.5px solid #020202;
-  border-right: 0.5px solid #020202;
+  border-left: 1px solid #020202;
+  border-right: 1px solid #020202;
   background-color: #202020;
 }
 
@@ -705,7 +707,7 @@ QScrollBar::handle:horizontal:hover {
 }
 
 QScrollBar::handle:horizontal:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QScrollBar::handle:vertical {
@@ -724,7 +726,7 @@ QScrollBar::handle:vertical:hover {
 }
 
 QScrollBar::handle:vertical:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QScrollBar::add-line:horizontal {
@@ -810,7 +812,7 @@ QTextEdit {
 }
 
 QTextEdit:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QTextEdit:selected {
@@ -829,7 +831,7 @@ QPlainTextEdit {
 }
 
 QPlainTextEdit:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QPlainTextEdit:selected {
@@ -870,15 +872,15 @@ QToolBar {
 
 QToolBar:horizontal {
   /* border-top: 1px solid #020202; */
-  border-bottom: 0.5px solid #020202;
+  border-bottom: 1px solid #020202;
   /* spacing: 2px; */
   padding-top: 3px;
   padding-left: 5px;
 }
 
 QToolBar:vertical {
-  border-left: 0.5px solid #020202;
-  border-right: 0.5px solid #020202;
+  border-left: 1px solid #020202;
+  border-right: 1px solid #020202;
   /* spacing: 1px; */
   padding-top: 3px;
   padding-left: 2px;
@@ -1004,7 +1006,7 @@ QAbstractSpinBox:hover {
 }
 
 QAbstractSpinBox:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QAbstractSpinBox:selected {
@@ -1167,6 +1169,11 @@ QPushButton {
   min-width: 80px;
 }
 
+#CreateNewRow > QPushButton {
+  /* Reset min width to default */
+  min-width: -1;
+}
+
 QPushButton:disabled {
   background-color: #444444;
   color: #adadad;
@@ -1177,6 +1184,11 @@ QPushButton:checked {
   border: 1px solid  @ThemeAccentColor1;
   outline: none;
 }
+
+QPushButton:focus {
+  border: 1px solid  @ThemeAccentColor1;
+}
+
 
 QPushButton:checked:disabled {
   border: 1px solid  @ThemeAccentColor1;
@@ -1337,7 +1349,7 @@ QToolButton::menu-button:checked:hover {
 
 QToolButton::menu-indicator {
   /* Exclude a shift for better image */
-  subcontrol-position: center center;
+  subcontrol-position: right center;
   /* Shift it a bit */
 }
 
@@ -1774,7 +1786,7 @@ QSlider::handle:horizontal:hover {
 
 QSlider::handle:horizontal:focus {
   background: @ThemeAccentColor2;
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QSlider::handle:vertical {
@@ -1792,7 +1804,7 @@ QSlider::handle:vertical:hover {
 }
 
 QSlider::handle:vertical:focus {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 /* QLineEdit --------------------------------------------------------------
@@ -1942,7 +1954,8 @@ QTabBar::tab, QDockWidget QTabBar::tab {
 
 QTabBar::tab:top, QDockWidget QTabBar::tab:top {
   color: white;
-  padding-left: 9px;
+  margin-left: 0px;
+  margin-right: 0px;
   min-width: 5px;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:0.6 #252525, stop:1 #252525);
   margin-top: 3px;
@@ -2029,7 +2042,7 @@ QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
 
 QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #444444, stop:1 #333333);
-
+  margin-right: 0px;
 }
 
 QTabBar::tab:right, QDockWidget QTabBar::tab:right {
@@ -2248,6 +2261,7 @@ QColumnView::indicator:checked:focus,
 QColumnView::indicator:checked:pressed {
   /* image: url(qss:images_classic/checkbox-checked-blue.png); */
   background-color: @ThemeAccentColor1;
+  border: 1px solid #ffffff;
 }
 
 /* QTreeView::indicator:unchecked,
@@ -2268,6 +2282,8 @@ QColumnView::indicator:unchecked:hover,
 QColumnView::indicator:unchecked:focus,
 QColumnView::indicator:unchecked:pressed {
   /* image: url(qss:images_classic/checkbox-Empty-blue.png); */
+  background-color: @ThemeAccentColor1;
+  border: 1px solid #ffffff;
 }
 
 QTreeView::indicator:indeterminate,
@@ -2288,6 +2304,8 @@ QColumnView::indicator:indeterminate:hover,
 QColumnView::indicator:indeterminate:focus,
 QColumnView::indicator:indeterminate:pressed {
   image: url(qss:images_classic/Check-indeterminate-mark-lightgray.png);
+  background-color: @ThemeAccentColor1;
+  border: 1px solid #ffffff;
 }
 
 QTreeView,
@@ -2421,7 +2439,7 @@ QHeaderView::section::vertical {
   padding-bottom: 0;
   padding-left: 1px;
   padding-right: 0px; */
-  border-top: 0.5px solid #020202;
+  border-top: 1px solid #020202;
 }
 
 QHeaderView::section::vertical::first, QHeaderView::section::vertical::only-one {
@@ -2786,7 +2804,7 @@ QWidget#thumbnailWidget {
 }
 
 QWidget#thumbnailWidget[state="hovered"] {
-  border: 0.5px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor2;
 }
 
 QWidget#thumbnailWidget[state="pressed"] {
@@ -2799,11 +2817,3 @@ QWidget#thumbnailWidget[state="pressed"] {
  #WbTabBar #WbTabBarMore {
   padding-right: 12px;
  }
-
-/**
- * Special resetting minimum button size
- */
-
- #StartView QPushButton {
-  min-width: -1;
-}

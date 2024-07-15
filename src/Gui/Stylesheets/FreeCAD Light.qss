@@ -41,6 +41,8 @@ Resetting everything helps to unify styles across different operating systems
   border-style: none;
   border-image: none;
   outline: 0;
+  color: black;
+  selection-background-color: @ThemeAccentColor1;
 }
 
 /* specific reset for elements inside QToolBar */
@@ -117,16 +119,16 @@ Gui--NavigationIndicatorGui--BlenderNavigationStyle {
 }
 
 /* QWidget ----------------------------------------------------------------
-
+This causes much load time.
 --------------------------------------------------------------------------- */
-QWidget {
+/* QWidget { */
   /* background-color: #d8d8d8; */
-  border: 0px solid #ababab;
-  padding: 0px;
+  /* border: 0px solid #ababab;
+  padding: 0px; */
   /* color: black; */
-  selection-background-color: @ThemeAccentColor1;
+  /* selection-background-color: @ThemeAccentColor1; */
   /* selection-color: black; */
-}
+/* } */
 
 QWidget:disabled {
   color: #adadad;
@@ -1133,6 +1135,11 @@ QPushButton {
   min-width: 80px;
 }
 
+#CreateNewRow > QPushButton {
+  /* Reset min width to default */
+  min-width: -1;
+}
+
 QPushButton:disabled {
   background-color: #d8d8d8;
   color: #adadad;
@@ -1316,7 +1323,7 @@ QToolButton::menu-arrow {
   image: url(qss:images_classic/Arrow-down-lightgray.png);
   width: 1.3ex;
   height: 1.3ex;
-  background: transparent;
+  /* background: transparent; */
 }
 QToolButton::menu-arrow:open {
   image: url(qss:images_classic/Arrow-Down-black.png);
@@ -1557,7 +1564,7 @@ QSint--ActionGroup QFrame[class="header"] QLabel{
   image: url(qss:images_classic/Qsint_header_Unfold_Blue-light.png);
 }
 
-QSint--ActionGroup QFrame[class="header"] QLabel:hover {
+QSint--ActionGroup QFrame[class="header"] QLabel:hover[fold="false"] {
   width: 30px;
   height: 30px;
   image: url(qss:images_classic/Qsint_header_UnfoldOver_Blue_light.png);
@@ -1881,12 +1888,12 @@ QTabBar[style="icon-only"]::tab:bottom {
 
 QTabBar[style="icon-only"]::tab:left {
   min-height: 16px;
-  padding: -1px;
+  padding: 0px;
 }
 
 QTabBar[style="icon-only"]::tab:right {
   min-height: 16px;
-  padding: -1px;
+  padding: 0px;
 }
 
 QTabBar::close-button, QDockWidget QTabBar::close-button {
@@ -2279,7 +2286,7 @@ QTableView::indicator:checked:pressed,
 QColumnView::indicator:checked:hover,
 QColumnView::indicator:checked:focus,
 QColumnView::indicator:checked:pressed {
-  image: url(qss:images_classic/check-checked-black.png);
+  /* image: url(qss:images_classic/checkbox-checked-blue.png); */
   background-color: @ThemeAccentColor1;
   border: 1px solid #1c1c1c;
 }
@@ -2693,6 +2700,7 @@ QAbstractView:selected {
 PlotWidget {
   /* Fix cut labels in plots #134 */
   padding: 0px;
+  color: rgba(253, 253, 253, 0.614);
 }
 
 /*==================================================================================================
@@ -2837,11 +2845,3 @@ QWidget#thumbnailWidget[state="pressed"] {
  #WbTabBar #WbTabBarMore {
   padding-right: 12px;
  }
-
- /**
- * Special resetting minimum button size
- */
-
- #StartView QPushButton {
-  min-width: -1;
-}
