@@ -53,6 +53,8 @@ def get_psets(element):
     psets = [p.RelatingPropertyDefinition for p in psets]
     if not psets:
         psets = getattr(element, "HasProperties", [])
+    if not psets:
+        return result
     for pset in psets:
         pset_dict = {}
         if pset.is_a("IfcPropertySet"):
