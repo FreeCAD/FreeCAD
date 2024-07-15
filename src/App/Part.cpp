@@ -27,6 +27,7 @@
 
 #include "Part.h"
 #include "PartPy.h"
+#include "VarSet.h"
 
 
 using namespace App;
@@ -104,6 +105,35 @@ PyObject *Part::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+std::vector<DocumentObject*> Part::addObjects(std::vector<DocumentObject*> objs)
+{
+    // note that addObjects inherits from OriginGroupExtension while
+    // removeObjects from GeoFeatureGroupExtension
+    std::vector<DocumentObject*> addedObjs = OriginGroupExtension::addObjects(objs);
+
+    for(auto obj : addedObjs) {
+        // if of type VarSet, enable exposed
+        if (auto varSet = dynamic_cast<App::VarSet*>(obj)) {
+            varSet->enableExposed();
+        }
+    }
+    return addedObjs;
+}
+
+std::vector<DocumentObject*> Part::removeObjects(std::vector<DocumentObject*> objs)
+{
+    for(auto obj : objs) {
+        // if of type VarSet, disable exposed
+        if (auto varSet = dynamic_cast<App::VarSet*>(obj)) {
+            varSet->disableExposed();
+        }
+    }
+
+    // note that removeObjects inherits from GeoFeatureGroupExtension while
+    // addObjects from OriginGroupExtension
+    return GeoFeatureGroupExtension::removeObjects(objs);
+}
+
 void Part::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
 {
     // Migrate Material from App::PropertyMap to App::PropertyLink
@@ -117,6 +147,19 @@ void Part::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeNa
     } else {
         App::GeoFeature::handleChangedPropertyType(reader, TypeName, prop);
     }
+}
+
+DocumentObjectExecReturn *Part::execute()
+{
+    for (auto obj : Group.getValues()) {
+        if (auto varSet = dynamic_cast<VarSet*>(obj)) {
+            if (varSet->isExposed()) {
+                 varSet->checkRewritesExpressions();
+            }
+        }
+    }
+
+    return DocumentObject::execute();
 }
 
 // Python feature ---------------------------------------------------------

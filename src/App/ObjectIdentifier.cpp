@@ -1737,6 +1737,17 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
     return pyobj;
 }
 
+VarSet* ObjectIdentifier::findReferencedVarSet() const
+{
+    ResolveResults rs(*this);
+
+    if (rs.resolvedProperty && rs.resolvedProperty->isDerivedFrom<PropertyVarSet>()) {
+        return static_cast<PropertyVarSet*>(rs.resolvedProperty)->getValue();
+    }
+
+    return nullptr;
+}
+
 /**
  * @brief Get the value of the property or field pointed to by this object identifier.
  *
