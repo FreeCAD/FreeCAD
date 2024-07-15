@@ -242,7 +242,7 @@ def export(exportList,filename,colors=None):
                             outfile.write("usemtl color_" + mn + "\n")
                             materials.append(("color_" + mn,color,0))
                 elif FreeCAD.GuiUp:
-                    if hasattr(obj.ViewObject,"ShapeAppearnce") and hasattr(obj.ViewObject,"Transparency"):
+                    if hasattr(obj.ViewObject,"ShapeAppearance") and hasattr(obj.ViewObject,"Transparency"):
                         mn = Draft.getrgb(obj.ViewObject.ShapeColor,testbw=False)[1:]
                         outfile.write("usemtl color_" + mn + "\n")
                         materials.append(("color_" + mn,obj.ViewObject.ShapeColor,obj.ViewObject.Transparency))
