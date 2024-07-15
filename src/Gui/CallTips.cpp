@@ -342,7 +342,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
 bool shibokenMayCrash(void)
 {
-    // Shiboken 6.4.0 to 6.8.0 crash if we try to read their object
+    // Shiboken 6.4.8 to 6.7.3 crash if we try to read their object
     // attributes without a current stack frame.
     // FreeCAD issue: https://github.com/FreeCAD/FreeCAD/issues/14101
     // Qt issue: https://bugreports.qt.io/browse/PYSIDE-2796
