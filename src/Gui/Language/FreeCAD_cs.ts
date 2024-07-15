@@ -148,7 +148,7 @@
     <message>
       <location filename="../CommandStructure.cpp" line="151"/>
       <source>Add a variable set</source>
-      <translation type="unfinished">Add a variable set</translation>
+      <translation>Přidat sadu proměnných</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="972"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="38"/>
       <source>Variable Sets</source>
-      <translation type="unfinished">Variable Sets</translation>
+      <translation>Sady proměnných</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="49"/>
@@ -371,22 +371,22 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="75"/>
       <source>Variable Set:</source>
-      <translation type="unfinished">Variable Set:</translation>
+      <translation>Sada proměnných:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="85"/>
       <source>Info:</source>
-      <translation type="unfinished">Info:</translation>
+      <translation>Informance:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="92"/>
       <source>New Property:</source>
-      <translation type="unfinished">New Property:</translation>
+      <translation>Nová vlastnost:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="114"/>
       <source>Show variable sets</source>
-      <translation type="unfinished">Show variable sets</translation>
+      <translation>Zobrazit sady proměnných</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="149"/>
@@ -462,7 +462,7 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceAppearances command</translation>
+      <translation>Objekt bude mít barvu svých jednotlivých ploch upravitelných příkazem Díl Vzhled plochy</translation>
     </message>
   </context>
   <context>
@@ -587,8 +587,8 @@
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
-      <source>Scroll middle mouse button</source>
-      <translation>Rolujte prostředním tlačítkem myši</translation>
+      <source>Scroll mouse wheel</source>
+      <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
   </context>
   <context>
@@ -4386,7 +4386,7 @@ Vyšší hodnota usnadňuje výběr věcí, ale může znemožnit výběr malýc
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="205"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Předvybrat objekt v 3D zobrazení, když se kurzor nachází nad položkou stromu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="218"/>
@@ -4558,8 +4558,8 @@ Vyšší hodnota usnadňuje výběr věcí, ale může znemožnit výběr malýc
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
-      <source>Units calculator</source>
-      <translation>Převodník Jednotek</translation>
+      <source>Units converter</source>
+      <translation type="unfinished">Units converter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -5194,8 +5194,8 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
-      <source>Rotation axis with angle</source>
-      <translation>Osa otáčení s úhlem</translation>
+      <source>Rotation axis and angle</source>
+      <translation type="unfinished">Rotation axis and angle</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5892,13 +5892,13 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Táhněte obrazovku jedním prstem NEBO stiskněté levé tlačítko myši. V náčrtu a dalších režimech úprav držte navíc Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Štípněte (položte dva prsty na obrazovku &amp;&amp; táhněte je od sebe || k sobě) NEBO rolujte prostředním tlačítkem myši NEBO použijte na klávesnici PgUp/PgDown.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -6852,8 +6852,8 @@ Do you want to specify another directory?</source>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="318"/>
-      <source>Automatic python modules documentation</source>
-      <translation>Automatická dokumentace modulu Python</translation>
+      <source>Automatic Python modules documentation</source>
+      <translation type="unfinished">Automatic Python modules documentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="319"/>
@@ -7361,22 +7361,22 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="1111"/>
       <source>Show description</source>
-      <translation type="unfinished">Show description</translation>
+      <translation>Zobrazit popis</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1112"/>
       <source>Show internal name</source>
-      <translation type="unfinished">Show internal name</translation>
+      <translation>Zobrazit interní název</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1113"/>
       <source>Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation type="unfinished">Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</translation>
+      <translation>Zobrazit sloupec popisu pro položky. Popis položky lze nastavit stisknutím klávesy F2 (nebo tlačítka úprav vašeho OS) nebo úpravou vlastnosti 'label2'.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1128"/>
       <source>Show an internal name column for items.</source>
-      <translation type="unfinished">Show an internal name column for items.</translation>
+      <translation>Zobrazit sloupec pro interní název položek.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1169"/>
@@ -7396,7 +7396,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="3266"/>
       <source>Internal name</source>
-      <translation type="unfinished">Internal name</translation>
+      <translation>Interní název</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3268"/>
@@ -7420,8 +7420,8 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3274"/>
-      <source>Create group...</source>
-      <translation>Vytvořit skupinu...</translation>
+      <source>Create group</source>
+      <translation>Vytvořit skupinu</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3275"/>
@@ -8590,8 +8590,8 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Selhal import všech odkazů</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="99"/>
-      <location filename="../DlgAddProperty.cpp" line="112"/>
+      <location filename="../DlgAddProperty.cpp" line="105"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="285"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="295"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="317"/>
@@ -8599,7 +8599,7 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Neplatný název</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="100"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="286"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
@@ -8607,19 +8607,19 @@ underscore, and must not start with a digit.</source>
 podtržítko a nesmí začínat číslicí.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="113"/>
+      <location filename="../DlgAddProperty.cpp" line="119"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="296"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation>Vlastnost '%1' již existuje v '%2'</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="136"/>
+      <location filename="../DlgAddProperty.cpp" line="142"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="248"/>
       <source>Add property</source>
       <translation>Přidat vlastnost</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="137"/>
+      <location filename="../DlgAddProperty.cpp" line="143"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="249"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Selhalo přidání vlastnosti do '%1': %2</translation>
@@ -8909,8 +8909,8 @@ na aktuální kopii budou ztraceny.
       <location filename="../DlgAddPropertyVarSet.cpp" line="318"/>
       <source>The group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>Název skupiny smí obsahovat pouze alfanumerické znaky,
+podtržítko a nesmí začínat číslicí.</translation>
     </message>
   </context>
   <context>
@@ -10496,20 +10496,6 @@ underscore, and must not start with a digit.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUnitsCalculator</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="778"/>
-      <source>&amp;Units calculator...</source>
-      <translation>Převodník jednotek...</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="779"/>
-      <location filename="../CommandStd.cpp" line="781"/>
-      <source>Start the units calculator</source>
-      <translation>Spustit kalkulátor jednotek</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdUserEditMode</name>
     <message>
       <location filename="../CommandStd.cpp" line="814"/>
@@ -11092,7 +11078,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3488"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Předvybrat objekt v 3D zobrazení, když se kurzor nachází nad položkou stromu</translation>
     </message>
   </context>
   <context>
@@ -11462,7 +11448,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1252"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation type="unfinished">Hide extra tree view column - Internal Names.</translation>
+      <translation>Skrýt extra sloupec zobrazení stromu - interní názvy.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1280"/>
@@ -11818,8 +11804,8 @@ po spuštění FreeCADu</translation>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pořadí pracovních ploch můžete změnit přetažením nebo pravým kliknutím na jakoukoliv pracovní půlochu a vybrat &lt;span style="  font-weight:600; font-style:italic;"&gt;Seřadit abecedně&lt;/span&gt;. Další pracovní plochy lze nainstalovat prostřednictvím správce doplňků.&lt;/p&gt;&lt;p&gt;
+V současné době má váš systém následující pracovní plochy:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
@@ -11982,8 +11968,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
-      <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>Toto je aktuální spouštěcí modul a musí být povolen. Pro změnu viz Preference/General/Autoload.</translation>
+      <source>This is the current startup module, and must be enabled.</source>
+      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -12002,8 +11988,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
-      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation>Toto je aktuální spouštěcí modul a musí být automaticky načten. Změna viz. Předvolby/Obecné/Autoload.</translation>
+      <source>This is the current startup module, and must be autoloaded.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -12506,7 +12492,7 @@ bude vždy vypsána tečka/tečka.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Hledáte více motivů? Můžete je získat prostřednictvím &lt;a href="freecad:Std_AddonMgr"&gt;Správce doplňků&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
@@ -12523,7 +12509,7 @@ podle velikosti obrazovky nebo osobní preference</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="271"/>
       <source>Tree view and Property view mode:</source>
-      <translation type="unfinished">Tree view and Property view mode:</translation>
+      <translation>Režim zobrazení stromu a zobrazení vlastností:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
@@ -12531,10 +12517,10 @@ podle velikosti obrazovky nebo osobní preference</translation>
 
 'Combined': combine Tree view and Property view into one panel.
 'Independent': split Tree view and Property view into separate panels.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>Přizpůsobte si, jak je v panelu zobrazeno zobrazení stromu (vyžaduje restart).
 
-'Combined': combine Tree view and Property view into one panel.
-'Independent': split Tree view and Property view into separate panels.</translation>
+'Kombinované' kombinovat zobrazení stromu a zobrazení vlastností v jednom panelu.
+'Nezávislé': rozdělit zobrazení stromu a zobrazení vlastností do samostatných panelů.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="288"/>
@@ -12665,12 +12651,12 @@ FreeCAD toto okno zobrazí</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="552"/>
       <source>Combined</source>
-      <translation type="unfinished">Combined</translation>
+      <translation>Kombinované</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="553"/>
       <source>Independent</source>
-      <translation type="unfinished">Independent</translation>
+      <translation>Nezávislé</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="580"/>
@@ -13019,8 +13005,8 @@ Díky tomu zůstanou dokovaná okna vždy průhledná.</translation>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3716"/>
-      <source>Toggle transparent</source>
-      <translation>Přepnout průhlednost</translation>
+      <source>Toggle transparent mode</source>
+      <translation>Přepnout režim průhlednosti</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
@@ -13365,8 +13351,8 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
-      <source>Locks toolbar so they are no longer moveable</source>
-      <translation>Zamkne panely nástrojů, aby již nebyly pohyblivé</translation>
+      <source>Lock toolbars so they are no longer moveable</source>
+      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
     </message>
   </context>
   <context>
@@ -13534,7 +13520,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="58"/>
       <source>Add another</source>
-      <translation type="unfinished">Add another</translation>
+      <translation>Přidat další</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="65"/>
@@ -13552,12 +13538,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="20"/>
       <source>Theme customization</source>
-      <translation type="unfinished">Theme customization</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
-      <source>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+      <translation>Přizpůsobení motivu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
@@ -13604,22 +13585,22 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="206"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation type="unfinished">Hide extra tree view column - Internal Names.</translation>
+      <translation>Skrýt extra sloupec zobrazení stromu - interní názvy.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="209"/>
       <source>Hide Internal Names</source>
-      <translation type="unfinished">Hide Internal Names</translation>
+      <translation>Skrýt interní názvy</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="222"/>
       <source>Icon size override, set to 0 for the default value.</source>
-      <translation type="unfinished">Icon size override, set to 0 for the default value.</translation>
+      <translation>Přepsání velikosti ikon, nastaveno na 0 pro výchozí hodnotu.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="241"/>
       <source>Additional row spacing</source>
-      <translation type="unfinished">Additional row spacing</translation>
+      <translation>Rozestupy řádků</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="251"/>
@@ -13634,17 +13615,22 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="267"/>
       <source>Icon size</source>
-      <translation type="unfinished">Icon size</translation>
+      <translation>Velikost ikon</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="277"/>
       <source>Additional spacing for tree view rows. Bigger values will increase row item heights.</source>
-      <translation type="unfinished">Additional spacing for tree view rows. Bigger values will increase row item heights.</translation>
+      <translation>Dodatečné mezery pro stromové zobrazení. Větší hodnoty zvýší výšku položek.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
+      <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
-      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</translation>
+      <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
+      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
@@ -13654,7 +13640,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="312"/>
       <source>Hide header with column names from the tree view.</source>
-      <translation type="unfinished">Hide header with column names from the tree view.</translation>
+      <translation>Skrýt záhlaví s názvy sloupců ze stromového zobrazení.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="315"/>
@@ -13664,7 +13650,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="328"/>
       <source>Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</source>
-      <translation type="unfinished">Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</translation>
+      <translation>Skrýt posuvník ve stromovém zobrazení, posouvání bude stále možné pomocí kolečka myši.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="331"/>
@@ -13674,12 +13660,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="344"/>
       <source>Hide column with object description in tree view.</source>
-      <translation type="unfinished">Hide column with object description in tree view.</translation>
+      <translation>Skrýt sloupec s popisem objektu ve stromovém zobrazení.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="347"/>
       <source>Hide description</source>
-      <translation type="unfinished">Hide description</translation>
+      <translation>Skrýt popis</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="363"/>
@@ -13719,7 +13705,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="417"/>
       <source>Automatically hide overlayed dock panels when in non 3D view (like TechDraw or Spreadsheet).</source>
-      <translation type="unfinished">Automatically hide overlayed dock panels when in non 3D view (like TechDraw or Spreadsheet).</translation>
+      <translation>Automaticky skrýt překrývající se dokované panely v jiném než 3D zobrazení (jako TechDraw nebo Spreadsheet).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="420"/>
@@ -13752,12 +13738,26 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="139"/>
       <source>Create a variable set</source>
-      <translation type="unfinished">Create a variable set</translation>
+      <translation>Vytvořit sadu proměnných</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
-      <translation type="unfinished">A Variable Set is an object that maintains a set of properties to be used as variables.</translation>
+      <translation>Sada proměnných je objekt, který sdružuje sadu vlastností použitých jako proměnné.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="778"/>
+      <source>&amp;Units converter...</source>
+      <translation type="unfinished">&amp;Units converter...</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="779"/>
+      <location filename="../CommandStd.cpp" line="781"/>
+      <source>Start the units converter</source>
+      <translation type="unfinished">Start the units converter</translation>
     </message>
   </context>
 </TS>

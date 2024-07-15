@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>Відкрити URL-адресу продукту цього матеріалу в зовнішньому браузері</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation type="unfinished">Saves this material as a card</translation>
+      <translation>Зберегти цей матеріал як картку</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material parameter</source>
-      <translation type="unfinished">Material parameter</translation>
+      <translation>Параметр матеріалу</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add / remove parameter</source>
-      <translation type="unfinished">Add / remove parameter</translation>
+      <translation>Додати / видалити параметр</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete property</source>
-      <translation type="unfinished">Delete property</translation>
+      <translation>Видалити властивість</translation>
     </message>
   </context>
   <context>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../MaterialEditor.py" line="310"/>
       <source>Product URL</source>
-      <translation type="unfinished">Product URL</translation>
+      <translation>URL продукту</translation>
     </message>
     <message>
       <location filename="../../MaterialEditor.py" line="398"/>
@@ -430,28 +430,36 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../Gui/MaterialsEditor.ui" line="202"/>
-      <source>*</source>
-      <translation type="unfinished">*</translation>
+      <source>Add to favorites</source>
+      <translation type="unfinished">Add to favorites</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="212"/>
+      <location filename="../../Gui/MaterialsEditor.ui" line="236"/>
+      <source>Add physical model</source>
+      <translation type="unfinished">Add physical model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="246"/>
+      <source>Delete physical model</source>
+      <translation type="unfinished">Delete physical model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="286"/>
+      <source>Add appearance model</source>
+      <translation type="unfinished">Add appearance model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="296"/>
+      <source>Delete appearance model</source>
+      <translation type="unfinished">Delete appearance model</translation>
+    </message>
+    <message>
+      <location filename="../../Gui/MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
       <translation type="unfinished">Physical</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="233"/>
-      <location filename="../../Gui/MaterialsEditor.ui" line="277"/>
-      <source>+</source>
-      <translation type="unfinished">+</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="240"/>
-      <location filename="../../Gui/MaterialsEditor.ui" line="284"/>
-      <source>-</source>
-      <translation type="unfinished">-</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="253"/>
+      <location filename="../../Gui/MaterialsEditor.ui" line="262"/>
       <source>Appearance</source>
       <translation>Зовнішній вигляд</translation>
     </message>
@@ -568,11 +576,6 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../Gui/ModelSelect.ui" line="159"/>
       <source>Add to favorites</source>
       <translation type="unfinished">Add to favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="162"/>
-      <source>*</source>
-      <translation type="unfinished">*</translation>
     </message>
     <message>
       <location filename="../../Gui/ModelSelect.ui" line="172"/>
@@ -873,8 +876,8 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="372"/>
-      <source>Custom Appearance</source>
-      <translation type="unfinished">Custom Appearance</translation>
+      <source>Custom appearance:</source>
+      <translation type="unfinished">Custom appearance:</translation>
     </message>
     <message>
       <location filename="../../Gui/DlgDisplayProperties.ui" line="382"/>

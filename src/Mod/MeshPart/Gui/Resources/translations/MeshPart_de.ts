@@ -85,13 +85,13 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation>Netz mit Fläche zuschneiden</translation>
+      <translation>Netz mit Fläche trimmen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Schneidet ein Netz mit einer Fläche zu</translation>
+      <translation>Trimmt ein Netz mit einer Fläche</translation>
     </message>
   </context>
   <context>
@@ -220,9 +220,9 @@ Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>Drücke 'Start' und wähle dann Punkte im Netz; wenn genug Punkte gesetzt wurden, klicke mit der rechten Maustaste und wähle 'Erstellen'. Wiederholen Sie diesen Prozess, um weitere Splines zu erstellen. Schließen Sie diese Taskleiste, um den Vorgang abzuschließen.
+      <translation>'Start' drücken und dann Punkte im Netz auswählen; wenn genug Punkte gesetzt wurden, mit der rechten Maustaste klicken und 'Erstellen' wählen. Diesen Prozess wiederholen, um weitere Splines zu erstellen. Diese Taskleiste schließen, um den Vorgang abzuschließen.
 
-Dieser Befehl funktioniert nur mit einem 'mesh' Objekt, nicht mit einer normalen Fläche oder Oberfläche. Um ein Objekt in ein Netz zu konvertieren, verwenden Sie die Werkzeuge der Mesh Workbench.</translation>
+Dieser Befehl funktioniert nur mit einem Netz-Objekt, nicht mit einer normalen Fläche oder Oberfläche. Um ein Objekt in ein Netz zu konvertieren, die Werkzeuge des Arbeitsbereichs Mesh verwenden.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -505,13 +505,13 @@ Bitte TIP des Körpers festlegen oder eine andere Form auswählen.</translation>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation>Du hast eine Form ohne Flächen ausgewählt.
-Wähle bitte eine andere Form aus.</translation>
+      <translation>Es wurde eine Form ohne Flächen ausgewählt.
+Bitte eine andere Form auswählen.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="283"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Wählen Sie zuerst eine Form für die Vernetzung.</translation>
+      <translation>Zuerst eine Form für die Vernetzung auswählen.</translation>
     </message>
   </context>
   <context>
@@ -524,7 +524,7 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation>Bitte wählen Sie eine Ebene, bei der Sie das Netz unterteilen.</translation>
+      <translation>Bitte eine Ebene auswählen, an der das Netz geteilt werden soll.</translation>
     </message>
   </context>
   <context>
@@ -537,17 +537,17 @@ Wähle bitte eine andere Form aus.</translation>
     <message>
       <location filename="../../Command.cpp" line="96"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Bitte wählen Sie eine Ebene, mit welcher Sie das Netz trimmen.</translation>
+      <translation>Bitte eine Ebene auswählen, mit welcher das Netz getrimmt werden soll.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Trim by plane</source>
-      <translation>Beschneiden mit einer Ebene</translation>
+      <translation>Trimmen mit einer Ebene</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
-      <translation>Wählen Sie die Seite, die Sie behalten möchten.</translation>
+      <translation>Die Seite auswählen, welche behalten werden soll.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>

@@ -231,8 +231,8 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>在当前图纸中将 svg 文件内容作为一个符号插入</translation>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
     </message>
   </context>
   <context>

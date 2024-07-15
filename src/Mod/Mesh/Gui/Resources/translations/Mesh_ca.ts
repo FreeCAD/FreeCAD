@@ -2014,7 +2014,7 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Nombre de facetes:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="77"/>
