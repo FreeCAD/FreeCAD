@@ -242,13 +242,20 @@ void QGIView::snapPosition(QPointF& mPos)
         auto* qgiv(dynamic_cast<QGIView*>(vpdv->getQView()));
         if (!qgiv) { return; }
         QPointF bvPos = qgiv->pos();
+
+        // if we are in a projection group, then we must take into account the group pos
+        auto* parent = dynamic_cast<QGIView*>(qgiv->parentItem());
+        if (parent) {
+            bvPos = bvPos + parent->pos();
+        }
+
         Base::Vector2d bvPt(bvPos.x(), bvPos.y());
         Base::Vector2d mPt(mPos.x(), mPos.y());
         Base::Vector2d dir(dir3d.x, dir3d.y);
         if (dir.Length() < Precision::Confusion()) { return; }
         dir.Normalize();
 
-        double snapDist = bSize * snapPercent;
+        double snapDist = bSize * getScale() * snapPercent;
 
         Base::Vector2d projPt;
         projPt.ProjectToLine(mPt - bvPt, dir);
@@ -277,6 +284,13 @@ void QGIView::snapPosition(QPointF& mPos)
         if (view == this) { continue; }
 
         QPointF vPos = view->pos();
+
+        // if we are in a projection group, then we must take into account the group pos
+        auto* parent = dynamic_cast<QGIView*>(view->parentItem());
+        if (parent) {
+            vPos = vPos + parent->pos();
+        }
+
         qreal dx = view->boundingRect().width() * snapPercent;
         qreal dy = view->boundingRect().height() * snapPercent;
         if (fabs(mPos.x() - vPos.x()) < dx) {
