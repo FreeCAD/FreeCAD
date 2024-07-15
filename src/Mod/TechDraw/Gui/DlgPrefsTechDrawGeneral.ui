@@ -1074,20 +1074,6 @@ for ProjectionGroups</string>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <item>
        <layout class="QGridLayout" name="gridLayout_8" columnstretch="1,0,2">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>View Snapping Factor</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Section Snap Limit (degrees)</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SnapViews">
           <property name="toolTip">
@@ -1107,29 +1093,30 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="psb_SectionSnap">
-          <property name="toolTip">
-           <string>The number of degree a section view can be out of line with its base view before snapping into alignment.</string>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-          <property name="value">
-           <double>10.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SnapLimitSection</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>View Snapping Factor</string>
           </property>
          </widget>
         </item>
         <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="psb_SnapFactor">
           <property name="toolTip">
-           <string>When dragging a view, if it is within this percent of view size, it will snap into alignment.</string>
+           <string>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1144,19 +1131,6 @@ for ProjectionGroups</string>
            <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
-        </item>
-        <item row="1" column="1">
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>

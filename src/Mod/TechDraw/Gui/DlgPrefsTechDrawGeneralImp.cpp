@@ -81,7 +81,6 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->cb_alwaysShowLabel->onSave();
     ui->cb_SnapViews->onSave();
     ui->psb_SnapFactor->onSave();
-    ui->psb_SectionSnap->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -130,8 +129,6 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 
     ui->cb_SnapViews->onRestore();
     ui->psb_SnapFactor->onRestore();
-    ui->psb_SectionSnap->onRestore();
-
 }
 
 /**

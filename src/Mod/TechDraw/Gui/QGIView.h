@@ -55,6 +55,7 @@ class ViewProvider;
 namespace TechDraw
 {
 class DrawView;
+class DrawViewSection;
 }
 
 namespace TechDrawGui
@@ -124,6 +125,9 @@ public:
 
     bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);
+    void snapSectionView(const TechDraw::DrawViewSection* sectionView,
+                         QPointF& newPosition);
+    static Base::Vector3d pointScenePos(Base::Vector3d point3d, QGIView* qgiv);
 
     void alignTo(QGraphicsItem*, const QString &alignment);
 
@@ -201,6 +205,8 @@ private:
     double m_lockWidth;
     double m_lockHeight;
     int m_zOrder;
+
+    bool m_snapped{false};
 
 };
 
