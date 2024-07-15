@@ -63,6 +63,9 @@ public:
     App::PropertyLinkSub Element1;
     App::PropertyLinkSub Element2;
     App::PropertyDistance Distance;
+    App::PropertyDistance DistanceX;
+    App::PropertyDistance DistanceY;
+    App::PropertyDistance DistanceZ;
 
     // Position properties for the viewprovider
     App::PropertyVector Position1;
@@ -106,6 +109,9 @@ public:
     ~MeasureDistanceDetached() override;
 
     App::PropertyDistance Distance;
+    App::PropertyDistance DistanceX;
+    App::PropertyDistance DistanceY;
+    App::PropertyDistance DistanceZ;
 
     App::PropertyVector Position1;
     App::PropertyVector Position2;
