@@ -1416,6 +1416,15 @@ bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, Doc
     return false;
 }
 
+Base::Placement DocumentObject::globalGroupPlacement() const {
+    Base::Placement groupPlacement;
+    if (const auto* group = GeoFeatureGroupExtension::getGroupOfObject(this)) {
+        const auto extension = group->getExtensionByType<GeoFeatureGroupExtension>();
+        groupPlacement = extension->globalGroupPlacement();
+    }
+    return groupPlacement;
+}
+
 void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) {
     (void)oldStatus;
     if(!Document::isAnyRestoring() && isAttachedToDocument() && getDocument())

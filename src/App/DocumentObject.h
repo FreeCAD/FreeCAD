@@ -29,6 +29,7 @@
 #include <App/PropertyExpressionEngine.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <Base/Placement.h>
 #include <Base/SmartPtrPy.h>
 
 #include <bitset>
@@ -589,6 +590,20 @@ public:
      */
     virtual bool redirectSubName(std::ostringstream &ss,
             DocumentObject *topParent, DocumentObject *child) const;
+
+    /**
+     * @brief Calculates the global placement of this group
+     *
+     * The returned placement describes the transformation from the global reference coordinate
+     * system to the local coordinate system of this group. If this group has a no
+     * parent group the returned placement is the one of this group. For multiple stacked
+     * groups the returned Placement is the combination of all parent placements including
+     * the one of this group.
+     *
+     * @return Base::Placement The transformation from global reference system to the groups local
+     * system
+     */
+    virtual Base::Placement globalGroupPlacement() const;
 
     /** Special marker to mark the object as hidden
      *
