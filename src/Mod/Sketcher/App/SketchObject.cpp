@@ -259,24 +259,29 @@ void SketchObject::buildShape()
 
     std::vector<Part::TopoShape> shapes;
     std::vector<Part::TopoShape> vertices;
-    unsigned i=0;
+    int geoId =0;
     for(auto geo : getInternalGeometry()) {
-        ++i;
-        if(GeometryFacade::getConstruction(geo))
+        ++geoId;
+        if(GeometryFacade::getConstruction(geo)) {
             continue;
+        }
         if (geo->isDerivedFrom<Part::GeomPoint>())
 #ifdef FC_USE_TNP_FIX
         {
             Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
-            int idx = getVertexIndexGeoPos(i-1, Sketcher::PointPos::start);
+            int idx = getVertexIndexGeoPos(geoId -1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
+            if (!vertex.hasElementMap()) {
+                // TODO: Eventually this will likely be made obsolete, when TopoShapes always have an element map
+                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
+            }
             vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
                                   Data::MappedName::fromRawData(name.c_str()), 0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
         }
         else {
-            auto indexedName = Data::IndexedName::fromConst("Edge", i);
+            auto indexedName = Data::IndexedName::fromConst("Edge", geoId);
             shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
         }
 
@@ -293,7 +298,7 @@ void SketchObject::buildShape()
     }
 
     // FIXME: Commented since ExternalGeometryFacade is not added
-    for(i=2;i<ExternalGeo.size();++i) {
+    for(size_t i=2;i<ExternalGeo.size();++i) {
         auto geo = ExternalGeo[i];
         auto egf = ExternalGeometryFacade::getFacade(geo);
         if(!egf->testFlag(ExternalGeometryExtension::Defining))
