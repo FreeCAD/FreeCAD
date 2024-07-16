@@ -264,7 +264,11 @@ bool GUISingleApplication::sendMessage(const QString &message, int timeout)
 #else
     ts.setEncoding(QStringConverter::Utf8);
 #endif
+#if QT_VERSION <= QT_VERSION_CHECK(5, 15, 0)
+    ts << message << endl;
+#else
     ts << message << Qt::endl;
+#endif
 
     return socket.waitForBytesWritten(timeout);
 }
