@@ -1,6 +1,7 @@
 name: freecad
 channels:
 - conda-forge
+- conda-forge/label/pivy_rc
 dependencies:
 - libspnav                             # [linux]
 - kernel-headers_linux-64              # [linux and x86_64]
@@ -80,6 +81,7 @@ dependencies:
 - openssl
 - pcl
 - pip
+- conda-forge/label/pivy_rc::pivy
 - pkg-config
 - ply
 - pre-commit
