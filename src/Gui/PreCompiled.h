@@ -98,6 +98,9 @@
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
 
+// Qt/OpenGL
+#include <QOpenGLFramebufferObjectFormat>
+
 // Keep this order to avoid compiler warnings
 #include "QtAll.h"
 #include "InventorAll.h"
