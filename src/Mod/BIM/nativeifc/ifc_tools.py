@@ -701,7 +701,10 @@ def filter_elements(elements, ifcfile, expand=True, spaces=False, assemblies=Tru
                 elements = ifcfile.by_type("IfcElement")
                 elements.extend(ifcfile.by_type("IfcSite"))
             else:
-                elements = ifcopenshell.util.element.get_decomposition(elem)
+                decomp = ifcopenshell.util.element.get_decomposition(elem)
+                if decomp:
+                    # avoid replacing elements if decomp is empty
+                    elements = decomp
         else:
             if elem.Representation.Representations:
                 rep = elem.Representation.Representations[0]
