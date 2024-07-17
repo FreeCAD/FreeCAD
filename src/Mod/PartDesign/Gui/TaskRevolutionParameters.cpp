@@ -86,7 +86,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
 
     setupDialog();
 
-    blockUpdate = false;
+    setUpdateBlocked(false);
     updateUI(ui->changeMode->currentIndex());
     connectSignals();
 
@@ -185,7 +185,7 @@ void TaskRevolutionParameters::translateModeList(int index)
 
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 {
-    Base::StateLocker lock(blockUpdate, true);
+    Base::StateLocker lock(getUpdateBlockRef(), true);
 
     if (axesInList.empty())
         forceRefill = true;//not filled yet, full refill
@@ -348,9 +348,9 @@ void TaskRevolutionParameters::connectSignals()
 
 void TaskRevolutionParameters::updateUI(int index)
 {
-    if (blockUpdate)
+    if (isUpdateBlocked())
         return;
-    Base::StateLocker lock(blockUpdate, true);
+    Base::StateLocker lock(getUpdateBlockRef(), true);
     fillAxisCombo();
     setCheckboxes(static_cast<PartDesign::Revolution::RevolMethod>(index));
 }
@@ -485,7 +485,7 @@ void TaskRevolutionParameters::onAngle2Changed(double len)
 
 void TaskRevolutionParameters::onAxisChanged(int num)
 {
-    if (blockUpdate)
+    if (isUpdateBlocked())
         return;
     PartDesign::ProfileBased* pcRevolution = static_cast<PartDesign::ProfileBased*>(vp->getObject());
 

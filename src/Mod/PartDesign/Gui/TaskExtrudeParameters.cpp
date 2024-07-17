@@ -27,6 +27,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
@@ -564,8 +565,7 @@ bool TaskExtrudeParameters::hasProfileFace(PartDesign::ProfileBased* profile) co
 
 void TaskExtrudeParameters::fillDirectionCombo()
 {
-    bool oldVal_blockUpdate = blockUpdate;
-    blockUpdate = true;
+    Base::StateLocker lock(getUpdateBlockRef(), true);
 
     if (axesInList.empty()) {
         bool hasFace = false;
@@ -628,8 +628,6 @@ void TaskExtrudeParameters::fillDirectionCombo()
         ui->directionCB->setCurrentIndex(indexOfCurrent);
     if (hasCustom)
         ui->directionCB->setCurrentIndex(DirectionModes::Custom);
-
-    blockUpdate = oldVal_blockUpdate;
 }
 
 void TaskExtrudeParameters::addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname,

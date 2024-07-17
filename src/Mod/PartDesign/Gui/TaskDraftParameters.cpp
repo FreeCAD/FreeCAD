@@ -300,16 +300,6 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-
-//void TaskDlgDraftParameters::open()
-//{
-//    // a transaction is already open at creation time of the draft
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = QObject::tr("Edit draft");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
-
 bool TaskDlgDraftParameters::accept()
 {
     auto tobj = vp->getObject();
@@ -327,13 +317,6 @@ bool TaskDlgDraftParameters::accept()
 
     draftparameter->getLine(obj, strings);
     std::string pullDirection = buildLinkSingleSubPythonStr(obj, strings);
-
-    // Force the user to select a neutral plane
-    // if (neutralPlane.empty() || neutralPlane == "None") {
-    //     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
-    //         QObject::tr("Please select a plane or an edge plus a pull direction"));
-    //     return false;
-    // }
 
     FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
     FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());

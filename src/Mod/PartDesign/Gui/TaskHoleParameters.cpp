@@ -281,7 +281,7 @@ void TaskHoleParameters::threadedChanged()
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
     ui->UpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    blockUpdate = ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(ui->UpdateView->isChecked());
+    setUpdateBlocked(ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(ui->UpdateView->isChecked()));
 
     pcHole->Threaded.setValue(ui->Threaded->isChecked());
     recomputeFeature();
@@ -296,7 +296,7 @@ void TaskHoleParameters::modelThreadChanged()
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
     ui->UpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    blockUpdate = ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(ui->UpdateView->isChecked());
+    setUpdateBlocked(ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(ui->UpdateView->isChecked()));
 
     // conditional enabling of thread modeling options
     ui->UseCustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
@@ -310,7 +310,7 @@ void TaskHoleParameters::modelThreadChanged()
 
 void TaskHoleParameters::updateViewChanged(bool isChecked)
 {
-    blockUpdate = !isChecked;
+    setUpdateBlocked(!isChecked);
     recomputeFeature();
 }
 

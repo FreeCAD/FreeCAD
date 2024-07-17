@@ -59,8 +59,27 @@ private:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 protected:
+    bool isUpdateBlocked() const
+    {
+        return blockUpdate;
+    }
+
+    bool& getUpdateBlockRef()
+    {
+        return blockUpdate;
+    }
+
+    void setUpdateBlocked(bool value)
+    {
+        blockUpdate = value;
+    }
+
+
+protected:
     PartDesignGui::ViewProvider *vp;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
+
+private:
     bool blockUpdate;
 };
 
