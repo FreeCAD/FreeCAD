@@ -1185,7 +1185,7 @@ TaskDlgHoleParameters::TaskDlgHoleParameters(ViewProviderHole* HoleView)
     : TaskDlgSketchBasedParameters(HoleView)
 {
     assert(HoleView);
-    parameter = new TaskHoleParameters(static_cast<ViewProviderHole*>(vp));
+    parameter = new TaskHoleParameters(HoleView);
 
     Content.push_back(parameter);
 }

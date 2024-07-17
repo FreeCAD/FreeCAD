@@ -1097,21 +1097,21 @@ void TaskDlgPipeParameters::onButtonToggled(QAbstractButton *button, bool checke
 
     switch (id) {
     case StateHandlerTaskPipe::SelectionModes::refProfile:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile, checked);
         break;
     case StateHandlerTaskPipe::SelectionModes::refSpine:
     case StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd:
     case StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine, checked);
         break;
     case StateHandlerTaskPipe::SelectionModes::refAuxSpine:
     case StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeAdd:
     case StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::AuxiliarySpine, checked);
         break;
     case StateHandlerTaskPipe::SelectionModes::refSectionAdd:
     case StateHandlerTaskPipe::SelectionModes::refSectionRemove:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Section, checked);
         break;
     default:
         break;

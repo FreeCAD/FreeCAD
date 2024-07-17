@@ -340,20 +340,12 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-
-//void TaskDlgChamferParameters::open()
-//{
-//    // a transaction is already open at creation time of the chamfer
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = tr("Edit chamfer");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
 bool TaskDlgChamferParameters::accept()
 {
-    auto obj = vp->getObject();
-    if (!obj->isError())
+    auto obj = getObject();
+    if (!obj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 

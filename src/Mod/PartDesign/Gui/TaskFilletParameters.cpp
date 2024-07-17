@@ -209,20 +209,12 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-
-//void TaskDlgFilletParameters::open()
-//{
-//    // a transaction is already open at creation time of the fillet
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = tr("Edit fillet");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
 bool TaskDlgFilletParameters::accept()
 {
-    auto obj = vp->getObject();
-    if (!obj->isError())
+    auto obj = getObject();
+    if (!obj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 

@@ -280,7 +280,7 @@ TaskDlgThicknessParameters::~TaskDlgThicknessParameters() = default;
 
 bool TaskDlgThicknessParameters::accept()
 {
-    auto obj = vp->getObject();
+    auto obj = getObject();
     if (!obj->isError()) {
         parameter->showObject();
     }

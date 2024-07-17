@@ -250,19 +250,20 @@ TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters() = default;
 //==== calls from the TaskView ===============================================================
 
 
-bool TaskDlgSketchBasedParameters::accept() {
-    App::DocumentObject* feature = vp->getObject();
+bool TaskDlgSketchBasedParameters::accept()
+{
+    auto feature = getObject<PartDesign::ProfileBased>();
 
     // Make sure the feature is what we are expecting
     // Should be fine but you never know...
-    if (!feature->isDerivedFrom<PartDesign::ProfileBased>()) {
+    if (!feature) {
         throw Base::TypeError("Bad object processed in the sketch based dialog.");
     }
 
     // First verify that the feature can be built and then hide the profile as otherwise
     // it will remain hidden if the feature's recompute fails
     if (TaskDlgFeatureParameters::accept()) {
-        App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();
+        App::DocumentObject* sketch = feature->Profile.getValue();
         Gui::cmdAppObjectHide(sketch);
         return true;
     }
@@ -272,24 +273,29 @@ bool TaskDlgSketchBasedParameters::accept() {
 
 bool TaskDlgSketchBasedParameters::reject()
 {
-    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-    App::DocumentObjectWeakPtrT weakptr(pcSketchBased);
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
-    bool rv;
+    auto feature = getObject<PartDesign::ProfileBased>();
 
-    // rv should be true anyway but to be on the safe side due to further changes better respect it.
-    rv = TaskDlgFeatureParameters::reject();
+    // Make sure the feature is what we are expecting
+    // Should be fine but you never know...
+    if (!feature) {
+        throw Base::TypeError("Bad object processed in the sketch based dialog.");
+    }
+
+    App::DocumentObjectWeakPtrT weakptr(feature);
+    auto sketch = dynamic_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
+
+    bool value = TaskDlgFeatureParameters::reject();
 
     // if abort command deleted the object the sketch is visible again.
     // The previous one feature already should be made visible
     if (weakptr.expired()) {
         // Make the sketch visible
-        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-            Gui::Application::Instance->getViewProvider(pcSketch)->show();
+        if (sketch && Gui::Application::Instance->getViewProvider(sketch)) {
+            Gui::Application::Instance->getViewProvider(sketch)->show();
+        }
     }
 
-    return rv;
+    return value;
 }
 
 #include "moc_TaskSketchBasedParameters.cpp"

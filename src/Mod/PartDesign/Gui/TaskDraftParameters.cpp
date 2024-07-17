@@ -302,9 +302,10 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters() = default;
 
 bool TaskDlgDraftParameters::accept()
 {
-    auto tobj = vp->getObject();
-    if (!tobj->isError())
+    auto tobj = getObject();
+    if (!tobj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 

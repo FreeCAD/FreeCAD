@@ -87,9 +87,6 @@ public:
     explicit TaskDlgLoftParameters(ViewProviderLoft *LoftView,bool newObj=false);
     ~TaskDlgLoftParameters() override;
 
-    ViewProviderLoft* getLoftView() const
-    { return static_cast<ViewProviderLoft*>(vp); }
-
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
 

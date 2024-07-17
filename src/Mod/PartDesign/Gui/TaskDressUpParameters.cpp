@@ -456,10 +456,10 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
 
 bool TaskDlgDressUpParameters::accept()
 {
-    getDressUpView()->highlightReferences(false);
+    getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
-    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = ("
+    str << Gui::Command::getObjectCmd(getObject()) << ".Base = ("
         << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
     for (const auto & ref : refs)
         str << "\"" << ref << "\",";
@@ -470,7 +470,7 @@ bool TaskDlgDressUpParameters::accept()
 
 bool TaskDlgDressUpParameters::reject()
 {
-    getDressUpView()->highlightReferences(false);
+    getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     return TaskDlgFeatureParameters::reject();
 }
 

@@ -375,17 +375,18 @@ TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;
 
 bool TaskDlgLoftParameters::accept()
 {
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
-    static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        getViewObject<ViewProviderLoft>()->highlightReferences(ViewProviderLoft::Both, false);
 
-    // First verify that the loft can be built and then hide the sections as otherwise
-    // they will remain hidden if the loft's recompute fails
-    if (TaskDlgSketchBasedParameters::accept()) {
-        for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-            Gui::cmdAppObjectHide(obj);
+        // First verify that the loft can be built and then hide the sections as otherwise
+        // they will remain hidden if the loft's recompute fails
+        if (TaskDlgSketchBasedParameters::accept()) {
+            for (App::DocumentObject* obj : loft->Sections.getValues()) {
+                Gui::cmdAppObjectHide(obj);
+            }
+
+            return true;
         }
-
-        return true;
     }
 
     return false;

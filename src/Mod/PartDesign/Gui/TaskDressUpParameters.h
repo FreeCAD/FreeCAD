@@ -113,9 +113,6 @@ public:
     explicit TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
     ~TaskDlgDressUpParameters() override;
 
-    ViewProviderDressUp* getDressUpView() const
-    { return static_cast<ViewProviderDressUp*>(vp); }
-
 public:
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
