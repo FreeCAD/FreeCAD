@@ -21,9 +21,14 @@
 
 #include "PreCompiled.h"
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "TaskMeasure.h"
 
@@ -55,14 +60,19 @@ void StdCmdMeasure::activated(int iMsg)
     Gui::Control().showDialog(task);
 }
 
+bool StdCmdMeasure::isActive() {
+    App::Document *doc = App::GetApplication().getActiveDocument();
+    if (!doc || doc->countObjectsOfType(App::GeoFeature::getClassTypeId()) == 0)
+        return false;
 
-bool StdCmdMeasure::isActive()
-{
-    return true;
+    Gui::MDIView *view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer *viewer =
+            static_cast<Gui::View3DInventor *>(view)->getViewer();
+        return !viewer->isEditing();
+    }
+    return false;
 }
-
-
-
 
 void CreateMeasureCommands() {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
