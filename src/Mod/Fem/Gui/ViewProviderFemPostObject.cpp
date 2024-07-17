@@ -316,13 +316,9 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     Gui::SoFCColorBar* pcBar =
         static_cast<Gui::SoFCColorBar*>(findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
     if (pcBar) {
-        float fMin = m_colorBar->getMinValue();
-        float fMax = m_colorBar->getMaxValue();
-
         // Attach to the foreign color bar and delete our own bar
         pcBar->Attach(this);
         pcBar->ref();
-        pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
         deleteColorBar();
         m_colorBar = pcBar;
@@ -687,7 +683,6 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     m_matPlainEdges->transparency.setNum(numPts);
     float* transp = m_material->transparency.startEditing();
     float* edgeTransp = m_matPlainEdges->transparency.startEditing();
-
     App::Color c;
     App::Color cEdge = EdgeColor.getValue();
     for (int i = 0; i < numPts; i++) {
@@ -1050,7 +1045,7 @@ void ViewProviderFemPostObject::show()
 
 void ViewProviderFemPostObject::OnChange(Base::Subject<int>& /*rCaller*/, int /*rcReason*/)
 {
-    bool ResetColorBarRange = true;
+    bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 }
 
