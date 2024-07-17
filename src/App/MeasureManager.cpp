@@ -62,6 +62,27 @@ namespace App {
         return empty;
     }
 
+    MeasureHandler MeasureManager::getMeasureHandler(const App::MeasureSelectionItem& selectionItem) {
+        auto objT = selectionItem.object;
+
+        App::DocumentObject* sub = objT.getSubObject();
+
+        const char* className = sub->getTypeId().getName();
+        std::string mod = Base::Type::getModuleName(className);
+
+        return getMeasureHandler(mod.c_str());
+    }
+
+    MeasureElementType MeasureManager::getMeasureElementType(const App::MeasureSelectionItem& selectionItem) {
+        auto handler = getMeasureHandler(selectionItem);
+        if (handler.module.empty()) {
+            return App::MeasureElementType::INVALID;
+        }
+
+        auto objT = selectionItem.object;
+        return handler.typeCb(objT.getObject(), objT.getSubName().c_str());
+    }
+
     void MeasureManager::addMeasureType(MeasureType* measureType) {
         _mMeasureTypes.push_back(measureType);
     }

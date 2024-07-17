@@ -185,13 +185,12 @@ void TaskMeasure::update() {
     if (measureTypes.size() > 0) {
         measureType = measureTypes.front();
     }
-    
 
     if (!measureType) {
 
         // Note: If there's no valid measure type we might just restart the selection,
         // however this requires enough coverage of measuretypes that we can access all of them
-        
+
         // std::tuple<std::string, std::string> sel = selection.back();
         // clearSelection();
         // addElement(measureModule.c_str(), get<0>(sel).c_str(), get<1>(sel).c_str());
@@ -215,7 +214,7 @@ void TaskMeasure::update() {
         if (measureType->isPython) {
             Base::PyGILStateLocker lock;
             auto pyMeasureClass = measureType->pythonClass;
-            
+
             // Create a MeasurePython instance
             auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
             setMeasureObject((Measure::MeasureBase*)featurePython);
@@ -297,7 +296,7 @@ void TaskMeasure::reset() {
     // Reset tool state
     this->clearSelection();
 
-    // Should the explicit mode also be reset? 
+    // Should the explicit mode also be reset?
     // setModeSilent(nullptr);
     // explicitMode = false;
 
@@ -368,7 +367,7 @@ void TaskMeasure::onModeChanged(int index) {
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode) {
     modeSwitch->blockSignals(true);
-    
+
     if (mode == nullptr) {
         modeSwitch->setCurrentIndex(0);
     }
