@@ -121,7 +121,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Line Weight</string>
+           <string>Line Width</string>
           </property>
          </widget>
         </item>

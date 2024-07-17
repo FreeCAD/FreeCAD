@@ -7,8 +7,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${QT_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})

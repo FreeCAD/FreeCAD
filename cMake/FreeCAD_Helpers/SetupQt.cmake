@@ -1,9 +1,7 @@
 # -------------------------------- Qt --------------------------------
 
 set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
-if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
-    list (APPEND FREECAD_QT_COMPONENTS XmlPatterns)
-elseif (FREECAD_QT_MAJOR_VERSION EQUAL 6)
+if (FREECAD_QT_MAJOR_VERSION EQUAL 6)
     set (Qt6Core_MOC_EXECUTABLE Qt6::moc)
 endif()
 
@@ -15,7 +13,6 @@ if(BUILD_GUI)
     elseif (FREECAD_QT_MAJOR_VERSION EQUAL 6)
         list (APPEND FREECAD_QT_COMPONENTS GuiTools)
         list (APPEND FREECAD_QT_COMPONENTS SvgWidgets)
-        list (APPEND FREECAD_QT_COMPONENTS Core5Compat)
     endif()
 
     list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets LinguistTools)

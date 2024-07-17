@@ -876,7 +876,7 @@ class ToolBitLibrary(object):
 
         TooltableTypeJSON = translate("CAM_ToolBit", "Tooltable JSON (*.fctl)")
         TooltableTypeLinuxCNC = translate("CAM_ToolBit", "LinuxCNC tooltable (*.tbl)")
-        TooltableTypeCamotics = translate("CAM_ToolBit", "Camotics tooltable (*.json)")
+        TooltableTypeCamotics = translate("CAM_ToolBit", "CAMotics tooltable (*.json)")
 
         filename = PySide.QtGui.QFileDialog.getSaveFileName(
             self.form,

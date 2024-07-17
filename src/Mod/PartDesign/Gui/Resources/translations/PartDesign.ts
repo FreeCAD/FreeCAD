@@ -80,23 +80,23 @@ so that self intersection is avoided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../InvoluteGearFeature.py" line="101"/>
-        <source>Modules of the gear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../InvoluteGearFeature.py" line="104"/>
         <source>Pressure angle of gear teeth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../InvoluteGearFeature.py" line="101"/>
+        <source>Module of the gear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../InvoluteGearFeature.py" line="108"/>
-        <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
+        <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../InvoluteGearFeature.py" line="111"/>
-        <source>True=external Gear False=internal Gear</source>
+        <source>True=external Gear, False=internal Gear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -910,7 +910,7 @@ so that self intersection is avoided.</source>
     </message>
     <message>
         <location filename="../../CommandBody.cpp" line="434"/>
-        <source>Migrate legacy part design features to Bodies</source>
+        <source>Migrate legacy Part Design features to Bodies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3007,7 +3007,7 @@ click again to end selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+        <location filename="../../TaskThicknessParameters.cpp" line="262"/>
         <source>Empty thickness created !
 </source>
         <translation type="unfinished"></translation>
@@ -3851,12 +3851,12 @@ This feature is broken and can&apos;t be edited.</source>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="179"/>
-        <source>One transformed shape does not intersect support</source>
+        <source>One transformed shape does not intersect the support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="181"/>
-        <source>%1 transformed shapes do not intersect support</source>
+        <source>%1 transformed shapes do not intersect the support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3951,7 +3951,7 @@ Although you will be able to migrate any moment later with &apos;Part Design -&g
     <name>SprocketParameter</name>
     <message>
         <location filename="../../../SprocketFeature.ui" line="14"/>
-        <source>Sprocket parameter</source>
+        <source>Sprocket parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4131,7 +4131,7 @@ Although you will be able to migrate any moment later with &apos;Part Design -&g
     </message>
     <message>
         <location filename="../../../SprocketFeature.ui" line="310"/>
-        <source>Tooth Width</source>
+        <source>Tooth Width:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4931,7 +4931,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     </message>
     <message>
         <location filename="../../../App/FeatureHelix.cpp" line="128"/>
-        <source>Error: Pitch too small</source>
+        <source>Error: Pitch too small!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="565"/>
       <source>Drawing</source>
-      <translation>ხაზვა</translation>
+      <translation>ნახაზი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Drawing</source>
-      <translation>ხაზვა</translation>
+      <translation>ნახაზი</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="317"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../../Command.cpp" line="615"/>
       <source>Drawing</source>
-      <translation>ნახაზი</translation>
+      <translation>ხაზვა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="616"/>
@@ -231,8 +231,8 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>აქტიურ ნახაზში Svg ფაილიდან სიმბოლოს ჩასმა</translation>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
     </message>
   </context>
   <context>
@@ -774,7 +774,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Drawing</source>
-      <translation>ნახაზი</translation>
+      <translation>ხაზვა</translation>
     </message>
   </context>
 </TS>

@@ -23,10 +23,52 @@
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
+
+#include "TaskMeasure.h"
 
 
-using namespace std;
+//===========================================================================
+// Std_Measure
+// this is the Unified Measurement Facility Measure command
+//===========================================================================
+
+
+DEF_STD_CMD_A(StdCmdMeasure)
+
+StdCmdMeasure::StdCmdMeasure()
+    : Command("Std_Measure")
+{
+    sGroup = "Measure";
+    sMenuText = QT_TR_NOOP("&Measure");
+    sToolTipText = QT_TR_NOOP("Measure a feature");
+    sWhatsThis = "Std_Measure";
+    sStatusTip = QT_TR_NOOP("Measure a feature");
+    sPixmap = "umf-measurement";
+}
+
+void StdCmdMeasure::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskMeasure* task = new Gui::TaskMeasure();
+    Gui::Control().showDialog(task);
+}
+
+
+bool StdCmdMeasure::isActive()
+{
+    return true;
+}
+
+
+
 
 void CreateMeasureCommands() {
-    Base::Console().Log("Init MeasureGui\n");
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    auto cmd = new StdCmdMeasure();
+    cmd->initAction();
+    rcCmdMgr.addCommand(cmd);
+
 }

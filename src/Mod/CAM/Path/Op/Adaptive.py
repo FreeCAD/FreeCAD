@@ -71,7 +71,7 @@ def convertTo2d(pathArray):
 
 
 sceneGraph = None
-scenePathNodes = []  # for scene cleanup aftewards
+scenePathNodes = []  # for scene cleanup afterwards
 topZ = 10
 
 

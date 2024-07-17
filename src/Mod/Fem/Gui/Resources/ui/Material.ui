@@ -104,7 +104,7 @@
         <item row="1" column="1">
          <widget class="QPushButton" name="pushButton_editMat">
           <property name="text">
-           <string>use FreeCAD material editor</string>
+           <string>Use FreeCAD material editor</string>
           </property>
          </widget>
         </item>
@@ -120,7 +120,7 @@
            <enum>Qt::RightToLeft</enum>
           </property>
           <property name="text">
-           <string>use this task panel</string>
+           <string>Use this task panel</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -389,7 +389,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Thermal  Properties</string>
+      <string>Thermal Properties</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_8">
       <item>
@@ -494,7 +494,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Specific Heat:</string>
+           <string>Specific Heat Capacity:</string>
           </property>
          </widget>
         </item>

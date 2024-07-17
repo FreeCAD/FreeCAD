@@ -51,14 +51,16 @@ SET(MeasureGui_SRCS
     QuickMeasurePyImp.cpp
     QuickMeasure.cpp
     QuickMeasure.h
+    TaskMeasure.cpp
+    TaskMeasure.h
     ViewProviderMeasureBase.cpp
     ViewProviderMeasureBase.h
     ViewProviderMeasureAngle.cpp
     ViewProviderMeasureAngle.h
     ViewProviderMeasureDistance.cpp
     ViewProviderMeasureDistance.h
-    # Workbench.cpp
-    # Workbench.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
     DlgPrefsMeasureAppearanceImp.ui
     DlgPrefsMeasureAppearanceImp.cpp
     DlgPrefsMeasureAppearanceImp.h

@@ -235,8 +235,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <source>Fit B-Spline</source>
-      <translation>Pas in B-Spline</translation>
+      <source>Fit B-spline</source>
+      <translation type="unfinished">Fit B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
@@ -607,7 +607,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation type="unfinished">Chord length</translation>
+      <translation>Koord lengte</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
@@ -672,7 +672,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
       <source>Closed curve</source>
-      <translation type="unfinished">Closed curve</translation>
+      <translation>Gesloten curve</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="151"/>

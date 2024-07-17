@@ -51,6 +51,16 @@ MeasureDistance::MeasureDistance()
                                             "Distance between the two elements");
     Distance.setUnit(Base::Unit::Length);
 
+    ADD_PROPERTY_TYPE(DistanceX,(0.0),"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                                            "Distance in X direction");
+    DistanceX.setUnit(Base::Unit::Length);
+    ADD_PROPERTY_TYPE(DistanceY,(0.0),"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                                            "Distance in Y direction");
+    DistanceY.setUnit(Base::Unit::Length);
+    ADD_PROPERTY_TYPE(DistanceZ,(0.0),"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                                            "Distance in Z direction");
+    DistanceZ.setUnit(Base::Unit::Length);
+
     ADD_PROPERTY_TYPE(Position1,(Base::Vector3d(0.0,0.0,0.0)),"Measurement", App::Prop_Hidden, "Position1");
     ADD_PROPERTY_TYPE(Position2,(Base::Vector3d(0.0,1.0,0.0)),"Measurement", App::Prop_Hidden, "Position2");
 
@@ -150,7 +160,6 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     }
 
     auto handler = getGeometryHandler(mod);
-    std::string obName = static_cast<std::string>(ob->getNameInDocument());
     App::SubObjectT subject{ob, subName.c_str()};
     auto info = handler(subject);
     if (!info->valid) {
@@ -158,7 +167,7 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     }
     auto distanceInfo = std::dynamic_pointer_cast<Part::MeasureDistanceInfo>(info);
 
-    rShape = *distanceInfo->getShape();
+    rShape = distanceInfo->getShape();
     return true;
 }
 
@@ -197,7 +206,11 @@ App::DocumentObjectExecReturn *MeasureDistance::execute()
         return new App::DocumentObjectExecReturn("Could not get extrema");
     }
 
+    gp_Pnt delta = measure.PointOnShape2(1).XYZ() - measure.PointOnShape1(1).XYZ();
     Distance.setValue(measure.Value());
+    DistanceX.setValue(fabs(delta.X()));
+    DistanceY.setValue(fabs(delta.Y()));
+    DistanceZ.setValue(fabs(delta.Z()));
 
     gp_Pnt p1 = measure.PointOnShape1(1);
     Position1.setValue(p1.X(), p1.Y(), p1.Z());
@@ -239,6 +252,16 @@ MeasureDistanceDetached::MeasureDistanceDetached()
                                             "Distance between the two elements");
     Distance.setUnit(Base::Unit::Length);
 
+    ADD_PROPERTY_TYPE(DistanceX,(0.0),"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                                            "Distance in X direction");
+    DistanceX.setUnit(Base::Unit::Length);
+    ADD_PROPERTY_TYPE(DistanceY,(0.0),"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                                            "Distance in Y direction");
+    DistanceY.setUnit(Base::Unit::Length);
+    ADD_PROPERTY_TYPE(DistanceZ,(0.0),"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+                                            "Distance in Z direction");
+    DistanceZ.setUnit(Base::Unit::Length);
+
     ADD_PROPERTY_TYPE(Position1,(Base::Vector3d(0.0,0.0,0.0)),"Measurement", App::Prop_None, "Position1");
     ADD_PROPERTY_TYPE(Position2,(Base::Vector3d(0.0,1.0,0.0)),"Measurement", App::Prop_None, "Position2");
 }
@@ -269,6 +292,9 @@ void MeasureDistanceDetached::recalculateDistance()
 {
     auto delta = Position1.getValue() - Position2.getValue();
     Distance.setValue(delta.Length());
+    DistanceX.setValue(fabs(delta.x));
+    DistanceY.setValue(fabs(delta.y));
+    DistanceZ.setValue(fabs(delta.z));
 }
 
 void MeasureDistanceDetached::onChanged(const App::Property* prop)

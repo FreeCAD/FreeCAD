@@ -148,7 +148,7 @@
     <message>
       <location filename="../CommandStructure.cpp" line="151"/>
       <source>Add a variable set</source>
-      <translation type="unfinished">Add a variable set</translation>
+      <translation>Ein Variablensatz hinzufügen</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="972"/>
@@ -194,18 +194,18 @@
       <translation>Selektierbarkeit an/aus</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="254"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="63"/>
       <source>Edit image</source>
       <translation>Bild bearbeiten</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="122"/>
+      <location filename="../CommandFeat.cpp" line="127"/>
       <source>Set Random Color</source>
       <translation>Zufällige Farbe festlegen</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="168"/>
+      <location filename="../CommandFeat.cpp" line="175"/>
       <source>Toggle freeze</source>
       <translation>Einfrieren umschalten</translation>
     </message>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="38"/>
       <source>Variable Sets</source>
-      <translation type="unfinished">Variable Sets</translation>
+      <translation>Variablensätze</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="49"/>
@@ -371,12 +371,12 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="75"/>
       <source>Variable Set:</source>
-      <translation type="unfinished">Variable Set:</translation>
+      <translation>Variablensatz:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="85"/>
       <source>Info:</source>
-      <translation type="unfinished">Info:</translation>
+      <translation>Info:</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="92"/>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="114"/>
       <source>Show variable sets</source>
-      <translation type="unfinished">Show variable sets</translation>
+      <translation>Variablensätze anzeigen</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="149"/>
@@ -462,7 +462,7 @@
     <message>
       <location filename="../Application.h" line="272"/>
       <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
-      <translation type="unfinished">The object will have the color of its individual faces editable with the Part FaceAppearances command</translation>
+      <translation>Das Objekt wird seine einzelnen Flächenfarben mit dem Befehl Part FaceAppearances editierbar haben</translation>
     </message>
   </context>
   <context>
@@ -550,7 +550,7 @@
     <message>
       <location filename="../Assistant.cpp" line="103"/>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 Hilfe-Dateien (%2) wurden nicht gefunden. Sie müssen möglicherweise die %1 Dokumentationspakete installieren.</translation>
+      <translation>%1 Hilfe-Dateien (%2) wurden nicht gefunden. Möglicherweise müssen die %1 Dokumentationspakete installiert werden.</translation>
     </message>
     <message>
       <location filename="../Assistant.cpp" line="135"/>
@@ -565,7 +565,7 @@
     <message>
       <location filename="../AutoSaver.cpp" line="172"/>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Bitte warten Sie, bis die AutoWiederherstellen-Datei gespeichert wurde...</translation>
+      <translation>Bitte warten, bis die Automatische Wiederherstellungs Datei gespeichert wurde...</translation>
     </message>
   </context>
   <context>
@@ -587,8 +587,8 @@
     </message>
     <message>
       <location filename="../BlenderNavigationStyle.cpp" line="58"/>
-      <source>Scroll middle mouse button</source>
-      <translation>Mausrad drehen</translation>
+      <source>Scroll mouse wheel</source>
+      <translation type="unfinished">Scroll mouse wheel</translation>
     </message>
   </context>
   <context>
@@ -778,7 +778,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="245"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation>Warnung: Bitte stellen Sie sicher, dass dies die einzige laufende %1-Instanz ist und dass keine Dokumente geöffnet sind, da dies zu Datenverlust führen kann!</translation>
+      <translation>Warnung: Bitte sicherstellen, dass dies die einzige laufende %1-Instanz ist und dass keine Dokumente geöffnet sind, da dies zu Datenverlust führen kann!</translation>
     </message>
   </context>
   <context>
@@ -1125,7 +1125,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgCreateNewPreferencePackImp.cpp" line="160"/>
       <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
-      <translation>Ein Einstellungspaket mit diesem Namen existiert bereits. Möchten Sie es überschreiben?</translation>
+      <translation>Ein Einstellungspaket mit diesem Namen existiert bereits. Überschreiben?</translation>
     </message>
   </context>
   <context>
@@ -1221,7 +1221,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgActionsImp.cpp" line="233"/>
       <source>Please specify the macro first.</source>
-      <translation>Wählen Sie bitte vorher das Makro aus.</translation>
+      <translation>Bitte vorher das Makro auswählen.</translation>
     </message>
     <message>
       <location filename="../DlgActionsImp.cpp" line="239"/>
@@ -1233,7 +1233,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
       <location filename="../DlgActionsImp.cpp" line="239"/>
       <location filename="../DlgActionsImp.cpp" line="307"/>
       <source>Please specify the menu text first.</source>
-      <translation>Geben Sie bitte den Menütext an.</translation>
+      <translation>Bitte den Menütext angeben.</translation>
     </message>
     <message>
       <location filename="../DlgActionsImp.cpp" line="301"/>
@@ -1243,7 +1243,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgActionsImp.cpp" line="301"/>
       <source>Please select a macro item first.</source>
-      <translation>Wählen Sie bitte vorher ein Makroelement aus.</translation>
+      <translation>Bitte vorher ein Makroelement auswählen.</translation>
     </message>
   </context>
   <context>
@@ -1273,7 +1273,7 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <location filename="../DlgKeyboard.ui" line="107"/>
       <source>To change a current shortcut enter the new shortcut in the field below and press 'Assign'.</source>
-      <translation>Um das aktuelle Tastenkürzel zu ändern, geben Sie unten ein neues ein und klicken Sie 'Zuweisen'.</translation>
+      <translation>Um das aktuelle Tastenkürzel zu ändern, unten ein neues eingeben und 'Zuweisen' klicken.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="119"/>
@@ -1718,7 +1718,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgMacroExecute.ui" line="281"/>
       <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
-      <translation>Starten Sie eine Anleitung, wie Sie ein Makro in einer benutzerdefinierten globalen Symbolleiste einrichten können.</translation>
+      <translation>Eine Anleitung starten, wie ein Makro in einer benutzerdefinierten globalen Symbolleiste eingerichtet werden kann.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="284"/>
@@ -1728,7 +1728,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgMacroExecute.ui" line="307"/>
       <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
-      <translation>Öffnen Sie den Erweiterungsmanager, in dem von der Community erstellte Makros und andere Erweiterungen heruntergeladen werden können.</translation>
+      <translation>Öffnet den Addon-Manager, in dem von der Community erstellte Makros und andere Erweiterungen heruntergeladen werden können.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="310"/>
@@ -1762,7 +1762,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="473"/>
       <source>Enter a file name, please:</source>
-      <translation>Geben Sie bitte einen Dateinamen an:</translation>
+      <translation>Bitte einen Dateinamen eingeben:</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="493"/>
@@ -1796,7 +1796,7 @@ Diese Datei ist bereits vorhanden.</translation>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="535"/>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Möchten Sie das Makro '%1' wirklich löschen?</translation>
+      <translation>Soll das Makro '%1' wirklich gelöscht werden?</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="564"/>
@@ -1816,7 +1816,7 @@ Note: your changes will be applied when you next switch workbenches
 </source>
       <translation>Einrichtungsassistent für die benutzerdefinierte globale Symbolleiste. Im Dialog: Anweisungen in rotem Text.
 
-Hinweis: Ihre Änderungen werden beim nächsten Wechsel im Arbeitsbereich wirksam
+Hinweis: Die Änderungen werden beim nächsten Wechsel im Arbeitsbereich wirksam
 </translation>
     </message>
     <message>
@@ -1827,7 +1827,7 @@ Hinweis: Ihre Änderungen werden beim nächsten Wechsel im Arbeitsbereich wirksa
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="635"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation>Lösung: Füllen Sie fehlende Felder aus (optional) und klicken Sie auf Hinzufügen, dann schließen</translation>
+      <translation>Lösung: Fehlende Felder ausfüllen (optional) und auf Hinzufügen klicken, dann schließen</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="669"/>
@@ -1842,12 +1842,12 @@ Hinweis: Ihre Änderungen werden beim nächsten Wechsel im Arbeitsbereich wirksa
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="698"/>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation>Lösungsansatz: Klicken Sie auf den rechten Pfeil (-&gt;), dann Schließen.</translation>
+      <translation>Lösungsansatz: Auf den rechten Pfeil (-&gt;) klicken, dann Schließen.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="722"/>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation>Lösungsansatz: Klicken Sie auf Neu, dann rechten Pfeil (-&gt;), dann Schließen.</translation>
+      <translation>Lösungsansatz: Auf Neu klicken, dann rechten Pfeil (-&gt;), dann Schließen.</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="807"/>
@@ -1941,12 +1941,12 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="100"/>
       <source>Specify first a place to save.</source>
-      <translation>Geben Sie vorher einen Speicherort an.</translation>
+      <translation>Zuerst einen Speicherort angeben.</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="107"/>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Das Makro-Verzeichnis existiert nicht. Wählen Sie bitte ein anderes aus.</translation>
+      <translation>Das Makro-Verzeichnis existiert nicht. Bitte ein anderes auswählen.</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="119"/>
@@ -1956,17 +1956,17 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="120"/>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation>Das Makro '%1' existiert bereits. Wollen Sie es überschreiben?</translation>
+      <translation>Das Makro '%1' existiert bereits. Soll es überschrieben werden?</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="129"/>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>Sie haben keine Schreibrechte für das Verzeichnis. Bitte wählen Sie ein anderes.</translation>
+      <translation>Keine Schreibrechte für das Verzeichnis. Bitte ein anderes Verzeichnis auswählen.</translation>
     </message>
     <message>
       <location filename="../DlgMacroRecordImp.cpp" line="173"/>
       <source>Choose macro directory</source>
-      <translation>Wählen Sie ein Makro-Verzeichnis</translation>
+      <translation>Makro-Verzeichnis auswählen</translation>
     </message>
   </context>
   <context>
@@ -2225,7 +2225,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPreferencePackManagement.ui" line="56"/>
       <source>Open Addon Manager...</source>
-      <translation>Erweiterungs-Manager öffnen...</translation>
+      <translation>Addon-Manager öffnen...</translation>
     </message>
   </context>
   <context>
@@ -2253,7 +2253,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="144"/>
       <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
-      <translation>Sichtbarkeit des Addon-Einstellungspakets '%1' umschalten (zum dauerhaften Entfernen Addon Manager verwenden)</translation>
+      <translation>Sichtbarkeit des Addon-Einstellungspakets '%1' umschalten (zum dauerhaften Entfernen Addon-Manager verwenden)</translation>
     </message>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="179"/>
@@ -2263,7 +2263,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPreferencePackManagementImp.cpp" line="180"/>
       <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
-      <translation>Sind Sie sicher, dass Sie das Einstellungspaket mit dem Namen '%1' löschen wollen? Dies kann nicht rückgängig gemacht werden.</translation>
+      <translation>Soll das Einstellungspaket mit dem Namen '%1' gelöscht werden? Dies kann nicht rückgängig gemacht werden.</translation>
     </message>
   </context>
   <context>
@@ -2328,12 +2328,12 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="572"/>
       <source>Do you want to clear all your user settings?</source>
-      <translation>Möchten Sie alle Ihre Benutzereinstellungen löschen?</translation>
+      <translation>Sollen alle Benutzereinstellungen gelöscht werden?</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="573"/>
       <source>If you agree all your settings will be cleared.</source>
-      <translation>Wenn Sie einverstanden sind werden alle ihre Einstellungen gelöscht.</translation>
+      <translation>Sollen alle Einstellungen gelöscht werden?.</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="673"/>
@@ -2653,7 +2653,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgRunExternal.cpp" line="126"/>
       <source>Select a file</source>
-      <translation>Wählen Sie eine Datei aus</translation>
+      <translation>Eine Datei auswählen</translation>
     </message>
   </context>
   <context>
@@ -2703,7 +2703,7 @@ angezeigt</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="145"/>
       <source>Time needed for last operation and resulting frame rate
 will be shown at the lower left corner in opened files</source>
-      <translation>Die benötigte Zeit für die letzte Operation und die resultierende Bildrate wird in der linken unteren Ecke in geöffneten Dateien angezeigt</translation>
+      <translation>Die benötigte Zeit für den letzten Vorgang und die resultierende Bildrate wird in der linken unteren Ecke in geöffneten Dateien angezeigt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="149"/>
@@ -2756,7 +2756,7 @@ Ein VBO ist eine OpenGL-Funktion, die Methoden zum Hochladen von Netzpunkt-Daten
 VBOs bieten erhebliche Leistungssteigerungen, da die Daten
 im Grafikspeicher und nicht im Systemspeicher liegen und somit direkt durch die GPU gerendert werden können. 
 
-Hinweis: Manchmal kann diese Funktion zu unerwarteten Problemen führen, die von grafischen Anomalien bis hin zu GPU-Absturzfehlern reichen. Wenn Sie Unterstützung in freeCAD-Foren suchen, sollten Sie darauf hinweisen, dass Sie diese Funktion aktiviert haben.</translation>
+Hinweis: Manchmal kann diese Funktion zu unerwarteten Problemen führen, die von grafischen Anomalien bis hin zu GPU-Absturzfehlern reichen. Bei Beiträgen in FreeCAD-Foren, sollten darauf hingewiesen werden, dass diese Funktion aktiviert ist</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
@@ -2993,7 +2993,7 @@ Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des ger
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="288"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Öffnen Sie ein neues Fenster oder starten Sie %1 neu, um Änderungen an der Kantenglättung zu übernehmen.</translation>
+      <translation>Ein neues Fenster öffnen oder %1 neu starten, um Änderungen an der Kantenglättung zu übernehmen.</translation>
     </message>
   </context>
   <context>
@@ -3429,11 +3429,10 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Aktiviere partielles Laden von externen verknüpften Dokumenten.
+      <translation>Partielles Laden von externen verknüpften Dokumenten aktivieren.
 Dann werden nur referenzierte Objekte und ihre Abhängigkeiten geladen,
 wenn ein verknüpftes Dokument automatisch zusammen mit dem Hauptdokument geöffnet wird.
-Ein teilweise geladenes Dokument kann nicht bearbeitet werden. Doppelklicken Sie auf das Dokument
-Symbol in der Baumansicht, um es vollständig neu zu laden.</translation>
+Ein teilweise geladenes Dokument kann nicht bearbeitet werden. Doppelklick auf das Dokumenten-Symbol in der Baumansicht, um es vollständig neu zu laden.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="585"/>
@@ -3457,7 +3456,7 @@ Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>Alle Dokumente, die erstellt werden, erhalten den angegebenen Autorennamen.
 Anonymisiert bleiben leer.
-Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translation>
+Es kann auch diese Form verwendet werden: Max Mustermann &lt;max@mustermann.de&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="629"/>
@@ -4021,7 +4020,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Listet die Konfiguration der Maustaste für jede ausgewählte Navigationseinstellung auf.
-Wählen Sie eine Einstellung aus und drücken Sie dann die Schaltfläche, um die Einstellungen anzuzeigen.</translation>
+Eine Einstellung auswählen und dann die Schaltfläche drücken, um die Einstellungen anzuzeigen.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="416"/>
@@ -4159,7 +4158,7 @@ Der Wert ist der Durchmesser der Kugel, der auf den Bildschirm passt.</translati
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="609"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
-      <translation>Zoom-Operationen werden an der Position des Mauszeigers ausgeführt</translation>
+      <translation>Zoom-Vorgänge werden an der Position des Mauszeigers ausgeführt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="612"/>
@@ -4176,7 +4175,7 @@ Zoom-Schritt von '1' bedeutet für jeden Zoom-Schritt einen Faktor von 7,5.</tra
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="690"/>
       <source>Direction of zoom operations will be inverted</source>
-      <translation>Richtung der Zoom-Operationen wird umgekehrt</translation>
+      <translation>Richtung der Zoom-Vorgänge wird umgekehrt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="693"/>
@@ -4381,7 +4380,7 @@ Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="205"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Vorauswählen des Objekts in der 3D -Ansicht, wenn die Maus über das Baumelement fährt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="218"/>
@@ -4553,13 +4552,13 @@ Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
-      <source>Units calculator</source>
-      <translation>Einheitenrechner</translation>
+      <source>Units converter</source>
+      <translation type="unfinished">Units converter</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
       <source>Input the source value and unit</source>
-      <translation>Geben Sie die Quellwert und die Einheit ein</translation>
+      <translation>Die Quellwert und die Einheit eingeben</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="35"/>
@@ -4569,7 +4568,7 @@ Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="48"/>
       <source>Input here the unit for the result</source>
-      <translation>Geben Sie hier die Einheit für das Ergebnis ein</translation>
+      <translation>Die Einheit für das Ergebnis eingeben</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="58"/>
@@ -4586,7 +4585,7 @@ Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
       <translation>Liste der zuletzt verwendeten Berechnungen.
-Um eine Berechnung hinzuzufügen, drücken Sie die Eingabetaste im Werteingabefeld</translation>
+Um eine Berechnung hinzuzufügen, die Eingabetaste im Werteingabefeld drücken</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="94"/>
@@ -4747,22 +4746,22 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DocumentRecovery.cpp" line="511"/>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation>Sind Sie sicher, dass Sie die ausgewählten temporären Verzeichnisse löschen möchten?</translation>
+      <translation>Sollen die ausgewählten temporären Verzeichnisse wirklich gelöscht werden?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="512"/>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Wenn die ausgewählten temporären Verzeichnisses gelöscht werden, können Sie danach keine Dateien wiederherstellen.</translation>
+      <translation>Wenn die ausgewählten temporären Verzeichnisses gelöscht werden, können danach keine Dateien wiederhergestellt werden.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="543"/>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation>Sind Sie sicher, dass Sie alle temporären Verzeichnisse löschen möchten?</translation>
+      <translation>Alle temporären Verzeichnisse löschen?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="544"/>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation>Wenn alle temporären Verzeichnisse gelöscht werden, können Sie anschließend keine Dateien wiederherstellen.</translation>
+      <translation>Wenn alle temporären Verzeichnisse gelöscht werden, können anschließend keine Dateien wiederhergestellt werden.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="558"/>
@@ -5021,7 +5020,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgParameterImp.cpp" line="519"/>
       <source>Do you really want to remove this parameter group?</source>
-      <translation>Möchten Sie diese Parametergruppe wirklich entfernen?</translation>
+      <translation>Diese Parametergruppe entfernen?</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="566"/>
@@ -5187,8 +5186,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
-      <source>Rotation axis with angle</source>
-      <translation>Rotationsachse mit Winkel</translation>
+      <source>Rotation axis and angle</source>
+      <translation type="unfinished">Rotation axis and angle</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5263,7 +5262,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.cpp" line="613"/>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Bitte wählen Sie 1, 2 oder 3 Punkte, bevor Sie auf diese Schaltfläche klicken. Ein Punkt kann sich auf einem Scheitelpunkt, einer Fläche oder einer Kante befinden. Der verwendete Punkt auf einer Fläche oder Kante ist derjenige Punkt, der sich an der Mausposition entlang der Fläche oder Kante befindet. Wenn 1 Punkt ausgewählt ist, wird dieser als Drehpunkt verwendet. Wenn zwei Punkte ausgewählt werden, ist der Mittelpunkt zwischen ihnen der Drehpunkt und falls erforderlich, wird eine neue benutzerdefinierte Achse erstellt. Wenn 3 Punkte ausgewählt werden, wird der erste Punkt zum Drehpunkt und liegt auf dem Vektor, der senkrecht zu der durch die 3 Punkte definierten Ebene liegt. In der Berichtansicht werden einige Entfernungs- und Winkelinformationen bereitgestellt, die beim Ausrichten von Objekten hilfreich sein können. Wenn Sie bei gedrückter Umschalttaste + klicken, wird der entsprechende Abstand oder Winkel in die Zwischenablage kopiert.</translation>
+      <translation>Vor einem Klick bitte 1, 2 oder 3 Punkte auswählen. Ein Punkt kann sich auf einem Scheitelpunkt, einer Fläche oder einer Kante befinden. Der verwendete Punkt auf einer Fläche oder Kante ist derjenige Punkt, der sich an der Mausposition entlang der Fläche oder Kante befindet. Wenn 1 Punkt ausgewählt ist, wird dieser als Drehpunkt verwendet. Wenn zwei Punkte ausgewählt werden, ist der Mittelpunkt zwischen ihnen der Drehpunkt und falls erforderlich, wird eine neue benutzerdefinierte Achse erstellt. Wenn 3 Punkte ausgewählt werden, wird der erste Punkt zum Drehpunkt und liegt auf dem Vektor, der senkrecht zu der durch die 3 Punkte definierten Ebene liegt. In der Berichtansicht werden einige Entfernungs- und Winkelinformationen bereitgestellt, die beim Ausrichten von Objekten hilfreich sein können. Bei gedrückter Umschalttaste + klicken, wird der entsprechende Abstand oder Winkel in die Zwischenablage kopiert.</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="709"/>
@@ -5273,7 +5272,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.cpp" line="711"/>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Es gibt Eingabefelder mit falschem Inhalt, bitte stellen Sie die Gültigkeit der Koordinaten-Werte sicher!</translation>
+      <translation>Es gibt Eingabefelder mit falscher Eingabe, bitte sicherstellen, dass gültige Werte für die Positionierung verwendet werden!</translation>
     </message>
   </context>
   <context>
@@ -5431,7 +5430,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="32"/>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation>Die ausgewählten Objekte enthalten andere Abhängigkeiten. Bitte wählen Sie aus, welche Objekte exportiert werden sollen. Alle Abhängigkeiten werden standardmäßig automatisch ausgewählt.</translation>
+      <translation>Die ausgewählten Objekte enthalten andere Abhängigkeiten. Bitte auswählen, welche Objekte exportiert werden sollen. Alle Abhängigkeiten werden standardmäßig automatisch ausgewählt.</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.ui" line="157"/>
@@ -5734,7 +5733,7 @@ dieses Dialogs ausgewählt wurden</translation>
 This has been modified outside of the source editor. Do you want to reload it?</source>
       <translation>%1. 
 
-Diese Datei wurde außerhalb des Editors verändert. Wollen Sie sie erneut laden?</translation>
+Diese Datei wurde außerhalb des Editors verändert. Soll sie erneut geladen werden?</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="323"/>
@@ -5811,12 +5810,12 @@ Sollen die Änderungen gespeichert werden?</translation>
       <location filename="../FileDialog.cpp" line="743"/>
       <location filename="../FileDialog.cpp" line="745"/>
       <source>Select a file</source>
-      <translation>Wählen Sie eine Datei aus</translation>
+      <translation>Eine Datei auswählen</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="748"/>
       <source>Select a directory</source>
-      <translation>Wählen Sie ein Verzeichnis aus</translation>
+      <translation>Ein Verzeichnis auswählen</translation>
     </message>
   </context>
   <context>
@@ -5879,7 +5878,7 @@ Sollen die Änderungen gespeichert werden?</translation>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="857"/>
       <source>Tap OR click left mouse button.</source>
-      <translation>Tippen Sie auf den Bildschirm, oder klicken sie mit der linken Maustaste.</translation>
+      <translation>Auf den Bildschirm tippen, oder klicken sie mit der linken Maustaste.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="859"/>
@@ -5888,13 +5887,13 @@ Sollen die Änderungen gespeichert werden?</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="861"/>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Bildschirm mit einem Finger ziehen ODER die linke Maustaste drücken. Im Sketcher &amp;&amp; anderen Bearbeitungsmodi zusätzlich die Alt-Taste halten.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
       <location filename="../GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Kneifen (zwei Finger auf den Bildschirm setzen und auseinanderziehen oder zusammenführen) ODER Mausrad drehen ODER Bild auf/Bild ab auf der Tastatur.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -5907,17 +5906,17 @@ Sollen die Änderungen gespeichert werden?</translation>
     <message>
       <location filename="../GraphvizView.cpp" line="312"/>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation>Graphviz konnte auf Ihrem System nicht gefunden werden.</translation>
+      <translation>Graphviz konnte auf dem System nicht gefunden werden.</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="313"/>
       <source>Read more about it here.</source>
-      <translation>Lesen Sie mehr dazu hier.</translation>
+      <translation>Mehr dazu hier nachlesen.</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="314"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation>Möchten Sie seinen Installationsort angeben, falls es bereits installiert wurde?</translation>
+      <translation>Den Installationsort angeben, falls es bereits installiert wurde?</translation>
     </message>
     <message>
       <location filename="../GraphvizView.cpp" line="321"/>
@@ -6189,7 +6188,7 @@ Sollen die Änderungen gespeichert werden?</translation>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Um zu externen Objekten zu verlinken, muss das Dokument mindestens einmal gespeichert werden.
-Möchten Sie das Dokument jetzt speichern?</translation>
+Das Dokument jetzt speichern?</translation>
     </message>
   </context>
   <context>
@@ -6321,17 +6320,17 @@ How do you want to proceed?</source>
     <message>
       <location filename="../MayaGestureNavigationStyle.cpp" line="94"/>
       <source>Tap OR click left mouse button.</source>
-      <translation>Tippen Sie auf den Bildschirm, oder klicken sie mit der linken Maustaste.</translation>
+      <translation>Auf den Bildschirm tippen, oder mit der linken Maustaste klicken.</translation>
     </message>
     <message>
       <location filename="../MayaGestureNavigationStyle.cpp" line="96"/>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
-      <translation>Ziehen Sie den Bildschirm mit zwei Fingern oder drücken Sie ALT + mittlere Maustaste.</translation>
+      <translation>Den Bildschirm mit zwei Fingern ziehen oder ALT + mittlere Maustaste drücken.</translation>
     </message>
     <message>
       <location filename="../MayaGestureNavigationStyle.cpp" line="98"/>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Ziehen Sie mit einem Finger über den Bildschirm oder drücken Sie die linke Maustaste. Im Skizzierer oder anderen Bearbeitungsmodi drücken sie zusätzlich die Alt-Taste ihrer Tastatur.</translation>
+      <translation>Mit einem Finger über den Bildschirm ziehen oder die linke Maustaste drücken. Im Sketcher oder anderen Bearbeitungsmodi zusätzlich die Alt-Taste drücken.</translation>
     </message>
     <message>
       <location filename="../MayaGestureNavigationStyle.cpp" line="100"/>
@@ -6435,7 +6434,7 @@ ODER ALT-Taste + rechte Maustaste drücken ODER Bild auf/Bild ab auf der Tastatu
     <message>
       <location filename="../ProgressBar.cpp" line="485"/>
       <source>Do you really want to abort the operation?</source>
-      <translation>Möchten Sie die Operation wirklich abbrechen?</translation>
+      <translation>Den Vorgang wirklich abbrechen?</translation>
     </message>
   </context>
   <context>
@@ -6453,7 +6452,7 @@ ODER ALT-Taste + rechte Maustaste drücken ODER Bild auf/Bild ab auf der Tastatu
     <message>
       <location filename="../ProgressDialog.cpp" line="316"/>
       <source>Do you really want to abort the operation?</source>
-      <translation>Möchten Sie die Operation wirklich abbrechen?</translation>
+      <translation>Den Vorgang wirklich abbrechen?</translation>
     </message>
   </context>
   <context>
@@ -6566,7 +6565,7 @@ ODER ALT-Taste + rechte Maustaste drücken ODER Bild auf/Bild ab auf der Tastatu
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
       <translation>Die Anwendung läuft immer noch.
-Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
+Trotzdem beenden, ohne die Daten zu speichern?</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="912"/>
@@ -6824,7 +6823,7 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
 Do you want to specify an existing directory?</source>
       <translation>Das Verzeichnis '%1' existiert nicht.
 
-Möchten Sie ein existierendes Verzeichnis angeben?</translation>
+Ein existierendes Verzeichnis angeben?</translation>
     </message>
     <message>
       <location filename="../NetworkRetriever.cpp" line="513"/>
@@ -6836,9 +6835,9 @@ Möchten Sie ein existierendes Verzeichnis angeben?</translation>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>Sie haben keine Schreibberechtigung für '%1'
+      <translation>Keine Schreibberechtigung für '%1'
 
-Möchten Sie ein anderes Verzeichnis angeben?</translation>
+Stattdessen ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
       <location filename="../NetworkRetriever.cpp" line="540"/>
@@ -6850,8 +6849,8 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="318"/>
-      <source>Automatic python modules documentation</source>
-      <translation>Automatische Python Modul Dokumentation</translation>
+      <source>Automatic Python modules documentation</source>
+      <translation type="unfinished">Automatic Python modules documentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="319"/>
@@ -7030,12 +7029,12 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="233"/>
       <source>Do you want to save your changes before closing?</source>
-      <translation>Möchten Sie Ihre Änderungen vor dem Schließen speichern?</translation>
+      <translation>Änderungen vor dem Schließen speichern?</translation>
     </message>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="234"/>
       <source>If you don't save, your changes will be lost.</source>
-      <translation>Wenn Sie nicht speichern, gehen Ihre Änderungen verloren.</translation>
+      <translation>Ohne speichern, gehen die Änderungen verloren.</translation>
     </message>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="288"/>
@@ -7369,12 +7368,12 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../Tree.cpp" line="1113"/>
       <source>Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</source>
-      <translation type="unfinished">Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property.</translation>
+      <translation>Zeige eine Spalte für die Beschreibung des Objekts an. Die Beschreibung kann durch Drücken der F2-Taste (oder einer entsprechenden Taste des Betriebssystems) oder über die 'label2'-Eigenschaft bearbeitet werden.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1128"/>
       <source>Show an internal name column for items.</source>
-      <translation type="unfinished">Show an internal name column for items.</translation>
+      <translation>Eine interne Namensspalte für Elemente anzeigen.</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1169"/>
@@ -7418,8 +7417,8 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3274"/>
-      <source>Create group...</source>
-      <translation>Gruppe erstellen...</translation>
+      <source>Create group</source>
+      <translation>Gruppe erstellen</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3275"/>
@@ -7616,7 +7615,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../DownloadItem.cpp" line="185"/>
       <source>&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</source>
-      <translation>&lt;qt&gt;Geben Sie Benutzernamen und Passwort für "%1" bei %2 ein&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;Benutzernamen und Passwort für "%1" bei %2 eingeben&lt;/qt&gt;</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="207"/>
@@ -7850,7 +7849,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <location filename="../StartupProcess.cpp" line="341"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation>Dieses System verwendet OpenGL %1.%2. FreeCAD benötigt OpenGL 2.0 oder höher. Bitte aktualisieren Sie Ihren Grafiktreiber und/oder Ihre Grafikkarte wenn erforderlich.</translation>
+      <translation>Dieses System verwendet OpenGL %1.%2. FreeCAD benötigt OpenGL 2.0 oder höher. Bitte den Grafiktreiber und/oder Grafikkarte aktualisieren.</translation>
     </message>
     <message>
       <location filename="../StartupProcess.cpp" line="350"/>
@@ -8026,7 +8025,7 @@ Weitere Einzelheiten finden sich im Ausgabefenster.</translation>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
       <translation>Wiederherstellen der importierten Ansichten löscht die bereits gespeicherten Ansichten.
-Wollen Sie fortfahren?</translation>
+Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="472"/>
@@ -8051,7 +8050,7 @@ Wollen Sie fortfahren?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2119"/>
       <source>Choose an image file to open</source>
-      <translation>Wählen Sie die zu öffnende Bild-Datei</translation>
+      <translation>Die zu öffnende Bild-Datei auswählen</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="553"/>
@@ -8066,7 +8065,7 @@ Wollen Sie fortfahren?</translation>
       <location filename="../DlgParameterImp.cpp" line="870"/>
       <location filename="../DlgParameterImp.cpp" line="899"/>
       <source>Enter the name:</source>
-      <translation>Geben Sie einen Namen an:</translation>
+      <translation>Einen Namen eingeben:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="775"/>
@@ -8078,7 +8077,7 @@ Wollen Sie fortfahren?</translation>
       <location filename="../DlgParameterImp.cpp" line="791"/>
       <location filename="../DlgParameterImp.cpp" line="1054"/>
       <source>Enter your text:</source>
-      <translation>Geben Sie einen Text ein:</translation>
+      <translation>Einen Text eingeben:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="804"/>
@@ -8094,7 +8093,7 @@ Wollen Sie fortfahren?</translation>
       <location filename="../DlgParameterImp.cpp" line="1138"/>
       <location filename="../DlgParameterImp.cpp" line="1189"/>
       <source>Enter your number:</source>
-      <translation>Geben Sie einen ganzzahligen Wert an:</translation>
+      <translation>Einen ganzzahligen Wert eingeben:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="834"/>
@@ -8117,7 +8116,7 @@ Wollen Sie fortfahren?</translation>
       <location filename="../DlgParameterImp.cpp" line="917"/>
       <location filename="../DlgParameterImp.cpp" line="1235"/>
       <source>Choose an item:</source>
-      <translation>Wählen Sie einen Eintrag aus:</translation>
+      <translation>Einen Eintrag auswählen:</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="917"/>
@@ -8208,7 +8207,7 @@ Wollen Sie fortfahren?</translation>
     <message>
       <location filename="../Document.cpp" line="1053"/>
       <source>Are you sure you want to continue?</source>
-      <translation>Sind Sie sicher, dass Sie fortfahren möchten?</translation>
+      <translation>Wirklich fortfahren?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1072"/>
@@ -8249,11 +8248,11 @@ Wollen Sie fortfahren?</translation>
 "%1"
 
 Would you like to save the file with a different name?</source>
-      <translation>Es gab ein Problem beim Speichern der Datei. Dies kann daran liegen, dass einige der übergeordneten Ordner nicht existieren, Sie nicht über ausreichende Berechtigungen verfügen oder aus anderen Gründen. Fehlerdetails:
+      <translation>Es gab ein Problem beim Speichern der Datei. Dies kann daran liegen, dass einige der übergeordneten Ordner nicht existieren, Berechtigungen fehlen oder andere Gründe vorliegen. Fehlerdetails:
 
 "%1"
 
-Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
+Die Datei unter einem anderen Namen speichern?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1113"/>
@@ -8270,7 +8269,7 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
     <message>
       <location filename="../Document.cpp" line="1161"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
-      <translation>Die Datei enthält externe Abhängigkeiten. Möchten Sie auch die abhängigen Dateien speichern?</translation>
+      <translation>Die Datei enthält externe Abhängigkeiten. Auch die abhängigen Dateien speichern?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1195"/>
@@ -8308,7 +8307,7 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
     <message>
       <location filename="../Document.cpp" line="1314"/>
       <source>Save a copy of the document under new filename...</source>
-      <translation>Speichern Sie eine Kopie des Dokuments unter einem neuen Dateinamen...</translation>
+      <translation>Eine Kopie des Dokuments unter einem neuen Dateinamen speichern...</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1319"/>
@@ -8355,9 +8354,9 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
-      <translation>Wählen Sie 'Ja', um alle vorherigen Transaktionen rückgängig zu machen.
-Wählen Sie 'Nein' um nur im aktiven Dokument rückgängig zu machen.
-Wählen Sie 'Abbrechen' um abzubrechen</translation>
+      <translation>'Ja', um alle vorherigen Transaktionen rückgängig zu machen.
+'Nein' um nur im aktiven Dokument rückgängig zu machen.
+'Abbrechen' um abzubrechen</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="349"/>
@@ -8473,7 +8472,7 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
     <message>
       <location filename="../MainWindow.cpp" line="865"/>
       <source>If you don't save, your changes will be lost.</source>
-      <translation>Wenn Sie nicht speichern, gehen Ihre Änderungen verloren.</translation>
+      <translation>Ohne speichern, gehen die Änderungen verloren.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="870"/>
@@ -8589,8 +8588,8 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <translation>Fehler beim Importieren aller Verknüpfungen</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="99"/>
-      <location filename="../DlgAddProperty.cpp" line="112"/>
+      <location filename="../DlgAddProperty.cpp" line="105"/>
+      <location filename="../DlgAddProperty.cpp" line="118"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="285"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="295"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="317"/>
@@ -8598,7 +8597,7 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <translation>Ungültiger Name</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="100"/>
+      <location filename="../DlgAddProperty.cpp" line="106"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="286"/>
       <source>The property name or group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
@@ -8606,19 +8605,19 @@ underscore, and must not start with a digit.</source>
 und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="113"/>
+      <location filename="../DlgAddProperty.cpp" line="119"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="296"/>
       <source>The property '%1' already exists in '%2'</source>
       <translation>Die Eigenschaft '%1' existiert bereits in '%2'</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="136"/>
+      <location filename="../DlgAddProperty.cpp" line="142"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="248"/>
       <source>Add property</source>
       <translation>Eigenschaft hinzufügen</translation>
     </message>
     <message>
-      <location filename="../DlgAddProperty.cpp" line="137"/>
+      <location filename="../DlgAddProperty.cpp" line="143"/>
       <location filename="../DlgAddPropertyVarSet.cpp" line="249"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Das Hinzufügen der Eigenschaft %2 zu '%1' ist fehlgeschlagen</translation>
@@ -8637,12 +8636,12 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
     <message>
       <location filename="../ViewProviderLink.cpp" line="2430"/>
       <source>Select which object to copy or exclude when configuration changes. All external linked objects are excluded by default.</source>
-      <translation>Wählen Sie, welches Objekt bei Änderungen der Konfiguration kopiert oder ausgeschlossen werden soll. Alle externen verknüpften Objekte sind standardmäßig ausgeschlossen.</translation>
+      <translation>Objekt auswählen, welches bei Änderungen der Konfiguration kopiert oder ausgeschlossen werden soll. Alle externen verknüpften Objekte sind standardmäßig ausgeschlossen.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2445"/>
       <source>Please select which objects to copy when the configuration is changed</source>
-      <translation>Bitte wählen Sie aus, welche Objekte kopiert werden sollen, wenn die Konfiguration geändert wird</translation>
+      <translation>Bitte auswählen, welche Objekte kopiert werden sollen, wenn die Konfiguration geändert wird</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2447"/>
@@ -8653,7 +8652,7 @@ und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translatio
       <location filename="../ViewProviderLink.cpp" line="2448"/>
       <source>Apply the setting to all links. Or, uncheck this
 option to apply only to this link.</source>
-      <translation>Wenden Sie die Einstellung auf alle Verknüpfungen an. Oder, deaktivieren Sie diese Option, um sie nur auf diesen Verknüpfung anzuwenden.</translation>
+      <translation>Die Einstellung auf alle Verknüpfungen anwenden. Oder, deaktivieren, um sie nur auf diese Verknüpfung anzuwenden.</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2493"/>
@@ -8680,7 +8679,7 @@ option to apply only to this link.</source>
       <source>Copy the linked object when its configuration is changed.
 Also auto redo the copy if the original linked object is changed.
 </source>
-      <translation>Kopieren Sie das verbundene Objekt, wenn seine Konfiguration geändert wird.
+      <translation>Kopiert das verbundene Objekt, wenn seine Konfiguration geändert wird.
 Außerdem wird die Kopie automatisch erneut erstellt, wenn das ursprüngliche verbundene Objekt geändert wird.
 </translation>
     </message>
@@ -8905,8 +8904,8 @@ the current copy will be lost.
       <location filename="../DlgAddPropertyVarSet.cpp" line="318"/>
       <source>The group name must only contain alpha numericals,
 underscore, and must not start with a digit.</source>
-      <translation type="unfinished">The group name must only contain alpha numericals,
-underscore, and must not start with a digit.</translation>
+      <translation>Der Gruppenname darf nur alphanumerische Zeichen
+und Unterstriche enthalten und darf nicht mit einer Ziffer beginnen.</translation>
     </message>
   </context>
   <context>
@@ -8943,7 +8942,7 @@ underscore, and must not start with a digit.</translation>
       <location filename="../CommandView.cpp" line="2755"/>
       <location filename="../CommandView.cpp" line="2757"/>
       <source>Activate the box selection tool</source>
-      <translation>Aktivieren Sie das Auswahlwerkzeug</translation>
+      <translation>Aktiviert das Rechteck-Auswahlwerkzeug</translation>
     </message>
   </context>
   <context>
@@ -9255,7 +9254,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="281"/>
       <source>Panels</source>
-      <translation>Tafeln</translation>
+      <translation>Fenster</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="282"/>
@@ -9331,7 +9330,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="416"/>
       <source>Select the objects to export before choosing Export.</source>
-      <translation>Wählen Sie die Objekte aus, bevor Sie Export wählen.</translation>
+      <translation>Die zu exportierenden Objekte vorher auswählen.</translation>
     </message>
   </context>
   <context>
@@ -9351,13 +9350,13 @@ underscore, and must not start with a digit.</translation>
   <context>
     <name>StdCmdFeatRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="56"/>
+      <location filename="../CommandFeat.cpp" line="57"/>
       <source>&amp;Recompute</source>
       <translation>Neu &amp;berechnen</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="57"/>
-      <location filename="../CommandFeat.cpp" line="59"/>
+      <location filename="../CommandFeat.cpp" line="58"/>
+      <location filename="../CommandFeat.cpp" line="60"/>
       <source>Recompute feature or document</source>
       <translation>Feature oder Dokument neu berechnen</translation>
     </message>
@@ -9403,7 +9402,7 @@ underscore, and must not start with a digit.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="638"/>
       <source>The FreeCAD forum, where you can find help from other users</source>
-      <translation>Das FreeCAD-Forum, wo Sie Hilfe von anderen Nutzern bekommen</translation>
+      <translation>Das FreeCAD-Forum, für Hilfe von anderen Nutzern</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="640"/>
@@ -9991,13 +9990,13 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="79"/>
+      <location filename="../CommandFeat.cpp" line="80"/>
       <source>Random color</source>
       <translation>Zufällige Farbe</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="80"/>
-      <location filename="../CommandFeat.cpp" line="82"/>
+      <location filename="../CommandFeat.cpp" line="81"/>
+      <location filename="../CommandFeat.cpp" line="83"/>
       <source>Set each selected object to a randomly-selected color</source>
       <translation>Ordnet jedem ausgewählten Objekt eine zufällig ausgewählte Farbe zu</translation>
     </message>
@@ -10055,7 +10054,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
       <location filename="../CommandDoc.cpp" line="1460"/>
       <location filename="../CommandDoc.cpp" line="1462"/>
       <source>Recomputes the current active document</source>
-      <translation>Das momentan aktive Dokument aktualisieren</translation>
+      <translation>Berechnet das aktive Dokument neu</translation>
     </message>
   </context>
   <context>
@@ -10139,7 +10138,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
       <location filename="../CommandDoc.cpp" line="736"/>
       <location filename="../CommandDoc.cpp" line="738"/>
       <source>Save a copy of the active document under a new file name</source>
-      <translation>Speichern Sie eine Kopie des aktiven Dokuments unter einem neuen Dateinamen</translation>
+      <translation>Speichert eine Kopie des aktiven Dokuments unter einem neuen Dateinamen</translation>
     </message>
   </context>
   <context>
@@ -10201,13 +10200,13 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="205"/>
+      <location filename="../CommandFeat.cpp" line="212"/>
       <source>&amp;Send to Python Console</source>
       <translation>An Python-Konsole &amp;senden</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="206"/>
-      <location filename="../CommandFeat.cpp" line="208"/>
+      <location filename="../CommandFeat.cpp" line="213"/>
+      <location filename="../CommandFeat.cpp" line="215"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Sendet das ausgewählte Objekt an die Python-Konsole</translation>
     </message>
@@ -10490,20 +10489,6 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
       <location filename="../CommandDoc.cpp" line="1010"/>
       <source>Undo exactly one action</source>
       <translation>Letzte Aktion rückgängig machen</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdUnitsCalculator</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="778"/>
-      <source>&amp;Units calculator...</source>
-      <translation>&amp;Einheitenrechner...</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="779"/>
-      <location filename="../CommandStd.cpp" line="781"/>
-      <source>Start the units calculator</source>
-      <translation>Einheitenrechner starten</translation>
     </message>
   </context>
   <context>
@@ -10909,7 +10894,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
       <location filename="../CommandView.cpp" line="1899"/>
       <location filename="../CommandView.cpp" line="1901"/>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation>Erweitern Sie das FreeCAD 3D Fenster zu einer Oculus-Rift-Darstellung</translation>
+      <translation>Erweitert das FreeCAD 3D Fenster zu einer Oculus-Rift-Darstellung</translation>
     </message>
   </context>
   <context>
@@ -11089,7 +11074,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
     <message>
       <location filename="../CommandView.cpp" line="3488"/>
       <source>Preselect the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Vorauswählen des Objekts in der 3D-Ansicht, wenn die Maus über das Baumelement fährt</translation>
     </message>
   </context>
   <context>
@@ -11183,7 +11168,7 @@ Es ist dazu gedacht, Objekte zusammenzustellen, die eine Part-Topoform enthalten
       <location filename="../CommandView.cpp" line="2721"/>
       <location filename="../CommandView.cpp" line="2723"/>
       <source>Activate the box zoom tool</source>
-      <translation>Aktivieren Sie das Zoom-Werkzeug</translation>
+      <translation>Aktiviert das Rechteck-Zoom-Werkzeug</translation>
     </message>
   </context>
   <context>
@@ -11294,7 +11279,7 @@ Are you sure you want to continue?
 </source>
       <translation>Die folgenden Referenzierungsobjekte könnten kaputt gehen.
 
-Sind Sie sicher, dass Sie fortfahren möchten?
+Trotzdem fortfahren?
 </translation>
     </message>
     <message>
@@ -11396,7 +11381,7 @@ Sind Sie sicher, dass Sie fortfahren möchten?
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Um zu externen Objekten zu verlinken, muss das Dokument mindestens einmal gespeichert werden.
-Möchten Sie das Dokument jetzt speichern?</translation>
+Das Dokument jetzt speichern?</translation>
     </message>
   </context>
   <context>
@@ -11459,7 +11444,7 @@ Trotzdem fortfahren?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1252"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation type="unfinished">Hide extra tree view column - Internal Names.</translation>
+      <translation>Extra Baumansicht-Spalte ausblenden - Interne Namen.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1280"/>
@@ -11814,8 +11799,8 @@ after FreeCAD launches</source>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Arbeitsbereiche können per Drag &amp; Drop, oder per Rechtsklick auf einen Arbeitsbereich und der Auswahl &lt;span style="  font-weight:600; font-style:italic;"&gt;alphabetisch sortieren&lt;/span&gt; neu geordnet werden. Weitere Arbeitsbereiche können über den Addon-Manager installiert werden.&lt;/p&gt;&lt;p&gt;
+Zurzeit verfügt dieses System über folgende Arbeitsbereiche:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="112"/>
@@ -11978,8 +11963,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="92"/>
-      <source>This is the current startup module, and must be enabled. See Preferences/General/Autoload to change.</source>
-      <translation>Dies ist das aktuelle Startmodul und muss aktiviert sein. Siehe Einstellungen/Allgemein/Autoload um dies zu ändern.</translation>
+      <source>This is the current startup module, and must be enabled.</source>
+      <translation type="unfinished">This is the current startup module, and must be enabled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="115"/>
@@ -11998,8 +11983,8 @@ Currently, your system has the following workbenches:&lt;/p&gt;&lt;/body&gt;&lt;
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="137"/>
-      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
-      <translation>Dies ist das aktuelle Startmodul und muss automatisch geladen werden. Siehe Einstellungen/Allgemein/Autoload um dies zu ändern.</translation>
+      <source>This is the current startup module, and must be autoloaded.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="144"/>
@@ -12500,201 +12485,206 @@ Punkt verwendet wird.</translation>
       <translation>Passt das Aussehen der Benutzeroberfläche an</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="241"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="246"/>
+      <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
+      <translation>Auf der Suche nach mehr Themes? Über den &lt;a href="freecad:Std_AddonMgr"&gt;Addon-Manager&lt;/a&gt; weitere abrufen.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
       <source>Size of toolbar icons:</source>
       <translation>Bildgröße in Symbolleisten:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="248"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="263"/>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Legt die Größe der Schaltflächen innerhalb der Symbolleisten fest. Sie können diese
-entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen.</translation>
+      <translation>Legt die Größe der Schaltflächen innerhalb der Symbolleisten fest. Diese können
+je nach Bildschirmgröße oder persönlichen Geschmack angepasst werden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="256"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="271"/>
       <source>Tree view and Property view mode:</source>
-      <translation type="unfinished">Tree view and Property view mode:</translation>
+      <translation>Baum-Ansicht und Eigenschaften-Ansicht:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
       <source>Customize how tree view is shown in the panel (restart required).
 
 'Combined': combine Tree view and Property view into one panel.
 'Independent': split Tree view and Property view into separate panels.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>Anpassung der Baumansicht im Fenster (Neustart erforderlich).
 
-'Combined': combine Tree view and Property view into one panel.
-'Independent': split Tree view and Property view into separate panels.</translation>
+'Kombiniert': Kombinierte Baum- und Eigenschaftsansicht in einem Fenster.
+'Eigenständig': Aufteilung der Baum- und Eigenschaftsansicht in separate Fenster.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="273"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="288"/>
       <source>Size of recent file list:</source>
       <translation>Anzahl der zuletzt benutzten Dateien:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="280"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="295"/>
       <source>How many files should be listed in recent files list</source>
       <translation>Anzahl der zuletzt verwendeten Dateien (Historie)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="296"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="311"/>
       <source>Background of the main window (when no document is opened) will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
       <translation>Der Hintergrund des Hauptfensters (wenn kein Dokument geöffnet ist) besteht aus Kacheln eines speziellen Bildes.
-Sehen Sie sich das FreeCAD Wiki für Details über das Bild an.</translation>
+Im FreeCAD Wiki gibt es Details über das Bild.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="300"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="315"/>
       <source>Enable tiled background</source>
       <translation>Gekachelten Hintergrund aktivieren</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="307"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="322"/>
       <source>The text cursor will be blinking</source>
       <translation>Der Text-Eingabezeiger blinkt</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="310"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="325"/>
       <source>Enable cursor blinking</source>
       <translation>Blinken des Eingabezeigers aktivieren</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="326"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="341"/>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
       <translation>Wenn diese Option aktiviert ist zeigt FreeCAD den (kleinen) Startbildschirm an</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="331"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="346"/>
       <source>Enable splash screen at start up</source>
       <translation>Splashscreen beim Starten anzeigen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="347"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="362"/>
       <source>Activate overlay handling of dock windows</source>
       <translation>Überlagerung von Dock-Fenstern aktivieren</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="350"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="365"/>
       <source>Activate overlay handling</source>
       <translation>Überlagerung aktivieren</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="369"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="384"/>
       <source>Preference packs</source>
       <translation>Präferenz-Pakete</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="435"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="450"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="446"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="461"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="457"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="472"/>
       <source>Load</source>
       <translation>Laden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="480"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="495"/>
       <source>Import config...</source>
       <translation>Konfiguration importieren...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="487"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="502"/>
       <source>Save new...</source>
       <translation>Neu speichern...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="500"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="515"/>
       <source>Manage...</source>
       <translation>Verwalten...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="507"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="522"/>
       <source>Revert...</source>
       <translation>Rückgängig...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="87"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="90"/>
       <source>Manage preference packs</source>
       <translation>Verwaltung von Einstellungspaketen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="475"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="478"/>
       <source>Small (%1px)</source>
       <translation>Klein (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="476"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="479"/>
       <source>Medium (%1px)</source>
       <translation>Mittel (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="477"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="480"/>
       <source>Large (%1px)</source>
       <translation>Groß (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="478"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="481"/>
       <source>Extra large (%1px)</source>
       <translation>Extra groß (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="480"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="483"/>
       <source>Custom (%1px)</source>
       <translation>Benutzerdefiniert (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="549"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="552"/>
       <source>Combined</source>
-      <translation type="unfinished">Combined</translation>
+      <translation>Kombiniert</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="550"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="553"/>
       <source>Independent</source>
-      <translation type="unfinished">Independent</translation>
+      <translation>Eigenständig</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="577"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="580"/>
       <source>Preference Pack Name</source>
       <translation>Einstellunspaketname</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="578"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="581"/>
       <source>Tags</source>
       <translation>Tags</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="615"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="618"/>
       <source>Apply</source>
       <translation>Übernehmen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="616"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="619"/>
       <source>Apply the %1 preference pack</source>
       <translation>Anwenden des %1-Einstellungspakets</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="677"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="680"/>
       <source>Choose a FreeCAD config file to import</source>
-      <translation>Wähle eine FreeCAD-Konfigurationsdatei zum Import aus</translation>
+      <translation>Eine FreeCAD-Konfigurationsdatei zum Import auswählen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="688"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="691"/>
       <source>File exists</source>
       <translation>Datei bereits vorhanden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="689"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="692"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
-      <translation>Ein Einstellungspaket mit diesem Namen existiert bereits. Möchten Sie es überschreiben?</translation>
+      <translation>Ein Einstellungspaket mit diesem Namen existiert bereits. Überschreiben?</translation>
     </message>
   </context>
   <context>
@@ -12960,7 +12950,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../CommandView.cpp" line="902"/>
       <source>Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</source>
-      <translation>Schaltet die Transparenz der ausgewählten Objekte um. Sie können auch die Transparenz in der Taskbox anpassen (Rechtsklick auf ein Objekt im Baum, Erscheinungsbild).</translation>
+      <translation>Schaltet die Transparenz der ausgewählten Objekte um. Die Transparenz kann auch im Darstellungsdialog angepasst werden (Rechtsklick auf ein Objekt im Baum, Darstellung).</translation>
     </message>
   </context>
   <context>
@@ -13008,8 +12998,8 @@ Dadurch bleiben die angedockten Fenster jederzeit transparent.</translation>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
       <location filename="../CommandView.cpp" line="3716"/>
-      <source>Toggle transparent</source>
-      <translation>Transparenz umschalten</translation>
+      <source>Toggle transparent mode</source>
+      <translation>Transparenzmodus umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
@@ -13348,8 +13338,8 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
-      <source>Locks toolbar so they are no longer moveable</source>
-      <translation>Sperrt die Symbolleisten, damit sie nicht mehr verschoben werden können</translation>
+      <source>Lock toolbars so they are no longer moveable</source>
+      <translation type="unfinished">Lock toolbars so they are no longer moveable</translation>
     </message>
   </context>
   <context>
@@ -13368,12 +13358,12 @@ der Region nicht transparent sind.</translation>
   <context>
     <name>StdCmdToggleFreeze</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="153"/>
+      <location filename="../CommandFeat.cpp" line="160"/>
       <source>Toggle freeze</source>
       <translation>Einfrieren umschalten</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="155"/>
+      <location filename="../CommandFeat.cpp" line="162"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
       <translation>Schaltet das Einfrier-Status der ausgewählten Objekte um. Ein eingefrorenes Objekt wird nicht neu berechnet, wenn die übergeordneten Objekte sich ändern.</translation>
     </message>
@@ -13517,7 +13507,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="58"/>
       <source>Add another</source>
-      <translation type="unfinished">Add another</translation>
+      <translation>Weitere hinzufügen</translation>
     </message>
     <message>
       <location filename="../DlgAddPropertyVarSet.ui" line="65"/>
@@ -13535,12 +13525,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="20"/>
       <source>Theme customization</source>
-      <translation type="unfinished">Theme customization</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
-      <source>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation type="unfinished">This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
+      <translation>Theme Anpassungen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
@@ -13552,7 +13537,7 @@ der Region nicht transparent sind.</translation>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="120"/>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="146"/>
       <source>This color might be used by your theme to let you customize it.</source>
-      <translation>Diese Farbe kann von Ihrem Design verwendet werden, um es anzupassen.</translation>
+      <translation>Diese Farbe kann von einem Theme verwendet werden, um es anzupassen.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="74"/>
@@ -13587,7 +13572,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="206"/>
       <source>Hide extra tree view column - Internal Names.</source>
-      <translation type="unfinished">Hide extra tree view column - Internal Names.</translation>
+      <translation>Extra Baumansicht-Spalte ausblenden - Interne Namen.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="209"/>
@@ -13597,12 +13582,12 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="222"/>
       <source>Icon size override, set to 0 for the default value.</source>
-      <translation type="unfinished">Icon size override, set to 0 for the default value.</translation>
+      <translation>Symbolgröße überschreiben, auf 0 setzen für den Standardwert.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="241"/>
       <source>Additional row spacing</source>
-      <translation type="unfinished">Additional row spacing</translation>
+      <translation>Zusätzlicher Zeilenabstand</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="251"/>
@@ -13617,17 +13602,22 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="267"/>
       <source>Icon size</source>
-      <translation type="unfinished">Icon size</translation>
+      <translation>Symbolgröße</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="277"/>
       <source>Additional spacing for tree view rows. Bigger values will increase row item heights.</source>
-      <translation type="unfinished">Additional spacing for tree view rows. Bigger values will increase row item heights.</translation>
+      <translation>Zusätzliche Abstände für Baum-Ansichtszeilen. Größere Werte erhöhen die Höhe der Zeilen.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
+      <source>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
+      <translation type="unfinished">This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="296"/>
-      <source>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</source>
-      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</translation>
+      <source>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</source>
+      <translation type="unfinished">If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="299"/>
@@ -13637,7 +13627,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="312"/>
       <source>Hide header with column names from the tree view.</source>
-      <translation type="unfinished">Hide header with column names from the tree view.</translation>
+      <translation>Kopfzeile mit Spaltennamen in der Baumansicht ausblenden.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="315"/>
@@ -13647,7 +13637,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="328"/>
       <source>Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</source>
-      <translation type="unfinished">Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</translation>
+      <translation>Blende die Bildlaufleiste in der Baumansicht aus. Es ist weiterhin möglich mit dem Mausrad zu scrollen.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="331"/>
@@ -13657,12 +13647,12 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="344"/>
       <source>Hide column with object description in tree view.</source>
-      <translation type="unfinished">Hide column with object description in tree view.</translation>
+      <translation>Blende die Spalte "Objektbeschreibung" in der Baumansicht aus.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="347"/>
       <source>Hide description</source>
-      <translation type="unfinished">Hide description</translation>
+      <translation>Beschreibung verstecken</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="363"/>
@@ -13702,7 +13692,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="417"/>
       <source>Automatically hide overlayed dock panels when in non 3D view (like TechDraw or Spreadsheet).</source>
-      <translation type="unfinished">Automatically hide overlayed dock panels when in non 3D view (like TechDraw or Spreadsheet).</translation>
+      <translation>Blendet überlagerte andockbare Fenster in anderen als 3D-Ansichten (wie TechDraw- oder Spreadsheet-Ansichten) automatisch aus.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="420"/>
@@ -13735,12 +13725,26 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="139"/>
       <source>Create a variable set</source>
-      <translation type="unfinished">Create a variable set</translation>
+      <translation>Variablensatz erstellen</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="140"/>
       <source>A Variable Set is an object that maintains a set of properties to be used as variables.</source>
-      <translation type="unfinished">A Variable Set is an object that maintains a set of properties to be used as variables.</translation>
+      <translation>Ein Variablensatz ist ein Objekt, das einen Satz von Eigenschaften verwaltet, die als Variablen verwendet werden können.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUnitsCalculator</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="778"/>
+      <source>&amp;Units converter...</source>
+      <translation type="unfinished">&amp;Units converter...</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="779"/>
+      <location filename="../CommandStd.cpp" line="781"/>
+      <source>Start the units converter</source>
+      <translation type="unfinished">Start the units converter</translation>
     </message>
   </context>
 </TS>

@@ -180,9 +180,10 @@ void DrawGuiUtil::loadLineStyleChoices(QComboBox* combo, LineGenerator* generato
         choices = LineGenerator::getLineDescriptions();
     }
 
+    auto translationContext = LineName::currentTranslationContext();
     int itemNumber {0};
     for (auto& entry : choices) {
-        QString qentry = Base::Tools::fromStdString(entry);
+        QString qentry = QCoreApplication::translate(translationContext.c_str(), entry.c_str());
         combo->addItem(qentry);
         if (generator) {
             combo->setItemIcon(itemNumber, iconForLine(itemNumber + 1, generator));

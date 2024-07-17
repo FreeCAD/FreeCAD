@@ -632,7 +632,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.alignMode = "Custom"
         self.selectingFeature = True
         # We use greedy selection to prevent that clicking again on the solid
-        # clears selection before trying to select the whole assemly
+        # clears selection before trying to select the whole assembly
         Gui.Selection.setSelectionStyle(Gui.Selection.SelectionStyle.GreedySelection)
         self.enableDragger(False)
         self.form.LabelAlignDragger.setVisible(True)

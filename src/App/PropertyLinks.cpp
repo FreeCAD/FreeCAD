@@ -415,7 +415,6 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         const char* oldElement = Data::findElementName(shadow.second.c_str());
         if (!Data::hasMissingElement(oldElement)) {
             const auto& names = geo->searchElementCache(oldElement);
-//        std::vector<std::string> names;  // searchElementCache isn't implemented.
             if (names.size()) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
@@ -4074,6 +4073,7 @@ void PropertyXLink::setAllowPartial(bool enable) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyXLinkSub , App::PropertyXLink)
+TYPESYSTEM_SOURCE(App::PropertyXLinkSubHidden, App::PropertyXLinkSub)
 
 PropertyXLinkSub::PropertyXLinkSub(bool allowPartial, PropertyLinkBase *parent)
     :PropertyXLink(allowPartial,parent)

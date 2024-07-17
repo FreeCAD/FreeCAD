@@ -34,6 +34,7 @@
 # include <QTimer>
 #endif
 
+#include <App/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -292,8 +293,8 @@ TaskView::TaskView(QWidget *parent)
     App::GetApplication().signalActiveDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1));
     connectApplicationDeleteDocument = 
-    App::GetApplication().signalDeletedDocument.connect
-        (std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this));
+    App::GetApplication().signalDeleteDocument.connect
+        (std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this, sp::_1));
     connectApplicationUndoDocument = 
     App::GetApplication().signalUndoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, sp::_1));
@@ -456,32 +457,58 @@ void TaskView::slotActiveDocument(const App::Document& doc)
         updateWatcher();
 }
 
-void TaskView::slotDeletedDocument()
+void TaskView::slotDeletedDocument(const App::Document& doc)
 {
-    if (!ActiveDialog)
-        updateWatcher();
-}
+    if (ActiveDialog) {
+        if (ActiveDialog->isAutoCloseOnDeletedDocument()) {
+            std::string name = ActiveDialog->getDocumentName();
+            if (name.empty()) {
+                Base::Console().Warning(std::string("TaskView::slotDeletedDocument"),
+                                        "No document name set\n");
+            }
 
-void TaskView::slotUndoDocument(const App::Document&)
-{
-    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
-        ActiveDialog->autoClosedOnTransactionChange();
-        removeDialog();
+            if (name == doc.getName()) {
+                ActiveDialog->autoClosedOnDeletedDocument();
+                removeDialog();
+            }
+        }
     }
 
-    if (!ActiveDialog)
+    if (!ActiveDialog) {
         updateWatcher();
+    }
 }
 
-void TaskView::slotRedoDocument(const App::Document&)
+void TaskView::transactionChangeOnDocument(const App::Document& doc)
 {
-    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
-        ActiveDialog->autoClosedOnTransactionChange();
-        removeDialog();
+    if (ActiveDialog) {
+        if (ActiveDialog->isAutoCloseOnTransactionChange()) {
+            std::string name = ActiveDialog->getDocumentName();
+            if (name.empty()) {
+                Base::Console().Warning(std::string("TaskView::transactionChangeOnDocument"),
+                                        "No document name set\n");
+            }
+
+            if (name == doc.getName()) {
+                ActiveDialog->autoClosedOnTransactionChange();
+                removeDialog();
+            }
+        }
     }
 
-    if (!ActiveDialog)
+    if (!ActiveDialog) {
         updateWatcher();
+    }
+}
+
+void TaskView::slotUndoDocument(const App::Document& doc)
+{
+    transactionChangeOnDocument(doc);
+}
+
+void TaskView::slotRedoDocument(const App::Document& doc)
+{
+    transactionChangeOnDocument(doc);
 }
 
 /// @cond DOXERR

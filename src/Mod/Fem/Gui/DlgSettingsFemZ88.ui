@@ -108,7 +108,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Leave blank to use default Z88 z88r binary file</string>
+           <string>Leave blank to use default Z88, z88r binary file</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>z88BinaryPath</cstring>

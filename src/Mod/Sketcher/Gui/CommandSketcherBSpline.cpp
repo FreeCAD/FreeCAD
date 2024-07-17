@@ -58,7 +58,7 @@ void ActivateBSplineHandler(Gui::Document* doc, DrawSketchHandler* handler)
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(ptr.release());
+            vp->activateHandler(std::move(ptr));
         }
     }
 }
@@ -214,7 +214,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Increase spline degree"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Increase B-spline degree"));
 
     bool ignored = false;
 
@@ -243,7 +243,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong selection"),
                                    QObject::tr("At least one of the selected "
-                                               "objects was not a B-Spline and was ignored."));
+                                               "objects was not a B-spline and was ignored."));
     }
 
     commitCommand();
@@ -293,7 +293,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease spline degree"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease B-spline degree"));
 
     bool ignored = false;
 
@@ -326,7 +326,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong selection"),
                                    QObject::tr("At least one of the selected "
-                                               "objects was not a B-Spline and was ignored."));
+                                               "objects was not a B-spline and was ignored."));
     }
 
     commitCommand();
@@ -918,7 +918,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         // as we need only one object to get the new GeoId after multiplicity change
         Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
                                    QObject::tr("Selection is empty"),
-                                   QObject::tr("Nothing is selected. Please select a b-spline."));
+                                   QObject::tr("Nothing is selected. Please select a B-spline."));
 
         return;
     }
@@ -936,8 +936,8 @@ void CmdSketcherInsertKnot::activated(int iMsg)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Wrong selection"),
-            QObject::tr("Please select a b-spline curve to insert a knot (not a knot on it). "
-                        "If the curve is not a b-spline, please convert it into one first."));
+            QObject::tr("Please select a B-spline to insert a knot (not a knot on it). "
+                        "If the curve is not a B-spline, please convert it into one first."));
     }
 
     getSelection().clearSelection();

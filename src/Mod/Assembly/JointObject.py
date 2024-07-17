@@ -290,7 +290,7 @@ class Joint:
                 "Joint",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the distance of the joint. It is used only by the distance joint and by RackPinion (pitch radius), Screw and Gears and Belt(radius1)",
+                    "This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)",
                 ),
             )
 
@@ -1382,6 +1382,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if not self.creating:  # update visibility only if we are editing the joint
             self.joint.Visibility = self.visibilityBackup
         return True
+
+    def autoClosedOnTransactionChange(self):
+        self.reject()
 
     def deactivate(self):
         global activeTask

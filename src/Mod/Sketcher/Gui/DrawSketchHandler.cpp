@@ -885,6 +885,22 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
     }
 }
 
+int DrawSketchHandler::seekAndRenderAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    const Base::Vector2d& Dir,
+    AutoConstraint::TargetType type)
+{
+    if (seekAutoConstraint(suggestedConstraints, Pos, Dir, type)) {
+        renderSuggestConstraintsCursor(suggestedConstraints);
+    }
+    else {
+        applyCursor();
+    }
+
+    return suggestedConstraints.size();
+}
+
 void DrawSketchHandler::renderSuggestConstraintsCursor(
     std::vector<AutoConstraint>& suggestedConstraints)
 {

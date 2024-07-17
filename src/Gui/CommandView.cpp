@@ -75,7 +75,6 @@
 #include "SelectionObject.h"
 #include "SoAxisCrossKit.h"
 #include "SoFCOffscreenRenderer.h"
-#include "TaskMeasure.h"
 #include "TextureMapping.h"
 #include "Tools.h"
 #include "Tree.h"
@@ -1928,7 +1927,7 @@ StdViewScreenShot::StdViewScreenShot()
     sToolTipText= QT_TR_NOOP("Creates a screenshot of the active view");
     sWhatsThis  = "Std_ViewScreenShot";
     sStatusTip  = QT_TR_NOOP("Creates a screenshot of the active view");
-    sPixmap     = "camera-photo";
+    sPixmap     = "Std_ViewScreenShot";
     eType       = Alter3DView;
 }
 
@@ -3137,37 +3136,6 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     Selection().selStackPush();
 }
 
-//===========================================================================
-// Std_Measure
-// this is the Unified Measurement Facility Measure command
-//===========================================================================
-
-
-DEF_STD_CMD_A(StdCmdMeasure)
-
-StdCmdMeasure::StdCmdMeasure()
-  :Command("Std_Measure")
-{
-    sGroup        = "Measure";
-    sMenuText     = QT_TR_NOOP("&Measure");
-    sToolTipText  = QT_TR_NOOP("Measure a feature");
-    sWhatsThis    = "Std_Measure";
-    sStatusTip    = QT_TR_NOOP("Measure a feature");
-    sPixmap       = "umf-measurement";
-}
-
-void StdCmdMeasure::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    TaskMeasure *task = new TaskMeasure();
-    Gui::Control().showDialog(task);
-}
-
-
-bool StdCmdMeasure::isActive(){
-    return true;
-}
 
 //===========================================================================
 // Std_SceneInspector
@@ -3713,7 +3681,7 @@ StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
   :Command("Std_DockOverlayToggleTransparent")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Toggle transparent");
+    sMenuText     = QT_TR_NOOP("Toggle transparent mode");
     sToolTipText  = QT_TR_NOOP("Toggle transparent mode for the docked window under cursor.\n"
                                "This makes the docked window stay transparent at all times.");
     sWhatsThis    = "Std_DockOverlayToggleTransparent";
@@ -4066,7 +4034,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdTreeExpand());
     rcCmdMgr.addCommand(new StdCmdTreeCollapse());
     rcCmdMgr.addCommand(new StdCmdTreeSelectAllInstances());
-    rcCmdMgr.addCommand(new StdCmdMeasure());
     rcCmdMgr.addCommand(new StdCmdSceneInspector());
     rcCmdMgr.addCommand(new StdCmdTextureMapping());
     rcCmdMgr.addCommand(new StdCmdDemoMode());

@@ -23,7 +23,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
+         <string>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -199,7 +199,7 @@
      <property name="title">
       <string>Tree view</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout" columnstretch="2,1">
+     <layout class="QGridLayout" name="gridLayout1" columnstretch="2,1">
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideInternalNamesCheckBox">
         <property name="toolTip">
@@ -293,7 +293,7 @@
       <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="showVisibilityIconCheckBox">
         <property name="toolTip">
-         <string>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</string>
+         <string>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
         </property>
         <property name="text">
          <string>Show visibility icon</string>

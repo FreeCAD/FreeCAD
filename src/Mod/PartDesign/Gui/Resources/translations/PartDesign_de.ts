@@ -77,8 +77,7 @@ i.e. counter-clockwise when moving along its axis.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>Wenn falsch, schlägt das Werkzeug einen Anfangswert für die Ganghöhe (Steigung) vor, der auf dem Profil-Begrenzungsrahmen basiert,
-damit eine Selbstdurchdringung vermieden wird.</translation>
+      <translation>Wenn falsch, schlägt das Werkzeug einen Anfangswert für die Ganghöhe (Steigung) vor, der auf dem Profil-Begrenzungsrahmen basiert, damit eine Selbstdurchdringung vermieden wird.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
@@ -86,24 +85,24 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <translation>Anzahl der Zähne</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="101"/>
-      <source>Modules of the gear</source>
-      <translation>Modul des Zahnrades</translation>
-    </message>
-    <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
       <translation>Eingriffswinkel der Zähne</translation>
     </message>
     <message>
+      <location filename="../../../InvoluteGearFeature.py" line="101"/>
+      <source>Module of the gear</source>
+      <translation type="unfinished">Module of the gear</translation>
+    </message>
+    <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
-      <source>True=2 curves with each 3 control points False=1 curve with 4 control points.</source>
-      <translation>True=2 Kurven mit je 3 Kontrollpunkten, False=1 Kurve mit 4 Kontrollpunkten.</translation>
+      <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
+      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
-      <source>True=external Gear False=internal Gear</source>
-      <translation>True=Außenverzahnung, False=Innenverzahnung</translation>
+      <source>True=external Gear, False=internal Gear</source>
+      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -406,7 +405,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="317"/>
       <source>Migrate</source>
-      <translation>Migrieren</translation>
+      <translation>Datenstruktur aktualisieren</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="318"/>
@@ -916,8 +915,8 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="434"/>
-      <source>Migrate legacy part design features to Bodies</source>
-      <translation>Überführt alte PartDesign-Formelemente in Körper</translation>
+      <source>Migrate legacy Part Design features to Bodies</source>
+      <translation type="unfinished">Migrate legacy Part Design features to Bodies</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="579"/>
@@ -1398,7 +1397,7 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>Die von Ihnen ausgewählten Geometrien sind nicht Teil des aktiven Körpers. Bitte legen Sie fest, wie diese Auswahlen behandelt werden sollen. Brechen Sie den Befehl ab, wenn Sie diese Referenzen nicht möchten.</translation>
+      <translation>Die ausgewählten Geometrien sind nicht Teil des aktiven Körpers. Bitte festlegen, wie diese Auswahlen behandelt werden sollen. Befehl abbrechen, wenn diese Referenzen nicht gewünscht sind.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1503,8 +1502,8 @@ Wenn Null, ist er gleich Radius2</translation>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
-Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
+      <translation>Auf die Schaltfläche klicken, um den Auswahlmodus zu betreten,
+erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="24"/>
@@ -1515,8 +1514,8 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskChamferParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation>- Wählen Sie ein Element um es zu markieren
-- Doppelklicken Sie auf ein Element, um die Fasen zu sehen</translation>
+      <translation>- Ein Element auswählen, um es zu markieren
+- Doppelklick auf ein Element, um die Fasen zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="49"/>
@@ -1624,7 +1623,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
+      <translation>Auf die Schaltfläche klicken, um den Auswahlmodus zu betreten,
 erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
@@ -1636,8 +1635,8 @@ erneut klicken um die Auswahl zu beenden</translation>
       <location filename="../../TaskDraftParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation>- Wählen Sie ein Element um es zu markieren
-- Doppelklicken Sie auf ein Element, um die Formschräge zu sehen</translation>
+      <translation>- Ein Element auswählen, um es zu markieren
+- Doppelklick auf ein Element, um die Formschräge zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="47"/>
@@ -1752,12 +1751,12 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
       <source>Click on a shape in the model</source>
-      <translation type="unfinished">Click on a shape in the model</translation>
+      <translation>Auf eine Form im Modell klicken</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
       <source>Click on a face in the model</source>
-      <translation>Klicken Sie auf eine Fläche im Modell</translation>
+      <translation>Auf eine Fläche im Modell klicken</translation>
     </message>
   </context>
   <context>
@@ -1854,7 +1853,7 @@ erneut klicken um die Auswahl zu beenden</translation>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
+      <translation>Auf die Schaltfläche klicken, um den Auswahlmodus zu betreten,
 erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
@@ -1866,8 +1865,8 @@ erneut klicken um die Auswahl zu beenden</translation>
       <location filename="../../TaskFilletParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation>- Wählen Sie ein Element um es zu markieren
-- Doppelklicken Sie auf ein Element, um die Verrundung zu sehen</translation>
+      <translation>- Ein Element auswählen, um es zu markieren
+- Doppelklick auf ein Element, um die Verrundungen zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="47"/>
@@ -2789,7 +2788,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
       <source>Attachment</source>
-      <translation>Anhang</translation>
+      <translation>Befestigung</translation>
     </message>
   </context>
   <context>
@@ -2967,8 +2966,8 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
-Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
+      <translation>Auf die Schaltfläche klicken, um den Auswahlmodus zu betreten,
+erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
@@ -2979,8 +2978,8 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation>- Wählen Sie ein Element um es zu markieren
-- Doppelklicken Sie auf ein Element, um das Merkmal zu sehen</translation>
+      <translation>- Ein Element auswählen, um es zu markieren
+- Doppelklick auf ein Element, um die Merkmale zu sehen</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="47"/>
@@ -3029,7 +3028,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Dicke nach innen auftragen</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="248"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
       <source>Empty thickness created !
 </source>
       <translation>Leere Wandstärke erzeugt !
@@ -3111,12 +3110,12 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="35"/>
       <source>Transform body</source>
-      <translation type="unfinished">Transform body</translation>
+      <translation>Körper transformieren</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="48"/>
       <source>Transform tool shapes</source>
-      <translation type="unfinished">Transform tool shapes</translation>
+      <translation>Werkzeugformen transformieren</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
@@ -3343,7 +3342,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="890"/>
       <source>Select a feature from the list</source>
-      <translation>Ein Objekt aus der Liste wählen</translation>
+      <translation>Ein Merkmal aus der Liste wählen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="960"/>
@@ -3371,7 +3370,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../Command.cpp" line="140"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Es gibt keine Anhang-Modi, die zu den ausgewählten Objekte passen. Wähle etwas anderes.</translation>
+      <translation>Es gibt keine Befestigungs-Modi, die zu den ausgewählten Objekte passen. Etwas anderes auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="146"/>
@@ -3398,7 +3397,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="651"/>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation>Sie müssen eine einzelne Fläche als Auflage für eine Skizze auswählen!</translation>
+      <translation>Eine einzelne Fläche als Auflage für eine Skizze auswählen!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="654"/>
@@ -3408,7 +3407,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="655"/>
       <source>You have to select a face as support for a sketch!</source>
-      <translation>Sie müssen eine Fläche als Auflage für eine Skizze auswählen!</translation>
+      <translation>Eine Fläche als Auflage für eine Skizze auswählen!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="658"/>
@@ -3418,7 +3417,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="659"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>Sie benötigen eine ebene Fläche als Auflage für eine Skizze!</translation>
+      <translation>Benötigt eine ebene Fläche als Auflage für eine Skizze!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="662"/>
@@ -3632,7 +3631,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="560"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Wählen Sie genau ein PartDesign-Objekt oder einen Körper.</translation>
+      <translation>Genau ein PartDesign-Objekt oder einen Körper auswählen.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="564"/>
@@ -3745,7 +3744,7 @@ Wenn ein älteres Dokument mit PartDesign-Objekten ohne Körper vorliegt, wird d
       <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
       <translation>Um ein neues PartDesign-Objekt zu erstellen, muss ein aktiver Körper in diesem Dokument vorhanden sein.
-Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</translation>
+Bitte einen Körker aktivieren (Doppelklick) oder einen neuen Körper erstellen.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="222"/>
@@ -3882,13 +3881,13 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
-      <source>One transformed shape does not intersect support</source>
-      <translation>Eine Transformation überschneidet die Basis nicht</translation>
+      <source>One transformed shape does not intersect the support</source>
+      <translation type="unfinished">One transformed shape does not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
-      <source>%1 transformed shapes do not intersect support</source>
-      <translation>%1 Transformationen überschneiden die Basis nicht</translation>
+      <source>%1 transformed shapes do not intersect the support</source>
+      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3898,7 +3897,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="140"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Das Dokument "%1" welches Sie editieren, wurde mit der alten Version des PartDesign Workbench erstellt.</translation>
+      <translation>Das bearbeitete Dokument "%1" wurde mit der alten Version des Arbeitsbereichs PartDesign erstellt.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="143"/>
@@ -3913,16 +3912,16 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation>Möchten Sie die Migrierung automatisch durchführen?</translation>
+      <translation>Die Migrierung automatisch durchführen?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="152"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation>Hinweis: Wenn Du Dich für die Migration entscheidest, kannst Du die Datei nicht mehr mit einer älteren FreeCAD-Version bearbeiten.
-Wenn Du die Migration ablehnst, kannst Du keine neuen PartDesign-Funktionen wie Bodies und Parts verwenden. Die Teile können dann auch nicht in der Assembly-Workbench verwendet werden.
-Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migrieren.</translation>
+      <translation>Hinweis: Bei Entscheidung für die Migrierung kann die Datei nicht mehr mit einer älteren FreeCAD-Version bearbeitet werden.
+Bei Ablehnung der Migration, können keine neuen PartDesign-Funktionen wie Körper und Bauteile verwendet werden. Die Teile können dann auch nicht im Arbeitsbereich Assembly verwendet werden.
+Es kann später jederzeit mit 'Part Design -&gt; Migrieren...' migriert werden.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="161"/>
@@ -3984,8 +3983,8 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <name>SprocketParameter</name>
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
-      <source>Sprocket parameter</source>
-      <translation>Kettenradparameter</translation>
+      <source>Sprocket parameters</source>
+      <translation type="unfinished">Sprocket parameters</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4164,8 +4163,8 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
-      <source>Tooth Width</source>
-      <translation>Zahnbreite</translation>
+      <source>Tooth Width:</source>
+      <translation type="unfinished">Tooth Width:</translation>
     </message>
   </context>
   <context>
@@ -4220,12 +4219,12 @@ Achtung, die Berechnung kann einige Zeit dauern!</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="470"/>
       <source>Update thread view</source>
-      <translation type="unfinished">Update thread view</translation>
+      <translation>Thread-Ansicht aktualisieren</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="486"/>
       <source>Custom Clearance</source>
-      <translation type="unfinished">Custom Clearance</translation>
+      <translation>Benutzerdefinierter Abstand</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="499"/>
@@ -4291,7 +4290,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="692"/>
       <source>Drill Point</source>
-      <translation type="unfinished">Drill Point</translation>
+      <translation>Bohrpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="134"/>
@@ -4357,7 +4356,7 @@ Schraubenkopfes unter der Oberfläche</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="530"/>
       <source>Hole Cut Type</source>
-      <translation type="unfinished">Hole Cut Type</translation>
+      <translation>Lochschnitt Typ</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
@@ -4658,7 +4657,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
       <source>You may have to install the Plot add-on</source>
-      <translation>Möglicherweise müssen Sie das Plot-Add-on installieren</translation>
+      <translation>Möglicherweise muss das Plot-Add-on installiert werden</translation>
     </message>
   </context>
   <context>
@@ -4918,7 +4917,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="598"/>
       <source>Extrude: Can only offset one face</source>
-      <translation type="unfinished">Extrude: Can only offset one face</translation>
+      <translation>Aufpolstern: kann nur eine Fläche versetzen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
@@ -4973,8 +4972,8 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="128"/>
-      <source>Error: Pitch too small</source>
-      <translation>Fehler: Die Steigung ist zu gering</translation>
+      <source>Error: Pitch too small!</source>
+      <translation type="unfinished">Error: Pitch too small!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>

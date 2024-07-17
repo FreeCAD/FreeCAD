@@ -70,7 +70,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="labelCustomAppearance">
           <property name="text">
-           <string>Custom Appearance</string>
+           <string>Custom appearance:</string>
           </property>
          </widget>
         </item>
@@ -94,7 +94,7 @@
      <item row="0" column="1">
       <widget class="QPushButton" name="boxSelection">
        <property name="toolTip">
-        <string>When checked, the you can select multiple faces
+        <string>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</string>
        </property>
        <property name="text">

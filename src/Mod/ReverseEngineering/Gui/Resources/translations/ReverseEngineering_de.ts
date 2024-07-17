@@ -235,8 +235,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <source>Fit B-Spline</source>
-      <translation>B-Spline einpassen</translation>
+      <source>Fit B-spline</source>
+      <translation type="unfinished">Fit B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
@@ -398,7 +398,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation>Bitte wählen Sie eine Punktwolke oder ein Netz.</translation>
+      <translation>Bitte eine Punktwolke oder ein Netz auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>

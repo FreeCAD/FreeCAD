@@ -643,6 +643,10 @@ TaskImageDialog::TaskImageDialog(Image::ImagePlane* obj)
     : widget{new TaskImage(obj)}
 {
     addTaskBox(Gui::BitmapFactory().pixmap("image-plane"), widget);
+
+    auto doc = obj->getDocument();
+    setDocumentName(doc->getName());
+    setAutoCloseOnDeletedDocument(true);
 }
 
 void TaskImageDialog::open()
