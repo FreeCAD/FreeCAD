@@ -59,6 +59,8 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -97,6 +99,7 @@
 using namespace Sketcher;
 using namespace Base;
 namespace sp = std::placeholders;
+namespace bio = boost::iostreams;
 
 FC_LOG_LEVEL_INIT("Sketch", true, true)
 
@@ -9735,10 +9738,60 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
     return shape;
 }
 
-Data::IndexedName SketchObject::checkSubName(const char *sub) const
-{
-    // FIXME: trivial implementation needs to be replaced with full logic
-    (void)sub;
+Data::IndexedName SketchObject::checkSubName(const char *subname) const{
+    static std::vector<const char *> types = {
+        "Edge",
+        "Vertex",
+        "edge",
+        "vertex",
+        "ExternalEdge",
+        "RootPoint",
+        "H_Axis",
+        "V_Axis",
+        "Constraint",
+
+        // other feature from LS3 not related to TNP
+        "InternalEdge",
+        "InternalFace",
+        "InternalVertex",
+    };
+
+    if(!subname) return Data::IndexedName();
+    const char *mappedSubname = Data::isMappedElement(subname);
+
+    // if not a mapped name parse the indexed name directly, uppercasing "edge" and "vertex"
+    if(!mappedSubname)  {
+        Data::IndexedName result(subname, types, true);
+        if (boost::equals(result.getType(), "edge"))
+            return Data::IndexedName("Edge", result.getIndex());
+        if (boost::equals(result.getType(), "vertex"))
+            return Data::IndexedName("Vertex", result.getIndex());
+        return result;
+    }
+
+    bio::stream<bio::array_source> iss(mappedSubname+1, std::strlen(mappedSubname+1));
+    int id = -1;
+    switch(mappedSubname[0]) {
+    case '\0': // check length != 0
+        FC_ERR("invalid subname " << subname);
+        break;
+
+    case 'g': // = geometry
+    case 'e': // = external geometry
+        if(!(iss>>id))
+            FC_ERR("invalid subname " << subname);
+        break;
+
+    // for RootPoint, H_Axis, V_Axis
+    default: {
+        const char *dot = strchr(mappedSubname,'.');
+        if(dot)
+            mappedSubname = dot+1;
+        return Data::IndexedName(mappedSubname, types, false);
+    }}
+
+    // TNP July '24: omitted code related to external and internal sketcher stuff implemented in LS3
+
     return Data::IndexedName();
 }
 

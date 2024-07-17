@@ -680,7 +680,7 @@ public:
 
     Part::TopoShape getEdge(const Part::Geometry* geo, const char* name) const;
 
-    Data::IndexedName checkSubName(const char* sub) const;
+    Data::IndexedName checkSubName(const char* subname) const;
 
     bool geoIdFromShapeType(const Data::IndexedName&, int& geoId, PointPos& posId) const;
 
