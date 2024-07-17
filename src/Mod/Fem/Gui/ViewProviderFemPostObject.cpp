@@ -614,12 +614,27 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points,
     }
 }
 
-void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
+void ViewProviderFemPostObject::setRangeOfColorBar(float min, float max)
 {
     try {
+        // setRange expects max value greater than min value.
+        // A typical case is max equal to min, so machine epsilon
+        // is used to overwrite and differentiate both values
         if (min >= max) {
-            min = max - 10 * std::numeric_limits<double>::epsilon();
-            max = max + 10 * std::numeric_limits<double>::epsilon();
+            static constexpr float eps = std::numeric_limits<float>::epsilon();
+            if (max > 0) {
+                min = max * (1 - eps);
+                max = max * (1 + eps);
+            }
+            else if (max < 0) {
+                min = max * (1 + eps);
+                max = max * (1 - eps);
+            }
+            else {
+                static constexpr float minF = std::numeric_limits<float>::min();
+                min = -1 * minF;
+                max = minF;
+            }
         }
         m_colorBar->setRange(min, max);
     }
@@ -669,7 +684,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     if (ResetColorBarRange) {
         double range[2];
         data->GetRange(range, component);
-        setRangeOfColorBar(range[0], range[1]);
+        setRangeOfColorBar(static_cast<float>(range[0]), static_cast<float>(range[1]));
     }
 
     vtkIdType numPts = pd->GetNumberOfPoints();
