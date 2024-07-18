@@ -46,6 +46,7 @@ class SketchAnalysis;
 
 class SketcherExport SketchObject: public Part::Part2DObject
 {
+    typedef Part::Part2DObject inherited;
     PROPERTY_HEADER_WITH_OVERRIDE(Sketcher::SketchObject);
 
 public:
@@ -66,6 +67,8 @@ public:
     Sketcher::PropertyConstraintList Constraints;
     App ::PropertyLinkSubList ExternalGeometry;
     App ::PropertyBool FullyConstrained;
+    Part ::PropertyPartShape InternalShape;
+    App ::PropertyBool MakeInternals;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
@@ -78,6 +81,7 @@ public:
     {
         return "SketcherGui::ViewProviderSketch";
     }
+    void setupObject() override;
     //@}
 
     /** SketchObject can work in two modes: Recompute Mode and noRecomputes Mode
@@ -695,10 +699,7 @@ public:
         return geoIdFromShapeType(shapetype, geoId, posId);
     }
 
-    std::string convertSubName(const char* subname, bool postfix = true) const
-    {
-        return convertSubName(checkSubName(subname), postfix);
-    }
+    std::string convertSubName(const char* subname, bool postfix = true) const;
 
     std::string convertSubName(const std::string& subname, bool postfix = true) const
     {
@@ -768,6 +769,15 @@ public:
 
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices() const;
+
+    // Signaled when solver has done update
+    boost::signals2::signal<void()> signalSolverUpdate;
+    boost::signals2::signal<void()> signalElementsChanged;
+
+    Part::TopoShape buildInternals(const Part::TopoShape& edges) const;
+
+    /// Get a map from internal element to the same geometry in normal shape
+    const std::map<std::string, std::string> getInternalElementMap() const;
 
 public:  // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
@@ -920,6 +930,7 @@ private:
     // indicates whether changes to properties are the deed of SketchObject or not (for input
     // validation)
     bool managedoperation;
+    mutable std::map<std::string, std::string> internalElementMap;
 };
 
 inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)

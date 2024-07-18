@@ -82,6 +82,7 @@
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/Part/App/WireJoiner.h>
 
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
@@ -124,6 +125,14 @@ SketchObject::SketchObject()
                       "Sketch",
                       (App::PropertyType)(App::Prop_Output | App::Prop_ReadOnly | App::Prop_Hidden),
                       "Sketch is fully constrained");
+
+    ADD_PROPERTY(InternalShape,
+                 (Part::TopoShape()));
+    ADD_PROPERTY_TYPE(MakeInternals,
+                      (false),
+                      "Internal Geometry",
+                      App::Prop_None,
+                      "Make internal geometry, e.g. split intersecting edges, face of closed wires.");
 
     Geometry.setOrderRelevant(true);
 
@@ -173,6 +182,8 @@ SketchObject::SketchObject()
 
     internaltransaction = false;
     managedoperation = false;
+
+    registerElementCache(internalPrefix(), &InternalShape);
 }
 
 SketchObject::~SketchObject()
@@ -184,6 +195,17 @@ SketchObject::~SketchObject()
     ExternalGeo.clear();
 
     delete analyser;
+}
+
+void SketchObject::setupObject()
+{
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+//    ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
+//    ExternalBSplineMaxDegree.setValue(hGrpp->GetInt("ExternalBSplineMaxDegree", 5));
+//    ExternalBSplineTolerance.setValue(hGrpp->GetFloat("ExternalBSplineTolerance", 1e-4));
+    MakeInternals.setValue(hGrpp->GetBool("MakeInternals", false));
+    inherited::setupObject();
 }
 
 short SketchObject::mustExecute() const
@@ -309,7 +331,11 @@ void SketchObject::buildShape()
         shapes.push_back(getEdge(geo, convertSubName(
                         Data::IndexedName::fromConst("ExternalEdge", i-1), false).c_str()));
     }
+
+    internalElementMap.clear();
+
     if(shapes.empty() && vertices.empty()) {
+        InternalShape.setValue(Part::TopoShape());
         Shape.setValue(Part::TopoShape());
         return;
     }
@@ -337,7 +363,87 @@ void SketchObject::buildShape()
          result.makeElementCompound(results, Part::OpCodes::Sketch);
      }
     result.Tag = getID();
+    InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
+    // Must set Shape property after InternalShape so that
+    // GeoFeature::updateElementReference() can run properly on change of Shape
+    // property, because some reference may pointing to the InternalShape
     Shape.setValue(result);
+}
+
+const std::map<std::string,std::string> SketchObject::getInternalElementMap() const
+{
+    if (!internalElementMap.empty() || !MakeInternals.getValue())
+        return internalElementMap;
+
+    auto internalShape = InternalShape.getShape();
+    auto shape = Shape.getShape().located(TopLoc_Location());
+    if (!internalShape.isNull() && !shape.isNull()) {
+        std::vector<std::string> names;
+        std::string prefix;
+        const std::array<TopAbs_ShapeEnum, 2> types = {TopAbs_VERTEX, TopAbs_EDGE};
+        for (const auto &type : types) {
+            prefix = internalPrefix() + Part::TopoShape::shapeName(type);
+            std::size_t len = prefix.size();
+            int i=0;
+            for (const auto &v : internalShape.getSubTopoShapes(type)) {
+                ++i;
+                shape.findSubShapesWithSharedVertex(v, &names, Data::SearchOption::CheckGeometry
+                                                |Data::SearchOption::SingleResult);
+                if (names.empty())
+                    continue;
+                prefix += std::to_string(i);
+                internalElementMap[prefix] = names.front();
+                internalElementMap[names.front()] = prefix;
+                prefix.resize(len);
+                names.clear();
+            }
+        }
+    }
+    return internalElementMap;
+}
+
+Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
+{
+    if (!MakeInternals.getValue())
+        return Part::TopoShape();
+
+    try {
+        Part::WireJoiner joiner;
+//        joiner.setTolerance(InternalTolerance.getValue());
+        joiner.setTightBound(true);
+        joiner.setMergeEdges(true);
+        joiner.addShape(edges);
+        Part::TopoShape result(getID(), getDocument()->getStringHasher());
+        if (!joiner.Shape().IsNull()) {
+            joiner.getResultWires(result, "SKF");
+
+            // NOTE: we set minElementNames to 2 (i.e to use at least two
+            // unused edge name to construct face name) in order to reduce the
+            // chance of face jumping.
+            result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
+                                     /*op*/"",
+                                     /*maker*/"Part::FaceMakerRing",
+                                     /*pln*/nullptr
+#if 1
+//                                     /*minElementNames (revert to 1 for now, see how it fares)*/1
+#else
+                                     /*minElementNames*/2
+#endif
+                                    );
+        }
+        Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
+        joiner.getOpenWires(openWires, "SKF");
+        if (openWires.isNull())
+            return result;
+        if (result.isNull())
+            return openWires;
+        return result.makeElementCompound({result, openWires});
+    } catch (Base::Exception &e) {
+        FC_WARN("Failed to make face for sketch: " << e.what());
+    } catch (Standard_Failure &e) {
+        FC_WARN("Failed to make face for sketch: " << e.GetMessageString());
+    }
+    return Part::TopoShape();
 }
 
 static const char *hasSketchMarker(const char *name) {
@@ -9514,11 +9620,11 @@ App::DocumentObject *SketchObject::getSubObject(
 
     if (auto realType = convertInternalName(indexedName.getType())) {
         if (realType[0] == '\0')
-                subshape = Shape.getShape();
+            subshape = InternalShape.getShape();
         else {
             auto shapeType = Part::TopoShape::shapeType(realType, true);
             if (shapeType != TopAbs_SHAPE)
-                subshape = Shape.getShape().getSubTopoShape(shapeType, indexedName.getIndex(), true);
+                subshape = InternalShape.getShape().getSubTopoShape(shapeType, indexedName.getIndex(), true);
         }
         if (subshape.isNull())
             return nullptr;
@@ -9662,13 +9768,12 @@ App::ElementNamePair SketchObject::getElementName(
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
         (void)realName;
-// Todo: Do we need to add the InternalShape?
-//        if (mapped)
-//            mappedElement = InternalShape.getShape().getElementName(name);
-//        else if (type == ElementNameType::Export)
-//            ret.newName = getExportElementName(InternalShape.getShape(), realName).first;
-//        else
-//            mappedElement = InternalShape.getShape().getElementName(realName);
+        if (mapped)
+            mappedElement = InternalShape.getShape().getElementName(name);
+        else if (type == ElementNameType::Export)
+            ret.first = getExportElementName(InternalShape.getShape(), realName).first;
+        else
+            mappedElement = InternalShape.getShape().getElementName(realName);
 
         if (mapped || type != ElementNameType::Export) {
             if (mappedElement.index) {
@@ -9832,9 +9937,25 @@ bool SketchObject::geoIdFromShapeType(const Data::IndexedName & indexedName,
     return true;
 }
 
-std::string SketchObject::convertSubName(const Data::IndexedName & indexedName, bool postfix) const
+std::string SketchObject::convertSubName(const char *subname, bool postfix) const
 {
+    return convertSubName(checkSubName(subname), postfix);
+}
+
+std::string SketchObject::convertSubName(const Data::IndexedName & indexedName, bool postfix) const{
     std::ostringstream ss;
+    if (auto realType = convertInternalName(indexedName.getType())) {
+        auto mapped = InternalShape.getShape().getMappedName(
+                Data::IndexedName::fromConst(realType, indexedName.getIndex()));
+        if (!mapped) {
+            if (postfix)
+                ss << indexedName;
+        } else if (postfix)
+            ss << Data::ComplexGeoData::elementMapPrefix() << mapped << '.' << indexedName;
+        else
+            ss << mapped;
+        return ss.str();
+    }
     int geoId;
     PointPos posId;
     if(!geoIdFromShapeType(indexedName,geoId,posId)) {
