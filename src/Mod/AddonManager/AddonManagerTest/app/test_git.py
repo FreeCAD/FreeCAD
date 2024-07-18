@@ -33,7 +33,13 @@ import FreeCAD
 
 from addonmanager_git import GitManager, NoGitFound, GitFailed
 
+try:
+    git_manager = GitManager()
+except NoGitFound:
+    git_manager = None
 
+
+@unittest.skipIf(git_manager is None, "No git executable -- not running git-based tests")
 class TestGit(unittest.TestCase):
 
     MODULE = "test_git"  # file name without extension
@@ -62,10 +68,7 @@ class TestGit(unittest.TestCase):
             zip_repo.extractall(self.test_repo_remote)
         self.test_repo_remote = os.path.join(self.test_repo_remote, "test_repo")
 
-        try:
-            self.git = GitManager()
-        except NoGitFound:
-            self.skipTest("No git found")
+        self.git = git_manager
 
     def tearDown(self):
         """Clean up after the test"""
