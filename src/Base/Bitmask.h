@@ -113,7 +113,8 @@ class Flags {
     Enum i;
 
 public:
-    constexpr inline Flags(Enum f = Enum()) : i(f) {}
+    // Linter seems wrong on next line, don't want explicit here forcing downstream changes
+    constexpr inline Flags(Enum f = Enum()) : i(f) {}   // NOLINT (runtime/explicit)
     constexpr bool testFlag(Enum f) const {
         using u = typename std::underlying_type<Enum>::type;
         return (i & f) == f && (static_cast<u>(f) != 0 || i == f);
