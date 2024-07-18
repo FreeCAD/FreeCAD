@@ -68,6 +68,7 @@ public:  // Factory methods
 public:  // Utility methods
     static void ensureSketchGeometryExtensions(Part::Geometry* geometry);
     static void copyId(const Part::Geometry* src, Part::Geometry* dst);
+    static void copyFlags(const Part::Geometry* src, Part::Geometry* dst);
 
 public:
     void setGeometry(Part::Geometry* geometry);
@@ -80,6 +81,15 @@ public:
     void setFlag(int flag, bool v = true) override
     {
         getExternalGeoExt()->setFlag(flag, v);
+    }
+
+    unsigned long getFlags() const override
+    {
+        return getExternalGeoExt()->getFlags();
+    }
+    void setFlags(unsigned long flags) override
+    {
+        getExternalGeoExt()->setFlags(flags);
     }
 
     bool isClear() const override
@@ -95,9 +105,16 @@ public:
     {
         return getExternalGeoExt()->getRef();
     }
-    void setRef(const std::string& ref) override
+    void setRef(const std::string& ref) override;
+
+    int getRefIndex() const override
     {
-        getExternalGeoExt()->setRef(ref);
+        return getExternalGeoExt()->getRefIndex();
+    }
+
+    void setRefIndex(int index) override
+    {
+        getExternalGeoExt()->setRefIndex(index);
     }
 
     /** GeometryExtension Interface **/
