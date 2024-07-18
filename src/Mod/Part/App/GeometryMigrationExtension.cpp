@@ -35,11 +35,10 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryMigrationPersistenceExtension, Part::Ge
 TYPESYSTEM_SOURCE(Part::GeometryMigrationExtension,Part::GeometryExtension)
 
 
-void GeometryMigrationExtension::copyAttributes(Part::GeometryExtension * cpy) const
-{
+void GeometryMigrationExtension::copyAttributes(Part::GeometryExtension *cpy) const {
     Part::GeometryExtension::copyAttributes(cpy);
     static_cast<GeometryMigrationExtension *>(cpy)->ConstructionState = this->ConstructionState;
-    static_cast<GeometryMigrationExtension *>(cpy)->GeometryMigrationFlags  = this->GeometryMigrationFlags;
+    static_cast<GeometryMigrationExtension *>(cpy)->GeometryMigrationFlags = this->GeometryMigrationFlags;
 
     static_cast<GeometryMigrationExtension *>(cpy)->Id = this->Id;
     static_cast<GeometryMigrationExtension *>(cpy)->Flags = this->Flags;

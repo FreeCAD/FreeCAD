@@ -78,6 +78,7 @@ public:
     {
         return getExternalGeoExt()->testFlag(flag);
     }
+
     void setFlag(int flag, bool v = true) override
     {
         getExternalGeoExt()->setFlag(flag, v);
@@ -87,6 +88,7 @@ public:
     {
         return getExternalGeoExt()->getFlags();
     }
+
     void setFlags(unsigned long flags) override
     {
         getExternalGeoExt()->setFlags(flags);
@@ -96,6 +98,7 @@ public:
     {
         return getExternalGeoExt()->isClear();
     }
+
     size_t flagSize() const override
     {
         return getExternalGeoExt()->flagSize();
@@ -105,6 +108,7 @@ public:
     {
         return getExternalGeoExt()->getRef();
     }
+
     void setRef(const std::string& ref) override;
 
     int getRefIndex() const override

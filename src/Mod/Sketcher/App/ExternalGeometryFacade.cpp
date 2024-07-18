@@ -170,21 +170,13 @@ void ExternalGeometryFacade::copyFlags(const Part::Geometry* src, Part::Geometry
 
 void ExternalGeometryFacade::setRef(const std::string& ref)
 {
-    if (ref.size() && getId() < 0) {
+    if (ref.empty() && getId() < 0) {
         FC_ERR("Cannot set reference on root geometries");
     }
     else {
         getExternalGeoExt()->setRef(ref);
     }
 }
-
-// void ExternalGeometryFacade::setRef(const std::string &ref)
-//{
-//     if (ref.size() && getId() < 0)
-//         FC_ERR("Cannot set reference on root geometries");
-//     else
-//         getExternalGeoExt()->setRef(ref);
-// }
 
 PyObject* ExternalGeometryFacade::getPyObject()
 {

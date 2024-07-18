@@ -62,16 +62,26 @@ public:
     PyObject *getPyObject() override;
 
 
-    virtual bool getConstruction() const {return ConstructionState;}
-    virtual void setConstruction(bool construction)
-        {ConstructionState = construction; setMigrationType(Construction);}
+    virtual bool getConstruction() const { return ConstructionState; }
 
-    long getId() const {return Id;}
-    void setId(long id) {Id = id; setMigrationType(GeometryId);}
+    virtual void setConstruction(bool construction) {
+        ConstructionState = construction;
+        setMigrationType(Construction);
+    }
 
-    const std::string &getRef() const {return Ref;}
-    int getRefIndex() const {return RefIndex;}
-    unsigned long getFlags() const {return Flags;}
+    long getId() const { return Id; }
+
+    void setId(long id) {
+        Id = id;
+        setMigrationType(GeometryId);
+    }
+
+    const std::string &getRef() const { return Ref; }
+
+    int getRefIndex() const { return RefIndex; }
+
+    unsigned long getFlags() const { return Flags; }
+
     void setReference(const char *ref, int index, unsigned long flags) {
         Ref = ref ? ref : "";
         RefIndex = index;
@@ -103,9 +113,9 @@ class PartExport GeometryMigrationPersistenceExtension : public Part::GeometryPe
 {
     TYPESYSTEM_HEADER();
 public:
-    // Called to save data as attributes in 'Geometry' XML tag
+    // Called to extend 'Geometry' XML tag with additional attributes (eg Id)
     virtual void preSave(Base::Writer &/*writer*/) const {}
-    // Called to save data after 'GeometryExtensions' XML elements
+    // Called to add additional tag after 'GeometryExtensions' XML elements (eg Construction flag)
     virtual void postSave(Base::Writer &/*writer*/) const {}
 };
 
