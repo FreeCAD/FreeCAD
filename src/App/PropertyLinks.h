@@ -559,12 +559,20 @@ public:
         LinkAllowPartial,
         LinkRestoreLabel,
         LinkSyncSubObject, // used by DlgPropertyLink
+        LinkNewElement, // return new element name in getPyObject
+        LinkSilentRestore, // do not report error on restore (e.g. missing external link)
     };
     inline bool testFlag(int flag) const {
         return _Flags.test((std::size_t)flag);
     }
 
     virtual void setAllowPartial(bool enable) { (void)enable; }
+
+    void setReturnNewElement(bool enable);
+
+    void setSilentRestore(bool enable);
+
+    boost::signals2::signal<void(const std::string &, const std::string &)> signalUpdateElementReference;
 
 protected:
     void hasSetValue() override;
@@ -574,6 +582,13 @@ protected:
     inline void setFlag(int flag, bool value=true) {
         _Flags.set((std::size_t)flag,value);
     }
+
+    void _getLinksTo(
+            std::vector<App::ObjectIdentifier> &identifiers,
+            App::DocumentObject *obj,
+            const char *subname,
+            const std::vector<std::string> &subs,
+            const std::vector<PropertyLinkBase::ShadowSub> &shadows) const;
 
 private:
     std::set<std::string> _LabelRefs;
@@ -751,11 +766,8 @@ public:
     Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    DocumentObject *find(const std::string &, int *pindex=nullptr) const;
-    DocumentObject *find(const char *sub, int *pindex=nullptr) const {
-        if(!sub) return nullptr;
-        return find(std::string(sub),pindex);
-    }
+    DocumentObject *findUsingMap(const std::string &, int *pindex=nullptr) const;
+    DocumentObject *find(const char *sub, int *pindex=nullptr) const;
 
 protected:
     DocumentObject *getPyValue(PyObject *item) const override;
@@ -1361,6 +1373,14 @@ public:
     void setSyncSubObject(bool enable);
 
 protected:
+    void _getLinksToList(
+        std::vector<App::ObjectIdentifier> &identifiers,
+        App::DocumentObject *obj,
+        const char *subname,
+        const std::vector<std::string> &subs,
+        const std::vector<PropertyLinkBase::ShadowSub> &shadows) const;
+
+protected:
     std::list<PropertyXLinkSub> _Links;
 };
 
@@ -1411,6 +1431,8 @@ protected:
     virtual void onRemoveDep(App::DocumentObject *) {}
     void updateDeps(std::map<DocumentObject*,bool> &&newDeps);
     void clearDeps();
+
+    void _onBreakLink(App::DocumentObject *obj);
 
 protected:
     std::map<App::DocumentObject*,bool> _Deps;

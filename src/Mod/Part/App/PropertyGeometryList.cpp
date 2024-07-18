@@ -85,18 +85,14 @@ void PropertyGeometryList::setValue(const Geometry* lValue)
 void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 {
     auto copy = lValue;
-//    for(auto &geo : copy) // copy of the individual geometry pointers
-//        geo = geo->clone();
-//
-//    setValues(std::move(copy));
     aboutToSetValue();
     std::sort(_lValueList.begin(), _lValueList.end());
-    for (auto &v : copy) {
-        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), v);
+    for (auto & geo : copy) {
+        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), geo);
         // clone if the new entry does not exist in the original value list, or
         // else, simply reuse it (i.e. erase it so that it won't get deleted below).
         if (range.first == range.second)
-            v = v->clone();
+            geo = geo->clone();
         else
             _lValueList.erase(range.first, range.second);
     }
@@ -108,24 +104,16 @@ void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
 
 void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
 {
-//    aboutToSetValue();
-//    std::set<Geometry*> valueSet(_lValueList.begin(),_lValueList.end());
-//    for(auto v : lValue)
-//        valueSet.erase(v);
-//    _lValueList = std::move(lValue);
-//    for(auto v : valueSet)
-//        delete v;
-//    hasSetValue();
     // Unlike above, the moved version of setValues() indicates the caller want
     // us to manager the memory of the passed in values. So no need clone.
     aboutToSetValue();
     std::sort(_lValueList.begin(), _lValueList.end());
-    for (auto v : lValue) {
-        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), v);
+    for (auto geo : lValue) {
+        auto range = std::equal_range(_lValueList.begin(), _lValueList.end(), geo);
         _lValueList.erase(range.first, range.second);
     }
-    for (auto v : _lValueList)
-        delete v;
+    for (auto geo : _lValueList)
+        delete geo;
     _lValueList = std::move(lValue);
     hasSetValue();
 }
@@ -201,9 +189,9 @@ void PropertyGeometryList::trySaveGeometry(Geometry * geom, Base::Writer &writer
     // Not all geometry classes implement Save() and throw an exception instead
     try {
         geom->Save(writer);
-        for( auto &e : geom->getExtensions() ) {
-            auto ext = e.lock();
-            auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(ext.get());
+        for( auto & ext : geom->getExtensions() ) {
+            auto extension = ext.lock();
+            auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(extension.get());
             if (gpe)
                 gpe->postSave(writer);
         }
@@ -217,12 +205,12 @@ void PropertyGeometryList::tryRestoreGeometry(Geometry * geom, Base::XMLReader &
 {
     // Not all geometry classes implement Restore() and throw an exception instead
     try {
-        if (!reader.getAttributeAsInteger("migrated") && reader.hasAttribute("id")) {
+        if (!reader.getAttributeAsInteger("migrated", "0") && reader.hasAttribute("id")) {
             auto ext = std::make_unique<GeometryMigrationExtension>();
             ext->setId(reader.getAttributeAsInteger("id"));
             if(reader.hasAttribute("ref")) {
                 const char *ref = reader.getAttribute("ref");
-                int index = reader.getAttributeAsInteger("refIndex");
+                int index = reader.getAttributeAsInteger("refIndex", "1");
                 unsigned long flags = (unsigned long)reader.getAttributeAsUnsigned("flags");
                 ext->setReference(ref, index, flags);
             }
@@ -241,7 +229,7 @@ void PropertyGeometryList::Save(Writer &writer) const
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<Geometry type=\""
-                                        << _lValueList[i]->getTypeId().getName() << "\"";
+                                        << _lValueList[i]->getTypeId().getName() << "\"" << endl;
         for( auto &e : _lValueList[i]->getExtensions() ) {
             auto ext = e.lock();
             auto gpe = freecad_dynamic_cast<GeometryMigrationPersistenceExtension>(ext.get());

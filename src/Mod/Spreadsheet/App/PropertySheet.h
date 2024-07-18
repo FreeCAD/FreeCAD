@@ -78,10 +78,10 @@ public:
 
     void Restore(Base::XMLReader& reader) override;
 
-    virtual void getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
-                            App::DocumentObject* obj,
-                            const char* subname = nullptr,
-                            bool all = false) const override;
+    void getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
+                    App::DocumentObject* obj,
+                    const char* subname = nullptr,
+                    bool all = false) const override;
 
     void copyCells(Base::Writer& writer, const std::vector<App::Range>& ranges) const;
 

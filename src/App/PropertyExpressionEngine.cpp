@@ -1081,45 +1081,47 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)
     }
 }
 
-void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
-                                          App::DocumentObject *obj,
-                                          const char *subname,
+void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
+                                          App::DocumentObject* obj,
+                                          const char* subname,
                                           bool all) const
 {
-    Expression::DepOption option = all ? Expression::DepOption::DepAll
-                                       : Expression::DepOption::DepNormal;
+    Expression::DepOption option =
+        all ? Expression::DepOption::DepAll : Expression::DepOption::DepNormal;
 
     App::SubObjectT objT(obj, subname);
     auto sobj = objT.getSubObject();
     auto subElement = objT.getOldElementName();
 
-    for(auto &v : expressions) {
-        const auto &deps = v.second.expression->getDeps(option);
+    for (auto& [expressionId, expressionInfo] : expressions) {
+        const auto& deps = expressionInfo.expression->getDeps(option);
         auto it = deps.find(obj);
-        if(it==deps.end())
+        if (it == deps.end()) {
             continue;
-        for(auto &dep : it->second)  {
+        }
+        auto [docObj, map] = *it;
+        for (auto& [key, paths] : map) {
             if (!subname) {
-                identifiers.push_back(v.first);
+                identifiers.push_back(expressionId);
                 break;
             }
             bool found = false;
-            for (const auto &path : dep.second) {
+            for (const auto& path : paths) {
                 if (path.getSubObjectName() == subname) {
-                    identifiers.push_back(v.first);
+                    identifiers.push_back(expressionId);
                     found = true;
                     break;
                 }
                 App::SubObjectT sobjT(obj, path.getSubObjectName().c_str());
-                if (sobjT.getSubObject() == sobj
-                    && sobjT.getOldElementName() == subElement) {
-                    identifiers.push_back(v.first);
+                if (sobjT.getSubObject() == sobj && sobjT.getOldElementName() == subElement) {
+                    identifiers.push_back(expressionId);
                     found = true;
                     break;
                 }
             }
-            if (found)
+            if (found) {
                 break;
+            }
         }
     }
 }

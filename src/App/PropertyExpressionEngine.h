@@ -160,7 +160,7 @@ public:
     void afterRestore() override;
     void onContainerRestored() override;
 
-    virtual void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
                             App::DocumentObject *obj,
                             const char *subname=nullptr,
                             bool all=false) const override;
