@@ -70,6 +70,7 @@ private:
     void removeFromListWidget(QListWidget*w, QString name);
     void clearButtons(const selectionModes notThis=none);
     void exitSelectionMode();
+    void setSelectionMode(selectionModes mode, bool checked);
 
 private:
     QWidget* proxy;

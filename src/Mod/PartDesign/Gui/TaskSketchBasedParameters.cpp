@@ -61,10 +61,12 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider
 const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg)
 {
     // Note: The validity checking has already been done in ReferenceSelection.cpp
-    PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-    App::DocumentObject* selObj = pcSketchBased->getDocument()->getObject(msg.pObjectName);
-    if (selObj == pcSketchBased)
+    auto sketchBased = getObject<PartDesign::ProfileBased>();
+    App::DocumentObject* selObj = sketchBased->getDocument()->getObject(msg.pObjectName);
+    if (selObj == sketchBased) {
         return QString();
+    }
+
     std::string subname = msg.pSubName;
     QString refStr;
 
@@ -72,54 +74,57 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     if (PartDesign::Feature::isDatum(selObj)) {
         subname = "";
         refStr = QString::fromLatin1(selObj->getNameInDocument());
-    } else if (subname.size() > 4) {
+    }
+    else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
         refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);
-    pcSketchBased->UpToFace.setValue(selObj, upToFaces);
+    sketchBased->UpToFace.setValue(selObj, upToFaces);
     recomputeFeature();
 
     return refStr;
 }
 
-void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile,
+                                                        App::DocumentObject* base)
 {
-    Gui::Document* doc = vp->getDocument();
-    if (doc) {
+    if (Gui::Document* doc = getGuiDocument()) {
         doc->setHide(profile->getNameInDocument());
-        if (base)
+        if (base) {
             doc->setShow(base->getNameInDocument());
+        }
     }
 }
 
-void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* profile,
+                                                         App::DocumentObject* base)
 {
-    Gui::Document* doc = vp->getDocument();
-    if (doc) {
+    if (Gui::Document* doc = getGuiDocument()) {
         doc->setShow(profile->getNameInDocument());
-        if (base)
+        if (base) {
             doc->setHide(base->getNameInDocument());
+        }
     }
 }
 
-void TaskSketchBasedParameters::onSelectReference(AllowSelectionFlags allow) {
+void TaskSketchBasedParameters::onSelectReference(AllowSelectionFlags allow)
+{
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
-    PartDesign::ProfileBased* pcSketchBased = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
-    if (pcSketchBased) {
+    if (auto sketchBased = getObject<PartDesign::ProfileBased>()) {
         // The solid this feature will be fused to
-        App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );
+        App::DocumentObject* prevSolid = sketchBased->getBaseObject( /* silent =*/ true );
 
         if (AllowSelectionFlags::Int(allow) != int(AllowSelection::NONE)) {
-            startReferenceSelection(pcSketchBased, prevSolid);
+            startReferenceSelection(sketchBased, prevSolid);
             this->blockSelection(false);
             Gui::Selection().clearSelection();
             Gui::Selection().addSelectionGate(new ReferenceSelection(prevSolid, allow));
         }
         else {
             Gui::Selection().rmvSelectionGate();
-            finishReferenceSelection(pcSketchBased, prevSolid);
+            finishReferenceSelection(sketchBased, prevSolid);
             this->blockSelection(true);
         }
     }
@@ -137,51 +142,63 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
         return {};
 
     QStringList parts = text.split(QChar::fromLatin1(':'));
-    if (parts.length() < 2)
-        parts.push_back(QString::fromLatin1(""));
+    if (parts.length() < 2) {
+        parts.push_back(QString());
+    }
 
     // Check whether this is the name of an App::Plane or Part::Datum feature
-    App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (!obj)
-        return {};
-
-    if (obj->isDerivedFrom<App::Plane>()) {
-        // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
+    App::Document* doc = getAppDocument();
+    if (!doc) {
         return {};
     }
-    else if (obj->isDerivedFrom<Part::Datum>()) {
+
+    App::DocumentObject* obj = doc->getObject(parts[0].toLatin1());
+    if (!obj) {
+        return {};
+    }
+
+    if (obj->isDerivedFrom<App::Plane>()) {
+        // everything is OK (we assume a Part can only have exactly 3 App::Plane objects
+        // located at the base of the feature tree)
+        return {};
+    }
+
+    if (obj->isDerivedFrom<Part::Datum>()) {
         // it's up to the document to check that the datum plane is in the same body
         return {};
     }
-    else {
-        // We must expect that "parts[1]" is the translation of "Face" followed by an ID.
-        QString name;
-        QTextStream str(&name);
-        str << "^" << tr("Face") << "(\\d+)$";
-        QRegularExpression rx(name);
-        QRegularExpressionMatch match;
-        if (parts[1].indexOf(rx, 0, &match) < 0) {
-            return {};
-        }
 
-        int faceId = match.captured(1).toInt();
-        std::stringstream ss;
-        ss << "Face" << faceId;
-
-        std::vector<std::string> upToFaces(1, ss.str());
-        PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-        pcSketchBased->UpToFace.setValue(obj, upToFaces);
-        recomputeFeature();
-
-        return QByteArray(ss.str().c_str());
+    // We must expect that "parts[1]" is the translation of "Face" followed by an ID.
+    QString name;
+    QTextStream str(&name);
+    str << "^" << tr("Face") << "(\\d+)$";
+    QRegularExpression rx(name);
+    QRegularExpressionMatch match;
+    if (parts[1].indexOf(rx, 0, &match) < 0) {
+        return {};
     }
+
+    int faceId = match.captured(1).toInt();
+    std::stringstream ss;
+    ss << "Face" << faceId;
+
+    std::vector<std::string> upToFaces(1, ss.str());
+    auto sketchBased = getObject<PartDesign::ProfileBased>();
+    sketchBased->UpToFace.setValue(obj, upToFaces);
+    recomputeFeature();
+
+    return QByteArray(ss.str().c_str());
 }
 
 QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
                                                       const QVariant& suggest) const
 {
     // search for an object with the given label
-    App::Document* doc = this->vp->getObject()->getDocument();
+    App::Document* doc = getAppDocument();
+    if (!doc) {
+        return {};
+    }
+
     // for faster access try the suggestion
     if (suggest.isValid()) {
         App::DocumentObject* obj = doc->getObject(suggest.toByteArray());
@@ -204,11 +221,15 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
 
 QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub) const
 {
-    App::Document* doc = this->vp->getObject()->getDocument();
-    QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
-
-    if (o.isEmpty())
+    App::Document* doc = getAppDocument();
+    if (!doc) {
         return {};
+    }
+
+    QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
+    if (o.isEmpty()) {
+        return {};
+    }
 
     return QString::fromLatin1(R"((App.getDocument("%1").%2, ["%3"]))")
             .arg(QString::fromLatin1(doc->getName()), o, sub);

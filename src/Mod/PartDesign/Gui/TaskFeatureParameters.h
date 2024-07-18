@@ -24,6 +24,7 @@
 #define TASKFEATUREPARAMETERS_H_NAHKE2YZ
 
 
+#include <type_traits>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/DocumentObserver.h>
@@ -102,12 +103,8 @@ protected:
         blockUpdate = value;
     }
 
-
-protected:
-    PartDesignGui::ViewProvider *vp;
-    /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-
 private:
+    PartDesignGui::ViewProvider *vp;
     bool blockUpdate;
 };
 
