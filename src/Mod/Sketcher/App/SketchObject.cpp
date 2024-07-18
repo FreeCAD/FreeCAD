@@ -9709,6 +9709,71 @@ App::DocumentObject *SketchObject::getSubObject(
     return const_cast<SketchObject*>(this);
 }
 
+std::vector<Data::IndexedName>
+SketchObject::getHigherElements(const char *element, bool silent) const
+{
+    std::vector<Data::IndexedName> res;
+//    if (testStatus(App::ObjEditing)) {
+        if (boost::istarts_with(element, "vertex")) {
+            int n = 0;
+            int index = atoi(element+6);
+            for (auto cstr : Constraints.getValues()) {
+                ++n;
+                if (cstr->Type != Sketcher::Coincident)
+                    continue;
+                for (int i=0; i<2; ++i) {
+                    int geoid = i ? cstr->Second : cstr->First;
+                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
+                    if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1)
+                        res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                };
+            }
+        }
+        return res;
+//    }
+
+    auto getNames = [&](const char *element) {
+        bool internal = boost::starts_with(element, internalPrefix());
+        const auto &shape = internal ? InternalShape.getShape() : Shape.getShape();
+        for (const auto &indexedName : shape.getHigherElements(element+(internal?internalPrefix().size():0), silent)) {
+            if (!internal) {
+                res.push_back(indexedName);
+            }
+            else if (boost::equals(indexedName.getType(), "Face")
+                    || boost::equals(indexedName.getType(), "Edge")
+                    || boost::equals(indexedName.getType(), "Wire")) {
+                res.emplace_back((internalPrefix() + indexedName.getType()).c_str(), indexedName.getIndex());
+            }
+        }
+    };
+    getNames(element);
+    const auto &elementMap = getInternalElementMap();
+    auto it = elementMap.find(element);
+    if (it != elementMap.end()) {
+        res.emplace_back(it->second.c_str());
+        getNames(it->second.c_str());
+    }
+    return res;
+}
+
+const std::vector<const char *>& SketchObject::getElementTypes(bool all) const
+{
+    if (!all)
+        return Part::Part2DObject::getElementTypes();
+    static std::vector<const char *> res;
+    if (res.empty()) {
+        res = { Part::TopoShape::shapeName(TopAbs_VERTEX).c_str(),
+                Part::TopoShape::shapeName(TopAbs_EDGE).c_str(),
+                "ExternalEdge",
+                "Constraint",
+                "InternalEdge",
+                "InternalFace",
+                "InternalVertex",
+              };
+    }
+    return res;
+}
+
 void SketchObject::setExpression(const App::ObjectIdentifier& path,
                                  std::shared_ptr<App::Expression> expr)
 {

@@ -4775,6 +4775,25 @@ TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, 
     return *this;
 }
 
+    std::vector<Data::IndexedName>
+    TopoShape::getHigherElements(const char *element, bool silent) const
+    {
+        TopoShape shape = getSubTopoShape(element, silent);
+        if(shape.isNull())
+            return {};
+
+        std::vector<Data::IndexedName> res;
+        int type = shape.shapeType();
+        for(;;) {
+            if(--type < 0)
+                break;
+            const char *shapetype = shapeName((TopAbs_ShapeEnum)type).c_str();
+            for(int idx : findAncestors(shape.getShape(), (TopAbs_ShapeEnum)type))
+                res.emplace_back(shapetype, idx);
+        }
+        return res;
+    }
+
 TopoShape& TopoShape::makeElementBSplineFace(const TopoShape& shape,
                                              FillingStyle style,
                                              bool keepBezier,
