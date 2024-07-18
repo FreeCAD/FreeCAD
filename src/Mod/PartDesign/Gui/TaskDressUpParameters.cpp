@@ -60,11 +60,11 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
               true,
               parent)
     , proxy(nullptr)
-    , DressUpView(DressUpView)
     , deleteAction(nullptr)
     , addAllEdgesAction(nullptr)
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
+    , DressUpView(DressUpView)
 {
     // remember initial transaction ID
     App::GetApplication().getActiveTransaction(&transactionID);
@@ -93,7 +93,7 @@ const QString TaskDressUpParameters::btnSelectStr()
 
 void TaskDressUpParameters::setupTransaction()
 {
-    if (!DressUpView)
+    if (DressUpView.expired())
         return;
 
     int tid = 0;
@@ -143,7 +143,7 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 #ifdef FC_USE_TNP_FIX
     Q_UNUSED(widget)
 
-    if (!DressUpView) {
+    if (DressUpView.expired()) {
         return;
     }
 
@@ -401,18 +401,31 @@ void TaskDressUpParameters::showObject()
     }
 }
 
+ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
+{
+    return DressUpView.expired() ? nullptr : DressUpView.get();
+}
+
 Part::Feature* TaskDressUpParameters::getBase() const
 {
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-    // Unlikely but this may throw an exception in case we are started to edit an object which base feature
-    // was deleted. This exception will be likely unhandled inside the dialog and pass upper, But an error
-    // message inside the report view is better than a SEGFAULT.
-    // Generally this situation should be prevented in ViewProviderDressUp::setEdit()
-    return pcDressUp->getBaseObject();
+    if (ViewProviderDressUp* vp = getDressUpView()) {
+        auto dressUp = dynamic_cast<PartDesign::DressUp*>(vp->getObject());
+        // Unlikely but this may throw an exception in case we are started to edit an object which
+        // base feature was deleted. This exception will be likely unhandled inside the dialog and
+        // pass upper. But an error message inside the report view is better than a SEGFAULT.
+        // Generally this situation should be prevented in ViewProviderDressUp::setEdit()
+        return dressUp->getBaseObject();
+    }
+
+    return nullptr;
 }
 
 void TaskDressUpParameters::setSelectionMode(selectionModes mode)
 {
+    if (DressUpView.expired()) {
+        return;
+    }
+
     selectionMode = mode;
     setButtons(mode);
 

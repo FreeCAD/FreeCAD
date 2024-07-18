@@ -63,8 +63,8 @@ void TaskThicknessParameters::addContainerWidget()
 
 void TaskThicknessParameters::initControls()
 {
-    auto pcThickness = dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    double a = pcThickness->Value.getValue();
+    auto thickness = getObject<PartDesign::Thickness>();
+    double a = thickness->Value.getValue();
 
     ui->Value->setMinimum(0.0);
     ui->Value->setValue(a);
@@ -72,25 +72,25 @@ void TaskThicknessParameters::initControls()
     QMetaObject::invokeMethod(ui->Value, "setFocus", Qt::QueuedConnection);
 
     // Bind input fields to properties
-    ui->Value->bind(pcThickness->Value);
+    ui->Value->bind(thickness->Value);
 
-    bool r = pcThickness->Reversed.getValue();
+    bool r = thickness->Reversed.getValue();
     ui->checkReverse->setChecked(r);
 
-    bool i = pcThickness->Intersection.getValue();
+    bool i = thickness->Intersection.getValue();
     ui->checkIntersection->setChecked(i);
 
-    std::vector<std::string> strings = pcThickness->Base.getSubValues();
+    std::vector<std::string> strings = thickness->Base.getSubValues();
     for (const auto& string : strings) {
         ui->listWidgetReferences->addItem(QString::fromStdString(string));
     }
 
     setupConnections();
 
-    int mode = static_cast<int>(pcThickness->Mode.getValue());
+    int mode = static_cast<int>(thickness->Mode.getValue());
     ui->modeComboBox->setCurrentIndex(mode);
 
-    int join = static_cast<int>(pcThickness->Join.getValue());
+    int join = static_cast<int>(thickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
 
     if (strings.empty()) {
@@ -156,7 +156,7 @@ PartDesign::Thickness* TaskThicknessParameters::onBeforeChange()
 {
     setButtons(none);
     setupTransaction();
-    return dynamic_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    return getObject<PartDesign::Thickness>();
 }
 
 void TaskThicknessParameters::onAfterChange(PartDesign::Thickness* obj)
@@ -168,25 +168,26 @@ void TaskThicknessParameters::onAfterChange(PartDesign::Thickness* obj)
 
 void TaskThicknessParameters::onValueChanged(double angle)
 {
-    PartDesign::Thickness* thickness = onBeforeChange();
-    thickness->Value.setValue(angle);
-    onAfterChange(thickness);
+    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+        thickness->Value.setValue(angle);
+        onAfterChange(thickness);
+    }
 }
 
 void TaskThicknessParameters::onJoinTypeChanged(int join)
 {
-
-    PartDesign::Thickness* thickness = onBeforeChange();
-    thickness->Join.setValue(join);
-    onAfterChange(thickness);
+    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+        thickness->Join.setValue(join);
+        onAfterChange(thickness);
+    }
 }
 
 void TaskThicknessParameters::onModeChanged(int mode)
 {
-
-    PartDesign::Thickness* thickness = onBeforeChange();
-    thickness->Mode.setValue(mode);
-    onAfterChange(thickness);
+    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+        thickness->Mode.setValue(mode);
+        onAfterChange(thickness);
+    }
 }
 
 double TaskThicknessParameters::getValue() const
@@ -196,9 +197,10 @@ double TaskThicknessParameters::getValue() const
 
 void TaskThicknessParameters::onReversedChanged(bool on)
 {
-    PartDesign::Thickness* thickness = onBeforeChange();
-    thickness->Reversed.setValue(on);
-    onAfterChange(thickness);
+    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+        thickness->Reversed.setValue(on);
+        onAfterChange(thickness);
+    }
 }
 
 bool TaskThicknessParameters::getReversed() const
@@ -208,9 +210,10 @@ bool TaskThicknessParameters::getReversed() const
 
 void TaskThicknessParameters::onIntersectionChanged(bool on)
 {
-    PartDesign::Thickness* thickness = onBeforeChange();
-    thickness->Intersection.setValue(on);
-    onAfterChange(thickness);
+    if (PartDesign::Thickness* thickness = onBeforeChange()) {
+        thickness->Intersection.setValue(on);
+        onAfterChange(thickness);
+    }
 }
 
 bool TaskThicknessParameters::getIntersection() const
