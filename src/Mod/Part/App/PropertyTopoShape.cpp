@@ -303,8 +303,14 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         writer.Stream() << " file=\""
                         << writer.addFile(getFileName(binary?".bin":".brp").c_str(), this)
                         << "\"/>\n";
+    } else if(binary) {
+        writer.Stream() << " binary=\"1\">\n";
+        _Shape.exportBinary(writer.beginCharStream(Base::CharStreamFormat::Base64Encoded));
+        writer.endCharStream() <<  writer.ind() << "</Part>\n";
     } else {
-        writer.Stream() << "/>\n";
+        writer.Stream() << " brep=\"1\">\n";
+        _Shape.exportBrep(writer.beginCharStream(Base::CharStreamFormat::Raw)<<'\n');
+        writer.endCharStream() << '\n' << writer.ind() << "</Part>\n";
     }
 
     if(_SaveHasher) {
