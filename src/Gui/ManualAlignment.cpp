@@ -47,18 +47,17 @@
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
+#include <Gui/Inventor/SoAxisCrossKit.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SplitView3DInventor.h>
+#include <Gui/Tools.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/WaitCursor.h>
-
 #include "ManualAlignment.h"
-#include "BitmapFactory.h"
-#include "SoAxisCrossKit.h"
-#include "Tools.h"
 
 
 using namespace Gui;

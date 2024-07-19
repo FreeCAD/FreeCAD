@@ -1009,8 +1009,11 @@ SET(Inventor_CPP_SRCS
     Inventor/SoAutoZoomTranslation.cpp
     Inventor/MarkerBitmaps.cpp
     Inventor/SmSwitchboard.cpp
+    Inventor/SoFCBoundingBox.cpp
+    Inventor/So3DAnnotation.cpp
+    Inventor/SoAxisCrossKit.cpp
+    Inventor/SoMouseWheelEvent.cpp
     SoFCBackgroundGradient.cpp
-    SoFCBoundingBox.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1025,12 +1028,9 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
-    So3DAnnotation.cpp
-    SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
-    SoMouseWheelEvent.cpp
     SoFCCSysDragger.cpp
     ArcEngine.cpp
 )
@@ -1040,8 +1040,10 @@ SET(Inventor_SRCS
     Inventor/SoAutoZoomTranslation.h
     Inventor/MarkerBitmaps.h
     Inventor/SmSwitchboard.h
+    Inventor/SoFCBoundingBox.h
+    Inventor/SoAxisCrossKit.h
+    Inventor/SoMouseWheelEvent.h
     SoFCBackgroundGradient.h
-    SoFCBoundingBox.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1056,11 +1058,9 @@ SET(Inventor_SRCS
     SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
-    SoAxisCrossKit.h
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
-    SoMouseWheelEvent.h
     SoFCCSysDragger.h
     ArcEngine.h
 )
@@ -1297,7 +1297,7 @@ SET(FreeCADGui_SRCS
     ${Dock_Windows_SRCS}
     ${Editor_SRCS}
     ${Help_SRCS}
-    ${Inventor_SRCS}
+    ${Inventor_CPP_SRCS}
     ${Language_SRCS}
     ${Propertyeditor_SRCS}
     ${Task_View_SRCS}

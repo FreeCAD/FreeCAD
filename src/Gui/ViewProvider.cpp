@@ -41,7 +41,7 @@
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 
-#include "SoMouseWheelEvent.h"
+#include "Inventor/SoMouseWheelEvent.h"
 #include "ViewProvider.h"
 #include "ActionFunction.h"
 #include "Application.h"
