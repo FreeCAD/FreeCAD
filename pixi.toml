@@ -54,7 +54,10 @@ configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
                      "-D", "BUILD_FEM_NETGEN:BOOL=ON",
                      "-D", "FREECAD_USE_PYBIND11:BOOL=ON",
                      "-D", "FREECAD_USE_PCL:BOOL=ON",
-                     "-D", "FREECAD_USE_EXTERNAL_SMESH=ON"], depends-on = ["initialize"]}
+                     "-D", "FREECAD_USE_EXTERNAL_SMESH=ON",
+                     "-D", "FREECAD_USE_SHIBOKEN=OFF",
+                     "-D", "FREECAD_USE_PYSIDE=OFF"
+                     ], depends-on = ["initialize"]}
 build = { cmd = ["ninja", "-C", "build", "-j", "3", "install"], depends-on = ["configure"]}
 
 
