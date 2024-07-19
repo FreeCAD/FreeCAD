@@ -292,3 +292,53 @@ TEST_F(ReaderTest, charStreamBase64Encoded)
     // Conversion done using https://www.base64encode.org for testing purposes
     EXPECT_EQ(std::string("FreeCAD rocks! 🪨🪨🪨"), std::string(buffer.data()));
 }
+
+TEST_F(ReaderTest, validDefaults)
+{
+    // Arrange
+    auto xmlBody = R"(
+<node1 attr='1'/>
+<node2 attr='2'/>
+)";
+
+    givenDataAsXMLStream(xmlBody);
+
+    // Act
+    const char* value2 = Reader()->getAttribute("missing", "expected value");
+    int value4 = Reader()->getAttributeAsInteger("missing", "-123");
+    unsigned value6 = Reader()->getAttributeAsUnsigned("missing", "123");
+    float value8 = Reader()->getAttributeAsFloat("missing", "1.234");
+
+    // Assert
+    EXPECT_THROW({ int value1 = Reader()->getAttributeAsInteger("missing"); },
+                 Base::XMLBaseException);
+    EXPECT_EQ(value2, "expected value");
+    EXPECT_THROW({ int value3 = Reader()->getAttributeAsInteger("missing"); },
+                 Base::XMLBaseException);
+    EXPECT_EQ(value4, -123);
+    EXPECT_THROW({ int value5 = Reader()->getAttributeAsUnsigned("missing"); },
+                 Base::XMLBaseException);
+    EXPECT_EQ(value6, 123);
+    EXPECT_THROW({ int value7 = Reader()->getAttributeAsFloat("missing"); },
+                 Base::XMLBaseException);
+    EXPECT_NEAR(value8, 1.234, 0.001);
+}
+
+TEST_F(ReaderTest, invalidDefaults)
+{
+    // Arrange
+    auto xmlBody = R"(
+<node1 attr='1'/>
+<node2 attr='2'/>
+)";
+
+    givenDataAsXMLStream(xmlBody);
+
+    // Act / Assert
+    EXPECT_THROW({ int value4 = Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
+                 std::invalid_argument);
+    EXPECT_THROW({ int value6 = Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
+                 std::invalid_argument);
+    EXPECT_THROW({ int value8 = Reader()->getAttributeAsInteger("missing", "Not a Float"); },
+                 std::invalid_argument);
+}
