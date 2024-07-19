@@ -2038,35 +2038,35 @@ QTabBar::tab:right:!selected:hover, QDockWidget QTabBar::tab:right:!selected:hov
 
 QTabBar QToolButton, QDockWidget QTabBar QToolButton {
   /* Fixes #136 */
-  background-color: #444444;
-  height: 12px;
-  width: 12px;
+  /* background-color: #444444; */
+  border: 1px solid #202020;;
+  margin: 1px;
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #333333, stop:0.6 #252525, stop:1 #252525);
+
 }
 
 QTabBar QToolButton:pressed, QDockWidget QTabBar QToolButton:pressed {
-  border: 0px solid @ThemeAccentColor1;
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #444444, stop:0.6 #444444, stop:1 #333333);
 }
 
 QTabBar QToolButton:pressed:hover, QDockWidget QTabBar QToolButton:pressed:hover {
-  border: 0px solid @ThemeAccentColor1;
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #444444, stop:0.6 #444444, stop:1 #333333);
 }
 
 QTabBar QToolButton::left-arrow:enabled, QDockWidget QTabBar QToolButton::left-arrow:enabled {
-  image: url(qss:images_classic/Arrow-left-white.png);
-}
-
-QTabBar QToolButton::left-arrow:disabled, QDockWidget QTabBar QToolButton::left-arrow:disabled {
   image: url(qss:images_classic/Arrow-left-lightgray.png);
 }
 
+QTabBar QToolButton::left-arrow:disabled, QDockWidget QTabBar QToolButton::left-arrow:disabled {
+  image: url(qss:images_classic/Arrow-left-darkgray.png);
+}
+
 QTabBar QToolButton::right-arrow:enabled, QDockWidget QTabBar QToolButton::right-arrow:enabled {
-  image: url(qss:images_classic/Arrow-right-white.png);
+  image: url(qss:images_classic/Arrow-right-lightgray.png);
 }
 
 QTabBar QToolButton::right-arrow:disabled, QDockWidget QTabBar QToolButton::right-arrow:disabled {
-  image: url(qss:images_classic/Arrow-right-lightgray.png);
+  image: url(qss:images_classic/Arrow-right-darkgray.png);
 }
 
 /* QDockWiget -------------------------------------------------------------
@@ -2633,33 +2633,35 @@ SKETCHER
 ==================================================================================================*/
 
 Gui--StatefulLabel[state="empty_sketch"] {
-  color : rgba(255,255,255,127); /* 50% opacity white */
+  color : rgba(255, 255, 255, 181); /* 50% opacity white */
 }
 Gui--StatefulLabel[state="under_constrained"] {
-  color : rgba(255,255,255,255); /* White */
+  /* color : white */
 }
 Gui--StatefulLabel[state="conflicting_constraints"] {
-  color : rgba(255,0,0,255); /* Red */
+  color : #fc6c6c; /* Red */
+  font-weight: bold;
 }
 Gui--StatefulLabel[state="malformed_constraints"] {
-  color : rgba(255,0,0,255); /* Red */
+  color : #fc6c6c; /* Red */
+  font-weight: bold;
 }
 Gui--StatefulLabel[state="redundant_constraints"] {
-  color : rgba(255,69,0,255); /* Orange red */
+  color : #ffa256; /* Orange red */
 }
 Gui--StatefulLabel[state="partially_redundant_constraints"] {
-  color : rgba(65,105,225,255); /* Royal blue */
+  color : #77cbff; /* Royal blue */
 }
 Gui--StatefulLabel[state="solver_failed"] {
-  color : rgba(255,0,0,255); /* Red */
+  color : #ff9090; /* Red */
   font-weight: bold;
 }
 Gui--StatefulLabel[state="fully_constrained"] {
-  color : rgba(0,255,0,255); /* Green */
+  color : #8cff5b; /* Green */
   font-weight: bold;
 }
 Gui--UrlLabel {
-  color : rgba(0,91,255,255); /* Deep sky blue */
+  color : #0095ff; /* Deep sky blue */
   text-decoration : underline;
 }
 

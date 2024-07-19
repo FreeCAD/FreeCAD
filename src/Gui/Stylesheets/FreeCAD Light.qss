@@ -2047,23 +2047,23 @@ QTabBar::tab:right:!selected:hover, QDockWidget QTabBar::tab:right:!selected:hov
 
 QTabBar QToolButton, QDockWidget QTabBar QToolButton {
   /* Fixes #136 */
-  background-color: #d8d8d8;
-  height: 12px;
-  width: 12px;
+  /* background-color: #444444; */
+  border: 1px solid #ababab;;
+  margin: 1px;
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:1 #d8d8d8);
+
 }
 
 QTabBar QToolButton:pressed, QDockWidget QTabBar QToolButton:pressed {
-  border: 0px solid @ThemeAccentColor1;
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:0.6 #fdfdfd stop:1 #f0f0f0);
 }
 
 QTabBar QToolButton:pressed:hover, QDockWidget QTabBar QToolButton:pressed:hover {
-  border: 0px solid @ThemeAccentColor1;
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #f0f0f0, stop:0.6 #fdfdfd stop:1 #f0f0f0);
 }
 
 QTabBar QToolButton::left-arrow:enabled, QDockWidget QTabBar QToolButton::left-arrow:enabled {
-  image: url(qss:images_classic/Arrow-left-black.png);
+  image: url(qss:images_classic/Arrow-left-darkgray.png);
 }
 
 QTabBar QToolButton::left-arrow:disabled, QDockWidget QTabBar QToolButton::left-arrow:disabled {
@@ -2071,7 +2071,7 @@ QTabBar QToolButton::left-arrow:disabled, QDockWidget QTabBar QToolButton::left-
 }
 
 QTabBar QToolButton::right-arrow:enabled, QDockWidget QTabBar QToolButton::right-arrow:enabled {
-  image: url(qss:images_classic/Arrow-right-black.png);
+  image: url(qss:images_classic/Arrow-right-darkgray.png);
 }
 
 QTabBar QToolButton::right-arrow:disabled, QDockWidget QTabBar QToolButton::right-arrow:disabled {
@@ -2646,30 +2646,32 @@ Gui--StatefulLabel[state="empty_sketch"] {
   color : rgba(255,255,255,127); /* 50% opacity white */
 }
 Gui--StatefulLabel[state="under_constrained"] {
-  color : rgba(255,255,255,255); /* White */
+  /* color : rgba(255,255,255,255); black */
 }
 Gui--StatefulLabel[state="conflicting_constraints"] {
-  color : rgba(255,0,0,255); /* Red */
+  color : #9d0000; /* Red */
+  font-weight: bold;
 }
 Gui--StatefulLabel[state="malformed_constraints"] {
-  color : rgba(255,0,0,255); /* Red */
+  color : #9d0000; /* Red */
+  font-weight: bold;
 }
 Gui--StatefulLabel[state="redundant_constraints"] {
-  color : rgba(255,69,0,255); /* Orange red */
+  color : #ab4d00; /* Orange red */
 }
 Gui--StatefulLabel[state="partially_redundant_constraints"] {
-  color : rgba(65,105,225,255); /* Royal blue */
+  color : #005991; /* Royal blue */
 }
 Gui--StatefulLabel[state="solver_failed"] {
-  color : rgba(255,0,0,255); /* Red */
+  color : #9d0000; /* Red */
   font-weight: bold;
 }
 Gui--StatefulLabel[state="fully_constrained"] {
-  color : rgba(0,255,0,255); /* Green */
+  color : #278100; /* Green */
   font-weight: bold;
 }
 Gui--UrlLabel {
-  color : rgba(0,91,255,255); /* Deep sky blue */
+  color : #0061a7; /* Deep sky blue */
   text-decoration : underline;
 }
 
