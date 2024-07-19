@@ -4,7 +4,7 @@ version = "0.22.0"
 description = "pixi instructions for FreeCAD"
 authors = ["looooo <sppedflyer@gmail.com>"]
 channels = ["conda-forge/label/pivy_rc", "conda-forge"]
-platforms = ["osx-arm64"]
+platforms = ["osx-arm64", "linux-64"]
 
 
 [environments]
@@ -55,6 +55,6 @@ configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
                      "-D", "FREECAD_USE_PYBIND11:BOOL=ON",
                      "-D", "FREECAD_USE_PCL:BOOL=ON",
                      "-D", "FREECAD_USE_EXTERNAL_SMESH=ON"], depends-on = ["initialize"]}
-build = { cmd = ["ninja", "-C", "build", "install"], depends-on = ["configure"]}
+build = { cmd = ["ninja", "-C", "build", "-j", "3", "install"], depends-on = ["configure"]}
 
 
