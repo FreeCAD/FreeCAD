@@ -1879,22 +1879,48 @@ QTabBar, QDockWidget QTabBar {
 
 QTabBar[style="icon-only"]::tab:top {
   min-width: 16px;
-  padding-right: -1px;
+  padding-right: -2px;
+  padding-left: 10px;
+}
+
+QTabBar[style="text-only"]::tab:top {
+  min-width: 16px;
+  /* padding-right: -2px;
+  padding-left: 10px; */
 }
 
 QTabBar[style="icon-only"]::tab:bottom {
   min-width: 16px;
-  padding-right: -1px;
+  padding-right: -2px;
+  padding-left: 10px;
 }
 
-QTabBar[style="icon-only"]::tab:left {
-  min-height: 16px;
-  padding: 0px;
+QTabBar[style="text-only"]::tab:bottom {
+  min-width: 16px;
+  padding-left: 4px;
 }
 
 QTabBar[style="icon-only"]::tab:right {
   min-height: 16px;
-  padding: 0px;
+  padding-bottom: -2px;
+  padding-top: 10px;
+}
+
+QTabBar[style="text-only"]::tab:right {
+  min-height: 16px;
+  /* padding-right: -2px;
+  padding-left: 10px; */
+}
+
+QTabBar[style="icon-only"]::tab:left {
+  min-height: 16px;
+  padding-top: -2px;
+  padding-bottom: 10px;
+}
+
+QTabBar[style="text-only"]::tab:left {
+  min-height: 16px;
+  padding-bottom: 4px;
 }
 
 QTabBar::close-button, QDockWidget QTabBar::close-button {
@@ -1988,7 +2014,7 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
   padding-bottom: 9px;
   min-height: 5px;
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #dddddd, stop:0.6 #e2e2e2, stop:1 #cccccc);
-  margin-right: 3px;
+  margin-left: 3px;
   border-bottom: 1px solid #ababab; /* selection color */
   border-right: 1px solid #ababab;
   border-left: 1px solid #ababab;
@@ -2004,14 +2030,14 @@ QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
   border-right: 1px solid #f0f0f0;
   border-left: 1px solid #ababab;
   border-top: 1px solid #ababab;
-  margin-right: 0px;
+  margin-left: 0px;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
 }
 
 QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #d8d8d8, stop:1 #f0f0f0);
-  margin-right: 0px;
+  margin-left: 0px;
 }
 
 QTabBar::tab:right, QDockWidget QTabBar::tab:right {
