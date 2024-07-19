@@ -141,6 +141,7 @@ void BomObject::generateBOM()
 {
     saveCustomColumnData();
     clearAll();
+    obj_list.clear();
     size_t row = 0;
     size_t col = 0;
 
@@ -168,7 +169,7 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
     int quantityColIndex = getColumnIndex("Quantity");
     bool hasQuantityCol = hasQuantityColumn();
 
-    int siblingsInitialRow = row;
+    size_t siblingsInitialRow = row;
 
     if (index != "") {
         index = index + ".";
@@ -177,8 +178,14 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
     size_t sub_i = 1;
 
     for (auto* child : objs) {
+        if (!child) {
+            continue;
+        }
         if (child->isDerivedFrom<App::Link>()) {
             child = static_cast<App::Link*>(child)->getLinkedObject();
+            if (!child) {
+                continue;
+            }
         }
 
         if (child->isDerivedFrom<BomGroup>() || child->isDerivedFrom<JointGroup>()
@@ -186,15 +193,15 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
             continue;
         }
 
-        if (hasQuantityCol) {
+        if (hasQuantityCol && row != siblingsInitialRow) {
             // Check if the object is not already in (case of links). And if so just increment.
             // Note: an object can be used in several parts. In which case we do no want to blindly
             // increment.
             bool found = false;
             for (size_t i = siblingsInitialRow; i <= row; ++i) {
-                std::string childName = child->Label.getValue();
+                size_t idInList = i - 1;  // -1 for the header
+                if (idInList < obj_list.size() && child == obj_list[idInList]) {
 
-                if (childName == getText(i, nameColIndex) && childName != "") {
                     int qty = std::stoi(getText(i, quantityColIndex)) + 1;
                     setCell(App::CellAddress(i, quantityColIndex), std::to_string(qty).c_str());
                     found = true;
@@ -227,6 +234,7 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
 
 void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string index)
 {
+    obj_list.push_back(obj);
     size_t col = 0;
     for (auto& columnName : columnsNames.getValues()) {
         if (columnName == "Index") {
