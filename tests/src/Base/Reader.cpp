@@ -310,17 +310,13 @@ TEST_F(ReaderTest, validDefaults)
     float value8 = Reader()->getAttributeAsFloat("missing", "1.234");
 
     // Assert
-    EXPECT_THROW({ int value1 = Reader()->getAttributeAsInteger("missing"); },
-                 Base::XMLBaseException);
+    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value2, "expected value");
-    EXPECT_THROW({ int value3 = Reader()->getAttributeAsInteger("missing"); },
-                 Base::XMLBaseException);
+    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value4, -123);
-    EXPECT_THROW({ int value5 = Reader()->getAttributeAsUnsigned("missing"); },
-                 Base::XMLBaseException);
+    EXPECT_THROW({ Reader()->getAttributeAsUnsigned("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value6, 123);
-    EXPECT_THROW({ int value7 = Reader()->getAttributeAsFloat("missing"); },
-                 Base::XMLBaseException);
+    EXPECT_THROW({ Reader()->getAttributeAsFloat("missing"); }, Base::XMLBaseException);
     EXPECT_NEAR(value8, 1.234, 0.001);
 }
 
@@ -335,10 +331,10 @@ TEST_F(ReaderTest, invalidDefaults)
     givenDataAsXMLStream(xmlBody);
 
     // Act / Assert
-    EXPECT_THROW({ int value4 = Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
+    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
                  std::invalid_argument);
-    EXPECT_THROW({ int value6 = Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
+    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
                  std::invalid_argument);
-    EXPECT_THROW({ int value8 = Reader()->getAttributeAsInteger("missing", "Not a Float"); },
+    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing", "Not a Float"); },
                  std::invalid_argument);
 }
