@@ -710,8 +710,7 @@ public:
 
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
 
-    std::pair<std::string, std::string> getElementName(const char* name,
-                                                       ElementNameType type) const override;
+    App::ElementNamePair getElementName(const char* name, ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const
     {

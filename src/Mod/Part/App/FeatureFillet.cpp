@@ -105,7 +105,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
         size_t i=0;
         for(const auto &info : Edges.getValues()) {
             auto &sub = subs[i];
-            auto &ref = sub.first.size()?sub.first:vals[i];
+            auto &ref = sub.newName.size()?sub.newName:vals[i];
             ++i;
             // Toponaming project March 2024:  Replaced this code because it wouldn't work:
 //            TopoDS_Shape edge;

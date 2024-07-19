@@ -24,7 +24,7 @@ protected:
     {
         _docName = App::GetApplication().getUniqueDocumentName("test");
         auto _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        // TODO: Do we add a body first, or is just adding sketch sufficient for this test?
+        // TODO: Do we add a body newName, or is just adding sketch sufficient for this test?
         _sketchobj =
             static_cast<Sketcher::SketchObject*>(_doc->addObject("Sketcher::SketchObject"));
     }
@@ -80,7 +80,7 @@ TEST_F(SketchObjectTest, testGeoIdFromShapeTypeEdge)
 TEST_F(SketchObjectTest, testGeoIdFromShapeTypeVertex)
 {
     // Arrange
-    // For operating on vertices, there is first a check if the vertex exists.
+    // For operating on vertices, there is newName a check if the vertex exists.
     Base::Vector3d p1(0.0, 0.0, 0.0), p2(1.0, 0.0, 0.0);
     std::unique_ptr<Part::Geometry> geoline(new Part::GeomLineSegment());
     static_cast<Part::GeomLineSegment*>(geoline.get())->setPoints(p1, p2);
@@ -277,18 +277,18 @@ TEST_F(SketchObjectTest, testGetElementName)
     EXPECT_EQ(map[0].index.toString(), "Edge1");
     // Assert
 #ifndef FC_USE_TNP_FIX
-    EXPECT_STREQ(forward_normal_name.first.c_str(), "");
-    EXPECT_STREQ(forward_normal_name.second.c_str(), "g39;SKT");
-    EXPECT_STREQ(reverse_normal_name.first.c_str(), "");
-    EXPECT_STREQ(reverse_normal_name.second.c_str(), "Vertex2");
-    EXPECT_STREQ(reverse_export_name.first.c_str(), ";g39v1;SKT.Vertex1");
-    EXPECT_STREQ(reverse_export_name.second.c_str(), "Vertex1");
+    EXPECT_STREQ(forward_normal_name.newName.c_str(), "");
+    EXPECT_STREQ(forward_normal_name.oldName.c_str(), "g39;SKT");
+    EXPECT_STREQ(reverse_normal_name.newName.c_str(), "");
+    EXPECT_STREQ(reverse_normal_name.oldName.c_str(), "Vertex2");
+    EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g39v1;SKT.Vertex1");
+    EXPECT_STREQ(reverse_export_name.oldName.c_str(), "Vertex1");
 #else
-    EXPECT_STREQ(forward_normal_name.first.c_str(), ";g39;SKT.Edge1");
-    EXPECT_STREQ(forward_normal_name.second.c_str(), "Edge1");
-    EXPECT_STREQ(reverse_normal_name.first.c_str(), ";g39v2;SKT.Vertex2");
-    EXPECT_STREQ(reverse_normal_name.second.c_str(), "Vertex2");
-    EXPECT_STREQ(reverse_export_name.first.c_str(), ";g39v1;SKT.Vertex1");
-    EXPECT_STREQ(reverse_export_name.second.c_str(), "Vertex1");
+    EXPECT_STREQ(forward_normal_name.newName.c_str(), ";g39;SKT.Edge1");
+    EXPECT_STREQ(forward_normal_name.oldName.c_str(), "Edge1");
+    EXPECT_STREQ(reverse_normal_name.newName.c_str(), ";g39v2;SKT.Vertex2");
+    EXPECT_STREQ(reverse_normal_name.oldName.c_str(), "Vertex2");
+    EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g39v1;SKT.Vertex1");
+    EXPECT_STREQ(reverse_export_name.oldName.c_str(), "Vertex1");
 #endif
 }
