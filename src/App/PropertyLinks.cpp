@@ -37,6 +37,7 @@
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectPy.h"
+#include "DocumentObserver.h"
 #include "ObjectIdentifier.h"
 #include "ElementNamingUtils.h"
 #include "GeoFeature.h"
@@ -516,7 +517,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     (void)obj;
     (void)reverse;
     (void)notify;
-    shadow.second = sub;
+    shadow.oldName = sub;
     return false;
 #endif
 }
@@ -2928,8 +2929,8 @@ void PropertyLinkSubList::getLinksTo(std::vector<App::ObjectIdentifier>& identif
         if (i < (int)_ShadowSubList.size()) {
             const auto& shadow = _ShadowSubList[i];
             App::SubObjectT sobjT(obj,
-                                  shadow.first.empty() ? shadow.second.c_str()
-                                                       : shadow.first.c_str());
+                                  shadow.newName.empty() ? shadow.oldName.c_str()
+                                                       : shadow.newName.c_str());
             if (sobjT.getSubObject() == subObject && sobjT.getOldElementName() == subElement) {
                 identifiers.emplace_back(*this);
                 continue;
