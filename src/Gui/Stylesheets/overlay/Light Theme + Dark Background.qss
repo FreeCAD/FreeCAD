@@ -39,7 +39,7 @@ QTreeView:disabled  {
 }
 
 Gui--PropertyEditor--PropertyEditor {
-  qproperty-itemBackground: #333333;
+  qproperty-itemBackground: rgba(77, 77, 77, 0.298);
 }
 
 Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
