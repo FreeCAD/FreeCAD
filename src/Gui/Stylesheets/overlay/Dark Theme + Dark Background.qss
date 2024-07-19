@@ -103,7 +103,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
 }
 
 Gui--OverlayToolButton:hover {
-  border: 1px solid #black;
+  border: 1px solid black;
   background: black;
   border-radius: 2px;
 }
