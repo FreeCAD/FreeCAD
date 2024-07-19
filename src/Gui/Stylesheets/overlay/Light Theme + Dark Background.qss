@@ -132,32 +132,34 @@ Gui--OverlayProxyWidget {
 }
 
 Gui--OverlayToolButton {
-  border: 0.5px solid transparent;
+  border: 1px solid transparent;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:hover {
-  border: 0.5px solid #000000;
+  border: 1px solid white;
+  background-color: #ffffff;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:focus {
-  border: 0.5px solid #0099ff;
+  border: 1px solid #0099ff;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
-  border: 0.5px solid #ababab;
+  border: 1px solid #ababab;
   border-radius: 2px;
-  background-color: #ffffff;
+  background-color: #ababab;
 }
 
 Gui--OverlayToolButton:checked:hover {
-  border: 0.5px solid #000000;
+  border: 1px solid white;
+  background-color: #ffffff;
 }
 
-Gui--OverlayToolButton:!hover{
+Gui--OverlayToolButton{
   image: url(qss:images_classic/close-lightgray.png);
 }
 
@@ -165,14 +167,14 @@ Gui--OverlayToolButton:hover {
   image: url(qss:images_classic/close-red.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN Transparent"]:!hover {
+Gui--OverlayToolButton[objectName="OBTN Transparent"] {
   image: url(qss:images_classic/transparent-lightgray.png);}
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
   image: url(qss:images_classic/transparent-black.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover {
+Gui--OverlayToolButton[objectName="OBTN Overlay"] {
   image: url(qss:images_classic/overlay-lightgray.png);
 }
 
@@ -180,7 +182,7 @@ Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
   image: url(qss:images_classic/overlay-black.png);
 }
 
-Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!hover {
+Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
   image: url(qss:images_classic/mode-lightgray.png);
 }
 

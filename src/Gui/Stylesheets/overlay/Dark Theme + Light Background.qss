@@ -110,29 +110,31 @@ Gui--PropertyEditor--PropertyEditor {
  }
 
  Gui--OverlayToolButton {
-  border: 0.5px solid transparent;
+  border: 1px solid transparent;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:hover {
-  border: 0.5px solid #f5f5f5;
+  border: 1px solid #black;
+  background: black;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:focus {
-  border: 0.5px solid #0099ff;
+  border: 1px solid #0099ff;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
-  border: 0.5px solid #696969;
+  border: 1px solid #696969;
   border-radius: 2px;
   background-color: #696969;
 }
 
 Gui--OverlayToolButton:checked:hover {
-  border: 0.5px solid #696969;
+  border: 1px solid #000000;
+  background: black;
 }
 
  Gui--OverlayToolButton[objectName="OBTN Transparent"]:!hover {
