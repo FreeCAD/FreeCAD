@@ -956,9 +956,11 @@ QAbstractSpinBox:up-button {
   subcontrol-position: top right;
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
-  border-bottom: 0px solid transparent;
+  border-bottom: 1px solid #b0b0b0;
   border-top-right-radius: 2px;
   border-left: 1px solid #b0b0b0;
+  margin:1px;
+  margin-bottom:-1px;
 }
 
 QAbstractSpinBox::up-arrow, QAbstractSpinBox::up-arrow:disabled, QAbstractSpinBox::up-arrow:off {
@@ -979,9 +981,11 @@ QAbstractSpinBox:down-button {
   subcontrol-position: bottom right;
   border-bottom: 1px solid transparent;
   border-right: 1px solid transparent;
-  border-top: 0px solid transparent;
+  border-top: 1px solid #b0b0b0;
   border-bottom-right-radius: 2px;
   border-left: 1px solid #b0b0b0;
+  margin:1px;
+  margin-top:-1px;
 }
 
 QAbstractSpinBox::down-arrow, QAbstractSpinBox::down-arrow:disabled, QAbstractSpinBox::down-arrow:off {
