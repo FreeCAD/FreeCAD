@@ -38,6 +38,8 @@
 #include "GeometryFacade.h"
 #include "Sketch.h"
 
+#include "SketchGeometryExtension.h"
+#include "ExternalGeometryExtension.h"
 
 namespace Sketcher
 {
@@ -70,8 +72,6 @@ public:
     Part ::PropertyGeometryList ExternalGeo;
     App ::PropertyBool FullyConstrained;
     App ::PropertyPrecision ArcFitTolerance;
-    //    App     ::PropertyInteger        ExternalBSplineMaxDegree;
-    //    App     ::PropertyPrecision      ExternalBSplineTolerance;
     Part ::PropertyPartShape InternalShape;
     App ::PropertyPrecision InternalTolerance;
     App ::PropertyBool MakeInternals;
@@ -213,7 +213,6 @@ public:
         typename GeometryT = Part::Geometry,
         typename = typename std::enable_if<
             std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
-    //    const GeometryT* getGeometry(int GeoId) const;
     const GeometryT* getGeometry(int GeoId) const
     {
         return static_cast<const GeometryT*>(_getGeometry(GeoId));
@@ -229,7 +228,6 @@ public:
     /// returns a list of projected external geometries
     const std::vector<Part::Geometry*>& getExternalGeometry() const
     {
-        //        return ExternalGeo;
         return ExternalGeo.getValues();
     }
     /// rebuilds external geometry (projection onto the sketch plane)
@@ -237,7 +235,6 @@ public:
     /// returns the number of external Geometry entities
     int getExternalGeometryCount() const
     {
-        //        return ExternalGeo.size();
         return ExternalGeo.getSize();
     }
     /// auto fix external geometry references
@@ -751,6 +748,8 @@ public:
 
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
 
+    Data::IndexedName shapeTypeFromGeoId(int GeoId, PointPos pos = Sketcher::PointPos::none) const;
+
     App::ElementNamePair getElementName(const char* name, ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const
@@ -824,12 +823,16 @@ public:  // geometry extension functionalities for single element sketch object 
     int getGeometryId(int GeoId, long& id) const;
 
 protected:
+    // Only the first flag is toggled, the rest of the flags is set or cleared following the first
+    // flag.
+    int toggleExternalGeometryFlag(const std::vector<int>& geoIds,
+                                   const std::vector<ExternalGeometryExtension::Flag>& flags);
+
+    void buildShape();
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
     void onDocumentRestored() override;
     void restoreFinished() override;
-
-    void buildShape();
 
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr);
@@ -923,8 +926,6 @@ private:
 
     /// Flag to allow carbon copy from misaligned geometry
     bool allowUnaligned;
-
-    //    std::vector<Part::Geometry*> ExternalGeo;
 
     std::vector<int> VertexId2GeoId;
     std::vector<PointPos> VertexId2PosId;
@@ -1039,22 +1040,6 @@ inline int SketchObject::moveTemporaryPoint(int geoId,
     return solvedSketch.movePoint(geoId, pos, toPoint, relative);
 }
 
-// template<typename GeometryT, typename>
-// const GeometryT* SketchObject::getGeometry(int GeoId) const
-//{
-//     if (GeoId >= 0) {
-//         const std::vector<Part::Geometry*>& geomlist = getInternalGeometry();
-//         if (GeoId < int(geomlist.size())) {
-//             return static_cast<GeometryT*>(geomlist[GeoId]);
-//         }
-//     }
-////    else if (-GeoId <= int(ExternalGeo.size())) {
-//    else if (-GeoId <= int(ExternalGeo.getSize())) {
-//        return static_cast<GeometryT*>(ExternalGeo[-GeoId - 1]);
-//    }
-//
-//    return nullptr;
-//}
 
 using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 

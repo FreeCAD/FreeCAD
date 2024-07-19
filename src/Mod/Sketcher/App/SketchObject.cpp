@@ -161,16 +161,6 @@ SketchObject::SketchObject()
                       "Sketch",
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
-    // ADD_PROPERTY_TYPE(ExternalBSplineMaxDegree,
-    //                   (0),
-    //                   "Sketch",
-    //                   (App::Prop_None),
-    //                   "Maximum degree of imported external BSpline. Zero to disable simplification");
-    // ADD_PROPERTY_TYPE(ExternalBSplineTolerance,
-    //                   (0.0),
-    //                   "Sketch",
-    //                   (App::Prop_None),
-    //                   "Tolerance for simplifying imported external BSpline");
     geoLastId = 0;
 
     ADD_PROPERTY(InternalShape,
@@ -185,22 +175,6 @@ SketchObject::SketchObject()
 
     allowOtherBody = true;
     allowUnaligned = true;
-
-//    for (std::vector<Part::Geometry*>::iterator it = ExternalGeo.begin(); it != ExternalGeo.end();
-//         ++it)
-//        if (*it)
-//            delete *it;
-//    ExternalGeo.clear();
-//    auto HLine = GeometryTypedFacade<Part::GeomLineSegment>::getTypedFacade();
-//    auto VLine = GeometryTypedFacade<Part::GeomLineSegment>::getTypedFacade();
-//    HLine->getTypedGeometry()->setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(1, 0, 0));
-//    VLine->getTypedGeometry()->setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(0, 1, 0));
-//    HLine->setConstruction(true);
-//    VLine->setConstruction(true);
-//    ExternalGeo.push_back(HLine->getGeometry());
-//    ExternalGeo.push_back(VLine->getGeometry());
-//    HLine->setOwner(false);// we have transferred the ownership to ExternalGeo
-//    VLine->setOwner(false);// we have transferred the ownership to ExternalGeo
 
     initExternalGeo();
 
@@ -236,14 +210,7 @@ SketchObject::SketchObject()
     registerElementCache(internalPrefix(), &InternalShape);
 }
 
-SketchObject::~SketchObject()
-{
-//    for (std::vector<Part::Geometry*>::iterator it = ExternalGeo.begin(); it != ExternalGeo.end();
-//         ++it)
-//        if (*it)
-//            delete *it;
-//    ExternalGeo.clear();
-
+SketchObject::~SketchObject() {
     delete analyser;
 }
 
@@ -252,8 +219,6 @@ void SketchObject::setupObject()
     ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
-//    ExternalBSplineMaxDegree.setValue(hGrpp->GetInt("ExternalBSplineMaxDegree", 5));
-//    ExternalBSplineTolerance.setValue(hGrpp->GetFloat("ExternalBSplineTolerance", 1e-4));
     MakeInternals.setValue(hGrpp->GetBool("MakeInternals", false));
     inherited::setupObject();
 }
@@ -346,8 +311,7 @@ App::DocumentObjectExecReturn* SketchObject::execute()
     return App::DocumentObject::StdReturn;
 }
 
-static bool inline checkSmallEdge(const Part::TopoShape &s)
-{
+static bool inline checkSmallEdge(const Part::TopoShape &s) {
     if (s.shapeType() != TopAbs_EDGE)
         return false;
     BRepAdaptor_Curve adapt(TopoDS::Edge(s.getShape()));
@@ -401,7 +365,6 @@ void SketchObject::buildShape() {
 #endif
     }
 
-    // FIXME: Commented since ExternalGeometryFacade is not added
     for(size_t i=2;i<ExternalGeo.getSize();++i) {
         auto geo = ExternalGeo[i];
         auto egf = ExternalGeometryFacade::getFacade(geo);
@@ -632,11 +595,6 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     if (err == 0 && updateGeoAfterSolving) {
         // set the newly solved geometry
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
-//        Geometry.setValues(geomlist);
-//        for (std::vector<Part::Geometry*>::iterator it = geomlist.begin(); it != geomlist.end();
-//             ++it)
-//            if (*it)
-//                delete *it;
         Part::PropertyGeometryList tmp;
         tmp.setValues(std::move(geomlist));
         // Only set values if there is actual changes
@@ -1349,6 +1307,10 @@ int SketchObject::toggleVirtualSpace(int ConstrId)
 
     this->Constraints.setValues(std::move(newVals));
 
+    // Solver didn't actually update, but we need this to inform view provider
+    // to redraw
+    signalSolverUpdate();
+
     return 0;
 }
 
@@ -1925,23 +1887,106 @@ int SketchObject::setConstruction(int GeoId, bool on)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
+#ifdef FC_USE_TNP_FIX
+   Part::PropertyGeometryList *prop;
+    int idx;
+    if (GeoId >= 0) {
+        prop = &Geometry;
+        if (GeoId < Geometry.getSize())
+            idx = GeoId;
+        else
+            return -1;
+    }else if (GeoId <= GeoEnum::RefExt && -GeoId-1 < ExternalGeo.getSize()) {
+        prop = &ExternalGeo;
+        idx = -GeoId-1;
+    }else
+        return -1;
+#else
     const std::vector<Part::Geometry*>& vals = getInternalGeometry();
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
     if (getGeometryFacade(GeoId)->isInternalAligned())
         return -1;
+#endif
 
     // While it may seem that there is not a need to trigger an update at this time, because the
     // solver has its own copy of the geometry, and updateColors of the viewprovider may be
     // triggered by the clearselection of the UI command, this won't update the elements widget, in
     // the accumulative of actions it is judged that it is worth to trigger an update here.
 
+#ifdef FC_USE_TNP_FIX
+    std::unique_ptr<Part::Geometry> geo(prop->getValues()[idx]->clone());
+    if(prop == &Geometry)
+        GeometryFacade::setConstruction(geo.get(), on);
+    else {
+        auto egf = ExternalGeometryFacade::getFacade(geo.get());
+        egf->setFlag(ExternalGeometryExtension::Defining, on);
+    }
+
+    prop->set1Value(idx,std::move(geo));
+
+#else
     std::unique_ptr<Part::Geometry> geo(vals[GeoId]->clone());
     GeometryFacade::setConstruction(geo.get(), on);
     this->Geometry.set1Value(GeoId, std::move(geo));
-
+#endif
     solverNeedsUpdate = true;
+    return 0;
+}
+
+int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
+                                             const std::vector<ExternalGeometryExtension::Flag> &flags)
+{
+    if (flags.empty())
+        return 0;
+    auto flag = flags.front();
+
+    Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
+
+    bool update = false;
+    bool touched = false;
+    auto geos = ExternalGeo.getValues();
+    std::set<int> idSet(geoIds.begin(),geoIds.end());
+    for(auto geoId : geoIds) {
+        if(geoId > GeoEnum::RefExt || -geoId-1>=ExternalGeo.getSize())
+            continue;
+        if(!idSet.count(geoId))
+            continue;
+        idSet.erase(geoId);
+        int idx = -geoId-1;
+        auto &geo = geos[idx];
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        bool value = !egf->testFlag(flag);
+        if(egf->getRef().size()) {
+            for(auto gid : getRelatedGeometry(geoId)) {
+                if(gid == geoId)
+                    continue;
+                int idx = -gid-1;
+                auto &g = geos[idx];
+                g = g->clone();
+                auto egf = ExternalGeometryFacade::getFacade(g);
+                egf->setFlag(flag, value);
+                for (size_t i=1; i<flags.size(); ++i)
+                    egf->setFlag(flags[i], value);
+                idSet.erase(gid);
+            }
+        }
+        geo = geo->clone();
+        egf->setGeometry(geo);
+        egf->setFlag(flag, value);
+        for (size_t i=1; i<flags.size(); ++i)
+            egf->setFlag(flags[i], value);
+        if (value || flag != ExternalGeometryExtension::Frozen)
+            update = true;
+        touched = true;
+    }
+
+    if(!touched)
+        return -1;
+    ExternalGeo.setValues(geos);
+    if (update)
+        rebuildExternalGeometry();
     return 0;
 }
 
@@ -4780,9 +4825,6 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     }
 
     // add the geometry
-//    std::map<int, int> geoIdMap;
-//    std::map<int, bool> isStartEndInverted;
-//    std::vector<Part::Geometry*> newgeoVals(getInternalGeometry());
     std::vector<Part::Geometry*> symmetricVals = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
     newgeoVals.insert(newgeoVals.end(), symmetricVals.begin(), symmetricVals.end());
 
@@ -5147,7 +5189,6 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
                 auto* geosymaoe = static_cast<Part::GeomArcOfParabola*>(geosym);
                 Base::Vector3d cp = geosymaoe->getCenter();
 
-                // double df= geosymaoe->getFocal();
                 Base::Vector3d f1 = geosymaoe->getFocus();
 
                 Base::Vector3d sf1 =
@@ -5342,7 +5383,6 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
                 geosymbsp->setPoles(poles);
 
-                // isStartEndInverted.insert(std::make_pair(geoId, false));
             }
             else if (geosym->is<Part::GeomPoint>()) {
                 auto* geosympoint = static_cast<Part::GeomPoint*>(geosym);
@@ -6878,7 +6918,6 @@ bool SketchObject::convertToNURBS(int GeoId)
     Base::StateLocker lock(managedoperation, true);
 
     if (GeoId > getHighestCurveIndex()
-//        || (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.size())) || GeoId == -1
         || (GeoId < 0 && -GeoId > static_cast<int>(ExternalGeo.getSize())) || GeoId == -1
         || GeoId == -2)
         return false;
@@ -7715,7 +7754,6 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
     // set the Link list.
     ExternalGeometry.setValues(Objects, SubElements);
     try {
-//        rebuildExternalGeometry();
         rebuildExternalGeometry(defining, intersection);
     }
     catch (const Base::Exception& e) {
@@ -8014,7 +8052,6 @@ int SketchObject::attachExternal(
     }
 
     auto geos = ExternalGeo.getValues();
-//    auto geos = ExternalGeo;
 
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     auto itObj = Objects.begin();
@@ -8026,7 +8063,7 @@ int SketchObject::attachExternal(
 
     for(auto &key : externalGeoRef) {
         if (*itObj == Obj  &&  *itSub == SubName){
-            FC_ERR("Duplicdate external element reference in " << getFullName() << ": " << key);
+            FC_ERR("Duplicate external element reference in " << getFullName() << ": " << key);
             return -1;
         }
         // detach old reference
@@ -8062,7 +8099,6 @@ int SketchObject::attachExternal(
 std::vector<int> SketchObject::getRelatedGeometry(int GeoId) const {
     std::vector<int> res;
     if(GeoId>GeoEnum::RefExt || -GeoId-1>=ExternalGeo.getSize())
-//    if(GeoId>GeoEnum::RefExt || -GeoId-1>=ExternalGeo.size())
         return res;
     auto geo = getGeometry(GeoId);
     if(!geo)
@@ -8084,7 +8120,6 @@ std::vector<int> SketchObject::getRelatedGeometry(int GeoId) const {
 int SketchObject::syncGeometry(const std::vector<int> &geoIds) {
     bool touched = false;
     auto geos = ExternalGeo.getValues();
-//    auto geos = ExternalGeo;
     std::set<int> idSet;
     for(int geoId : geoIds) {
         auto geo = getGeometry(geoId);
@@ -8095,7 +8130,6 @@ int SketchObject::syncGeometry(const std::vector<int> &geoIds) {
     }
     for(int geoId : idSet) {
         if(geoId <= GeoEnum::RefExt && -geoId-1 < ExternalGeo.getSize()) {
-//        if(geoId <= GeoEnum::RefExt && -geoId-1 < ExternalGeo.size()) {
             auto &geo = geos[-geoId-1];
             geo = geo->clone();
             ExternalGeometryFacade::getFacade(geo)->setFlag(ExternalGeometryExtension::Sync);
@@ -8115,7 +8149,6 @@ const Part::Geometry* SketchObject::_getGeometry(int GeoId) const
             return geomlist[GeoId];
     }
     else if (GeoId < 0 && -GeoId-1 < ExternalGeo.getSize())
-//    else if (GeoId < 0 && -GeoId-1 < ExternalGeo.size())
         return ExternalGeo[-GeoId-1];
 
     return nullptr;
@@ -8127,7 +8160,6 @@ int SketchObject::getCompleteGeometryIndex(int GeoId) const
         if (GeoId < int(Geometry.getSize()))
             return GeoId;
     }
-//    else if (-GeoId <= int(ExternalGeo.size()))
     else if (-GeoId <= int(ExternalGeo.getSize()))
         return -GeoId - 1;
 
@@ -8136,7 +8168,6 @@ int SketchObject::getCompleteGeometryIndex(int GeoId) const
 
 int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const
 {
-//    int completeGeometryCount = int(Geometry.getSize() + ExternalGeo.size());
     int completeGeometryCount = int(Geometry.getSize() + ExternalGeo.getSize());
 
     if (completeGeometryIndex < 0 || completeGeometryIndex >= completeGeometryCount)
@@ -8258,14 +8289,14 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
 
 // Project an edge to a line. Only works if the edge is planar and its plane is
 // perpendicular to the projection plane. This function is to work around OCC
-// normal projection bug which seems to only repsect the start and ending points
+// normal projection bug which seems to only respect the start and ending points
 // of an arc but disregarding any extreme points. OCC also has trouble handling
 // BSpline projection to a straight line. Although it does correctly projects
 // the line including extreme bounds, it will produce a BSpline with degree
 // more than one.
 //
 // The work around here is to use an aligned bounding box of the edge to get
-// the projection of the extremem points to construct the projected line.
+// the projection of the extreme points to construct the projected line.
 Part::Geometry* projectEdgeToLine(const TopoDS_Edge &edge,
                                   const Base::Placement& invPlm)
 {
@@ -8342,7 +8373,7 @@ void getParameterRange(Handle(Geom_Curve) curve,
     // The reason of this function is because the first/last parameter reported
     // from some curve does not really corresponds to the first/last vertex of
     // the edge. I can only guess this is because the curve (in some cases) is
-    // actually computed on demaond from surface (in BRepAdaptor_Curve maybe).
+    // actually computed on demand from surface (in BRepAdaptor_Curve maybe).
     // And in the process, there is something off in tolerance causing the
     // derived parameter not matching the value corresponding to the position of
     // the actual vertex.
@@ -8364,7 +8395,7 @@ void adjustParameterRange(const TopoDS_Edge &edge,
     // lower arc. Because projection orientation may swap the first and last
     // parameter of the original curve.
     //
-    // We project the middel point of the original curve to the projected curve
+    // We project the middle point of the original curve to the projected curve
     // to decide whether to flip the parameters.
 
     Handle(Geom_Curve) origCurve = BRepAdaptor_Curve(edge).Curve().Curve();
@@ -8589,13 +8620,13 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
             auto obj = getDocument()->getObject(objName.c_str());
             if(!obj)
                 continue;
-            std::pair<std::string,std::string> elementName;
+            App::ElementNamePair elementName;
             App::GeoFeature::resolveElement(obj,ref.c_str()+pos+1,elementName);
-            if(elementName.second.size()
-                    && !App::GeoFeature::hasMissingElement(elementName.second.c_str()))
+            if(elementName.oldName.size()
+                    && !App::GeoFeature::hasMissingElement(elementName.oldName.c_str()))
             {
                 Objects.push_back(obj);
-                SubElements.push_back(elementName.second);
+                SubElements.push_back(elementName.oldName);
                 keys.push_back(ref);
             }
         }
@@ -8656,8 +8687,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                     frozen = true;
                 if(egf->testFlag(ExternalGeometryExtension::Sync))
                     sync = true;
-//                if (egf->testFlag(ExternalGeometryExtension::Intersection))
-//                    intersection = true;
             }
         }
         if(frozen && !sync) {
@@ -8745,7 +8774,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                             BRepAdaptor_Curve curve(edge);
                             if (curve.GetType() == GeomAbs_Line) {
                                 geos.emplace_back(projectLine(curve, gPlane, invPlm));
-//                                ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
                             }
                         }
                     }
@@ -8763,7 +8791,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                 const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
                 BRepAdaptor_Curve curve(edge);
                 if (curve.GetType() == GeomAbs_Line) {
-//                    ExternalGeo.push_back(projectLine(curve, gPlane, invPlm));
                     geos.emplace_back(projectLine(curve, gPlane, invPlm));
                 }
                 else if (curve.GetType() == GeomAbs_Circle) {
@@ -8787,7 +8814,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                             gCircle->setCenter(Base::Vector3d(cnt.X(), cnt.Y(), cnt.Z()));
 
                             GeometryFacade::setConstruction(gCircle, true);
-//                            ExternalGeo.push_back(gCircle);
                             geos.emplace_back(gCircle);
                         }
                         else {
@@ -8797,7 +8823,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                 hCircle, curve.FirstParameter(), curve.LastParameter());
                             gArc->setHandle(tCurve);
                             GeometryFacade::setConstruction(gArc, true);
-//                            ExternalGeo.push_back(gArc);
                             geos.emplace_back(gArc);
                         }
                     }
@@ -8917,7 +8942,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
 
                             projectedSegment->setPoints(p1, p2);
                             GeometryFacade::setConstruction(projectedSegment, true);
-//                            ExternalGeo.push_back(projectedSegment);
                             geos.emplace_back(projectedSegment);
                         }
                         else {// general case, full circle
@@ -8957,9 +8981,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                             Part::GeomEllipse* ellipse = new Part::GeomEllipse();
                             ellipse->setHandle(curve);
                             GeometryFacade::setConstruction(ellipse, true);
-
-//                            ExternalGeo.push_back(ellipse);
-                        geos.emplace_back(ellipse);
+                            geos.emplace_back(ellipse);
                         }
                     }
                 }
@@ -9031,8 +9053,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                         Part::GeomCircle* circle = new Part::GeomCircle();
                         circle->setHandle(curve);
                         GeometryFacade::setConstruction(circle, true);
-
-//                        ExternalGeo.push_back(circle);
                         geos.emplace_back(circle);
                     }
                     else {
@@ -9046,7 +9066,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                 Base::Vector3d(start.X(), start.Y(), start.Z()),
                                 Base::Vector3d(end.X(), end.Y(), end.Z()));
                             GeometryFacade::setConstruction(projectedSegment, true);
-//                            ExternalGeo.push_back(projectedSegment);
                             geos.emplace_back(projectedSegment);
                         }
                         else {
@@ -9060,8 +9079,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                             Part::GeomEllipse* ellipse = new Part::GeomEllipse();
                             ellipse->setHandle(curve);
                             GeometryFacade::setConstruction(ellipse, true);
-
-//                            ExternalGeo.push_back(ellipse);
                             geos.emplace_back(ellipse);
                         }
                     }
@@ -9089,14 +9106,12 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                         Base::Vector3d p = (p1 + p2) / 2;
                                         Part::GeomPoint* point = new Part::GeomPoint(p);
                                         GeometryFacade::setConstruction(point, true);
-//                                        ExternalGeo.push_back(point);
                                         geos.emplace_back(point);
                                     }
                                     else {
                                         Part::GeomLineSegment* line = new Part::GeomLineSegment();
                                         line->setPoints(p1, p2);
                                         GeometryFacade::setConstruction(line, true);
-//                                        ExternalGeo.push_back(line);
                                         geos.emplace_back(line);
                                     }
                                 }
@@ -9112,7 +9127,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                         circle->setCenter(Base::Vector3d(p.X(), p.Y(), p.Z()));
 
                                         GeometryFacade::setConstruction(circle, true);
-//                                        ExternalGeo.push_back(circle);
                                         geos.emplace_back(circle);
                                     }
                                     else {
@@ -9124,7 +9138,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                                                   projCurve.LastParameter());
                                         arc->setHandle(tCurve);
                                         GeometryFacade::setConstruction(arc, true);
-//                                        ExternalGeo.push_back(arc);
                                         geos.emplace_back(arc);
                                     }
                                 }
@@ -9151,14 +9164,12 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                             Base::Vector3d(center.X(), center.Y(), center.Z()));
 
                                         GeometryFacade::setConstruction(circle, true);
-//                                        ExternalGeo.push_back(circle);
                                         geos.emplace_back(circle);
                                     }
                                     else {
                                         Part::GeomBSplineCurve* bspline =
                                             new Part::GeomBSplineCurve(projCurve.BSpline());
                                         GeometryFacade::setConstruction(bspline, true);
-//                                        ExternalGeo.push_back(bspline);
                                         geos.emplace_back(bspline);
                                     }
                                 }
@@ -9180,7 +9191,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                         hyperbola->setAngleXU(
                                             -xdir.AngleWithRef(xdirref.XDirection(), normal));
                                         GeometryFacade::setConstruction(hyperbola, true);
-//                                        ExternalGeo.push_back(hyperbola);
                                         geos.emplace_back(hyperbola);
                                     }
                                     else {
@@ -9193,7 +9203,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                                                   projCurve.LastParameter());
                                         aoh->setHandle(tCurve);
                                         GeometryFacade::setConstruction(aoh, true);
-//                                        ExternalGeo.push_back(aoh);
                                         geos.emplace_back(aoh);
                                     }
                                 }
@@ -9214,7 +9223,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                         parabola->setAngleXU(
                                             -xdir.AngleWithRef(xdirref.XDirection(), normal));
                                         GeometryFacade::setConstruction(parabola, true);
-//                                        ExternalGeo.push_back(parabola);
                                         geos.emplace_back(parabola);
                                     }
                                     else {
@@ -9227,7 +9235,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                                                   projCurve.LastParameter());
                                         aop->setHandle(tCurve);
                                         GeometryFacade::setConstruction(aop, true);
-//                                        ExternalGeo.push_back(aop);
                                         geos.emplace_back(aop);
                                     }
                                 }
@@ -9246,7 +9253,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                         Handle(Geom_Ellipse) curve = new Geom_Ellipse(e);
                                         ellipse->setHandle(curve);
                                         GeometryFacade::setConstruction(ellipse, true);
-//                                        ExternalGeo.push_back(ellipse);
                                         geos.emplace_back(ellipse);
                                     }
                                     else {
@@ -9258,7 +9264,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                                                                   projCurve.LastParameter());
                                         aoe->setHandle(tCurve);
                                         GeometryFacade::setConstruction(aoe, true);
-//                                        ExternalGeo.push_back(aoe);
                                         geos.emplace_back(aoe);
                                     }
                                 }
@@ -9283,7 +9288,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
 
                 Part::GeomPoint* point = new Part::GeomPoint(p);
                 GeometryFacade::setConstruction(point, true);
-//                ExternalGeo.push_back(point);
                 geos.emplace_back(point);
             } break;
             default:
@@ -9300,8 +9304,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                     FC_THROWM(Base::CADKernelError,"Failed to get intersection");
                 Part::TopoShape intersectionShape(maker.Shape());
                 auto edges = intersectionShape.getSubTopoShapes(TopAbs_EDGE);
-//                for (const auto &s : edges)
-//                    importEdge(s.getShape());
                 // Section of some face (e.g. sphere) produce more than one arcs
                 // from the same circle. So we try to fit the arcs with a single
                 // circle/arc.
@@ -9322,8 +9324,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
                         }
                     }
                 }
-//                for (const auto &s : intersectionShape.getSubShapes(TopAbs_VERTEX, TopAbs_EDGE))
-//                    importVertex(s);
             }
 
         } catch (Base::Exception &e) {
@@ -9353,7 +9353,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
         if (intersection) {
             for(auto &geo : geos) {
                 auto egf = ExternalGeometryFacade::getFacade(geo.get());
-//                egf->setFlag(ExternalGeometryExtension::Intersection);
                 egf->setFlag(ExternalGeometryExtension::Defining, defining);
             }
         } else if (defining && i+1==(int)Objects.size()) {
@@ -9450,7 +9449,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
 void SketchObject::fixExternalGeometry(const std::vector<int> &geoIds) {
     std::set<int> idSet(geoIds.begin(),geoIds.end());
     auto geos = ExternalGeo.getValues();
-//    auto geos = ExternalGeo;
     auto objs = ExternalGeometry.getValues();
     auto subs = ExternalGeometry.getSubValues();
     bool touched = false;
@@ -9503,7 +9501,6 @@ void SketchObject::fixExternalGeometry(const std::vector<int> &geoIds) {
 std::vector<Part::Geometry*> SketchObject::getCompleteGeometry() const
 {
     std::vector<Part::Geometry*> vals = getInternalGeometry();
-//    vals.insert(vals.end(), ExternalGeo.rbegin(), ExternalGeo.rend());// in reverse order
     const auto &geos = getExternalGeometry();
     vals.insert(vals.end(), geos.rbegin(), geos.rend()); // in reverse order
     return vals;
@@ -9512,13 +9509,11 @@ std::vector<Part::Geometry*> SketchObject::getCompleteGeometry() const
 GeoListFacade SketchObject::getGeoListFacade() const
 {
     std::vector<GeometryFacadeUniquePtr> facade;
-//    facade.reserve(Geometry.getSize() + ExternalGeo.size());
     facade.reserve(Geometry.getSize() + ExternalGeo.getSize());
 
     for (auto geo : Geometry.getValues())
         facade.push_back(GeometryFacade::getFacade(geo));
 
-//    for (auto rit = ExternalGeo.rbegin(); rit != ExternalGeo.rend(); rit++)
     const auto &externalGeos = ExternalGeo.getValues();
     for(auto rit = externalGeos.rbegin(); rit != externalGeos.rend(); rit++)
         facade.push_back(GeometryFacade::getFacade(*rit));
@@ -10279,14 +10274,7 @@ static inline bool checkMigration(Part::PropertyGeometryList &prop)
 
 void SketchObject::onChanged(const App::Property* prop)
 {
-//    if (isRestoring() && prop == &Geometry) {
-//        std::vector<Part::Geometry*> geom = Geometry.getValues();
-//        std::vector<Part::Geometry*> supportedGeom = supportedGeometry(geom);
-//        // To keep upward compatibility ignore unsupported geometry types
-//        if (supportedGeom.size() != geom.size()) {
-//            Geometry.setValues(supportedGeom);
-//            return;
-//        }
+
     if (prop == &Geometry) {
         if (isRestoring() && checkMigration(Geometry)) {
             // Construction migration to extension
@@ -10308,6 +10296,21 @@ void SketchObject::onChanged(const App::Property* prop)
                 }
             }
         }
+        geoMap.clear();
+        const auto &vals = getInternalGeometry();
+        for(long i=0;i<(long)vals.size();++i) {
+            auto geo = vals[i];
+            auto gf = GeometryFacade::getFacade(geo);
+            if(!gf->getId())
+                gf->setId(++geoLastId);
+            else if(gf->getId() > geoLastId)
+                geoLastId = gf->getId();
+            while(!geoMap.insert(std::make_pair(gf->getId(),i)).second) {
+                FC_WARN("duplicate geometry id " << gf->getId() << " -> " << geoLastId+1);
+                gf->setId(++geoLastId);
+            }
+        }
+        updateGeoHistory();
     }
 
     auto doc = getDocument();
@@ -10546,7 +10549,7 @@ void SketchObject::updateGeometryRefs() {
     std::unordered_map<std::string, int> legacyMap;
     for(int i=0;i<(int)objs.size();++i) {
         auto obj = objs[i];
-        const std::string &sub=shadows[i].first.size()?shadows[i].first:subs[i];
+        const std::string &sub=shadows[i].newName.size()?shadows[i].newName:subs[i];
         externalGeoRef.emplace_back(obj->getNameInDocument());
         auto &key = externalGeoRef.back();
         key += '.';
@@ -11806,10 +11809,10 @@ std::string SketchObject::getGeometryReference(int GeoId) const {
     if(!obj)
         return ref;
 
-    std::pair<std::string,std::string> elementName;
+    App::ElementNamePair elementName;
     App::GeoFeature::resolveElement(obj,ref.c_str()+pos+1,elementName);
-    if(elementName.second.size())
-        return objName + "." + elementName.second;
+    if(elementName.oldName.size())
+        return objName + "." + elementName.oldName;
     return ref;
 }
 

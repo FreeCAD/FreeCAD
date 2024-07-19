@@ -266,29 +266,29 @@ TEST_F(SketchObjectTest, testGetElementName)
     // unless it's Export, we are really just testing the superclass App::GeoFeature::getElementName
     // call.
     auto forward_normal_name =
-        getObject()->getElementName("g39;SKT", App::GeoFeature::ElementNameType::Normal);
+        getObject()->getElementName("g1;SKT", App::GeoFeature::ElementNameType::Normal);
     auto reverse_normal_name =
         getObject()->getElementName("Vertex2", App::GeoFeature::ElementNameType::Normal);
     auto reverse_export_name =
         getObject()->getElementName("Vertex1", App::GeoFeature::ElementNameType::Export);
     auto map = getObject()->Shape.getShape().getElementMap();
     ASSERT_EQ(map.size(), 3);
-    EXPECT_STREQ(map[0].name.toString().c_str(), "g39;SKT");
+    EXPECT_STREQ(map[0].name.toString().c_str(), "g1;SKT");
     EXPECT_EQ(map[0].index.toString(), "Edge1");
     // Assert
 #ifndef FC_USE_TNP_FIX
     EXPECT_STREQ(forward_normal_name.newName.c_str(), "");
-    EXPECT_STREQ(forward_normal_name.oldName.c_str(), "g39;SKT");
+    EXPECT_STREQ(forward_normal_name.oldName.c_str(), "g1;SKT");
     EXPECT_STREQ(reverse_normal_name.newName.c_str(), "");
     EXPECT_STREQ(reverse_normal_name.oldName.c_str(), "Vertex2");
-    EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g39v1;SKT.Vertex1");
+    EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g1v1;SKT.Vertex1");
     EXPECT_STREQ(reverse_export_name.oldName.c_str(), "Vertex1");
 #else
-    EXPECT_STREQ(forward_normal_name.newName.c_str(), ";g39;SKT.Edge1");
+    EXPECT_STREQ(forward_normal_name.newName.c_str(), ";g1;SKT.Edge1");
     EXPECT_STREQ(forward_normal_name.oldName.c_str(), "Edge1");
-    EXPECT_STREQ(reverse_normal_name.newName.c_str(), ";g39v2;SKT.Vertex2");
+    EXPECT_STREQ(reverse_normal_name.newName.c_str(), ";g1v2;SKT.Vertex2");
     EXPECT_STREQ(reverse_normal_name.oldName.c_str(), "Vertex2");
-    EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g39v1;SKT.Vertex1");
+    EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g1v1;SKT.Vertex1");
     EXPECT_STREQ(reverse_export_name.oldName.c_str(), "Vertex1");
 #endif
 }
