@@ -1,0 +1,60 @@
+[project]
+name = "FreeCAD"
+version = "0.22.0"
+description = "pixi instructions for FreeCAD"
+authors = ["looooo <sppedflyer@gmail.com>"]
+channels = ["conda-forge/label/pivy_rc", "conda-forge"]
+platforms = ["osx-arm64"]
+
+
+[environments]
+build = ["build"]
+
+[feature.build.dependencies]
+ninja = ">=1.12.1,<1.13"
+cmake = ">=3.30.1,<3.31"
+swig = ">=4.2.1,<4.3"
+sed = ">=4.8,<5"
+python = ">=3.12.4,<3.13"
+libboost-devel = ">=1.84.0,<1.86"
+qt6-main = ">=6.7.2,<6.8"
+occt = ">=7.8.1,<7.9"
+xerces-c = ">=3.2.5,<3.3"
+zlib = ">=1.3.1,<1.4"
+vtk = ">=9.3.0,<9.4"
+eigen = ">=3.4.0,<3.5"
+pybind11 = ">=2.13.1,<2.14"
+coin3d = ">=4.0.2,<4.1"
+pyside6 = ">=6.7.2,<6.8"
+smesh = ">=9.9.0.0,<9.9.1"
+doxygen = ">=1.10.0,<1.11"
+hdf5 = ">=1.14.3,<1.15"
+freetype = ">=2.12.1,<2.13"
+pcl = ">=1.14.1,<1.15"
+six = ">=1.16.0,<1.17"
+ply = ">=3.11,<4"
+matplotlib-base = ">=3.9.1,<3.10"
+yaml-cpp = ">=0.8.0,<0.9"
+pivy = ">=0.6.9.a0,<0.6.10"
+numpy = ">=2.0.0,<2.1"
+pyyaml = ">=6.0.1,<6.1"
+graphviz = ">=11.0.0,<11.1"
+# gmsh  needs to be build for occt7.8.1
+
+[feature.build.tasks]
+
+initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
+configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
+                     "-D", "CMAKE_INSTALL_PREFIX:STRING=$CONDA_PREFIX",
+                     "-D", "CMAKE_INSTALL_RPATH=$CONDA_PREFIX/lib",
+                     "-D", "CMAKE_BUILD_TYPE:STRING=Debug",
+                     "-D", "QT_HOST_PATH=$CONDA_PREFIX",
+                     "-D", "BUILD_WITH_CONDA:BOOL=ON",
+                     "-D", "BUILD_FLAT_MESH:BOOL=ON",
+                     "-D", "BUILD_FEM_NETGEN:BOOL=ON",
+                     "-D", "FREECAD_USE_PYBIND11:BOOL=ON",
+                     "-D", "FREECAD_USE_PCL:BOOL=ON",
+                     "-D", "FREECAD_USE_EXTERNAL_SMESH=ON"], depends-on = ["initialize"]}
+build = { cmd = ["ninja", "-C", "build", "install"], depends-on = ["configure"]}
+
+
