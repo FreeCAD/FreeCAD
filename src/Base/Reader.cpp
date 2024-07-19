@@ -109,51 +109,34 @@ unsigned int Base::XMLReader::getAttributeCount() const
     return static_cast<unsigned int>(AttrMap.size());
 }
 
-long Base::XMLReader::getAttributeAsInteger(const char* AttrName) const
+long Base::XMLReader::getAttributeAsInteger(const char* AttrName, const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return atol(pos->second.c_str());
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    const int base = 10;
+    return strtol(getAttribute(AttrName, defaultValue), nullptr, base);
 }
 
-unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) const
+unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName,
+                                                      const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return strtoul(pos->second.c_str(), nullptr, 10);
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    const int base = 10;
+    return strtoul(getAttribute(AttrName, defaultValue), nullptr, base);
 }
 
-double Base::XMLReader::getAttributeAsFloat(const char* AttrName) const
+double Base::XMLReader::getAttributeAsFloat(const char* AttrName, const char* defaultValue) const
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
-
-    if (pos != AttrMap.end()) {
-        return atof(pos->second.c_str());
-    }
-    // wrong name, use hasAttribute if not sure!
-    std::ostringstream msg;
-    msg << "XML Attribute: \"" << AttrName << "\" not found";
-    throw Base::XMLAttributeError(msg.str());
+    return strtod(getAttribute(AttrName, defaultValue), nullptr);
 }
 
-const char* Base::XMLReader::getAttribute(const char* AttrName) const
+const char* Base::XMLReader::getAttribute(const char* AttrName,            // NOLINT
+                                          const char* defaultValue) const  // NOLINT
 {
-    AttrMapType::const_iterator pos = AttrMap.find(AttrName);
+    auto pos = AttrMap.find(AttrName);
 
     if (pos != AttrMap.end()) {
         return pos->second.c_str();
+    }
+    if (defaultValue) {
+        return defaultValue;
     }
     // wrong name, use hasAttribute if not sure!
     std::ostringstream msg;
