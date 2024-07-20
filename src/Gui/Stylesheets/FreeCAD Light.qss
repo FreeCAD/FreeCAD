@@ -2208,31 +2208,23 @@ QTreeView::branch:!has-children:!has-siblings:adjoins-item  {
 }
 
 QTreeView::branch:closed:has-children:has-siblings  {
-  margin-top: 5px;
-  margin-bottom: 5px;
   border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png) 0;
+  image: url(qss:images_classic/Arrow-right-black.png);
 }
 
 QTreeView::branch:has-children:!has-siblings:closed  {
-  margin-top: 5px;
-  margin-bottom: 5px;
   border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png) 0;
+  image: url(qss:images_classic/Arrow-right-black.png);
 }
 
 QTreeView::branch:open:has-children:has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
   border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png) 0;
+  image: url(qss:images_classic/Arrow-down-black.png);
 }
 
 QTreeView::branch:open:has-children:!has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
   border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png) 0;
+  image: url(qss:images_classic/Arrow-down-black.png) ;
 }
 
 QTreeView::indicator,
@@ -2775,29 +2767,22 @@ Settings menu #groupsTreeView:
 ==================================================================================================*/
 
 QTreeView::branch#groupsTreeView:closed:has-children:has-siblings  {
-  margin-top: 15px;
-  margin-bottom: 15px;
   border-image: none;
   image: url(qss:images_classic/Arrow-right-black.png) 0;
 }
 
 QTreeView::branch#groupsTreeView:open:has-children:has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-black.png) 0;
 }
 
 QTreeView::branch#groupsTreeView:open:has-children:!has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-black.png) 0;
 }
 
 QTreeView::branch#groupsTreeView:has-children:!has-siblings:closed  {
-  margin-top: 15px;
-  margin-bottom: 15px;
+
   border-image: none;
   image: url(qss:images_classic/Arrow-right-black.png) 0;
 }
