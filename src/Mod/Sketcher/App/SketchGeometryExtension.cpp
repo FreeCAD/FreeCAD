@@ -93,6 +93,17 @@ void SketchGeometryExtension::saveAttributes(Base::Writer& writer) const
         << GeometryModeFlags.to_string() << "\" geometryLayer=\"" << GeometryLayer;
 }
 
+void SketchGeometryExtension::preSave(Base::Writer& writer) const
+{
+    writer.Stream() << " id=\"" << Id << "\"";
+}
+
+void SketchGeometryExtension::postSave(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind() << "<Construction value=\""
+                    << (GeometryModeFlags.test(GeometryMode::Construction) ? 1 : 0) << "\"/>\n";
+}
+
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy() const
 {
     auto cpy = std::make_unique<SketchGeometryExtension>();

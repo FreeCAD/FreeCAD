@@ -148,8 +148,12 @@ std::pair<std::string, std::string> Feature::getElementName(const char* name,
     if (!prop) {
         return App::GeoFeature::getElementName(name, type);
     }
+    return getExportElementName(prop->getShape(), name);
+}
 
-    TopoShape shape = prop->getShape();
+std::pair<std::string, std::string> Feature::getExportElementName(TopoShape shape,
+                                                                  const char* name) const
+{
     Data::MappedElement mapped = shape.getElementName(name);
     auto res = shape.shapeTypeAndIndex(mapped.index);
     static const int MinLowerTopoNames = 3;
@@ -259,10 +263,10 @@ std::pair<std::string, std::string> Feature::getElementName(const char* name,
                         // disambiguation.
                         auto it = std::find(ancestors.begin(), ancestors.end(), res.second);
                         if (it == ancestors.end()) {
-                            assert(0 && "ancestor not found");  // this shouldn't happened
+                            assert(0 && "ancestor not found");  // this shouldn't happen
                         }
                         else {
-                            op = Data::POSTFIX_TAG + std::to_string(it - ancestors.begin());
+                            op = Data::POSTFIX_INDEX + std::to_string(it - ancestors.begin());
                         }
                     }
 
@@ -284,10 +288,8 @@ std::pair<std::string, std::string> Feature::getElementName(const char* name,
                 }
             }
         }
-        return App::GeoFeature::_getElementName(name, mapped);
     }
-
-    if (!res.second && mapped.name) {
+    else if (!res.second && mapped.name) {
         const char* dot = strchr(name, '.');
         if (dot) {
             ++dot;
@@ -350,7 +352,6 @@ std::pair<std::string, std::string> Feature::getElementName(const char* name,
                 if (ancestors.size() == 1) {
                     idxName.setIndex(ancestors.front());
                     mapped.index = idxName;
-                    return App::GeoFeature::_getElementName(name, mapped);
                 }
             }
         }

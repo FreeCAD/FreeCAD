@@ -36,13 +36,14 @@ using namespace Sketcher;
 constexpr std::array<const char*, ExternalGeometryExtension::NumFlags>
     ExternalGeometryExtension::flag2str;
 
-TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension, Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension, Part::GeometryMigrationPersistenceExtension)
 
 void ExternalGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
 {
     Part::GeometryPersistenceExtension::copyAttributes(cpy);
 
     static_cast<ExternalGeometryExtension*>(cpy)->Ref = this->Ref;
+    static_cast<ExternalGeometryExtension*>(cpy)->RefIndex = this->RefIndex;
     static_cast<ExternalGeometryExtension*>(cpy)->Flags = this->Flags;
 }
 
@@ -50,15 +51,32 @@ void ExternalGeometryExtension::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    Ref = reader.getAttribute("Ref");
-    Flags = FlagType(reader.getAttribute("Flags"));
+    Ref = reader.getAttribute("Ref", "");
+    RefIndex = reader.getAttributeAsInteger("RefIndex", "-1");
+    Flags = FlagType(reader.getAttributeAsUnsigned("Flags", "0"));
 }
 
 void ExternalGeometryExtension::saveAttributes(Base::Writer& writer) const
 {
     Part::GeometryPersistenceExtension::saveAttributes(writer);
+    writer.Stream() << "\" Ref=\"" << Base::Persistence::encodeAttribute(Ref);
+    writer.Stream() << "\" Flags=\"" << Flags.to_ulong();
+    if (RefIndex >= 0) {
+        writer.Stream() << "\" RefIndex=\"" << RefIndex;
+    }
+}
 
-    writer.Stream() << "\" Ref=\"" << Ref << "\" Flags=\"" << Flags.to_string();
+void ExternalGeometryExtension::preSave(Base::Writer& writer) const
+{
+    if (Ref.size()) {
+        writer.Stream() << " ref=\"" << Base::Persistence::encodeAttribute(Ref) << "\"";
+    }
+    if (RefIndex >= 0) {
+        writer.Stream() << " refIndex=\"" << RefIndex << "\"";
+    }
+    if (Flags.any()) {
+        writer.Stream() << " flags=\"" << Flags.to_ulong() << "\"";
+    }
 }
 
 std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy() const
