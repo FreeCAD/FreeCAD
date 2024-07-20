@@ -44,6 +44,7 @@ graphviz = ">=11.0.0,<11.1"
 [feature.build.tasks]
 
 initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
+patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cmake/Shiboken6/Shiboken6Targets.cmake"
 configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
                      "-D", "CMAKE_INSTALL_PREFIX:STRING=$CONDA_PREFIX",
                      "-D", "CMAKE_INSTALL_RPATH=$CONDA_PREFIX/lib",
@@ -55,7 +56,7 @@ configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
                      "-D", "FREECAD_USE_PYBIND11:BOOL=ON",
                      "-D", "FREECAD_USE_PCL:BOOL=ON",
                      "-D", "FREECAD_USE_EXTERNAL_SMESH=ON"
-                     ], depends-on = ["initialize"]}
+                     ], depends-on = ["initialize", "patch_shiboken"]}
 build = { cmd = ["ninja", "-C", "build", "-j", "3", "install"], depends-on = ["configure"]}
 build_only = { cmd = ["ninja", "-C", "build", "-j", "3", "install"]}
 
