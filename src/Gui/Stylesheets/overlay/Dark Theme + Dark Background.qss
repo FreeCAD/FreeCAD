@@ -9,8 +9,7 @@ QFrame {
  QAbstractItemView {
    alternate-background-color: rgba(0, 0, 0, 0.119);
    color: White;
-   border: transparent;
-   padding-right: 5px;
+   border: 1px solid #252525;
  }
 
  Gui--OverlayTitleBar,
@@ -79,7 +78,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
  QSint--ActionGroup QFrame[class="content"] {
    border-bottom-left-radius: 5px;
    border-bottom-right-radius: 5px;
-   }
+ }
 
  Gui--OverlayTabWidget::tab-bar:top,
  Gui--OverlayTabWidget::tab-bar:bottom {
@@ -103,8 +102,8 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
 }
 
 Gui--OverlayToolButton:hover {
-  border: 1px solid black;
-  background: black;
+  border: 1px solid #000000
+  background: #000000;
   border-radius: 2px;
 }
 
@@ -122,38 +121,39 @@ Gui--OverlayToolButton:checked {
 
 Gui--OverlayToolButton:checked:hover {
   border: 1px solid #000000;
-  background: black;
+  background: #000000;
 }
 
 Gui--OverlayToolButton{
-  image: url(qss:images_classic/close-lightgray.png);
+  image: url(qss:images_classic/close-lightgray.png) 0;
 }
 
 Gui--OverlayToolButton:hover {
-  image: url(qss:images_classic/close-red.png);
+  image: url(qss:images_classic/close-red.png) 0;
 }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
-  image: url(qss:images_classic/transparent-lightgray.png);}
+  image: url(qss:images_classic/transparent-lightgray.png) 0;
+  }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-  image: url(qss:images_classic/transparent-white.png);
+  image: url(qss:images_classic/transparent-white.png) 0;
 }
 
 Gui--OverlayToolButton[objectName="OBTN Overlay"] {
-  image: url(qss:images_classic/overlay-lightgray.png);
+  image: url(qss:images_classic/overlay-lightgray.png) 0;
 }
 
 Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-  image: url(qss:images_classic/overlay-white.png);
+  image: url(qss:images_classic/overlay-white.png) 0;
 }
 
 Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
-  image: url(qss:images_classic/mode-lightgray.png);
+  image: url(qss:images_classic/mode-lightgray.png) 0;
 }
 
 Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-  image: url(qss:images_classic/mode-white.png);
+  image: url(qss:images_classic/mode-white.png) 0;
 }
 
  QTreeView::branch:open:has-children:has-siblings  {

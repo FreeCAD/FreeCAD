@@ -10,8 +10,7 @@ QTabWidget::pane{
 QAbstractItemView {
   alternate-background-color: rgba(255, 255, 255, 0.13);
   color: #000000;
-  border: transparent;
-  padding-right: 5px;
+  border: 1px solid #696968;
 }
 
 Gui--OverlayTitleBar,
@@ -132,30 +131,30 @@ Gui--OverlayProxyWidget {
 }
 
 Gui--OverlayToolButton {
-  border: 1px solid transparent;
+  border: 0.5px solid transparent;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:hover {
-  border: 1px solid white;
+  border: 0.5px solid white;
   background-color: #ffffff;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:focus {
-  border: 1px solid #0099ff;
+  border: 0.5px solid #0099ff;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
-  border: 1px solid #ababab;
+  border: 0.5px solid #ababab;
   border-radius: 2px;
   background-color: #ababab;
 }
 
 Gui--OverlayToolButton:checked:hover {
-  border: 1px solid white;
+  border: 0.5px solid white;
   background-color: #ffffff;
 }
 

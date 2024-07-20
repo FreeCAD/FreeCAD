@@ -9,8 +9,7 @@ QFrame {
  QAbstractItemView {
    alternate-background-color: rgba(0, 0, 0, 0.273);
    color: White;
-   border: transparent;
-   padding-right: 5px;
+   border: 1px solid #696968;
  }
 
  Gui--OverlayTitleBar,

@@ -9,13 +9,12 @@ QTabWidget::pane{
 QAbstractItemView {
   alternate-background-color: #f0f0f0;
   color: #000000;
-  border: transparent;
-  padding-right: 5px;
+  border: 1px solid #ababab;
 }
 
 Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: #ffffff;
-}
+  }
 
 Gui--OverlayTitleBar,
 Gui--OverlaySplitterHandle {
@@ -136,7 +135,8 @@ Gui--OverlayToolButton:hover {
 }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
-  image: url(qss:images_classic/transparent-lightgray.png);}
+  image: url(qss:images_classic/transparent-lightgray.png);
+  }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
   image: url(qss:images_classic/transparent-black.png);
