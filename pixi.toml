@@ -79,6 +79,3 @@ configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
 build = { cmd = ["ninja", "-C", "build", "-j", "3", "install"], depends-on = ["configure"]}
 build_only = { cmd = ["ninja", "-C", "build", "-j", "3", "install"]}
 freecad = "FreeCAD"
-
-
-
