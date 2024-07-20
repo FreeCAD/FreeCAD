@@ -3362,13 +3362,17 @@ void View3DInventorViewer::alignToSelection()
         return;
     }
 
-    Base::Placement placement;
-    if (const auto plm = dynamic_cast<App::PropertyPlacement*>(selection[0].pObject->getPropertyByName("Placement"))) {
-        placement = plm->getValue();
-    }
-
     const auto groupPlacement = selection[0].pObject->globalGroupPlacement();
-    const Base::Rotation rotation = groupPlacement.getRotation() * placement.getRotation() * geoFeature->Placement.getValue().getRotation().inverse();
+    Base::Rotation rotation = groupPlacement.getRotation();
+
+    // Link placement correction
+    if (const auto link = dynamic_cast<App::Link*>(selection[0].pObject)) {
+        if (!link->LinkTransform.getValue()) {
+            rotation *= link->Placement.getValue().getRotation();
+        }
+
+        rotation *= geoFeature->Placement.getValue().getRotation().inverse();
+    }
 
     Base::Vector3d direction;
     if (geoFeature->getCameraAlignmentDirection(direction, selection[0].SubName)) {
