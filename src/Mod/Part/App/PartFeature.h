@@ -171,6 +171,17 @@ protected:
 
     void registerElementCache(const std::string &prefix, PropertyPartShape *prop);
 
+    /** Helper function to obtain mapped and indexed element name from a shape
+     * @params shape: source shape
+     * @param name: the input name, can be either mapped or indexed name
+     * @return Returns both the indexed and mapped name
+     *
+     * If the 'name' referencing a non-primary shape type, i.e. not
+     * Vertex/Edge/Face, this function will auto generate a name from primary
+     * sub-shapes.
+     */
+    std::pair<std::string,std::string> getExportElementName(TopoShape shape, const char *name) const;
+
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
