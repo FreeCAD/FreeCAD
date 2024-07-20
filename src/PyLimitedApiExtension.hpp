@@ -9,8 +9,7 @@ inline const char *PyUnicode_AsUTF8(PyObject *unicode)
     return PyUnicode_AsUTF8AndSize(unicode, &sz);
 }
 
-PyObject *
-PyRun_String(const char *str, int start, PyObject *globals, PyObject *locals)
+PyObject *PyRun_String(const char *str, int start, PyObject *globals, PyObject *locals)
 {
     PyObject *code = Py_CompileString(str, "pyscript", start);
     PyObject *ret = nullptr;
