@@ -2682,10 +2682,10 @@ SKETCHER
 ==================================================================================================*/
 
 Gui--StatefulLabel[state="empty_sketch"] {
-  color : rgba(255, 255, 255, 181); /* 50% opacity white */
+  color : #ffffff; /* 50% opacity white */
 }
 Gui--StatefulLabel[state="under_constrained"] {
-  /* color : white */
+  color : #ffffff
 }
 Gui--StatefulLabel[state="conflicting_constraints"] {
   color : #fc6c6c; /* Red */
