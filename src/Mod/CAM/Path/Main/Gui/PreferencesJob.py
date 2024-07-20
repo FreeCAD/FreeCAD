@@ -23,7 +23,7 @@
 import FreeCAD
 import Path
 import Path.Main.Stock as PathStock
-from Path.Post.Processor import PostProcessor
+from Path.Post.Processor import PostProcessor, PostProcessorFactory
 import json
 
 from FreeCAD import Units
@@ -330,7 +330,7 @@ class JobPreferencesPage:
 
     def getPostProcessor(self, name):
         if not name in self.processor:
-            processor = PostProcessor.load(name)
+            processor = PostProcessorFactory.get_post_processor(None, name)
             self.processor[name] = processor
             return processor
         return self.processor[name]
