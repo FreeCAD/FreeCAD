@@ -207,6 +207,7 @@ if(FREECAD_USE_SHIBOKEN)
             )
         endif (TARGET Shiboken2::libshiboken)
     endif (SHIBOKEN_LIBRARY)
+    remove_definitions(-DPy_LIMITED_API)
 endif(FREECAD_USE_SHIBOKEN)
 
 if(FREECAD_USE_PYSIDE)
