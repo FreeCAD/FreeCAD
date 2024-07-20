@@ -121,7 +121,7 @@ Gui--OverlayToolButton:checked {
 }
 
 Gui--OverlayToolButton:checked:hover {
-  border: 1px solid white;
+  border: 1px solid #ffffff;
   background-color: #ffffff;
 }
 

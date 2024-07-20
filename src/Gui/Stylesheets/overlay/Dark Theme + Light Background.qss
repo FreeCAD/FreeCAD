@@ -8,7 +8,7 @@ QFrame {
 
  QAbstractItemView {
    alternate-background-color: rgba(0, 0, 0, 0.273);
-   color: White;
+   color: #ffffff;
    border: 1px solid #696968;
  }
 
@@ -90,7 +90,7 @@ Gui--PropertyEditor--PropertyEditor {
  QSint--ActionGroup QFrame[class="content"] {
    border-bottom-left-radius: 5px;
    border-bottom-right-radius: 5px;
-   }
+ }
 
  Gui--OverlayTabWidget::tab-bar:top,
  Gui--OverlayTabWidget::tab-bar:bottom {
@@ -114,8 +114,8 @@ Gui--PropertyEditor--PropertyEditor {
 }
 
 Gui--OverlayToolButton:hover {
-  border: 1px solid #black;
-  background: black;
+  border: 1px solid #000000;
+  background: #000000;
   border-radius: 2px;
 }
 
@@ -133,10 +133,18 @@ Gui--OverlayToolButton:checked {
 
 Gui--OverlayToolButton:checked:hover {
   border: 1px solid #000000;
-  background: black;
+  background: #000000;
 }
 
- Gui--OverlayToolButton[objectName="OBTN Transparent"]:!hover {
+Gui--OverlayToolButton{
+  image: url(qss:images_classic/close-lightgray.png) ;
+}
+
+Gui--OverlayToolButton:hover {
+  image: url(qss:images_classic/close-red.png) ;
+}
+
+ Gui--OverlayToolButton[objectName="OBTN Transparent"] {
    image: url(qss:images_classic/transparent-lightgray.png);
  }
 
@@ -144,7 +152,7 @@ Gui--OverlayToolButton:checked:hover {
    image: url(qss:images_classic/transparent-white.png);
  }
 
- Gui--OverlayToolButton[objectName="OBTN Overlay"]:!hover {
+ Gui--OverlayToolButton[objectName="OBTN Overlay"] {
     image: url(qss:images_classic/overlay-lightgray.png);
  }
 
@@ -152,7 +160,7 @@ Gui--OverlayToolButton:checked:hover {
    image: url(qss:images_classic/overlay-white.png);
  }
 
- Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!hover {
+ Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
   image: url(qss:images_classic/mode-lightgray.png);
 }
 
@@ -161,7 +169,7 @@ Gui--OverlayToolButton:checked:hover {
  }
 
  Gui--OverlaySplitterHandle Gui--OverlayToolButton,
- Gui--OverlayToolButton[objectName="OBTN Float"]:!hover {
+ Gui--OverlayToolButton[objectName="OBTN Float"] {
    image: url(qss:images_classic/float-lightgray.png);
  }
 
@@ -171,29 +179,21 @@ Gui--OverlayToolButton:checked:hover {
  }
 
  QTreeView::branch:open:has-children:has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-black.png);
 }
 
  QTreeView::branch:open:has-children:!has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
   border-image: none;
   image: url(qss:images_classic/Arrow-down-black.png);
 }
 
 QTreeView::branch:closed:has-children:has-siblings  {
-  margin-top: 5px;
-  margin-bottom: 5px;
   border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png) 0;
+  image: url(qss:images_classic/Arrow-right-black.png);
 }
 
 QTreeView::branch:has-children:!has-siblings:closed  {
-  margin-top: 5px;
-  margin-bottom: 5px;
   border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png) 0;
+  image: url(qss:images_classic/Arrow-right-black.png);
 }

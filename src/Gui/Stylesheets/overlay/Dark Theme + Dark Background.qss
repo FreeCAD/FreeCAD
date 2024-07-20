@@ -8,13 +8,13 @@ QFrame {
 
  QAbstractItemView {
    alternate-background-color: rgba(0, 0, 0, 0.119);
-   color: White;
+   color: #ffffff;
    border: 1px solid #252525;
  }
 
  Gui--OverlayTitleBar,
  Gui--OverlaySplitterHandle {
-   background-color: transparent;
+   background-color: #252525;
  }
 
  Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
@@ -27,17 +27,17 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
   color: #ffffff;
-  background-color: #181d2a;
+  background-color: #234497;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
   color: #ffffff;
-  background-color: #181d2a;
+  background-color: #234497;
 }
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
   color: #ffffff;
-  background-color: #181d2a;
+  background-color: #234497;
 }
 
  /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
@@ -66,7 +66,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
    qproperty-enableEffect: 1;
  }
 
- Gui--PropertyEditor--PropertyEditor {
+Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: #333333;
 }
 
@@ -102,7 +102,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
 }
 
 Gui--OverlayToolButton:hover {
-  border: 1px solid #000000
+  border: 1px solid #000000;
   background: #000000;
   border-radius: 2px;
 }
@@ -125,61 +125,34 @@ Gui--OverlayToolButton:checked:hover {
 }
 
 Gui--OverlayToolButton{
-  image: url(qss:images_classic/close-lightgray.png) 0;
+  image: url(qss:images_classic/close-lightgray.png) ;
 }
 
 Gui--OverlayToolButton:hover {
-  image: url(qss:images_classic/close-red.png) 0;
+  image: url(qss:images_classic/close-red.png) ;
 }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
-  image: url(qss:images_classic/transparent-lightgray.png) 0;
+  image: url(qss:images_classic/transparent-lightgray.png) ;
   }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-  image: url(qss:images_classic/transparent-white.png) 0;
+  image: url(qss:images_classic/transparent-white.png) ;
 }
 
 Gui--OverlayToolButton[objectName="OBTN Overlay"] {
-  image: url(qss:images_classic/overlay-lightgray.png) 0;
+  image: url(qss:images_classic/overlay-lightgray.png) ;
 }
 
 Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-  image: url(qss:images_classic/overlay-white.png) 0;
+  image: url(qss:images_classic/overlay-white.png) ;
 }
 
 Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
-  image: url(qss:images_classic/mode-lightgray.png) 0;
+  image: url(qss:images_classic/mode-lightgray.png) ;
 }
 
 Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-  image: url(qss:images_classic/mode-white.png) 0;
+  image: url(qss:images_classic/mode-white.png) ;
 }
 
- QTreeView::branch:open:has-children:has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-down-white.png) 0;
-}
-
- QTreeView::branch:open:has-children:!has-siblings  {
-  margin-left: 6px;
-  margin-right: 6px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-down-white.png) 0;
-}
-
-QTreeView::branch:closed:has-children:has-siblings  {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-right-white.png) 0;
-}
-
-QTreeView::branch:has-children:!has-siblings:closed  {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-image: none;
-  image: url(qss:images_classic/Arrow-right-white.png) 0;
-}
