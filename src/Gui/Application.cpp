@@ -132,6 +132,7 @@
 #include "WorkbenchManipulator.h"
 #include "WidgetFactory.h"
 #include "3Dconnexion/navlib/NavlibInterface.h"
+#include "PyLimitedApiExtension.hpp"
 
 
 using namespace Gui;
