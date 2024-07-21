@@ -6,11 +6,10 @@ QTabWidget::pane{
   background-color: transparent;
   border: transparent;
 }
-
 QAbstractItemView {
-  alternate-background-color: rgba(255, 255, 255, 0.13);
+  alternate-background-color: #f0f0f0;
   color: #000000;
-  border: 1px solid #696968;
+  border: 1px solid #ababab;
 }
 
 Gui--OverlayTitleBar,
@@ -38,7 +37,14 @@ QTreeView:disabled  {
 }
 
 Gui--PropertyEditor--PropertyEditor {
-  qproperty-itemBackground: rgba(77, 77, 77, 0.298);
+  qproperty-itemBackground: #ffffff;
+}
+
+Gui--OverlayTabWidget[transparent="false"] * {
+  color: #000000;
+}
+Gui--OverlayTabWidget[transparent="true"] * {
+  color: #000000;
 }
 
 Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
