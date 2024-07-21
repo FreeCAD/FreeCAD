@@ -2763,23 +2763,23 @@ Settings menu #groupsTreeView:
 
 QTreeView::branch#groupsTreeView:closed:has-children:has-siblings  {
   border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png);
+  image: url(qss:images_classic/Arrow-right-white.png);
 }
 
 QTreeView::branch#groupsTreeView:open:has-children:has-siblings  {
   border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png);
+  image: url(qss:images_classic/Arrow-down-white.png);
 }
 
 QTreeView::branch#groupsTreeView:open:has-children:!has-siblings  {
 
   border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png);
+  image: url(qss:images_classic/Arrow-down-white.png);
 }
 
 QTreeView::branch#groupsTreeView:has-children:!has-siblings:closed  {
   border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png);
+  image: url(qss:images_classic/Arrow-right-white.png);
 }
 
 QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
