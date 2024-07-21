@@ -258,30 +258,27 @@ QCheckBox::indicator {
   width: 12px;
   height: 12px;
   border: 1px solid #1c1c1c;
-  /* image:url(qss:images_classic/checkbox-Empty-black.png); */
 }
 
 QCheckBox::indicator:unchecked {
   background-color: #fdfdfd;
   border: 1px solid #1c1c1c;
-  /* image:url(qss:images_classic/checkbox-Empty-black.png); */
 }
 
 QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:focus, QCheckBox::indicator:unchecked:pressed {
   background-color: @ThemeAccentColor1;
-  image:url(qss:images_classic/checkbox-Empty-black.png);
+  border: 1px solid #1c1c1c;
 }
 
 QCheckBox::indicator:unchecked:disabled {
   background-color: #d8d8d8;
   border: 1px solid #646464;
-  /* image:url(qss:images_classic/checkbox-Empty-lightgray.png); */
 }
 
 QCheckBox::indicator:checked {
-  background-color: #f0f0f0;
-
-  image:url(qss:images_classic/check-checked-black.png);
+  image:url(qss:images_classic/check-mark-black.png);
+  border: 1px solid #1c1c1c;
+  background-color: #fdfdfd;
 }
 
 QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
@@ -292,23 +289,23 @@ QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
 QCheckBox::indicator:checked:disabled {
   background-color: #d8d8d8;
   border: 1px solid #ababab;
-  image: url(qss:images_classic/check-checked-lightgray.png);
+  image: url(qss:images_classic/check-mark-lightgray.png);
 }
 
 QCheckBox::indicator:indeterminate {
   background-color: #f0f0f0;
   border: 1px solid #1c1c1c;
-  image: url(qss:images_classic/Check-indeterminate-mark-black.png);
+  image: url(qss:images_classic/indeterminate-mark-black.png);
 }
 
 QCheckBox::indicator:indeterminate:disabled {
   background-color: #d8d8d8;
   border: 1px solid #ababab;
-  image: url(qss:images_classic/Check-indeterminate-mark-lightgray.png);
+  image: url(qss:images_classic/indeterminate-mark-lightgray.png);
 }
 
 QCheckBox::indicator:indeterminate:hover, QCheckBox::indicator:indeterminate:pressed {
-  background-color: @ThemeAccentColor1; /* QRadioButton has the same color */
+  background-color: @ThemeAccentColor1;
   border: 1px solid #1c1c1c;
 }
 
@@ -1458,7 +1455,7 @@ QComboBox::indicator {
 QComboBox::indicator:checked {
   width: 10px;
   height: 10px;
-  image: url(qss:images_classic/Check-Checked-black.png);
+  image: url(qss:images_classic/check-mark-black.png);
 }
 
 QComboBox::item {
@@ -2245,14 +2242,14 @@ QTreeView::indicator:checked,
 QListView::indicator:checked,
 QTableView::indicator:checked,
 QColumnView::indicator:checked {
-  image: url(qss:images_classic/check-checked-black.png);
+  image: url(qss:images_classic/check-mark-black.png);
 }
 
 QTreeView::indicator:checked:disabled ,
 QListView::indicator:checked:disabled ,
 QTableView::indicator:checked:disabled ,
 QColumnView::indicator:checked:disabled  {
-  image: url(qss:images_classic/check-checked-lightgray.png);
+  image: url(qss:images_classic/check-mark-lightgray.png);
   border: 1px solid #696969;
 }
 
@@ -2297,7 +2294,7 @@ QTreeView::indicator:indeterminate,
 QListView::indicator:indeterminate,
 QTableView::indicator:indeterminate,
 QColumnView::indicator:indeterminate {
-  image: url(qss:images_classic/Check-indeterminate-mark-black.png);
+  image: url(qss:images_classic/indeterminate-mark-black.png);
 }
 
 QTreeView::indicator:indeterminate:hover, QTreeView::indicator:indeterminate:focus, QTreeView::indicator:indeterminate:pressed,
@@ -2310,7 +2307,7 @@ QTableView::indicator:indeterminate:pressed,
 QColumnView::indicator:indeterminate:hover,
 QColumnView::indicator:indeterminate:focus,
 QColumnView::indicator:indeterminate:pressed {
-  image: url(qss:images_classic/Check-indeterminate-mark-black.png);
+  image: url(qss:images_classic/indeterminate-mark-black.png);
   background-color: @ThemeAccentColor1;
   border: 1px solid #1c1c1c;
 }

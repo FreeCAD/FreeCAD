@@ -258,54 +258,56 @@ QCheckBox::indicator {
   width: 12px;
   height: 12px;
   border: 1px solid #f0f0f0;
-  /* image:url(qss:images_classic/checkbox-Empty-white.png); */
 }
 
 QCheckBox::indicator:unchecked {
   background-color: #252525;
   border: 1px solid #f0f0f0;
-  /* image:url(qss:images_classic/checkbox-Empty-white.png); */
 }
 
 QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:focus, QCheckBox::indicator:unchecked:pressed {
   background-color: @ThemeAccentColor1;
   border: 1px solid #f0f0f0;
-  /* image:url(qss:images_classic/checkbox-Empty-white.png); */
 }
 
 QCheckBox::indicator:unchecked:disabled {
   background-color: #444444;
   border: 1px solid #696969;
-  /* image:url(qss:images_classic/checkbox-Empty-lightgray.png); */
 }
 
 QCheckBox::indicator:checked {
-  /* background-color: #252525; */
-  image:url(qss:images_classic/check-checked-white.png);
+  image:url(qss:images_classic/check-mark-white.png);
+  border: 1px solid #f0f0f0;
+  background-color: #252525;
 }
 
 QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
   background-color: @ThemeAccentColor1;
+  border: 1px solid #f0f0f0;
 }
 
 QCheckBox::indicator:checked:disabled {
   background-color: #444444;
-  image: url(qss:images_classic/check-checked-lightgray.png);
+  border: 1px solid #696969;
+  image: url(qss:images_classic/check-mark-lightgray.png);
 }
 
 QCheckBox::indicator:indeterminate {
-  /* background-color: #252525; */
-  image: url(qss:images_classic/Check-indeterminate-mark-white.png);
+  background-color: #252525;
+  border: 1px solid #f0f0f0;
+  image: url(qss:images_classic/indeterminate-mark-white.png);
 }
 
 QCheckBox::indicator:indeterminate:disabled {
   background-color: #444444;
-  image: url(qss:images_classic/Check-indeterminate-mark-lightgray.png);
+    border: 1px solid #696969;
+  image: url(qss:images_classic/indeterminate-mark-lightgray.png);
 }
 
 QCheckBox::indicator:indeterminate:hover, QCheckBox::indicator:indeterminate:pressed {
-  background-color: @ThemeAccentColor1; /* QRadioButton has the same color */
-}
+  background-color: @ThemeAccentColor1;
+    border: 1px solid #f0f0f0;
+  }
 
 /* QGroupBox --------------------------------------------------------------
 
@@ -332,7 +334,6 @@ QGroupBox::indicator {
   height: 12px;
   border-radius:1px;
 }
-
 
 QGroupBox::indicator:unchecked {
   background-color: #020202;
@@ -1452,7 +1453,7 @@ QComboBox::indicator {
 QComboBox::indicator:checked {
   width: 10px;
   height: 10px;
-  image: url(qss:images_classic/Check-Checked-white.png);
+  image: url(qss:images_classic/check-mark-white.png);
 }
 
 QComboBox::item {
@@ -2239,14 +2240,14 @@ QTreeView::indicator:checked,
 QListView::indicator:checked,
 QTableView::indicator:checked,
 QColumnView::indicator:checked {
-  image: url(qss:images_classic/check-checked-white.png);
+  image: url(qss:images_classic/check-mark-white.png);
 }
 
 QTreeView::indicator:checked:disabled ,
 QListView::indicator:checked:disabled ,
 QTableView::indicator:checked:disabled ,
 QColumnView::indicator:checked:disabled  {
-  image: url(qss:images_classic/check-checked-lightgray.png);
+  image: url(qss:images_classic/check-mark-lightgray.png);
   border: 1px solid #696969;
 }
 
@@ -2291,7 +2292,7 @@ QTreeView::indicator:indeterminate,
 QListView::indicator:indeterminate,
 QTableView::indicator:indeterminate,
 QColumnView::indicator:indeterminate {
-  image: url(qss:images_classic/Check-indeterminate-mark-white.png);
+  image: url(qss:images_classic/Indeterminate-mark-white.png);
 }
 
 QTreeView::indicator:indeterminate:hover, QTreeView::indicator:indeterminate:focus, QTreeView::indicator:indeterminate:pressed,
@@ -2304,7 +2305,7 @@ QTableView::indicator:indeterminate:pressed,
 QColumnView::indicator:indeterminate:hover,
 QColumnView::indicator:indeterminate:focus,
 QColumnView::indicator:indeterminate:pressed {
-  image: url(qss:images_classic/Check-indeterminate-mark-lightgray.png);
+  image: url(qss:images_classic/Indeterminate-mark-lightgray.png);
   background-color: @ThemeAccentColor1;
   border: 1px solid #ffffff;
 }
