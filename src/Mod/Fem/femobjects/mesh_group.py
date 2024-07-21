@@ -29,10 +29,10 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief mesh group object
 
-from . import base_fempythonobject
+from . import base_femmeshelement
 
 
-class MeshGroup(base_fempythonobject.BaseFemPythonObject):
+class MeshGroup(base_femmeshelement.BaseFemMeshElement):
     """
     The MeshGroup object
     """
@@ -49,11 +49,3 @@ class MeshGroup(base_fempythonobject.BaseFemPythonObject):
             "The identifier used for export (True: Label, False: Name)",
         )
         obj.setPropertyStatus("UseLabel", "LockDynamic")
-
-        obj.addProperty(
-            "App::PropertyLinkSubList",
-            "References",
-            "MeshGroupShapes",
-            "List of FEM mesh group shapes",
-        )
-        obj.setPropertyStatus("References", "LockDynamic")

@@ -31,6 +31,7 @@
 #include <unordered_set>
 #include <unordered_map>
 
+// #include "GeoFeature.h"
 #include "Property.h"
 
 namespace Base {
@@ -104,7 +105,7 @@ class AppExport PropertyLinkBase : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    using ShadowSub = std::pair<std::string,std::string>;
+    using ShadowSub = ElementNamePair;
 
     PropertyLinkBase();
     ~PropertyLinkBase() override;

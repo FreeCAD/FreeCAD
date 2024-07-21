@@ -270,13 +270,13 @@ void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::
     if (!obj || !obj->getNameInDocument() || sub.empty()) {
         return;
     }
-    if (shadow.first.empty()) {
+    if (shadow.newName.empty()) {
         _updateElementReference(0, obj, sub, shadow, false);
         return;
     }
     GeoFeature* geo = nullptr;
     const char* element = nullptr;
-    std::pair<std::string, std::string> elementName;
+    ShadowSub elementName;
     GeoFeature::resolveElement(obj,
                                sub.c_str(),
                                elementName,
@@ -350,10 +350,10 @@ void PropertyLinkBase::restoreLabelReference(const DocumentObject *obj,
 
     size_t count = sub-subname.c_str();
     const auto &newSub = ss.str();
-    if(shadow && shadow->second.size()>=count)
-        shadow->second = newSub + (shadow->second.c_str()+count);
-    if(shadow && shadow->first.size()>=count)
-        shadow->first = newSub + (shadow->first.c_str()+count);
+    if(shadow && shadow->oldName.size()>=count)
+        shadow->oldName = newSub + (shadow->oldName.c_str()+count);
+    if(shadow && shadow->newName.size()>=count)
+        shadow->newName = newSub + (shadow->newName.c_str()+count);
     subname = newSub + sub;
 }
 
@@ -367,11 +367,11 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     }
     ShadowSub elementName;
     const char* subname;
-    if (shadow.first.size()) {
-        subname = shadow.first.c_str();
+    if (shadow.newName.size()) {
+        subname = shadow.newName.c_str();
     }
-    else if (shadow.second.size()) {
-        subname = shadow.second.c_str();
+    else if (shadow.oldName.size()) {
+        subname = shadow.oldName.c_str();
     }
     else {
         subname = sub.c_str();
@@ -387,8 +387,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
                                           &element,
                                           &geo);
     if (!ret || !geo || !element || !element[0]) {
-        if (elementName.second.size()) {
-            shadow.second.swap(elementName.second);
+        if (elementName.oldName.size()) {
+            shadow.oldName.swap(elementName.oldName);
         }
         return false;
     }
@@ -398,8 +398,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     }
 
     if (!reverse) {
-        if (elementName.first.empty()) {
-            shadow.second.swap(elementName.second);
+        if (elementName.newName.empty()) {
+            shadow.oldName.swap(elementName.oldName);
             return false;
         }
         if (shadow == elementName) {
@@ -407,12 +407,12 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         }
     }
 
-    bool missing = GeoFeature::hasMissingElement(elementName.second.c_str());
+    bool missing = GeoFeature::hasMissingElement(elementName.oldName.c_str());
     if (feature == geo && (missing || reverse)) {
         // If the referenced element is missing, or we are generating element
         // map for the first time, or we are re-generating the element map due
         // to version change, i.e. 'reverse', try search by geometry first
-        const char* oldElement = Data::findElementName(shadow.second.c_str());
+        const char* oldElement = Data::findElementName(shadow.oldName.c_str());
         if (!Data::hasMissingElement(oldElement)) {
             const auto& names = geo->searchElementCache(oldElement);
             if (names.size()) {
@@ -425,9 +425,9 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
                                            true,
                                            GeoFeature::ElementNameType::Export,
                                            feature);
-                const auto& oldName = shadow.first.size() ? shadow.first : shadow.second;
+                const auto& oldName = shadow.newName.size() ? shadow.newName : shadow.oldName;
                 const auto& newName =
-                    elementName.first.size() ? elementName.first : elementName.second;
+                    elementName.newName.size() ? elementName.newName : elementName.oldName;
                 if (oldName != newName) {
                     FC_WARN(propertyName(this)
                             << " auto change element reference " << ret->getFullName() << " "
@@ -451,34 +451,34 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     if (missing) {
         FC_WARN(propertyName(this)
                 << " missing element reference " << ret->getFullName() << " "
-                << (elementName.first.size() ? elementName.first : elementName.second));
-        shadow.second.swap(elementName.second);
+                << (elementName.newName.size() ? elementName.newName : elementName.oldName));
+        shadow.oldName.swap(elementName.oldName);
     }
     else {
         FC_TRACE(propertyName(this) << " element reference shadow update " << ret->getFullName()
-                                    << " " << shadow.first << " -> " << elementName.first);
+                                    << " " << shadow.newName << " -> " << elementName.newName);
         shadow.swap(elementName);
-        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str())) {
-            updateSub(shadow.first);
+        if (shadow.newName.size() && Data::hasMappedElementName(sub.c_str())) {
+            updateSub(shadow.newName);
         }
     }
 
     if (reverse) {
-        if (shadow.first.size() && Data::hasMappedElementName(sub.c_str())) {
-            updateSub(shadow.first);
+        if (shadow.newName.size() && Data::hasMappedElementName(sub.c_str())) {
+            updateSub(shadow.newName);
         }
         else {
-            updateSub(shadow.second);
+            updateSub(shadow.oldName);
         }
         return true;
     }
     if (missing) {
-        if (sub != shadow.first) {
-            updateSub(shadow.second);
+        if (sub != shadow.newName) {
+            updateSub(shadow.oldName);
         }
         return true;
     }
-    auto pos2 = shadow.first.rfind('.');
+    auto pos2 = shadow.newName.rfind('.');
     if (pos2 == std::string::npos) {
         return true;
     }
@@ -491,16 +491,16 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         ++pos;
     }
     if (pos == pos2) {
-        if (sub.compare(pos, sub.size() - pos, &shadow.first[pos2]) != 0) {
-            FC_LOG("element reference update " << sub << " -> " << shadow.first);
+        if (sub.compare(pos, sub.size() - pos, &shadow.newName[pos2]) != 0) {
+            FC_LOG("element reference update " << sub << " -> " << shadow.newName);
             std::string newSub(sub);
-            newSub.replace(pos, sub.size() - pos, &shadow.first[pos2]);
+            newSub.replace(pos, sub.size() - pos, &shadow.newName[pos2]);
             updateSub(newSub);
         }
     }
-    else if (sub != shadow.second) {
-        FC_LOG("element reference update " << sub << " -> " << shadow.second);
-        updateSub(shadow.second);
+    else if (sub != shadow.oldName) {
+        FC_LOG("element reference update " << sub << " -> " << shadow.oldName);
+        updateSub(shadow.oldName);
     }
     return true;
 #else
@@ -1217,22 +1217,22 @@ static inline const std::string &getSubNameWithStyle(const std::string &subName,
         const PropertyLinkBase::ShadowSub &shadow, bool newStyle, std::string &tmp)
 {
     if(!newStyle) {
-        if(!shadow.second.empty())
-            return shadow.second;
-    }else if(!shadow.first.empty()) {
+        if(!shadow.oldName.empty())
+            return shadow.oldName;
+    }else if(!shadow.newName.empty()) {
 #ifdef FC_USE_TNP_FIX
-        if (Data::hasMissingElement(shadow.second.c_str())) {
-            auto pos = shadow.first.rfind('.');
+        if (Data::hasMissingElement(shadow.oldName.c_str())) {
+            auto pos = shadow.newName.rfind('.');
             if (pos != std::string::npos) {
-                tmp = shadow.first.substr(0, pos+1);
-                tmp += shadow.second;
+                tmp = shadow.newName.substr(0, pos+1);
+                tmp += shadow.oldName;
                 return tmp;
             }
         }
 #else
         (void) tmp;
 #endif
-        return shadow.first;
+        return shadow.newName;
     }
     return subName;
 }
@@ -1380,8 +1380,8 @@ static bool updateLinkReference(App::PropertyLinkBase *prop,
     if(!touched)
         return false;
     for(int idx : mapped) {
-        if(idx<(int)subs.size() && !shadows[idx].first.empty())
-            subs[idx] = shadows[idx].first;
+        if(idx<(int)subs.size() && !shadows[idx].newName.empty())
+            subs[idx] = shadows[idx].newName;
     }
     mapped.clear();
     if(owner && feature)
@@ -1593,15 +1593,15 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
     bool exporting = owner && owner->isExporting();
     for(unsigned int i = 0;i<_cSubList.size(); i++) {
         const auto &shadow = _ShadowSubList[i];
-        // shadow.second stores the old style element name. For backward
+        // shadow.oldName stores the old style element name. For backward
         // compatibility reason, we shall store the old name into attribute
         // 'value' whenever possible.
-        const auto &sub = shadow.second.empty()?_cSubList[i]:shadow.second;
+        const auto &sub = shadow.oldName.empty()?_cSubList[i]:shadow.oldName;
         writer.Stream() << writer.ind() << "<Sub value=\"";
         if(exporting) {
             std::string exportName;
             writer.Stream() << encodeAttribute(exportSubName(exportName,_pcLinkSub,sub.c_str()));
-            if(!shadow.second.empty() && shadow.first == _cSubList[i])
+            if(!shadow.oldName.empty() && shadow.newName == _cSubList[i])
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << encodeAttribute(sub);
@@ -1610,10 +1610,10 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
                     // Stores the actual value that is shadowed. For new version FC,
                     // we will restore this shadowed value instead.
                     writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(_cSubList[i]);
-                }else if(!shadow.first.empty()){
+                }else if(!shadow.newName.empty()){
                     // Here means the user set value is old style element name.
                     // We shall then store the shadow somewhere else.
-                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.first);
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.newName);
                 }
             }
         }
@@ -1653,14 +1653,14 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
-        shadows[i].second = importSubName(reader,reader.getAttribute("value"),restoreLabel);
+        shadows[i].oldName = importSubName(reader,reader.getAttribute("value"),restoreLabel);
         if(reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
-            values[i] = shadows[i].first =
+            values[i] = shadows[i].newName =
                 importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
         } else {
-            values[i] = shadows[i].second;
+            values[i] = shadows[i].oldName;
             if(reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW)
-                shadows[i].first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+                shadows[i].newName = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
         }
         if(reader.hasAttribute(ATTR_MAPPED))
             mapped.push_back(i);
@@ -2259,10 +2259,10 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues(b
     for (std::size_t i = 0; i < _lValueList.size(); i++) {
         App::DocumentObject* link = _lValueList[i];
         std::string sub;
-        if(newStyle && !_ShadowSubList[i].first.empty())
-            sub = _ShadowSubList[i].first;
-        else if(!newStyle && !_ShadowSubList[i].second.empty())
-            sub = _ShadowSubList[i].second;
+        if(newStyle && !_ShadowSubList[i].newName.empty())
+            sub = _ShadowSubList[i].newName;
+        else if(!newStyle && !_ShadowSubList[i].oldName.empty())
+            sub = _ShadowSubList[i].oldName;
         else
             sub = _lSubList[i];
         if (values.empty() || values.back().first != link){
@@ -2404,8 +2404,8 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
     mapped.reserve(_mapped.size());
     for(int idx : _mapped) {
         if(idx<(int)_lSubList.size()) {
-            if(!_ShadowSubList[idx].first.empty())
-                _lSubList[idx] = _ShadowSubList[idx].first;
+            if(!_ShadowSubList[idx].newName.empty())
+                _lSubList[idx] = _ShadowSubList[idx].newName;
             else
                 mapped.push_back(idx);
         }
@@ -2439,16 +2439,16 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
         if(!obj || !obj->isAttachedToDocument())
             continue;
         const auto &shadow = _ShadowSubList[i];
-        // shadow.second stores the old style element name. For backward
+        // shadow.oldName stores the old style element name. For backward
         // compatibility reason, we shall store the old name into attribute
         // 'value' whenever possible.
-        const auto &sub = shadow.second.empty()?_lSubList[i]:shadow.second;
+        const auto &sub = shadow.oldName.empty()?_lSubList[i]:shadow.oldName;
 
         writer.Stream() << writer.ind() << "<Link obj=\"" << obj->getExportName() << "\" sub=\"";
         if(exporting) {
             std::string exportName;
             writer.Stream() << encodeAttribute(exportSubName(exportName,obj,sub.c_str()));
-            if(!shadow.second.empty() && _lSubList[i]==shadow.first)
+            if(!shadow.oldName.empty() && _lSubList[i]==shadow.newName)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << encodeAttribute(sub);
@@ -2457,10 +2457,10 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
                     // Stores the actual value that is shadowed. For new version FC,
                     // we will restore this shadowed value instead.
                     writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(_lSubList[i]);
-                }else if(!shadow.first.empty()) {
+                }else if(!shadow.newName.empty()) {
                     // Here means the user set value is old style element name.
                     // We shall then store the shadow somewhere else.
-                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.first);
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.newName);
                 }
             }
         }
@@ -2500,14 +2500,14 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
             values.push_back(child);
             shadows.emplace_back();
             auto &shadow = shadows.back();
-            shadow.second = importSubName(reader,reader.getAttribute("sub"),restoreLabel);
+            shadow.oldName = importSubName(reader,reader.getAttribute("sub"),restoreLabel);
             if(reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
-                shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
-                SubNames.push_back(shadow.first);
+                shadow.newName = importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
+                SubNames.push_back(shadow.newName);
             }else{
-                SubNames.push_back(shadow.second);
+                SubNames.push_back(shadow.oldName);
                 if(reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW)
-                    shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+                    shadow.newName = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
             }
             if(reader.hasAttribute(ATTR_MAPPED))
                 mapped.push_back(i);
@@ -3608,20 +3608,20 @@ void PropertyXLink::Save (Base::Writer &writer) const {
     } else if(_SubList.size() == 1) {
         const auto &subName = _SubList[0];
         const auto &shadowSub = _ShadowSubList[0];
-        const auto &sub = shadowSub.second.empty()?subName:shadowSub.second;
+        const auto &sub = shadowSub.oldName.empty()?subName:shadowSub.oldName;
         if(exporting) {
             std::string exportName;
             writer.Stream() << "\" sub=\"" << 
                 encodeAttribute(exportSubName(exportName,_pcLink,sub.c_str()));
-            if(!shadowSub.second.empty() && shadowSub.first==subName)
+            if(!shadowSub.oldName.empty() && shadowSub.newName==subName)
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         }else{
             writer.Stream() << "\" sub=\"" << encodeAttribute(sub);
             if(!sub.empty()) {
                 if(sub!=subName)
                     writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(subName);
-                else if(!shadowSub.first.empty())
-                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadowSub.first);
+                else if(!shadowSub.newName.empty())
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadowSub.newName);
             }
         }
         writer.Stream() << "\"/>" << std::endl;
@@ -3630,23 +3630,23 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         writer.incInd();
         for(unsigned int i = 0;i<_SubList.size(); i++) {
             const auto &shadow = _ShadowSubList[i];
-            // shadow.second stores the old style element name. For backward
+            // shadow.oldName stores the old style element name. For backward
             // compatibility reason, we shall store the old name into attribute
             // 'value' whenever possible.
-            const auto &sub = shadow.second.empty()?_SubList[i]:shadow.second;
+            const auto &sub = shadow.oldName.empty()?_SubList[i]:shadow.oldName;
             writer.Stream() << writer.ind() << "<Sub value=\"";
             if(exporting) {
                 std::string exportName;
                 writer.Stream() << encodeAttribute(exportSubName(exportName,_pcLink,sub.c_str()));
-                if(!shadow.second.empty() && shadow.first == _SubList[i])
+                if(!shadow.oldName.empty() && shadow.newName == _SubList[i])
                     writer.Stream() << "\" " ATTR_MAPPED "=\"1";
             } else {
                 writer.Stream() << encodeAttribute(sub);
                 if(!_SubList[i].empty()) {
                     if(sub!=_SubList[i])
                         writer.Stream() << "\" " ATTR_SHADOWED "=\"" << encodeAttribute(_SubList[i]);
-                    else if(!shadow.first.empty())
-                        writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.first);
+                    else if(!shadow.newName.empty())
+                        writer.Stream() << "\" " ATTR_SHADOW "=\"" << encodeAttribute(shadow.newName);
                 }
             }
             writer.Stream()<<"\"/>" << endl;
@@ -3699,13 +3699,13 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         auto &subname = subs.back();
         shadows.emplace_back();
         auto &shadow = shadows.back();
-        shadow.second = importSubName(reader,reader.getAttribute("sub"),restoreLabel);
+        shadow.oldName = importSubName(reader,reader.getAttribute("sub"),restoreLabel);
         if(reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW)
-            subname = shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
+            subname = shadow.newName = importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
         else {
-            subname = shadow.second;
+            subname = shadow.oldName;
             if(reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW)
-                shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+                shadow.newName = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
         }
     }else if(reader.hasAttribute("count")) {
         int count = reader.getAttributeAsInteger("count");
@@ -3713,14 +3713,14 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         shadows.resize(count);
         for (int i = 0; i < count; i++) {
             reader.readElement("Sub");
-            shadows[i].second = importSubName(reader,reader.getAttribute("value"),restoreLabel);
+            shadows[i].oldName = importSubName(reader,reader.getAttribute("value"),restoreLabel);
             if(reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW)
-                subs[i] = shadows[i].first =
+                subs[i] = shadows[i].newName =
                     importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
             else {
-                subs[i] = shadows[i].second;
+                subs[i] = shadows[i].oldName;
                 if(reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW)
-                    shadows[i].first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+                    shadows[i].newName = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
             }
             if(reader.hasAttribute(ATTR_MAPPED))
                 mapped.push_back(i);

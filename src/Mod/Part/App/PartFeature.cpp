@@ -58,6 +58,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/GeoFeature.h>
 #include <App/Link.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/ElementNamingUtils.h>
@@ -132,10 +133,10 @@ PyObject *Feature::getPyObject()
  * method
  * @param name The name to search for, or if non existent, name of current Feature is returned
  * @param type An element type name.
- * @return The element name located, of
+ * @return a struct with the newName and oldName. New element name may be empty.
  */
-std::pair<std::string, std::string> Feature::getElementName(const char* name,
-                                                            ElementNameType type) const
+App::ElementNamePair Feature::getElementName(const char* name,
+                                                ElementNameType type) const
 {
     if (type != ElementNameType::Export) {
         return App::GeoFeature::getElementName(name, type);
@@ -151,7 +152,7 @@ std::pair<std::string, std::string> Feature::getElementName(const char* name,
     return getExportElementName(prop->getShape(), name);
 }
 
-std::pair<std::string, std::string> Feature::getExportElementName(TopoShape shape,
+App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                                                                   const char* name) const
 {
     Data::MappedElement mapped = shape.getElementName(name);
@@ -657,14 +658,14 @@ QVector<Data::MappedElement> Feature::getElementFromSource(App::DocumentObject* 
             return true;
         }
         if (name == element.name) {
-            std::pair<std::string, std::string> objElement;
+            App::ElementNamePair objElement;
             std::size_t len = sub.size();
             checkingSubname.appendToStringBuffer(sub);
             GeoFeature::resolveElement(obj, sub.c_str(), objElement);
             sub.resize(len);
-            if (objElement.second.size()) {
-                res.push_back(Data::MappedElement(Data::MappedName(objElement.first),
-                                                  Data::IndexedName(objElement.second.c_str())));
+            if (objElement.oldName.size()) {
+                res.push_back(Data::MappedElement(Data::MappedName(objElement.newName),
+                                                  Data::IndexedName(objElement.oldName.c_str())));
                 return true;
             }
         }
@@ -672,13 +673,13 @@ QVector<Data::MappedElement> Feature::getElementFromSource(App::DocumentObject* 
     };
 
     // obtain both the old and new style element name
-    std::pair<std::string, std::string> objElement;
+    App::ElementNamePair objElement;
     GeoFeature::resolveElement(src, srcSub, objElement, false);
 
-    element.index = Data::IndexedName(objElement.second.c_str());
-    if (!objElement.first.empty()) {
+    element.index = Data::IndexedName(objElement.oldName.c_str());
+    if (!objElement.newName.empty()) {
         // Strip prefix and indexed based name at the tail of the new style element name
-        auto mappedName = Data::newElementName(objElement.first.c_str());
+        auto mappedName = Data::newElementName(objElement.newName.c_str());
         auto mapped = Data::isMappedElement(mappedName.c_str());
         if (mapped) {
             element.name = Data::MappedName(mapped);
@@ -686,18 +687,18 @@ QVector<Data::MappedElement> Feature::getElementFromSource(App::DocumentObject* 
     }
 
     // Translate the element name for datum
-    if (objElement.second == "Plane") {
-        objElement.second = "Face1";
+    if (objElement.oldName == "Plane") {
+        objElement.oldName = "Face1";
     }
-    else if (objElement.second == "Line") {
-        objElement.second = "Edge1";
+    else if (objElement.oldName == "Line") {
+        objElement.oldName = "Edge1";
     }
-    else if (objElement.second == "Point") {
-        objElement.second = "Vertex1";
+    else if (objElement.oldName == "Point") {
+        objElement.oldName = "Vertex1";
     }
 
     // Use the old style name to obtain the shape type
-    auto type = TopoShape::shapeType(Data::findElementName(objElement.second.c_str()));
+    auto type = TopoShape::shapeType(Data::findElementName(objElement.oldName.c_str()));
     // If the given shape has the same number of sub shapes as the source (e.g.
     // a compound operation), then take a shortcut and assume the element index
     // remains the same. But we still need to trace the shape history to
@@ -714,7 +715,7 @@ QVector<Data::MappedElement> Feature::getElementFromSource(App::DocumentObject* 
     }
 
     // Try geometry search first
-    auto subShape = srcShape.getSubShape(objElement.second.c_str());
+    auto subShape = srcShape.getSubShape(objElement.oldName.c_str());
     std::vector<std::string> names;
     shape.findSubShapesWithSharedVertex(subShape, &names);
     if (names.size()) {

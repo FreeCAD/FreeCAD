@@ -32,6 +32,7 @@
 #include <string>
 #include <FCGlobal.h>
 
+#include "ElementNamingUtils.h"
 namespace Py {
 class Object;
 }
