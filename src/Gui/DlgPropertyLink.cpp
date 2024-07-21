@@ -639,13 +639,13 @@ void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
     bool found = false;
     auto selObj = msg.Object.getObject();
 
-    std::pair<std::string,std::string> elementName;
+    App::ElementNamePair elementName;
     const char *subname = msg.pSubName;
     if(!ui->checkSubObject->isChecked()) {
         selObj = App::GeoFeature::resolveElement(selObj,subname,elementName);
         if(!selObj)
             return;
-        subname = elementName.second.c_str();
+        subname = elementName.oldName.c_str();
     }
 
     auto item = findItem(selObj, msg.pSubName, &found);

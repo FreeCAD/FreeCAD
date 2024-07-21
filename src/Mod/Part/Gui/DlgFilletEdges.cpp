@@ -600,7 +600,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
     }
     std::set<std::string> subSet;
     for(auto &sub : subs)
-        subSet.insert(sub.first.empty()?sub.second:sub.first);
+        subSet.insert(sub.newName.empty()?sub.oldName:sub.newName);
 
     std::string tmp;
     std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
@@ -628,16 +628,16 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         std::set<Part::FilletElement> elements;
         for(size_t i=0;i<e.size();++i) {
             auto &sub = subs[i];
-            if(sub.first.empty()) {
+            if(sub.newName.empty()) {
                 int idx = 0;
-                sscanf(sub.second.c_str(),"Edge%d",&idx);
+                sscanf(sub.oldName.c_str(),"Edge%d",&idx);
                 if(idx==0)
-                    FC_WARN("missing element reference: " << sub.second);
+                    FC_WARN("missing element reference: " << sub.oldName);
                 else
                     elements.insert(e[i]);
                 continue;
             }
-            auto &ref = sub.first;
+            auto &ref = sub.newName;
             Part::TopoShape edge;
             try {
                 edge = baseShape.getSubShape(ref.c_str());

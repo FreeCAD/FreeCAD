@@ -77,17 +77,15 @@ public:
         /// For exporting
         Export=2,
     };
+
     /** Return the new and old style sub-element name
      *
      * @param name: input name
      * @param type: desired element name type to return
      *
-     * @return a pair(newName,oldName). New element name may be empty.
-     *
-     * This function currently is does nothing. The new style element name
-     * generation will be added in the next batch of patches.
+     * @return a struct with the newName and oldName. New element name may be empty.
      */
-    virtual std::pair<std::string,std::string> getElementName(
+    virtual ElementNamePair getElementName(  // NOLINT(google-default-arguments)
             const char *name, ElementNameType type=Normal) const;
 
     /** Resolve both the new and old style element name
@@ -105,7 +103,7 @@ public:
      * @return Return the owner object of the element
      */
     static DocumentObject *resolveElement(App::DocumentObject *obj, 
-            const char *subname, std::pair<std::string,std::string> &elementName, 
+            const char *subname, ElementNamePair &elementName,
             bool append=false, ElementNameType type=Normal,
             const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
 
@@ -185,9 +183,10 @@ protected:
 //    void onDocumentRestored() override;
     void updateElementReference();
 #endif
+
 protected:
-    std::pair<std::string, std::string> _getElementName(const char* name,
-                                                        const Data::MappedElement& mapped) const;
+    ElementNamePair _getElementName(const char* name,
+                                    const Data::MappedElement& mapped) const;
 };
 
 } //namespace App

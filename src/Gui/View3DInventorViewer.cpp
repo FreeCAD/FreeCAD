@@ -3356,7 +3356,7 @@ void View3DInventorViewer::alignToSelection()
 
     // Get the geo feature
     App::GeoFeature* geoFeature = nullptr;
-    std::pair<std::string, std::string> elementName;
+    App::ElementNamePair elementName;
     App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
     if (!geoFeature) {
         return;
