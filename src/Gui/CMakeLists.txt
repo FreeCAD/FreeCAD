@@ -1005,15 +1005,15 @@ SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 
 # The Inventor sources
 SET(Inventor_CPP_SRCS
-    Inventor/SoDrawingGrid.cpp
-    Inventor/SoAutoZoomTranslation.cpp
     Inventor/MarkerBitmaps.cpp
     Inventor/SmSwitchboard.cpp
-    Inventor/SoFCBoundingBox.cpp
     Inventor/So3DAnnotation.cpp
+    Inventor/SoAutoZoomTranslation.cpp
     Inventor/SoAxisCrossKit.cpp
+    Inventor/SoDrawingGrid.cpp
+    Inventor/SoFCBackgroundGradient.cpp
+    Inventor/SoFCBoundingBox.cpp
     Inventor/SoMouseWheelEvent.cpp
-    SoFCBackgroundGradient.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1036,14 +1036,14 @@ SET(Inventor_CPP_SRCS
 )
 SET(Inventor_SRCS
     ${Inventor_CPP_SRCS}
-    Inventor/SoDrawingGrid.h
-    Inventor/SoAutoZoomTranslation.h
     Inventor/MarkerBitmaps.h
     Inventor/SmSwitchboard.h
-    Inventor/SoFCBoundingBox.h
+    Inventor/SoAutoZoomTranslation.h
     Inventor/SoAxisCrossKit.h
+    Inventor/SoDrawingGrid.h
+    Inventor/SoFCBackgroundGradient.h
+    Inventor/SoFCBoundingBox.h
     Inventor/SoMouseWheelEvent.h
-    SoFCBackgroundGradient.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
