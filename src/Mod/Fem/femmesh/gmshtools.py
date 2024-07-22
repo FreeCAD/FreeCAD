@@ -607,8 +607,6 @@ class GmshTools:
                                 for i in range(mr_obj.NumberOfLayers)
                             ]
                         )
-                        # setting["hwall_n"] * 5 # tangential cell dimension
-                        setting["hwall_t"] = setting["thickness"]
 
                         # hfar: cell dimension outside boundary
                         # should be set later if some character length is set
