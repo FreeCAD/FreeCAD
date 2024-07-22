@@ -46,9 +46,6 @@
 
 
 #include "AssemblyObject.h"
-#include "BomGroup.h"
-#include "JointGroup.h"
-#include "ViewGroup.h"
 #include "BomObject.h"
 #include "BomObjectPy.h"
 
@@ -188,8 +185,8 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
             }
         }
 
-        if (child->isDerivedFrom<BomGroup>() || child->isDerivedFrom<JointGroup>()
-            || child->isDerivedFrom<ViewGroup>()) {
+        if (!child->isDerivedFrom<AssemblyObject>() && !child->isDerivedFrom<App::Part>()
+            && !(child->isDerivedFrom<Part::Feature>() && !onlyParts.getValue())) {
             continue;
         }
 
@@ -213,21 +210,15 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
             }
         }
 
-        if (child->isDerivedFrom<App::DocumentObjectGroup>()
-            || child->isDerivedFrom<AssemblyObject>() || child->isDerivedFrom<App::Part>()
-            || (child->isDerivedFrom<Part::Feature>() && !onlyParts.getValue())) {
+        std::string sub_index = index + std::to_string(sub_i);
+        ++sub_i;
 
-            std::string sub_index = index + std::to_string(sub_i);
-            ++sub_i;
+        addObjectToBom(child, row, sub_index);
+        ++row;
 
-            addObjectToBom(child, row, sub_index);
-            ++row;
-
-            if (child->isDerivedFrom<App::DocumentObjectGroup>()
-                || (child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
-                || (child->isDerivedFrom<App::Part>() && detailParts.getValue())) {
-                addObjectChildrenToBom(child->getOutList(), row, sub_index);
-            }
+        if ((child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
+            || (child->isDerivedFrom<App::Part>() && detailParts.getValue())) {
+            addObjectChildrenToBom(child->getOutList(), row, sub_index);
         }
     }
 }
