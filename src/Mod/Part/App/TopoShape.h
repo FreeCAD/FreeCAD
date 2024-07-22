@@ -1496,6 +1496,9 @@ public:
     Data::ElementMapPtr resetElementMap(
         Data::ElementMapPtr elementMap=Data::ElementMapPtr()) override;
 
+    std::vector<Data::IndexedName> getHigherElements(const char *element,
+                                                     bool silent = false) const override;
+
     /** Helper class to return the generated and modified shape given an input shape
      *
      * Shape history information is extracted using OCCT APIs

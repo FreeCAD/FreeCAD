@@ -3714,7 +3714,7 @@ struct MapperPrism: MapperMaker
             }
         }
     }
-    virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
     {
         _res.clear();
         switch (s.ShapeType()) {
