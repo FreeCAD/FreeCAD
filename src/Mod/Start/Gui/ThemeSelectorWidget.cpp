@@ -141,6 +141,11 @@ void ThemeSelectorWidget::themeChanged(Theme newTheme)
             prefPackManager->apply("FreeCAD Light");
             break;
     }
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
+    hGrp->SetUnsigned("ThemeAccentColor1", 1434171135);
+    hGrp->SetUnsigned("ThemeAccentColor2", 1434171135);
+    hGrp->SetUnsigned("ThemeAccentColor3", 1434171135);
 }
 
 bool ThemeSelectorWidget::eventFilter(QObject* object, QEvent* event)
