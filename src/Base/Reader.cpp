@@ -111,20 +111,18 @@ unsigned int Base::XMLReader::getAttributeCount() const
 
 long Base::XMLReader::getAttributeAsInteger(const char* AttrName, const char* defaultValue) const
 {
-    const int base = 10;
-    return strtol(getAttribute(AttrName, defaultValue), nullptr, base);
+    return stol(getAttribute(AttrName, defaultValue));
 }
 
 unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName,
                                                       const char* defaultValue) const
 {
-    const int base = 10;
-    return strtoul(getAttribute(AttrName, defaultValue), nullptr, base);
+    return stoul(getAttribute(AttrName, defaultValue), nullptr);
 }
 
 double Base::XMLReader::getAttributeAsFloat(const char* AttrName, const char* defaultValue) const
 {
-    return strtod(getAttribute(AttrName, defaultValue), nullptr);
+    return stod(getAttribute(AttrName, defaultValue), nullptr);
 }
 
 const char* Base::XMLReader::getAttribute(const char* AttrName,            // NOLINT
