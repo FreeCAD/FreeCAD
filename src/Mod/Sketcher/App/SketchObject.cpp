@@ -201,9 +201,6 @@ void SketchObject::setupObject()
 {
     ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
-//    ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
-//    ExternalBSplineMaxDegree.setValue(hGrpp->GetInt("ExternalBSplineMaxDegree", 5));
-//    ExternalBSplineTolerance.setValue(hGrpp->GetFloat("ExternalBSplineTolerance", 1e-4));
     MakeInternals.setValue(hGrpp->GetBool("MakeInternals", false));
     inherited::setupObject();
 }
@@ -402,42 +399,31 @@ const std::map<std::string,std::string> SketchObject::getInternalElementMap() co
     return internalElementMap;
 }
 
-Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
-{
+Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const {
     if (!MakeInternals.getValue())
         return Part::TopoShape();
 
     try {
         Part::WireJoiner joiner;
-//        joiner.setTolerance(InternalTolerance.getValue());
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
         joiner.addShape(edges);
         Part::TopoShape result(getID(), getDocument()->getStringHasher());
         if (!joiner.Shape().IsNull()) {
             joiner.getResultWires(result, "SKF");
-
-            // NOTE: we set minElementNames to 2 (i.e to use at least two
-            // unused edge name to construct face name) in order to reduce the
-            // chance of face jumping.
             result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
-                                     /*op*/"",
-                                     /*maker*/"Part::FaceMakerRing",
-                                     /*pln*/nullptr
-#if 1
-//                                     /*minElementNames (revert to 1 for now, see how it fares)*/1
-#else
-                                     /*minElementNames*/2
-#endif
-                                    );
+                    /*op*/"",
+                    /*maker*/"Part::FaceMakerRing",
+                    /*pln*/nullptr
+            );
         }
         Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
         joiner.getOpenWires(openWires, "SKF");
         if (openWires.isNull())
-            return result;
+            return result;  // No open wires, return either face or empty toposhape
         if (result.isNull())
-            return openWires;
-        return result.makeElementCompound({result, openWires});
+            return openWires;   // No face, but we have open wires to return as a shape
+        return result.makeElementCompound({result, openWires}); // Compound and return both
     } catch (Base::Exception &e) {
         FC_WARN("Failed to make face for sketch: " << e.what());
     } catch (Standard_Failure &e) {
@@ -9771,7 +9757,7 @@ App::ElementNamePair SketchObject::getElementName(
         if (mapped)
             mappedElement = InternalShape.getShape().getElementName(name);
         else if (type == ElementNameType::Export)
-            ret.first = getExportElementName(InternalShape.getShape(), realName).first;
+            ret.newName = getExportElementName(InternalShape.getShape(), realName).newName;
         else
             mappedElement = InternalShape.getShape().getElementName(realName);
 
@@ -9937,12 +9923,11 @@ bool SketchObject::geoIdFromShapeType(const Data::IndexedName & indexedName,
     return true;
 }
 
-std::string SketchObject::convertSubName(const char *subname, bool postfix) const
-{
+std::string SketchObject::convertSubName(const char *subname, bool postfix) const {
     return convertSubName(checkSubName(subname), postfix);
 }
 
-std::string SketchObject::convertSubName(const Data::IndexedName & indexedName, bool postfix) const{
+std::string SketchObject::convertSubName(const Data::IndexedName &indexedName, bool postfix) const {
     std::ostringstream ss;
     if (auto realType = convertInternalName(indexedName.getType())) {
         auto mapped = InternalShape.getShape().getMappedName(
@@ -9958,40 +9943,40 @@ std::string SketchObject::convertSubName(const Data::IndexedName & indexedName, 
     }
     int geoId;
     PointPos posId;
-    if(!geoIdFromShapeType(indexedName,geoId,posId)) {
+    if (!geoIdFromShapeType(indexedName, geoId, posId)) {
         ss << indexedName;
         return ss.str();
     }
-    if(geoId == Sketcher::GeoEnum::HAxis ||
-       geoId == Sketcher::GeoEnum::VAxis ||
-       geoId == Sketcher::GeoEnum::RtPnt) {
+    if (geoId == Sketcher::GeoEnum::HAxis ||
+        geoId == Sketcher::GeoEnum::VAxis ||
+        geoId == Sketcher::GeoEnum::RtPnt) {
         if (postfix)
             ss << Data::ELEMENT_MAP_PREFIX;
         ss << indexedName;
-        if(postfix)
-           ss  << '.' << indexedName;
+        if (postfix)
+            ss << '.' << indexedName;
         return ss.str();
     }
 
     auto geo = getGeometry(geoId);
-    if(!geo) {
+    if (!geo) {
         std::string res = indexedName.toString();
         return res;
     }
     if (postfix)
         ss << Data::ELEMENT_MAP_PREFIX;
-    ss << (geoId>=0?'g':'e') << GeometryFacade::getFacade(geo)->getId();
-    if(posId!=PointPos::none)
+    ss << (geoId >= 0 ? 'g' : 'e') << GeometryFacade::getFacade(geo)->getId();
+    if (posId != PointPos::none)
         ss << 'v' << static_cast<int>(posId);
-    if(postfix) {
+    if (postfix) {
         // rename Edge to edge, and Vertex to vertex to avoid ambiguous of
         // element mapping of the public shape and internal geometry.
         if (indexedName.getIndex() <= 0)
             ss << '.' << indexedName;
-        else if(boost::starts_with(indexedName.getType(),"Edge"))
-            ss << ".e" << (indexedName.getType()+1) << indexedName.getIndex();
-        else if(boost::starts_with(indexedName.getType(),"Vertex"))
-            ss << ".v" << (indexedName.getType()+1) << indexedName.getIndex();
+        else if (boost::starts_with(indexedName.getType(), "Edge"))
+            ss << ".e" << (indexedName.getType() + 1) << indexedName.getIndex();
+        else if (boost::starts_with(indexedName.getType(), "Vertex"))
+            ss << ".v" << (indexedName.getType() + 1) << indexedName.getIndex();
         else
             ss << '.' << indexedName;
     }
