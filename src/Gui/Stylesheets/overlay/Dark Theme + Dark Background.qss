@@ -8,14 +8,13 @@ QFrame {
 
  QAbstractItemView {
    alternate-background-color: rgba(0, 0, 0, 0.119);
-   color: White;
-   border: transparent;
-   padding-right: 5px;
+   color: #ffffff;
+   border: 1px solid #252525;
  }
 
  Gui--OverlayTitleBar,
  Gui--OverlaySplitterHandle {
-   background-color: transparent;
+   background-color: #252525;
  }
 
  Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
@@ -28,17 +27,17 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
   color: #ffffff;
-  background-color: #181d2a;
+  background-color: #234497;
 }
 
 Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
   color: #ffffff;
-  background-color: #181d2a;
+  background-color: #234497;
 }
 
  Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
   color: #ffffff;
-  background-color: #181d2a;
+  background-color: #234497;
 }
 
  /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
@@ -67,7 +66,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
    qproperty-enableEffect: 1;
  }
 
- Gui--PropertyEditor--PropertyEditor {
+Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: #333333;
 }
 
@@ -79,7 +78,7 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
  QSint--ActionGroup QFrame[class="content"] {
    border-bottom-left-radius: 5px;
    border-bottom-right-radius: 5px;
-   }
+ }
 
  Gui--OverlayTabWidget::tab-bar:top,
  Gui--OverlayTabWidget::tab-bar:bottom {
@@ -98,68 +97,62 @@ Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
  }
 
  Gui--OverlayToolButton {
-  border: 0.5px solid transparent;
+  border: 1px solid transparent;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:hover {
-  border: 0.5px solid #f5f5f5;
+  border: 1px solid #000000;
+  background: #000000;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton:focus {
-  border: 0.5px solid #0099ff;
+  border: 1px solid #0099ff;
   border-radius: 2px;
 }
 
 Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
-  border: 0.5px solid #696969;
+  border: 1px solid #696969;
   border-radius: 2px;
   background-color: #696969;
 }
 
 Gui--OverlayToolButton:checked:hover {
-  border: 0.5px solid #f5f5f5;
+  border: 1px solid #000000;
+  background: #000000;
 }
 
- Gui--OverlayToolButton[objectName="OBTN Transparent"] {
-  image: url(qss:overlay/icons/mode_lighter.svg);
+Gui--OverlayToolButton{
+  image: url(qss:images_classic/close-lightgray.png) ;
+}
 
- }
+Gui--OverlayToolButton:hover {
+  image: url(qss:images_classic/close-red.png) ;
+}
 
- Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-  image: url(qss:overlay/icons/mode_lighter.svg);
+Gui--OverlayToolButton[objectName="OBTN Transparent"] {
+  image: url(qss:images_classic/transparent-lightgray.png) ;
+  }
 
- }
+Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
+  image: url(qss:images_classic/transparent-white.png) ;
+}
 
- Gui--OverlayToolButton[objectName="OBTN Overlay"]  {
-  image: url(qss:overlay/icons/mode_lighter.svg);
+Gui--OverlayToolButton[objectName="OBTN Overlay"] {
+  image: url(qss:images_classic/overlay-lightgray.png) ;
+}
 
- }
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
+  image: url(qss:images_classic/overlay-white.png) ;
+}
 
- Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
-  image: url(qss:overlay/icons/mode_lighter.svg);
+Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
+  image: url(qss:images_classic/mode-lightgray.png) ;
+}
 
- }
+Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
+  image: url(qss:images_classic/mode-white.png) ;
+}
 
- Gui--OverlayToolButton[objectName="OBTN AutoMode"]  {
-  image: url(qss:overlay/icons/mode_lighter.svg);
-
- }
-
- Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
-  image: url(qss:overlay/icons/mode_lighter.svg);
-
- }
-
- Gui--OverlaySplitterHandle Gui--OverlayToolButton,
- Gui--OverlayToolButton[objectName="OBTN Float"]  {
-  image: url(qss:overlay/icons/mode_lighter.svg);
-
- }
-
- Gui--OverlaySplitterHandle Gui--OverlayToolButton:hover,
- Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
-   image: url(qss:overlay/icons/mode_lighter.svg);
- }
