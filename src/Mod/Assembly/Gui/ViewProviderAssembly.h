@@ -101,6 +101,9 @@ public:
                             bool pressed,
                             const SbVec2s& cursorPos,
                             const Gui::View3DInventorViewer* viewer) override;
+    // Function to handle double click event
+    void doubleClickedIn3dView();
+
 
     /// Finds what drag mode should be used based on the user selection.
     DragMode findDragMode();
@@ -170,6 +173,9 @@ public:
     bool moveInCommand;
     bool jointVisibilityBackup;
     bool ctrlPressed;
+
+    long lastClickTime;  // Store last click time as milliseconds
+
     int numberOfSel;
     Base::Vector3d prevPosition;
     Base::Vector3d initialPosition;
