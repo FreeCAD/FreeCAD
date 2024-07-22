@@ -142,13 +142,11 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
 TaskPipeParameters::~TaskPipeParameters()
 {
     try {
-        if (vp) {
-            PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-
+        if (auto pipe = getObject<PartDesign::Pipe>()) {
             // setting visibility to true is needed when preselecting profile and path prior to invoking sweep
             Gui::cmdGuiObject(pipe, "Visibility = True");
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
+            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine, false);
+            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile, false);
         }
     }
     catch (const Standard_OutOfRange&) {
@@ -228,27 +226,32 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskPipeParameters::onTransitionChanged(int idx)
 {
-    static_cast<PartDesign::Pipe*>(vp->getObject())->Transition.setValue(idx);
-    recomputeFeature();
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        pipe->Transition.setValue(idx);
+        recomputeFeature();
+    }
 }
 
 void TaskPipeParameters::onProfileButton(bool checked)
 {
     if (checked) {
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        Gui::Document* doc = vp->getDocument();
+        if (auto pipe = getObject<PartDesign::Pipe>()) {
+            Gui::Document* doc = getGuiDocument();
 
-        if (pipe->Profile.getValue()) {
-            auto* pvp = doc->getViewProvider(pipe->Profile.getValue());
-            pvp->setVisible(true);
+            if (pipe->Profile.getValue()) {
+                auto* pvp = doc->getViewProvider(pipe->Profile.getValue());
+                pvp->setVisible(true);
+            }
         }
     }
 }
 
 void TaskPipeParameters::onTangentChanged(bool checked)
 {
-    static_cast<PartDesign::Pipe*>(vp->getObject())->SpineTangent.setValue(checked);
-    recomputeFeature();
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        pipe->SpineTangent.setValue(checked);
+        recomputeFeature();
+    }
 }
 
 void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString itemstr)
@@ -272,7 +275,7 @@ void TaskPipeParameters::onDeleteEdge()
         delete item;
 
         // search inside the list of spines
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        auto pipe = getObject<PartDesign::Pipe>();
         std::vector<std::string> refs = pipe->Spine.getSubValues();
         std::string obj = data.constData();
         std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), obj);
@@ -293,21 +296,21 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
 
     if (msg.Type == Gui::SelectionChanges::AddSelection &&
         selectionMode != StateHandlerTaskPipe::SelectionModes::none) {
-        if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
+        if (strcmp(msg.pDocName, getAppDocument()->getName()) != 0)
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
+        const char* fname = getObject()->getNameInDocument();
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
 
         switch (selectionMode) {
         case StateHandlerTaskPipe::SelectionModes::refProfile:
         {
-            PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-            Gui::Document* doc = vp->getDocument();
+            auto pipe = getObject<PartDesign::Pipe>();
+            Gui::Document* doc = getGuiDocument();
 
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
+            getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile, false);
 
             bool success = true;
             App::DocumentObject* profile = pipe->getDocument()->getObject(msg.pObjectName);
@@ -335,11 +338,12 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
         {
             //change the references
             std::string subName(msg.pSubName);
-            std::vector<std::string> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->Spine.getSubValues();
+            auto pipe = getObject<PartDesign::Pipe>();
+            std::vector<std::string> refs = pipe->Spine.getSubValues();
             std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
 
             if (selectionMode == StateHandlerTaskPipe::SelectionModes::refSpine) {
-                static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
+                getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine, false);
                 refs.clear();
             }
             else if (selectionMode == StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd) {
@@ -355,8 +359,7 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
                     return false;
             }
 
-            static_cast<PartDesign::Pipe*>(vp->getObject())->Spine.setValue(
-                        vp->getObject()->getDocument()->getObject(msg.pObjectName), refs);
+            pipe->Spine.setValue(getAppDocument()->getObject(msg.pObjectName), refs);
             return true;
         }
         default:
@@ -384,9 +387,8 @@ void TaskPipeParameters::exitSelectionMode()
 
 void TaskPipeParameters::setVisibilityOfSpineAndProfile()
 {
-    if (vp) {
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        Gui::Document* doc = vp->getDocument();
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        Gui::Document* doc = getGuiDocument();
 
         // set visibility to the state when the pipe was opened
         for (auto obj : pipe->Sections.getValues()) {
@@ -416,8 +418,8 @@ bool TaskPipeParameters::accept()
     //see what to do with external references
     //check the prerequisites for the selected objects
     //the user has to decide which option we should take if external references are used
-    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getPipeView()->getObject());
-    auto pcActiveBody = PartDesignGui::getBodyFor (pcPipe, false);
+    auto pipe = getObject<PartDesign::Pipe>();
+    auto pcActiveBody = PartDesignGui::getBodyFor (pipe, false);
     if (!pcActiveBody) {
         QMessageBox::warning(this, tr("Input error"), tr("No active body"));
         return false;
@@ -426,16 +428,16 @@ bool TaskPipeParameters::accept()
     std::vector<App::DocumentObject*> copies;
 
     bool extReference = false;
-    App::DocumentObject* spine = pcPipe->Spine.getValue();
-    App::DocumentObject* auxSpine = pcPipe->AuxillerySpine.getValue();
+    App::DocumentObject* spine = pipe->Spine.getValue();
+    App::DocumentObject* auxSpine = pipe->AuxillerySpine.getValue();
 
     // If a spine isn't set but user entered a label then search for the appropriate document object
     QString label = ui->spineBaseEdit->text();
     if (!spine && !label.isEmpty()) {
         QByteArray ba = label.toUtf8();
-        std::vector<App::DocumentObject*> objs = pcPipe->getDocument()->findObjects(App::DocumentObject::getClassTypeId(), nullptr, ba.constData());
+        std::vector<App::DocumentObject*> objs = pipe->getDocument()->findObjects(App::DocumentObject::getClassTypeId(), nullptr, ba.constData());
         if (!objs.empty()) {
-            pcPipe->Spine.setValue(objs.front());
+            pipe->Spine.setValue(objs.front());
             spine = objs.front();
         }
     }
@@ -447,7 +449,7 @@ bool TaskPipeParameters::accept()
         extReference = true;
     }
     else {
-        for (App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+        for (App::DocumentObject* obj : pipe->Sections.getValues()) {
             if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                 extReference = true;
                 break;
@@ -466,20 +468,20 @@ bool TaskPipeParameters::accept()
 
         if (!dlg.radioXRef->isChecked()) {
             if (!pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
-                pcPipe->Spine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(spine, "",
+                pipe->Spine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(spine, "",
                                        dlg.radioIndependent->isChecked()),
-                                       pcPipe->Spine.getSubValues());
-                copies.push_back(pcPipe->Spine.getValue());
+                                       pipe->Spine.getSubValues());
+                copies.push_back(pipe->Spine.getValue());
             }
             else if (!pcActiveBody->hasObject(auxSpine) && !pcActiveBody->getOrigin()->hasObject(auxSpine)){
-                pcPipe->AuxillerySpine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(auxSpine, "",
+                pipe->AuxillerySpine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(auxSpine, "",
                                                 dlg.radioIndependent->isChecked()),
-                                                pcPipe->AuxillerySpine.getSubValues());
-                copies.push_back(pcPipe->AuxillerySpine.getValue());
+                                                pipe->AuxillerySpine.getSubValues());
+                copies.push_back(pipe->AuxillerySpine.getValue());
             }
 
             std::vector<App::PropertyLinkSubList::SubSet> subSets;
-            for (auto &subSet : pcPipe->Sections.getSubListValues()) {
+            for (auto &subSet : pipe->Sections.getSubListValues()) {
                 if (!pcActiveBody->hasObject(subSet.first) &&
                     !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
                     subSets.emplace_back(
@@ -493,22 +495,22 @@ bool TaskPipeParameters::accept()
                 }
             }
 
-            pcPipe->Sections.setSubListValues(subSets);
+            pipe->Sections.setSubListValues(subSets);
         }
     }
 
     try {
         setVisibilityOfSpineAndProfile();
 
-        App::DocumentObject* spine = pcPipe->Spine.getValue();
-        std::vector<std::string> subNames = pcPipe->Spine.getSubValues();
+        App::DocumentObject* spine = pipe->Spine.getValue();
+        std::vector<std::string> subNames = pipe->Spine.getSubValues();
         App::PropertyLinkT propT(spine, subNames);
-        Gui::cmdAppObjectArgs(pcPipe, "Spine = %s", propT.getPropertyPython());
+        Gui::cmdAppObjectArgs(pipe, "Spine = %s", propT.getPropertyPython());
 
-        Gui::cmdAppDocument(pcPipe, "recompute()");
-        if (!vp->getObject()->isValid())
-            throw Base::RuntimeError(vp->getObject()->getStatusString());
-        Gui::cmdGuiDocument(pcPipe, "resetEdit()");
+        Gui::cmdAppDocument(pipe, "recompute()");
+        if (!getObject()->isValid())
+            throw Base::RuntimeError(getObject()->getStatusString());
+        Gui::cmdGuiDocument(pipe, "resetEdit()");
         Gui::Command::commitCommand();
 
         //we need to add the copied features to the body after the command action, as otherwise FreeCAD crashes unexplainably
@@ -597,8 +599,8 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 TaskPipeOrientation::~TaskPipeOrientation()
 {
     try {
-        if (vp) {
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
+        if (auto view = getViewObject<ViewProviderPipe>()) {
+            view->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
         }
     }
     catch (const Standard_OutOfRange&) {
@@ -607,8 +609,10 @@ TaskPipeOrientation::~TaskPipeOrientation()
 
 void TaskPipeOrientation::onOrientationChanged(int idx)
 {
-    static_cast<PartDesign::Pipe*>(vp->getObject())->Mode.setValue(idx);
-    recomputeFeature();
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        pipe->Mode.setValue(idx);
+        recomputeFeature();
+    }
 }
 
 void TaskPipeOrientation::clearButtons()
@@ -620,34 +624,37 @@ void TaskPipeOrientation::clearButtons()
 
 void TaskPipeOrientation::exitSelectionMode()
 {
-    // commenting because this should be handled by buttonToggled signal
-    // selectionMode = none;
     Gui::Selection().clearSelection();
 }
 
 void TaskPipeOrientation::onClearButton()
 {
-    static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
-
     ui->listWidgetReferences->clear();
     ui->profileBaseEdit->clear();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.setValue(nullptr);
+    if (auto view = getViewObject<ViewProviderPipe>()) {
+        view->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
+        getObject<PartDesign::Pipe>()->AuxillerySpine.setValue(nullptr);
+    }
 }
 
 void TaskPipeOrientation::onCurvelinearChanged(bool checked)
 {
-    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxilleryCurvelinear.setValue(checked);
-    recomputeFeature();
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        pipe->AuxilleryCurvelinear.setValue(checked);
+        recomputeFeature();
+    }
 }
 
 void TaskPipeOrientation::onBinormalChanged(double)
 {
-    Base::Vector3d vec(ui->doubleSpinBoxX->value(),
-                       ui->doubleSpinBoxY->value(),
-                       ui->doubleSpinBoxZ->value());
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        Base::Vector3d vec(ui->doubleSpinBoxX->value(),
+                           ui->doubleSpinBoxY->value(),
+                           ui->doubleSpinBoxZ->value());
 
-    static_cast<PartDesign::Pipe*>(vp->getObject())->Binormal.setValue(vec);
-    recomputeFeature();
+        pipe->Binormal.setValue(vec);
+        recomputeFeature();
+    }
 }
 
 void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
@@ -675,8 +682,9 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
             }
             else if (stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove) {
                 QString sub = QString::fromLatin1(msg.pSubName);
-                if (!sub.isEmpty())
+                if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
+                }
                 else {
                     ui->profileBaseEdit->clear();
                 }
@@ -693,7 +701,8 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
             }
 
             clearButtons();
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
+            auto view = getViewObject<ViewProviderPipe>();
+            view->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
             recomputeFeature();
         }
 
@@ -710,38 +719,42 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const
         (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpine ||
         selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeAdd ||
         selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove)) {
-        if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
+        const char* fname = getObject()->getNameInDocument();
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
 
-        //change the references
-        std::string subName(msg.pSubName);
-        std::vector<std::string> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.getSubValues();
-        std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
+        if (auto pipe = getObject<PartDesign::Pipe>()) {
+            //change the references
+            std::string subName(msg.pSubName);
+            std::vector<std::string> refs = pipe->AuxillerySpine.getSubValues();
+            std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
 
-        if (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpine) {
-            refs.clear();
-        }
-        else if (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeAdd) {
-            if (f == refs.end())
+            if (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpine) {
+                refs.clear();
+            }
+            else if (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeAdd) {
+                if (f != refs.end()) {
+                    return false; // duplicate selection
+                }
+
                 refs.push_back(subName);
-            else
-                return false; // duplicate selection
-        }
-        else if (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove) {
-            if (f != refs.end())
-                refs.erase(f);
-            else
-                return false;
-        }
+            }
+            else if (selectionMode == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove) {
+                if (f == refs.end()) {
+                    return false;
+                }
 
-        static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.setValue
-                    (vp->getObject()->getDocument()->getObject(msg.pObjectName), refs);
-        return true;
+                refs.erase(f);
+            }
+
+            App::Document* doc = pipe->getDocument();
+            pipe->AuxillerySpine.setValue(doc->getObject(msg.pObjectName), refs);
+            return true;
+        }
     }
 
     return false;
@@ -768,17 +781,18 @@ void TaskPipeOrientation::onDeleteItem()
         delete item;
 
         // search inside the list of spines
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        std::vector<std::string> refs = pipe->AuxillerySpine.getSubValues();
-        std::string obj = data.constData();
-        std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        if (auto pipe = getObject<PartDesign::Pipe>()) {
+            std::vector<std::string> refs = pipe->AuxillerySpine.getSubValues();
+            std::string obj = data.constData();
+            std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), obj);
 
-        // if something was found, delete it and update the spine list
-        if (f != refs.end()) {
-            refs.erase(f);
-            pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), refs);
-            clearButtons();
-            recomputeFeature();
+            // if something was found, delete it and update the spine list
+            if (f != refs.end()) {
+                refs.erase(f);
+                pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), refs);
+                clearButtons();
+                recomputeFeature();
+            }
         }
     }
 }
@@ -852,8 +866,8 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 TaskPipeScaling::~TaskPipeScaling()
 {
     try {
-        if (vp) {
-            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
+        if (auto view = getViewObject<ViewProviderPipe>()) {
+            view->highlightReferences(ViewProviderPipe::Section, false);
         }
     }
     catch (const Standard_OutOfRange&) {
@@ -863,21 +877,22 @@ TaskPipeScaling::~TaskPipeScaling()
 void TaskPipeScaling::indexesMoved()
 {
     QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
-    if (!model)
+    if (!model) {
         return;
-
-    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-    auto originals = pipe->Sections.getSubListValues();
-
-    int rows = model->rowCount();
-    for (int i = 0; i < rows; i++) {
-        QModelIndex index = model->index(i, 0);
-        originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
     }
 
-    pipe->Sections.setSubListValues(originals);
-    recomputeFeature();
-    updateUI(ui->stackedWidget->currentIndex());
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        auto originals = pipe->Sections.getSubListValues();
+        int rows = model->rowCount();
+        for (int i = 0; i < rows; i++) {
+            QModelIndex index = model->index(i, 0);
+            originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
+        }
+
+        pipe->Sections.setSubListValues(originals);
+        recomputeFeature();
+        updateUI(ui->stackedWidget->currentIndex());
+    }
 }
 
 void TaskPipeScaling::clearButtons()
@@ -888,15 +903,15 @@ void TaskPipeScaling::clearButtons()
 
 void TaskPipeScaling::exitSelectionMode()
 {
-    // commenting because this should be handled by buttonToggled signal
-    // selectionMode = none;
     Gui::Selection().clearSelection();
 }
 
 void TaskPipeScaling::onScalingChanged(int idx)
 {
-    updateUI(idx);
-    static_cast<PartDesign::Pipe*>(vp->getObject())->Transformation.setValue(idx);
+    if (auto pipe = getObject<PartDesign::Pipe>()) {
+        updateUI(idx);
+        pipe->Transformation.setValue(idx);
+    }
 }
 
 void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg)
@@ -937,40 +952,39 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const
     if ((msg.Type == Gui::SelectionChanges::AddSelection) &&
         ((selectionMode == StateHandlerTaskPipe::SelectionModes::refSectionAdd) ||
          (selectionMode == StateHandlerTaskPipe::SelectionModes::refSectionRemove))) {
-        if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
+        const char* fname = getObject()->getNameInDocument();
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
 
-        //every selection needs to be a profile in itself, hence currently only full objects are
-        //supported, not individual edges of a part
-
         //change the references
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
-        App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
-        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        if (auto pipe = getObject<PartDesign::Pipe>()) {
+            std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
+            App::DocumentObject* obj = pipe->getDocument()->getObject(msg.pObjectName);
+            std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
 
-        if (selectionMode == StateHandlerTaskPipe::SelectionModes::refSectionAdd) {
-            if (f == refs.end())
+            if (selectionMode == StateHandlerTaskPipe::SelectionModes::refSectionAdd) {
+                if (f != refs.end()) {
+                    return false; // duplicate selection
+                }
+
                 pipe->Sections.addValue(obj, {msg.pSubName});
-            else
-                return false; // duplicate selection
-        }
-        else {
-            if (f != refs.end())
-                // Removing just the object this way instead of `refs.erase` and
-                // `setValues(ref)` cleanly ensures subnames are preserved.
-                pipe->Sections.removeValue(obj);
-            else
-                return false;
-        }
+            }
+            else {
+                if (f == refs.end()) {
+                    return false;
+                }
 
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
-        return true;
+                pipe->Sections.removeValue(obj);
+            }
+
+            auto view = getViewObject<ViewProviderPipe>();
+            view->highlightReferences(ViewProviderPipe::Section, false);
+            return true;
+        }
     }
 
     return false;
@@ -996,19 +1010,16 @@ void TaskPipeScaling::onDeleteSection()
         QByteArray data(item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument());
         delete item;
 
-        // search inside the list of sections
-        PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-        std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
-        App::DocumentObject* obj = pipe->getDocument()->getObject(data.constData());
-        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+        if (auto pipe = getObject<PartDesign::Pipe>()) {
+            std::vector<App::DocumentObject*> refs = pipe->Sections.getValues();
+            App::DocumentObject* obj = pipe->getDocument()->getObject(data.constData());
+            std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
 
-        // if something was found, delete it and update the section list
-        if (f != refs.end()) {
-            // Removing just the object this way instead of `refs.erase` and
-            // `setValues(ref)` cleanly ensures subnames are preserved.
-            pipe->Sections.removeValue(obj);
-            clearButtons();
-            recomputeFeature();
+            if (f != refs.end()) {
+                pipe->Sections.removeValue(obj);
+                clearButtons();
+                recomputeFeature();
+            }
         }
     }
 }
@@ -1097,21 +1108,21 @@ void TaskDlgPipeParameters::onButtonToggled(QAbstractButton *button, bool checke
 
     switch (id) {
     case StateHandlerTaskPipe::SelectionModes::refProfile:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Profile, checked);
         break;
     case StateHandlerTaskPipe::SelectionModes::refSpine:
     case StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd:
     case StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Spine, checked);
         break;
     case StateHandlerTaskPipe::SelectionModes::refAuxSpine:
     case StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeAdd:
     case StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::AuxiliarySpine, checked);
         break;
     case StateHandlerTaskPipe::SelectionModes::refSectionAdd:
     case StateHandlerTaskPipe::SelectionModes::refSectionRemove:
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, checked);
+        getViewObject<ViewProviderPipe>()->highlightReferences(ViewProviderPipe::Section, checked);
         break;
     default:
         break;
