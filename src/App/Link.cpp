@@ -1147,7 +1147,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         // Try search by element objects' name
         std::string name(subname,dot);
         if(_ChildCache.getSize()) {
-            auto obj=_ChildCache.find(name,&idx);
+            auto obj=_ChildCache.findUsingMap(name,&idx);
             if(obj) {
                 auto group = obj->getExtensionByType<GroupExtension>(true,false);
                 if(group) {
