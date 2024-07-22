@@ -174,7 +174,9 @@
         <file>ui/dialogCustomProperties.ui</file>
         <file>ui/dialogDiff.ui</file>
         <file>ui/dialogExport.ui</file>
+        <file>ui/dialogEditIfcArbitraryProfile.ui</file>
         <file>ui/dialogIfcElements.ui</file>
+        <file>ui/dialogIfcProfiles.ui</file>
         <file>ui/dialogIfcProperties.ui</file>
         <file>ui/dialogIfcPropertiesRedux.ui</file>
         <file>ui/dialogIfcQuantities.ui</file>
