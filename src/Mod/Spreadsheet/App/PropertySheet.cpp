@@ -2295,23 +2295,18 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
                     identifiers.emplace_back(owner, cellName.toString().c_str());
                     break;
                 }
-                bool found = false;
-                for (const auto& path : paths) {
-                    if (path.getSubObjectName() == subname) {
-                        identifiers.emplace_back(owner, cellName.toString().c_str());
-                        found = true;
-                        break;
-                    }
-                    App::SubObjectT sobjT(obj, path.getSubObjectName().c_str());
-                    if (sobjT.getSubObject() == subObject
-                        && sobjT.getOldElementName() == subElement) {
-                        identifiers.emplace_back(owner, cellName.toString().c_str());
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) {
-                    break;
+                if (std::any_of(paths.begin(),
+                                paths.end(),
+                                [subname, obj, subObject, &subElement](const auto& path) {
+                                    if (path.getSubObjectName() == subname) {
+                                        return true;
+                                    }
+
+                                    App::SubObjectT sobjT(obj, path.getSubObjectName().c_str());
+                                    return (sobjT.getSubObject() == subObject
+                                            && sobjT.getOldElementName() == subElement);
+                                })) {
+                    identifiers.emplace_back(owner, cellName.toString().c_str());
                 }
             }
         }

@@ -1499,7 +1499,7 @@ const std::vector<std::string>& Feature::searchElementCache(const std::string& e
         it->second.searched = true;
         propShape->getShape().findSubShapesWithSharedVertex(it->second.shape,
                                                             &it->second.names,
-                                                            static_cast<CheckGeometry>(options),
+                                                            options,
                                                             tol,
                                                             atol);
         if (prefix) {

@@ -165,7 +165,7 @@ public:
      * reference to the same geometry of the old element.
      */
     virtual const std::vector<std::string>& searchElementCache(const std::string &element,
-                                                               Data::SearchOptions options = Data::SearchOptions::CheckGeometry,
+                                                               Data::SearchOptions options = Data::SearchOption::CheckGeometry,
                                                                double tol = 1e-7,
                                                                double atol = 1e-10) const;
 

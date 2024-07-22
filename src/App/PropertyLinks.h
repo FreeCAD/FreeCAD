@@ -183,7 +183,7 @@ public:
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
             bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const = 0;
 
-    /** Obtain identifiers from this link property that link to a give object
+    /** Obtain identifiers from this link property that link to a given object
      * @param identifiers: holds the returned identifier to reference the given object
      * @param obj: the referenced object
      * @param subname: optional subname reference

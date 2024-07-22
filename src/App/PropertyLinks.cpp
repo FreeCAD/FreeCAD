@@ -73,7 +73,7 @@ void PropertyLinkBase::setAllowExternal(bool allow) {
 }
 
 void PropertyLinkBase::setSilentRestore(bool allow) {
-    setFlag(LinkSilentRestore,allow);
+    setFlag(LinkSilentRestore, allow);
 }
 
 void PropertyLinkBase::setReturnNewElement(bool enable) {
@@ -800,13 +800,15 @@ void PropertyLink::getLinks(std::vector<App::DocumentObject *> &objs,
         objs.push_back(_pcLink);
 }
 
-void PropertyLink::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
-                              App::DocumentObject* obj,
-                              const char* subname,
-                              bool all) const
-{
-    (void)subname;
-    if ((all || _pcScope != LinkScope::Hidden) && obj && _pcLink == obj) {
+void PropertyLink::getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                              App::DocumentObject *obj,
+                              const char *subname,
+                              bool all) const {
+    (void) subname;
+    if (!all && _pcScope == LinkScope::Hidden) {
+        return; // Don't get hidden links unless all is specified.
+    }
+    if (obj && _pcLink == obj) {
         identifiers.emplace_back(*this);
     }
 }
@@ -1165,9 +1167,9 @@ void PropertyLinkList::getLinksTo(std::vector<App::ObjectIdentifier>& identifier
         return;
     }
     int i = -1;
-    for (auto o : _lValueList) {
+    for (auto docObj : _lValueList) {
         ++i;
-        if (o == obj) {
+        if (docObj == obj) {
             identifiers.emplace_back(*this, i);
             break;
         }
@@ -1658,13 +1660,13 @@ void PropertyLinkBase::_getLinksTo(std::vector<App::ObjectIdentifier>& identifie
         if (!subObject) {
             continue;
         }
-        // There is a subobject and the subname doesn't match our current entry
+        // After above, there is a subobject and the subname doesn't match our current entry
         App::SubObjectT sobjT(obj, sub.c_str());
         if (sobjT.getSubObject() == subObject && sobjT.getOldElementName() == subElement) {
             identifiers.emplace_back(*this);
             return;
         }
-        // The oldElementName ( short, I.E. "Edge5" ) doesn't match.
+        // And the oldElementName ( short, I.E. "Edge5" ) doesn't match.
         if (i < (int)shadows.size()) {
             const auto& [shadowNewName, shadowOldName] = shadows[i];
             if (shadowNewName == subname || shadowOldName == subname) {
@@ -2909,15 +2911,18 @@ void PropertyLinkSubList::getLinksTo(std::vector<App::ObjectIdentifier>& identif
     auto subElement = objT.getOldElementName();
 
     int i = -1;
-    for (const auto& o : _lValueList) {
+    for (const auto& docObj : _lValueList) {
         ++i;
-        if (o != obj) {
+        if (docObj != obj) {
             continue;
         }
+        // If we don't specify a subname we looking for all; or if the subname is in our
+        // property, add this entry to our result
         if (!subname || (i < (int)_lSubList.size() && subname == _lSubList[i])) {
             identifiers.emplace_back(*this, i);
             continue;
         }
+        // If we couldn't find any subobjects or this object's index is in our list, ignore it
         if (!subObject || i < (int)_lSubList.size()) {
             continue;
         }
@@ -4917,12 +4922,12 @@ void PropertyXLinkSubList::getLinksTo(std::vector<App::ObjectIdentifier>& identi
                                       const char* subname,
                                       bool all) const
 {
-    if (all || _pcScope != LinkScope::Hidden) {
-        for (auto& l : _Links) {
-            // This is the same algorithm as _getLinksTo, but returns lists, not single entries
-            if (obj && obj == l._pcLink) {
-                _getLinksToList(identifiers, obj, subname, l._SubList, l._ShadowSubList);
-            }
+    if ( ! all && _pcScope != LinkScope::Hidden) {
+        return;
+    }
+    for (auto& l : _Links) {
+        if (obj && obj == l._pcLink) {
+            _getLinksToList(identifiers, obj, subname, l._SubList, l._ShadowSubList);
         }
     }
 }
