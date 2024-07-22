@@ -2320,15 +2320,12 @@ QColumnView {
   color: black;
   gridline-color: #ababab;
   border-radius: 0px;
+  selection-background-color: @ThemeAccentColor1;
 }
 
 QTableView,
 QListView  {
   background-color: #ffffff;  /* background of a lot of stuff including spreadsheets.*/
-}
-
-QTreeView{
-selection-background-color: transparent; /* fix for selection color being visible in preferences */
 }
 
 QTreeView:disabled,
@@ -2351,7 +2348,7 @@ QTreeView:focus,
 QListView:focus,
 QTableView:focus,
 QColumnView:focus {
-  /* border: 1px solid #ababab; */
+  /* background-color: @ThemeAccentColor2; */
 }
 
 QTreeView::item:pressed,

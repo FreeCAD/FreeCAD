@@ -2318,15 +2318,12 @@ QColumnView {
   color: White;
   gridline-color: #020202;
   border-radius: 0px;
+  selection-background-color: @ThemeAccentColor1;
 }
 
 QTableView,
 QListView  {
   background-color: #252525;  /* background of a lot of stuff including spreadsheets.*/
-}
-
-QTreeView{
-selection-background-color: transparent; /* fix for selection color being visible in preferences */
 }
 
 QTreeView:disabled,
