@@ -585,11 +585,6 @@ bool TaskFemConstraintDisplacement::get_useFlowSurfaceForce() const
     return ui->FlowForceCB->isChecked();
 }
 
-bool TaskFemConstraintDisplacement::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintDisplacement::changeEvent(QEvent*)
 {
     //    TaskBox::changeEvent(e);

@@ -262,11 +262,6 @@ bool TaskFemConstraintPressure::getReverse() const
     return ui->checkBoxReverse->isChecked();
 }
 
-bool TaskFemConstraintPressure::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintPressure::changeEvent(QEvent*)
 {}
 
