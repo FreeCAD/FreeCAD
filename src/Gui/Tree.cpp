@@ -3791,7 +3791,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/TreeView");
-    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 4294902015);
+    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
     QColor color(App::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
@@ -5234,7 +5234,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setUnderline(underlined);
             f.setOverline(overlined);
 
-            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 3873898495);
+            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 1538528255);
             color = App::Color::fromPackedRGB<QColor>(col);
         }
         else {
