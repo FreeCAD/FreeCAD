@@ -143,9 +143,9 @@ void ThemeSelectorWidget::themeChanged(Theme newTheme)
     }
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
-    const long nonExistentColor = -1434171135;
-    const long defaultAccentColor = 1434171135;
-    long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", nonExistentColor);
+    const unsigned long nonExistentColor = -1434171135;
+    const unsigned long defaultAccentColor = 1434171135;
+    unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", nonExistentColor);
     if (longAccentColor1 == nonExistentColor) {
         hGrp->SetUnsigned("ThemeAccentColor1", defaultAccentColor);
         hGrp->SetUnsigned("ThemeAccentColor2", defaultAccentColor);
