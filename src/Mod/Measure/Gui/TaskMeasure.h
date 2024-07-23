@@ -26,7 +26,9 @@
 #include <QLineEdit>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/MeasureManager.h>
+#include <Gui/Document.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
 #include <Mod/Measure/Gui/ViewProviderMeasureBase.h>
@@ -64,6 +66,8 @@ public:
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
+    App::Document* _mDocument = nullptr;
+    Gui::Document* _mGuiDocument = nullptr;
     App::MeasureType* _mMeasureType = nullptr;
     Measure::MeasureBase *_mMeasureObject = nullptr;
     Gui::ViewProviderDocumentObject* _mViewObject = nullptr;
@@ -79,6 +83,7 @@ private:
     App::DocumentObject* createObject(const std::string& measureClass);
     Gui::ViewProviderDocumentObject* createViewObject(App::DocumentObject* measureObj);
     void saveObject();
+    void ensureGroup(Measure::MeasureBase* measurement);
 
 
     // List of measure types
