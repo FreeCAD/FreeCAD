@@ -150,7 +150,9 @@ void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj) {
 }
 
 
-App::DocumentObject* TaskMeasure::createObject(const std::string& measureClass) {
+App::DocumentObject* TaskMeasure::createObject(const App::MeasureType* measureType)
+{
+    auto measureClass = measureType->isPython ? "Measure::MeasurePython" : measureType->measureObject;
     auto type = Base::Type::getTypeIfDerivedFrom(measureClass.c_str(),
                                                  App::DocumentObject::getClassTypeId(),
                                                  true);
@@ -159,8 +161,19 @@ App::DocumentObject* TaskMeasure::createObject(const std::string& measureClass) 
         return nullptr;
     }
 
-    auto measureObj = static_cast<App::DocumentObject*>(type.createInstance());
-    return measureObj;
+    _mMeasureObject = static_cast<Measure::MeasureBase*>(type.createInstance());
+
+    // Create an instance of the python measure class, the classe's
+    // initializer sets the object as proxy
+    if (measureType->isPython) {
+        Base::PyGILStateLocker lock;
+        Py::Tuple args(1);
+        args.setItem(0, Py::asObject(_mMeasureObject->getPyObject()));
+        PyObject* result = PyObject_CallObject(measureType->pythonClass, args.ptr());
+        Py_XDECREF(result);
+    }
+
+    return static_cast<App::DocumentObject*>(_mMeasureObject);
 }
 
 
@@ -269,27 +282,8 @@ void TaskMeasure::update() {
     if (!_mMeasureObject || _mMeasureType->measureObject != _mMeasureObject->getTypeId().getName()) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
-
-        if (_mMeasureType->isPython) {
-            Base::PyGILStateLocker lock;
-            auto pyMeasureClass = measureType->pythonClass;
-
-            // Create a MeasurePython instance
-            auto featurePython = doc->addObject("Measure::MeasurePython", _mMeasureType->label.c_str());
-            setMeasureObject((Measure::MeasureBase*)featurePython);
-
-            // Create an instance of the pyMeasureClass, the classe's initializer sets the object as proxy
-            Py::Tuple args(1);
-            args.setItem(0, Py::asObject(featurePython->getPyObject()));
-            PyObject* result = PyObject_CallObject(pyMeasureClass, args.ptr());
-            Py_XDECREF(result);
-        }
-        else {
-            // Create measure object
-            setMeasureObject(
-                (Measure::MeasureBase*)createObject(_mMeasureType->measureObject)
-            );
-        }
+        createObject(_mMeasureType);
+        
     }
 
     // we have a valid measure object so we can enable the annotate button

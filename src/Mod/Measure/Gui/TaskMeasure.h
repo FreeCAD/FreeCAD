@@ -80,7 +80,7 @@ private:
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
-    App::DocumentObject* createObject(const std::string& measureClass);
+    App::DocumentObject* createObject(const App::MeasureType* measureType);
     Gui::ViewProviderDocumentObject* createViewObject(App::DocumentObject* measureObj);
     void saveObject();
     void ensureGroup(Measure::MeasureBase* measurement);
