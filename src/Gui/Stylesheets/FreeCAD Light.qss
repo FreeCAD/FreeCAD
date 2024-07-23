@@ -140,6 +140,13 @@ QWidget::item:selected {
   background-color: @ThemeAccentColor1;
 }
 
+QColorDialog QWidget {
+  background-color: #f0f0f0;
+  color: black;
+  selection-background-color: @ThemeAccentColor1;
+  selection-color: white;
+}
+
   /* Causes issue with colorselector.
   QWidget::item:hover:!selected {
     background-color: @ThemeAccentColor1;
@@ -2796,10 +2803,12 @@ QWidget#thumbnailWidget {
 
 QWidget#thumbnailWidget[state="hovered"] {
   border: 1px solid @ThemeAccentColor2;
+  background-color: @ThemeAccentColor2;
 }
 
 QWidget#thumbnailWidget[state="pressed"] {
   border: 1px solid @ThemeAccentColor1;
+  background-color: @ThemeAccentColor2;
 }
 
 /**
