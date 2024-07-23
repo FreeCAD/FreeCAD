@@ -127,7 +127,7 @@ void MeasureLength::onChanged(const App::Property* prop)
     if (prop == &Elements) {
         recalculateLength();
     }
-    
+
     MeasureBase::onChanged(prop);
 }
 
@@ -142,7 +142,7 @@ Base::Placement MeasureLength::getPlacement() {
 
     App::SubObjectT subject{objects.front(), subElements.front().c_str()};
     auto info = getMeasureInfo(subject);
-    
+
     if (!info || !info->valid) {
         return {};
     }

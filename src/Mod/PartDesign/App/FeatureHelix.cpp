@@ -271,7 +271,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
-            
+
             if (!isSingleSolidRuleSatisfied(boolOp)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
