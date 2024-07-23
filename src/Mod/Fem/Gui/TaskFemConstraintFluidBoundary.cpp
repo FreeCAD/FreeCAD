@@ -951,11 +951,6 @@ void TaskFemConstraintFluidBoundary::updateUI()
     }
 }
 
-bool TaskFemConstraintFluidBoundary::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintFluidBoundary::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
