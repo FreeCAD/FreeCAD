@@ -313,7 +313,7 @@ public:
      * Legacy values are thosed contained in old format files that don't fit in the new
      * property format. It should not be used as a catch all for defining a property with
      * no model.
-     * 
+     *
      * These values are transient and will not be saved.
      */
     void setLegacyValue(const QString& name, const QString& value);

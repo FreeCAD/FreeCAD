@@ -3584,7 +3584,7 @@ void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
             for (unsigned y = 0; y < height; y++) {
                 for (unsigned x = 0; x < width; x++) {
                     unsigned offset = (y * width + x) * bitdepth;
-                    
+
                     const unsigned char* src = &mask[offset];
                     unsigned char* dst = &data[offset];
 

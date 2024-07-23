@@ -104,7 +104,7 @@ bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selectio
 //! Set properties from first item in selection. assumes a valid selection.
 void MeasureRadius::parseSelection(const App::MeasureSelection& selection) {
     auto element = selection.front();
-    auto objT = element.object;    
+    auto objT = element.object;
 
     std::vector<std::string> subElementList { objT.getSubName() };
     Element.setValue(objT.getObject(), subElementList);
@@ -132,7 +132,7 @@ void MeasureRadius::onChanged(const App::Property* prop)
     if (prop == &Element) {
         recalculateRadius();
     }
-    
+
     MeasureBase::onChanged(prop);
 }
 
