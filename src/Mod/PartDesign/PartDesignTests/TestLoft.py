@@ -141,6 +141,83 @@ class TestLoft(unittest.TestCase):
 
         self.assertGreater(loft.Shape.Volume, 80000.0) # 85105.5788704151
 
+    def testLoftBetweenCones(self):
+        """  Test issue #15138 adapted from a script by chennes """
+        body = self.Doc.addObject('PartDesign::Body','Body')
+        body.Label = 'Body'
+        coneBottomSketch = body.newObject('Sketcher::SketchObject','ConeBottomSketch')
+        coneBottomSketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'),[''])
+        coneBottomSketch.MapMode = 'FlatFace'
+
+        geoList = []
+        geoList.append(Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000), Base.Vector(0.000000, 0.000000, 1.000000), 25.000000))
+        coneBottomSketch.addGeometry(geoList,False)
+        del geoList
+
+        constraintList = []
+        coneBottomSketch.addConstraint(Sketcher.Constraint('Diameter',0,25.000000))
+        coneBottomSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
+
+        geoList = []
+        geoList.append(Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000), Base.Vector(0.000000, 0.000000, 1.000000), 40.000000))
+        coneBottomSketch.addGeometry(geoList,False)
+        del geoList
+
+        constraintList = []
+        coneBottomSketch.addConstraint(Sketcher.Constraint('Diameter',1,40.000000))
+        coneBottomSketch.addConstraint(Sketcher.Constraint('Coincident', 1, 3, 0, 3))
+
+        coneTopSketch = body.newObject('Sketcher::SketchObject','ConeTopSketch')
+        coneTopSketch.AttachmentSupport = (self.Doc.getObject('XY_Plane'),[''])
+        coneTopSketch.MapMode = 'FlatFace'
+
+        geoList = []
+        geoList.append(Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000), Base.Vector(0.000000, 0.000000, 1.000000), 8.000000))
+        coneTopSketch.addGeometry(geoList,False)
+        del geoList
+
+        constraintList = []
+        coneTopSketch.addConstraint(Sketcher.Constraint('Diameter',0,8.000000))
+        coneTopSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
+
+        geoList = []
+        geoList.append(Part.Circle(Base.Vector(0.000000, 0.000000, 0.000000), Base.Vector(0.000000, 0.000000, 1.000000), 15.000000))
+        coneTopSketch.addGeometry(geoList,False)
+        del geoList
+
+        constraintList = []
+        coneTopSketch.addConstraint(Sketcher.Constraint('Diameter',1,15.000000))
+        coneTopSketch.addConstraint(Sketcher.Constraint('Coincident', 1, 3, 0, 3))
+        coneTopSketch.AttachmentOffset = Base.Placement(Base.Vector(0,0,20),Base.Rotation(Base.Vector(0,0,1),0))
+        self.Doc.recompute()
+
+        cone = body.newObject('PartDesign::AdditiveLoft','Cone')
+        cone.Profile = coneBottomSketch
+        cone.Sections += [(coneTopSketch, [''])]
+        coneBottomSketch.Visibility = False
+        coneTopSketch.Visibility = False
+        self.Doc.recompute()
+
+        pad = body.newObject('PartDesign::Pad','Pad')
+        pad.Profile = (cone, ['Face4',])
+        pad.Length = 10.000000
+        pad.TaperAngle = 0.000000
+        pad.UseCustomVector = 0
+        pad.Direction = (0, 0, 1)
+        pad.ReferenceAxis = None
+        pad.AlongSketchNormal = 1
+        pad.Type = 0
+        pad.UpToFace = None
+        pad.Reversed = 0
+        pad.Midplane = 0
+        pad.Offset = 0
+        cone.Visibility = True
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(cone.Shape.Volume, 5854.5823094398365)
+        # self.assertAlmostEqual(body.Shape.Volume, 5854.5823094398365)  # TODO: is this supposed to be?
+        # self.assertAlmostEqual(pad.Shape.Volume, 5854.5823094398365)  # TODO: how about this one?
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestLoft")
