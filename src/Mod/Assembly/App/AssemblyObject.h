@@ -62,7 +62,11 @@ namespace Assembly
 class JointGroup;
 class ViewGroup;
 
-using ObjRefPair = std::pair<App::DocumentObject*, App::PropertyXLinkSub*>;
+struct ObjRef
+{
+    App::DocumentObject* obj;
+    App::PropertyXLinkSub* ref;
+};
 
 // This enum has to be the same as the one in JointObject.py
 enum class JointType
@@ -202,19 +206,18 @@ public:
     bool isJointConnectingPartToGround(App::DocumentObject* joint, const char* partPropName);
     bool isJointTypeConnecting(App::DocumentObject* joint);
 
-    bool isObjInSetOfObjRefPairs(App::DocumentObject* obj, const std::set<ObjRefPair>& pairs);
+    bool isObjInSetOfObjRefs(App::DocumentObject* obj, const std::vector<ObjRef>& pairs);
     void removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
                                  std::vector<App::DocumentObject*> groundedObjs);
     void traverseAndMarkConnectedParts(App::DocumentObject* currentPart,
-                                       std::set<ObjRefPair>& connectedParts,
+                                       std::vector<ObjRef>& connectedParts,
                                        const std::vector<App::DocumentObject*>& joints);
-    std::vector<ObjRefPair> getConnectedParts(App::DocumentObject* part,
-                                              const std::vector<App::DocumentObject*>& joints);
+    std::vector<ObjRef> getConnectedParts(App::DocumentObject* part,
+                                          const std::vector<App::DocumentObject*>& joints);
     bool isPartGrounded(App::DocumentObject* part);
     bool isPartConnected(App::DocumentObject* part);
 
-    std::vector<ObjRefPair> getDownstreamParts(App::DocumentObject* part,
-                                               App::DocumentObject* joint);
+    std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part, App::DocumentObject* joint);
     std::vector<App::DocumentObject*> getUpstreamParts(App::DocumentObject* part, int limit = 0);
     App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part,
                                                App::DocumentObject*& joint,
