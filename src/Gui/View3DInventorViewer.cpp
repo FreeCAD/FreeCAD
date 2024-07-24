@@ -3356,7 +3356,7 @@ void View3DInventorViewer::alignToSelection()
 
     // Get the geo feature
     App::GeoFeature* geoFeature = nullptr;
-    std::pair<std::string, std::string> elementName;
+    App::ElementNamePair elementName;
     App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
     if (!geoFeature) {
         return;
@@ -3584,7 +3584,7 @@ void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
             for (unsigned y = 0; y < height; y++) {
                 for (unsigned x = 0; x < width; x++) {
                     unsigned offset = (y * width + x) * bitdepth;
-                    
+
                     const unsigned char* src = &mask[offset];
                     unsigned char* dst = &data[offset];
 

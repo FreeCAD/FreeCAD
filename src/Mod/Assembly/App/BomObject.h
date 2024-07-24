@@ -93,6 +93,7 @@ public:
     App::PropertyBool onlyParts;
 
     std::vector<BomDataElement> dataElements;
+    std::vector<App::DocumentObject*> obj_list;
 };
 
 

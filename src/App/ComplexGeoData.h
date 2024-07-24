@@ -54,11 +54,12 @@ namespace Data
 
 //struct MappedChildElements;
 /// Option for App::GeoFeature::searchElementCache()
-enum class SearchOptions {
+enum class SearchOption {
     /// Whether to compare shape geometry
     CheckGeometry = 1,
     SingleResult = 2,
 };
+typedef Base::Flags<SearchOption> SearchOptions;
 
 /** Segments
  *  Sub-element type of the ComplexGeoData type
@@ -483,5 +484,5 @@ protected:
 
 } //namespace App
 
-
+ENABLE_BITMASK_OPERATORS(Data::SearchOption)
 #endif

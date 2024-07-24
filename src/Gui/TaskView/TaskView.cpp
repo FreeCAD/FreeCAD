@@ -635,11 +635,8 @@ void TaskView::removeDialog()
     triggerMinimumSizeHint();
 }
 
-void TaskView::updateWatcher(void)
+void TaskView::updateWatcher()
 {
-    if (ActiveCtrl || ActiveDialog)
-        return;
-
     if (ActiveWatcher.empty()) {
         auto panel = Gui::Control().taskPanel();
         if (panel && panel->ActiveWatcher.size())

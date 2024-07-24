@@ -680,7 +680,7 @@ public:
 
     Part::TopoShape getEdge(const Part::Geometry* geo, const char* name) const;
 
-    Data::IndexedName checkSubName(const char* sub) const;
+    Data::IndexedName checkSubName(const char* subname) const;
 
     bool geoIdFromShapeType(const Data::IndexedName&, int& geoId, PointPos& posId) const;
 
@@ -710,8 +710,7 @@ public:
 
     std::string convertSubName(const Data::IndexedName&, bool postfix = true) const;
 
-    std::pair<std::string, std::string> getElementName(const char* name,
-                                                       ElementNameType type) const override;
+    App::ElementNamePair getElementName(const char* name, ElementNameType type) const override;
 
     bool isPerformingInternalTransaction() const
     {

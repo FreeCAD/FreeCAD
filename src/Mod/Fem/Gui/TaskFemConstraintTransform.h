@@ -63,7 +63,6 @@ private Q_SLOTS:
     void angleChanged(double a);
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     const QString makeText(const App::DocumentObject* obj) const;
 
