@@ -162,7 +162,6 @@ void BomObject::addObjectChildrenToBom(std::vector<App::DocumentObject*> objs,
                                        size_t& row,
                                        std::string index)
 {
-    int nameColIndex = getColumnIndex("Name");
     int quantityColIndex = getColumnIndex("Quantity");
     bool hasQuantityCol = hasQuantityColumn();
 
