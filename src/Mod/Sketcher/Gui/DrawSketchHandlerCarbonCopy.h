@@ -162,7 +162,8 @@ public:
 
             static const char* sketchArchType = "Sketcher::SketchObjectPython";
 
-            if (obj->is<Sketcher::SketchObject>() || strcmp(obj->getTypeId().getName(), sketchArchType) == 0) {
+            if (obj->is<Sketcher::SketchObject>()
+                || strcmp(obj->getTypeId().getName(), sketchArchType) == 0) {
 
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));
