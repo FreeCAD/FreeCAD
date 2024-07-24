@@ -100,7 +100,7 @@ EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape*
 {
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
     retShape->ExtrudeProfileRadial(profilePoints.data(),
-                                   PROFILE_BUFFER_POINTS(nPoints),
+                                   nFullPoints,
                                    radius,
                                    angleRad,
                                    zShift,

@@ -57,10 +57,10 @@ struct GuiItem
     unsigned int vbo, vao;
     int sx, sy;     // screen location
     int actionKey;  // action key when item pressed
-    bool hidden;    // is item hidden
-    unsigned int flags;
-    bool mouseOver;
-    TextureItem texItem;
+    bool hidden {};  // is item hidden
+    unsigned int flags {};
+    bool mouseOver {};
+    TextureItem texItem {};
 
     int posx() {
         return sx >= 0 ? sx : gWindowSizeW + sx;

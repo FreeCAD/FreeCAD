@@ -53,7 +53,7 @@ void SimDisplay::InitShaders()
     shaderGeom.CompileShader(VertShaderGeom, FragShaderGeom);
     shaderGeomCloser.CompileShader(VertShaderGeom, FragShaderGeom);
 
-    // ligthing shader - apply standard ligting based on geometric buffers
+    // lighting shader - apply standard lighting based on geometric buffers
     shaderLighting.CompileShader(VertShader2DFbo, FragShaderStdLighting);
     shaderLighting.UpdateAlbedoTexSlot(0);
     shaderLighting.UpdatePositionTexSlot(1);
@@ -552,7 +552,7 @@ void SimDisplay::UpdateProjection()
     shaderLinePath.Activate();
     shaderLinePath.UpdateProjectionMat(projmat);
     shaderLinePath.UpdateObjColor(pathLineColorPassed);
-    
+
     projmat[2][2] *= 0.99999;
     shaderGeomCloser.Activate();
     shaderGeomCloser.UpdateProjectionMat(projmat);

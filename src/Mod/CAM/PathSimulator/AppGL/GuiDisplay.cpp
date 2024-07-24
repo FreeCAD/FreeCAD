@@ -131,7 +131,7 @@ bool GuiDisplay::InitGui()
         return false;
     }
     mTexture.LoadImage(buffer, TEX_SIZE, TEX_SIZE);
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
         guiItems[i].texItem = *tLoader.GetTextureItem(i);
         GenerateGlItem(&(guiItems[i]));
     }
@@ -152,7 +152,7 @@ bool GuiDisplay::InitGui()
 void GuiDisplay::ResetGui()
 {
     mShader.Destroy();
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
         DestroyGlItem(&(guiItems[i]));
     }
     mTexture.DestroyTexture();
@@ -193,7 +193,7 @@ void GuiDisplay::RenderItem(int itemId)
 void GuiDisplay::MouseCursorPos(int x, int y)
 {
     mMouseOverItem = nullptr;
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
         GuiItem* g = &(guiItems[i]);
         if (g->actionKey == 0) {
             continue;
@@ -239,7 +239,7 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
     }
 }
 
-void GuiDisplay::MouseDrag(int buttons, int dx, int dy)
+void GuiDisplay::MouseDrag(int /* buttons */, int dx, int /* dy */)
 {
     if (mPressedItem == nullptr) {
         return;
@@ -274,7 +274,7 @@ void MillSim::GuiDisplay::UpdateSimSpeed(int speed)
 
 void MillSim::GuiDisplay::HandleKeyPress(int key)
 {
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (unsigned int i = 0; i < NUM_GUI_ITEMS; i++) {
         GuiItem* g = &(guiItems[i]);
         if (g->actionKey == key) {
             HandleActionItem(g);
@@ -305,7 +305,7 @@ void GuiDisplay::Render(float progress)
     mShader.UpdateTextureSlot(0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    for (int i = 0; i < NUM_GUI_ITEMS; i++) {
+    for (int i = 0; i < (int)NUM_GUI_ITEMS; i++) {
         RenderItem(i);
     }
 }

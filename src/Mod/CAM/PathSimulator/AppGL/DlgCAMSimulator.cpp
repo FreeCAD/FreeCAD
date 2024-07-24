@@ -182,7 +182,7 @@ void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
         }
 
         // copy points and set normals
-        for (int i = 0; i < points.size(); i++) {
+        for (unsigned int i = 0; i < points.size(); i++) {
             Base::Vector3d& point = points[i];
             Base::Vector3d& normal = normals[i];
             int count = normalCount[i];

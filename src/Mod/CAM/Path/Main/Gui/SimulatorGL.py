@@ -24,7 +24,7 @@ import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
+from   PathScripts import PathUtils
 import Path.Main.Job as PathJob
 import PathGui
 import CAMSimulator
@@ -137,9 +137,9 @@ class CAMSimulation:
         for i in range(len(shape.Edges)):
             edge = shape.Edges[i]
             if not edge.isClosed():
-                v1 = edge.firstVertex()
-                v2 = edge.lastVertex()
-                tp = "arc" if type(edge.Curve) is Part.Circle else "line"
+                # v1 = edge.firstVertex()
+                # v2 = edge.lastVertex()
+                # tp = "arc" if type(edge.Curve) is Part.Circle else "line"
                 sideEdgeList.append(edge)
 
         # sort edges as a single 3d line on the x-z plane
@@ -156,7 +156,7 @@ class CAMSimulation:
                 nsegments = int(edge.Length / resolution) + 1
                 step = (p2 - p1) / nsegments
                 location = p1 + step
-                print (edge.Length, nsegments, step)
+                # print (edge.Length, nsegments, step)
                 while nsegments > 0:
                     endrad = RadiusAt(edge, location)
                     endz = edge.valueAt(location).z
@@ -271,9 +271,9 @@ class CAMSimulation:
         form = self.taskForm.form
         self.quality = form.sliderAccuracy.value()
         qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "High")
-        if (self.quality < 4):
+        if self.quality < 4:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Low")
-        elif (self.quality < 9):
+        elif self.quality < 9:
             qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Medium")
         form.labelAccuracy.setText(qualText)
 

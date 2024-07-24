@@ -41,7 +41,7 @@ MillSimulation::~MillSimulation()
 
 void MillSimulation::ClearMillPathSegments()
 {
-    for (int i = 0; i < MillPathSegments.size(); i++) {
+    for (unsigned int i = 0; i < MillPathSegments.size(); i++) {
         delete MillPathSegments[i];
     }
     MillPathSegments.clear();
@@ -50,7 +50,7 @@ void MillSimulation::ClearMillPathSegments()
 void MillSimulation::Clear()
 {
     mCodeParser.Operations.clear();
-    for (int i = 0; i < mToolTable.size(); i++) {
+    for (unsigned int i = 0; i < mToolTable.size(); i++) {
         delete mToolTable[i];
     }
     ClearMillPathSegments();
@@ -119,7 +119,7 @@ void MillSimulation::InitSimulation(float quality)
 
 EndMill* MillSimulation::GetTool(int toolId)
 {
-    for (int i = 0; i < mToolTable.size(); i++) {
+    for (unsigned int i = 0; i < mToolTable.size(); i++) {
         if (mToolTable[i]->toolId == toolId) {
             return mToolTable[i];
         }
@@ -489,6 +489,8 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             simDisplay.updateDisplay = true;
             break;
 
+        default:
+            break;
 
     }
     guiDisplay.UpdatePlayState(mSimPlaying);
@@ -498,7 +500,7 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
 void MillSimulation::InitDisplay(float quality)
 {
     // generate tools
-    for (int i = 0; i < mToolTable.size(); i++) {
+    for (unsigned int i = 0; i < mToolTable.size(); i++) {
         mToolTable[i]->GenerateDisplayLists(quality);
     }
 

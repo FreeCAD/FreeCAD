@@ -31,16 +31,11 @@
 
 using namespace MillSim;
 
-static std::vector<float> sinTable;
-static std::vector<float> cosTable;
-static int lastNumSlices = 0;
-static int lastNumSectionIndices = 0;
-static GLshort quadIndices[] = {0, 2, 3, 0, 3, 1};
-static GLshort quadIndicesReversed[] = {0, 3, 2, 0, 1, 3};
-static GLshort* sectionIndicesQuad = nullptr;
-static GLshort* sectionIndicesTri = nullptr;
+int Shape::lastNumSlices = 0;
+std::vector<float> Shape::sinTable;
+std::vector<float> Shape::cosTable;
 
-static void GenerateSinTable(int nSlices)
+void Shape::GenerateSinTable(int nSlices)
 {
     if (nSlices == lastNumSlices) {
         return;
@@ -61,7 +56,7 @@ static void GenerateSinTable(int nSlices)
 void Shape::RotateProfile(float* profPoints,
                           int nPoints,
                           float distance,
-                          float deltaHeight,
+                          float /* deltaHeight */,
                           int nSlices,
                           bool isHalfTurn)
 {

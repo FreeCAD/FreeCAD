@@ -150,11 +150,13 @@ void Shader::UpdateCurSegment(int curSeg)
 }
 
 
-bool CheckCompileResult(int shader)
-{
 #ifdef QT_OPENGL_LIB
+bool CheckCompileResult(int /* shader */)
+{
     return false;
 #else
+bool CheckCompileResult(int shader)
+{
     char log[1024];
     int res = 0;
     GLsizei len;

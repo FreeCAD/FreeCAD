@@ -57,7 +57,7 @@ void SolidObject::render()
 void SolidObject::GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
 {
     shape.SetModelData(verts, indices);
-    
+
     // calculate object's bounding box:
     float x = 999999.0f, y = 999999.0f, z = 999999.0f;
     float l = -999999.0f, w = -999999.0f, h = -999999.0f;

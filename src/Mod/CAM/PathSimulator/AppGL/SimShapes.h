@@ -110,6 +110,11 @@ public:
                               bool capStart,
                               bool capEnd);
 
+    static void GenerateSinTable(int nSlices);
+    static std::vector<float> sinTable;
+    static std::vector<float> cosTable;
+    static int lastNumSlices;
+
 protected:
     void GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int numIndices);
     void CalculateExtrudeBufferSizes(int nProfilePoints,
@@ -121,6 +126,7 @@ protected:
                                      int* vc2idx,
                                      int* ic1idx,
                                      int* ic2idx);
+
 };
 
 }  // namespace MillSim

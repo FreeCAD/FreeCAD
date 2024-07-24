@@ -107,9 +107,9 @@ protected:
     std::vector<MillPathSegment*> MillPathSegments;
     std::ostringstream mFpsStream;
 
-    MillMotion mZeroPos = {eNop, -1, 0, 0, 100, 0, 0, 0};
-    MillMotion mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0};
-    MillMotion mDestMotion = {eNop, -1, 0, 0, 0, 0, 0, 0};
+    MillMotion mZeroPos = {eNop, -1, 0, 0, 100, 0, 0, 0, 0};
+    MillMotion mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
+    MillMotion mDestMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
 
     StockObject mStockObject;
     SolidObject mBaseShape;

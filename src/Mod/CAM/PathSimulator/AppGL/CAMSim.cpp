@@ -69,18 +69,6 @@ void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& bshape, float res
     }
 
     DlgCAMSimulator::GetInstance()->SetBaseShape(bshape, resolution);
-
-    //BRepMesh_IncrementalMesh aMesh(bshape, resolution);
-
-    //std::vector<Part::TopoShape::Domain> domains;
-    //Part::TopoShape(bshape).getDomains(domains);
-
-    //std::vector<Base::Vector3d> points;
-    //std::vector<Part::TopoShape::Facet> facets;
-    //Part::BRepMesh mesh;
-    //mesh.getFacesFromDomains(domains, points, facets);
-    //Part::TopoShape::Facet& facet = facets[0];
-    
 }
 
 void CAMSim::AddCommand(Command* cmd)
