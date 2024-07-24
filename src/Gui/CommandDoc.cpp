@@ -190,7 +190,7 @@ StdCmdImport::StdCmdImport()
     sWhatsThis    = "Std_Import";
     sStatusTip    = QT_TR_NOOP("Import a file in the active document");
     sPixmap       = "Std_Import";
-    sAccel        = "Ctrl+I";
+    sAccel        = "Ctrl+Shift+I";
 }
 
 void StdCmdImport::activated(int iMsg)
