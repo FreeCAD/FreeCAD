@@ -1856,7 +1856,8 @@ QTabWidget::pane {
   margin: 0px;
   /* Fixes double border inside pane with pyqt5 */
   padding: 0px;
-  background-color: rgba(27, 27, 27, 0.549);
+  background-color: rgba(74, 74, 74, 54);
+  border: 1px solid #202020;
 }
 
 QTabWidget::pane:selected {

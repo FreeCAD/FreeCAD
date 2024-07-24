@@ -1858,7 +1858,8 @@ QTabWidget::pane {
   margin: 0px;
   /* Fixes double border inside pane with pyqt5 */
   padding: 0px;
-  background-color: rgba(27, 27, 27, 0.549);
+  background-color: #f0f0f0;
+  border: 1px solid #d8d8d8;
 }
 
 QTabWidget::pane:selected {
@@ -2803,12 +2804,10 @@ QWidget#thumbnailWidget {
 
 QWidget#thumbnailWidget[state="hovered"] {
   border: 1px solid @ThemeAccentColor2;
-  background-color: @ThemeAccentColor2;
 }
 
 QWidget#thumbnailWidget[state="pressed"] {
   border: 1px solid @ThemeAccentColor1;
-  background-color: @ThemeAccentColor2;
 }
 
 /**
