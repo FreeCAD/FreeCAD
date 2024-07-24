@@ -48,13 +48,14 @@ class Arch_Fence:
         if len(FreeCADGui.Selection.getSelection()) != 3:
             FreeCAD.Console.PrintError(translate('Arch Fence selection','Select a section, post and path in exactly this order to build a fence.')+"\n")
             return
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Fence"))
+        doc = FreeCAD.ActiveDocument
+        doc.openTransaction(translate("Arch","Create Fence"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("section = FreeCADGui.Selection.getSelection()[0]")
         FreeCADGui.doCommand("post = FreeCADGui.Selection.getSelection()[1]")
         FreeCADGui.doCommand("path = FreeCADGui.Selection.getSelection()[2]")
         FreeCADGui.doCommand("Arch.makeFence(section, post, path)")
-        FreeCAD.ActiveDocument.commitTransaction()
-
+        doc.commitTransaction()
+        doc.recompute()
 
 FreeCADGui.addCommand('Arch_Fence', Arch_Fence())

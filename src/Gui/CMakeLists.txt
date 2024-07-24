@@ -466,7 +466,6 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
-    TaskMeasure.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
     DlgAddPropertyVarSet.cpp
@@ -507,7 +506,6 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
-    TaskMeasure.h
     DlgObjectSelection.h
     DlgAddProperty.h
     DlgAddPropertyVarSet.h
@@ -850,6 +848,7 @@ SET(View3D_CPP_SRCS
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
+    Multisample.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
     InventorNavigationStyle.cpp
@@ -882,6 +881,7 @@ SET(View3D_SRCS
     Flag.h
     GLBuffer.h
     GLPainter.h
+    Multisample.h
     MouseSelection.h
     NavigationStyle.h
     GestureNavigationStyle.h

@@ -100,12 +100,12 @@ class CAMSimulation:
             z2 = edge.valueAt(p2).z
             if IsSame(px, rad2) and IsSame(pz, z2):
                 return edge, p2, p1
-            # sometimes a flat circle is without edge, so return edge with 
+            # sometimes a flat circle is without edge, so return edge with
             # same height and later a connecting edge will be interpolated
             if IsSame(pz, z1):
                 return edge, p1, p2
             if IsSame(pz, z2):
-                return edge, p2, p1           
+                return edge, p2, p1
         return None, 0.0, 0.0
 
     def FindTopMostEdge(self, edges):
@@ -130,7 +130,7 @@ class CAMSimulation:
                 maxz = z
         return topedge, top_p1, top_p2
 
-    #the algo is based on locating the side edge that OCC creates on any revolved object 
+    #the algo is based on locating the side edge that OCC creates on any revolved object
     def GetToolProfile(self, tool, resolution):
         shape = tool.Shape
         sideEdgeList = []
@@ -177,7 +177,7 @@ class CAMSimulation:
                 profile.append(startrad)
                 startz = edge.valueAt(p1).z
                 profile.append(startz)
-                        
+
         return profile
 
     def Activate(self):

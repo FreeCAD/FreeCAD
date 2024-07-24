@@ -53,7 +53,7 @@ class CommandCreateView:
         return {
             "Pixmap": "Assembly_ExplodedView",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateView", "Create Exploded View"),
-            "Accel": "V",
+            "Accel": "E",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateView",

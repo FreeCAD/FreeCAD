@@ -6,7 +6,7 @@
       "type": "cppdbg",
       "request": "launch",
       "cwd": "${workspaceFolder}",
-      "program": "${command:cmake.buildDirectory}/tests/Tests_run", 
+      "program": "${command:cmake.buildDirectory}/tests/Tests_run",
       "args": [],
       "environment": [
         {
@@ -33,7 +33,7 @@
       "type": "cppdbg",
       "request": "launch",
       "cwd": "${workspaceFolder}",
-      "program": "${command:cmake.buildDirectory}/bin/FreeCAD", 
+      "program": "${command:cmake.buildDirectory}/bin/FreeCAD",
       "args": ["${workspaceFolder}/.vscode/scripts/VSCodeAutostartDebug.FCMacro"],
       "environment": [
         {

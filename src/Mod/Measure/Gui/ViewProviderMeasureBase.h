@@ -135,6 +135,7 @@ protected:
     // TODO: getters & setters and move variables to private?
     bool _mShowTree = true;
 
+    SoSeparator* pGlobalSeparator; // Separator in the global coordinate space
     Gui::SoFrameLabel * pLabel;
     SoTranslate2Dragger* pDragger;
     SoTransform* pDraggerOrientation;

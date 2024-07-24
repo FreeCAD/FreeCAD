@@ -27,6 +27,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
@@ -67,7 +68,7 @@ TaskExtrudeParameters::~TaskExtrudeParameters() = default;
 void TaskExtrudeParameters::setupDialog()
 {
     // Get the feature data
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
     Base::Quantity l = extrude->Length.getQuantityValue();
     Base::Quantity l2 = extrude->Length2.getQuantityValue();
     Base::Quantity off = extrude->Offset.getQuantityValue();
@@ -267,7 +268,7 @@ void PartDesignGui::TaskExtrudeParameters::onUnselectShapeFacesTrigger()
     auto selected = ui->listWidgetReferences->selectedItems();
     auto faces = getShapeFaces();
 
-    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
 
     faces.erase(std::remove_if(faces.begin(), faces.end(), [selected](const std::string &face) { 
         for (auto &item : selected) {
@@ -306,13 +307,13 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode)
             break;
         case SelectShapeFaces:
             onSelectReference(AllowSelection::FACE);
-            static_cast<ViewProviderExtrude*>(vp)->highlightShapeFaces(getShapeFaces());
+            getViewObject<ViewProviderExtrude>()->highlightShapeFaces(getShapeFaces());
             break;
         case SelectReferenceAxis:
             onSelectReference(AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE);
             break;
         default:
-            static_cast<ViewProviderExtrude*>(vp)->highlightShapeFaces({});
+            getViewObject<ViewProviderExtrude>()->highlightShapeFaces({});
             onSelectReference(AllowSelection::NONE);
     }
 }
@@ -363,7 +364,7 @@ void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& m
     std::vector<std::string> edge;
     App::DocumentObject* selObj;
 
-    if (getReferencedSelection(vp->getObject(), msg, selObj, edge) && selObj) {
+    if (getReferencedSelection(getObject(), msg, selObj, edge) && selObj) {
         setSelectionMode(None);
 
         propReferenceAxis->setValue(selObj, edge);
@@ -376,7 +377,7 @@ void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& m
 
 void TaskExtrudeParameters::selectedShapeFace(const Gui::SelectionChanges& msg)
 {
-    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
     auto document = extrude->getDocument();
 
     if (strcmp(msg.pDocName, document->getName()) != 0) {
@@ -435,7 +436,7 @@ void PartDesignGui::TaskExtrudeParameters::selectedFace(const Gui::SelectionChan
 
 void PartDesignGui::TaskExtrudeParameters::selectedShape(const Gui::SelectionChanges& msg)
 {
-    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
     auto document = extrude->getDocument();
 
     if (strcmp(msg.pDocName, document->getName()) != 0) {
@@ -471,12 +472,13 @@ void TaskExtrudeParameters::updateShapeName()
 {
     QSignalBlocker block(ui->lineShapeName);
 
-    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
     auto shape = extrude->UpToShape.getValue();
 
     if (shape) {
         ui->lineShapeName->setText(QString::fromStdString(shape->getFullName()));
-    } else {
+    }
+    else {
         ui->lineShapeName->setText({});
         ui->lineShapeName->setPlaceholderText(tr("No shape selected"));
     }
@@ -492,7 +494,7 @@ void TaskExtrudeParameters::updateShapeFaces()
     }
 
     if (selectionMode == SelectShapeFaces) {
-        static_cast<ViewProviderExtrude*>(vp)->highlightShapeFaces(faces);
+        getViewObject<ViewProviderExtrude>()->highlightShapeFaces(faces);
     }
 }
 
@@ -500,7 +502,7 @@ std::vector<std::string> PartDesignGui::TaskExtrudeParameters::getShapeFaces()
 {
     std::vector<std::string> faces;
 
-    auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
     auto allRefs = extrude->UpToShape.getSubValues();
 
     std::copy_if(
@@ -514,37 +516,42 @@ std::vector<std::string> PartDesignGui::TaskExtrudeParameters::getShapeFaces()
 
 void TaskExtrudeParameters::onLengthChanged(double len)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Length.setValue(len);
-    tryRecomputeFeature();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Length.setValue(len);
+        tryRecomputeFeature();
+    }
 }
 
 void TaskExtrudeParameters::onLength2Changed(double len)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Length2.setValue(len);
-    tryRecomputeFeature();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Length2.setValue(len);
+        tryRecomputeFeature();
+    }
 }
 
 void TaskExtrudeParameters::onOffsetChanged(double len)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Offset.setValue(len);
-    tryRecomputeFeature();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Offset.setValue(len);
+        tryRecomputeFeature();
+    }
 }
 
 void TaskExtrudeParameters::onTaperChanged(double angle)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->TaperAngle.setValue(angle);
-    tryRecomputeFeature();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->TaperAngle.setValue(angle);
+        tryRecomputeFeature();
+    }
 }
 
 void TaskExtrudeParameters::onTaper2Changed(double angle)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->TaperAngle2.setValue(angle);
-    tryRecomputeFeature();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->TaperAngle2.setValue(angle);
+        tryRecomputeFeature();
+    }
 }
 
 bool TaskExtrudeParameters::hasProfileFace(PartDesign::ProfileBased* profile) const
@@ -564,15 +571,14 @@ bool TaskExtrudeParameters::hasProfileFace(PartDesign::ProfileBased* profile) co
 
 void TaskExtrudeParameters::fillDirectionCombo()
 {
-    bool oldVal_blockUpdate = blockUpdate;
-    blockUpdate = true;
+    Base::StateLocker lock(getUpdateBlockRef(), true);
 
     if (axesInList.empty()) {
         bool hasFace = false;
         ui->directionCB->clear();
         // we can have sketches or faces
         // for sketches just get the sketch normal
-        PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+        auto pcFeat = getObject<PartDesign::ProfileBased>();
         Part::Part2DObject* pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         // for faces we test if it is verified and if we can get its normal
         if (!pcSketch) {
@@ -622,14 +628,12 @@ void TaskExtrudeParameters::fillDirectionCombo()
     }
 
     // highlight either current index or set custom direction
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
     bool hasCustom = extrude->UseCustomVector.getValue();
     if (indexOfCurrent != -1 && !hasCustom)
         ui->directionCB->setCurrentIndex(indexOfCurrent);
     if (hasCustom)
         ui->directionCB->setCurrentIndex(DirectionModes::Custom);
-
-    blockUpdate = oldVal_blockUpdate;
 }
 
 void TaskExtrudeParameters::addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname,
@@ -747,8 +751,6 @@ void TaskExtrudeParameters::setCheckboxes(Mode mode, Type type)
 
 void TaskExtrudeParameters::onDirectionCBChanged(int num)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-
     if (axesInList.empty())
         return;
 
@@ -768,7 +770,7 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         setSelectionMode(SelectReferenceAxis);
         setDirectionMode(num);
     }
-    else {
+    else if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         if (lnk.getValue()) {
             if (!extrude->getDocument()->isIn(lnk.getValue())) {
                 Base::Console().Error("Object was deleted\n");
@@ -789,9 +791,10 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
 
 void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->AlongSketchNormal.setValue(on);
-    tryRecomputeFeature();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->AlongSketchNormal.setValue(on);
+        tryRecomputeFeature();
+    }
 }
 
 void TaskExtrudeParameters::onDirectionToggled(bool on)
@@ -810,45 +813,55 @@ void PartDesignGui::TaskExtrudeParameters::onAllFacesToggled(bool on)
     ui->buttonShapeFace->setChecked(false);
 
     if (on) {
-        auto extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-        extrude->UpToShape.setValue(extrude->UpToShape.getValue());
+        if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+            extrude->UpToShape.setValue(extrude->UpToShape.getValue());
 
-        updateShapeFaces();
+            updateShapeFaces();
 
-        tryRecomputeFeature();
+            tryRecomputeFeature();
+        }
     }
 }
 
 void TaskExtrudeParameters::onXDirectionEditChanged(double len)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Direction.setValue(len, extrude->Direction.getValue().y, extrude->Direction.getValue().z);
-    tryRecomputeFeature();
-    // checking for case of a null vector is done in FeatureExtrude.cpp
-    // if there was a null vector, the normal vector of the sketch is used.
-    // therefore the vector component edits must be updated
-    updateDirectionEdits();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Direction.setValue(len,
+                                    extrude->Direction.getValue().y,
+                                    extrude->Direction.getValue().z);
+        tryRecomputeFeature();
+        // checking for case of a null vector is done in FeatureExtrude.cpp
+        // if there was a null vector, the normal vector of the sketch is used.
+        // therefore the vector component edits must be updated
+        updateDirectionEdits();
+    }
 }
 
 void TaskExtrudeParameters::onYDirectionEditChanged(double len)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Direction.setValue(extrude->Direction.getValue().x, len, extrude->Direction.getValue().z);
-    tryRecomputeFeature();
-    updateDirectionEdits();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Direction.setValue(extrude->Direction.getValue().x,
+                                    len,
+                                    extrude->Direction.getValue().z);
+        tryRecomputeFeature();
+        updateDirectionEdits();
+    }
 }
 
 void TaskExtrudeParameters::onZDirectionEditChanged(double len)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Direction.setValue(extrude->Direction.getValue().x, extrude->Direction.getValue().y, len);
-    tryRecomputeFeature();
-    updateDirectionEdits();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Direction.setValue(extrude->Direction.getValue().x,
+                                    extrude->Direction.getValue().y,
+                                    len);
+        tryRecomputeFeature();
+        updateDirectionEdits();
+    }
 }
 
 void TaskExtrudeParameters::updateDirectionEdits()
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
     // we don't want to execute the onChanged edits, but just update their contents
     QSignalBlocker xdir(ui->XDirectionEdit);
     QSignalBlocker ydir(ui->YDirectionEdit);
@@ -860,7 +873,11 @@ void TaskExtrudeParameters::updateDirectionEdits()
 
 void TaskExtrudeParameters::setDirectionMode(int index)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    if (!extrude) {
+        return;
+    }
+
     // disable AlongSketchNormal when the direction is already normal
     if (index == DirectionModes::Normal)
         ui->checkBoxAlongDirection->setEnabled(false);
@@ -892,20 +909,22 @@ void TaskExtrudeParameters::setDirectionMode(int index)
 
 void TaskExtrudeParameters::onMidplaneChanged(bool on)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Midplane.setValue(on);
-    ui->checkBoxReversed->setEnabled(!on);
-    tryRecomputeFeature();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Midplane.setValue(on);
+        ui->checkBoxReversed->setEnabled(!on);
+        tryRecomputeFeature();
+    }
 }
 
 void TaskExtrudeParameters::onReversedChanged(bool on)
 {
-    PartDesign::FeatureExtrude* extrude = static_cast<PartDesign::FeatureExtrude*>(vp->getObject());
-    extrude->Reversed.setValue(on);
-    ui->checkBoxMidplane->setEnabled(!on);
-    // update the direction
-    tryRecomputeFeature();
-    updateDirectionEdits();
+    if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+        extrude->Reversed.setValue(on);
+        ui->checkBoxMidplane->setEnabled(!on);
+        // update the direction
+        tryRecomputeFeature();
+        updateDirectionEdits();
+    }
 }
 
 void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
@@ -921,7 +940,7 @@ void TaskExtrudeParameters::getReferenceAxis(App::DocumentObject*& obj, std::vec
         sub.clear();
     }
     else {
-        PartDesign::ProfileBased* pcDirection = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+        auto pcDirection = getObject<PartDesign::ProfileBased>();
         if (!pcDirection->getDocument()->isIn(lnk.getValue()))
             throw Base::RuntimeError("Object was deleted");
 
@@ -1116,7 +1135,7 @@ void TaskExtrudeParameters::saveHistory()
 
 void TaskExtrudeParameters::applyParameters(QString facename)
 {
-    auto obj = vp->getObject();
+    auto obj = getObject();
 
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();

@@ -95,6 +95,7 @@
 #include "Document.h"
 #include "GLPainter.h"
 #include "MainWindow.h"
+#include "Multisample.h"
 #include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "Selection.h"
@@ -1965,25 +1966,8 @@ void View3DInventorViewer::clearGraphicsItems()
 
 int View3DInventorViewer::getNumSamples()
 {
-    long samples = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetInt("AntiAliasing", 0);
-
-    // NOLINTBEGIN
-    switch (samples) {
-    case View3DInventorViewer::MSAA2x:
-        return 2;
-    case View3DInventorViewer::MSAA4x:
-        return 4;
-    case View3DInventorViewer::MSAA6x:
-        return 6;
-    case View3DInventorViewer::MSAA8x:
-        return 8;
-    case View3DInventorViewer::Smoothing:
-        return 1;
-    default:
-        return 0;
-    }
-    // NOLINTEND
+    Gui::AntiAliasing msaa = Multisample::readMSAAFromSettings();
+    return Multisample::toSamples(msaa);
 }
 
 GLenum View3DInventorViewer::getInternalTextureFormat()
@@ -3372,7 +3356,7 @@ void View3DInventorViewer::alignToSelection()
 
     // Get the geo feature
     App::GeoFeature* geoFeature = nullptr;
-    std::pair<std::string, std::string> elementName;
+    App::ElementNamePair elementName;
     App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
     if (!geoFeature) {
         return;
@@ -3600,7 +3584,7 @@ void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
             for (unsigned y = 0; y < height; y++) {
                 for (unsigned x = 0; x < width; x++) {
                     unsigned offset = (y * width + x) * bitdepth;
-                    
+
                     const unsigned char* src = &mask[offset];
                     unsigned char* dst = &data[offset];
 

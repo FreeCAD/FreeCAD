@@ -147,8 +147,18 @@ StartView::StartView(QWidget* parent)
 
     _newFileLabel = gsl::owner<QLabel*>(new QLabel());
     layout->addWidget(_newFileLabel);
+
+    auto createNewRow = gsl::owner<QWidget*>(new QWidget);
     auto flowLayout = gsl::owner<FlowLayout*>(new FlowLayout);
-    layout->addLayout(flowLayout);
+
+    // reset margins of layout to provide consistent spacing
+    flowLayout->setContentsMargins({});
+
+    // this allows new file widgets to be targeted via QSS
+    createNewRow->setObjectName(QStringLiteral("CreateNewRow"));
+    createNewRow->setLayout(flowLayout);
+
+    layout->addWidget(createNewRow);
     configureNewFileButtons(flowLayout);
 
     _recentFilesLabel = gsl::owner<QLabel*>(new QLabel());

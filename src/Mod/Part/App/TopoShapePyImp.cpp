@@ -2602,35 +2602,18 @@ PyObject* TopoShapePy::removeSplitter(PyObject *args)
 PyObject* TopoShapePy::getElement(PyObject *args)
 {
     char* input;
-    if (!PyArg_ParseTuple(args, "s", &input))
+    PyObject* silent = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &input, &silent)) {
         return nullptr;
-
-    boost::regex ex("^(Face|Edge|Vertex)[1-9][0-9]*$");
-
+    }
     try {
-        if (boost::regex_match(input, ex)) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape shape = s->Shape;
-            switch (shape.ShapeType()) {
-                case TopAbs_FACE:
-                    return new TopoShapeFacePy(new TopoShape(shape));
-                case TopAbs_EDGE:
-                    return new TopoShapeEdgePy(new TopoShape(shape));
-                case TopAbs_VERTEX:
-                    return new TopoShapeVertexPy(new TopoShape(shape));
-                default:
-                    break;
-            }
+        PyObject* res = getTopoShapePtr()->getPySubShape(input, PyObject_IsTrue(silent));
+        if (!res) {
+            Py_Return;
         }
-
-        PyErr_SetString(PyExc_ValueError, "Invalid subelement name");
-        return nullptr;
+        return res;
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
+    PY_CATCH_OCC
 }
 
 PyObject* TopoShapePy::countElement(PyObject *args)
@@ -3129,10 +3112,11 @@ PyObject* TopoShapePy::findSubShape(PyObject* args)
 
 PyObject* TopoShapePy::findSubShapesWithSharedVertex(PyObject* args, PyObject* keywds)
 {
-    static const std::array<const char*, 6> kwlist {"shape", "needName", "checkGeometry", "tol", "atol", nullptr};
+    static const std::array<const char*, 7> kwlist {"shape", "needName", "checkGeometry", "tol", "atol", "singleResult", nullptr};
     PyObject* pyobj;
     PyObject* needName = Py_False;
     PyObject* checkGeometry = Py_True;
+    PyObject* singleResult = Py_False;
     double tol = 1e-7;
     double atol = 1e-12;
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
@@ -3144,7 +3128,8 @@ PyObject* TopoShapePy::findSubShapesWithSharedVertex(PyObject* args, PyObject* k
                                              &needName,
                                              &checkGeometry,
                                              &tol,
-                                             &atol)) {
+                                             &atol,
+                                             &singleResult)) {
         return nullptr;
     }
 
@@ -3152,13 +3137,17 @@ PyObject* TopoShapePy::findSubShapesWithSharedVertex(PyObject* args, PyObject* k
     {
         Py::List res;
         const TopoShape& shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
+        Data::SearchOptions options;
+        if (PyObject_IsTrue(checkGeometry))
+            options.setFlag(Data::SearchOption::CheckGeometry);
+        if (PyObject_IsTrue(singleResult))
+            options.setFlag(Data::SearchOption::SingleResult);
         if (PyObject_IsTrue(needName)) {
             std::vector<std::string> names;
             auto shapes = getTopoShapePtr()->findSubShapesWithSharedVertex(
                 shape,
                 &names,
-                PyObject_IsTrue(checkGeometry) ? CheckGeometry::checkGeometry
-                                               : CheckGeometry::ignoreGeometry,
+                options,
                 tol,
                 atol);
             for (std::size_t i = 0; i < shapes.size(); ++i) {
@@ -3169,8 +3158,7 @@ PyObject* TopoShapePy::findSubShapesWithSharedVertex(PyObject* args, PyObject* k
             for (auto& s : getTopoShapePtr()->findSubShapesWithSharedVertex(
                      shape,
                      nullptr,
-                     PyObject_IsTrue(checkGeometry) ? CheckGeometry::checkGeometry
-                                                    : CheckGeometry::ignoreGeometry,
+                     options,
                      tol,
                      atol)) {
                 res.append(shape2pyshape(s));

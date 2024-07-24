@@ -83,7 +83,11 @@ from urllib.parse import quote_plus
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import urlretrieve
-from PySide2 import QtCore
+
+try:
+    from PySide6 import QtCore
+except ImportError:
+    from PySide2 import QtCore
 
 TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
@@ -141,8 +145,8 @@ locations = [
     ],
     [
         "Material",
-        "../Mod/Material/Resources/translations",
-        "../Mod/Material/Resources/Material.qrc",
+        "../Mod/Material/Gui/Resources/translations",
+        "../Mod/Material/Gui/Resources/Material.qrc",
     ],
     [
         "Mesh",
@@ -376,7 +380,7 @@ def updateqrc(qrcpath, lncode):
     # inserting new entry just after the last one
     line = resources[pos]
     if ".qm" in line:
-        line = re.sub("_.*\.qm", "_" + lncode + ".qm", line)
+        line = re.sub(r"_.*\.qm", "_" + lncode + ".qm", line)
     else:
         modname = os.path.splitext(os.path.basename(qrcpath))[0]
         line = "        <file>translations/" + modname + "_" + lncode + ".qm</file>\n"

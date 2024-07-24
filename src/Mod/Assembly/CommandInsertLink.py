@@ -168,6 +168,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     if obj == self.assembly:
                         continue  # Skip current assembly
 
+                    if obj in self.assembly.InListRecursive:
+                        continue  # Prevent dependency loop.
+                        # For instance if asm1/asm2 with asm2 active, we don't want to have asm1 in the list
+
                     if (
                         obj.isDerivedFrom("Part::Feature")
                         or obj.isDerivedFrom("App::Part")
@@ -344,7 +348,9 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         translation = App.Vector()
         resetThreshold = (screenCorner - screenCenter).Length * 0.1
-        if (self.prevScreenCenter - screenCenter).Length > resetThreshold:
+        if len(self.insertionStack) == 1:
+            translation = App.Vector()  # No translation for first object.
+        elif (self.prevScreenCenter - screenCenter).Length > resetThreshold:
             self.totalTranslation = App.Vector()
             self.prevScreenCenter = screenCenter
         else:
@@ -353,8 +359,14 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         insertionDict["translation"] = translation
         self.totalTranslation += translation
 
-        bboxCenter = addedObject.ViewObject.getBoundingBox().Center
-        addedObject.Placement.Base = screenCenter - bboxCenter + self.totalTranslation
+        originX, originY = view.getPointOnViewport(App.Vector() + translation)
+        if originX > 0 and originX < x and originY > 0 and originY < y:
+            # If the origin is within view then we insert at the origin.
+            addedObject.Placement.Base = self.totalTranslation
+        else:
+            #
+            bboxCenter = addedObject.ViewObject.getBoundingBox().Center
+            addedObject.Placement.Base = screenCenter - bboxCenter + self.totalTranslation
 
         self.prevScreenCenter = screenCenter
 

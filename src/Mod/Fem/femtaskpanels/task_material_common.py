@@ -274,13 +274,14 @@ class _TaskPanel:
                     for a_mat_item in self.materials[a_mat].items():
                         if item[0] == a_mat_item[0]:
                             # now check if we have a number value in a unit
-                            if item[1].split() != item[1]:
-                                if not self.isfloat(item[1].split()[0]):
-                                    break
-                                if float(item[1].split()[0]) == float(a_mat_item[1].split()[0]):
-                                    unmatched_item = False
-                            else:
-                                # it can be a unitless number
+                            if item[1].split() and not self.isfloat(item[1].split()[0]):
+                                break
+                            if item[1].split() and float(item[1].split()[0]) == float(
+                                a_mat_item[1].split()[0]
+                            ):
+                                unmatched_item = False
+                            elif not item[1].split():
+                                # handle the case where item[1] is an empty string
                                 if not self.isfloat(item[1]):
                                     break
                                 if float(item[1]) == float(a_mat_item[1]):

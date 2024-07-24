@@ -70,10 +70,7 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
         else if (Mode == STATUS_SEEK_Second) {
             EditCurve[1] = onSketchPos;
@@ -88,10 +85,7 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
         else if (Mode == STATUS_SEEK_Third) {
             double focal = (axisPoint - focusPoint).Length();
@@ -125,10 +119,7 @@ public:
 
             drawEdit(EditCurve);
 
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr3);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
         else if (Mode == STATUS_SEEK_Fourth) {
             double focal = (axisPoint - focusPoint).Length();
@@ -174,13 +165,8 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr4);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
-
-        applyCursor();
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override

@@ -69,7 +69,6 @@ private Q_SLOTS:
     void onCheckAxial(bool);
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 

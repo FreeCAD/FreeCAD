@@ -37,6 +37,7 @@
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderMeasureBase.h"
+#include "WorkbenchManipulator.h"
 
 
 // use a different name to CreateCommand()
@@ -86,8 +87,13 @@ PyMOD_INIT_FUNC(MeasureGui)
     PyObject* mod = MeasureGui::initModule();
     Base::Console().Log("Loading GUI of Measure module... done\n");
 
+    auto manip = std::make_shared<MeasureGui::WorkbenchManipulator>();
+    Gui::WorkbenchManipulator::installManipulator(manip);
+
     // instantiating the commands
     CreateMeasureCommands();
+
+    MeasureGui::DimensionLinear::initClass();
 
     MeasureGui::ViewProviderMeasureGroup               ::init();
     MeasureGui::ViewProviderMeasureBase                ::init();

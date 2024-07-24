@@ -160,6 +160,11 @@ public:
     void afterRestore() override;
     void onContainerRestored() override;
 
+    void getLinksTo(std::vector<App::ObjectIdentifier> &identifiers,
+                            App::DocumentObject *obj,
+                            const char *subname=nullptr,
+                            bool all=false) const override;
+
     /* Python interface */
     PyObject *getPyObject() override;
     void setPyObject(PyObject *) override;

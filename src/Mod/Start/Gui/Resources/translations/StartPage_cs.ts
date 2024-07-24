@@ -157,12 +157,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
       <source>Dark theme</source>
-      <translation type="unfinished">Dark theme</translation>
+      <translation>Tmavý motiv</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>Light theme</source>
-      <translation type="unfinished">Light theme</translation>
+      <translation>Světlý motiv</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="156"/>
@@ -172,19 +172,19 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="157"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Hledáte více motivů? Můžete je získat prostřednictvím &lt;a href="freecad:Std_AddonMgr"&gt;Správce doplňků&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="159"/>
       <source>Dark theme</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark theme</translation>
+      <translation>Tmavý motiv</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="160"/>
       <source>Light theme</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Light theme</translation>
+      <translation>Světlý motiv</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="161"/>

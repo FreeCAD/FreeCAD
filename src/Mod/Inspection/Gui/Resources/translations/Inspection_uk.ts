@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>Перевірка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection...</source>
-      <translation>Інспекція...</translation>
+      <translation>Перевірка...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>Перевірка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>

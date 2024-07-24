@@ -1438,6 +1438,8 @@ public:
                                                          const char* marker = nullptr,
                                                          std::string* postfix = nullptr) const;
 
+    long isElementGenerated(const Data::MappedName &name, int depth=1) const;
+
     /** @name sub shape cached functions
      *
      * Mapped element names introduces some overhead when getting sub shapes
@@ -1470,7 +1472,7 @@ public:
      */
      std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
                                           std::vector<std::string> *names=nullptr,
-                                          CheckGeometry checkGeometry=CheckGeometry::checkGeometry,
+                                          Data::SearchOptions = Data::SearchOption::CheckGeometry,
                                           double tol=1e-7, double atol=1e-12) const;
     //@}
 

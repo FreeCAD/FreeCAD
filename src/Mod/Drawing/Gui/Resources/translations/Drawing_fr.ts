@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="565"/>
       <source>Drawing</source>
-      <translation>Mise en plan</translation>
+      <translation>Dessin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="775"/>
       <source>Drawing</source>
-      <translation>Dessin</translation>
+      <translation>Mise en plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="776"/>
@@ -231,8 +231,8 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
-      <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Insèrer un symbole à partir d'un fichier SVG dans le dessin actif</translation>
+      <source>Inserts a symbol from a SVG file in the active drawing</source>
+      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
     </message>
   </context>
   <context>

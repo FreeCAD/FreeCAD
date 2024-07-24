@@ -791,7 +791,7 @@
       <location filename="../../ViewProvider.cpp" line="973"/>
       <location filename="../../ViewProvider.cpp" line="1094"/>
       <source>Trim</source>
-      <translation>Zuschneiden</translation>
+      <translation>Trimmen</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1181"/>
@@ -1669,7 +1669,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="306"/>
       <source>Before fitting the surface select an area.</source>
-      <translation>Bevor Sie die Oberfläche annähern, wählen Sie einen Bereich aus.</translation>
+      <translation>Vor dem Befehl Oberfläche annähern, einen Bereich auswählen.</translation>
     </message>
   </context>
   <context>
@@ -1984,7 +1984,7 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <location filename="../../Selection.cpp" line="86"/>
       <source>Use a brush tool to select the area</source>
-      <translation>Verwenden Sie einen Pinsel, um den Bereich auszuwählen</translation>
+      <translation>Einen Pinsel verwenden, um den Bereich auszuwählen</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="89"/>
@@ -2079,8 +2079,8 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <location filename="../../Command.cpp" line="303"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD kann auf Ihrem System nicht gefunden werden.
-Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</translation>
+      <translation>OpenSCAD kann auf dem System nicht gefunden werden.
+Bitte bhttp://www.openscad.org/index.html besuchen, um es zu installieren.</translation>
     </message>
   </context>
   <context>
@@ -2274,7 +2274,7 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     <message>
       <location filename="../../Command.cpp" line="1805"/>
       <source>Enter scaling factor:</source>
-      <translation>Geben Sie den Skalierungsfaktor an:</translation>
+      <translation>Den Skalierungsfaktor angeben:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="77"/>

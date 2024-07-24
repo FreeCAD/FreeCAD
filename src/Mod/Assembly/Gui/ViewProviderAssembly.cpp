@@ -138,16 +138,27 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
         return false;
     }
 
-    // else if a solid is removed, remove associated joints if any.
+    return true;
+}
+
+bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
+                                                 App::DocumentObject* target) const
+{
+    // If a solid is removed from the assembly, its joints need to be removed.
     bool prompted = false;
     auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+
+    // If target is null then it's being dropped on a doc.
+    if (target && assemblyPart->hasObject(target)) {
+        // If the obj stays in assembly then its ok.
+        return true;
+    }
 
     // Combine the joints and groundedJoints vectors into one for simplicity.
     std::vector<App::DocumentObject*> allJoints = assemblyPart->getJoints();
     std::vector<App::DocumentObject*> groundedJoints = assemblyPart->getGroundedJoints();
     allJoints.insert(allJoints.end(), groundedJoints.begin(), groundedJoints.end());
 
-    Gui::Command::openCommand(tr("Delete associated joints").toStdString().c_str());
     for (auto joint : allJoints) {
         // getLinkObjFromProp returns nullptr if the property doesn't exist.
         App::DocumentObject* obj1 = AssemblyObject::getObjFromProp(joint, "Object1");
@@ -175,60 +186,65 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
                                     joint->getNameInDocument());
         }
     }
-    Gui::Command::commitCommand();
 
     return true;
 }
 
-bool ViewProviderAssembly::setEdit(int ModNum)
+bool ViewProviderAssembly::setEdit(int mode)
 {
-    Q_UNUSED(ModNum);
+    if (mode == ViewProvider::Default) {
+        // Set the part as 'Activated' ie bold in the tree.
+        Gui::Command::doCommand(Gui::Command::Gui,
+                                "appDoc = App.getDocument('%s')\n"
+                                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
+                                "appDoc.getObject('%s'))",
+                                this->getObject()->getDocument()->getName(),
+                                PARTKEY,
+                                this->getObject()->getNameInDocument());
 
-    // Set the part as 'Activated' ie bold in the tree.
-    Gui::Command::doCommand(Gui::Command::Gui,
-                            "appDoc = App.getDocument('%s')\n"
-                            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
-                            "appDoc.getObject('%s'))",
-                            this->getObject()->getDocument()->getName(),
-                            PARTKEY,
-                            this->getObject()->getNameInDocument());
+        // When we set edit, we update the grounded joints placements to support :
+        // - If user transformed the grounded object
+        // - For nested assemblies where the grounded object moves around.
+        auto* assembly = static_cast<AssemblyObject*>(getObject());
+        assembly->updateGroundedJointsPlacements();
 
-    // When we set edit, we update the grounded joints placements to support :
-    // - If user transformed the grounded object
-    // - For nested assemblies where the grounded object moves around.
-    auto* assembly = static_cast<AssemblyObject*>(getObject());
-    assembly->updateGroundedJointsPlacements();
+        setDragger();
 
-    setDragger();
+        attachSelection();
 
-    attachSelection();
+        return true;
+    }
 
-    return true;
+    return ViewProviderPart::setEdit(mode);
 }
 
-void ViewProviderAssembly::unsetEdit(int ModNum)
+void ViewProviderAssembly::unsetEdit(int mode)
 {
-    Q_UNUSED(ModNum);
-    canStartDragging = false;
-    partMoving = false;
-    docsToMove.clear();
+    if (mode == ViewProvider::Default) {
+        canStartDragging = false;
+        partMoving = false;
+        docsToMove.clear();
 
-    unsetDragger();
+        unsetDragger();
 
-    detachSelection();
+        detachSelection();
 
-    // Check if the view is still active before trying to deactivate the assembly.
-    auto activeView = getDocument()->getActiveView();
-    if (!activeView) {
+        // Check if the view is still active before trying to deactivate the assembly.
+        auto activeView = getDocument()->getActiveView();
+        if (!activeView) {
+            return;
+        }
+
+        // Set the part as not 'Activated' ie not bold in the tree.
+        Gui::Command::doCommand(Gui::Command::Gui,
+                                "appDoc = App.getDocument('%s')\n"
+                                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
+                                this->getObject()->getDocument()->getName(),
+                                PARTKEY);
         return;
     }
 
-    // Set the part as not 'Activated' ie not bold in the tree.
-    Gui::Command::doCommand(Gui::Command::Gui,
-                            "appDoc = App.getDocument('%s')\n"
-                            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
-                            this->getObject()->getDocument()->getName(),
-                            PARTKEY);
+    ViewProviderPart::unsetEdit(mode);
 }
 
 void ViewProviderAssembly::setDragger()
@@ -239,7 +255,7 @@ void ViewProviderAssembly::setDragger()
     asmDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
                               Gui::ViewParams::instance()->getAxisYColor(),
                               Gui::ViewParams::instance()->getAxisZColor());
-    asmDragger->draggerSize.setValue(0.05f);
+    asmDragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
 
     asmDraggerSwitch = new SoSwitch(SO_SWITCH_NONE);
     asmDraggerSwitch->addChild(asmDragger);
@@ -308,6 +324,10 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+    if (!isInEditMode()) {
+        return false;
+    }
+
     // Initialize or cancel the dragging of parts
     if (canStartDragging) {
         canStartDragging = false;
@@ -438,6 +458,10 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
 {
     Q_UNUSED(cursorPos);
     Q_UNUSED(viewer);
+
+    if (!isInEditMode()) {
+        return false;
+    }
 
     // Left Mouse button ****************************************************
     if (Button == 1) {
@@ -960,6 +984,10 @@ void ViewProviderAssembly::setDraggerVisibility(bool val)
 }
 bool ViewProviderAssembly::getDraggerVisibility()
 {
+    if (!isInEditMode()) {
+        return false;
+    }
+
     return asmDraggerSwitch->whichChild.getValue() == SO_SWITCH_ALL;
 }
 

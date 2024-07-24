@@ -500,15 +500,12 @@ void ParameterGroup::contextMenuEvent ( QContextMenuEvent* event )
 
 void ParameterGroup::keyPressEvent (QKeyEvent* event)
 {
-    switch ( tolower(event->key()) )
-    {
-    case Qt::Key_Delete:
-        {
-            onDeleteSelectedItem();
-        }   break;
-    default:
-            QTreeWidget::keyPressEvent(event);
-  }
+    if (event->matches(QKeySequence::Delete)) {
+        onDeleteSelectedItem();
+    }
+    else {
+        QTreeWidget::keyPressEvent(event);
+    }
 }
 
 void ParameterGroup::onDeleteSelectedItem()
@@ -715,15 +712,12 @@ void ParameterValue::contextMenuEvent ( QContextMenuEvent* event )
 
 void ParameterValue::keyPressEvent (QKeyEvent* event)
 {
-    switch ( tolower(event->key()) )
-    {
-    case Qt::Key_Delete:
-        {
-            onDeleteSelectedItem();
-        }   break;
-    default:
-            QTreeWidget::keyPressEvent(event);
-  }
+    if (event->matches(QKeySequence::Delete)) {
+        onDeleteSelectedItem();
+    }
+    else {
+        QTreeWidget::keyPressEvent(event);
+    }
 }
 
 void ParameterValue::resizeEvent(QResizeEvent* event)
