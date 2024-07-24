@@ -20,14 +20,14 @@
         <Attribute Name="Degree" ReadOnly="true">
             <Documentation>
                 <UserDocu>Returns the polynomial degree of this Bezier curve,
-which is equal to the number of poles minus 1.</UserDocu>
+                    which is equal to the number of poles minus 1.</UserDocu>
             </Documentation>
             <Parameter Name="Degree" Type="Long"/>
         </Attribute>
         <Attribute Name="MaxDegree" ReadOnly="true">
             <Documentation>
                 <UserDocu>Returns the value of the maximum polynomial degree of any
-Bezier curve curve. This value is 25.</UserDocu>
+                    Bezier curve curve. This value is 25.</UserDocu>
             </Documentation>
             <Parameter Name="MaxDegree" Type="Long"/>
         </Attribute>
@@ -68,8 +68,8 @@ Bezier curve curve. This value is 25.</UserDocu>
         <Methode Name="increase">
             <Documentation>
                 <UserDocu>increase(Int=Degree)
-Increases the degree of this Bezier curve to Degree.
-As a result, the poles and weights tables are modified.</UserDocu>
+                    Increases the degree of this Bezier curve to Degree.
+                    As a result, the poles and weights tables are modified.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="insertPoleAfter">
@@ -85,7 +85,7 @@ As a result, the poles and weights tables are modified.</UserDocu>
         <Methode Name="removePole">
             <Documentation>
                 <UserDocu>Removes the pole of index Index from the table of poles of this Bezier curve.
-If this Bezier curve is rational, it can become non-rational.</UserDocu>
+                    If this Bezier curve is rational, it can become non-rational.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="segment">
@@ -131,10 +131,10 @@ If this Bezier curve is rational, it can become non-rational.</UserDocu>
         <Methode Name="getResolution" Const="true">
             <Documentation>
                 <UserDocu>Computes for this Bezier curve the parametric tolerance (UTolerance)
-for a given 3D tolerance (Tolerance3D).
-If f(t) is the equation of this Bezier curve, the parametric tolerance
-ensures that:
-|t1-t0| &lt; UTolerance =&quot;&quot;==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
+                    for a given 3D tolerance (Tolerance3D).
+                    If f(t) is the equation of this Bezier curve,
+                    the parametric tolerance ensures that:
+                    |t1-t0| &lt; UTolerance =&quot;&quot;==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
             </Documentation>
         </Methode>
     </PythonExport>

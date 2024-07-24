@@ -24,7 +24,7 @@
         <Attribute Name="MaxDegree" ReadOnly="true">
             <Documentation>
                 <UserDocu>Returns the value of the maximum polynomial degree of any
-B-Spline curve curve. This value is 25.</UserDocu>
+                    B-Spline curve curve. This value is 25.</UserDocu>
             </Documentation>
             <Parameter Name="MaxDegree" Type="Long"/>
         </Attribute>
@@ -55,16 +55,16 @@ B-Spline curve curve. This value is 25.</UserDocu>
         <Attribute Name="FirstUKnotIndex" ReadOnly="true">
             <Documentation>
                 <UserDocu>Returns the index in the knot array of the knot
-corresponding to the first or last parameter
-of this B-Spline curve.</UserDocu>
+                    corresponding to the first or last parameter
+                    of this B-Spline curve.</UserDocu>
             </Documentation>
             <Parameter Name="FirstUKnotIndex" Type="Object"/>
         </Attribute>
         <Attribute Name="LastUKnotIndex" ReadOnly="true">
             <Documentation>
                 <UserDocu>Returns the index in the knot array of the knot
-corresponding to the first or last parameter
-of this B-Spline curve.</UserDocu>
+                    corresponding to the first or last parameter
+                    of this B-Spline curve.</UserDocu>
             </Documentation>
             <Parameter Name="LastUKnotIndex" Type="Object"/>
         </Attribute>
@@ -95,54 +95,56 @@ of this B-Spline curve.</UserDocu>
         <Methode Name="increaseDegree">
             <Documentation>
                 <UserDocu>increase(Int=Degree)
-Increases the degree of this B-Spline curve to Degree.
-As a result, the poles, weights and multiplicities tables
-are modified; the knots table is not changed. Nothing is
-done if Degree is less than or equal to the current degree.</UserDocu>
+                    Increases the degree of this B-Spline curve to Degree.
+                    As a result, the poles, weights and multiplicities tables
+                    are modified; the knots table is not changed. Nothing is
+                    done if Degree is less than or equal to the current degree.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="increaseMultiplicity">
             <Documentation>
                 <UserDocu>increaseMultiplicity(int index, int mult)
-                increaseMultiplicity(int start, int end, int mult)
-                Increases multiplicity of knots up to mult.
+                    increaseMultiplicity(int start, int end, int mult)
+                    Increases multiplicity of knots up to mult.
 
-                index: the index of a knot to modify (1-based)
-                start, end: index range of knots to modify.
-                If mult is lower or equal to the current multiplicity nothing is done. If mult is higher than the degree the degree is used.</UserDocu>
+                    index: the index of a knot to modify (1-based)
+                    start, end: index range of knots to modify.
+                    If mult is lower or equal to the current multiplicity nothing is done.
+                    If mult is higher than the degree the degree is used.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="incrementMultiplicity">
             <Documentation>
                 <UserDocu>incrementMultiplicity(int start, int end, int mult)
-                Raises multiplicity of knots by mult.
+                    Raises multiplicity of knots by mult.
 
-                start, end: index range of knots to modify.</UserDocu>
+                    start, end: index range of knots to modify.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="insertKnot">
             <Documentation>
                 <UserDocu>insertKnot(u, mult = 1, tol = 0.0)
-                Inserts a knot value in the sequence of knots. If u is an existing knot the
-                multiplicity is increased by mult.</UserDocu>
+                    Inserts a knot value in the sequence of knots. If u is an existing knot the
+                    multiplicity is increased by mult.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="insertKnots">
             <Documentation>
                 <UserDocu>insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
-                Inserts a set of knots values in the sequence of knots.
 
-                For each u = list_of_floats[i], mult = list_of_ints[i]
+                    Inserts a set of knots values in the sequence of knots.
 
-                If u is an existing knot the multiplicity is increased by mult if bool_add is
-                True, otherwise increased to mult.
+                    For each u = list_of_floats[i], mult = list_of_ints[i]
 
-                If u is not on the parameter range nothing is done.
+                    If u is an existing knot the multiplicity is increased by mult if bool_add is
+                    True, otherwise increased to mult.
 
-                If the multiplicity is negative or null nothing is done. The new multiplicity
-                is limited to the degree.
+                    If u is not on the parameter range nothing is done.
 
-                The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.</UserDocu>
+                    If the multiplicity is negative or null nothing is done. The new multiplicity
+                    is limited to the degree.
+
+                    The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="removeKnot">
@@ -192,7 +194,7 @@ done if Degree is less than or equal to the current degree.</UserDocu>
         <Methode Name="setPole">
             <Documentation>
                 <UserDocu>Modifies this B-Spline curve by assigning P
-to the pole of index Index in the poles table.</UserDocu>
+                    to the pole of index Index in the poles table.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getPole">
@@ -228,27 +230,27 @@ to the pole of index Index in the poles table.</UserDocu>
         <Methode Name="getResolution" Const="true">
             <Documentation>
                 <UserDocu>Computes for this B-Spline curve the parametric tolerance (UTolerance)
-for a given 3D tolerance (Tolerance3D).
-If f(t) is the equation of this B-Spline curve, the parametric tolerance
-ensures that:
-|t1-t0| &lt; UTolerance =&quot;&quot;==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
+                    for a given 3D tolerance (Tolerance3D).
+                    If f(t) is the equation of this B-Spline curve, the parametric tolerance
+                    ensures that:
+                    |t1-t0| &lt; UTolerance =&quot;&quot;==&gt; |f(t1)-f(t0)| &lt; Tolerance3D</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="movePoint">
             <Documentation>
                 <UserDocu>movePoint(U, P, Index1, Index2)
-                Moves the point of parameter U of this B-Spline curve to P.
-Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
-of the first and last poles designated to be moved.
+                    Moves the point of parameter U of this B-Spline curve to P.
+                    Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
+                    of the first and last poles designated to be moved.
 
-Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the
-first and last poles which are effectively modified.</UserDocu>
+                    Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the
+                    first and last poles which are effectively modified.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setNotPeriodic">
             <Documentation>
                 <UserDocu>Changes this B-Spline curve into a non-periodic curve.
-If this curve is already non-periodic, it is not modified.</UserDocu>
+                    If this curve is already non-periodic, it is not modified.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="setPeriodic">
@@ -259,14 +261,14 @@ If this curve is already non-periodic, it is not modified.</UserDocu>
         <Methode Name="setOrigin">
             <Documentation>
                 <UserDocu>Assigns the knot of index Index in the knots table
-as the origin of this periodic B-Spline curve. As a consequence,
-the knots and poles tables are modified.</UserDocu>
+                    as the origin of this periodic B-Spline curve. As a consequence,
+                    the knots and poles tables are modified.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getMultiplicity">
             <Documentation>
                 <UserDocu>Returns the multiplicity of the knot of index
-from the knots table of this B-Spline curve.</UserDocu>
+                    from the knots table of this B-Spline curve.</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getMultiplicities">
@@ -353,28 +355,29 @@ from the knots table of this B-Spline curve.</UserDocu>
         <Methode Name="buildFromPolesMultsKnots" Keyword="true">
             <Documentation>
                 <UserDocu>Builds a B-Spline by a lists of Poles, Mults, Knots.
-                arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
+                    arguments: poles (sequence of Base.Vector),
+                        [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
 
-                Examples:
-                from FreeCAD import Base
-                import Part
-                V=Base.Vector
-                poles=[V(-10,-10),V(10,-10),V(10,10),V(-10,10)]
+                    Examples:
+                    from FreeCAD import Base
+                    import Part
+                    V=Base.Vector
+                    poles=[V(-10,-10),V(10,-10),V(10,10),V(-10,10)]
 
-                # non-periodic spline
-                n=Part.BSplineCurve()
-                n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
-                Part.show(n.toShape())
+                    # non-periodic spline
+                    n=Part.BSplineCurve()
+                    n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
+                    Part.show(n.toShape())
 
-                # periodic spline
-                p=Part.BSplineCurve()
-                p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
-                Part.show(p.toShape())
+                    # periodic spline
+                    p=Part.BSplineCurve()
+                    p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
+                    Part.show(p.toShape())
 
-                # periodic and rational spline
-                r=Part.BSplineCurve()
-                r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
-                Part.show(r.toShape())</UserDocu>
+                    # periodic and rational spline
+                    r=Part.BSplineCurve()
+                    r.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2,(1,0.8,0.7,0.2))
+                    Part.show(r.toShape())</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="toBezier">

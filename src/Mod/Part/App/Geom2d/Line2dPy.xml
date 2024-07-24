@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport
-      Father="Curve2dPy"
-      Name="Line2dPy"
-      PythonName="Part.Geom2d.Line2d"
-      Twin="Geom2dLine"
-      TwinPointer="Geom2dLine"
-      Include="Mod/Part/App/Geometry2d.h"
-      Namespace="Part"
-      FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h"
-      FatherNamespace="Part"
-      Constructor="true">
-    <Documentation>
-      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>Describes an infinite line in 2D space
-To create a line there are several ways:
-Part.Geom2d.Line2d()
-    Creates a default line
+    <PythonExport
+        Father="Curve2dPy"
+        Name="Line2dPy"
+        PythonName="Part.Geom2d.Line2d"
+        Twin="Geom2dLine"
+        TwinPointer="Geom2dLine"
+        Include="Mod/Part/App/Geometry2d.h"
+        Namespace="Part"
+        FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>Describes an infinite line in 2D space
+                To create a line there are several ways:
+                Part.Geom2d.Line2d()
+                    Creates a default line.
 
-Part.Geom2d.Line2d(Line)
-    Creates a copy of the given line
+                Part.Geom2d.Line2d(Line)
+                    Creates a copy of the given line.
 
-Part.Geom2d.Line2d(Point,Dir)
-    Creates a line that goes through two given points</UserDocu>
-    </Documentation>
-    <Attribute Name="Location" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Returns the location of this line.</UserDocu>
-      </Documentation>
-      <Parameter Name="Location" Type="Object"/>
-    </Attribute>
-    <Attribute Name="Direction" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Returns the direction of this line.</UserDocu>
-      </Documentation>
-      <Parameter Name="Direction" Type="Object"/>
-    </Attribute>
-  </PythonExport>
+                Part.Geom2d.Line2d(Point,Dir)
+                    Creates a line that goes through two given points.</UserDocu>
+        </Documentation>
+        <Attribute Name="Location" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Returns the location of this line.</UserDocu>
+            </Documentation>
+            <Parameter Name="Location" Type="Object"/>
+        </Attribute>
+        <Attribute Name="Direction" ReadOnly="false">
+            <Documentation>
+                <UserDocu>Returns the direction of this line.</UserDocu>
+            </Documentation>
+            <Parameter Name="Direction" Type="Object"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>
