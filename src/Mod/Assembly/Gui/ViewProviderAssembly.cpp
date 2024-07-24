@@ -642,22 +642,23 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
-        auto downstreamParts = assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
-        for (auto partRef : downstreamParts) {
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(
-                partRef.first->getPropertyByName("Placement"));
+        std::vector<Assembly::ObjRef> downstreamParts =
+            assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
+        for (auto& partRef : downstreamParts) {
+            auto* pPlc =
+                dynamic_cast<App::PropertyPlacement*>(partRef.obj->getPropertyByName("Placement"));
             if (pPlc) {
-                App::DocumentObject* selRoot = partRef.second->getValue();
+                App::DocumentObject* selRoot = partRef.ref->getValue();
                 if (!selRoot) {
                     return DragMode::None;
                 }
-                std::vector<std::string> subs = partRef.second->getSubValues();
+                std::vector<std::string> subs = partRef.ref->getSubValues();
                 if (subs.empty()) {
                     return DragMode::None;
                 }
 
 
-                docsToMove.emplace_back(partRef.first, pPlc->getValue(), selRoot, subs[0]);
+                docsToMove.emplace_back(partRef.obj, pPlc->getValue(), selRoot, subs[0]);
             }
         }
 

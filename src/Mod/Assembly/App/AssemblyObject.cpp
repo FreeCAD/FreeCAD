@@ -725,11 +725,10 @@ bool AssemblyObject::isJointTypeConnecting(App::DocumentObject* joint)
 }
 
 
-bool AssemblyObject::isObjInSetOfObjRefPairs(App::DocumentObject* obj,
-                                             const std::set<ObjRefPair>& set)
+bool AssemblyObject::isObjInSetOfObjRefs(App::DocumentObject* obj, const std::vector<ObjRef>& set)
 {
     for (const auto& pair : set) {
-        if (pair.first == obj) {
+        if (pair.obj == obj) {
             return true;
         }
     }
@@ -739,11 +738,11 @@ bool AssemblyObject::isObjInSetOfObjRefPairs(App::DocumentObject* obj,
 void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
                                              std::vector<App::DocumentObject*> groundedObjs)
 {
-    std::set<ObjRefPair> connectedParts;
+    std::vector<ObjRef> connectedParts;
 
     // Initialize connectedParts with groundedObjs
     for (auto* groundedObj : groundedObjs) {
-        connectedParts.insert({groundedObj, nullptr});
+        connectedParts.push_back({groundedObj, nullptr});
     }
 
     // Perform a traversal from each grounded object
@@ -759,8 +758,8 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
             [&](App::DocumentObject* joint) {
                 App::DocumentObject* obj1 = getMovingPartFromRef(joint, "Reference1");
                 App::DocumentObject* obj2 = getMovingPartFromRef(joint, "Reference2");
-                if (!isObjInSetOfObjRefPairs(obj1, connectedParts)
-                    || !isObjInSetOfObjRefPairs(obj2, connectedParts)) {
+                if (!isObjInSetOfObjRefs(obj1, connectedParts)
+                    || !isObjInSetOfObjRefs(obj2, connectedParts)) {
                     Base::Console().Warning(
                         "%s is unconnected to a grounded part so it is ignored.\n",
                         joint->getFullName());
@@ -772,25 +771,25 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
 }
 
 void AssemblyObject::traverseAndMarkConnectedParts(App::DocumentObject* currentObj,
-                                                   std::set<ObjRefPair>& connectedParts,
+                                                   std::vector<ObjRef>& connectedParts,
                                                    const std::vector<App::DocumentObject*>& joints)
 {
     // getConnectedParts returns the objs connected to the currentObj by any joint
     auto connectedObjs = getConnectedParts(currentObj, joints);
-    for (auto nextObjRef : connectedObjs) {
-        if (!isObjInSetOfObjRefPairs(nextObjRef.first, connectedParts)) {
-            // Create a new ObjRefPair with the nextObj and a nullptr for PropertyXLinkSub*
-            connectedParts.insert(nextObjRef);
-            traverseAndMarkConnectedParts(nextObjRef.first, connectedParts, joints);
+    for (auto& nextObjRef : connectedObjs) {
+        if (!isObjInSetOfObjRefs(nextObjRef.obj, connectedParts)) {
+            // Create a new ObjRef with the nextObj and a nullptr for PropertyXLinkSub*
+            connectedParts.push_back(nextObjRef);
+            traverseAndMarkConnectedParts(nextObjRef.obj, connectedParts, joints);
         }
     }
 }
 
-std::vector<ObjRefPair>
+std::vector<ObjRef>
 AssemblyObject::getConnectedParts(App::DocumentObject* part,
                                   const std::vector<App::DocumentObject*>& joints)
 {
-    std::vector<ObjRefPair> connectedParts;
+    std::vector<ObjRef> connectedParts;
     for (auto joint : joints) {
         if (!isJointTypeConnecting(joint)) {
             continue;
@@ -836,11 +835,11 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
     std::vector<App::DocumentObject*> groundedObjs = getGroundedParts();
     std::vector<App::DocumentObject*> joints = getJoints(false);
 
-    std::set<ObjRefPair> connectedParts;
+    std::vector<ObjRef> connectedParts;
 
     // Initialize connectedParts with groundedObjs
     for (auto* groundedObj : groundedObjs) {
-        connectedParts.insert({groundedObj, nullptr});
+        connectedParts.push_back({groundedObj, nullptr});
     }
 
     // Perform a traversal from each grounded object
@@ -848,8 +847,8 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
         traverseAndMarkConnectedParts(groundedObj, connectedParts, joints);
     }
 
-    for (auto objRef : connectedParts) {
-        if (obj == objRef.first) {
+    for (auto& objRef : connectedParts) {
+        if (obj == objRef.obj) {
             return true;
         }
     }
@@ -1515,8 +1514,8 @@ std::shared_ptr<ASMTMarker> AssemblyObject::makeMbdMarker(std::string& name, Bas
     return mbdMarker;
 }
 
-std::vector<std::pair<App::DocumentObject*, App::PropertyXLinkSub*>>
-AssemblyObject::getDownstreamParts(App::DocumentObject* part, App::DocumentObject* joint)
+std::vector<ObjRef> AssemblyObject::getDownstreamParts(App::DocumentObject* part,
+                                                       App::DocumentObject* joint)
 {
     // First we deactivate the joint
     bool state = getJointActivated(joint);
@@ -1524,13 +1523,12 @@ AssemblyObject::getDownstreamParts(App::DocumentObject* part, App::DocumentObjec
 
     std::vector<App::DocumentObject*> joints = getJoints(false);
 
-    std::set<std::pair<App::DocumentObject*, App::PropertyXLinkSub*>> connectedParts = {
-        {part, nullptr}};
+    std::vector<ObjRef> connectedParts = {{part, nullptr}};
     traverseAndMarkConnectedParts(part, connectedParts, joints);
 
-    std::vector<std::pair<App::DocumentObject*, App::PropertyXLinkSub*>> downstreamParts;
-    for (auto parti : connectedParts) {
-        if (!isPartConnected(parti.first) && (parti.first != part)) {
+    std::vector<ObjRef> downstreamParts;
+    for (auto& parti : connectedParts) {
+        if (!isPartConnected(parti.obj) && (parti.obj != part)) {
             downstreamParts.push_back(parti);
         }
     }
