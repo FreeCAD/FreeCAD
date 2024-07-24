@@ -477,7 +477,7 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
 
 void ViewProviderAssembly::doubleClickedIn3dView()
 {
-    // Double clicking on a joint should start its edition.
+    // Double clicking on a joint should start editing it.
     auto sel = Gui::Selection().getSelectionEx("", App::DocumentObject::getClassTypeId());
     if (sel.size() != 1) {
         return;  // Handle double click only if only one obj selected.
