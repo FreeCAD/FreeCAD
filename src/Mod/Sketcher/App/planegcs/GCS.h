@@ -516,6 +516,11 @@ public:
                                                           unsigned int poleindex,
                                                           int tag = 0,
                                                           bool driving = true);
+    int addConstraintInternalAlignmentBezierControlPoint(BezierCurve& b,
+                                                         Circle& c,
+                                                         unsigned int poleindex,
+                                                         int tag = 0,
+                                                         bool driving = true);
     int addConstraintInternalAlignmentKnotPoint(BSpline& b,
                                                 Point& p,
                                                 unsigned int knotindex,
