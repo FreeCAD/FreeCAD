@@ -258,8 +258,7 @@ private:
     //FIXME duplicate code? as in copy/paste
     const MappedNameRef* findMappedRef(const IndexedName& idx) const;
     MappedNameRef* findMappedRef(const IndexedName& idx);
-    MappedNameRef* findMappedRef(const IndexedName& idx) const;
-
+    
     MappedNameRef& mappedRef(const IndexedName& idx);
 
     void collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
