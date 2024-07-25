@@ -61,19 +61,7 @@ bool MeasureAngle::isValidSelection(const App::MeasureSelection& selection)
     }
 
     for (auto element : selection) {
-        auto objT = element.object;
-        
-        App::DocumentObject* ob = objT.getObject();
-        const std::string& subName = objT.getSubName();
-        const char* className = objT.getSubObject()->getTypeId().getName();
-        std::string mod = Base::Type::getModuleName(className);
-
-        if (!hasGeometryHandler(mod)) {
-            return false;
-        }
-
-        App::MeasureHandler handler = App::MeasureManager::getMeasureHandler(mod.c_str());
-        App::MeasureElementType type = handler.typeCb(ob, subName.c_str());
+        auto type = App::MeasureManager::getMeasureElementType(element);
 
         if (type == App::MeasureElementType::INVALID) {
             return false;
@@ -134,16 +122,11 @@ void MeasureAngle::parseSelection(const App::MeasureSelection& selection) {
 
 
 bool MeasureAngle::getVec(App::DocumentObject& ob, std::string& subName, Base::Vector3d& vecOut) {
-    const char* className = ob.getSubObject(subName.c_str())->getTypeId().getName();
-    std::string mod = Base::Type::getModuleName(className);
-
-    if (!hasGeometryHandler(mod)) {
+    App::SubObjectT subject{&ob, subName.c_str()};
+    auto info = getMeasureInfo(subject);
+    if (!info || !info->valid) {
         return false;
     }
-
-    auto handler = getGeometryHandler(mod);
-    App::SubObjectT subject{&ob, subName.c_str()};
-    auto info = handler(subject);
 
     auto angleInfo = std::dynamic_pointer_cast<Part::MeasureAngleInfo>(info);
     vecOut = angleInfo->orientation;
@@ -152,16 +135,12 @@ bool MeasureAngle::getVec(App::DocumentObject& ob, std::string& subName, Base::V
 
 Base::Vector3d MeasureAngle::getLoc(App::DocumentObject& ob, std::string& subName)
 {
-    const char* className = ob.getSubObject(subName.c_str())->getTypeId().getName();
-    std::string mod = Base::Type::getModuleName(className);
-
-    if (!hasGeometryHandler(mod)) {
-        return Base::Vector3d();
-    }
-
-    auto handler = getGeometryHandler(mod);
     App::SubObjectT subject{&ob, subName.c_str()};
-    auto info = handler(subject);
+    auto info = getMeasureInfo(subject);
+        if (!info || !info->valid) {
+            return Base::Vector3d();
+        }    
+    
     auto angleInfo = std::dynamic_pointer_cast<Part::MeasureAngleInfo>(info);
     return angleInfo->position;
 }

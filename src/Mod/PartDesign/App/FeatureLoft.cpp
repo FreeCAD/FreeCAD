@@ -357,11 +357,11 @@ Loft::getSectionShape(const char *name,
                                                                               << App::SubObjectT(obj, sub.c_str()).getSubObjectFullName(obj->getDocument()->getName()));
         }
     }
-    auto compound = TopoShape().makeElementCompound(shapes, "", TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+    auto compound = TopoShape(0).makeElementCompound(shapes, "", TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
     auto wires = compound.getSubTopoShapes(TopAbs_WIRE);
     auto edges = compound.getSubTopoShapes(TopAbs_EDGE, TopAbs_WIRE); // get free edges and make wires from it
     if (edges.size()) {
-        auto extra = TopoShape().makeElementWires(edges).getSubTopoShapes(TopAbs_WIRE);
+        auto extra = TopoShape(0).makeElementWires(edges).getSubTopoShapes(TopAbs_WIRE);
         wires.insert(wires.end(), extra.begin(), extra.end());
     }
     const char *msg = "Sections need to have the same amount of wires or vertices as the base section";

@@ -126,9 +126,9 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             referenceSelected(msg, ui->listWidgetReferences);
         }
         else if (selectionMode == plane) {
-            PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+            auto pcDraft = getObject<PartDesign::Draft>();
             std::vector<std::string> planes;
-            App::DocumentObject* selObj;
+            App::DocumentObject* selObj {};
             getReferencedSelection(pcDraft, msg, selObj, planes);
             if(!selObj)
                 return;
@@ -138,12 +138,12 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
             // highlight existing references for possible further selections
-            DressUpView->highlightReferences(true);
+            getDressUpView()->highlightReferences(true);
             // hide the draft if there was a computation error
             hideOnError();
         } 
         else if (selectionMode == line) {
-            PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+            auto pcDraft = getObject<PartDesign::Draft>();
             std::vector<std::string> edges;
             App::DocumentObject* selObj;
             getReferencedSelection(pcDraft, msg, selObj, edges);
@@ -155,7 +155,7 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
             // highlight existing references for possible further selections
-            DressUpView->highlightReferences(true);
+            getDressUpView()->highlightReferences(true);
             // hide the draft if there was a computation error
             hideOnError();
         }
@@ -204,7 +204,7 @@ void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::s
 {
     sub = std::vector<std::string>(1,"");
     QStringList parts = ui->linePlane->text().split(QChar::fromLatin1(':'));
-    obj = DressUpView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+    obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
     if (parts.size() > 1)
         sub[0] = parts[1].toStdString();
 }
@@ -213,20 +213,21 @@ void TaskDraftParameters::getLine(App::DocumentObject*& obj, std::vector<std::st
 {
     sub = std::vector<std::string>(1,"");
     QStringList parts = ui->lineLine->text().split(QChar::fromLatin1(':'));
-    obj = DressUpView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+    obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
     if (parts.size() > 1)
         sub[0] = parts[1].toStdString();
 }
 
 void TaskDraftParameters::onAngleChanged(double angle)
 {
-    setButtons(none);
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
-    setupTransaction();
-    pcDraft->Angle.setValue(angle);
-    pcDraft->getDocument()->recomputeFeature(pcDraft);
-    // hide the draft if there was a computation error
-    hideOnError();
+    if (auto draft = getObject<PartDesign::Draft>()) {
+        setButtons(none);
+        setupTransaction();
+        draft->Angle.setValue(angle);
+        draft->recomputeFeature();
+        // hide the draft if there was a computation error
+        hideOnError();
+    }
 }
 
 double TaskDraftParameters::getAngle() const
@@ -234,14 +235,16 @@ double TaskDraftParameters::getAngle() const
     return ui->draftAngle->value().getValue();
 }
 
-void TaskDraftParameters::onReversedChanged(const bool on) {
-    setButtons(none);
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
-    setupTransaction();
-    pcDraft->Reversed.setValue(on);
-    pcDraft->getDocument()->recomputeFeature(pcDraft);
-    // hide the draft if there was a computation error
-    hideOnError();
+void TaskDraftParameters::onReversedChanged(const bool on)
+{
+    if (auto draft = getObject<PartDesign::Draft>()) {
+        setButtons(none);
+        setupTransaction();
+        draft->Reversed.setValue(on);
+        draft->recomputeFeature();
+        // hide the draft if there was a computation error
+        hideOnError();
+    }
 }
 
 bool TaskDraftParameters::getReversed() const
@@ -300,21 +303,12 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-
-//void TaskDlgDraftParameters::open()
-//{
-//    // a transaction is already open at creation time of the draft
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = QObject::tr("Edit draft");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
-
 bool TaskDlgDraftParameters::accept()
 {
-    auto tobj = vp->getObject();
-    if (!tobj->isError())
+    auto tobj = getObject();
+    if (!tobj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 
@@ -327,13 +321,6 @@ bool TaskDlgDraftParameters::accept()
 
     draftparameter->getLine(obj, strings);
     std::string pullDirection = buildLinkSingleSubPythonStr(obj, strings);
-
-    // Force the user to select a neutral plane
-    // if (neutralPlane.empty() || neutralPlane == "None") {
-    //     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
-    //         QObject::tr("Please select a plane or an edge plus a pull direction"));
-    //     return false;
-    // }
 
     FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
     FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());

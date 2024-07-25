@@ -59,7 +59,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     this->groupLayout()->addWidget(proxy);
 
     // bind property mirrors
-    if (auto *rev = dynamic_cast<PartDesign::Revolution *>(vp->getObject())) {
+    if (auto rev = getObject<PartDesign::Revolution>()) {
         this->propAngle = &(rev->Angle);
         this->propAngle2 = &(rev->Angle2);
         this->propMidPlane = &(rev->Midplane);
@@ -69,7 +69,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         ui->revolveAngle->bind(rev->Angle);
         ui->revolveAngle2->bind(rev->Angle2);
     }
-    else if (auto *rev = dynamic_cast<PartDesign::Groove *>(vp->getObject())) {
+    else if (auto rev = getObject<PartDesign::Groove>()) {
         isGroove = true;
         this->propAngle = &(rev->Angle);
         this->propAngle2 = &(rev->Angle2);
@@ -86,14 +86,14 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
 
     setupDialog();
 
-    blockUpdate = false;
+    setUpdateBlocked(false);
     updateUI(ui->changeMode->currentIndex());
     connectSignals();
 
     setFocus();
 
     // show the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject () );
+    PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject());
     if (body) {
         try {
             App::Origin *origin = body->getOrigin();
@@ -148,7 +148,7 @@ void TaskRevolutionParameters::setupDialog()
 
     // TODO: This should also be implemented for groove
     if (!isGroove) {
-        PartDesign::Revolution* rev = static_cast<PartDesign::Revolution*>(vp->getObject());
+        auto rev = getObject<PartDesign::Revolution>();
         ui->revolveAngle2->setValue(propAngle2->getValue());
         ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
         ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
@@ -156,7 +156,7 @@ void TaskRevolutionParameters::setupDialog()
         index = rev->Type.getValue();
     }
     else {
-        PartDesign::Groove* rev = static_cast<PartDesign::Groove*>(vp->getObject());
+        auto rev = getObject<PartDesign::Groove>();
         ui->revolveAngle2->setValue(propAngle2->getValue());
         ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
         ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
@@ -185,7 +185,7 @@ void TaskRevolutionParameters::translateModeList(int index)
 
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 {
-    Base::StateLocker lock(blockUpdate, true);
+    Base::StateLocker lock(getUpdateBlockRef(), true);
 
     if (axesInList.empty())
         forceRefill = true;//not filled yet, full refill
@@ -194,9 +194,10 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         ui->axis->clear();
         axesInList.clear();
 
-        auto *pcFeat = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
-        if (!pcFeat)
+        auto *pcFeat = getObject<PartDesign::ProfileBased>();
+        if (!pcFeat) {
             throw Base::TypeError("The object is not ProfileBased.");
+        }
 
         //add sketch axes
         if (auto *pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue())) {
@@ -348,9 +349,9 @@ void TaskRevolutionParameters::connectSignals()
 
 void TaskRevolutionParameters::updateUI(int index)
 {
-    if (blockUpdate)
+    if (isUpdateBlocked())
         return;
-    Base::StateLocker lock(blockUpdate, true);
+    Base::StateLocker lock(getUpdateBlockRef(), true);
     fillAxisCombo();
     setCheckboxes(static_cast<PartDesign::Revolution::RevolMethod>(index));
 }
@@ -377,7 +378,7 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
             exitSelectionMode();
             std::vector<std::string> axis;
             App::DocumentObject* selObj;
-            if (getReferencedSelection(vp->getObject(), msg, selObj, axis) && selObj) {
+            if (getReferencedSelection(getObject(), msg, selObj, axis) && selObj) {
                 propReferenceAxis->setValue(selObj, axis);
 
                 recomputeFeature();
@@ -470,24 +471,29 @@ void TaskRevolutionParameters::clearFaceName()
 
 void TaskRevolutionParameters::onAngleChanged(double len)
 {
-    propAngle->setValue(len);
-    exitSelectionMode();
-    recomputeFeature();
+    if (getObject()) {
+        propAngle->setValue(len);
+        exitSelectionMode();
+        recomputeFeature();
+    }
 }
 
 void TaskRevolutionParameters::onAngle2Changed(double len)
 {
-    if (propAngle2)
-        propAngle2->setValue(len);
-    exitSelectionMode();
-    recomputeFeature();
+    if (getObject()) {
+        if (propAngle2) {
+            propAngle2->setValue(len);
+        }
+        exitSelectionMode();
+        recomputeFeature();
+    }
 }
 
 void TaskRevolutionParameters::onAxisChanged(int num)
 {
-    if (blockUpdate)
+    if (isUpdateBlocked())
         return;
-    PartDesign::ProfileBased* pcRevolution = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    auto pcRevolution = getObject<PartDesign::ProfileBased>();
 
     if (axesInList.empty())
         return;
@@ -549,30 +555,31 @@ void TaskRevolutionParameters::onAxisChanged(int num)
 
 void TaskRevolutionParameters::onMidplane(bool on)
 {
-    propMidPlane->setValue(on);
-    recomputeFeature();
+    if (getObject()) {
+        propMidPlane->setValue(on);
+        recomputeFeature();
+    }
 }
 
 void TaskRevolutionParameters::onReversed(bool on)
 {
-    propReversed->setValue(on);
-    recomputeFeature();
+    if (getObject()) {
+        propReversed->setValue(on);
+        recomputeFeature();
+    }
 }
 
 void TaskRevolutionParameters::onModeChanged(int index)
 {
-    App::PropertyEnumeration* pcType;
+    App::PropertyEnumeration* pcType {};
     if (!isGroove)
-        pcType = &(static_cast<PartDesign::Revolution*>(vp->getObject())->Type);
+        pcType = &(getObject<PartDesign::Revolution>()->Type);
     else
-        pcType = &(static_cast<PartDesign::Groove*>(vp->getObject())->Type);
+        pcType = &(getObject<PartDesign::Groove>()->Type);
 
     switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
     case PartDesign::Revolution::RevolMethod::Dimension:
         pcType->setValue("Angle");
-        // Avoid error message
-        // if (ui->revolveAngle->value() < Base::Quantity(Precision::Angular(), Base::Unit::Angle)) // TODO: Ensure radians/degree consistency
-        //     ui->revolveAngle->setValue(5.0);
         break;
     case PartDesign::Revolution::RevolMethod::ToLast:
         if (!isGroove)
@@ -597,16 +604,18 @@ void TaskRevolutionParameters::onModeChanged(int index)
 
 void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    if (axesInList.empty())
+    if (axesInList.empty()) {
         throw Base::RuntimeError("Not initialized!");
+    }
 
     int num = ui->axis->currentIndex();
     const App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (!lnk.getValue()) {
         throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
-    } else {
-        PartDesign::ProfileBased* pcRevolution = static_cast<PartDesign::ProfileBased*>(vp->getObject());
-        if (!pcRevolution->getDocument()->isIn(lnk.getValue())){
+    }
+    else {
+        auto revolution = getObject<PartDesign::ProfileBased>();
+        if (!revolution->getDocument()->isIn(lnk.getValue())){
             throw Base::RuntimeError("Object was deleted");
         }
 
@@ -629,14 +638,16 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
 {
     try {
         //hide the parts coordinate system axis for selection
-        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : nullptr;
+        auto obj = getObject();
+        PartDesign::Body * body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr;
         if (body) {
             App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
             vpOrigin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }
-    } catch (const Base::Exception &ex) {
+    }
+    catch (const Base::Exception &ex) {
         ex.ReportException();
     }
 
@@ -663,7 +674,7 @@ void TaskRevolutionParameters::apply()
     App::DocumentObject* obj;
     getReferenceAxis(obj, sub);
     std::string axis = buildLinkSingleSubPythonStr(obj, sub);
-    auto tobj = vp->getObject();
+    auto tobj = getObject();
     FCMD_OBJ_CMD(tobj, "ReferenceAxis = " << axis);
     FCMD_OBJ_CMD(tobj, "Midplane = " << (getMidplane() ? 1 : 0));
     FCMD_OBJ_CMD(tobj, "Reversed = " << (getReversed() ? 1 : 0));

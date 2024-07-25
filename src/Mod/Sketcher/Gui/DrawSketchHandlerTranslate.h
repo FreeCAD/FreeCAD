@@ -485,14 +485,14 @@ void DSHTranslateController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_translate", "Clone constraints"));
+            QApplication::translate("TaskSketcherTool_c1_translate", "Apply equal constraints"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate(
-                "TaskSketcherTool_c1_translate",
-                "This concerns the datum constraints like distances. If you activate Clone, "
-                "then the tool will copy the datum. Else it will try to replace them with "
-                "equalities between the initial geometries and the new copies."));
+            QApplication::translate("TaskSketcherTool_c1_translate",
+                                    "If this option is selected dimensional constraints are "
+                                    "excluded from the operation.\n"
+                                    "Instead equal constraints are applied between the original "
+                                    "objects and their copies."));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);

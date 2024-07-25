@@ -22,10 +22,35 @@
 
 #include "PreCompiled.h"
 
+#include "Preferences.h"
+
 #include "LineNameEnum.h"
 
 
 namespace TechDraw {
+
+// these strings have to be kept in order according to Preferences::lineStandard()
+std::vector<std::string> LineName::ContextStrings{
+                            "ANSILineTypeEnum",
+                            "ASMELineTypeEnum",
+                            "ISOLineTypeEnum" };
+
+std::string LineName::translationContext(size_t iStandard)
+{
+    if (iStandard < ContextStrings.size() &&
+        iStandard > 0) {
+        return ContextStrings[iStandard];
+    }
+    return {};
+}
+
+
+std::string LineName::currentTranslationContext()
+{
+    return translationContext(Preferences::lineStandard());
+}
+
+
 
 //! line numbers begin at 1, not 0
 

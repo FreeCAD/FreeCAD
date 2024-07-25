@@ -64,8 +64,10 @@ public:
     void setValues(const std::vector<Geometry*>&);
     void setValues(std::vector<Geometry*>&&);
 
+    void moveValues(PropertyGeometryList &&other);
+
     /// index operator
-    const Geometry *operator[] (const int idx) const {
+    Geometry *operator[] (const int idx) const {
         return _lValueList[idx];
     }
 

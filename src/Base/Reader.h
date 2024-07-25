@@ -217,13 +217,23 @@ public:
     unsigned int getAttributeCount() const;
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
-    /// return the named attribute as an integer (does type checking)
-    long getAttributeAsInteger(const char* AttrName) const;
-    unsigned long getAttributeAsUnsigned(const char* AttrName) const;
-    /// return the named attribute as a double floating point (does type checking)
-    double getAttributeAsFloat(const char* AttrName) const;
-    /// return the named attribute as a double floating point (does type checking)
-    const char* getAttribute(const char* AttrName) const;
+
+    /// return the named attribute as an integer (does type checking); if missing return
+    /// defaultValue
+    long getAttributeAsInteger(const char* AttrName, const char* defaultValue = nullptr) const;
+
+    /// return the named attribute as unsigned integer (does type checking); if missing return
+    /// defaultValue
+    unsigned long getAttributeAsUnsigned(const char* AttrName,
+                                         const char* defaultValue = nullptr) const;
+
+    /// return the named attribute as a double floating point (does type checking); if missing
+    /// return defaultValue
+    double getAttributeAsFloat(const char* AttrName, const char* defaultValue = nullptr) const;
+
+    /// return the named attribute as a double floating point (does type checking); if missing
+    /// return defaultValue
+    const char* getAttribute(const char* AttrName, const char* defaultValue = nullptr) const;
     //@}
 
     /** @name additional file reading */

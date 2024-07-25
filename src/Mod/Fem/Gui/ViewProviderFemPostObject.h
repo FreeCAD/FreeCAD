@@ -133,7 +133,7 @@ protected:
     virtual void setupTaskDialog(TaskDlgPost* dlg);
     bool setupPipeline();
     void updateVtk();
-    void setRangeOfColorBar(double min, double max);
+    void setRangeOfColorBar(float min, float max);
 
     SoCoordinate3* m_coordinates;
     SoIndexedPointSet* m_markers;

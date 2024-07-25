@@ -68,19 +68,7 @@ bool MeasureRadius::isValidSelection(const App::MeasureSelection& selection){
     }
 
     auto element = selection.front();
-    auto objT = element.object;
-    
-    App::DocumentObject* ob = objT.getObject();
-    const std::string& subName = objT.getSubName();
-    const char* className = objT.getSubObject()->getTypeId().getName();
-    std::string mod = Base::Type::getModuleName(className);
-
-    if (!hasGeometryHandler(mod)) {
-        return false;
-    }
-
-    App::MeasureHandler handler = App::MeasureManager::getMeasureHandler(mod.c_str());
-    App::MeasureElementType type = handler.typeCb(ob, subName.c_str());
+    auto type = App::MeasureManager::getMeasureElementType(element);
 
     if (type == App::MeasureElementType::INVALID) {
         return false;
@@ -102,19 +90,7 @@ bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selectio
     }
 
     auto element = selection.front();
-    auto objT = element.object;
-    
-    App::DocumentObject* ob = objT.getObject();
-    const std::string& subName = objT.getSubName();
-    const char* className = objT.getSubObject()->getTypeId().getName();
-    std::string mod = Base::Type::getModuleName(className);
-
-    if (!hasGeometryHandler(mod)) {
-        return false;
-    }
-
-    App::MeasureHandler handler = App::MeasureManager::getMeasureHandler(mod.c_str());
-    App::MeasureElementType type = handler.typeCb(ob, subName.c_str());
+    auto type = App::MeasureManager::getMeasureElementType(element);
 
     if (type == App::MeasureElementType::CIRCLE
         || type == App::MeasureElementType::ARC) {
@@ -128,7 +104,7 @@ bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selectio
 //! Set properties from first item in selection. assumes a valid selection.
 void MeasureRadius::parseSelection(const App::MeasureSelection& selection) {
     auto element = selection.front();
-    auto objT = element.object;    
+    auto objT = element.object;
 
     std::vector<std::string> subElementList { objT.getSubName() };
     Element.setValue(objT.getObject(), subElementList);
@@ -156,7 +132,7 @@ void MeasureRadius::onChanged(const App::Property* prop)
     if (prop == &Element) {
         recalculateRadius();
     }
-    
+
     MeasureBase::onChanged(prop);
 }
 
@@ -179,7 +155,7 @@ Base::Vector3d MeasureRadius::getPointOnCurve() const
 //! get the handler's result for the first element
 Part::MeasureRadiusInfoPtr MeasureRadius::getMeasureInfoFirst() const
 {
-   const App::DocumentObject* object = Element.getValue();
+    const App::DocumentObject* object = Element.getValue();
     const std::vector<std::string>& subElements = Element.getSubValues();
 
     if (!object || subElements.empty()) {
@@ -187,18 +163,13 @@ Part::MeasureRadiusInfoPtr MeasureRadius::getMeasureInfoFirst() const
         return std::make_shared<Part::MeasureRadiusInfo>();
     }
 
-    std::string subElement = subElements.front();
-    const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
-    const std::string& mod = Base::Type::getModuleName(className);
-
-    auto handler = getGeometryHandler(mod);
-    if (!handler) {
-        throw Base::RuntimeError("No geometry handler available for submitted element type");
+    App::SubObjectT subject{object, subElements.front().c_str()};
+    auto info = getMeasureInfo(subject);
+    if (!info || !info->valid) {
+// NOLINTNEXTLINE(modernize-return-braced-init-list)
+        return std::make_shared<Part::MeasureRadiusInfo>();
     }
 
-    std::string obName = object->getNameInDocument();
-    App::SubObjectT subject{object, subElement.c_str()};
-    auto info = handler(subject);
     auto radiusInfo = std::dynamic_pointer_cast<Part::MeasureRadiusInfo>(info);
     return radiusInfo;
 }

@@ -909,7 +909,6 @@ class ToolBitLibrary(object):
                 )
                 self.path = path
                 self.librarySave()
-                self.updateToolbar()
 
     def libararySaveLinuxCNC(self, path):
         # linuxcnc line template

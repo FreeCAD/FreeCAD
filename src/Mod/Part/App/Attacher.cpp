@@ -198,8 +198,8 @@ void AttachEngine::setReferences(const App::PropertyLinkSubList& references)
     this->shadowSubs.clear();
     this->shadowSubs.reserve(this->objNames.size());
     for (auto& shadow : references.getShadowSubs()) {
-        this->shadowSubs.push_back(shadow.first);
-        this->subnames.push_back(shadow.second);
+        this->shadowSubs.push_back(shadow.newName);
+        this->subnames.push_back(shadow.oldName);
     }
     assert(this->objNames.size() == this->subnames.size());
 }

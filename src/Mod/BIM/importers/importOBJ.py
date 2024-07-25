@@ -306,7 +306,7 @@ def insert(filename,docname):
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
 
-    with pythonopen(filename,"r") as infile:
+    with pythonopen(filename,"r",encoding="utf8") as infile:
         verts = []
         facets = []
         activeobject = None

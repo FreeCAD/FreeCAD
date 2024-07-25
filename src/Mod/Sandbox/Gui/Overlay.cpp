@@ -66,7 +66,7 @@ public:
         fbo = new QtGLFramebufferObject(v->getGLWidget()->size());
         fbo->bind();
         fbo->release();
-        
+
         view->getSoRenderManager()->scheduleRedraw();
     }
  #ifndef GL_MULTISAMPLE

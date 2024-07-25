@@ -32,6 +32,8 @@
 #include <boost/any.hpp>
 #include <FCConfig.h>
 
+#include "ElementNamingUtils.h"
+
 namespace Py {
 class Object;
 }
@@ -486,7 +488,7 @@ protected:
     String  documentName;
     String  documentObjectName;
     String  subObjectName;
-    std::pair<std::string,std::string> shadowSub;
+    ElementNamePair shadowSub;
     std::vector<Component> components;
     bool documentNameSet;
     bool documentObjectNameSet;

@@ -423,7 +423,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         if (dot) {
             auto body = PartDesign::Body::findBodyOf(this);
             if (body) {
-                auto feat = body->Group.find(std::string(subname, dot));
+                auto feat = body->Group.findUsingMap(std::string(subname, dot));
                 if (feat) {
                     Base::Matrix4D _mat;
                     if (!transform) {

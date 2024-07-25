@@ -146,8 +146,6 @@ public:
     explicit TaskDlgHoleParameters(ViewProviderHole *HoleView);
     ~TaskDlgHoleParameters() override;
 
-    ViewProviderHole* getHoleView() const { return static_cast<ViewProviderHole*>(vp); }
-
 protected:
     TaskHoleParameters  *parameter;
 };

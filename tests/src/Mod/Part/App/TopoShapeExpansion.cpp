@@ -1140,16 +1140,19 @@ TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexEverything)
     exp.Init(box1, TopAbs_VERTEX);
     auto vertex = exp.Current();
     // Act
-    auto shapes =
-        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes = box1TS.findSubShapesWithSharedVertex(face,
+                                                       &names,
+                                                       Data::SearchOption::CheckGeometry,
+                                                       tol,
+                                                       atol);
     auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
                                                         &names1,
-                                                        CheckGeometry::checkGeometry,
+                                                        Data::SearchOption::CheckGeometry,
                                                         tol,
                                                         atol);
     auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
                                                         &names2,
-                                                        CheckGeometry::checkGeometry,
+                                                        Data::SearchOption::CheckGeometry,
                                                         tol,
                                                         atol);
     //  Assert
@@ -1185,16 +1188,19 @@ TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexMid)
     exp.Init(box1, TopAbs_VERTEX);
     auto vertex = exp.Current();
     // Act
-    auto shapes =
-        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes = box1TS.findSubShapesWithSharedVertex(face,
+                                                       &names,
+                                                       Data::SearchOption::CheckGeometry,
+                                                       tol,
+                                                       atol);
     auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
                                                         &names1,
-                                                        CheckGeometry::checkGeometry,
+                                                        Data::SearchOption::CheckGeometry,
                                                         tol,
                                                         atol);
     auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
                                                         &names2,
-                                                        CheckGeometry::checkGeometry,
+                                                        Data::SearchOption::CheckGeometry,
                                                         tol,
                                                         atol);
     //  Assert
@@ -1224,16 +1230,19 @@ TEST_F(TopoShapeExpansionTest, findSubShapesWithSharedVertexClose)
     exp.Init(box1, TopAbs_VERTEX);
     auto vertex = exp.Current();
     // Act
-    auto shapes =
-        box1TS.findSubShapesWithSharedVertex(face, &names, CheckGeometry::checkGeometry, tol, atol);
+    auto shapes = box1TS.findSubShapesWithSharedVertex(face,
+                                                       &names,
+                                                       Data::SearchOption::CheckGeometry,
+                                                       tol,
+                                                       atol);
     auto shapes1 = box1TS.findSubShapesWithSharedVertex(edge,
                                                         &names1,
-                                                        CheckGeometry::checkGeometry,
+                                                        Data::SearchOption::CheckGeometry,
                                                         tol,
                                                         atol);
     auto shapes2 = box1TS.findSubShapesWithSharedVertex(vertex,
                                                         &names2,
-                                                        CheckGeometry::checkGeometry,
+                                                        Data::SearchOption::CheckGeometry,
                                                         tol,
                                                         atol);
     //  Assert

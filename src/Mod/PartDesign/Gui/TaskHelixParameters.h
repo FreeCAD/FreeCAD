@@ -134,9 +134,6 @@ class TaskDlgHelixParameters : public TaskDlgSketchBasedParameters
 
 public:
     explicit TaskDlgHelixParameters(ViewProviderHelix* HelixView);
-
-    ViewProviderHelix* getHelixView() const
-    { return static_cast<ViewProviderHelix*>(vp); }
 };
 
 } //namespace PartDesignGui

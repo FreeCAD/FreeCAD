@@ -339,7 +339,6 @@ void TaskLeaderLine::onLineStyleChanged()
 //! sceneDeltas are in Qt scene coords (Rez and inverted Y).
 void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas)
 {
-    // Base::Console().Message("TTL::createLeaderFeature()\n");
     const std::string objectName{"LeaderLine"};
     std::string m_leaderName = m_basePage->getDocument()->getUniqueObjectName(objectName.c_str());
     m_leaderType = "TechDraw::DrawLeaderLine";
@@ -354,9 +353,12 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        PageName.c_str(), m_leaderName.c_str());
+
+    double baseRotation{0};
     if (m_baseFeat) {
         Command::doCommand(Command::Doc, "App.activeDocument().%s.LeaderParent = App.activeDocument().%s",
                                m_leaderName.c_str(), m_baseFeat->getNameInDocument());
+        baseRotation = m_baseFeat->Rotation.getValue();
     }
 
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(m_leaderName.c_str());
@@ -366,6 +368,13 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
     if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
+        auto forMath{m_attachPoint};
+        if (baseRotation != 0) {
+            forMath = DU::invertY(forMath);
+            forMath.RotateZ(-Base::toRadians(baseRotation));
+            forMath = DU::invertY(forMath);
+        }
+        m_attachPoint = forMath;
         m_lineFeat->setPosition(Rez::appX(m_attachPoint.x), Rez::appX(- m_attachPoint.y), true);
         if (!sceneDeltas.empty()) {
             std::vector<Base::Vector3d> pageDeltas;
@@ -378,7 +387,6 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 // should just do this in place.
             if (m_lineFeat->AutoHorizontal.getValue()) {
                 pageDeltas = DrawLeaderLine::horizLastSegment(pageDeltas);
-                // m_lineFeat->horizLastSegment();
             }
             // convert to unscaled, unrotated but inverted
             auto temp = m_lineFeat->makeCanonicalPointsInverted(pageDeltas);

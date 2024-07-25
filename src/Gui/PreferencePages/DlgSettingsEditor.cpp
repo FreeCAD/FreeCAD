@@ -52,7 +52,7 @@ namespace
 /**
  * Get some kind of font that is monospaced, suitable for coding.
  *
- * Based on 
+ * Based on
  * https://stackoverflow.com/questions/18896933/qt-qfont-selection-of-a-monospace-font-doesnt-work
  */
 QFont getMonospaceFont()

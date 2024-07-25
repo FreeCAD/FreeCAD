@@ -498,6 +498,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeometryBoolExtension   	::init();
     Part::GeometryDoubleExtension 	::init();
     Part::GeometryMigrationExtension	::init();
+    Part::GeometryMigrationPersistenceExtension	::init();
     Part::Geometry                	::init();
     Part::GeomPoint               	::init();
     Part::GeomCurve               	::init();

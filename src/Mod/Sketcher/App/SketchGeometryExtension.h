@@ -28,6 +28,7 @@
 #include <bitset>
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
 
 
@@ -84,7 +85,7 @@ public:
     virtual void setGeometryLayerId(int geolayer) = 0;
 };
 
-class SketcherExport SketchGeometryExtension: public Part::GeometryPersistenceExtension,
+class SketcherExport SketchGeometryExtension: public Part::GeometryMigrationPersistenceExtension,
                                               private ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -159,6 +160,8 @@ protected:
     void copyAttributes(Part::GeometryExtension* cpy) const override;
     void restoreAttributes(Base::XMLReader& reader) override;
     void saveAttributes(Base::Writer& writer) const override;
+    void preSave(Base::Writer& writer) const override;
+    void postSave(Base::Writer& writer) const override;
 
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;

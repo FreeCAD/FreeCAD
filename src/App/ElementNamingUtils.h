@@ -2,8 +2,39 @@
 #define ELEMENT_NAMING_UTILS_H
 
 #include <string>
+#include <utility>
 #include "FCGlobal.h"
 
+namespace App
+{
+
+/** Return type for lookups of new and old style sub-element names
+ *
+ */
+struct ElementNamePair
+{
+    std::string newName;
+    std::string oldName;
+
+    ElementNamePair() = default;
+
+    ElementNamePair(std::string newNameStr, std::string oldNameStr) :
+        newName(std::move(newNameStr)), oldName(std::move(oldNameStr))
+    {
+    }
+
+    bool operator==(const ElementNamePair& other) const
+    {
+        return this->newName == other.newName && this->oldName == other.oldName;
+    };
+
+    void swap(ElementNamePair& other) noexcept
+    {
+        std::swap(*this, other);
+    }
+};
+
+}
 
 // clang-format off
 namespace Data

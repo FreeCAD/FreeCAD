@@ -47,12 +47,12 @@ TEST_F(FeaturePartTest, testGetElementName)
     auto namePairExport = _common->getElementName("test", App::GeoFeature::Export);
     auto namePairSelf = _common->getElementName(nullptr);
     // Assert
-    EXPECT_STREQ(namePair.first.c_str(), "");
-    EXPECT_STREQ(namePair.second.c_str(), "test");
-    EXPECT_STREQ(namePairExport.first.c_str(), "");
-    EXPECT_STREQ(namePairExport.second.c_str(), "test");
-    EXPECT_STREQ(namePairSelf.first.c_str(), "");
-    EXPECT_STREQ(namePairSelf.second.c_str(), "");
+    EXPECT_STREQ(namePair.newName.c_str(), "");
+    EXPECT_STREQ(namePair.oldName.c_str(), "test");
+    EXPECT_STREQ(namePairExport.newName.c_str(), "");
+    EXPECT_STREQ(namePairExport.oldName.c_str(), "test");
+    EXPECT_STREQ(namePairSelf.newName.c_str(), "");
+    EXPECT_STREQ(namePairSelf.oldName.c_str(), "");
 #ifndef FC_USE_TNP_FIX
     EXPECT_EQ(ts.getElementMap().size(), 0);
 #else

@@ -316,19 +316,17 @@ class ifc_vp_object:
         """Add an object to the view provider by d&d"""
 
         from PySide import QtCore  # lazy import
-        self.incoming_object = incoming_object
         # delay the action to prevent the object to be deleted
         # before the end of the drop
-        QtCore.QTimer.singleShot(100, self.onDrop)
+        QtCore.QTimer.singleShot(100, lambda: self.onDrop(incoming_object))
 
-    def onDrop(self):
+    def onDrop(self, incoming_object):
         """Delayed action to be taken when dropping an object"""
 
         from nativeifc import ifc_tools  # lazy import
-        ifc_tools.aggregate(self.incoming_object, self.Object)
+        ifc_tools.aggregate(incoming_object, self.Object)
         if self.hasChildren(self.Object):
             self.expandChildren(self.Object)
-        del self.incoming_object
 
     def activate(self):
         """Marks this container as active"""

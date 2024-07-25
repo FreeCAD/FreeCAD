@@ -270,11 +270,6 @@ std::string TaskFemConstraintSpring::getElmerStiffness() const
     return Base::Tools::toStdString(ui->ElmerStiffnessCB->currentText());
 }
 
-bool TaskFemConstraintSpring::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintSpring::changeEvent(QEvent*)
 {}
 

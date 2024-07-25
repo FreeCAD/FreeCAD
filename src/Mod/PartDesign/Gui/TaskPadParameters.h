@@ -62,10 +62,11 @@ class TaskDlgPadParameters : public TaskDlgExtrudeParameters
 public:
     explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
 
-    ViewProviderPad* getPadView() const { return static_cast<ViewProviderPad*>(vp); }
-
 protected:
-    TaskExtrudeParameters* getTaskParameters() override { return parameters; };
+    TaskExtrudeParameters* getTaskParameters() override
+    {
+        return parameters;
+    }
 
 private:
     TaskPadParameters* parameters;

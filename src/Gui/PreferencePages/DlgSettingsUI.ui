@@ -419,6 +419,9 @@
         <property name="text">
          <string>Auto hide in non 3D view</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayAutoView</cstring>
         </property>

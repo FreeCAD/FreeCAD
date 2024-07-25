@@ -197,7 +197,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
         Command::abortCommand();
         e.ReportException();
     }
-} 
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 

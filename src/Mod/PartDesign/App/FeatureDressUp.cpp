@@ -203,7 +203,7 @@ std::vector<TopoShape> DressUp::getContinuousEdges(const TopoShape& shape)
 
     for (const auto& v : Base.getShadowSubs()) {
         TopoDS_Shape subshape;
-        const auto& ref = v.first.size() ? v.first : v.second;
+        const auto& ref = v.newName.size() ? v.newName : v.oldName;
         subshape = shape.getSubShape(ref.c_str(), true);
         if (subshape.IsNull()) {
             FC_THROWM(Base::CADKernelError, "Invalid edge link: " << ref);
@@ -236,7 +236,7 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
             continue;
         }
         auto& sub = subs[i++];
-        auto& ref = sub.first.size() ? sub.first : val;
+        auto& ref = sub.newName.size() ? sub.newName : val;
         TopoShape subshape;
         try {
             subshape = shape.getSubTopoShape(ref.c_str());

@@ -38,6 +38,8 @@
 #include <Inventor/sensors/SoSensor.h>
 #endif
 
+#include <chrono>
+
 #include <App/Link.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -96,6 +98,7 @@ ViewProviderAssembly::ViewProviderAssembly()
     , moveInCommand(true)
     , jointVisibilityBackup(false)
     , ctrlPressed(false)
+    , lastClickTime(0)
     , docsToMove({})
 {}
 
@@ -190,55 +193,61 @@ bool ViewProviderAssembly::canDragObjectToTarget(App::DocumentObject* obj,
     return true;
 }
 
-bool ViewProviderAssembly::setEdit(int ModNum)
+bool ViewProviderAssembly::setEdit(int mode)
 {
-    Q_UNUSED(ModNum);
+    if (mode == ViewProvider::Default) {
+        // Set the part as 'Activated' ie bold in the tree.
+        Gui::Command::doCommand(Gui::Command::Gui,
+                                "appDoc = App.getDocument('%s')\n"
+                                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
+                                "appDoc.getObject('%s'))",
+                                this->getObject()->getDocument()->getName(),
+                                PARTKEY,
+                                this->getObject()->getNameInDocument());
 
-    // Set the part as 'Activated' ie bold in the tree.
-    Gui::Command::doCommand(Gui::Command::Gui,
-                            "appDoc = App.getDocument('%s')\n"
-                            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
-                            "appDoc.getObject('%s'))",
-                            this->getObject()->getDocument()->getName(),
-                            PARTKEY,
-                            this->getObject()->getNameInDocument());
+        // When we set edit, we update the grounded joints placements to support :
+        // - If user transformed the grounded object
+        // - For nested assemblies where the grounded object moves around.
+        auto* assembly = static_cast<AssemblyObject*>(getObject());
+        assembly->updateGroundedJointsPlacements();
 
-    // When we set edit, we update the grounded joints placements to support :
-    // - If user transformed the grounded object
-    // - For nested assemblies where the grounded object moves around.
-    auto* assembly = static_cast<AssemblyObject*>(getObject());
-    assembly->updateGroundedJointsPlacements();
+        setDragger();
 
-    setDragger();
+        attachSelection();
 
-    attachSelection();
+        return true;
+    }
 
-    return true;
+    return ViewProviderPart::setEdit(mode);
 }
 
-void ViewProviderAssembly::unsetEdit(int ModNum)
+void ViewProviderAssembly::unsetEdit(int mode)
 {
-    Q_UNUSED(ModNum);
-    canStartDragging = false;
-    partMoving = false;
-    docsToMove.clear();
+    if (mode == ViewProvider::Default) {
+        canStartDragging = false;
+        partMoving = false;
+        docsToMove.clear();
 
-    unsetDragger();
+        unsetDragger();
 
-    detachSelection();
+        detachSelection();
 
-    // Check if the view is still active before trying to deactivate the assembly.
-    auto activeView = getDocument()->getActiveView();
-    if (!activeView) {
+        // Check if the view is still active before trying to deactivate the assembly.
+        auto activeView = getDocument()->getActiveView();
+        if (!activeView) {
+            return;
+        }
+
+        // Set the part as not 'Activated' ie not bold in the tree.
+        Gui::Command::doCommand(Gui::Command::Gui,
+                                "appDoc = App.getDocument('%s')\n"
+                                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
+                                this->getObject()->getDocument()->getName(),
+                                PARTKEY);
         return;
     }
 
-    // Set the part as not 'Activated' ie not bold in the tree.
-    Gui::Command::doCommand(Gui::Command::Gui,
-                            "appDoc = App.getDocument('%s')\n"
-                            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
-                            this->getObject()->getDocument()->getName(),
-                            PARTKEY);
+    ViewProviderPart::unsetEdit(mode);
 }
 
 void ViewProviderAssembly::setDragger()
@@ -318,6 +327,10 @@ bool ViewProviderAssembly::keyPressed(bool pressed, int key)
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+    if (!isInEditMode()) {
+        return false;
+    }
+
     // Initialize or cancel the dragging of parts
     if (canStartDragging) {
         canStartDragging = false;
@@ -449,9 +462,26 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
     Q_UNUSED(cursorPos);
     Q_UNUSED(viewer);
 
+    if (!isInEditMode()) {
+        return false;
+    }
+
     // Left Mouse button ****************************************************
     if (Button == 1) {
         if (pressed && !getDraggerVisibility()) {
+            // Check for double-click
+            auto now = std::chrono::steady_clock::now();
+            long nowMillis =
+                std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch())
+                    .count();
+            if (nowMillis - lastClickTime < 500) {
+                // Double-click detected
+                doubleClickedIn3dView();
+                return true;
+            }
+            // First click detected
+            lastClickTime = nowMillis;
+
             canStartDragging = true;
         }
         else {  // Button 1 released
@@ -467,6 +497,36 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
     }
 
     return false;
+}
+
+void ViewProviderAssembly::doubleClickedIn3dView()
+{
+    // Double clicking on a joint should start editing it.
+    auto sel = Gui::Selection().getSelectionEx("", App::DocumentObject::getClassTypeId());
+    if (sel.size() != 1) {
+        return;  // Handle double click only if only one obj selected.
+    }
+
+    App::DocumentObject* obj = sel[0].getObject();
+    if (!obj) {
+        return;
+    }
+
+    auto* prop = dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("EnableLengthMin"));
+    if (!prop) {
+        return;
+    }
+
+    std::string obj_name = obj->getNameInDocument();
+    std::string doc_name = obj->getDocument()->getName();
+
+    std::string cmd = "import JointObject\n"
+                      "obj = App.getDocument('"
+        + doc_name + "').getObject('" + obj_name
+        + "')\n"
+          "Gui.Control.showDialog(JointObject.TaskAssemblyCreateJoint(0, obj))";
+
+    Gui::Command::runCommand(Gui::Command::App, cmd.c_str());
 }
 
 bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
@@ -970,6 +1030,10 @@ void ViewProviderAssembly::setDraggerVisibility(bool val)
 }
 bool ViewProviderAssembly::getDraggerVisibility()
 {
+    if (!isInEditMode()) {
+        return false;
+    }
+
     return asmDraggerSwitch->whichChild.getValue() == SO_SWITCH_ALL;
 }
 

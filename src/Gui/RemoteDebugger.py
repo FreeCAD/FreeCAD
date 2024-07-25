@@ -54,7 +54,7 @@ class RemoteDebugger():
                 # It does not have to be FC embedded interpreter.
                 # By default it attempts to use Freecad's PID mistaking it for python.
                 # https://github.com/microsoft/debugpy/issues/262
-                debugpy.configure(python=get_python_exe()) 
+                debugpy.configure(python=get_python_exe())
                 debugpy.listen((address, port))
                 debugpy.wait_for_client()
 

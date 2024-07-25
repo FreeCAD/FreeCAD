@@ -3073,16 +3073,16 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         for(const auto &sub : subs) {
             if(++i >= size)
                 break;
-            auto pos = sub.second.rfind('.');
+            auto pos = sub.oldName.rfind('.');
             if(pos == std::string::npos)
                 pos = 0;
             else
                 ++pos;
-            const char *element = sub.second.c_str()+pos;
+            const char *element = sub.oldName.c_str()+pos;
             if(boost::starts_with(element,wildcard))
-                colors[sub.second] = OverrideColorList[i];
+                colors[sub.oldName] = OverrideColorList[i];
             else if(!element[0] && wildcard=="Face")
-                colors[sub.second.substr(0,element-sub.second.c_str())+wildcard] = OverrideColorList[i];
+                colors[sub.oldName.substr(0,element-sub.oldName.c_str())+wildcard] = OverrideColorList[i];
         }
 
         // In case of multi-level linking, we recursively call into each level,
@@ -3133,15 +3133,15 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
 
         int offset = 0;
 
-        if(!sub.second.empty() && element_count && !std::isdigit(sub.second[0])) {
+        if(!sub.oldName.empty() && element_count && !std::isdigit(sub.oldName[0])) {
             // For checking and expanding color override of array base
             if(!subname[0]) {
                 std::ostringstream ss;
-                ss << "0." << sub.second;
+                ss << "0." << sub.oldName;
                 if(getObject()->getSubObject(ss.str().c_str())) {
                     for(int j=0;j<element_count;++j) {
                         ss.str("");
-                        ss << j << '.' << sub.second;
+                        ss << j << '.' << sub.oldName;
                         colors.emplace(ss.str(),OverrideColorList[i]);
                     }
                     continue;
@@ -3154,16 +3154,16 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         }
 
         if(isPrefix) {
-            if(!boost::starts_with(sub.first,subname+offset)
-                    && !boost::starts_with(sub.second,subname+offset))
+            if(!boost::starts_with(sub.newName,subname+offset)
+                    && !boost::starts_with(sub.oldName,subname+offset))
                 continue;
-        }else if(sub.first!=subname+offset && sub.second!=subname+offset)
+        }else if(sub.newName!=subname+offset && sub.oldName!=subname+offset)
             continue;
 
         if(offset)
-            colors.emplace(std::string(subname,offset)+sub.second, OverrideColorList[i]);
+            colors.emplace(std::string(subname,offset)+sub.oldName, OverrideColorList[i]);
         else
-            colors[sub.second] = OverrideColorList[i];
+            colors[sub.oldName] = OverrideColorList[i];
     }
 
     if(!subname[0])

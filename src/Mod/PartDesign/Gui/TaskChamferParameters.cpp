@@ -162,13 +162,16 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 {
-    if(checked)
-        setSelectionMode(none);
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    ui->buttonRefSel->setEnabled(!checked);
-    ui->listWidgetReferences->setEnabled(!checked);
-    pcChamfer->UseAllEdges.setValue(checked);
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+        if (checked) {
+            setSelectionMode(none);
+        }
+
+        ui->buttonRefSel->setEnabled(!checked);
+        ui->listWidgetReferences->setEnabled(!checked);
+        chamfer->UseAllEdges.setValue(checked);
+        chamfer->recomputeFeature();
+    }
 }
 
 void TaskChamferParameters::setButtons(const selectionModes mode)
@@ -189,58 +192,63 @@ void TaskChamferParameters::onAddAllEdges()
 
 void TaskChamferParameters::onTypeChanged(int index)
 {
-    setSelectionMode(none);
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    pcChamfer->ChamferType.setValue(index);
-    ui->stackedWidget->setCurrentIndex(index);
-    ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
-    // hide the chamfer if there was a computation error
-    hideOnError();
+    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+        setSelectionMode(none);
+        chamfer->ChamferType.setValue(index);
+        ui->stackedWidget->setCurrentIndex(index);
+        ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
+        chamfer->recomputeFeature();
+        // hide the chamfer if there was a computation error
+        hideOnError();
+    }
 }
 
 void TaskChamferParameters::onSizeChanged(double len)
 {
-    setSelectionMode(none);
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    setupTransaction();
-    pcChamfer->Size.setValue(len);
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
-    // hide the chamfer if there was a computation error
-    hideOnError();
+    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+        setSelectionMode(none);
+        setupTransaction();
+        chamfer->Size.setValue(len);
+        chamfer->recomputeFeature();
+        // hide the chamfer if there was a computation error
+        hideOnError();
+    }
 }
 
 void TaskChamferParameters::onSize2Changed(double len)
 {
-    setSelectionMode(none);
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    setupTransaction();
-    pcChamfer->Size2.setValue(len);
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
-    // hide the chamfer if there was a computation error
-    hideOnError();
+    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+        setSelectionMode(none);
+        setupTransaction();
+        chamfer->Size2.setValue(len);
+        chamfer->recomputeFeature();
+        // hide the chamfer if there was a computation error
+        hideOnError();
+    }
 }
 
 void TaskChamferParameters::onAngleChanged(double angle)
 {
-    setSelectionMode(none);
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    setupTransaction();
-    pcChamfer->Angle.setValue(angle);
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
-    // hide the chamfer if there was a computation error
-    hideOnError();
+    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+        setSelectionMode(none);
+        setupTransaction();
+        chamfer->Angle.setValue(angle);
+        chamfer->recomputeFeature();
+        // hide the chamfer if there was a computation error
+        hideOnError();
+    }
 }
 
 void TaskChamferParameters::onFlipDirection(bool flip)
 {
-    setSelectionMode(none);
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    setupTransaction();
-    pcChamfer->FlipDirection.setValue(flip);
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
-    // hide the chamfer if there was a computation error
-    hideOnError();
+    if (auto chamfer = getObject<PartDesign::Chamfer>()) {
+        setSelectionMode(none);
+        setupTransaction();
+        chamfer->FlipDirection.setValue(flip);
+        chamfer->recomputeFeature();
+        // hide the chamfer if there was a computation error
+        hideOnError();
+    }
 }
 
 int TaskChamferParameters::getType() const
@@ -295,13 +303,9 @@ void TaskChamferParameters::changeEvent(QEvent *e)
 
 void TaskChamferParameters::apply()
 {
-    std::string name = DressUpView->getObject()->getNameInDocument();
+    auto chamfer = getObject<PartDesign::Chamfer>();
 
-    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Chamfer changed"));
-
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-
-    const int chamfertype = pcChamfer->ChamferType.getValue();
+    const int chamfertype = chamfer->ChamferType.getValue();
 
     switch(chamfertype) {
 
@@ -340,20 +344,12 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-
-//void TaskDlgChamferParameters::open()
-//{
-//    // a transaction is already open at creation time of the chamfer
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = tr("Edit chamfer");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
 bool TaskDlgChamferParameters::accept()
 {
-    auto obj = vp->getObject();
-    if (!obj->isError())
+    auto obj = getObject();
+    if (!obj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 

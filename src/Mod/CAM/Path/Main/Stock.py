@@ -172,12 +172,6 @@ class StockFromBase(Stock):
                 "Extra allowance from part bound box in positive Z direction",
             ),
         )
-        obj.addProperty(
-            "App::PropertyLink",
-            "Material",
-            "Component",
-            QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
-        )
 
         obj.Base = base
         obj.ExtXneg = 1.0

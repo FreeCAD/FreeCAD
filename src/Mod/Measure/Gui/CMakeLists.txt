@@ -64,7 +64,7 @@ SET(MeasureGui_SRCS
     DlgPrefsMeasureAppearanceImp.ui
     DlgPrefsMeasureAppearanceImp.cpp
     DlgPrefsMeasureAppearanceImp.h
-    
+
 )
 
 SET(MeasureGuiTaskDlgs_SRCS

@@ -163,12 +163,14 @@
 #include <vtkHexahedron.h>
 #include <vtkIdList.h>
 #include <vtkImageData.h>
+#include <vtkLine.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkMultiPieceDataSet.h>
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPyramid.h>
 #include <vtkQuad.h>
+#include <vtkQuadraticEdge.h>
 #include <vtkQuadraticHexahedron.h>
 #include <vtkQuadraticPyramid.h>
 #include <vtkQuadraticQuad.h>

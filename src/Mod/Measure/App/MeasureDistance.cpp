@@ -76,20 +76,7 @@ bool MeasureDistance::isValidSelection(const App::MeasureSelection& selection){
     }
 
     for (auto element : selection) {
-
-        auto objT = element.object;
-        
-        App::DocumentObject* ob = objT.getObject();
-        const std::string& subName = objT.getSubName();
-        const char* className = objT.getSubObject()->getTypeId().getName();
-        std::string mod = Base::Type::getModuleName(className);
-
-        if (!hasGeometryHandler(mod)) {
-            return false;
-        }
-
-        App::MeasureHandler handler = App::MeasureManager::getMeasureHandler(mod.c_str());
-        App::MeasureElementType type = handler.typeCb(ob, subName.c_str());
+        auto type = App::MeasureManager::getMeasureElementType(element);
 
         if (type == App::MeasureElementType::INVALID) {
             return false;
@@ -152,17 +139,11 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     }
 
     std::string subName = subs.at(0);
-    const char* className = ob->getSubObject(subName.c_str())->getTypeId().getName();
-    std::string mod = Base::Type::getModuleName(className);
-
-    if (!hasGeometryHandler(mod)) {
-        return false;
-    }
-
-    auto handler = getGeometryHandler(mod);
     App::SubObjectT subject{ob, subName.c_str()};
-    auto info = handler(subject);
-    if (!info->valid) {
+
+    auto info = getMeasureInfo(subject);
+    
+    if (!info || !info->valid) {
         return false;
     }
     auto distanceInfo = std::dynamic_pointer_cast<Part::MeasureDistanceInfo>(info);
