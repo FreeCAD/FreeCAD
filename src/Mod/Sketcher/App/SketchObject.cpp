@@ -9706,20 +9706,18 @@ SketchObject::getHigherElements(const char *element, bool silent) const
                 ++n;
                 if (cstr->Type != Sketcher::Coincident)
                     continue;
-                for (int i=0; i<2; ++i) {
-                    int geoid = i ? cstr->Second : cstr->First;
-                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
-                    if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1)
-                        res.push_back(Data::IndexedName::fromConst("Constraint", n));
-                };
+                if(cstr->First >= 0 && index == getSolvedSketch().getPointId(cstr->First, cstr->FirstPos) + 1)
+                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                if(cstr->Second >= 0 && index == getSolvedSketch().getPointId(cstr->Second, cstr->SecondPos) + 1)
+                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
             }
         }
         return res;
 
-    auto getNames = [&](const char *element) {
+    auto getNames = [this, &silent, &res](const char *element) {
         bool internal = boost::starts_with(element, internalPrefix());
         const auto &shape = internal ? InternalShape.getShape() : Shape.getShape();
-        for (const auto &indexedName : shape.getHigherElements(element+(internal?internalPrefix().size():0), silent)) {
+        for (const auto &indexedName : shape.getHigherElements(element+(internal?internalPrefix().size() : 0), silent)) {
             if (!internal) {
                 res.push_back(indexedName);
             }
@@ -9744,9 +9742,7 @@ std::vector<const char *> SketchObject::getElementTypes(bool all) const
 {
     if (!all)
         return Part::Part2DObject::getElementTypes();
-    static std::vector<const char *> res;
-    if (res.empty()) {
-        res = { Part::TopoShape::shapeName(TopAbs_VERTEX).c_str(),
+    static std::vector<const char *> res { Part::TopoShape::shapeName(TopAbs_VERTEX).c_str(),
                 Part::TopoShape::shapeName(TopAbs_EDGE).c_str(),
                 "ExternalEdge",
                 "Constraint",
@@ -9754,7 +9750,6 @@ std::vector<const char *> SketchObject::getElementTypes(bool all) const
                 "InternalFace",
                 "InternalVertex",
               };
-    }
     return res;
 }
 
