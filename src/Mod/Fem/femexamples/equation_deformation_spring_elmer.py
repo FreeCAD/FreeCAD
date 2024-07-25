@@ -192,7 +192,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = body
+    femmesh_obj.Shape = body
     femmesh_obj.CharacteristicLengthMax = "1.25 mm"
     femmesh_obj.ElementOrder = "1st"
     femmesh_obj.ViewObject.Visibility = False
