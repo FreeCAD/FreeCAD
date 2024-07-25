@@ -57,7 +57,7 @@ class GmshTools:
             self.analysis = None
 
         # part to mesh
-        self.part_obj = self.mesh_obj.Part
+        self.part_obj = self.mesh_obj.Shape
 
         # clmax, CharacteristicLengthMax: float, 0.0 = 1e+22
         self.clmax = Units.Quantity(self.mesh_obj.CharacteristicLengthMax).Value
@@ -982,7 +982,7 @@ doc.recompute()
 box_obj.ViewObject.Visibility = False
 
 femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + "_Mesh")
-femmesh_obj.Part = box_obj
+femmesh_obj.Shape = box_obj
 doc.recompute()
 
 from femmesh.gmshtools import GmshTools as gt
@@ -1009,7 +1009,7 @@ for len in max_mesh_sizes:
     quantity_len = "{}".format(len)
     print("\n\n Start length = {}".format(quantity_len))
     femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + "_Mesh")
-    femmesh_obj.Part = box_obj
+    femmesh_obj.Shape = box_obj
     femmesh_obj.CharacteristicLengthMax = "{}".format(quantity_len)
     femmesh_obj.CharacteristicLengthMin = "{}".format(quantity_len)
     doc.recompute()

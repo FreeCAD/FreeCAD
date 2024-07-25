@@ -41,7 +41,6 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
-from femobjects import mesh_gmsh
 from femtools.femutils import is_of_type
 from femtools.femutils import getOutputWinColor
 
@@ -80,9 +79,9 @@ class _TaskPanel:
             self.form.pb_get_gmsh_version, QtCore.SIGNAL("clicked()"), self.get_gmsh_version
         )
 
-        self.form.cb_dimension.addItems(mesh_gmsh.MeshGmsh.known_element_dimensions)
+        self.form.cb_dimension.addItems(self.mesh_obj.getEnumerationsOfProperty("ElementDimension"))
 
-        self.form.cb_order.addItems(mesh_gmsh.MeshGmsh.known_element_orders)
+        self.form.cb_order.addItems(self.mesh_obj.getEnumerationsOfProperty("ElementOrder"))
 
         self.get_mesh_params()
         self.get_active_analysis()
@@ -195,7 +194,7 @@ class _TaskPanel:
 
         gmsh_mesh = gmshtools.GmshTools(self.mesh_obj, self.analysis)
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        part = self.mesh_obj.Part
+        part = self.mesh_obj.Shape
         if (
             self.mesh_obj.MeshRegionList
             and part.Shape.ShapeType == "Compound"

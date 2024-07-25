@@ -758,24 +758,24 @@ class Writer:
         obj = self.getSingleMember("Fem::FemMeshObject")
         bodyCount = 0
         prefix = ""
-        if obj.Part.Shape.Solids:
+        if obj.Shape.Shape.Solids:
             prefix = "Solid"
-            bodyCount = len(obj.Part.Shape.Solids)
-        elif obj.Part.Shape.Faces:
+            bodyCount = len(obj.Shape.Shape.Solids)
+        elif obj.Shape.Shape.Faces:
             prefix = "Face"
-            bodyCount = len(obj.Part.Shape.Faces)
-        elif obj.Part.Shape.Edges:
+            bodyCount = len(obj.Shape.Shape.Faces)
+        elif obj.Shape.Shape.Edges:
             prefix = "Edge"
-            bodyCount = len(obj.Part.Shape.Edges)
+            bodyCount = len(obj.Shape.Shape.Edges)
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def getMeshDimension(self):
         obj = self.getSingleMember("Fem::FemMeshObject")
-        if obj.Part.Shape.Solids:
+        if obj.Shape.Shape.Solids:
             return 3
-        if obj.Part.Shape.Faces:
+        if obj.Shape.Shape.Faces:
             return 2
-        if obj.Part.Shape.Edges:
+        if obj.Shape.Shape.Edges:
             return 1
         return None
 
