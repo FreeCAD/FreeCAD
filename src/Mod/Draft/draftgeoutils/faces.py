@@ -110,7 +110,7 @@ isCoplanar = is_coplanar
 
 
 def bind(w1, w2, per_segment=False):
-    """Bind 2 wires by their endpoints and returns a face.
+    """Bind 2 wires by their endpoints and returns a face / compound of faces.
 
     If per_segment is True and the wires have the same number of edges, the
     wires are processed per segment: a separate face is created for each pair
@@ -139,21 +139,25 @@ def bind(w1, w2, per_segment=False):
             and len(w1.Edges) == len(w2.Edges)):
         faces = []
         facesList = []
+        from draftgeoutils.intersections import findIntersection
         for (edge1, edge2) in zip(w1.Edges, w2.Edges):
-            from draftgeoutils.intersections import findIntersection
             # Find potential intersection due to ArchWall Align in opposite
             # direction (or Edge's Orientation in opposite direction,
             # or a combinantion of the above)
-            #              v
-            # w1 ----------+
-            #              |
-            # w2 ----------+---------- w1
-            #              |
-            #              +---------- w2
+            #
+            #           v                       v                     v
+            # w1 -------+            w1 -------+            w1 -------+
+            #           | w1                   | w1                   | w1
+            # w2 -------+------ w1   w2 -------+            w2 -------+
+            #        w2 |                   w2 | w1                w2 | w1
+            #           +------ w2             +------ w1             +------ w2
+            #                               w2 |                      | w1
+            #                                  +------ w2             +------ w1
+            #
             # TODO Maybe those edge pair should not be generated in offsetWire().
             #      Or should have broken into separate wires then.
             #if DraftGeomUtils.findIntersection(edge1, edge2, dts=False):		# This code fails at some case https://forum.freecad.org/viewtopic.php?p=769210#p769210
-            nearestPts = findIntersection(edge1, edge2, dts=True)			# Works with dts : https://wiki.freecad.org/TopoShape_API : Returns: float<min dist>,list<nearest pts>,list<nearest subshapes & parameters>
+            nearestPts = findIntersection(edge1, edge2, dts=True)			# Works if dts=True : https://wiki.freecad.org/TopoShape_API : Returns: float<min dist>,list<nearest pts>,list<nearest subshapes & parameters>
             if nearestPts:
                 facesList.append(faces)  # Break into separate list
                 faces = []  # Reset original faces variable
@@ -166,15 +170,15 @@ def bind(w1, w2, per_segment=False):
         if facesList:
             facesList.append(faces)  # Break into separate list
         # return concatenate(faces[0].fuse(faces[1:])) # Also works.
-        facesCompound = []  # = None
+        facesFusedList = []  # = None
         if facesList:
             for faces in facesList:
                 if len(faces) > 1 :
                     facesFused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
-                    facesCompound.append(facesFused)
+                    facesFusedList.append(facesFused)
                 else:
-                    facesCompound.append(faces[0])  # Only 1 face
-            return Part.Compound(facesCompound)
+                    facesFusedList.append(faces[0])  # Only 1 face
+            return Part.Compound(facesFusedList)
         else:
             return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
 
