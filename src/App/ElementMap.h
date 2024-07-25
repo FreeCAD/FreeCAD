@@ -254,6 +254,10 @@ private:
 
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName& name) const;
+    
+    //FIXME duplicate code? as in copy/paste
+    const MappedNameRef* findMappedRef(const IndexedName& idx) const;
+    MappedNameRef* findMappedRef(const IndexedName& idx);
     MappedNameRef* findMappedRef(const IndexedName& idx) const;
 
     MappedNameRef& mappedRef(const IndexedName& idx);
