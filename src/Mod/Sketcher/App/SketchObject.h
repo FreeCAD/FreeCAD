@@ -684,6 +684,11 @@ public:
 
     Part::TopoShape getEdge(const Part::Geometry* geo, const char* name) const;
 
+    std::vector<const char*> getElementTypes(bool all = true) const override;
+
+    std::vector<Data::IndexedName> getHigherElements(const char* element,
+                                                     bool silent = false) const override;
+
     Data::IndexedName checkSubName(const char* subname) const;
 
     bool geoIdFromShapeType(const Data::IndexedName&, int& geoId, PointPos& posId) const;
