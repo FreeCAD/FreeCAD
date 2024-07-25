@@ -208,6 +208,9 @@
         <property name="text">
          <string>Hide Internal Names</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideInternalNames</cstring>
         </property>
@@ -298,6 +301,9 @@
         <property name="text">
          <string>Show visibility icon</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>VisibilityIcon</cstring>
         </property>
@@ -314,6 +320,9 @@
         <property name="text">
          <string>Hide header</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideHeaderView</cstring>
         </property>
@@ -329,6 +338,9 @@
         </property>
         <property name="text">
          <string>Hide scroll bar</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideScrollBar</cstring>
@@ -370,6 +382,9 @@
         </property>
         <property name="text">
          <string>Hide tab bar</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayHideTabBar</cstring>
@@ -438,6 +453,9 @@
         <property name="text">
          <string>Auto mouse pass through</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayAutoMouseThrough</cstring>
         </property>
@@ -453,6 +471,9 @@
         </property>
         <property name="text">
          <string>Auto mouse wheel pass through</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayWheelPassThrough</cstring>
