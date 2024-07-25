@@ -605,22 +605,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 if (!copyerror) {
                     std::vector<App::Property*> props;
                     getPropertyList(props);
-                    for (auto prop : props) {
-                        if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
-                            continue;
-                        auto p = copied->getPropertyByName(prop->getName());
-                        if (p && p->getContainer() == copied
-                            && p->getTypeId() == prop->getTypeId()
-                            && !p->isSame(*prop))
-                        {
-                            recomputeCopy = true;
-                            std::unique_ptr<App::Property> pcopy(prop->Copy());
-                            p->Paste(*pcopy);
-                        }
-                    }
-                    if (recomputeCopy && !copied->recomputeFeature(true))
-                        copyerror = 2;
-                    if (!copyerror) {
+                    // lambda for copying values of copy-on-change properties
+                    const auto copyPropertyValues = [this, &recomputeCopy, &props, copied](const bool to_parent) {
                         for (auto prop : props) {
                             if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
                                 continue;
@@ -629,11 +615,21 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                                 && p->getTypeId() == prop->getTypeId()
                                 && !p->isSame(*prop))
                             {
-                                std::unique_ptr<App::Property> pcopy(p->Copy());
-                                prop->Paste(*pcopy);
+                                recomputeCopy = true;
+                                auto* const from = to_parent ? prop : p;
+                                auto* const to = to_parent ? p : prop;
+
+                                std::unique_ptr<App::Property> pcopy(from->Copy());
+                                to->Paste(*pcopy);
                             }
                         }
-                    }
+                    };
+
+                    copyPropertyValues(true);
+                    if (recomputeCopy && !copied->recomputeFeature(true))
+                        copyerror = 2;
+                    if (!copyerror)
+                        copyPropertyValues(false);
                 }
                 obj = copied;
                 _CopiedLink.setValue(copied, l.getSubValues(false));
