@@ -401,7 +401,7 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
 
 };
 
-const double Hole::metricHoleDiameters[36][4] =
+const double Hole::metricHoleDiameters[51][4] =
 {
     /* ISO metric clearance hole diameters according to ISO 273 */
     // {screw diameter, close, standard, coarse}
@@ -442,7 +442,22 @@ const double Hole::metricHoleDiameters[36][4] =
         { 56.0,     58.0,  	62.0,   66.0},
         { 60.0,     62.0,  	66.0,   70.0},
         { 64.0,     66.0,  	70.0,   74.0},
-        { 68.0,     70.0,  	77.0,   78.0}
+        { 68.0,     70.0,  	74.0,   78.0},
+        { 72.0,     74.0,  	78.0,   82.0},
+        { 76.0,     78.0,  	82.0,   86.0},
+        { 80.0,     82.0,  	86.0,   91.0},
+        { 85.0,     87.0,  	91.0,   96.0},
+        { 90.0,     93.0,  	96.0,   101.0},
+        { 95.0,     98.0,  	101.0,   107.0},
+        { 100.0,     104.0,  	107.0,   112.0},
+        { 105.0,     109.0,  	112.0,   117.0},
+        { 110.0,     114.0,  	117.0,   122.0},
+        { 115.0,     119.0,  	122.0,   127.0},
+        { 120.0,     124.0,  	127.0,   132.0},
+        { 125.0,     129.0,  	132.0,   137.0},
+        { 130.0,     134.0,  	137.0,   144.0},
+        { 140.0,     144.0,  	147.0,   155.0},
+        { 150.0,     155.0,  	158.0,   165.0}
 };
 
 const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
