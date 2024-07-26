@@ -152,6 +152,10 @@ private:
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
 
+    /* BSP profile */
+    static const char* HoleCutType_BSP_Enums[];
+    static const char* ThreadSize_BSP_Enums[];
+
     static const double ThreadRunout[ThreadRunout_size][2];
 
     /* Counter-xxx */
