@@ -37,6 +37,8 @@
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <Geom_Circle.hxx>
+# include <GC_MakeArcOfCircle.hxx>
+# include <Geom_TrimmedCurve.hxx>
 # include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
@@ -65,7 +67,7 @@ namespace PartDesign {
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
-const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", nullptr};
+const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "BSP", nullptr};
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
@@ -397,8 +399,36 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
         { "1 9/16",     39.688, 1.411,   38.55 },
         { "1 5/8",      41.275, 1.411,   40.10 },
         { "1 11/16",    42.862, 1.411,   41.60 },
+    },
+    /* BSP */
+    // Parallel - ISO 228-1
+    // Tapered  - ISO 7-1
+    {
+        { "1/16",   7.723,      0.907,   6.6     }, // G
+        { "1/8",    9.728,      0.907,   8.8     }, // 11/32
+        { "1/4",    13.157,     1.337,   11.8    }, // 29/64
+        { "3/8",    16.662,     1.337,   15.25   }, // 19/32
+        { "1/2",    20.955,     1.814,   19.00   }, // 3/4
+        { "5/8",    22.911,     1.814,   21.00   }, // 53/64
+        { "3/4",    26.441,     1.814,   24.50   }, // 31/32
+        { "7/8",    30.201,     1.814,   28.25   }, // 1 7/64
+        { "1",      33.249,     2.309,   30.75   }, // 1 13/64
+        { "1 1/8",  37.897,     2.309,   0.0     },
+        { "1 1/4",  41.910,     2.309,   39.50   }, // 1 35/64
+        { "1 1/2",  47.803,     2.309,   45.50   }, // 1 25/32
+        { "1 3/4",  53.743,     2.309,   51.00   }, // 2
+        { "2",      59.614,     2.309,   57.00   }, // 2 1/4
+        { "2 1/4",  65.710,     2.309,   0.0     },
+        { "2 1/2",  75.184,     2.309,   0.0     },
+        { "2 3/4",  81.534,     2.309,   0.0     },
+        { "3",      87.884,     2.309,   0.0     },
+        { "3 1/2",  100.330,    2.309,   0.0     },
+        { "4",      113.030,    2.309,   0.0     },
+        { "4 1/2",  125.730,    2.309,   0.0     },
+        { "5",      138.430,    2.309,   0.0     },
+        { "5 1/2",  151.130,    2.309,   0.0     },
+        { "6",      163.830,    2.309,   0.0     },
     }
-
 };
 
 const double Hole::metricHoleDiameters[51][4] =
@@ -651,6 +681,14 @@ const char* Hole::ThreadSize_UNEF_Enums[]  = { "#12", "1/4", "5/16", "3/8", "7/1
                                                "1 5/16", "1 3/8", "1 7/16", "1 1/2", "1 9/16",
                                                "1 5/8", "1 11/16", nullptr };
 const char* Hole::ThreadClass_UNEF_Enums[] = { "1B", "2B", "3B", nullptr };
+
+/* BSP */
+const char* Hole::HoleCutType_BSP_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
+const char* Hole::ThreadSize_BSP_Enums[]  = {  "1/16", "1/8", "1/4", "3/8", "1/2", "5/8", "3/4", "7/8",
+                                               "1", "1 1/8", "1 1/4", "1 3/8", "1 1/2", "1 3/4",
+                                               "2", "2 1/4", "2 1/2", "2 3/4",
+                                               "3", "3 1/2", "4", "4 1/2",
+                                               "5", "5 1/2", "6", nullptr };
 
 const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", nullptr};
 
@@ -1108,11 +1146,14 @@ std::optional<double> Hole::determineDiameter() const
 
         // use normed diameters if possible
         std::string threadTypeStr = ThreadType.getValueAsString();
-        if (threadTypeStr == "ISOMetricProfile" || threadTypeStr == "UNC"
-            || threadTypeStr == "UNF" || threadTypeStr == "UNEF") {
+        if (threadDescription[threadType][threadSize].CoreHole > 0) {
             diameter = threadDescription[threadType][threadSize].CoreHole + clearance;
+        } // if nothing is available, we must calculate
+        else if (threadTypeStr == "BSP") {
+            double thread = 2 * (0.640327 * pitch);
+            // truncation is allowed by ISO-228 and BS 84
+            diameter = diameter - thread * 0.75 + clearance;
         }
-        // if nothing available, we must calculate
         else {
             // this fits exactly the definition for ISO metric fine
             diameter = diameter - pitch + clearance;
@@ -1366,6 +1407,20 @@ void Hole::onChanged(const App::Property* prop)
             // fit only sensible if not threaded
             ThreadFit.setReadOnly(Threaded.getValue());
             ThreadClass.setReadOnly(!Threaded.getValue());
+            Diameter.setReadOnly(true);
+            ModelThread.setReadOnly(!Threaded.getValue());
+            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
+            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
+            ThreadDepthType.setReadOnly(!Threaded.getValue());
+            ThreadDepth.setReadOnly(!Threaded.getValue());
+        }
+        else if (type == "BSP") {
+            ThreadSize.setEnums(ThreadSize_BSP_Enums);
+            ThreadClass.setEnums(ThreadClass_None_Enums);
+            HoleCutType.setEnums(HoleCutType_BSP_Enums);
+            Threaded.setReadOnly(false);
+            ThreadSize.setReadOnly(false);
+            ThreadFit.setReadOnly(Threaded.getValue());
             Diameter.setReadOnly(true);
             ModelThread.setReadOnly(!Threaded.getValue());
             UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
@@ -2100,34 +2155,65 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     // Nomenclature and formulae according to Figure 1 of ISO 68-1
     // this is the same for all metric and UTS threads as stated here:
     // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
-    // Note that in the ISO standard, Dmaj is called D, which has been followed here.
-    double Diam = threadDescription[threadType][threadSize].diameter; // major diameter
+    // Note that in the ISO standard, Dmaj is called D.
+    double Dmaj = threadDescription[threadType][threadSize].diameter / 2; // major diameter position
     double Pitch = getThreadPitch();
-    double H = sqrt(3) / 2 * Pitch; // height of fundamental triangle
 
     double clearance; // clearance to be added on the diameter
     if (UseCustomThreadClearance.getValue())
-        clearance = CustomThreadClearance.getValue();
+        clearance = CustomThreadClearance.getValue() / 2;
     else
-        clearance = getThreadClassClearance();
-
-    // construct the cross section going counter-clockwise
-    // for graphical explanation of geometrical construction of p1-p6 see:
-    // https://forum.freecad.org/viewtopic.php?f=19&t=54284#p466570
-    gp_Pnt p1 = toPnt((Diam / 2 - 5 * H / 8 + clearance / 2) * xDir + Pitch / 8 * zDir);
-    gp_Pnt p2 = toPnt((Diam / 2 + clearance / 2) * xDir + 7 * Pitch / 16 * zDir);
-    gp_Pnt p3 = toPnt((Diam / 2 + clearance / 2) * xDir + 9 * Pitch / 16 * zDir);
-    gp_Pnt p4 = toPnt((Diam / 2 - 5 * H / 8 + clearance / 2) * xDir + 7 * Pitch / 8 * zDir);
-    gp_Pnt p5 = toPnt(0.9 * (Diam / 2 - 5 * H / 8) * xDir + 7 * Pitch / 8 * zDir);
-    gp_Pnt p6 = toPnt(0.9 * (Diam / 2 - 5 * H / 8) * xDir + Pitch / 8 * zDir);
+        clearance = getThreadClassClearance() / 2;
 
     BRepBuilderAPI_MakeWire mkThreadWire;
-    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
-    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
-    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5).Edge());
-    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p5, p6).Edge());
-    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p6, p1).Edge());
+    double H;
+    std::string threadTypeStr = ThreadType.getValueAsString();
+    if (threadTypeStr == "BSP") {
+        H = 0.960491 * Pitch; // Height of Sharp V
+        double radius = 0.137329 * Pitch; // radius of the crest
+        double h = 0.640627 * Pitch; // height of the thread
+        // construct the cross section going counter-clockwise
+
+        gp_Pnt p1 = toPnt((Dmaj - h + clearance) * xDir + Pitch / 8 * zDir);
+        gp_Pnt p4 = toPnt((Dmaj - h + clearance) * xDir + 7 * Pitch / 8 * zDir);
+        gp_Pnt p5 = toPnt(0.9 * (Dmaj - h) * xDir + 7 * Pitch / 8 * zDir);
+        gp_Pnt p6 = toPnt(0.9 * (Dmaj - h) * xDir + Pitch / 8 * zDir);
+
+        // Calculate positions for p2 and p3 based on the arc radius
+        double p23x = Dmaj + clearance - radius * (1 - std::cos(M_PI / 4));
+
+        gp_Pnt p2 = toPnt(p23x * xDir + 7 * Pitch / 16 * zDir);
+        gp_Pnt p3 = toPnt(p23x * xDir + 9 * Pitch / 16 * zDir);
+        gp_Pnt crest = toPnt((Dmaj + clearance) * xDir + Pitch / 2 * zDir);
+
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+        Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p5, p6).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p6, p1).Edge());
+    } else {
+        H = sqrt(3) / 2 * Pitch; // height of fundamental triangle
+        double h = 5 * H / 8; // height of the thread
+        // construct the cross section going counter-clockwise
+        // for graphical explanation of geometrical construction of p1-p6 see:
+        // https://forum.freecad.org/viewtopic.php?f=19&t=54284#p466570
+        gp_Pnt p1 = toPnt((Dmaj - h + clearance) * xDir + Pitch / 8 * zDir);
+        gp_Pnt p2 = toPnt((Dmaj + clearance) * xDir + 7 * Pitch / 16 * zDir);
+        gp_Pnt p3 = toPnt((Dmaj + clearance) * xDir + 9 * Pitch / 16 * zDir);
+        gp_Pnt p4 = toPnt((Dmaj - h + clearance) * xDir + 7 * Pitch / 8 * zDir);
+        gp_Pnt p5 = toPnt(0.9 * (Dmaj - h) * xDir + 7 * Pitch / 8 * zDir);
+        gp_Pnt p6 = toPnt(0.9 * (Dmaj - h) * xDir + Pitch / 8 * zDir);
+
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p5, p6).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p6, p1).Edge());
+    }
+
     mkThreadWire.Build();
     TopoDS_Wire threadWire = mkThreadWire.Wire();
 
@@ -2162,7 +2248,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
                 helixLength = holeDepth + Pitch / 8;
         }
     }
-    TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Diam / 2, 0.0, leftHanded);
+    TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Dmaj, 0.0, leftHanded);
 
     gp_Pnt origo(0.0, 0.0, 0.0);
     gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
