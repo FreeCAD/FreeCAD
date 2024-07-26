@@ -31,20 +31,22 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepOffsetAPI_NormalProjection.hxx>
-#include <BRep_Tool.hxx>
 #include <BRepTools_WireExplorer.hxx>
+#include <BRep_Tool.hxx>
 #include <ElCLib.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #include <GC_MakeArcOfCircle.hxx>
 #include <GC_MakeCircle.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+#include <GeomLProp_CLProps.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_Circle.hxx>
 #include <Geom_Ellipse.hxx>
@@ -53,35 +55,31 @@
 #include <Geom_Parabola.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_TrimmedCurve.hxx>
-#include <GeomLProp_CLProps.hxx>
 #include <Standard_Version.hxx>
 #include <TColStd_Array1OfInteger.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Elips.hxx>
 #include <gp_Hypr.hxx>
 #include <gp_Parab.hxx>
 #include <gp_Pln.hxx>
-#endif
-
-
-#include <boost_geometry.hpp>
-
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/geometry/geometries/register/point.hpp>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
-#include <boost/geometry/geometries/register/point.hpp>
+#include <boost/range/adaptor/map.hpp>
+#include <boost_geometry.hpp>
+
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -110,10 +108,7 @@
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
 
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <ExternalGeometryFacade.h>
-#include <boost/range/adaptor/map.hpp>
-#include <Mod/Part/App/PartPyCXX.h>
+#include "ExternalGeometryFacade.h"
 
 
 #undef DEBUG
@@ -685,19 +680,18 @@ public:
             oldset.clear();
             for(long _id : idset) {
                 long id = abs(_id);
-                auto &v = adjmap[id];
-                auto &adj = _id>0?v.first:v.second;
-                for(auto it=adj.begin(),itNext=it;it!=adj.end();it=itNext) {
-                    ++itNext;
+                auto& v = adjmap[id];
+                auto& adj = _id > 0 ? v.first : v.second;
+                for (auto it = adj.begin(); it != adj.end(); /* don't advance here */) {
                     long other = *it;
-                    if(geomap.find(other) == geomap.end()) {
-                        // remember those deleted id's
+                    auto removeId = it++;  // grab ID we might erase, and advance
+                    if (geomap.find(other) == geomap.end()) {
+                        // remember those deleted IDs to swap in below
                         oldset.insert(other);
-                        FC_TRACE("insert old " << id << ", " << other);
-                    } else if(idset.find(other)==idset.end()) {
-                        // delete any existing id's that are no longer in the adj list
-                        FC_TRACE("erase " << id << ", " << other);
-                        adj.erase(it);
+                    }
+                    else if (idset.find(other) == idset.end()) {
+                        // delete any existing IDs that are no longer in the adj list
+                        adj.erase(removeId);
                     }
                 }
                 // now merge the current ones
@@ -705,7 +699,6 @@ public:
                     long id2 = abs(_id2);
                     if(id!=id2) {
                         adj.insert(id2);
-                        FC_TRACE("insert new " << id << ", " << id2);
                     }
                 }
             }
@@ -1954,22 +1947,24 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
         if(!idSet.count(geoId))
             continue;
         idSet.erase(geoId);
-        int idx = -geoId-1;
-        auto &geo = geos[idx];
-        auto egf = ExternalGeometryFacade::getFacade(geo);
-        bool value = !egf->testFlag(flag);
-        if(egf->getRef().size()) {
-            for(auto gid : getRelatedGeometry(geoId)) {
-                if(gid == geoId)
+        const int idx = -geoId - 1;
+        auto& geo = geos[idx];
+        const auto egf = ExternalGeometryFacade::getFacade(geo);
+        const bool value = !egf->testFlag(flag);
+        if (!egf->getRef().empty()) {
+            for (auto relatedGeoId : getRelatedGeometry(geoId)) {
+                if (relatedGeoId == geoId) {
                     continue;
-                int idx = -gid-1;
-                auto &g = geos[idx];
-                g = g->clone();
-                auto egf = ExternalGeometryFacade::getFacade(g);
-                egf->setFlag(flag, value);
-                for (size_t i=1; i<flags.size(); ++i)
-                    egf->setFlag(flags[i], value);
-                idSet.erase(gid);
+                }
+                int relatedIndex = -relatedGeoId - 1;
+                auto& relatedGeometry = geos[relatedIndex];
+                relatedGeometry = relatedGeometry->clone();
+                auto relatedFacade = ExternalGeometryFacade::getFacade(relatedGeometry);
+                relatedFacade->setFlag(flag, value);
+                for (size_t i = 1; i < flags.size(); ++i) {
+                    relatedFacade->setFlag(flags[i], value);
+                }
+                idSet.erase(relatedGeoId);
             }
         }
         geo = geo->clone();
@@ -3002,7 +2997,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
                             oc2pf.x,
                             oc2pf.y,
                             oc2pf.z);
-
+        // To enable detailed Log of ten intermediate points along the curves uncomment this
         /*auto printoffsetcurve = [](Part::GeomOffsetCurve *c) {
 
             for(double param = c->getFirstParameter(); param < c->getLastParameter(); param = param
@@ -8037,9 +8032,8 @@ int SketchObject::attachExternal(
 
     std::set<std::string> detached;
     std::set<int> idSet;
-    for(int geoId : geoIds) {
-        if(geoId > GeoEnum::RefExt || -geoId-1 >= ExternalGeo.getSize())
-//        if(geoId > GeoEnum::RefExt || -geoId-1 >= ExternalGeo.size())
+    for (int geoId : geoIds) {
+        if (geoId > GeoEnum::RefExt || -geoId - 1 >= ExternalGeo.getSize())
             continue;
         auto geo = getGeometry(geoId);
         if(!geo)
@@ -8285,183 +8279,6 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
         GeometryFacade::setConstruction(line, true);
         return line;
     }
-}
-
-// Project an edge to a line. Only works if the edge is planar and its plane is
-// perpendicular to the projection plane. This function is to work around OCC
-// normal projection bug which seems to only respect the start and ending points
-// of an arc but disregarding any extreme points. OCC also has trouble handling
-// BSpline projection to a straight line. Although it does correctly projects
-// the line including extreme bounds, it will produce a BSpline with degree
-// more than one.
-//
-// The work around here is to use an aligned bounding box of the edge to get
-// the projection of the extreme points to construct the projected line.
-Part::Geometry* projectEdgeToLine(const TopoDS_Edge &edge,
-                                  const Base::Placement& invPlm)
-{
-    auto shape = Part::TopoShape(edge);
-    // First, transform the shape to the projection plane local coordinates.
-    // TODO: Both of these methods are heavily deprecated.  Is this really required?
-    // shape.setShapePlacement(invPlm * shape.getShapePlacement());
-
-    gp_Pln plane;
-    // Check if the edge is planar
-    if (!shape.findPlane(plane))
-        return nullptr;
-
-    // Check if the edge plane is perpendicular to the projection plane
-    if (!plane.Axis().IsNormal(gp_Ax1(), Precision::Angular()))
-        return nullptr;
-
-    // Align the z axis of the edge plane to the y axis of the projection
-    // plane,  so that the extreme bound will be a line in the x axis direction
-    // of the projection plane.
-    double angle = plane.Axis().Direction().Angle(gp_Dir(0, 1, 0));
-    gp_Trsf trsf;
-    if (fabs(angle) > Precision::Angular()) {
-        trsf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(0, 0, 1)), angle);
-        shape.move(trsf);
-    }
-
-    // Make a copy to work around OCC circular edge transformation bug
-    shape = shape.makeElementCopy();
-
-    // Explicitly make the mesh, or else getBoundBox() will be very loosely
-    // bound.
-    //
-    // Use very small deflection to make more accurate measurement. Could be slow!
-    BRepMesh_IncrementalMesh aMesh(shape.getShape(), 0.005, false, 0.1, true);
-
-    // Obtain the bounding box and move the extreme points back to its original
-    // location
-    auto bbox = shape.getBoundBox();
-    if (!bbox.IsValid())
-        return nullptr;
-
-    gp_Pnt p1(bbox.MinX, bbox.MinY, 0);
-    gp_Pnt p2(bbox.MaxX, bbox.MaxY, 0);
-    if (fabs(angle) > Precision::Angular()) {
-        trsf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(0, 0, 1)), -angle);
-        p1.Transform(trsf);
-        p2.Transform(trsf);
-    }
-
-    Base::Vector3d P1(p1.X(), p1.Y(), 0);
-    Base::Vector3d P2(p2.X(), p2.Y(), 0);
-
-    // check for degenerated case when the line is collapsed to a point
-    if (p1.SquareDistance(p2) < Precision::SquareConfusion()) {
-        Part::GeomPoint* point = new Part::GeomPoint((P1 + P2) / 2);
-        GeometryFacade::setConstruction(point, true);
-        return point;
-    }
-    else {
-        Part::GeomLineSegment* line = new Part::GeomLineSegment();
-        line->setPoints(P1, P2);
-        GeometryFacade::setConstruction(line, true);
-        return line;
-    }
-}
-
-void getParameterRange(Handle(Geom_Curve) curve,
-                       const gp_Pnt &firstPoint,
-                       const gp_Pnt &lastPoint,
-                       double &firstParameter,
-                       double &lastParameter)
-{
-    // The reason of this function is because the first/last parameter reported
-    // from some curve does not really corresponds to the first/last vertex of
-    // the edge. I can only guess this is because the curve (in some cases) is
-    // actually computed on demand from surface (in BRepAdaptor_Curve maybe).
-    // And in the process, there is something off in tolerance causing the
-    // derived parameter not matching the value corresponding to the position of
-    // the actual vertex.
-    GeomAPI_ProjectPointOnCurve pfirst(firstPoint, curve);
-    GeomAPI_ProjectPointOnCurve plast(lastPoint, curve);
-    firstParameter = pfirst.LowerDistanceParameter();
-    lastParameter = plast.LowerDistanceParameter();
-}
-
-void adjustParameterRange(const TopoDS_Edge &edge,
-                                 Handle(Geom_Plane) gPlane,
-                                 const gp_Trsf &mov,
-                                 Handle(Geom_Curve) curve,
-                                 double &firstParameter,
-                                 double &lastParameter)
-{
-    // This function is to deal with the ambiguity of trimming a periodic
-    // curve, e.g. given two points on a circle, whether to get the upper or
-    // lower arc. Because projection orientation may swap the first and last
-    // parameter of the original curve.
-    //
-    // We project the middle point of the original curve to the projected curve
-    // to decide whether to flip the parameters.
-
-    Handle(Geom_Curve) origCurve = BRepAdaptor_Curve(edge).Curve().Curve();
-
-    // GeomAPI_ProjectPointOnCurve will project a point to an untransformed
-    // curve, so make sure to obtain the point on an untransformed edge.
-    auto e = edge.Located(TopLoc_Location());
-
-    gp_Pnt firstPoint = BRep_Tool::Pnt(TopExp::FirstVertex(TopoDS::Edge(e)));
-    double f = GeomAPI_ProjectPointOnCurve(firstPoint, origCurve).LowerDistanceParameter();
-
-    gp_Pnt lastPoint = BRep_Tool::Pnt(TopExp::LastVertex(TopoDS::Edge(e)));
-    double l = GeomAPI_ProjectPointOnCurve(lastPoint, origCurve).LowerDistanceParameter();
-
-    auto adjustPeriodic = [](Handle(Geom_Curve) curve, double &f, double &l) {
-        // Copied from Geom_TrimmedCurve::setTrim()
-        if (curve->IsPeriodic()) {
-            Standard_Real Udeb = curve->FirstParameter();
-            Standard_Real Ufin = curve->LastParameter();
-            // set f in the range Udeb , Ufin
-            // set l in the range f , f + Period()
-            ElCLib::AdjustPeriodic(Udeb, Ufin,
-                    std::min(std::abs(f-l)/2,Precision::PConfusion()),
-                    f, l);
-        }
-    };
-
-    // Adjust for periodic curve to deal with orientation
-    adjustPeriodic(origCurve, f, l);
-
-    // Obtain the middle parameter in order to get the mid point of the arc
-    double m = (l - f) * 0.5 + f;
-    GeomLProp_CLProps prop(origCurve,m,0,Precision::Confusion());
-    gp_Pnt midPoint = prop.Value();
-
-    // Transform all three points to the world coordinate
-    auto trsf = edge.Location().Transformation();
-    midPoint.Transform(trsf);
-    firstPoint.Transform(trsf);
-    lastPoint.Transform(trsf);
-
-    // Project the points to the sketch plane. Note the coordinates are still
-    // in world coordinate system.
-    gp_Pnt pm = GeomAPI_ProjectPointOnSurf(midPoint, gPlane).NearestPoint();
-    gp_Pnt pf = GeomAPI_ProjectPointOnSurf(firstPoint, gPlane).NearestPoint();
-    gp_Pnt pl = GeomAPI_ProjectPointOnSurf(lastPoint, gPlane).NearestPoint();
-
-    // Transform the projected points to sketch plane local coordinates
-    pm.Transform(mov);
-    pf.Transform(mov);
-    pl.Transform(mov);
-
-    // Obtain the corresponding parameters for those points in the projected curve
-    double f2 = GeomAPI_ProjectPointOnCurve(pf, curve).LowerDistanceParameter();
-    double l2 = GeomAPI_ProjectPointOnCurve(pl, curve).LowerDistanceParameter();
-    double m2 = GeomAPI_ProjectPointOnCurve(pm, curve).LowerDistanceParameter();
-
-    firstParameter = f2;
-    lastParameter = l2;
-
-    adjustPeriodic(curve, f2, l2);
-    adjustPeriodic(curve, f2, m2);
-    // If the middle point is out of range, it means we need to choose the
-    // other half of the arc.
-    if (m2 > l2)
-        std::swap(firstParameter, lastParameter);
 }
 
 } // anonymous namespace
@@ -10745,28 +10562,6 @@ void SketchObject::onDocumentRestored()
             auto grpObj = App::GeoFeatureGroupExtension::getGroupOfObject(this);
             if (grpObj)
                 grp = grpObj->getExtensionByType<App::GeoFeatureGroupExtension>(true);
-
-            auto exports = Exports.getValues();
-            bool touched = false;
-            for (auto &obj : exports) {
-                auto exp = Base::freecad_dynamic_cast<SketchExport>(obj);
-                if (!exp || exp->BaseRefs.getValue() == this)
-                    continue;
-                auto newexp = Base::freecad_dynamic_cast<SketchExport>(
-                        getDocument()->addObject("Sketcher::SketchExport", "Export"));
-                if (grp)
-                    grp->addObject(newexp);
-                if (exp->Label.getStrValue() != exp->getNameInDocument())
-                    newexp->Label.setValue(exp->Label.getValue());
-                else
-                    newexp->Label.setValue(newexp->getNameInDocument());
-                newexp->BaseRefs.setValue(this, exp->BaseRefs.getSubValues(false));
-                newexp->Visibility.setValue(exp->Visibility.getValue());
-                obj = newexp;
-                touched = true;
-            }
-            if (touched)
-                Exports.setValues(exports);
         }
 
     }
@@ -12044,164 +11839,5 @@ PyObject* Sketcher::SketchObjectPython::getPyObject()
 // explicit template instantiation
 template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
-
-// ---------------------------------------------------------
-
-PROPERTY_SOURCE(Sketcher::SketchExport, Part::Part2DObject)
-
-SketchExport::SketchExport() {
-    ADD_PROPERTY_TYPE(Base,(0),"",
-                      (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly),
-                      "(Deprecated) Base sketch object name");
-
-    ADD_PROPERTY_TYPE(Refs,(),"",App::Prop_Hidden,
-                      "(Deprecated) Sketch geometry references");
-
-    ADD_PROPERTY_TYPE(BaseRefs,(0),"",App::Prop_None,"Base sketch references");
-
-    ADD_PROPERTY_TYPE(SyncPlacement,(true),"",
-                      App::Prop_None,"Synchronize placement with parent sketch if not attached");
-
-    ADD_PROPERTY_TYPE(ScaleVector,    (1, 1, 1)  ,"", App::Prop_None,
-                      "Scale vector intended for mirror. Note that using the scale vector for\n"
-                      "non-uniform scaling transformed the geometries into BSpline curves");
-}
-
-SketchExport::~SketchExport()
-{}
-
-App::DocumentObject *SketchExport::getBase() const {
-    return BaseRefs.getValue();
-}
-
-void SketchExport::onDocumentRestored()
-{
-    if (!BaseRefs.getValue() && Base.getValue())
-        BaseRefs.setValue(Base.getValue(), Refs.getValues());
-    if (Shape.getShape().getPlacement() != Placement.getValue())
-        Placement.touch();
-    Part::Part2DObject::onDocumentRestored();
-}
-
-App::DocumentObjectExecReturn *SketchExport::execute(void) {
-    try {
-        App::DocumentObjectExecReturn* rtn = Part2DObject::execute();//to positionBySupport
-        if(rtn!=App::DocumentObject::StdReturn)
-            //error
-            return rtn;
-    }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
-
-    auto base = Base::freecad_dynamic_cast<SketchObject>(getBase());
-    if(!base)
-        return new App::DocumentObjectExecReturn("Missing parent sketch");
-    if(update() && SyncPlacement.getValue() && !positionBySupport())
-        Placement.setValue(base->Placement.getValue());
-    return App::DocumentObject::StdReturn;
-}
-
-void SketchExport::onChanged(const App::Property* prop) {
-    auto doc = getDocument();
-    if(prop == &BaseRefs) {
-        if(!isRestoring() && doc && !doc->isPerformingTransaction())
-            update();
-        Base.setValue(BaseRefs.getValue());
-        Refs.setValue(BaseRefs.getSubValues(true));
-    } else if(prop == &Shape) {
-        // We used to bypass Part::Feature handling of shape change, which sets
-        // the placement the same as the shape's. But this is causes bad thing
-        // to happen. We'll fix that in onDocumentRestored().
-        if (getDocument() && getDocument()->testStatus(App::Document::Restoring)) {
-            DocumentObject::onChanged(prop);
-            return;
-        }
-    }
-    Part2DObject::onChanged(prop);
-}
-
-std::set<std::string> SketchExport::getRefs() const {
-    std::set<std::string> refSet;
-    const auto &refs = BaseRefs.getSubValues();
-    refSet.insert(refs.begin(),refs.end());
-    if(refSet.size()>1)
-        refSet.erase("");
-    return refSet;
-}
-
-bool SketchExport::update() {
-    auto base = getBase();
-    if(!base)
-        return false;
-    std::vector<Part::TopoShape> points;
-    std::vector<Part::TopoShape> shapes;
-    for(const auto &ref : getRefs()) {
-        // Obtain the shape without feature's placement transformation, because
-        // we may have our own support.
-        auto shape = Part::Feature::getTopoShape(base,ref.c_str(),true,0,0,false,false);
-        if(shape.isNull()) {
-            FC_ERR("Invalid element reference: " << ref);
-            throw Base::RuntimeError("Invalid element reference");
-        }
-        if(!shape.hasSubShape(TopAbs_EDGE))
-            points.push_back(shape.makeElementCopy(Part::OpCodes::SketchExport));
-        else
-            shapes.push_back(shape.makeElementCopy());
-    }
-    Part::TopoShape res;
-    if(shapes.size()) {
-        res.makeElementWires(shapes,Part::OpCodes::SketchExport);
-        shapes.clear();
-        if(points.size()) {
-            // Check if the vertex is already included in the wires
-            for(auto &point : points) {
-                auto name = point.getMappedName(
-                        Data::IndexedName::fromConst("Vertex", 1));
-                if(name && res.getIndexedName(name))
-                    continue;
-                shapes.push_back(point);
-            }
-            if(shapes.size()) {
-                shapes.push_back(res);
-                res.makeElementCompound(shapes);
-            }
-        }
-    }else if(points.empty())
-        return false;
-    else
-        res.makeElementCompound(points,0,Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
-
-    const auto &scale = ScaleVector.getValue();
-    if ((fabs(scale.x - 1.0) > Precision::Confusion()
-         || fabs(scale.y - 1.0) > Precision::Confusion()
-         || fabs(scale.z - 1.0) > Precision::Confusion())
-        && fabs(scale.x) > Precision::Confusion()
-        && fabs(scale.y) > Precision::Confusion()
-        && fabs(scale.z) > Precision::Confusion())
-    {
-        Base::Matrix4D mat;
-        mat.scale(scale);
-        res.transformShape(mat, false, true);
-    }
-
-    Shape.setValue(res);
-    return true;
-}
-
-void SketchExport::handleChangedPropertyType(Base::XMLReader &reader,
-                                             const char *TypeName, App::Property *prop)
-{
-    if (prop == &Base && strcmp(TypeName, "App::PropertyString") == 0) {
-        App::PropertyString p;
-        p.Restore(reader);
-        auto obj = getDocument()->getObject(p.getValue());
-        if(!obj) {
-            FC_ERR("Cannot find parent sketch '" << p.getValue() << "' of " << getFullName());
-            return;
-        }
-        Base.setValue(obj);
-    }
-}
 
 // clang-format on

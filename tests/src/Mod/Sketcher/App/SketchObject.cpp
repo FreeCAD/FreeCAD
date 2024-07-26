@@ -260,21 +260,31 @@ TEST_F(SketchObjectTest, testGetElementName)
     Base::Vector3d p1(0.0, 0.0, 0.0), p2(1.0, 0.0, 0.0);
     std::unique_ptr<Part::Geometry> geoline(new Part::GeomLineSegment());
     static_cast<Part::GeomLineSegment*>(geoline.get())->setPoints(p1, p2);
-    getObject()->addGeometry(geoline.get());
+    auto id = getObject()->addGeometry(geoline.get());
+    long tag;
+    getObject()->getGeometryId(id, tag);  // We need to look up the tag that got assigned
+    std::ostringstream oss;
+    oss << "g" << tag;
+    auto tagName = oss.str();
     getObject()->recomputeFeature();  // or ->execute()
     // Act
     // unless it's Export, we are really just testing the superclass App::GeoFeature::getElementName
     // call.
     auto forward_normal_name =
-        getObject()->getElementName("g1;SKT", App::GeoFeature::ElementNameType::Normal);
+        getObject()->getElementName((tagName + ";SKT").c_str(),
+                                    App::GeoFeature::ElementNameType::Normal);
     auto reverse_normal_name =
         getObject()->getElementName("Vertex2", App::GeoFeature::ElementNameType::Normal);
     auto reverse_export_name =
         getObject()->getElementName("Vertex1", App::GeoFeature::ElementNameType::Export);
     auto map = getObject()->Shape.getShape().getElementMap();
     ASSERT_EQ(map.size(), 3);
-    EXPECT_STREQ(map[0].name.toString().c_str(), "g1;SKT");
+    EXPECT_STREQ(map[0].name.toString().c_str(), (tagName + ";SKT").c_str());
     EXPECT_EQ(map[0].index.toString(), "Edge1");
+    EXPECT_STREQ(map[1].name.toString().c_str(), (tagName + "v1;SKT").c_str());
+    EXPECT_EQ(map[1].index.toString(), "Vertex1");
+    EXPECT_STREQ(map[2].name.toString().c_str(), (tagName + "v2;SKT").c_str());
+    EXPECT_EQ(map[2].index.toString(), "Vertex2");
     // Assert
 #ifndef FC_USE_TNP_FIX
     EXPECT_STREQ(forward_normal_name.newName.c_str(), "");
@@ -284,11 +294,11 @@ TEST_F(SketchObjectTest, testGetElementName)
     EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g1v1;SKT.Vertex1");
     EXPECT_STREQ(reverse_export_name.oldName.c_str(), "Vertex1");
 #else
-    EXPECT_STREQ(forward_normal_name.newName.c_str(), ";g1;SKT.Edge1");
+    EXPECT_STREQ(forward_normal_name.newName.c_str(), (";" + tagName + ";SKT.Edge1").c_str());
     EXPECT_STREQ(forward_normal_name.oldName.c_str(), "Edge1");
-    EXPECT_STREQ(reverse_normal_name.newName.c_str(), ";g1v2;SKT.Vertex2");
+    EXPECT_STREQ(reverse_normal_name.newName.c_str(), (";" + tagName + "v2;SKT.Vertex2").c_str());
     EXPECT_STREQ(reverse_normal_name.oldName.c_str(), "Vertex2");
-    EXPECT_STREQ(reverse_export_name.newName.c_str(), ";g1v1;SKT.Vertex1");
+    EXPECT_STREQ(reverse_export_name.newName.c_str(), (";" + tagName + "v1;SKT.Vertex1").c_str());
     EXPECT_STREQ(reverse_export_name.oldName.c_str(), "Vertex1");
 #endif
 }

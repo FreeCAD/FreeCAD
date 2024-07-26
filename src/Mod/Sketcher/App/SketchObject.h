@@ -1044,39 +1044,6 @@ inline int SketchObject::moveTemporaryPoint(int geoId,
 using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
 // ---------------------------------------------------------
-
-class SketcherExport SketchExport: public Part::Part2DObject
-{
-    PROPERTY_HEADER(Sketcher::SketchObject);
-
-public:
-    SketchExport();
-    ~SketchExport() override;
-
-    App::PropertyStringList Refs;
-    App::PropertyLink Base;
-    App::PropertyLinkSub BaseRefs;
-    App::PropertyBool SyncPlacement;
-    App::PropertyVector ScaleVector;
-
-    App::DocumentObjectExecReturn* execute(void) override;
-    void onChanged(const App::Property* /*prop*/) override;
-    const char* getViewProviderName(void) const override
-    {
-        return "SketcherGui::ViewProviderSketchExport";
-    }
-
-    bool update();
-
-    App::DocumentObject* getBase() const;
-    std::set<std::string> getRefs() const;
-
-    void handleChangedPropertyType(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   App::Property* prop) override;
-    void onDocumentRestored() override;
-};
-
 }  // namespace Sketcher
 
 
