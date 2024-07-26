@@ -94,7 +94,7 @@ public:
     };
     static const ThreadDescription threadDescription[][171];
 
-    static const double metricHoleDiameters[36][4];
+    static const double metricHoleDiameters[51][4];
 
     using UTSClearanceDefinition = struct {
         std::string designation;
