@@ -137,18 +137,17 @@ def bind(w1, w2, per_segment=False):
     if (per_segment
             and len(w1.Edges) > 1
             and len(w1.Edges) == len(w2.Edges)):
-        from draftgeoutils.intersections import findIntersection
+        from draftgeoutils.general import areColinear
         faces = []
         faces_list = []
         for (edge1, edge2) in zip(w1.Edges, w2.Edges):
-            # Find potential intersection due to ArchWall Align in opposite
-            # direction (or Edge's Orientation in opposite direction,
-            # or a combinantion of the above)
+            # Find potential collinear edges due to ArchWall Align in opposite
+            # directions, and/or opposite edge orientations.
             #
             # w1 -------+            w1 -------+            w1 -------+
             #           | w1                   |                      |
             # w2 ------++------ w1   w2 ------+| w1         w2 ------+|
-            #       w2 |                      ||                   w2|| w1
+            #       w2 |                      ||                  w2 || w1
             #          +------- w2         w2 |+------ w1            +------- w2
             #                                 |                       |
             #                                 +------- w2             +------ w1
@@ -156,11 +155,10 @@ def bind(w1, w2, per_segment=False):
             # TODO Maybe those edge pair should not be generated in offsetWire().
             #      Or should have broken into separate wires then.
 
-            # dts=True is required: https://forum.freecad.org/viewtopic.php?p=769210#p769210
-            if findIntersection(edge1, edge2, dts=True):
+            if areColinear(edge1, edge2):
                 faces_list.append(faces)  # Break into separate list
                 faces = []  # Reset original faces variable
-                continue  # Skip the edges pair which 'intersect'
+                continue  # Skip the collinear edge pair
             else:
                 face = create_face(edge1, edge2)
                 if face is None:
