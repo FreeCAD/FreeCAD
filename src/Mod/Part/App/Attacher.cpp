@@ -833,70 +833,85 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
 #ifdef FC_USE_TNP_FIX
     for (std::size_t i = 0; i < objs.size(); i++) {
         if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            FC_THROWM(AttachEngineException, "AttachEngine3D: attached to a non App::GeoFeature '"
-                    << objs[i]->getNameInDocument() << "'");
+            FC_THROWM(AttachEngineException,
+                      "AttachEngine3D: attached to a non App::GeoFeature '"
+                          << objs[i]->getNameInDocument() << "'");
         }
-        App::GeoFeature *geof = static_cast<App::GeoFeature *>(objs[i]);
+        auto* geof = dynamic_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
         Part::TopoShape shape;
         if (geof->isDerivedFrom(App::Plane::getClassTypeId())) {
-            //obtain Z axis and origin of placement
+            // obtain Z axis and origin of placement
             Base::Vector3d norm;
             geof->Placement.getValue().getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), norm);
             Base::Vector3d org;
             geof->Placement.getValue().multVec(Base::Vector3d(), org);
-            //make shape - an local-XY plane infinite face
-            gp_Pln pl = gp_Pln(gp_Pnt(org.x, org.y, org.z), gp_Dir(norm.x, norm.y, norm.z));
-            TopoDS_Shape myShape = BRepBuilderAPI_MakeFace(pl).Shape();
+            // make shape - an local-XY plane infinite face
+            gp_Pln plane = gp_Pln(gp_Pnt(org.x, org.y, org.z), gp_Dir(norm.x, norm.y, norm.z));
+            TopoDS_Shape myShape = BRepBuilderAPI_MakeFace(plane).Shape();
             myShape.Infinite(true);
-            storage.push_back(myShape);
+            storage.emplace_back(myShape);
             shapes[i] = &(storage[storage.size() - 1]);
-        } else if (geof->isDerivedFrom(App::Line::getClassTypeId())) {
-            //obtain X axis and origin of placement
-            //note an inconsistency: App::Line is along local X, PartDesign::DatumLine is along local Z.
+        }
+        else if (geof->isDerivedFrom(App::Line::getClassTypeId())) {
+            // obtain X axis and origin of placement
+            // note an inconsistency: App::Line is along local X, PartDesign::DatumLine is along
+            // local Z.
             Base::Vector3d dir;
             geof->Placement.getValue().getRotation().multVec(Base::Vector3d(1.0, 0.0, 0.0), dir);
             Base::Vector3d org;
             geof->Placement.getValue().multVec(Base::Vector3d(), org);
-            //make shape - an infinite line along local X axis
-            gp_Lin l = gp_Lin(gp_Pnt(org.x, org.y, org.z), gp_Dir(dir.x, dir.y, dir.z));
-            TopoDS_Shape myShape = BRepBuilderAPI_MakeEdge(l).Shape();
+            // make shape - an infinite line along local X axis
+            gp_Lin line = gp_Lin(gp_Pnt(org.x, org.y, org.z), gp_Dir(dir.x, dir.y, dir.z));
+            TopoDS_Shape myShape = BRepBuilderAPI_MakeEdge(line).Shape();
             myShape.Infinite(true);
-            storage.push_back(myShape);
+            storage.emplace_back(myShape);
             shapes[i] = &(storage[storage.size() - 1]);
-        } else {
+        }
+        else {
             try {
                 shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
                 for (;;) {
-                    if (shape.isNull())
-                        FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                                << objs[i]->getNameInDocument() << '.' << sub[i]);
+                    if (shape.isNull()) {
+                        FC_THROWM(AttachEngineException,
+                                  "AttachEngine3D: subshape not found "
+                                      << objs[i]->getNameInDocument() << '.' << sub[i]);
+                    }
                     if (shape.shapeType() != TopAbs_COMPOUND
-                        || shape.countSubShapes(TopAbs_SHAPE) != 1)
+                        || shape.countSubShapes(TopAbs_SHAPE) != 1) {
                         break;
+                    }
                     // auto extract the single sub-shape from a compound
                     shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
                 }
-                storage.push_back(shape.getShape());
-            } catch (Standard_Failure &e) {
-                FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                        << objs[i]->getNameInDocument() << '.' << sub[i]
-                        << std::endl << e.GetMessageString());
-            } catch (Base::CADKernelError &e) {
-                FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                        << objs[i]->getNameInDocument() << '.' << sub[i]
-                        << std::endl << e.what());
+                storage.emplace_back(shape.getShape());
             }
-            if (storage.back().IsNull())
-                FC_THROWM(AttachEngineException, "AttachEngine3D: null subshape "
-                        << objs[i]->getNameInDocument() << '.' << sub[i]);
+            catch (Standard_Failure& e) {
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
+                                                                << '.' << sub[i] << std::endl
+                                                                << e.GetMessageString());
+            }
+            catch (Base::CADKernelError& e) {
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
+                                                                << '.' << sub[i] << std::endl
+                                                                << e.what());
+            }
+            if (storage.back().IsNull()) {
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
+                                                           << sub[i]);
+            }
             shapes[i] = &(storage.back());
         }
 
-        //FIXME: unpack single-child compounds here? Compounds are not used so far, so it should be considered later, when the need arises.
+        // FIXME: unpack single-child compounds here? Compounds are not used so far, so it should be
+        // considered later, when the need arises.
         types[i] = getShapeType(*(shapes[i]));
-        if (sub[i].length() == 0)
+        if (sub[i].length() == 0) {
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
+        }
     }
 
 #else
