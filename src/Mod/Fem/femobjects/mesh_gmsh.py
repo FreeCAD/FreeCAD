@@ -50,6 +50,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         "BAMG",
         "DelQuad",
         "Packing Parallelograms",
+        "Quasi-structured Quad",
     ]
     known_mesh_algorithm_3D = [
         "Automatic",
