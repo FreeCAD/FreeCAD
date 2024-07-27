@@ -151,8 +151,8 @@ def bind(w1, w2, per_segment=False):
             #                                |                     |
             #                                +-----+ w2            o-----o w1
             #
-            # TODO Maybe those edge pairs should not be generated in offsetWire().
-            #      Or should have broken into separate wires then.
+            # TODO Maybe those edge pair should not be generated in offsetWire()
+            #      and separate wires should then be returned.
 
             # If edges touch the Shape.section() compound will have 1 or 2 vertexes:
             if edge1.section(edge2).Vertexes:
@@ -166,8 +166,8 @@ def bind(w1, w2, per_segment=False):
                 faces.append(face)
         if faces_list:
             faces_list.append(faces)  # Break into separate list
-        faces_fused_list = []
         if faces_list:
+            faces_fused_list = []
             for faces in faces_list:
                 if len(faces) > 1 :
                     faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
