@@ -2219,29 +2219,36 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
         }
     }
 
+    auto transferToReplacement = [&GeoId, &PosId, &replaceGeoId, &replacePosId](int& constrGeoId, PointPos& constrPosId) {
+        if (replaceGeoId == GeoEnum::GeoUndef) {
+            return false;
+        }
+        if (GeoId != constrGeoId || PosId != constrPosId) {
+            return false;
+        }
+        constrGeoId = replaceGeoId;
+        constrPosId = replacePosId;
+        return true;
+    };
+
     // remove or redirect any constraints associated with the given point
     std::vector<Constraint*> newVals;
     for (auto& constr : vals) {
+        // keep the constraint if it doesn't involve the point
+        if (!((constr->First == GeoId && constr->FirstPos == PosId)
+              || (constr->Second == GeoId && constr->SecondPos == PosId)
+              || (constr->Third == GeoId && constr->ThirdPos == PosId))) {
+            newVals.push_back(constr);
+            continue;
+        }
         if (constr->Type == Sketcher::Coincident) {
-            if (constr->First == GeoId && constr->FirstPos == PosId) {
-                // redirect this constraint
-                if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != constr->Second || replacePosId != constr->SecondPos)) {
-                    constr->First = replaceGeoId;
-                    constr->FirstPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+            if (!(transferToReplacement(constr->First, constr->FirstPos)
+                  || transferToReplacement(constr->Second, constr->SecondPos))) {
+                continue;// skip this constraint
             }
-            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
-                // redirect this constraint
-                if (replaceGeoId != GeoEnum::GeoUndef
-                    && (replaceGeoId != constr->First || replacePosId != constr->FirstPos)) {
-                    constr->Second = replaceGeoId;
-                    constr->SecondPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+            // this is to remove the redundant coincidence of replacement point with itself
+            if (constr->First == constr->Second && constr->FirstPos == constr->SecondPos) {
+                continue;// skip this constraint
             }
         }
         else if (onlyCoincident) {
@@ -2257,54 +2264,29 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                 // with the given point
                 continue;// skip this constraint
             }
-            else if (constr->First == GeoId && constr->FirstPos == PosId) {
-                if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                    constr->First = replaceGeoId;
-                    constr->FirstPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
-            }
-            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
-                if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                    constr->Second = replaceGeoId;
-                    constr->SecondPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+            if (!(transferToReplacement(constr->First, constr->FirstPos)
+                  || transferToReplacement(constr->Second, constr->SecondPos))) {
+                continue;// skip this constraint
             }
         }
         else if (constr->Type == Sketcher::PointOnObject) {
-            if (constr->First == GeoId && constr->FirstPos == PosId) {
-                if (replaceGeoId != GeoEnum::GeoUndef) {// redirect this constraint
-                    constr->First = replaceGeoId;
-                    constr->FirstPos = replacePosId;
-                }
-                else
-                    continue;// skip this constraint
+            if (!transferToReplacement(constr->First, constr->FirstPos)) {
+                continue;// skip this constraint
             }
         }
         else if (constr->Type == Sketcher::Tangent
                  || constr->Type == Sketcher::Perpendicular) {
-            if ((constr->First == GeoId && constr->FirstPos == PosId)
-                || (constr->Second == GeoId && constr->SecondPos == PosId)) {
-                // we could keep the tangency constraint by converting it
-                // to a simple one but it is not really worth
-                continue;// skip this constraint
-            }
+            // we could keep the tangency constraint by converting it to a simple one,
+            // but that doesn't always work (for example if tangent-via-point is necessary),
+            // and it is not really worth it
+            continue;// skip this constraint
         }
         else if (constr->Type == Sketcher::Symmetric) {
-            if ((constr->First == GeoId && constr->FirstPos == PosId)
-                || (constr->Second == GeoId && constr->SecondPos == PosId)) {
-                continue;// skip this constraint
-            }
+            continue;// skip this constraint
         }
         else if (constr->Type == Sketcher::Vertical
                  || constr->Type == Sketcher::Horizontal) {
-            if ((constr->First == GeoId && constr->FirstPos == PosId)
-                || (constr->Second == GeoId && constr->SecondPos == PosId)) {
-                continue;// skip this constraint
-            }
+            continue;// skip this constraint
         }
         newVals.push_back(constr);
     }
@@ -2335,12 +2317,13 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
         std::vector<int> deleteme;
         for (int i = 0; i < int(constraints.size()); i++) {
             const Constraint* c = constraints[i];
-            if (c->Type == Sketcher::Distance || c->Type == Sketcher::Equal) {
-                bool line1 = c->First == geoId1 && c->FirstPos == PointPos::none;
-                bool line2 = c->First == geoId2 && c->FirstPos == PointPos::none;
-                if (line1 || line2) {
-                    deleteme.push_back(i);
-                }
+            if (c->Type != Sketcher::Distance && c->Type != Sketcher::Equal) {
+                continue;
+            }
+            bool line1 = c->First == geoId1 && c->FirstPos == PointPos::none;
+            bool line2 = c->First == geoId2 && c->FirstPos == PointPos::none;
+            if (line1 || line2) {
+                deleteme.push_back(i);
             }
         }
         delConstraints(deleteme, false);
@@ -2351,8 +2334,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     // TODO: Add support for curved lines.
     const Part::Geometry* geo1 = getGeometry(geoId1);
     const Part::Geometry* geo2 = getGeometry(geoId2);
-    if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-        || geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+    if (!geo1->is<Part::GeomLineSegment>() || !geo2->is<Part::GeomLineSegment>()) {
         delConstraintOnPoint(geoId1, posId1, false);
         delConstraintOnPoint(geoId2, posId2, false);
         return;
@@ -2405,39 +2387,13 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
                 // instead.
                 continue;
             }
-            if (point1First || point2First) {
-                // Move the coincident constraint to the new corner point
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
-            }
-            if (point1Second || point2Second) {
-                // Move the coincident constraint to the new corner point
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
-            }
         }
         else if (c->Type == Sketcher::Horizontal || c->Type == Sketcher::Vertical) {
-            // Point-to-point horizontal or vertical constraint, move to new corner point
-            if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
-            }
-            if (point1Second || point2Second) {
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
-            }
+            // Point-to-point horizontal or vertical constraint, move to new corner point (done towards end of present loop)
         }
         else if (c->Type == Sketcher::Distance || c->Type == Sketcher::DistanceX
                  || c->Type == Sketcher::DistanceY) {
-            // Point-to-point distance constraint.  Move it to the new corner point
-            if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
-            }
-            if (point1Second || point2Second) {
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
-            }
+            // Point-to-point distance constraint. Move it to the new corner point (done towards end of present loop)
 
             // Distance constraint on the line itself. Change it to point-point between the far end
             // of the line and the new corner
@@ -2454,10 +2410,6 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
         }
         else if (c->Type == Sketcher::PointOnObject) {
             // The corner to be filleted was touching some other object.
-            if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
-            }
         }
         else if (c->Type == Sketcher::Equal) {
             // Equal length constraints are dicey because the lines are getting shorter.  Safer to
@@ -2468,18 +2420,6 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
         }
         else if (c->Type == Sketcher::Symmetric) {
             // Symmetries should probably be preserved relative to the original corner
-            if (point1First || point2First) {
-                c->First = originalCornerId;
-                c->FirstPos = PointPos::start;
-            }
-            else if (point1Second || point2Second) {
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
-            }
-            else if (point1Third || point2Third) {
-                c->Third = originalCornerId;
-                c->ThirdPos = PointPos::start;
-            }
         }
         else if (c->Type == Sketcher::SnellsLaw) {
             // Can't imagine any cases where you'd fillet a vertex going through a lens, so let's
@@ -2490,6 +2430,20 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
                  || point2Third) {
             // Delete any other point-based constraints on the relevant points
             continue;
+        }
+
+        // For any constraint not passing previous conditions, transfer to the new point if relevant
+        if (point1First || point2First) {
+            c->First = originalCornerId;
+            c->FirstPos = PointPos::start;
+        }
+        else if (point1Second || point2Second) {
+            c->Second = originalCornerId;
+            c->SecondPos = PointPos::start;
+        }
+        else if (point1Third || point2Third) {
+            c->Third = originalCornerId;
+            c->ThirdPos = PointPos::start;
         }
 
         // Default: keep all other constraints
