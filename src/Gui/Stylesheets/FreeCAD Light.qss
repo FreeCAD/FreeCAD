@@ -43,6 +43,7 @@ Resetting everything helps to unify styles across different operating systems
   outline: 0;
   color: black;
   selection-background-color: @ThemeAccentColor1;
+  selection-color: black;
 }
 
 /* specific reset for elements inside QToolBar */

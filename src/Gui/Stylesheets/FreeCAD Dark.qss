@@ -41,8 +41,9 @@ Resetting everything helps to unify styles across different operating systems
   border-style: none;
   border-image: none;
   outline: 0;
-  color: White;
+  color: white;
   selection-background-color: @ThemeAccentColor1;
+  selection-color: white;
 }
 
 /* specific reset for elements inside QToolBar */
@@ -125,9 +126,9 @@ This causes much load time.
   /* background-color: #444444; */
   /* border: 0px solid #020202;
   padding: 0px;
-  color: White; */
+  color: white; */
   /* selection-background-color: @ThemeAccentColor1; */
-  /* selection-color: White; */
+  /* selection-color: white; */
 /* } */
 
 QWidget:disabled {
@@ -378,7 +379,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qradiobutton
 --------------------------------------------------------------------------- */
 QRadioButton {
   background-color: transparent;
-  color: White;
+  color: white;
   border: none;
   spacing: 4px;
   padding-top: 4px;
@@ -396,7 +397,7 @@ QRadioButton:disabled {
 
 QRadioButton QWidget {
   background-color: transparent;
-  color: White;
+  color: white;
   spacing: 0px;
   padding: 0px;
   outline: none;
@@ -449,7 +450,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmenubar
 --------------------------------------------------------------------------- */
 QMenuBar {
   background-color: #252525;
-  color: White;
+  color: white;
   selection-background-color: @ThemeAccentColor1;
 }
 
@@ -470,7 +471,7 @@ QMenuBar::item:selected {
 QMenuBar::item:pressed {
   border: 0px solid #020202;
   background-color: @ThemeAccentColor1;
-  color: White;
+  color: white;
 }
 
 /* QMenu ------------------------------------------------------------------
@@ -480,7 +481,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmenu
 --------------------------------------------------------------------------- */
 QMenu {
   border: 1px solid #3c3c3c;
-  color: White;
+  color: white;
   margin: 0px;
   background-color: #252525;
   selection-background-color: @ThemeAccentColor1;
@@ -504,7 +505,7 @@ QMenu::item {
 }
 
 QMenu::item:selected {
-  color: White;
+  color: white;
   background-color: @ThemeAccentColor1;
 }
 
@@ -622,7 +623,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcombobox
 --------------------------------------------------------------------------- */
 QAbstractItemView {
   alternate-background-color: #5b5b5b;
-  color: White;
+  color: white;
   border: 1px solid #020202;
   border-radius: 2px;
 }
@@ -643,7 +644,7 @@ QAbstractScrollArea {
   /* fix #159 */
   padding: 0px;
   /* remove min-height to fix #244 */
-  color: White;
+  color: white;
 }
 
 QAbstractScrollArea:disabled {
@@ -810,7 +811,7 @@ report view
 --------------------------------------------------------------------------- */
 QTextEdit {
   background-color: #444444;
-  color: White;
+  color: white;
   border-radius: 2px;
   border: 0px solid #020202;
 }
@@ -829,7 +830,7 @@ Python
 --------------------------------------------------------------------------- */
 QPlainTextEdit {
   background-color: #3c3c3c;
-  color: White;
+  color: white;
   border-radius: 1.9px;
   border: 0px solid #020202;
 }
@@ -840,7 +841,7 @@ QPlainTextEdit:focus {
 
 QPlainTextEdit:selected {
   background: @ThemeAccentColor1;
-  color: White;
+  color: white;
 }
 
 /* QSizeGrip --------------------------------------------------------------
@@ -946,7 +947,7 @@ QAbstractSpinBox,
 QSpinBox {
   background-color: #252525;
   border: 1px solid #020202;
-  color: White;
+  color: white;
   border-radius: 2px;
   min-height: 1.7em;
   padding-left: 4px;
@@ -1049,7 +1050,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qabstractscrollarea
 QTextBrowser {
   background-color: #252525;
   border: 1px solid #020202;
-  color: White;
+  color: white;
   border-radius: 1.9px;
 }
 
@@ -1069,7 +1070,7 @@ QTextBrowser:hover, QTextBrowser:!hover, QTextBrowser:selected, QTextBrowser:pre
 QGraphicsView {
   background-color: transparent;
   border: 0px solid @ThemeAccentColor1;
-  color: White;
+  color: white;
   border-radius: 0px;
   selection-background-color:  @ThemeAccentColor1;
 }
@@ -1103,7 +1104,7 @@ QCalendarWidget:disabled {
 --------------------------------------------------------------------------- */
 QLCDNumber {
   background-color: #1aff00;
-  color: White;
+  color: white;
 }
 
 QLCDNumber:disabled {
@@ -1119,7 +1120,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qprogressbar
 QProgressBar {
   background-color: #cccccc;
   border: 1px solid #020202;
-  color: White;
+  color: white;
   border-radius: 1.9px;
   text-align: center;
 }
@@ -1154,7 +1155,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qpushbutton
 --------------------------------------------------------------------------- */
 QPushButton {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
-  color: White;
+  color: white;
   border: 1px solid #020202;
   /* border-bottom-color: #1e1e1e; simulates shadow under the button */
   border-radius: 3px;
@@ -1195,7 +1196,7 @@ QPushButton:checked:selected {
 
 QPushButton:hover {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #444444, stop:1 #333333);
-  color: White;
+  color: white;
 }
 
 QPushButton:pressed {
@@ -1204,7 +1205,7 @@ QPushButton:pressed {
 
 QPushButton:selected {
   border: 1px solid  @ThemeAccentColor1;
-  color: White;
+  color: white;
 }
 
 QPushButton::menu-indicator {
@@ -1225,7 +1226,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
 --------------------------------------------------------------------------- */
 QToolButton {
   background-color: transparent;
-  color: White;
+  color: white;
   /* border-radius: 1px; */
   padding: 2px;
   outline: none;
@@ -1265,11 +1266,11 @@ QToolButton:checked:pressed {
 
 QToolButton:checked:selected {
   background: @ThemeAccentColor2;
-  color: White;
+  color: white;
 }
 
 QToolButton:hover {
-  color: White;
+  color: white;
   border: 1px solid #020202;
 }
 
@@ -1278,7 +1279,7 @@ QToolButton:pressed {
 
 QToolButton:selected {
   border: 1px solid @ThemeAccentColor1;
-  color: White;
+  color: white;
 }
 
 /* QToolButton[popupMode="0"] { */
@@ -1369,7 +1370,7 @@ QToolButton::menu-arrow:hover {
 QCommandLinkButton {
   background-color: transparent;
   border: 1px solid #020202;
-  color: White;
+  color: white;
   border-radius: 1.9px;
   padding: 0px;
   margin: 0px;
@@ -1417,12 +1418,12 @@ QComboBox QAbstractItemView {
 
 QComboBox QAbstractItemView:hover {
   background-color:#252525;
-  color: White;
+  color: white;
 }
 
 QComboBox QAbstractItemView:selected {
   background: @ThemeAccentColor1;
-  color: White;
+  color: white;
 }
 
 QComboBox QAbstractItemView:alternate {
@@ -1816,7 +1817,7 @@ QLineEdit {
   border-style: solid;
   border: 1px solid #020202;
   border-radius: 2px;
-  color: White;
+  color: white;
 }
 
 QLineEdit:disabled {
@@ -1826,7 +1827,7 @@ QLineEdit:disabled {
 
 QLineEdit:hover {
   /* border: 1px solid @ThemeAccentColor1; */
-  color: White;
+  color: white;
 }
 
 QLineEdit:focus {
@@ -2324,7 +2325,7 @@ QListView,
 QTableView,
 QColumnView {
   background-color: #252525;  /* background of a lot of stuff including spreadsheets.*/
-  color: White;
+  color: white;
   gridline-color: #020202;
   border-radius: 0px;
   selection-background-color: @ThemeAccentColor1;
@@ -2348,7 +2349,7 @@ QListView:selected,
 QTableView:selected,
 QColumnView:selected {
   background-color: #333333;
-  color: White;
+  color: white;
 }
 
 QTreeView:focus,
@@ -2384,7 +2385,7 @@ QListView::item:!selected:hover,
 QTableView::item:!selected:hover,
 QColumnView::item:!selected:hover {
   outline: 0;
-  color: White;
+  color: white;
   background-color: @ThemeAccentColor1;
 }
 
@@ -2419,7 +2420,7 @@ QHeaderView:disabled {
 
 QHeaderView::section {
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
-  color: White;
+  color: white;
   border-bottom: 1px solid #020202;
   border-right: 1px solid #020202;
   border-top: 1px solid #020202;
@@ -2496,7 +2497,7 @@ QToolBox:selected {
 
 QToolBox::tab {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
-  color: White;
+  color: white;
   border-radius: 4px;
  border: 1px solid #020202;
   image: none;
@@ -2659,12 +2660,12 @@ QDateEdit QAbstractItemView, QDateTimeEdit QAbstractItemView {
 --------------------------------------------------------------------------- */
 QAbstractView:hover {
   border: 1px solid @ThemeAccentColor1;
-  color: White;
+  color: white;
 }
 
 QAbstractView:selected {
   background: @ThemeAccentColor1;
-  color: White;
+  color: white;
 }
 
 /* PlotWidget -------------------------------------------------------------
