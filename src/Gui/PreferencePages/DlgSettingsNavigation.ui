@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>687</height>
+    <width>548</width>
+    <height>762</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>91</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
@@ -217,6 +217,9 @@
         <property name="toolTip">
          <string>Opacity of the navigation cube when not focused</string>
         </property>
+        <property name="suffix">
+         <string notr="true">%</string>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -225,9 +228,6 @@
         </property>
         <property name="value">
          <number>50</number>
-        </property>
-        <property name="suffix">
-         <string notr="true">%</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>InactiveOpacity</cstring>
@@ -249,7 +249,7 @@
         <property name="toolTip">
          <string>Base color for all elements</string>
         </property>
-        <property name="color">
+        <property name="color" stdset="0">
          <color alpha="128">
           <red>226</red>
           <green>232</green>
@@ -305,16 +305,16 @@
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>1.0</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>100.0</double>
+         <double>100.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.5</double>
+         <double>0.500000000000000</double>
         </property>
         <property name="value">
-         <double>5.0</double>
+         <double>5.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RotationCenterSize</cstring>
