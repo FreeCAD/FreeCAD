@@ -1028,6 +1028,7 @@ QLabel {
   padding: 2px;
   margin: 0px;
   color: black;
+  spacing:8px;
 }
 
 QLabel:disabled {
@@ -1037,7 +1038,7 @@ QLabel:disabled {
 }
 
 QLabel[haslink="true"] {
-  color: orange;
+  color: #0050a1;
 }
 
 
@@ -1157,7 +1158,7 @@ QPushButton {
   border: 1px solid #ababab;
   /* border-bottom-color: #1e1e1e; simulates shadow under the button */
   border-radius: 3px;
-  padding: 4px 0px;
+  padding: 4px;
   min-width: 80px;
 }
 
@@ -1449,7 +1450,7 @@ QComboBox:focus {
 }
 
 QComboBox:on {
-  selection-background-color: @ThemeAccentColor2;
+  selection-background-color: @ThemeAccentColor1;
 }
 
 QComboBox::indicator {
@@ -1483,7 +1484,7 @@ QComboBox::item:alternate {
 /* Color of the selected list item. */
 QComboBox::item:selected {
   border: 1px solid #ababab;
-  background: @ThemeAccentColor2;
+  background: @ThemeAccentColor1;
 }
 
 QComboBox::drop-down {
@@ -2368,7 +2369,7 @@ QTreeView::item:selected:active,
 QListView::item:selected:active,
 QTableView::item:selected:active,
 QColumnView::item:selected:active {
-  background-color: @ThemeAccentColor2;
+  background-color: @ThemeAccentColor1;
 }
 
 QTreeView::item:selected:!active,
@@ -2801,7 +2802,7 @@ QWidget#thumbnailWidget {
 }
 
 QWidget#thumbnailWidget[state="hovered"] {
-  border: 1px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor1;
 }
 
 QWidget#thumbnailWidget[state="pressed"] {

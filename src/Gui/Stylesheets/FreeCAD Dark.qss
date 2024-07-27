@@ -249,6 +249,7 @@ QCheckBox {
   outline: none;
   border: 1px solid transparent;
   background-color: transparent;
+  spacing:8px;
 }
 
 QCheckBox:focus {
@@ -1036,7 +1037,7 @@ QLabel:disabled {
 }
 
 QLabel[haslink="true"] {
-  color: orange;
+  color: #0080ff;
 }
 
 
@@ -1157,7 +1158,7 @@ QPushButton {
   border: 1px solid #020202;
   /* border-bottom-color: #1e1e1e; simulates shadow under the button */
   border-radius: 3px;
-  padding: 4px 0px;
+  padding: 4px;
   min-width: 80px;
 }
 
@@ -1449,7 +1450,7 @@ QComboBox:focus {
 }
 
 QComboBox:on {
-  selection-background-color: @ThemeAccentColor2;
+  selection-background-color: @ThemeAccentColor1;
 }
 
 QComboBox::indicator {
@@ -2801,7 +2802,7 @@ QWidget#thumbnailWidget {
 }
 
 QWidget#thumbnailWidget[state="hovered"] {
-  border: 1px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor1;
 }
 
 QWidget#thumbnailWidget[state="pressed"] {
