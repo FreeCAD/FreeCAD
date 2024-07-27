@@ -566,19 +566,7 @@ Free Turntable: the part will be rotated around the z-axis.</string>
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
+       <widget class="Gui::PrefUnitSpinBox" name="qspinNewDocScale">
         <property name="toolTip">
          <string>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</string>
@@ -832,6 +820,11 @@ Mouse tilting is not disabled by this setting.</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
@@ -862,10 +855,9 @@ Mouse tilting is not disabled by this setting.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>PrefUnitSpinBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefUnitSpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
