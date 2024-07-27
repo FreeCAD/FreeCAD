@@ -88,7 +88,7 @@ Gui--PropertyEditor--PropertyEditor QComboBox {
 
 /* fix for column items background when a link is present */
 Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
-  background-color: @ThemeAccentColor1; /* same as focused background color */
+  background-color: @ThemeAccentColor2; /* same as focused background color */
 }
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
@@ -325,7 +325,7 @@ QGroupBox {
   background-color: #ededed;
   border: 1px solid #d8d8d8;
   border-radius: 2px;
-  margin-top: 3ex; /* leave space at the top for the title */
+  margin-top: 15px; /* leave space at the top for the title */
 }
 
 QGroupBox::title {
@@ -1012,7 +1012,7 @@ QAbstractSpinBox:focus {
 }
 
 QAbstractSpinBox:selected {
-  background: @ThemeAccentColor2;
+  background: @ThemeAccentColor1;
 }
 
 /* ------------------------------------------------------------------------ */
@@ -1169,7 +1169,6 @@ QPushButton {
 
 QPushButton:disabled {
 background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #e2e2e2, stop:1 #fdfdfd);
-
   color: #adadad;
   border: 1px solid #ababab;
 }
@@ -1180,7 +1179,7 @@ QPushButton:checked {
 }
 
 QPushButton:focus {
-  border: 1px solid  @ThemeAccentColor1;
+  border: 1px solid  @ThemeAccentColor2;
 }
 
 
@@ -1858,7 +1857,7 @@ QTabWidget::pane {
   margin: 0px;
   /* Fixes double border inside pane with pyqt5 */
   padding: 0px;
-  background-color: #f0f0f0;
+  background-color: rgba(227, 227, 227, 84);
   border: 1px solid #d8d8d8;
 }
 

@@ -88,7 +88,7 @@ Gui--PropertyEditor--PropertyEditor QComboBox {
 
 /* fix for column items background when a link is present */
 Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
-  background-color: @ThemeAccentColor1; /* same as focused background color */
+  background-color: @ThemeAccentColor2; /* same as focused background color */
 }
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
@@ -325,7 +325,7 @@ QGroupBox {
   background-color: #3c3c3c;
   border: 1px solid #444444;
   border-radius: 2px;
-  margin-top: 3ex; /* leave space at the top for the title */
+  margin-top: 15px; /* leave space at the top for the title */
 }
 
 QGroupBox::title {
@@ -1011,7 +1011,7 @@ QAbstractSpinBox:focus {
 }
 
 QAbstractSpinBox:selected {
-  background: @ThemeAccentColor2;
+  background: @ThemeAccentColor1;
 }
 
 /* ------------------------------------------------------------------------ */
@@ -1071,6 +1071,7 @@ QGraphicsView {
   border: 0px solid @ThemeAccentColor1;
   color: White;
   border-radius: 0px;
+  selection-background-color:  @ThemeAccentColor1;
 }
 
 QGraphicsView:disabled {
@@ -1178,7 +1179,7 @@ QPushButton:checked {
 }
 
 QPushButton:focus {
-  border: 1px solid  @ThemeAccentColor1;
+  border: 1px solid  @ThemeAccentColor2;
 }
 
 
@@ -1483,7 +1484,7 @@ QComboBox::item:alternate {
 /* Color of the selected list item. */
 QComboBox::item:selected {
   border: 1px solid #020202;
-  background: @ThemeAccentColor2;
+  background: @ThemeAccentColor1;
 }
 
 QComboBox::drop-down {
@@ -2354,7 +2355,7 @@ QTreeView:focus,
 QListView:focus,
 QTableView:focus,
 QColumnView:focus {
-  /* border: 1px solid #020202; */
+  /* background-color: @ThemeAccentColor2; */
 }
 
 QTreeView::item:pressed,
@@ -2368,7 +2369,7 @@ QTreeView::item:selected:active,
 QListView::item:selected:active,
 QTableView::item:selected:active,
 QColumnView::item:selected:active {
-  background-color: @ThemeAccentColor2;
+  background-color: @ThemeAccentColor1;
 }
 
 QTreeView::item:selected:!active,
