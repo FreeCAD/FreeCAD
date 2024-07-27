@@ -931,12 +931,11 @@ background-position: center center;
 }
 
 QToolButton#qt_toolbar_ext_button:hover {
-background-color: @ThemeAccentColor1;
+  background-color: transparent;
 }
 
 QToolButton#qt_toolbar_ext_button:on {
-border-color: #ababab;
-background-color: @ThemeAccentColor1;
+  background-color: transparent;
 }
 
 

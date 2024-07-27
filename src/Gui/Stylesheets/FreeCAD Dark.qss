@@ -923,19 +923,18 @@ QToolBar::separator:vertical {
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working Qproperty works but breaks when you move the toolbar see also */
 QToolButton#qt_toolbar_ext_button {
-margin: 0px;
-padding: 0px;
 background-repeat: none;
 background-position: center center;
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #7c7c7c, stop:1 #898989);
+padding: 0px;
 }
 
 QToolButton#qt_toolbar_ext_button:hover {
-background-color: @ThemeAccentColor1;
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #b4b4b4, stop:1 #c0c0c0);
 }
 
 QToolButton#qt_toolbar_ext_button:on {
-border-color: #020202;
-background-color: @ThemeAccentColor1;
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #b4b4b4, stop:1 #c0c0c0);
 }
 
 
