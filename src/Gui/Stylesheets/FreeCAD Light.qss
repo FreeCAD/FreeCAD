@@ -250,6 +250,7 @@ QCheckBox {
   outline: none;
   border: 1px solid transparent;
   background-color: transparent;
+  spacing:8px;
 }
 
 QCheckBox:focus {
