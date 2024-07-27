@@ -151,7 +151,7 @@ def bind(w1, w2, per_segment=False):
             #                                |                     |
             #                                +-----+ w2            o-----o w1
             #
-            # TODO Maybe those edge pair should not be generated in offsetWire().
+            # TODO Maybe those edge pairs should not be generated in offsetWire().
             #      Or should have broken into separate wires then.
 
             # If edges touch the Shape.section() compound will have 1 or 2 vertexes:
