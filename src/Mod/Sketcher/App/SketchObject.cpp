@@ -104,6 +104,8 @@
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/WireJoiner.h>
 
+#include <memory>
+
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
@@ -612,22 +614,25 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
 
+// NOLINTNEXTLINE
 BOOST_GEOMETRY_REGISTER_POINT_3D(
         Base::Vector3d,double,bg::cs::cartesian,x,y,z)
 
 class SketchObject::GeoHistory {
+private:
+    static constexpr int bgiMaxElements = 16;
 public:
-    typedef bgi::linear<16> Parameters;
+    using Parameters = bgi::linear<bgiMaxElements>;
 
-    typedef std::set<long> IdSet;
-    typedef std::pair<IdSet,IdSet> IdSets;
-    typedef std::list<IdSet> AdjList;
+    using IdSet = std::set<long>;
+    using IdSets = std::pair<IdSet, IdSet>;
+    using AdjList = std::list<IdSet>;
 
     //associate a geo with connected ones on both points
-    typedef std::map<long, IdSets> AdjMap;
+    using AdjMap = std::map<long, IdSets>;
 
     // maps start/end points to all existing geo to query and update adjacencies
-    typedef std::pair<Base::Vector3d,AdjList::iterator> Value;
+    using Value = std::pair<Base::Vector3d, AdjList::iterator>;
 
     AdjList adjlist;
     AdjMap adjmap;
@@ -636,7 +641,7 @@ public:
     AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
         std::vector<Value> ret;
         rtree.query(bgi::nearest(pt,1),std::back_inserter(ret));
-        if(ret.size()) {
+        if(!ret.empty()) {
             // NOTE: we are using square distance here, the 1e-6 threshold is
             // very forgiving. We should have used Precision::SquareConfisuion(),
             // which is 1e-14. However, there is a problem with current
@@ -647,13 +652,9 @@ public:
             double tol = strict?Precision::SquareConfusion()*10:1e-6;
             double d = Base::DistanceP2(ret[0].first,pt);
             if(d<tol) {
-                if(!strict) FC_TRACE("hit " << FC_xyz(pt));
                 return ret[0].second;
             }
-            if(!strict)
-                FC_TRACE("miss " << FC_xyz(pt) << ", " << FC_xyz(ret[0].first) << ", " << d);
-        }else if(!strict)
-            FC_TRACE("miss " << FC_xyz(pt));
+        }
         return adjlist.end();
     }
 
@@ -722,13 +723,12 @@ void SketchObject::updateGeoHistory() {
     if(!geoHistoryLevel) return;
 
     if(!geoHistory)
-        geoHistory.reset(new GeoHistory);
+        geoHistory = std::make_unique<GeoHistory>();
 
     FC_TIME_INIT(t);
     const auto &geos = getInternalGeometry();
     geoHistory->clear();
-    for(int i=0;i<(int)geos.size();++i) {
-        auto geo = geos[i];
+    for(auto geo : geos) {
         auto pstart = getPoint(geo,PointPos::start);
         auto pend = getPoint(geo,PointPos::end);
         int id = GeometryFacade::getId(geo);
@@ -7098,7 +7098,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         THROWMT(Base::ValueError,
-                QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
+                QT_TRANSLATE_NOOP("Exceptions", "B-spline Geometry Index (GeoID) is out of bounds."))
 
     if (multiplicityincr == 0)// no change in multiplicity
         THROWMT(
@@ -7110,7 +7110,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
         THROWMT(Base::TypeError,
                 QT_TRANSLATE_NOOP("Exceptions",
-                                  "The Geometry Index (GeoId) provided is not a B-spline curve."))
+                                  "The Geometry Index (GeoId) provided is not a B-spline."))
 
     const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
 
@@ -7283,7 +7283,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
         THROWMT(
             Base::ValueError,
-            QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."));
+            QT_TRANSLATE_NOOP("Exceptions", "B-spline Geometry Index (GeoID) is out of bounds."));
 
     if (multiplicity == 0)
         THROWMT(Base::ValueError,
@@ -7294,7 +7294,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
         THROWMT(Base::TypeError,
                 QT_TRANSLATE_NOOP("Exceptions",
-                                  "The Geometry Index (GeoId) provided is not a B-spline curve."));
+                                  "The Geometry Index (GeoId) provided is not a B-spline."));
 
     const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
 
@@ -7306,12 +7306,12 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         THROWMT(Base::ValueError,
                 QT_TRANSLATE_NOOP(
                     "Exceptions",
-                    "Knot multiplicity cannot be higher than the degree of the BSpline."));
+                    "Knot multiplicity cannot be higher than the degree of the B-spline."));
 
     if (param > lastParam || param < firstParam)
         THROWMT(Base::ValueError,
                 QT_TRANSLATE_NOOP("Exceptions",
-                                  "Knot cannot be inserted outside the BSpline parameter range."));
+                                  "Knot cannot be inserted outside the B-spline parameter range."));
 
     std::unique_ptr<Part::GeomBSplineCurve> bspline;
 
@@ -8267,7 +8267,7 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
     invPlm.multVec(p1, p1);
     invPlm.multVec(p2, p2);
 
-    if (Base::Distance(p1, p2) < Precision::Confusion()) {
+    if (Base::DistanceP2(p1, p2) < Precision::SquareConfusion()) {
         Base::Vector3d p = (p1 + p2) / 2;
         Part::GeomPoint* point = new Part::GeomPoint(p);
         GeometryFacade::setConstruction(point, true);
