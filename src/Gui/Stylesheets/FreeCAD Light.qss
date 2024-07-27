@@ -627,7 +627,7 @@ QAbstractItemView {
 }
 
 QAbstractItemView QLineEdit {
-  padding: 2px;
+  padding: 0 2px;
 }
 
 /* QAbstractScrollArea ----------------------------------------------------
