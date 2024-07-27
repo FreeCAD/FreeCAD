@@ -745,6 +745,7 @@ protected:
     //@{
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
+    void slotSolverUpdate();
     void forceUpdateData();
     //@}
 
@@ -924,6 +925,7 @@ private:
 private:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
+    boost::signals2::connection connectSolverUpdate;
 
     // modes while sketching
     SketchMode Mode;
