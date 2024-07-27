@@ -578,8 +578,8 @@ class BIMWorkbench(Workbench):
 
         # store views widget state and vertical size
         w = BimViews.findWidget()
-        PARAMS.SetBool("RestoreBimViews", w.isVisible())
         if w:
+            PARAMS.SetBool("RestoreBimViews", w.isVisible())
             PARAMS.SetInt("BimViewsSize", w.height())
             w.hide()
             w.toggleViewAction().setVisible(False)
