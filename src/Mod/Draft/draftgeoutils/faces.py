@@ -137,28 +137,28 @@ def bind(w1, w2, per_segment=False):
     if (per_segment
             and len(w1.Edges) > 1
             and len(w1.Edges) == len(w2.Edges)):
-        from draftgeoutils.general import areColinear
         faces = []
         faces_list = []
         for (edge1, edge2) in zip(w1.Edges, w2.Edges):
-            # Find potential collinear edges due to ArchWall Align in opposite
+            # Find touching edges due to ArchWall Align in opposite
             # directions, and/or opposite edge orientations.
             #
-            # w1 -------+            w1 -------+            w1 -------+
-            #           | w1                   |                      |
-            # w2 ------++------ w1   w2 ------+| w1         w2 ------+|
-            #       w2 |                      ||                  w2 || w1
-            #          +------- w2         w2 |+------ w1            +------- w2
-            #                                 |                       |
-            #                                 +------- w2             +------ w1
+            # w1 o-----o            w1 o-----o            w1 o-----o
+            #          | w1                  |                     |
+            # w2 +-----x-----o w1   w2 +-----+            w2 +-----+
+            #       w2 |                  w2 | w1               w2 | w1
+            #          +-----+ w2            o-----o w1            +-----+ w2
+            #                                |                     |
+            #                                +-----+ w2            o-----o w1
             #
             # TODO Maybe those edge pair should not be generated in offsetWire().
             #      Or should have broken into separate wires then.
 
-            if areColinear(edge1, edge2):
+            # If edges touch the Shape.section() compound will have 1 or 2 vertexes:
+            if edge1.section(edge2).Vertexes:
                 faces_list.append(faces)  # Break into separate list
                 faces = []  # Reset original faces variable
-                continue  # Skip the collinear edge pair
+                continue  # Skip the touching edge pair
             else:
                 face = create_face(edge1, edge2)
                 if face is None:
