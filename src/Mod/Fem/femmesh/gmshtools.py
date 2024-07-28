@@ -101,6 +101,8 @@ class GmshTools:
             self.algorithm2D = "8"
         elif algo2D == "Packing Parallelograms":
             self.algorithm2D = "9"
+        elif algo2D == "Quasi-structured Quad":
+            self.algorithm2D = "11"
         else:
             self.algorithm2D = "2"
 
@@ -839,7 +841,7 @@ class GmshTools:
         )
         geo.write(
             "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, "
-            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms)\n"
+            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms, 11=Quasi-structured Quad)\n"
         )
         if len(self.bl_setting_list) and self.dimension == 3:
             geo.write("Mesh.Algorithm = " + "DelQuad" + ";\n")  # Frontal/DelQuad are tested

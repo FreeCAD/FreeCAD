@@ -230,6 +230,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                     "BAMG",
                     "DelQuad",
                     "Packing Parallelograms",
+                    "Quasi-structured Quad",
                 ],
             )
         )
@@ -276,7 +277,10 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)
-                if prop.name == "Algorithm3D":
+                if prop.name == "Algorithm2D":
+                    # refresh the list of known 2D algorithms
+                    obj.Algorithm2D = prop.value
+                elif prop.name == "Algorithm3D":
                     # refresh the list of known 3D algorithms
                     obj.Algorithm3D = prop.value
                 elif prop.name == "HighOrderOptimize":
