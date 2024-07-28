@@ -29,6 +29,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief mesh gmsh object
 
+from FreeCAD import Base
 from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
@@ -40,8 +41,6 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
     """
 
     Type = "Fem::FemMeshGmsh"
-
-    # they will be used from the task panel too, thus they need to be outside of the __init__
 
     def __init__(self, obj):
         super().__init__(obj)
@@ -277,22 +276,20 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)
-                if prop.name == "Algorithm2D":
-                    # refresh the list of known 2D algorithms
-                    obj.Algorithm2D = prop.value
-                elif prop.name == "Algorithm3D":
-                    # refresh the list of known 3D algorithms
-                    obj.Algorithm3D = prop.value
-                elif prop.name == "HighOrderOptimize":
-                    # HighOrderOptimize was once App::PropertyBool, so check this
-                    if type(obj.HighOrderOptimize) is bool:
-                        value = obj.HighOrderOptimize
-                        obj.setPropertyStatus("HighOrderOptimize", "-LockDynamic")
-                        obj.removeProperty("HighOrderOptimize")
-                        prop.add_to_object(obj)
-                        obj.HighOrderOptimize = "Optimization" if value else "None"
-            except:
+            except Base.PropertyError:
                 prop.add_to_object(obj)
+
+            if prop.name == "Algorithm2D":
+                # refresh the list of known 2D algorithms for old projects
+                obj.Algorithm2D = prop.value
+            elif prop.name == "Algorithm3D":
+                # refresh the list of known 3D algorithms for old projects
+                obj.Algorithm3D = prop.value
+            elif prop.name == "HighOrderOptimize":
+                # HighOrderOptimize was once App::PropertyBool, so check this
+                prop.handle_change_type(
+                    obj, "App::PropertyBool", lambda x: "Optimization" if x else "None"
+                )
 
         # migrate old Part property to Shape property
         try:
@@ -304,9 +301,9 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyLinkGlobal",
                 name="Shape",
                 group="FEM Mesh",
-                doc="Geometry object, the mesh is made from. The geometry object has to have a Shape",
+                doc="Geometry object, the mesh is made from. The geometry object has to have a Shape.",
                 value=value_part,
             )
             prop.add_to_object(obj)
-        except:
+        except Base.PropertyError:
             pass
