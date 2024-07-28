@@ -166,7 +166,7 @@ def bind(w1, w2, per_segment=False):
                 faces.append(face)
         if faces_list:
             if w1.isClosed() and w2.isClosed():
-                faces_list[0].extend(faces)  # 1st & last are continuos
+                faces_list[0].extend(faces)  # 1st & last are continuous
             else:
                 faces_list.append(faces)  # Break into separate list
         if faces_list:
