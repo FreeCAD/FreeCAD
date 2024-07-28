@@ -1,0 +1,94 @@
+/* DarkTheme.qss file for a dark theme in FreeCAD */
+
+QWidget {
+    background-color: #2d2d30;
+    color: #dcdcdc;
+}
+
+QMenuBar {
+    background-color: #2d2d30;
+}
+
+QMenuBar::item {
+    background: #2d2d30;
+}
+
+QMenuBar::item:selected {
+    background: #4d4d4d;
+}
+
+QMenu {
+    background-color: #2d2d30;
+    color: #dcdcdc;
+}
+
+QMenu::item:selected {
+    background: #4d4d4d;
+}
+
+QToolBar {
+    background: #3c3c3c;
+}
+
+QStatusBar {
+    background: #2d2d30;
+    color: #dcdcdc;
+}
+
+QLineEdit {
+    background-color: #3c3c3c;
+    color: #dcdcdc;
+}
+
+QPushButton {
+    background-color: #3c3c3c;
+    color: #dcdcdc;
+}
+
+QPushButton:hover {
+    background-color: #4d4d4d;
+}
+
+QPushButton:pressed {
+    background-color: #5d5d5d;
+}
+
+QTabWidget::pane {
+    border: 1px solid #4d4d4d;
+}
+
+QTabBar::tab {
+    background: #2d2d30;
+    color: #dcdcdc;
+    border: 1px solid #4d4d4d;
+    padding: 5px;
+}
+
+QTabBar::tab:selected {
+    background: #3c3c3c;
+    border: 1px solid #5d5d5d;
+}
+
+QHeaderView::section {
+    background-color: #3c3c3c;
+    color: #dcdcdc;
+    padding: 4px;
+}
+
+QTreeView {
+    background-color: #2d2d30;
+    color: #dcdcdc;
+    alternate-background-color: #3c3c3c;
+}
+
+QTableView {
+    background-color: #2d2d30;
+    color: #dcdcdc;
+    alternate-background-color: #3c3c3c;
+}
+
+QListView {
+    background-color: #2d2d30;
+    color: #dcdcdc;
+    alternate-background-color: #3c3c3c;
+}

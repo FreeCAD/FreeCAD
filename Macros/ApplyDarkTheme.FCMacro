@@ -1,0 +1,19 @@
+import FreeCAD
+import FreeCADGui
+
+def apply_dark_theme():
+    # Path to the QSS file
+    qss_file = FreeCAD.getHomePath() + "data/themes/DarkTheme.qss"
+    
+    try:
+        # Read the QSS file
+        with open(qss_file, "r") as file:
+            qss = file.read()
+        
+        # Apply the QSS
+        FreeCADGui.getMainWindow().setStyleSheet(qss)
+        print("Dark theme applied successfully.")
+    except Exception as e:
+        print(f"Failed to apply dark theme: {e}")
+
+apply_dark_theme()
