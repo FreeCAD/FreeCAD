@@ -164,9 +164,21 @@ def bind(w1, w2, per_segment=False):
                 if face is None:
                     return None
                 faces.append(face)
-        if faces_list:
-            if w1.isClosed() and w2.isClosed():
-                faces_list[0].extend(faces)  # 1st & last are continuous
+        # Usually there is last series of face after above 'for' routine,
+        # EXCEPT when the last edge pair touch, faces had been appended
+        # to faces_list, and reset faces =[]
+        #
+        # TODO Need fix further anything if there is a empty [] in faces_list ?
+        #
+        if faces_list and faces:
+            # if wires are closed, 1st & last series of faces might be connected
+            # except when
+            # 1) there are only 2 series, connecting would return invalid shape
+            # 2) 1st series of faces happens to be [], i.e. 1st edge pairs touch
+            #
+            if w1.isClosed() and w2.isClosed() \
+            and len(faces_list) > 1 and faces_list[0]:
+                faces_list[0].extend(faces)
             else:
                 faces_list.append(faces)  # Break into separate list
         if faces_list:
@@ -175,7 +187,8 @@ def bind(w1, w2, per_segment=False):
                 if len(faces) > 1 :
                     faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
                     faces_fused_list.append(faces_fused)
-                else:
+                # faces might be emply list [], see above; skip if empty
+                elif faces:
                     faces_fused_list.append(faces[0])  # Only 1 face
             return Part.Compound(faces_fused_list)
         else:
