@@ -52,6 +52,7 @@
 # include <QToolBar>
 # include <QUrlQuery>
 # include <QWhatsThis>
+# include <QWindow>
 # include <QPushButton>
 #endif
 
