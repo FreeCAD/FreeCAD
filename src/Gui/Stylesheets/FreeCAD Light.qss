@@ -327,7 +327,7 @@ QGroupBox {
   background-color: #ededed;
   border: 1px solid #d8d8d8;
   border-radius: 2px;
-  margin-top: 15px; /* leave space at the top for the title */
+  margin-top: 18px; /* leave space at the top for the title */
 }
 
 QGroupBox::title {
