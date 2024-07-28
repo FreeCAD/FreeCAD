@@ -4160,7 +4160,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     else {
         for (auto* constr : constrvals) {
             if (constr->First == refGeoId
-                && (constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal)){
+                && (constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal)) {
                 refIsAxisAligned = true;
             }
         }
@@ -4173,117 +4173,127 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
 
         for (auto* constr :  constrvals) {
             // we look in the map, because we might have skipped internal alignment geometry
-            auto fit = geoIdMap.find(constr->First);
+            auto firstIt = geoIdMap.find(constr->First);
 
-            if (fit != geoIdMap.end()) {// if First of constraint is in geoIdList
-                if (addSymmetryConstraints && constr->Type != Sketcher::InternalAlignment) {
-                    // if we are making symmetric constraints, then we don't want to copy all constraints
+            if (firstIt == geoIdMap.end()) {
+                continue;
+            }
+
+            // if First of constraint is in geoIdList
+            if (addSymmetryConstraints && constr->Type != Sketcher::InternalAlignment) {
+                // if we are making symmetric constraints, then we don't want to copy all constraints
+                continue;
+            }
+
+            if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
+                if (refIsAxisAligned
+                    && (constr->Type == Sketcher::DistanceX
+                        || constr->Type == Sketcher::DistanceY)) {
+                    // In this case we want to keep the Vertical, Horizontal constraints.
+                    // DistanceX and DistanceY constraints should also be possible to keep in
+                    // this case, but keeping them causes segfault, not sure why.
+
+                    continue;
+                }
+                if (!refIsAxisAligned
+                    && (constr->Type == Sketcher::DistanceX
+                        || constr->Type == Sketcher::DistanceY
+                        || constr->Type == Sketcher::Vertical
+                        || constr->Type == Sketcher::Horizontal)) {
+                    // this includes all non-directional single GeoId constraints, as radius,
+                    // diameter, weight,...
+                    continue;
+                }
+                Constraint* constNew = constr->copy();
+                constNew->Name = "";
+                constNew->First = firstIt->second;
+                newconstrVals.push_back(constNew);
+
+                continue;
+            }
+
+            // other geoids intervene in this constraint
+            auto secondIt = geoIdMap.find(constr->Second);
+
+            if (secondIt == geoIdMap.end()) {
+                continue;
+            }
+
+            // Second is also in the list
+            if (constr->Third == GeoEnum::GeoUndef) {
+                if (!(constr->Type == Sketcher::Coincident
+                      || constr->Type == Sketcher::Perpendicular
+                      || constr->Type == Sketcher::Parallel
+                      || constr->Type == Sketcher::Tangent
+                      || constr->Type == Sketcher::Distance
+                      || constr->Type == Sketcher::Equal
+                      || constr->Type == Sketcher::Angle
+                      || constr->Type == Sketcher::PointOnObject
+                      || constr->Type == Sketcher::InternalAlignment)) {
                     continue;
                 }
 
-                if (constr->Second == GeoEnum::GeoUndef ){
-                    if (refIsAxisAligned) {
-                        // in this case we want to keep the Vertical, Horizontal constraints
-                        // DistanceX ,and DistanceY constraints should also be possible to keep in
-                        // this case, but keeping them causes segfault, not sure why.
-
-                        if (constr->Type != Sketcher::DistanceX
-                            && constr->Type != Sketcher::DistanceY) {
-                            Constraint* constNew = constr->copy();
-                            constNew->Name = ""; // Make sure we don't have 2 constraint with same name.
-                            constNew->First = fit->second;
-                            newconstrVals.push_back(constNew);
-                        }
-                    }
-                    else if (constr->Type != Sketcher::DistanceX
-                                && constr->Type != Sketcher::DistanceY
-                                && constr->Type != Sketcher::Vertical
-                                && constr->Type != Sketcher::Horizontal) {
-                        // this includes all non-directional single GeoId constraints, as radius,
-                        // diameter, weight,...
-
-                        Constraint* constNew = constr->copy();
-                        constNew->Name = "";
-                        constNew->First = fit->second;
-                        newconstrVals.push_back(constNew);
-                    }
+                Constraint* constNew = constr->copy();
+                constNew->Name = "";
+                constNew->First = firstIt->second;
+                constNew->Second = secondIt->second;
+                if (isStartEndInverted[constr->First]) {
+                    if (constr->FirstPos == Sketcher::PointPos::start)
+                        constNew->FirstPos = Sketcher::PointPos::end;
+                    else if (constr->FirstPos == Sketcher::PointPos::end)
+                        constNew->FirstPos = Sketcher::PointPos::start;
                 }
-                else {// other geoids intervene in this constraint
-
-                    auto sit = geoIdMap.find(constr->Second);
-
-                    if (sit != geoIdMap.end()) {// Second is also in the list
-
-                        if (constr->Third == GeoEnum::GeoUndef) {
-                            if (constr->Type == Sketcher::Coincident
-                                || constr->Type == Sketcher::Perpendicular
-                                || constr->Type == Sketcher::Parallel
-                                || constr->Type == Sketcher::Tangent
-                                || constr->Type == Sketcher::Distance
-                                || constr->Type == Sketcher::Equal || constr->Type == Sketcher::Angle
-                                || constr->Type == Sketcher::PointOnObject
-                                || constr->Type == Sketcher::InternalAlignment) {
-                                Constraint* constNew = constr->copy();
-                                constNew->Name = "";
-                                constNew->First = fit->second;
-                                constNew->Second = sit->second;
-                                if (isStartEndInverted[constr->First]) {
-                                    if (constr->FirstPos == Sketcher::PointPos::start)
-                                        constNew->FirstPos = Sketcher::PointPos::end;
-                                    else if (constr->FirstPos == Sketcher::PointPos::end)
-                                        constNew->FirstPos = Sketcher::PointPos::start;
-                                }
-                                if (isStartEndInverted[constr->Second]) {
-                                    if (constr->SecondPos == Sketcher::PointPos::start)
-                                        constNew->SecondPos = Sketcher::PointPos::end;
-                                    else if (constr->SecondPos == Sketcher::PointPos::end)
-                                        constNew->SecondPos = Sketcher::PointPos::start;
-                                }
-
-                                if (constNew->Type == Tangent || constNew->Type == Perpendicular)
-                                    AutoLockTangencyAndPerpty(constNew, true);
-
-                                if ((constr->Type == Sketcher::Angle)
-                                    && (refPosId == Sketcher::PointPos::none)) {
-                                    constNew->setValue(-constr->getValue());
-                                }
-
-                                newconstrVals.push_back(constNew);
-                            }
-                        }
-                        else {// three GeoIds intervene in constraint
-                            auto tit = geoIdMap.find(constr->Third);
-
-                            if (tit != geoIdMap.end()) {// Third is also in the list
-                                Constraint* constNew = constr->copy();
-                                constNew->Name = "";
-                                constNew->First = fit->second;
-                                constNew->Second = sit->second;
-                                constNew->Third = tit->second;
-                                if (isStartEndInverted[constr->First]) {
-                                    if (constr->FirstPos == Sketcher::PointPos::start)
-                                        constNew->FirstPos = Sketcher::PointPos::end;
-                                    else if (constr->FirstPos == Sketcher::PointPos::end)
-                                        constNew->FirstPos = Sketcher::PointPos::start;
-                                }
-                                if (isStartEndInverted[constr->Second]) {
-                                    if (constr->SecondPos == Sketcher::PointPos::start)
-                                        constNew->SecondPos = Sketcher::PointPos::end;
-                                    else if (constr->SecondPos == Sketcher::PointPos::end)
-                                        constNew->SecondPos = Sketcher::PointPos::start;
-                                }
-                                if (isStartEndInverted[constr->Third]) {
-                                    if (constr->ThirdPos == Sketcher::PointPos::start)
-                                        constNew->ThirdPos = Sketcher::PointPos::end;
-                                    else if (constr->ThirdPos == Sketcher::PointPos::end)
-                                        constNew->ThirdPos = Sketcher::PointPos::start;
-                                }
-                                newconstrVals.push_back(constNew);
-                            }
-                        }
-                    }
+                if (isStartEndInverted[constr->Second]) {
+                    if (constr->SecondPos == Sketcher::PointPos::start)
+                        constNew->SecondPos = Sketcher::PointPos::end;
+                    else if (constr->SecondPos == Sketcher::PointPos::end)
+                        constNew->SecondPos = Sketcher::PointPos::start;
                 }
+
+                if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+                    AutoLockTangencyAndPerpty(constNew, true);
+
+                if ((constr->Type == Sketcher::Angle)
+                    && (refPosId == Sketcher::PointPos::none)) {
+                    constNew->setValue(-constr->getValue());
+                }
+
+                newconstrVals.push_back(constNew);
+                continue;
             }
+
+            // three GeoIds intervene in constraint
+            auto thirdIt = geoIdMap.find(constr->Third);
+
+            if (thirdIt == geoIdMap.end()) {
+                continue;
+            }
+
+            // Third is also in the list
+            Constraint* constNew = constr->copy();
+            constNew->Name = "";
+            constNew->First = firstIt->second;
+            constNew->Second = secondIt->second;
+            constNew->Third = thirdIt->second;
+            if (isStartEndInverted[constr->First]) {
+                if (constr->FirstPos == Sketcher::PointPos::start)
+                    constNew->FirstPos = Sketcher::PointPos::end;
+                else if (constr->FirstPos == Sketcher::PointPos::end)
+                    constNew->FirstPos = Sketcher::PointPos::start;
+            }
+            if (isStartEndInverted[constr->Second]) {
+                if (constr->SecondPos == Sketcher::PointPos::start)
+                    constNew->SecondPos = Sketcher::PointPos::end;
+                else if (constr->SecondPos == Sketcher::PointPos::end)
+                    constNew->SecondPos = Sketcher::PointPos::start;
+            }
+            if (isStartEndInverted[constr->Third]) {
+                if (constr->ThirdPos == Sketcher::PointPos::start)
+                    constNew->ThirdPos = Sketcher::PointPos::end;
+                else if (constr->ThirdPos == Sketcher::PointPos::end)
+                    constNew->ThirdPos = Sketcher::PointPos::start;
+            }
+            newconstrVals.push_back(constNew);
         }
 
         if (addSymmetryConstraints) {
@@ -4370,20 +4380,21 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
 
     auto shouldCopyGeometry = [&](auto* geo, int geoId) -> bool {
         auto gf = GeometryFacade::getFacade(geo);
-        if (gf->isInternalAligned()) {
-            // only add if the corresponding geometry it defines is also in the list.
-            int definedGeo = GeoEnum::GeoUndef;
-            for (auto c : Constraints.getValues()) {
-                if (c->Type == Sketcher::InternalAlignment && c->First == geoId) {
-                    definedGeo = c->Second;
-                    break;
-                }
-            }
-            // Return true if definedGeo is in geoIdList, false otherwise
-            return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
+        if (!gf->isInternalAligned()) {
+            // Return true if not internal aligned, indicating it should always be copied
+            return true;
         }
-        // Return true if not internal aligned, indicating it should always be copied
-        return true;
+
+        // only add if the corresponding geometry it defines is also in the list.
+        int definedGeo = GeoEnum::GeoUndef;
+        for (auto c : Constraints.getValues()) {
+            if (c->Type == Sketcher::InternalAlignment && c->First == geoId) {
+                definedGeo = c->Second;
+                break;
+            }
+        }
+        // Return true if definedGeo is in geoIdList, false otherwise
+        return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
     };
 
     if (refIsLine) {
@@ -5358,32 +5369,31 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
             changed = true;
             if (referenceHorizontal == GeoEnum::GeoUndef) {
                 referenceHorizontal = constrvals[i]->First;
+                ++cindex;
+                continue;
             }
-            else {
+            auto newConstr = new Constraint();
 
-                auto newConstr = new Constraint();
+            newConstr->Type = Sketcher::Parallel;
+            newConstr->First = referenceHorizontal;
+            newConstr->Second = constrvals[i]->First;
 
-                newConstr->Type = Sketcher::Parallel;
-                newConstr->First = referenceHorizontal;
-                newConstr->Second = constrvals[i]->First;
-
-                newconstrVals.push_back(newConstr);
-            }
+            newconstrVals.push_back(newConstr);
         }
         else if (changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
             changed = true;
             if (referenceVertical == GeoEnum::GeoUndef) {
                 referenceVertical = constrvals[i]->First;
+                ++cindex;
+                continue;
             }
-            else {
-                auto newConstr = new Constraint();
+            auto newConstr = new Constraint();
 
-                newConstr->Type = Sketcher::Parallel;
-                newConstr->First = referenceVertical;
-                newConstr->Second = constrvals[i]->First;
+            newConstr->Type = Sketcher::Parallel;
+            newConstr->First = referenceVertical;
+            newConstr->Second = constrvals[i]->First;
 
-                newconstrVals.push_back(newConstr);
-            }
+            newconstrVals.push_back(newConstr);
         }
         else if (changeConstraintIndices[cindex].second == Sketcher::Symmetric
                  || changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
@@ -5392,11 +5402,12 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         else if (changeConstraintIndices[cindex].second == Sketcher::DistanceX
                  || changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
             changed = true;// We remove symmetric on axes
+            // TODO: Handle pathological cases like DistanceY on horizontal constraint
             newconstrVals.push_back(constrvals[i]->clone());
             newconstrVals.back()->Type = Sketcher::Distance;
         }
 
-        cindex++;
+        ++cindex;
     }
 
     if (nhoriz > 0 && nvert > 0) {
@@ -5409,8 +5420,9 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         newconstrVals.push_back(newConstr);
     }
 
-    if (changed)
+    if (changed) {
         Constraints.setValues(std::move(newconstrVals));
+    }
 
     return 0;
 }
