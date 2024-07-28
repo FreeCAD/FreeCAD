@@ -10572,14 +10572,6 @@ void SketchObject::onDocumentRestored()
     try {
         restoreFinished();
         Part::Part2DObject::onDocumentRestored();
-
-        if (getDocument()->testStatus(App::Document::Importing)) {
-            App::GeoFeatureGroupExtension *grp = nullptr;
-            auto grpObj = App::GeoFeatureGroupExtension::getGroupOfObject(this);
-            if (grpObj)
-                grp = grpObj->getExtensionByType<App::GeoFeatureGroupExtension>(true);
-        }
-
     }
     catch (...) {
     }
