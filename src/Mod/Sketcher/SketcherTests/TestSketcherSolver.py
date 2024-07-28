@@ -537,6 +537,113 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertEqual(len(hole.Shape.Edges), 32)
         self.assertEqual(len(sketch2.ExternalGeometry), 1)
 
+    def testSaveLoadWithExternalGeometryReference(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, (0, 0), (30, 30))
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        sketch1 = self.Doc.addObject("Sketcher::SketchObject", "Sketch1")
+        body.addObject(sketch)
+        body.addObject(pad)
+        body.addObject(sketch1)
+        self.Doc.recompute()
+        sketch1.addExternal("Pad", "Edge12")
+        self.Doc.recompute()
+
+        # Try changing it before the save
+        sketch = self.Doc.getObject("Sketch")
+        g1 = sketch.Constraints[11].First
+        d1 = sketch.Constraints[11].Value
+        sketch.delConstraint(11)
+        sketch.addConstraint(Sketcher.Constraint("Distance", g1, d1 - 1.0))
+        self.Doc.recompute()
+
+        filename = self.Doc.Name + ".FCStd"
+        self.Doc.saveAs(filename)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(filename)
+        pad = self.Doc.getObject("Pad")
+        self.Doc.recompute()
+        pad = self.Doc.getObject("Pad")
+
+        sketch = self.Doc.getObject("Sketch")
+        g1 = sketch.Constraints[11].First
+        d1 = sketch.Constraints[11].Value
+        sketch.delConstraint(11)
+        sketch.addConstraint(Sketcher.Constraint("Distance", g1, d1 - 1.0))
+        self.Doc.recompute()
+
+        pad = self.Doc.getObject("Pad")
+        # TODO:  Assert some stuff when the bug is fixed
+        # self.assertEqual(pad.Shape.ElementMapSize,0)
+        # self.assertNotNull(pad.Shape.ElementReverseMap["Edge12"])
+
+    def testTNPExternalGeometryStored(self):
+        # Arrange
+        import xml.etree.ElementTree as ET
+
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        CreateRectangleSketch(sketch, (0, 0), (30, 30))
+        sketch1 = self.Doc.addObject("Sketcher::SketchObject", "Sketch1")
+        pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        pad.Profile = sketch
+        self.Doc.recompute()
+        # sketch1.addExternal("Sketch", "Edge3")
+        sketch1.addExternal("Pad", "Edge12")
+        self.Doc.recompute()
+        # Act
+        root = ET.fromstring("<all>" + sketch1.Content + "</all>")
+        # Can't use != in an xpath because it wasn't added until python 3.10.
+        # "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref!='']"
+        extRefs = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref='']"
+        )
+        extRefsAll = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref]"
+        )
+        # Assert
+        self.assertEqual(len(extRefs), 2)
+        self.assertEqual(len(extRefsAll), 3)
+        self.assertEqual(root.tag, "all")
+        # Act
+        filename = self.Doc.Name + ".FCStd"
+        self.Doc.saveAs(filename)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(filename)
+        # Assert
+        root = ET.fromstring("<all>" + self.Doc.getObject("Sketch1").Content + "</all>")
+        extRefs = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref='']"
+        )
+        extRefsAll = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref]"
+        )
+        self.assertEqual(len(extRefs), 2)
+        self.assertEqual(len(extRefsAll), 3)
+        self.assertEqual(root.tag, "all")
+        # Act
+        sketch = self.Doc.getObject("Sketch")
+        g1 = sketch.Constraints[11].First
+        d1 = sketch.Constraints[11].Value
+        sketch.delConstraint(11)
+        sketch.addConstraint(Sketcher.Constraint("Distance", g1, d1 - 1.0))
+        self.Doc.recompute()
+        # Assert
+        root = ET.fromstring("<all>" + self.Doc.getObject("Sketch1").Content + "</all>")
+        extRefs = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref='']"
+        )
+        extRefsAll = root.findall(
+            "*/*[@name='ExternalGeo']//*/[@type='Sketcher::ExternalGeometryExtension']/[@Ref]"
+        )
+        self.assertEqual(len(extRefs), 2)
+        self.assertEqual(len(extRefsAll), 3)
+        self.assertEqual(root.tag, "all")
+
+    # TODO other tests:
+    #  getHigherElement
+
     def assertSuccessfulSolve(self, sketch, msg=None):
         status = sketch.solve()
         # TODO: can we get the solver's messages somehow to improve the message?
