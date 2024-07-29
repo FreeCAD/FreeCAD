@@ -112,14 +112,20 @@ class WidgetViewSelector(QtWidgets.QWidget):
         )
 
         self.composite_button = QtWidgets.QToolButton(self)
-        self.composite_button.setObjectName("expanded_button")
-        self.composite_button.setCheckable(True)
-        self.composite_button.setChecked(True)
+        self.composite_button.setObjectName("composite_button")
+        qtcore_major_ver = int(float(QtCore.qVersion()[0]))
+        qtcore_minor_ver = int(float(QtCore.qVersion()[2]))
+        if qtcore_major_ver == 5 and qtcore_minor_ver < 15:
+            self.composite_button.setEnabled(False)
+            self.composite_button.setCheckable(False)
+            self.composite_button.setChecked(False)
+        else:
+            self.composite_button.setCheckable(True)
+            self.composite_button.setChecked(True)
         self.composite_button.setAutoExclusive(True)
         self.composite_button.setIcon(
             QtGui.QIcon.fromTheme("composite_button", QtGui.QIcon(":/icons/composite_view.svg"))
         )
-
         self.horizontal_layout.addWidget(self.compact_button)
         self.horizontal_layout.addWidget(self.expanded_button)
         self.horizontal_layout.addWidget(self.composite_button)
