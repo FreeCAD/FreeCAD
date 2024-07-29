@@ -85,7 +85,7 @@ class _TaskPanel:
             self.form = [self.refWidget, propWidget]
         analysis = obj.getParentGroup()
         self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
-        self._part = self._mesh.Part if self._mesh is not None else None
+        self._part = self._mesh.Shape if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None
 
