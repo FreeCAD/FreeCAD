@@ -690,8 +690,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 sewer.Add(s);
 
             sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-        } else {
+            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));        } else {
             // shells are already closed - add them directly
             for (TopoDS_Shape& s : shells) {
                 mkSolid.Add(TopoDS::Shell(s));
@@ -709,15 +708,15 @@ App::DocumentObjectExecReturn *Pipe::execute()
         }
 
         //result.Move(invObjLoc);
-        AddSubShape.setValue(result); // TODO: Do we need to toposhape here?
+        AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
 
         if (base.isNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
-            result = refineShapeIfActive(result);
-            Shape.setValue(getSolid(result));
+            auto ts_result = refineShapeIfActive(result);
+            Shape.setValue(getSolid(ts_result));
             return App::DocumentObject::StdReturn;
         }
 

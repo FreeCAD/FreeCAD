@@ -41,6 +41,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         """ Create a document for each test in the test suite """
         self.Doc = App.newDocument("PartDesignTestTNP."+self._testMethodName)
 
+    def countFacesEdgesVertexes(self, map):
+        faces = [name for name in map.keys() if name.startswith("Face")]
+        edges = [name for name in map.keys() if name.startswith("Edge")]
+        vertexes = [name for name in map.keys() if name.startswith("Vertex")]
+        return ( len(faces), len(edges), len(vertexes) )
+
     def testPadsOnBaseObject(self):
         """ Simple TNP test case
             By creating three Pads dependent on each other in succession, and then moving the
@@ -516,32 +522,40 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(sketch)
         body.addObject(pad)
         self.Doc.recompute()
-        # Assert
-        # self.assertEqual(len(body.Shape.childShapes()), 1)
+       # Assert
+        self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)
         self.assertEqual(body.Shape.ElementMapSize,30)
         self.assertEqual(sketch.Shape.ElementMapSize,12)
         self.assertEqual(pad.Shape.ElementMapSize,30)
-        # Todo: Assert that the names in the ElementMap are good;
-        #  in particular that they are hashed with a # starting
+        self.assertNotEqual(pad.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
+        self.assertEqual(self.countFacesEdgesVertexes(pad.Shape.ElementReverseMap),(6,12,8))
+
+        # Todo: Offer a way to turn on hashing and check that with a # starting
+        #  Pad -> Extrusion -> makes compounds and does booleans, thus the resulting newName element maps
+        #  See if we can turn those off, or try them on the other types?
 
     def testPartDesignElementMapRevolution(self):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
-        TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
+        TestSketcherApp.CreateRectangleSketch(sketch, (1, 1), (2, 2))   # (pt), (w,l)
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         revolution = self.Doc.addObject('PartDesign::Revolution', 'Revolution')
         revolution.ReferenceAxis = (self.Doc.getObject('Sketch'),['V_Axis'])
-        revolution.Profile = sketch  # Causing segfault
+        revolution.Profile = sketch
         body.addObject(sketch)
         body.addObject(revolution)
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 8)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 14 )
+        self.assertEqual(revolution.Shape.ElementMapSize, 14 )
+        self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),(4,6,4))
+        volume = ( math.pi * 3 * 3 - math.pi * 1 * 1 ) * 2   # 50.26548245743668
+        self.assertAlmostEqual(revolution.Shape.Volume, volume)
 
     def testPartDesignElementMapLoft(self):
         # Arrange
@@ -564,14 +578,31 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)
+        self.assertEqual(loft.Shape.ElementMapSize, 30)
+        revMap = body.Shape.childShapes()[0].ElementReverseMap
+        # 4 vertexes and 4 edges in each of the two sketches = 16.
+        # Loft is a rectangular prism and so 26.
+        # End map is 12 Edge + 6 face + 8 vertexes (with 4 duplicates)
+        # Why only 4 dup vertexes in the map, not 8 and 8 dup edges?
+        # Theory:  only vertexes on the actual profile matter to the mapper.
+        # Has newnames, so we must have done a boolean to attach the ends to the pipe.
+        self.assertNotEqual(loft.Shape.ElementReverseMap['Vertex1'],"Vertex1")
+        self.assertNotEqual(revMap['Vertex1'],"Vertex1")
+        self.assertEqual(self.countFacesEdgesVertexes(loft.Shape.ElementReverseMap),(6,12,8))
+        volume = 7.0
+        self.assertAlmostEqual(loft.Shape.Volume, volume)
 
     def testPartDesignElementMapPipe(self):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
-        sketch2 = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
-        TestSketcherApp.CreateRectangleSketch(sketch2, (0, 0), (2, 2))
+        sketch2 = self.Doc.addObject('Sketcher::SketchObject', 'Sketch001')
+        sketch2.AttachmentSupport = (self.Doc.getObject("XZ_Plane"), [''])
+        sketch2.addGeometry(Part.LineSegment(App.Vector(0, 0, 0),
+                                             App.Vector(0, 1, 0)))
+        sketch2.Placement=App.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1.00,0.00,0.00),90.00))
+        # Need to set sketch2 placement?
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
@@ -583,8 +614,26 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(pipe)
         self.Doc.recompute()
         # Assert
+        self.assertAlmostEqual(body.Shape.Volume,1)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMin,0)
+        self.assertAlmostEqual(body.Shape.BoundBox.YMin,0)
+        self.assertAlmostEqual(body.Shape.BoundBox.ZMin,0)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax,1)
+        self.assertAlmostEqual(body.Shape.BoundBox.YMax,1)
+        self.assertAlmostEqual(body.Shape.BoundBox.ZMax,1)
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 64)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        revMap = body.Shape.childShapes()[0].ElementReverseMap
+        # TODO: This is a child of the body and not the actual Pipe.
+        #   1: is that okay and normal, or should the pipe have an element map
+        #   2: Should these be newNames and not oldNames?
+        self.assertEqual(revMap['Vertex1'],"Vertex1")
+        self.assertEqual(revMap['Vertex8'],"Vertex8")
+        self.assertEqual(revMap['Edge1'],"Edge1")
+        self.assertEqual(revMap['Edge12'],"Edge12")
+        self.assertEqual(revMap['Face1'],"Face1")
+        self.assertEqual(revMap['Face6'],"Face6")
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(6,12,8))
 
     def testPartDesignElementMapHelix(self):
         # Arrange
@@ -602,21 +651,78 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        # The next size can vary based on tOCCT version (26 or 30), so we accept having entries.
         self.assertGreaterEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
+        revMap = body.Shape.childShapes()[0].ElementReverseMap
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(6,12,8))
+        volume = 9.424696540407776  # TODO:  math formula to calc this.
+        self.assertAlmostEqual(helix.Shape.Volume, volume)
 
     def testPartDesignElementMapPocket(self):
-        pass  # TODO
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        body.addObject(box)
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        sketch.AttachmentSupport = (box, 'Face6')
+        sketch.MapMode = 'FlatFace'
+        TestSketcherApp.CreateRectangleSketch(sketch, (1, 1), (1, 1))
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        # Act
+        pocket = self.Doc.addObject('PartDesign::Pocket', 'Pocket')
+        pocket.Profile = sketch
+        pocket.Length = 5
+        pocket.Direction = ( 0,0,-1)
+        pocket.ReferenceAxis = (sketch, ['N_Axis'])
+
+        body.addObject(sketch)
+        body.addObject(pocket)
+        self.Doc.recompute()
+        # Assert
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 55)
+        self.assertEqual(body.Shape.ElementMapSize,55)
+        self.assertEqual(sketch.Shape.ElementMapSize,12)
+        self.assertEqual(pocket.Shape.ElementMapSize,55)
+        self.assertNotEqual(pocket.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
+        self.assertEqual(self.countFacesEdgesVertexes(pocket.Shape.ElementReverseMap),(11,24,16))
+        volume = 1000 - 5 * 1 * 1
+        self.assertAlmostEqual(pocket.Shape.Volume, volume)
 
     def testPartDesignElementMapHole(self):
-        pass  # TODO
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        body.addObject(box)
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        sketch.AttachmentSupport = (box, 'Face6')
+        sketch.MapMode = 'FlatFace'
+        TestSketcherApp.CreateCircleSketch(sketch, (5, 5), 1)
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        # Act
+        hole = self.Doc.addObject('PartDesign::Hole', 'Hole')
+        hole.Profile = sketch
+
+        body.addObject(sketch)
+        body.addObject(hole)
+        self.Doc.recompute()
+        # Assert
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 32)
+        self.assertEqual(body.Shape.ElementMapSize,32)
+        self.assertEqual(sketch.Shape.ElementMapSize,2)
+        self.assertEqual(hole.Shape.ElementMapSize,32)
+        # self.assertNotEqual(hole.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
+        self.assertEqual(self.countFacesEdgesVertexes(hole.Shape.ElementReverseMap),(7,15,10))
+        volume = 1000 - 10 * math.pi * 3 * 3
+        self.assertAlmostEqual(hole.Shape.Volume, volume)
 
     def testPartDesignElementMapGroove(self):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
         body.addObject(box)
-
         groove = self.Doc.addObject('PartDesign::Groove', 'Groove')
         body.addObject(groove)
         groove.ReferenceAxis = (self.Doc.getObject('Y_Axis'), [''])
@@ -630,17 +736,105 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Assert
-        # print(groove.Shape.childShapes()[0].ElementMap)
-        # TODO: Complete me as part of the subtractive features
+        revMap = groove.Shape.ElementReverseMap # body.Shape.childShapes()[0].ElementReverseMap
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(5,9,6))
+        volume = 785.3981633974482  # TODO:  math formula to calc this.  Maybe make a sketch as the Profile.
+        self.assertAlmostEqual(groove.Shape.Volume, volume)
 
     def testPartDesignElementMapSubLoft(self):
-        pass  # TODO
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        body.addObject(box)
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        TestSketcherApp.CreateRectangleSketch(sketch, (1, 1), (1, 1))
+        sketch2 = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        TestSketcherApp.CreateRectangleSketch(sketch2, (1, 1), (2, 2))
+        sketch2.Placement.move(App.Vector(0, 0, 3))
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        # Act
+        loft = self.Doc.addObject('PartDesign::SubtractiveLoft', 'SubLoft')
+        loft.Profile = sketch
+        loft.Sections = [sketch2]
+        body.addObject(loft)
+        self.Doc.recompute()
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        # Assert
+        revMap = loft.Shape.ElementReverseMap # body.Shape.childShapes()[0].ElementReverseMap
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(11,24,16))
+        volume = 993  # TODO:  math formula to calc this.
+        self.assertAlmostEqual(loft.Shape.Volume, volume)
 
     def testPartDesignElementMapSubPipe(self):
-        pass  # TODO
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        body.addObject(box)
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
+        sketch2 = self.Doc.addObject('Sketcher::SketchObject', 'Sketch001')
+        sketch2.AttachmentSupport = (self.Doc.getObject("XZ_Plane"), [''])
+        sketch2.addGeometry(Part.LineSegment(App.Vector(0, 0, 0),
+                                             App.Vector(0, 1, 0)))
+        sketch2.Placement=App.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1.00,0.00,0.00),90.00))
+        # Need to set sketch2 placement?
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        # Act
+        pipe = self.Doc.addObject('PartDesign::SubtractivePipe', 'SubPipe')
+        pipe.Profile = sketch
+        pipe.Spine = sketch2
+        body.addObject(sketch)
+        body.addObject(sketch2)
+        body.addObject(pipe)
+        self.Doc.recompute()
+        # Assert
+        self.assertAlmostEqual(body.Shape.Volume,999)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMin,0)
+        self.assertAlmostEqual(body.Shape.BoundBox.YMin,0)
+        self.assertAlmostEqual(body.Shape.BoundBox.ZMin,0)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax,10)
+        self.assertAlmostEqual(body.Shape.BoundBox.YMax,10)
+        self.assertAlmostEqual(body.Shape.BoundBox.ZMax,10)
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 44)
+        revMap = body.Shape.childShapes()[0].ElementReverseMap
+        # TODO: This is a child of the body and not the actual Pipe.
+        #   1: is that okay and normal, or should the pipe have an element map
+        #   2: Should these be newNames and not oldNames?
+        self.assertEqual(revMap['Vertex1'],"Vertex1")
+        self.assertEqual(revMap['Vertex8'],"Vertex8")
+        self.assertEqual(revMap['Edge1'],"Edge1")
+        self.assertEqual(revMap['Edge12'],"Edge12")
+        self.assertEqual(revMap['Face1'],"Face1")
+        self.assertEqual(revMap['Face6'],"Face6")
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(9,21,14))
 
     def testPartDesignElementMapSubHelix(self):
-        pass  # TODO
+        # Arrange
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox', 'Box')
+        body.addObject(box)
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        TestSketcherApp.CreateRectangleSketch(sketch, (5, 5), (1, 1))
+        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+            return
+        # Act
+        helix = self.Doc.addObject('PartDesign::SubtractiveHelix', 'SubHelix')
+        helix.Profile = sketch
+        helix.ReferenceAxis = (self.Doc.getObject('Sketch'),['V_Axis'])
+        body.addObject(sketch)
+        body.addObject(helix)
+        self.Doc.recompute()
+        # Assert
+        self.assertEqual(len(body.Shape.childShapes()), 1)
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 50)
+        revMap = body.Shape.childShapes()[0].ElementReverseMap
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(10,24,16))
+        volume = 991.3606270276762  # TODO:  math formula to calc this.
+        self.assertAlmostEqual(helix.Shape.Volume, volume)
 
     def testPartDesignElementMapChamfer(self):
         """ Test Chamfer ( and  FeatureDressup )"""
