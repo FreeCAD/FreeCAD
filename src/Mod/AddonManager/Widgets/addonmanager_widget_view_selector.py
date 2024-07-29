@@ -116,7 +116,7 @@ class WidgetViewSelector(QtWidgets.QWidget):
         qtcore_major_ver = int(float(QtCore.qVersion()[0]))
         qtcore_minor_ver = int(float(QtCore.qVersion()[2]))
         if qtcore_major_ver == 5 and qtcore_minor_ver < 15:
-            self.composite_button.setEnabled(False)        
+            self.composite_button.setEnabled(False)
             self.composite_button.setCheckable(False)
             self.composite_button.setChecked(False)
         else:
