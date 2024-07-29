@@ -20,19 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
+import os
 import FreeCAD
-import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
 from   PathScripts import PathUtils
 import Path.Main.Job as PathJob
-import PathGui
 import CAMSimulator
-import math
-import os
 
 from FreeCAD import Vector, Base
-from PySide.QtGui import QDialogButtonBox
+
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -43,37 +41,52 @@ Part = LazyLoader("Part", globals(), "Part")
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui, QtCore
+    from PySide.QtGui import QDialogButtonBox
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
 
 def IsSame(x, y):
+    """ Check if two floats are the same within an epsilon
+    """
     return abs(x - y) < 0.0001
 
 def RadiusAt(edge, p):
+    """ Find the tool radius within a point on its circumference
+    """
     x = edge.valueAt(p).x
     y = edge.valueAt(p).y
     return math.sqrt(x * x + y * y)
 
 
 class CAMSimTaskUi:
+    """ Handles the simulator task panel
+    """
     def __init__(self, parent):
         # this will create a Qt widget from our ui file
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/TaskCAMSimulator.ui")
         self.parent = parent
 
-    def getStandardButtons(self, *args):
+    def getStandardButtons(self, *_args):
+        """ Task panel needs only Close button
+        """
         return QDialogButtonBox.Close
 
     def reject(self):
+        """ User Pressed the Close button 
+        """
         self.parent.cancel()
         FreeCADGui.Control.closeDialog()
 
 
 def TSError(msg):
+    """ Display error message
+    """
     QtGui.QMessageBox.information(None, "Path Simulation", msg)
 
 
 class CAMSimulation:
+    """ Handles and prepares CAM jobs for simulation 
+    """
     def __init__(self):
         self.debug = False
         self.stdrot = FreeCAD.Rotation(Vector(0, 0, 1), 0)
@@ -83,12 +96,26 @@ class CAMSimulation:
         self.quality = 10
         self.resetSimulation = False
         self.jobs = []
+        self.initdone = False
+        self.taskForm = None
+        self.disableAnim = False
+        self.firstDrill = True
+        self.millSim = None
+        self.job = None
+        self.activeOps = []
+        self.ioperation = 0
+        self.stock = None
+        self.busy = False
+        self.operations = []
+        self.baseShape = None
 
     def Connect(self, but, sig):
+        """ Connect task panel buttons """
         QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
 
-    ## Convert tool shape to tool profile needed by GL simulator
     def FindClosestEdge(self, edges, px, pz):
+        """ Convert tool shape to tool profile needed by GL simulator
+        """
         for edge in edges:
             p1 = edge.FirstParameter
             p2 = edge.LastParameter
@@ -109,6 +136,8 @@ class CAMSimulation:
         return None, 0.0, 0.0
 
     def FindTopMostEdge(self, edges):
+        """ Examin tool solid edges and find the top most one
+        """
         maxz = -99999999.0
         topedge = None
         top_p1 = 0.0
@@ -130,12 +159,13 @@ class CAMSimulation:
                 maxz = z
         return topedge, top_p1, top_p2
 
-    #the algo is based on locating the side edge that OCC creates on any revolved object
     def GetToolProfile(self, tool, resolution):
+        """ Get the edge profile of a tool solid. Basically locating the 
+            side edge that OCC creates on any revolved object
+        """
         shape = tool.Shape
         sideEdgeList = []
-        for i in range(len(shape.Edges)):
-            edge = shape.Edges[i]
+        for _i, edge in enumerate(shape.Edges):
             if not edge.isClosed():
                 # v1 = edge.firstVertex()
                 # v2 = edge.lastVertex()
@@ -151,7 +181,7 @@ class CAMSimulation:
         # one by one find all connecting edges
         while edge is not None:
             sideEdgeList.remove(edge)
-            if type(edge.Curve) is Part.Circle:
+            if isinstance(edge.Curve, Part.Circle):
                 # if edge is curved, approximate it with lines based on resolution
                 nsegments = int(edge.Length / resolution) + 1
                 step = (p2 - p1) / nsegments
@@ -181,6 +211,8 @@ class CAMSimulation:
         return profile
 
     def Activate(self):
+        """ Invoke the simulator task panel
+        """
         self.initdone = False
         self.taskForm = CAMSimTaskUi(self)
         form = self.taskForm.form
@@ -200,7 +232,8 @@ class CAMSimulation:
         # self.SetupSimulation()
 
     def _populateJobSelection(self, form):
-        # Make Job selection combobox
+        """ Make Job selection combobox
+        """
         setJobIdx = 0
         jobName = ""
         jIdx = 0
@@ -236,6 +269,8 @@ class CAMSimulation:
             form.comboJobs.setCurrentIndex(0)
 
     def SetupSimulation(self):
+        """ Prepare all selected job operations for simulation
+        """
         form = self.taskForm.form
         self.activeOps = []
         self.numCommands = 0
@@ -250,6 +285,8 @@ class CAMSimulation:
         self.busy = False
 
     def onJobChange(self):
+        """ When a new job is selected from the drop-down, update job operation list
+        """
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
         self.job = j
@@ -268,6 +305,8 @@ class CAMSimulation:
             self.baseShape = None
 
     def onAccuracyBarChange(self):
+        """ Update simulation quality
+        """
         form = self.taskForm.form
         self.quality = form.sliderAccuracy.value()
         qualText = QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "High")
@@ -278,6 +317,8 @@ class CAMSimulation:
         form.labelAccuracy.setText(qualText)
 
     def onOperationItemChange(self, _item):
+        """ Check if at least one operation is selected to enable the Play button
+        """
         playvalid = False
         form = self.taskForm.form
         for i in range(form.listOperations.count()):
@@ -287,6 +328,8 @@ class CAMSimulation:
         form.toolButtonPlay.setEnabled(playvalid)
 
     def SimPlay(self):
+        """ Activate the simulation
+        """
         self.SetupSimulation()
         self.millSim.ResetSimulation()
         for op in self.activeOps:
@@ -302,12 +345,18 @@ class CAMSimulation:
             self.millSim.SetBaseShape(self.baseShape, 1)
 
     def cancel(self):
+        """ Cancel the simulation
+        """
         #self.EndSimulation()
         pass
 
 
 class CommandCAMSimulate:
+    """ FreeCAD invoke simulation task panel command
+    """
     def GetResources(self):
+        """ Command info
+        """
         return {
             "Pixmap": "CAM_SimulatorGL",
             "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "New CAM Simulator"),
@@ -318,6 +367,8 @@ class CommandCAMSimulate:
         }
 
     def IsActive(self):
+        """ Command is active if at least one CAM job exists
+        """
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
@@ -325,6 +376,8 @@ class CommandCAMSimulate:
         return False
 
     def Activated(self):
+        """ Activate the simulation
+        """
         CamSimulation = CAMSimulation()
         CamSimulation.Activate()
 
