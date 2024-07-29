@@ -43,6 +43,7 @@ Resetting everything helps to unify styles across different operating systems
   outline: 0;
   color: black;
   selection-background-color: @ThemeAccentColor1;
+  selection-color: black;
 }
 
 /* specific reset for elements inside QToolBar */
@@ -88,7 +89,7 @@ Gui--PropertyEditor--PropertyEditor QComboBox {
 
 /* fix for column items background when a link is present */
 Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
-  background-color: @ThemeAccentColor1; /* same as focused background color */
+  background-color: @ThemeAccentColor2; /* same as focused background color */
 }
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
@@ -138,6 +139,13 @@ QWidget:disabled {
 
 QWidget::item:selected {
   background-color: @ThemeAccentColor1;
+}
+
+QColorDialog QWidget {
+  background-color: #f0f0f0;
+  color: black;
+  selection-background-color: @ThemeAccentColor1;
+  selection-color: white;
 }
 
   /* Causes issue with colorselector.
@@ -242,6 +250,7 @@ QCheckBox {
   outline: none;
   border: 1px solid transparent;
   background-color: transparent;
+  spacing:8px;
 }
 
 QCheckBox:focus {
@@ -318,7 +327,7 @@ QGroupBox {
   background-color: #ededed;
   border: 1px solid #d8d8d8;
   border-radius: 2px;
-  margin-top: 3ex; /* leave space at the top for the title */
+  margin-top: 18px; /* leave space at the top for the title */
 }
 
 QGroupBox::title {
@@ -620,7 +629,7 @@ QAbstractItemView {
 }
 
 QAbstractItemView QLineEdit {
-  padding: 2px;
+  padding: 0 2px;
 }
 
 /* QAbstractScrollArea ----------------------------------------------------
@@ -924,12 +933,11 @@ background-position: center center;
 }
 
 QToolButton#qt_toolbar_ext_button:hover {
-background-color: @ThemeAccentColor1;
+  background-color: transparent;
 }
 
 QToolButton#qt_toolbar_ext_button:on {
-border-color: #ababab;
-background-color: @ThemeAccentColor1;
+  background-color: transparent;
 }
 
 
@@ -1005,7 +1013,7 @@ QAbstractSpinBox:focus {
 }
 
 QAbstractSpinBox:selected {
-  background: @ThemeAccentColor2;
+  background: @ThemeAccentColor1;
 }
 
 /* ------------------------------------------------------------------------ */
@@ -1022,6 +1030,7 @@ QLabel {
   padding: 2px;
   margin: 0px;
   color: black;
+  spacing:8px;
 }
 
 QLabel:disabled {
@@ -1031,7 +1040,7 @@ QLabel:disabled {
 }
 
 QLabel[haslink="true"] {
-  color: orange;
+  color: #0050a1;
 }
 
 
@@ -1151,7 +1160,7 @@ QPushButton {
   border: 1px solid #ababab;
   /* border-bottom-color: #1e1e1e; simulates shadow under the button */
   border-radius: 3px;
-  padding: 4px 0px;
+  padding: 4px;
   min-width: 80px;
 }
 
@@ -1162,7 +1171,6 @@ QPushButton {
 
 QPushButton:disabled {
 background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #e2e2e2, stop:1 #fdfdfd);
-
   color: #adadad;
   border: 1px solid #ababab;
 }
@@ -1173,7 +1181,7 @@ QPushButton:checked {
 }
 
 QPushButton:focus {
-  border: 1px solid  @ThemeAccentColor1;
+  border: 1px solid  @ThemeAccentColor2;
 }
 
 
@@ -1444,7 +1452,7 @@ QComboBox:focus {
 }
 
 QComboBox:on {
-  selection-background-color: @ThemeAccentColor2;
+  selection-background-color: @ThemeAccentColor1;
 }
 
 QComboBox::indicator {
@@ -1478,7 +1486,7 @@ QComboBox::item:alternate {
 /* Color of the selected list item. */
 QComboBox::item:selected {
   border: 1px solid #ababab;
-  background: @ThemeAccentColor2;
+  background: @ThemeAccentColor1;
 }
 
 QComboBox::drop-down {
@@ -1851,7 +1859,8 @@ QTabWidget::pane {
   margin: 0px;
   /* Fixes double border inside pane with pyqt5 */
   padding: 0px;
-  background-color: rgba(27, 27, 27, 0.549);
+  background-color: rgba(227, 227, 227, 84);
+  border: 1px solid #d8d8d8;
 }
 
 QTabWidget::pane:selected {
@@ -2362,7 +2371,7 @@ QTreeView::item:selected:active,
 QListView::item:selected:active,
 QTableView::item:selected:active,
 QColumnView::item:selected:active {
-  background-color: @ThemeAccentColor2;
+  background-color: @ThemeAccentColor1;
 }
 
 QTreeView::item:selected:!active,
@@ -2795,7 +2804,7 @@ QWidget#thumbnailWidget {
 }
 
 QWidget#thumbnailWidget[state="hovered"] {
-  border: 1px solid @ThemeAccentColor2;
+  border: 1px solid @ThemeAccentColor1;
 }
 
 QWidget#thumbnailWidget[state="pressed"] {
