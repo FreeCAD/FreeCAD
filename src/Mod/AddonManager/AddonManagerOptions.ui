@@ -7,13 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>757</width>
-    <height>621</height>
+    <height>783</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Addon manager options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="Gui::PrefCheckBox" name="guiprefcheckboxcheckupdates">
      <property name="toolTip">
@@ -298,12 +301,6 @@ installed addons will be checked for available updates</string>
       </item>
       <item>
        <widget class="Gui::PrefLineEdit" name="guipreflineedituserproxy">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>24</height>
-         </size>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>ProxyUrl</cstring>
         </property>
@@ -332,14 +329,14 @@ installed addons will be checked for available updates</string>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</string>
+       </property>
        <property name="prefEntry" stdset="0">
         <cstring>AddonsScoreURL</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>Addons</cstring>
-       </property>
-       <property name="toolTip">
-        <string>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</string>
        </property>
       </widget>
      </item>

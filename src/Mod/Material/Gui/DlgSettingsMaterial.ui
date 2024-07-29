@@ -131,18 +131,6 @@ will be listed as available.</string>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
             <property name="prefEntry" stdset="0">
              <cstring>CustomMaterialsDir</cstring>
             </property>
