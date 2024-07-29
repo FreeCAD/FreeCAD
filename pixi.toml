@@ -65,7 +65,7 @@ patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cma
 configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
                      "-D", "CMAKE_INSTALL_PREFIX:STRING=$CONDA_PREFIX",
                      "-D", "CMAKE_INSTALL_RPATH=$CONDA_PREFIX/lib",
-                     "-D", "CMAKE_BUILD_TYPE:STRING=Debug",
+                     "-D", "CMAKE_BUILD_TYPE:STRING=Release",
                      "-D", "QT_HOST_PATH=$CONDA_PREFIX",
                      "-D", "Boost_NO_BOOST_CMAKE:BOOL=ON",
                      "-D", "BUILD_WITH_CONDA:BOOL=ON",
@@ -74,7 +74,8 @@ configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
                      "-D", "FREECAD_USE_PYBIND11:BOOL=ON",
                      "-D", "FREECAD_USE_PCL:BOOL=ON",
                      "-D", "FREECAD_USE_EXTERNAL_SMESH=ON",
-                     "-D", "FREECAD_USE_EXTERNAL_FMT:BOOL=OFF"
+                     "-D", "FREECAD_USE_EXTERNAL_FMT:BOOL=OFF",
+                     "-D", "DFREECAD_USE_3DCONNEXION:BOOL=OFF"
                      ], depends-on = ["initialize", "patch_shiboken"]}
 build = { cmd = ["ninja", "-C", "build", "-j", "3", "install"], depends-on = ["configure"]}
 build_only = { cmd = ["ninja", "-C", "build", "-j", "3", "install"]}
