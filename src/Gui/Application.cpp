@@ -2001,10 +2001,9 @@ bool onlySingleInstance(GUISingleApplication& mainApp)
                 fn = QDir::cleanPath(fn);
             }
 
-            QByteArray msg = fn.toUtf8();
-            msg.prepend("OpenFile:");
-            if (!mainApp.sendMessage(msg)) {
-                qWarning("Failed to send message to server");
+            fn.prepend(QLatin1String("OpenFile:"));
+            if (!mainApp.sendMessage(fn)) {
+                qWarning("Failed to send OpenFile message to server");
                 break;
             }
         }
