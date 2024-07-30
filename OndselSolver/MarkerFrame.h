@@ -28,7 +28,7 @@ namespace MbD {
 		//partFrame rpmp aApm rOmO aAOm prOmOpE pAOmpE pprOmOpEpE ppAOmpEpE endFrames 
 	public:
 		MarkerFrame();
-        MarkerFrame(const char* str);
+        MarkerFrame(const std::string& str);
 		System* root() override;
 		void initialize() override;
 		void setPartFrame(PartFrame* partFrm);

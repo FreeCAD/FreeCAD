@@ -88,7 +88,7 @@ void BasicIntegrator::initialize()
 	opBDF->timeNodes = tpast;
 }
 
-void BasicIntegrator::logString(std::string& str)
+void BasicIntegrator::logString(const std::string& str)
 {
 	system->logString(str);
 }

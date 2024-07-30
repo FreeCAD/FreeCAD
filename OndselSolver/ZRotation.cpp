@@ -20,7 +20,7 @@ ZRotation::ZRotation() {
 
 }
 
-ZRotation::ZRotation(const char* str) : PrescribedMotion(str) {
+ZRotation::ZRotation(const std::string& str) : PrescribedMotion(str) {
 
 }
 

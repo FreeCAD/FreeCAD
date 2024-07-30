@@ -30,7 +30,7 @@ void IntegratorInterface::setSystem(Solver* sys)
 	system = static_cast<SystemSolver*>(sys);
 }
 
-void IntegratorInterface::logString(std::string& str)
+void IntegratorInterface::logString(const std::string& str)
 {
 	system->logString(str);
 }

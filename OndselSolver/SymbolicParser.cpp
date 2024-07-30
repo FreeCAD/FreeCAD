@@ -57,7 +57,7 @@ void MbD::SymbolicParser::parseUserFunction(Symsptr userFunc)
 	stack->push(Symbolic::times(func, std::make_shared<Constant>(usrFunc->myUnit)));
 }
 
-void MbD::SymbolicParser::parseString(std::string expr)
+void MbD::SymbolicParser::parseString(const std::string& expr)
 {
 	buffer->clear();
 	while (!stack->empty()) {
@@ -179,7 +179,7 @@ bool MbD::SymbolicParser::divideByFunction()
 	return false;
 }
 
-bool MbD::SymbolicParser::peekForTypeNoPush(std::string c)
+bool MbD::SymbolicParser::peekForTypeNoPush(const std::string& c)
 {
 	//"Test to see if tokenType matches aType. If so, advance to the next token, leaving the stack unchanged"
 
@@ -440,7 +440,7 @@ bool MbD::SymbolicParser::raisedTo()
 	return false;
 }
 
-bool MbD::SymbolicParser::expected(std::string)
+bool MbD::SymbolicParser::expected(const std::string&)
 {
 	return false;
 }
@@ -472,7 +472,7 @@ bool MbD::SymbolicParser::signedNumber()
 	return false;
 }
 
-bool MbD::SymbolicParser::peekForTypevalue(std::string type, std::string symbol)
+bool MbD::SymbolicParser::peekForTypevalue(const std::string& type, std::string symbol)
 {
 	if ((tokenType == type) && (token == symbol)) {
 		scanToken();
@@ -481,12 +481,12 @@ bool MbD::SymbolicParser::peekForTypevalue(std::string type, std::string symbol)
 	return false;
 }
 
-void MbD::SymbolicParser::notify(std::string msg) const
+void MbD::SymbolicParser::notify(const std::string& msg) const
 {
 	notifyat(msg, mark);
 }
 
-void MbD::SymbolicParser::notifyat(std::string, int) const
+void MbD::SymbolicParser::notifyat(const std::string&, int) const
 {
 	//"Temporarily reset source in order to get full contents"
 	auto p = source->tellg();

@@ -20,7 +20,6 @@
 #include "../OndselSolver/MomentOfInertiaSolver.h"
 
 using namespace MbD;
-void runSpMat();
 void sharedptrTest();
 
 int main()
@@ -30,44 +29,43 @@ int main()
 	//auto assembly = ASMTAssembly::assemblyFromFile("C:/Users/askoh/OneDrive/askoh/visualstudio/Ondsel/OndselFreeCAD/build/src/Main/runPreDrag.asmt");
 	//assembly->runDraggingLog("C:/Users/askoh/OneDrive/askoh/visualstudio/Ondsel/OndselFreeCAD/build/src/Main/dragging.log");
 	//return 0;
-	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/runPreDragBackhoe3.asmt");
-	assembly->runDraggingLog("../testapp/draggingBackhoe3.log");
-	return 0;
+	auto assembly = ASMTAssembly::assemblyFromFile(std::string(TEST_DATA_PATH) + "/runPreDragBackhoe3.asmt");
+	assembly->runDraggingLog(std::string(TEST_DATA_PATH) + "/draggingBackhoe3.log");
+	//return 0;
 	ASMTAssembly::runDraggingLogTest3();
 	ASMTAssembly::runDraggingLogTest2();
 	ASMTAssembly::runDraggingLogTest();
-	ASMTAssembly::runFile("../testapp/pistonAllowZRotation.asmt");
-	ASMTAssembly::runFile("../testapp/Schmidt_Coupling_Ass_1-1.asmt");
-	ASMTAssembly::runFile("../testapp/RevRevJt.asmt");
-	ASMTAssembly::runFile("../testapp/RevCylJt.asmt");
-	ASMTAssembly::runFile("../testapp/CylSphJt.asmt");
-	ASMTAssembly::runFile("../testapp/SphSphJt.asmt");
-	ASMTAssembly::readWriteFile("../testapp/Gears.asmt");
-	ASMTAssembly::readWriteFile("../testapp/anglejoint.asmt");
-	ASMTAssembly::readWriteFile("../testapp/constvel.asmt");
-	ASMTAssembly::readWriteFile("../testapp/rackscrew.asmt");
-	ASMTAssembly::readWriteFile("../testapp/planarbug.asmt");
-	ASMTAssembly::runFile("../testapp/cirpendu2.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::runFile("../testapp/quasikine.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::readWriteFile("../testapp/piston.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/pistonAllowZRotation.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/Schmidt_Coupling_Ass_1-1.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/RevRevJt.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/RevCylJt.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/CylSphJt.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/SphSphJt.asmt");
+	ASMTAssembly::readWriteFile(std::string(TEST_DATA_PATH) + "/Gears.asmt");
+	ASMTAssembly::readWriteFile(std::string(TEST_DATA_PATH) + "/anglejoint.asmt");
+	ASMTAssembly::readWriteFile(std::string(TEST_DATA_PATH) + "/constvel.asmt");
+	ASMTAssembly::readWriteFile(std::string(TEST_DATA_PATH) + "/rackscrew.asmt");
+	ASMTAssembly::readWriteFile(std::string(TEST_DATA_PATH) + "/planarbug.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/cirpendu2.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/quasikine.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::readWriteFile(std::string(TEST_DATA_PATH) + "/piston.asmt");
 	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
 	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
 	ASMTAssembly::runSinglePendulumSimplified();
 	ASMTAssembly::runSinglePendulum();
-	ASMTAssembly::runFile("../testapp/piston.asmt");
-	ASMTAssembly::runFile("../testapp/00backhoe.asmt");
-	//ASMTAssembly::runFile("../testapp/circular.asmt");	//Needs checking
-	//ASMTAssembly::runFile("../testapp/engine1.asmt");	//Needs checking
-	ASMTAssembly::runFile("../testapp/fourbar.asmt");
-	//ASMTAssembly::runFile("../testapp/fourbot.asmt");	//Very large but works
-	ASMTAssembly::runFile("../testapp/wobpump.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/piston.asmt");
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/00backhoe.asmt");
+	//ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/circular.asmt");	//Needs checking
+	//ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/engine1.asmt");	//Needs checking
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/fourbar.asmt");
+	//ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/fourbot.asmt");	//Very large but works
+	ASMTAssembly::runFile(std::string(TEST_DATA_PATH) + "/wobpump.asmt");
 
 	auto cadSystem = std::make_shared<CADSystem>();
 	cadSystem->runOndselSinglePendulum();
 	cadSystem->runOndselDoublePendulum();
 	//cadSystem->runOndselPiston();		//For debugging
 	cadSystem->runPiston();
-	runSpMat();
 	MomentOfInertiaSolver::example1();
 	sharedptrTest();
 }
@@ -87,21 +85,4 @@ void sharedptrTest() {
 	assert(&assm != &assm2);
 	assert(assm->constantGravity == assm2->constantGravity);	//constantGravity is same object pointed to
 	assert(&(assm->constantGravity) != &(assm2->constantGravity)); //Different shared_ptrs of same reference counter
-}
-void runSpMat() {
-	auto spMat = std::make_shared<SparseMatrix<double>>(3, 3);
-	spMat->atijput(0, 0, 1.0);
-	spMat->atijput(0, 1, 1.0);
-	spMat->atijput(1, 0, 1.0);
-	spMat->atijput(1, 1, 1.0);
-	spMat->atijput(1, 2, 1.0);
-	spMat->atijput(2, 1, 1.0);
-	spMat->atijput(2, 2, 1.0);
-	auto fullCol = std::make_shared<FullColumn<double>>(3);
-	fullCol->atiput(0, 1.0);
-	fullCol->atiput(1, 2.0);
-	fullCol->atiput(2, 3.0);
-	auto matSolver = CREATE<GESpMatParPvPrecise>::With();
-	auto answer = matSolver->solvewithsaveOriginal(spMat, fullCol, true);
-	auto aAx = spMat->timesFullColumn(answer);
 }

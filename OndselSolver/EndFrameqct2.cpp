@@ -10,7 +10,7 @@
 #include "MarkerFrame.h"
 #include "System.h"
 #include "Symbolic.h"
-#include "Time.h"
+#include "SymTime.h"
 #include "EulerParameters.h"
 #include "CREATE.h"
 #include "EulerAngleszxz.h"
@@ -22,7 +22,7 @@ using namespace MbD;
 EndFrameqct2::EndFrameqct2() {
 }
 
-EndFrameqct2::EndFrameqct2(const char* str) : EndFrameqct(str) {
+EndFrameqct2::EndFrameqct2(const std::string& str) : EndFrameqct(str) {
 }
 
 void EndFrameqct2::initpPhiThePsiptBlks()

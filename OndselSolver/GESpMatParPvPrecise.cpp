@@ -10,6 +10,7 @@
 
 #include "GESpMatParPvPrecise.h"
 #include "SingularMatrixError.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -103,4 +104,23 @@ void GESpMatParPvPrecise::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr f
 		matrixA->at(i) = spRowi->conditionedWithTol(singularPivotTolerance * maxRowMagnitude);
 		rowOrder->at(i) = i;
 	}
+}
+
+void MbD::GESpMatParPvPrecise::runSpMat()
+{
+	auto spMat = std::make_shared<SparseMatrix<double>>(3, 3);
+	spMat->atijput(0, 0, 1.0);
+	spMat->atijput(0, 1, 1.0);
+	spMat->atijput(1, 0, 1.0);
+	spMat->atijput(1, 1, 1.0);
+	spMat->atijput(1, 2, 1.0);
+	spMat->atijput(2, 1, 1.0);
+	spMat->atijput(2, 2, 1.0);
+	auto fullCol = std::make_shared<FullColumn<double>>(3);
+	fullCol->atiput(0, 1.0);
+	fullCol->atiput(1, 2.0);
+	fullCol->atiput(2, 3.0);
+	auto matSolver = CREATE<GESpMatParPvPrecise>::With();
+	auto answer = matSolver->solvewithsaveOriginal(spMat, fullCol, true);
+	auto aAx = spMat->timesFullColumn(answer);
 }

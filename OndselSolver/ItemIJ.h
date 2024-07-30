@@ -19,7 +19,7 @@ namespace MbD {
 		//
 	public:
 		ItemIJ();
-		ItemIJ(const char* str);
+		ItemIJ(const std::string& str);
 		ItemIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 		virtual void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ);
 

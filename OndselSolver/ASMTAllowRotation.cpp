@@ -55,7 +55,7 @@ std::shared_ptr<ItemIJ> MbD::ASMTAllowRotation::mbdClassNew()
 	return AllowZRotation::With();
 }
 
-void MbD::ASMTAllowRotation::setMotionJoint(std::string motionJoint)
+void MbD::ASMTAllowRotation::setMotionJoint(const std::string& motionJoint)
 {
     (void) motionJoint;
 }

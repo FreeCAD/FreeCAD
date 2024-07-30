@@ -27,8 +27,7 @@ namespace MbD {
 		virtual void finalize();
 		virtual void reportStats();
 		virtual void postRun();
-		virtual void logString(std::string& str);
-		void logString(const char* chars);
+		virtual void logString(const std::string& str);
 		virtual void setSystem(Solver* sys) = 0;
 		virtual void handleSingularMatrix();
 

@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		PointInPlaneJoint();
-		PointInPlaneJoint(const char* str);
+		PointInPlaneJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

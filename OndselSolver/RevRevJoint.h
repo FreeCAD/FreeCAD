@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		RevRevJoint();
-		RevRevJoint(const char* str);
+		RevRevJoint(const std::string& str);
 		void initializeGlobally() override;
 
 

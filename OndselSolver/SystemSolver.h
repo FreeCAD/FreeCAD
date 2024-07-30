@@ -60,7 +60,7 @@ namespace MbD {
 		void runPosICKine();
 		void runVelICKine();
 		void runAccICKine();
-		void logString(std::string& str) override;
+		void logString(const std::string& str) override;
 		std::shared_ptr<std::vector<std::shared_ptr<Part>>> parts();
 		std::shared_ptr<std::vector<std::shared_ptr<LimitIJ>>> limits();
 		//std::shared_ptr<std::vector<ContactEndFrame>> contactEndFrames();

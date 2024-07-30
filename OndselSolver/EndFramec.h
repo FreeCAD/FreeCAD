@@ -23,7 +23,7 @@ namespace MbD {
 		//markerFrame rOeO aAOe 
 	public:
 		EndFramec();
-		EndFramec(const char* str);
+		EndFramec(const std::string& str);
 
 		FMatDsptr aAeO();
 		System* root() override;

@@ -16,7 +16,7 @@ namespace MbD {
 		//Abstract class. Create subclasses only.
 	public:
 		InLineJoint();
-		InLineJoint(const char* str);
+		InLineJoint(const std::string& str);
 		virtual void initializeGlobally() = 0;	//To prevent instantiation of this class
 
 		void createInLineConstraints();

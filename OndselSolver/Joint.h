@@ -24,7 +24,7 @@ namespace MbD {
 		//frmI frmJ constraints friction 
 	public:
 		Joint();
-		Joint(const char* str);
+		Joint(const std::string& str);
 		virtual ~Joint() {}
 
 		void initializeLocally() override;

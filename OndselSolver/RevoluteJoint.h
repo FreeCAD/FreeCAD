@@ -16,7 +16,7 @@ namespace MbD {
         //
     public:
         RevoluteJoint();
-        RevoluteJoint(const char* str);
+        RevoluteJoint(const std::string& str);
         void initializeGlobally() override;
     };
 }

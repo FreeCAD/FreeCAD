@@ -13,7 +13,7 @@ MbD::InPlaneJoint::InPlaneJoint()
 {
 }
 
-MbD::InPlaneJoint::InPlaneJoint(const char*)
+MbD::InPlaneJoint::InPlaneJoint(const std::string&)
 {
 }
 

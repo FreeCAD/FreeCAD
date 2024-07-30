@@ -16,7 +16,7 @@ namespace MbD {
         //theIzJz
     public:
         AngleJoint();
-        AngleJoint(const char* str);
+        AngleJoint(const std::string& str);
         void initializeGlobally() override;
 
         double theIzJz = 0.0;

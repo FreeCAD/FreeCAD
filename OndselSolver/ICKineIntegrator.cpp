@@ -30,7 +30,7 @@ void ICKineIntegrator::selectOrder()
 
 void ICKineIntegrator::preRun()
 {
-	system->Solver::logString("MbD: Starting quasi kinematic analysis.");
+	system->logString("MbD: Starting quasi kinematic analysis.");
 	QuasiIntegrator::preRun();
 }
 

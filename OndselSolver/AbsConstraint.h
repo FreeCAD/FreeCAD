@@ -15,7 +15,7 @@ namespace MbD {
 		//axis iqXminusOnePlusAxis 
 	public:
 		//AbsConstraint();
-		//AbsConstraint(const char* str);
+		//AbsConstraint(const std::string& str);
 		AbsConstraint(size_t axis);
 
 		void calcPostDynCorrectorIteration() override;

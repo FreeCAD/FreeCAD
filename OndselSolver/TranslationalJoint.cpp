@@ -18,7 +18,7 @@ MbD::TranslationalJoint::TranslationalJoint()
 {
 }
 
-MbD::TranslationalJoint::TranslationalJoint(const char* str) : InLineJoint(str)
+MbD::TranslationalJoint::TranslationalJoint(const std::string& str) : InLineJoint(str)
 {
 }
 

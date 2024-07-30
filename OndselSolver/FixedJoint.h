@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		FixedJoint();
-		FixedJoint(const char* str);
+		FixedJoint(const std::string& str);
 		void initializeGlobally() override;
 
 

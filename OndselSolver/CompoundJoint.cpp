@@ -14,6 +14,6 @@ MbD::CompoundJoint::CompoundJoint()
 {
 }
 
-MbD::CompoundJoint::CompoundJoint(const char* str) : Joint(str)
+MbD::CompoundJoint::CompoundJoint(const std::string& str) : Joint(str)
 {
 }

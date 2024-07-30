@@ -13,7 +13,7 @@ MbD::InLineJoint::InLineJoint()
 {
 }
 
-MbD::InLineJoint::InLineJoint(const char*)
+MbD::InLineJoint::InLineJoint(const std::string&)
 {
 }
 

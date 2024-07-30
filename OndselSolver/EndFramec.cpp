@@ -19,7 +19,7 @@ using namespace MbD;
 EndFramec::EndFramec() {
 }
 
-EndFramec::EndFramec(const char* str) : CartesianFrame(str) {
+EndFramec::EndFramec(const std::string& str) : CartesianFrame(str) {
 }
 
 FMatDsptr MbD::EndFramec::aAeO()

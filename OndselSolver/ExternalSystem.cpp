@@ -59,7 +59,7 @@ void MbD::ExternalSystem::outputFor(AnalysisType type)
 	}
 }
 
-void MbD::ExternalSystem::logString(std::string& str)
+void MbD::ExternalSystem::logString(const std::string& str)
 {
 	std::cout << str << std::endl;
 }

@@ -17,7 +17,7 @@ EulerConstraint::EulerConstraint()
 
 }
 
-EulerConstraint::EulerConstraint(const char* str) : Constraint(str)
+EulerConstraint::EulerConstraint(const std::string& str) : Constraint(str)
 {
 }
 

@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		RevCylJoint();
-		RevCylJoint(const char* str);
+		RevCylJoint(const std::string& str);
 		void initializeGlobally() override;
 	
 

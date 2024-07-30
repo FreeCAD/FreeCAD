@@ -13,7 +13,7 @@
 #include "Joint.h"
 #include "ForceTorqueItem.h"
 #include "SystemSolver.h"
-#include "Time.h"
+#include "SymTime.h"
 #include "CREATE.h"
 #include "ExternalSystem.h"
 #include "PrescribedMotion.h"
@@ -30,7 +30,7 @@ System::System() {
 	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
-System::System(const char* str) : Item(str) {
+System::System(const std::string& str) : Item(str) {
 }
 
 System* MbD::System::root()
@@ -171,7 +171,7 @@ void MbD::System::partsJointsMotionsLimitsForcesTorquesDo(const std::function<vo
 	std::for_each(forcesTorques->begin(), forcesTorques->end(), f);
 }
 
-void System::logString(std::string& str)
+void System::logString(const std::string& str)
 {
 	externalSystem->logString(str);
 }

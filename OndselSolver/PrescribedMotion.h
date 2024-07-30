@@ -21,7 +21,7 @@ namespace MbD {
         //xBlk yBlk zBlk phiBlk theBlk psiBlk 
     public:
         PrescribedMotion();
-        PrescribedMotion(const char* str);
+        PrescribedMotion(const std::string& str);
 
         void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
         void initialize() override;

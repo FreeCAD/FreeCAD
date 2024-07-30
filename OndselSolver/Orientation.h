@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		Orientation();
-		Orientation(const char* str);
+		Orientation(const std::string& str);
 		void initializeGlobally() override;
 
 	};

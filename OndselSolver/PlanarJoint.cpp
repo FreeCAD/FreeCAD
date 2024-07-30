@@ -16,7 +16,7 @@ MbD::PlanarJoint::PlanarJoint()
 {
 }
 
-MbD::PlanarJoint::PlanarJoint(const char*)
+MbD::PlanarJoint::PlanarJoint(const std::string&)
 {
 }
 

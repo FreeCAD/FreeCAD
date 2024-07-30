@@ -9,7 +9,7 @@
 #include <cassert>
 
 #include "ASMTTime.h"
-#include "Time.h"
+#include "SymTime.h"
 #include "Constant.h"
 #include "Product.h"
 

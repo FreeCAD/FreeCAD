@@ -24,10 +24,10 @@ namespace MbD {
         void readTol(std::vector<std::string>& lines);
         void parseASMT(std::vector<std::string>& lines) override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        void setmotionJoint(std::string _motionJoint);
-        void settype(std::string _type);
-        void setlimit(std::string _limit);
-        void settol(std::string _tol);
+        void setmotionJoint(const std::string& _motionJoint);
+        void settype(const std::string& _type);
+        void setlimit(const std::string& _limit);
+        void settol(const std::string& _tol);
 
         std::string motionJoint, type, limit, tol;
 

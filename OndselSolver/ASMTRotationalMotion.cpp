@@ -89,12 +89,12 @@ std::shared_ptr<ItemIJ> MbD::ASMTRotationalMotion::mbdClassNew()
 	return CREATE<ZRotation>::With();
 }
 
-void MbD::ASMTRotationalMotion::setMotionJoint(std::string str)
+void MbD::ASMTRotationalMotion::setMotionJoint(const std::string& str)
 {
 	motionJoint = str;
 }
 
-void MbD::ASMTRotationalMotion::setRotationZ(std::string rotZ)
+void MbD::ASMTRotationalMotion::setRotationZ(const std::string& rotZ)
 {
 	rotationZ = rotZ;
 }

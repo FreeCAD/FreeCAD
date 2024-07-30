@@ -17,8 +17,8 @@ namespace MbD {
     public:
         ASMTItemIJ();
         void initialize() override;
-        void setMarkerI(std::string mkrI);
-        void setMarkerJ(std::string mkrJ);
+        void setMarkerI(const std::string& mkrI);
+        void setMarkerJ(const std::string& mkrJ);
         void readMarkerI(std::vector<std::string>& lines);
         void readMarkerJ(std::vector<std::string>& lines);
         void readFXonIs(std::vector<std::string>& lines);

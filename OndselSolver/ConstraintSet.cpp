@@ -11,7 +11,7 @@ MbD::ConstraintSet::ConstraintSet()
 {
 }
 
-MbD::ConstraintSet::ConstraintSet(const char* str) : ItemIJ(str)
+MbD::ConstraintSet::ConstraintSet(const std::string& str) : ItemIJ(str)
 {
 }
 

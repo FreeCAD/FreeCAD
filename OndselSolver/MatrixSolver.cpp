@@ -70,12 +70,12 @@ void MatrixSolver::findScalingsForRowRange(size_t begin, size_t end)
 	}
 }
 
-void MatrixSolver::throwSingularMatrixError(const char* chars)
+void MatrixSolver::throwSingularMatrixError(const std::string& chars)
 {
 	throw SingularMatrixError(chars);
 }
 
-void MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<size_t>> redunEqnNos)
+void MatrixSolver::throwSingularMatrixError(const std::string& chars, std::shared_ptr<FullColumn<size_t>> redunEqnNos)
 {
 	throw SingularMatrixError(chars, redunEqnNos);
 }

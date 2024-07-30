@@ -17,7 +17,7 @@ MbD::RevCylJoint::RevCylJoint()
 {
 }
 
-MbD::RevCylJoint::RevCylJoint(const char* str) : CompoundJoint(str)
+MbD::RevCylJoint::RevCylJoint(const std::string& str) : CompoundJoint(str)
 {
 }
 

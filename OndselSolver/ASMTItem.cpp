@@ -46,7 +46,7 @@ std::string MbD::ASMTItem::classname()
 	return answer;
 }
 
-void MbD::ASMTItem::setName(std::string str)
+void MbD::ASMTItem::setName(const std::string& str)
 {
 	name = str;
 }
@@ -72,7 +72,7 @@ std::string MbD::ASMTItem::readStringOffTop(std::vector<std::string>& args)
 	return str;
 }
 
-FRowDsptr MbD::ASMTItem::readRowOfDoubles(std::string& line)
+FRowDsptr MbD::ASMTItem::readRowOfDoubles(const std::string& line)
 {
 	std::istringstream iss(line);
 	auto readRowOfDoubles = std::make_shared<FullRow<double>>();
@@ -89,7 +89,7 @@ FRowDsptr MbD::ASMTItem::readRowOfDoublesOffTop(std::vector<std::string>& lines)
 	return readRowOfDoubles(str);
 }
 
-FColDsptr MbD::ASMTItem::readColumnOfDoubles(std::string& line)
+FColDsptr MbD::ASMTItem::readColumnOfDoubles(const std::string& line)
 {
 	std::istringstream iss(line);
 	auto readColumnOfDoubles = std::make_shared<FullColumn<double>>();
@@ -106,7 +106,7 @@ FColDsptr MbD::ASMTItem::readColumnOfDoublesOffTop(std::vector<std::string>& lin
 	return readColumnOfDoubles(str);
 }
 
-double MbD::ASMTItem::readDouble(std::string& line)
+double MbD::ASMTItem::readDouble(const std::string& line)
 {
 	std::istringstream iss(line);
 	double d;
@@ -114,7 +114,7 @@ double MbD::ASMTItem::readDouble(std::string& line)
 	return d;
 }
 
-int MbD::ASMTItem::readInt(std::string& line)
+int MbD::ASMTItem::readInt(const std::string& line)
 {
 	std::istringstream iss(line);
 	int i;
@@ -122,7 +122,7 @@ int MbD::ASMTItem::readInt(std::string& line)
 	return i;
 }
 
-size_t MbD::ASMTItem::readSize_t(std::string& line)
+size_t MbD::ASMTItem::readSize_t(const std::string& line)
 {
 	std::istringstream iss(line);
 	size_t i;
@@ -130,7 +130,7 @@ size_t MbD::ASMTItem::readSize_t(std::string& line)
 	return i;
 }
 
-bool MbD::ASMTItem::readBool(std::string& line)
+bool MbD::ASMTItem::readBool(const std::string& line)
 {
 	if (line.find("true") != std::string::npos)
 	{
@@ -146,7 +146,7 @@ bool MbD::ASMTItem::readBool(std::string& line)
 	}
 }
 
-std::string MbD::ASMTItem::readString(std::string& line)
+std::string MbD::ASMTItem::readString(const std::string& line)
 {
 	std::string str = line;
 	str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](unsigned char ch) { return !std::isspace(ch); }));
@@ -161,7 +161,7 @@ void MbD::ASMTItem::readName(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 }
 
-std::string MbD::ASMTItem::fullName(std::string partialName)
+std::string MbD::ASMTItem::fullName(const std::string& partialName)
 {
 	std::string longerName = "/" + name + partialName;
 	if (owner == nullptr) {
@@ -172,7 +172,7 @@ std::string MbD::ASMTItem::fullName(std::string partialName)
 	}
 }
 
-void MbD::ASMTItem::readDoublesInto(std::string& str, std::string label, FRowDsptr& row)
+void MbD::ASMTItem::readDoublesInto(std::string str, std::string label, FRowDsptr& row)
 {
 	auto pos = str.find(label);
 	assert(pos != std::string::npos);
@@ -289,12 +289,7 @@ void MbD::ASMTItem::storeOnTimeSeries(std::ofstream&)
 	assert(false);
 }
 
-void MbD::ASMTItem::logString(std::string& str)
+void MbD::ASMTItem::logString(const std::string& str)
 {
 	std::cout << str << std::endl;
-}
-
-void MbD::ASMTItem::logString(const char* chars)
-{
-	std::cout << chars << std::endl;
 }

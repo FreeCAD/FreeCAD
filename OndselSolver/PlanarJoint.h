@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		PlanarJoint();
-		PlanarJoint(const char* str);
+		PlanarJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

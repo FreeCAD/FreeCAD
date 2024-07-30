@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		NoRotationJoint();
-		NoRotationJoint(const char* str);
+		NoRotationJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

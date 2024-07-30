@@ -20,7 +20,7 @@ Constraint::Constraint() : Item()
 	aConstant = 0.0;
 }
 
-Constraint::Constraint(const char* str) : Item(str)
+Constraint::Constraint(const std::string& str) : Item(str)
 {
 }
 

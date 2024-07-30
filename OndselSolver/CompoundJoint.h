@@ -16,7 +16,7 @@ namespace MbD {
 		//distanceIJ
 	public:
 		CompoundJoint();
-		CompoundJoint(const char* str);
+		CompoundJoint(const std::string& str);
 
 		double distanceIJ = 0.0;
 	};

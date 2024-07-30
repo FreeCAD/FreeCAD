@@ -22,7 +22,7 @@ MbD::AllowZRotation::AllowZRotation()
 	//Do nothing.
 }
 
-MbD::AllowZRotation::AllowZRotation(const char* str) : PrescribedMotion(str) 
+MbD::AllowZRotation::AllowZRotation(const std::string& str) : PrescribedMotion(str) 
 {
 	//Do nothing.
 }

@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		SphericalJoint();
-		SphericalJoint(const char* str);
+		SphericalJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

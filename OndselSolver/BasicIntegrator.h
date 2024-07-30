@@ -38,7 +38,7 @@ namespace MbD {
         void selectOrder() override;
         void subsequentSteps() override;
         void setSystem(Solver* sys) override;
-        void logString(std::string& str) override;
+        void logString(const std::string& str) override;
         
         virtual void setorder(size_t o);
         virtual void settnew(double t);

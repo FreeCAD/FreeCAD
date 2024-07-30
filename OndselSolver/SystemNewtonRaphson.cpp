@@ -86,7 +86,7 @@ void SystemNewtonRaphson::handleSingularMatrix()
 
 void MbD::SystemNewtonRaphson::outputSpreadsheet()
 {
-	std::ofstream os("../testapp/spreadsheetcpp.csv");
+	std::ofstream os("../../testapp/spreadsheetcpp.csv");
 	os << std::setprecision(std::numeric_limits<double>::max_digits10);
 	for (size_t i = 0; i < pypx->nrow(); i++)
 	{

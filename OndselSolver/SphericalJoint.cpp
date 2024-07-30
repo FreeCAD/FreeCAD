@@ -16,7 +16,7 @@ MbD::SphericalJoint::SphericalJoint()
 {
 }
 
-MbD::SphericalJoint::SphericalJoint(const char* str) : AtPointJoint(str)
+MbD::SphericalJoint::SphericalJoint(const std::string& str) : AtPointJoint(str)
 {
 }
 

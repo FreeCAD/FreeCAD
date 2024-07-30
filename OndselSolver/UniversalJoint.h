@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		UniversalJoint();
-		UniversalJoint(const char* str);
+		UniversalJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

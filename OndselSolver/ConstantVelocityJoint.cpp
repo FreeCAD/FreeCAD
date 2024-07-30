@@ -18,7 +18,7 @@ MbD::ConstantVelocityJoint::ConstantVelocityJoint()
 {
 }
 
-MbD::ConstantVelocityJoint::ConstantVelocityJoint(const char* str) : AtPointJoint(str)
+MbD::ConstantVelocityJoint::ConstantVelocityJoint(const std::string& str) : AtPointJoint(str)
 {
 }
 //

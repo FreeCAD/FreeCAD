@@ -38,7 +38,7 @@ namespace MbD {
 		//ToDo: Needed members admSystem namedItems mbdTime parts jointsMotions forcesTorques sensors variables hasChanged mbdSystemSolver
 	public:
 		System();
-		System(const char* str);
+		System(const std::string& str);
 		System* root() override;
 		void initialize() override;
 		void initializeLocally() override;
@@ -53,7 +53,7 @@ namespace MbD {
 		void partsJointsMotionsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void partsJointsMotionsLimitsForcesTorquesDo(const std::function <void(std::shared_ptr<Item>)>& f);
 		void partsJointsMotionsLimitsDo(const std::function <void(std::shared_ptr<Item>)>& f);
-		void logString(std::string& str) override;
+		void logString(const std::string& str) override;
 		double mbdTimeValue();
 		void mbdTimeValue(double t);
 		std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essentialConstraints();

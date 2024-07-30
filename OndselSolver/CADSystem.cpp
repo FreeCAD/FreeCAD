@@ -22,7 +22,7 @@
 #include "Part.h"
 #include "MarkerFrame.h"
 #include "PartFrame.h"
-#include "Time.h"
+#include "SymTime.h"
 #include "StateData.h"
 #include "EulerParameters.h"
 
@@ -40,7 +40,7 @@ void CADSystem::outputFor(AnalysisType)
 		});
 }
 
-void CADSystem::logString(std::string& str)
+void CADSystem::logString(const std::string& str)
 {
 	std::cout << str << std::endl;
 }

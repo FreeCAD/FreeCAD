@@ -17,7 +17,7 @@ MbD::RevRevJoint::RevRevJoint()
 {
 }
 
-MbD::RevRevJoint::RevRevJoint(const char* str) : CompoundJoint(str)
+MbD::RevRevJoint::RevRevJoint(const std::string& str) : CompoundJoint(str)
 {
 }
 

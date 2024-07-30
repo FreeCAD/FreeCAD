@@ -18,7 +18,7 @@ RevoluteJoint::RevoluteJoint()
 {
 }
 
-RevoluteJoint::RevoluteJoint(const char* str) : AtPointJoint(str)
+RevoluteJoint::RevoluteJoint(const std::string& str) : AtPointJoint(str)
 {
 }
 

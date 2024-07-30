@@ -14,7 +14,7 @@ namespace MbD {
     class Sum : public FunctionWithManyArgs
     {
     public:
-        static Symsptr parseExpression(std::string& expression);
+        static Symsptr parseExpression(const std::string& expression);
         void parse(std::istringstream& iss);
         void parseTerm(std::istringstream& iss);
         void parsePlusTerm(std::istringstream& iss);

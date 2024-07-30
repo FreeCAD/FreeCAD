@@ -152,7 +152,7 @@ double QuasiIntegrator::suggestSmallerOrAcceptStepSize(double hnew)
 	system->partsJointsMotionsLimitsForcesTorquesDo([&](std::shared_ptr<Item> item) { hnew2 = item->suggestSmallerOrAcceptDynStepSize(hnew2); });
 	if (hnew2 > hmax) {
 		hnew2 = hmax;
-		this->Solver::logString("StM: Step size is at user specified maximum.");
+		this->logString("StM: Step size is at user specified maximum.");
 	}
 	if (hnew2 < hmin) {
 		std::stringstream ss;
@@ -170,7 +170,7 @@ void QuasiIntegrator::incrementTime(double tnew)
 	IntegratorInterface::incrementTime(tnew);
 }
 
-void QuasiIntegrator::throwDiscontinuityError(const char* chars, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes)
+void QuasiIntegrator::throwDiscontinuityError(const std::string& chars, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes)
 {
 	throw DiscontinuityError(chars, discontinuityTypes);
 }

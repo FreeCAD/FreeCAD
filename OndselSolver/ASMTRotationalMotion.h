@@ -23,8 +23,8 @@ namespace MbD {
         void initMarkers() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         std::shared_ptr<ItemIJ> mbdClassNew() override;
-        void setMotionJoint(std::string motionJoint);
-        void setRotationZ(std::string rotZ);
+        void setMotionJoint(const std::string& motionJoint);
+        void setRotationZ(const std::string& rotZ);
         void storeOnLevel(std::ofstream& os, size_t level) override;
         void storeOnTimeSeries(std::ofstream& os) override;
 

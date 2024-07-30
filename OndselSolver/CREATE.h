@@ -23,7 +23,7 @@ namespace MbD {
 	template<typename T>
 	class CREATE {
 	public:
-		static std::shared_ptr<T> With(const char* name) {
+		static std::shared_ptr<T> With(const std::string& name) {
 			auto inst = std::make_shared<T>(name);
 			inst->initialize();
 			return inst;

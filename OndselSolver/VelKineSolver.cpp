@@ -49,7 +49,7 @@ void VelKineSolver::assignEquationNumbers()
 
 void VelKineSolver::run()
 {
-	system->Solver::logString("MbD: Solving for kinematic velocity.");
+	system->logString("MbD: Solving for kinematic velocity.");
 	system->partsJointsMotionsLimitsDo([](std::shared_ptr<Item> item) { item->preVelIC(); });
 	this->assignEquationNumbers();
 	system->partsJointsMotionsLimitsDo([](std::shared_ptr<Item> item) { item->useEquationNumbers(); });

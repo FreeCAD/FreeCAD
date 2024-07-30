@@ -40,8 +40,8 @@ namespace MbD {
         virtual void postSolve() = 0;
         virtual void findScalingsForRowRange(size_t begin, size_t end);
         virtual double getmatrixArowimaxMagnitude(size_t i) = 0;
-        void throwSingularMatrixError(const char* chars);
-        void throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<size_t>> redunEqnNos);
+        void throwSingularMatrixError(const std::string& chars);
+        void throwSingularMatrixError(const std::string& chars, std::shared_ptr<FullColumn<size_t>> redunEqnNos);
 
         size_t m = 0, n = 0;
         FColDsptr answerX, rightHandSideB, rowScalings, pivotValues;

@@ -16,7 +16,7 @@ namespace MbD {
         //frmI frmJ constraints friction 
     public:
         CylindricalJoint();
-        CylindricalJoint(const char* str);
+        CylindricalJoint(const std::string& str);
         void initializeGlobally() override;
     };
 }

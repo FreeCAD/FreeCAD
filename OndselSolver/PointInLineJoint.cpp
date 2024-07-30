@@ -16,7 +16,7 @@ MbD::PointInLineJoint::PointInLineJoint()
 {
 }
 
-MbD::PointInLineJoint::PointInLineJoint(const char* str) : InLineJoint(str)
+MbD::PointInLineJoint::PointInLineJoint(const std::string& str) : InLineJoint(str)
 {
 }
 

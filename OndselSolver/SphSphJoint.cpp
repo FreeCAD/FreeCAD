@@ -17,7 +17,7 @@ MbD::SphSphJoint::SphSphJoint()
 {
 }
 
-MbD::SphSphJoint::SphSphJoint(const char* str) : CompoundJoint(str)
+MbD::SphSphJoint::SphSphJoint(const std::string& str) : CompoundJoint(str)
 {
 }
 

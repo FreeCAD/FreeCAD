@@ -18,7 +18,7 @@ CylindricalJoint::CylindricalJoint()
 {
 }
 
-CylindricalJoint::CylindricalJoint(const char* str) : InLineJoint(str) 
+CylindricalJoint::CylindricalJoint(const std::string& str) : InLineJoint(str) 
 {
 }
 

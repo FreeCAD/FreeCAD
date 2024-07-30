@@ -16,7 +16,7 @@ namespace MbD {
         //
     public:
         TranslationalJoint();
-        TranslationalJoint(const char* str);
+        TranslationalJoint(const std::string& str);
         void initializeGlobally() override;
 
     };

@@ -24,7 +24,7 @@ namespace MbD {
 		SymbolicParser();
 		void initialize();
 		void parseUserFunction(Symsptr userFunc);
-		void parseString(std::string expr);
+		void parseString(const std::string& expr);
 		bool commaExpression();
 		bool plusTerm();
 		bool minusTerm();
@@ -33,7 +33,7 @@ namespace MbD {
 		bool plainFunction();
 		bool timesFunction();
 		bool divideByFunction();
-		bool peekForTypeNoPush(std::string c);
+		bool peekForTypeNoPush(const std::string& c);
 		std::string scanToken();
 		void xLetter();
 		void xDigit();
@@ -46,11 +46,11 @@ namespace MbD {
 		bool intrinsic();
 		bool variable();
 		bool raisedTo();
-		bool expected(std::string msg);
+		bool expected(const std::string& msg);
 		bool signedNumber();
-		bool peekForTypevalue(std::string type, std::string symbol);
-		void notify(std::string msg) const;
-		void notifyat(std::string msg, int mrk) const;
+		bool peekForTypevalue(const std::string& type, std::string symbol);
+		void notify(const std::string& msg) const;
+		void notifyat(const std::string& msg, int mrk) const;
 		void combineStackTo(size_t pos) const;
 		bool isNextLineTag(char c) const;
 

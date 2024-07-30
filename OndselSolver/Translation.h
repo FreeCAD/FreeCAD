@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		Translation();
-		Translation(const char* str);
+		Translation(const std::string& str);
 		void initializeGlobally() override;
 
 	};

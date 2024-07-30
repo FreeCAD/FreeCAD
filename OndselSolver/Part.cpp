@@ -22,7 +22,7 @@ using namespace MbD;
 Part::Part() {
 }
 
-Part::Part(const char* str) : Item(str) {
+Part::Part(const std::string& str) : Item(str) {
 }
 
 System* MbD::Part::root()

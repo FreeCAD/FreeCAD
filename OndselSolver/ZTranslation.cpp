@@ -16,7 +16,7 @@ MbD::ZTranslation::ZTranslation()
 {
 }
 
-MbD::ZTranslation::ZTranslation(const char*)
+MbD::ZTranslation::ZTranslation(const std::string&)
 {
 }
 

@@ -38,8 +38,8 @@ namespace MbD {
 		static void runSinglePendulumSuperSimplified2();
 		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
-		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const char* chars);
-		static void runFile(const char* chars);
+		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const std::string& fileName);
+		static void runFile(const std::string& chars);
 		static void runDraggingLogTest();
 		static void runDraggingLogTest2();
 		static void runDraggingLogTest3();
@@ -47,10 +47,10 @@ namespace MbD {
 		static void runDraggingTest2();
 		static void runDraggingTest3();
     
-		static void readWriteFile(const char* chars);
+		static void readWriteFile(const std::string& chars);
 		void initialize() override;
 		ASMTAssembly* root() override;
-		void setNotes(std::string str);
+		void setNotes(const std::string& str);
 		void parseASMT(std::vector<std::string>& lines) override;
 		void readNotes(std::vector<std::string>& lines);
 		void readParts(std::vector<std::string>& lines);
@@ -75,7 +75,7 @@ namespace MbD {
 		void readJointSeries(std::vector<std::string>& lines);
 		void readMotionSeriesMany(std::vector<std::string>& lines);
 		void readMotionSeries(std::vector<std::string>& lines);
-		void runDraggingLog(const char* chars);
+		void runDraggingLog(const std::string& chars);
 
 		void outputFor(AnalysisType type);
 		void preMbDrun(std::shared_ptr<System> mbdSys);
@@ -89,7 +89,7 @@ namespace MbD {
 		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>>markerMap() const;
 		void deleteMbD() override;
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-		void outputFile(std::string filename);
+		void outputFile(const std::string& filename);
 		void storeOnLevel(std::ofstream& os, size_t level) override;
 
 		/* This function performs a one shot solve of the assembly.*/
@@ -102,11 +102,11 @@ namespace MbD {
 		void runKINEMATIC();
 		void initprincipalMassMarker();
 		std::shared_ptr<ASMTSpatialContainer> spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname) const;
-		std::shared_ptr<ASMTPart> partAt(std::string& longname) const;
-		std::shared_ptr<ASMTMarker> markerAt(std::string& longname) const;
-		std::shared_ptr<ASMTJoint> jointAt(std::string& longname) const;
-		std::shared_ptr<ASMTMotion> motionAt(std::string& longname) const;
-		std::shared_ptr<ASMTForceTorque> forceTorqueAt(std::string& longname) const;
+		std::shared_ptr<ASMTPart> partAt(const std::string& longname) const;
+		std::shared_ptr<ASMTMarker> markerAt(const std::string& longname) const;
+		std::shared_ptr<ASMTJoint> jointAt(const std::string& longname) const;
+		std::shared_ptr<ASMTMotion> motionAt(const std::string& longname) const;
+		std::shared_ptr<ASMTForceTorque> forceTorqueAt(const std::string& longname) const;
 		FColDsptr vOcmO() override;
 		FColDsptr omeOpO() override;
 		std::shared_ptr<ASMTTime> geoTime() const;
@@ -119,8 +119,8 @@ namespace MbD {
 		void addLimit(std::shared_ptr<ASMTLimit> limit);
 		void setConstantGravity(std::shared_ptr<ASMTConstantGravity> constantGravity);
 		void setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> simulationParameters);
-		std::shared_ptr<ASMTPart> partNamed(std::string partName) const;
-		std::shared_ptr<ASMTPart> partPartialNamed(std::string partialName) const;
+		std::shared_ptr<ASMTPart> partNamed(const std::string& partName) const;
+		std::shared_ptr<ASMTPart> partPartialNamed(const std::string& partialName) const;
 		void storeOnLevelNotes(std::ofstream& os, size_t level);
 		void storeOnLevelParts(std::ofstream& os, size_t level);
 		void storeOnLevelKinematicIJs(std::ofstream& os, size_t level);
@@ -131,7 +131,7 @@ namespace MbD {
 		void storeOnLevelLimits(std::ofstream& os, size_t level);
 		void storeOnLevelGeneralConstraintSets(std::ofstream& os, size_t level);
 		void storeOnTimeSeries(std::ofstream& os) override;
-		void setFilename(std::string filename);
+		void setFilename(const std::string& filename);
 		void setDebug(bool todebug);
 
 		std::string filename = "";

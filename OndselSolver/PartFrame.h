@@ -30,7 +30,7 @@ namespace MbD {
 		//ToDo: part iqX iqE qX qE qXdot qEdot qXddot qEddot aGeu aGabs markerFrames 
 	public:
 		PartFrame();
-		PartFrame(const char* str);
+		PartFrame(const std::string& str);
 		System* root() override;
 		void initialize() override;
 		void initializeLocally() override;
@@ -57,7 +57,7 @@ namespace MbD {
 		void setPart(Part* x);
 		Part* getPart();
 		void addMarkerFrame(std::shared_ptr<MarkerFrame> x);
-		EndFrmsptr endFrame(std::string name);
+		EndFrmsptr endFrame(const std::string& name);
 		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
 		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f);
 		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;

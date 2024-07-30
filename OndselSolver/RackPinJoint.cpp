@@ -17,7 +17,7 @@ MbD::RackPinJoint::RackPinJoint()
 {
 }
 
-MbD::RackPinJoint::RackPinJoint(const char* str) : Joint(str)
+MbD::RackPinJoint::RackPinJoint(const std::string& str) : Joint(str)
 {
 }
 //

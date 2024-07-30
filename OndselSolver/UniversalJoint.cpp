@@ -16,7 +16,7 @@ MbD::UniversalJoint::UniversalJoint()
 {
 }
 
-MbD::UniversalJoint::UniversalJoint(const char* str) : AtPointJoint(str)
+MbD::UniversalJoint::UniversalJoint(const std::string& str) : AtPointJoint(str)
 {
 }
 

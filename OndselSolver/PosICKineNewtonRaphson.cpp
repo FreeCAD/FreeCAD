@@ -22,6 +22,6 @@ void PosICKineNewtonRaphson::initializeGlobally()
 
 void MbD::PosICKineNewtonRaphson::preRun()
 {
-	system->Solver::logString("MbD: Solving for quasi kinematic position.");
+	system->logString("MbD: Solving for quasi kinematic position.");
 	PosNewtonRaphson::preRun();
 }

@@ -16,7 +16,7 @@
 
 using namespace MbD;
 
-Symsptr MbD::Sum::parseExpression(std::string& expression)
+Symsptr MbD::Sum::parseExpression(const std::string& expression)
 {
 	std::istringstream iss(expression);
 	auto sum = std::make_shared<Sum>();

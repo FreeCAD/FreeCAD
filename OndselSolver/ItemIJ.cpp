@@ -6,7 +6,7 @@ MbD::ItemIJ::ItemIJ()
 {
 }
 
-MbD::ItemIJ::ItemIJ(const char* str) : Item(str)
+MbD::ItemIJ::ItemIJ(const std::string& str) : Item(str)
 {
 }
 

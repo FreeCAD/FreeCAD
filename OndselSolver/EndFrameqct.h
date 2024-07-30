@@ -21,7 +21,7 @@ namespace MbD {
 		//rmem prmempt pprmemptpt aAme pAmept ppAmeptpt prOeOpt pprOeOpEpt pprOeOptpt pAOept ppAOepEpt ppAOeptpt 
 	public:
 		EndFrameqct();
-		EndFrameqct(const char* str);
+		EndFrameqct(const std::string& str);
 		void initialize() override;
 		void initializeLocally() override;
 		void initializeGlobally() override;

@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		ZRotation();
-		ZRotation(const char* str);
+		ZRotation(const std::string& str);
 		void initializeGlobally() override;
 	};
 }

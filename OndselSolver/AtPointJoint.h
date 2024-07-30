@@ -16,7 +16,7 @@ namespace MbD {
         //
     public:
         AtPointJoint();
-        AtPointJoint(const char* str);
+        AtPointJoint(const std::string& str);
 
         void createAtPointConstraints();
 

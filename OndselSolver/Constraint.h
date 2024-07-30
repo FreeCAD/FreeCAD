@@ -19,7 +19,7 @@ namespace MbD {
 		//iG aG lam mu lamDeriv owner 
 	public:
 		Constraint();
-		Constraint(const char* str);
+		Constraint(const std::string& str);
 
 		void initialize() override;
 		virtual void addToJointForceI(FColDsptr col);

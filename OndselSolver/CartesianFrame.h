@@ -15,7 +15,7 @@ namespace MbD {
 	{
 	public:
 		CartesianFrame();
-		CartesianFrame(const char* str);
+		CartesianFrame(const std::string& str);
 		void initialize() override;
 	};
 }

@@ -16,7 +16,7 @@ namespace MbD {
 		//radiusI radiusJ aConstant 
 	public:
 		GearJoint();
-		GearJoint(const char* str);
+		GearJoint(const std::string& str);
 
 		//void initializeLocally() override;
 		void initializeGlobally() override;

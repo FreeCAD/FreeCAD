@@ -21,7 +21,7 @@ namespace MbD {
         //prOeOpE pprOeOpEpE pAOepE ppAOepEpE
     public:
         EndFrameqc();
-        EndFrameqc(const char* str);
+        EndFrameqc(const std::string& str);
         void initialize() override;
         void initializeGlobally() override;
         void initEndFrameqct() override;

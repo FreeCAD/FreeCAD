@@ -17,7 +17,7 @@ MbD::GearJoint::GearJoint()
 {
 }
 
-MbD::GearJoint::GearJoint(const char*)
+MbD::GearJoint::GearJoint(const std::string&)
 {
 }
 //

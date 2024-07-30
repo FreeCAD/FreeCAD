@@ -20,7 +20,7 @@ namespace MbD {
 		//pGpE iqE 
 	public:
 		EulerConstraint();
-		EulerConstraint(const char* str);
+		EulerConstraint(const std::string& str);
 		void initialize() override;
 		void calcPostDynCorrectorIteration() override;
 		void useEquationNumbers() override;

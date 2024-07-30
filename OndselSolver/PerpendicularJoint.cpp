@@ -16,7 +16,7 @@ MbD::PerpendicularJoint::PerpendicularJoint()
 {
 }
 
-MbD::PerpendicularJoint::PerpendicularJoint(const char*)
+MbD::PerpendicularJoint::PerpendicularJoint(const std::string&)
 {
 }
 

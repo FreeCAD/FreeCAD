@@ -59,15 +59,9 @@ void Solver::postRun()
 	assert(false);
 }
 
-void Solver::logString(std::string&)
+void Solver::logString(const std::string&)
 {
 	assert(false);
-}
-
-void Solver::logString(const char* chars)
-{
-	std::string str = chars;
-	this->logString(str);
 }
 
 void MbD::Solver::handleSingularMatrix()

@@ -61,6 +61,7 @@
 #include "ASMTLimit.h"
 #include "ASMTRotationLimit.h"
 #include "ASMTTranslationLimit.h"
+#include <filesystem>
 
 using namespace MbD;
 
@@ -354,8 +355,11 @@ void MbD::ASMTAssembly::runSinglePendulum()
     assembly->runKINEMATIC();
 }
 
-std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const char* fileName)
+std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const std::string& fileName)
 {
+    std::filesystem::path currentPath = std::filesystem::current_path();
+    std::cout << "Current directory: " << currentPath << std::endl;
+
     std::ifstream stream(fileName);
     if (stream.fail()) {
         throw std::invalid_argument("File not found.");
@@ -376,7 +380,7 @@ std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const char* fi
     return assembly;
 }
 
-void MbD::ASMTAssembly::runFile(const char* fileName)
+void MbD::ASMTAssembly::runFile(const std::string& fileName)
 {
     std::ifstream stream(fileName);
     if (stream.fail()) {
@@ -424,8 +428,8 @@ void MbD::ASMTAssembly::runDraggingLogTest3()
 
 void MbD::ASMTAssembly::runDraggingTest()
 {
-    // auto assembly = ASMTAssembly::assemblyFromFile("../testapp/pistonWithLimits.asmt");
-    auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+    // auto assembly = ASMTAssembly::assemblyFromFile("../../testapp/pistonWithLimits.asmt");
+    auto assembly = ASMTAssembly::assemblyFromFile("../../testapp/dragCrankSlider.asmt");
     assembly->setDebug(true);
 
     auto limit1 = ASMTRotationLimit::With();
@@ -464,8 +468,8 @@ void MbD::ASMTAssembly::runDraggingTest()
 
 void MbD::ASMTAssembly::runDraggingTest2()
 {
-    // auto assembly = ASMTAssembly::assemblyFromFile("../testapp/pistonWithLimits.asmt");
-    auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+    // auto assembly = ASMTAssembly::assemblyFromFile("../../testapp/pistonWithLimits.asmt");
+    auto assembly = ASMTAssembly::assemblyFromFile("../../testapp/dragCrankSlider.asmt");
     assembly->setDebug(true);
 
     auto limit1 = ASMTRotationLimit::With();
@@ -504,7 +508,7 @@ void MbD::ASMTAssembly::runDraggingTest2()
 
 void MbD::ASMTAssembly::runDraggingTest3()
 {
-    auto assembly = ASMTAssembly::assemblyFromFile("../testapp/rackPinion3.asmt");
+    auto assembly = ASMTAssembly::assemblyFromFile("../../testapp/rackPinion3.asmt");
     assembly->setDebug(true);
     auto dragPart = assembly->partNamed("/OndselAssembly/rackPinion#Box");
     auto rotPart = assembly->partNamed("/OndselAssembly/rackPinion#Cylinder");
@@ -534,7 +538,7 @@ void MbD::ASMTAssembly::runDraggingTest3()
     rotMat = rotPart->rotationMatrix;
 }
 
-void MbD::ASMTAssembly::readWriteFile(const char* fileName)
+void MbD::ASMTAssembly::readWriteFile(const std::string& fileName)
 {
     std::ifstream stream(fileName);
     if (stream.fail()) {
@@ -571,7 +575,7 @@ ASMTAssembly* MbD::ASMTAssembly::root()
     return this;
 }
 
-void MbD::ASMTAssembly::setNotes(std::string str)
+void MbD::ASMTAssembly::setNotes(const std::string& str)
 {
     notes = str;
 }
@@ -1040,7 +1044,7 @@ void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
     motion->readMotionSeries(lines);
 }
 
-void MbD::ASMTAssembly::runDraggingLog(const char* fileName)
+void MbD::ASMTAssembly::runDraggingLog(const std::string& fileName)
 {
     std::ifstream stream(fileName);
     if (stream.fail()) {
@@ -1270,7 +1274,7 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
     // animationParameters = nullptr;
 }
 
-void MbD::ASMTAssembly::outputFile(std::string filename)
+void MbD::ASMTAssembly::outputFile(const std::string& filename)
 {
     std::ofstream os(filename);
     os << std::setprecision(std::numeric_limits<double>::max_digits10);
@@ -1458,7 +1462,7 @@ MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self,
     return part;
 }
 
-std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partAt(std::string& longname) const
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partAt(const std::string& longname) const
 {
     for (auto& part : *parts) {
         if (part->fullName("") == longname) {
@@ -1468,7 +1472,7 @@ std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partAt(std::string& longname) const
     return nullptr;
 }
 
-std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname) const
+std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(const std::string& longname) const
 {
     for (auto& refPoint : *refPoints) {
         for (auto& marker : *refPoint->markers) {
@@ -1489,7 +1493,7 @@ std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname) c
     return nullptr;
 }
 
-std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname) const
+std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(const std::string& longname) const
 {
     auto it =
         std::find_if(joints->begin(), joints->end(), [&](const std::shared_ptr<ASMTJoint>& jt) {
@@ -1499,7 +1503,7 @@ std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname) con
     return joint;
 }
 
-std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname) const
+std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(const std::string& longname) const
 {
     auto it =
         std::find_if(motions->begin(), motions->end(), [&](const std::shared_ptr<ASMTMotion>& mt) {
@@ -1509,7 +1513,7 @@ std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname) c
     return motion;
 }
 
-std::shared_ptr<ASMTForceTorque> MbD::ASMTAssembly::forceTorqueAt(std::string& longname) const
+std::shared_ptr<ASMTForceTorque> MbD::ASMTAssembly::forceTorqueAt(const std::string& longname) const
 {
     auto it = std::find_if(forcesTorques->begin(),
                            forcesTorques->end(),
@@ -1621,7 +1625,7 @@ void MbD::ASMTAssembly::setSimulationParameters(
     parameters->owner = this;
 }
 
-std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName) const
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(const std::string& partName) const
 {
     auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
         return prt->fullName("") == partName;
@@ -1630,7 +1634,7 @@ std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName) con
     return part;
 }
 
-std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partialName) const
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(const std::string& partialName) const
 {
     auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
         auto fullName = prt->fullName("");
@@ -1740,7 +1744,7 @@ void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
     }
 }
 
-void MbD::ASMTAssembly::setFilename(std::string str)
+void MbD::ASMTAssembly::setFilename(const std::string& str)
 {
     std::stringstream ss;
     ss << "FileName = " << str << std::endl;

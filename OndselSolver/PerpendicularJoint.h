@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		PerpendicularJoint();
-		PerpendicularJoint(const char* str);
+		PerpendicularJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

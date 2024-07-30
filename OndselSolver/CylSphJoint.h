@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		CylSphJoint();
-		CylSphJoint(const char* str);
+		CylSphJoint(const std::string& str);
 		void initializeGlobally() override;
 
 

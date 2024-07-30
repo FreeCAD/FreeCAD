@@ -17,7 +17,7 @@ MbD::CylSphJoint::CylSphJoint()
 {
 }
 
-MbD::CylSphJoint::CylSphJoint(const char* str) : CompoundJoint(str)
+MbD::CylSphJoint::CylSphJoint(const std::string& str) : CompoundJoint(str)
 {
 }
 

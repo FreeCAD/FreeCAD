@@ -18,9 +18,10 @@
 namespace MbD {
 	template<typename T>
 	class SparseMatrix;
+	using SpMatDsptr = std::shared_ptr<SparseMatrix<double>>;
 	template<typename T>
 	using SpMatsptr = std::shared_ptr<SparseMatrix<T>>;
-	using SpMatDsptr = std::shared_ptr<SparseMatrix<double>>;
+	class GESpMatParPvPrecise;
 
 	template<typename T>
 	class SparseMatrix : public RowTypeMatrix<SpRowsptr<T>>

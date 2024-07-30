@@ -22,7 +22,7 @@ namespace MbD {
 		//
 	public:
 		EndFrameqct2();
-		EndFrameqct2(const char* str);
+		EndFrameqct2(const std::string& str);
 		void initpPhiThePsiptBlks() override;
 		void initppPhiThePsiptptBlks() override;
 		void evalAme() override;

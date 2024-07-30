@@ -17,7 +17,7 @@ MbD::AngleJoint::AngleJoint()
 {
 }
 
-MbD::AngleJoint::AngleJoint(const char* str) : Joint(str)
+MbD::AngleJoint::AngleJoint(const std::string& str) : Joint(str)
 {
 }
 

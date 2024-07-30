@@ -16,7 +16,7 @@ MbD::AtPointJoint::AtPointJoint()
 {
 }
 
-MbD::AtPointJoint::AtPointJoint(const char* str) : Joint(str)
+MbD::AtPointJoint::AtPointJoint(const std::string& str) : Joint(str)
 {
 }
 

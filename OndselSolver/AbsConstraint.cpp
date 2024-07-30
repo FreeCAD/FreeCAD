@@ -13,7 +13,7 @@ using namespace MbD;
 //
 //AbsConstraint::AbsConstraint() {}
 //
-//AbsConstraint::AbsConstraint(const char* str) : Constraint(str) {}
+//AbsConstraint::AbsConstraint(const std::string& str) : Constraint(str) {}
 
 AbsConstraint::AbsConstraint(size_t i)
 {

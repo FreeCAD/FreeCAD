@@ -95,22 +95,22 @@ void MbD::ASMTLimit::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<U
 	limitIJ->tol = geotol->getValue();
 }
 
-void MbD::ASMTLimit::setmotionJoint(std::string _motionJoint)
+void MbD::ASMTLimit::setmotionJoint(const std::string& _motionJoint)
 {
 	motionJoint = _motionJoint;
 }
 
-void MbD::ASMTLimit::settype(std::string _type)
+void MbD::ASMTLimit::settype(const std::string& _type)
 {
 	type = _type;
 }
 
-void MbD::ASMTLimit::setlimit(std::string _limit)
+void MbD::ASMTLimit::setlimit(const std::string& _limit)
 {
 	limit = _limit;
 }
 
-void MbD::ASMTLimit::settol(std::string _tol)
+void MbD::ASMTLimit::settol(const std::string& _tol)
 {
 	tol = _tol;
 }

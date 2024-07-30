@@ -17,7 +17,7 @@ MbD::ScrewJoint::ScrewJoint()
 {
 }
 
-MbD::ScrewJoint::ScrewJoint(const char* str) : Joint(str)
+MbD::ScrewJoint::ScrewJoint(const std::string& str) : Joint(str)
 {
 }
 //

@@ -19,7 +19,7 @@ void MbD::ASMTRefPoint::parseASMT(std::vector<std::string>& lines)
 	readMarkers(lines);
 }
 
-std::string MbD::ASMTRefPoint::fullName(std::string partialName)
+std::string MbD::ASMTRefPoint::fullName(const std::string& partialName)
 {
 	return owner->fullName(partialName);
 }

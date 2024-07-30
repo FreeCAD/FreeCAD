@@ -22,7 +22,7 @@ namespace MbD {
 		//ToDo: ipX ipE m aJ partFrame pX pXdot pE pEdot mX mE mEdot pTpE ppTpEpE ppTpEpEdot 
 	public:
 		Part();
-		Part(const char* str);
+		Part(const std::string& str);
 		System* root() override;
 		void initialize() override;
 		void initializeLocally() override;

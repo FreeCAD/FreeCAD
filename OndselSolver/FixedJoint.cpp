@@ -16,7 +16,7 @@ MbD::FixedJoint::FixedJoint()
 {
 }
 
-MbD::FixedJoint::FixedJoint(const char* str) : AtPointJoint(str)
+MbD::FixedJoint::FixedJoint(const std::string& str) : AtPointJoint(str)
 {
 }
 

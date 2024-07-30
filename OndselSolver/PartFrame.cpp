@@ -24,7 +24,7 @@ using namespace MbD;
 PartFrame::PartFrame()
 {
 }
-PartFrame::PartFrame(const char* str) : CartesianFrame(str)
+PartFrame::PartFrame(const std::string& str) : CartesianFrame(str)
 {
 }
 System* PartFrame::root()
@@ -127,7 +127,7 @@ void PartFrame::addMarkerFrame(std::shared_ptr<MarkerFrame> markerFrame)
 	markerFrames->push_back(markerFrame);
 }
 
-EndFrmsptr PartFrame::endFrame(std::string name)
+EndFrmsptr PartFrame::endFrame(const std::string& name)
 {
 	auto match = std::find_if(markerFrames->begin(), markerFrames->end(), [&](auto& mkr) {return mkr->name == name; });
 	return (*match)->endFrames->at(0);

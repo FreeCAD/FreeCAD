@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		ParallelAxesJoint();
-		ParallelAxesJoint(const char* str);
+		ParallelAxesJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

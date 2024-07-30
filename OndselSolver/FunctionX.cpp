@@ -26,10 +26,9 @@ void MbD::FunctionX::arguments(Symsptr args)
 	xx = arguments->terms->front();
 }
 
-Symsptr MbD::FunctionX::copyWith(Symsptr)
+Symsptr MbD::FunctionX::copyWith(Symsptr self)
 {
-	assert(false);
-	return Symsptr();
+	return self;
 }
 
 Symsptr MbD::FunctionX::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)

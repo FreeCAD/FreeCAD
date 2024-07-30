@@ -21,7 +21,7 @@ PrescribedMotion::PrescribedMotion() {
 
 }
 
-PrescribedMotion::PrescribedMotion(const char* str) : Joint(str) {
+PrescribedMotion::PrescribedMotion(const std::string& str) : Joint(str) {
 
 }
 

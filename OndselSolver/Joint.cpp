@@ -26,7 +26,7 @@ Joint::Joint() {
 
 }
 
-Joint::Joint(const char* str) : ConstraintSet(str) {
+Joint::Joint(const std::string& str) : ConstraintSet(str) {
 
 }
 

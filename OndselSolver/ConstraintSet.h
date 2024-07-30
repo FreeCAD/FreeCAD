@@ -18,7 +18,7 @@ namespace MbD {
 		//
 	public:
 		ConstraintSet();
-		ConstraintSet(const char* str);
+		ConstraintSet(const std::string& str);
 		void constraintsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
 		void initialize() override;
 		void initializeGlobally() override;

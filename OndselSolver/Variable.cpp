@@ -15,7 +15,7 @@ Variable::Variable()
 	value = 0.0;
 }
 
-Variable::Variable(const char* str) : name(str) 
+Variable::Variable(const std::string& str) : name(str) 
 {
 	value = 0.0;
 }
@@ -28,7 +28,7 @@ void Variable::initialize()
 {
 }
 
-void Variable::setName(std::string str)
+void Variable::setName(const std::string& str)
 {
 	name = str;
 }

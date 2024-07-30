@@ -255,7 +255,7 @@ void SystemSolver::partsJointsMotionsDo(const std::function<void(std::shared_ptr
 	system->partsJointsMotionsDo(f);
 }
 
-void SystemSolver::logString(std::string& str)
+void SystemSolver::logString(const std::string& str)
 {
 	system->logString(str);
 }

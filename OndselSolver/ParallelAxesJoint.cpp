@@ -16,7 +16,7 @@ MbD::ParallelAxesJoint::ParallelAxesJoint()
 {
 }
 
-MbD::ParallelAxesJoint::ParallelAxesJoint(const char*)
+MbD::ParallelAxesJoint::ParallelAxesJoint(const std::string&)
 {
 }
 

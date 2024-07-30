@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		PointInLineJoint();
-		PointInLineJoint(const char* str);
+		PointInLineJoint(const std::string& str);
 		void initializeGlobally() override;
 
 	};

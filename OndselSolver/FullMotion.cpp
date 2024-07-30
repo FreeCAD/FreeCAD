@@ -16,7 +16,7 @@ MbD::FullMotion::FullMotion()
 {
 }
 
-MbD::FullMotion::FullMotion(const char*)
+MbD::FullMotion::FullMotion(const std::string&)
 {
 }
 

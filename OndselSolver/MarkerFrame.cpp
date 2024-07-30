@@ -21,7 +21,7 @@ MarkerFrame::MarkerFrame()
 {
 }
 
-MarkerFrame::MarkerFrame(const char* str) : CartesianFrame(str) {
+MarkerFrame::MarkerFrame(const std::string& str) : CartesianFrame(str) {
 }
 
 System* MarkerFrame::root()

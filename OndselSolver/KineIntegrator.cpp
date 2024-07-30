@@ -16,7 +16,7 @@ using namespace MbD;
 
 void KineIntegrator::preRun()
 {
-	system->Solver::logString("MbD: Starting kinematic analysis.");
+	system->logString("MbD: Starting kinematic analysis.");
 	QuasiIntegrator::preRun();
 }
 

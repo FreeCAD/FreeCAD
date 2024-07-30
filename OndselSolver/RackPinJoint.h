@@ -16,7 +16,7 @@ namespace MbD {
 		//pitchRadius aConstant 
 	public:
 		RackPinJoint();
-		RackPinJoint(const char* str);
+		RackPinJoint(const std::string& str);
 		//void initializeLocally() override;
 		void initializeGlobally() override;
 		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;

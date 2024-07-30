@@ -14,7 +14,7 @@ CartesianFrame::CartesianFrame()
 {
 }
 
-CartesianFrame::CartesianFrame(const char* str) : Item(str)
+CartesianFrame::CartesianFrame(const std::string& str) : Item(str)
 {
 }
 

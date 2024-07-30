@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include "Time.h"
+#include "SymTime.h"
 
 using namespace MbD;
 

@@ -24,7 +24,7 @@ namespace MbD {
         virtual void checkForDiscontinuity() = 0;
         
         void setSystem(Solver* sys) override;
-        void logString(std::string& str) override;
+        void logString(const std::string& str) override;
         void run() override;
         size_t orderMax();
         virtual void incrementTime(double tnew);

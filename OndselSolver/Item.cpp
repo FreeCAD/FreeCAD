@@ -24,7 +24,7 @@ Item::Item() {
 	name = std::to_string(nanoseconds);
 }
 
-Item::Item(const char* str) : name(str)
+Item::Item(const std::string& str) : name(str)
 {
 }
 
@@ -377,11 +377,6 @@ void Item::fillVelICJacob(SpMatDsptr)
 {
 }
 
-void MbD::Item::getString(std::string)
-{
-	assert(false);
-}
-
 void Item::setqsudotlam(FColDsptr)
 {
 }
@@ -549,23 +544,17 @@ void Item::useEquationNumbers()
 {
 }
 
-void Item::logString(std::string& str)
+void Item::logString(const std::string& str)
 {
 	this->root()->logString(str);
 }
 
-void Item::logString(const char* chars)
-{
-	std::string str = chars;
-	this->logString(str);
-}
-
-void MbD::Item::logStringwithArgument(const char*, const char*)
+void MbD::Item::logStringwithArgument(const std::string&, const std::string&)
 {
 	assert(false);
 }
 
-void MbD::Item::logStringwithArguments(const char*, std::shared_ptr<std::vector<char*>>)
+void MbD::Item::logStringwithArguments(const std::string&, std::shared_ptr<std::vector<std::string>>)
 {
 	assert(false);
 }

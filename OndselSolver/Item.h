@@ -27,7 +27,7 @@ namespace MbD {
 		//name
 	public:
 		Item();
-		Item(const char* str);
+		Item(const std::string& str);
 		virtual ~Item() {}
 		virtual System* root();
 		void noop();
@@ -73,7 +73,6 @@ namespace MbD {
 		virtual void fillStaticJacob(FMatDsptr mat);
 		virtual void fillVelICError(FColDsptr col);
 		virtual void fillVelICJacob(SpMatDsptr mat);
-		virtual void getString(std::string str);
 		virtual void initialize();
 		virtual void initializeGlobally();
 		virtual void initializeLocally();
@@ -81,10 +80,9 @@ namespace MbD {
 		virtual bool isJointTorque();
 		virtual bool isKinedotIJ();
 		virtual bool isKineIJ();
-		virtual void logString(std::string& str);
-		void logString(const char* chars);
-		virtual void logStringwithArgument(const char* chars, const char* chars1);
-		virtual void logStringwithArguments(const char* chars, std::shared_ptr<std::vector<char*>> arrayOfChars);
+		virtual void logString(const std::string& str);
+		virtual void logStringwithArgument(const std::string& chars, const std::string& chars1);
+		virtual void logStringwithArguments(const std::string& chars, std::shared_ptr<std::vector<std::string>> arrayOfChars);
 		virtual void normalImpulse(double imp);
 		virtual void postAccIC();
 		virtual void postAccICIteration();

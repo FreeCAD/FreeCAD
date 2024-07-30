@@ -16,7 +16,7 @@ namespace MbD {
 		//
 	public:
 		ZTranslation();
-		ZTranslation(const char* str);
+		ZTranslation(const std::string& str);
 		void initializeGlobally() override;
 
 	};

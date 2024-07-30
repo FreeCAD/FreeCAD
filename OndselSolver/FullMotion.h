@@ -19,7 +19,7 @@ namespace MbD {
 		//frIJI fangIJJ 
 	public:
 		FullMotion();
-		FullMotion(const char* str);
+		FullMotion(const std::string& str);
 		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
 		void initializeGlobally() override;
 		void initMotions() override;

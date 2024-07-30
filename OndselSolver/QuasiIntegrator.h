@@ -28,7 +28,7 @@ namespace MbD {
         double suggestSmallerOrAcceptFirstStepSize(double hnew) override;
         double suggestSmallerOrAcceptStepSize(double hnew) override;
         void incrementTime(double tnew) override;
-        void throwDiscontinuityError(const char* chars, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes);
+        void throwDiscontinuityError(const std::string& chars, std::shared_ptr<std::vector<DiscontinuityType>> discontinuityTypes);
         void checkForOutputThrough(double t) override;
         void interpolateAt(double t) override;
         void postStep() override;

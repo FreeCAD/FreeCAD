@@ -20,7 +20,7 @@ using namespace MbD;
 EndFrameqc::EndFrameqc() {
 }
 
-EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
+EndFrameqc::EndFrameqc(const std::string& str) : EndFramec(str) {
 }
 
 void EndFrameqc::initialize()

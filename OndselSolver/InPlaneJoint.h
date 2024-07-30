@@ -16,7 +16,7 @@ namespace MbD {
 		//offset
 	public:
 		InPlaneJoint();
-		InPlaneJoint(const char* str);
+		InPlaneJoint(const std::string& str);
 		virtual void initializeGlobally() = 0;	//To prevent instantiation of this class
 
 		void createInPlaneConstraint();
