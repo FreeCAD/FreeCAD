@@ -213,25 +213,4 @@ void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * Ty
     }
 }
 
-
-// FIXME:  This method ( and the Refine property it depends on ) is redundant with the exact same
-//  thing in FeatureAddSub, but cannot reasonably be moved up an inheritance level to Feature as
-//  there are inheritors like FeatureBox for which a refine Property does not make sense.  A
-//  solution like moving Refine and refineShapeIfActive to a new FeatureRefine class that sits
-//  between Feature and FeatureBoolean / FeatureAddSub is a possibility, or maybe [ew!] hiding the
-//  property in Feature and only enabling it in the places it is relevant.
-TopoShape Boolean::refineShapeIfActive(const TopoShape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        try {
-            return oldShape.makeElementRefine();
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
-    return oldShape;
-}
-
 }

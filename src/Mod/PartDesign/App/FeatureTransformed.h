@@ -27,7 +27,7 @@
 #include <gp_Trsf.hxx>
 
 #include <App/PropertyStandard.h>
-#include "Feature.h"
+#include "FeatureRefine.h"
 
 
 namespace PartDesign
@@ -37,7 +37,7 @@ namespace PartDesign
  * Abstract superclass of all features that are created by transformation of another feature
  * Transformations are translation, rotation and mirroring
  */
-class PartDesignExport Transformed: public PartDesign::Feature
+class PartDesignExport Transformed: public PartDesign::FeatureRefine
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Transformed);
 
@@ -55,8 +55,6 @@ public:
     App::PropertyLinkList Originals;
 
     App::PropertyEnumeration TransformMode;
-
-    App::PropertyBool Refine;
 
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
@@ -106,7 +104,6 @@ protected:
                                    App::Property* prop) override;
 
     virtual void positionBySupport();
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
