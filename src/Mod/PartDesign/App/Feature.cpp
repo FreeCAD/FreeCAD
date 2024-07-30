@@ -147,6 +147,7 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
+#ifndef FC_USE_TNP_FIX
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
 {
@@ -167,7 +168,7 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
 
     return {};
 }
-
+#endif
 TopoShape Feature::getSolid(const TopoShape& shape)
 {
     if (shape.isNull()) {

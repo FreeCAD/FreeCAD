@@ -71,17 +71,6 @@ Transformed::Transformed()
 
     ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::TransformToolShapes)));
     TransformMode.setEnums(transformModeEnums.data());
-
-    ADD_PROPERTY_TYPE(Refine,
-                      (0),
-                      "Part Design",
-                      (App::PropertyType)(App::Prop_None),
-                      "Refine shape (clean up redundant edges) after adding/subtracting");
-
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
 void Transformed::positionBySupport()
@@ -426,25 +415,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
     rejected = getRemainingSolids(support);
 
     return App::DocumentObject::StdReturn;
-}
-
-TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            if (!TopoShape(resShape).isClosed()) {
-                return oldShape;
-            }
-            return resShape;
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
-    return oldShape;
 }
 
 TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
