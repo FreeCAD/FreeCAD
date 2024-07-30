@@ -5922,6 +5922,662 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
     return 0;
 }
 
+template <>
+int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int GeoId)
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    // First we search what has to be restored
+    bool major = false;
+    bool minor = false;
+    bool focus1 = false;
+    bool focus2 = false;
+
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    for (const auto& constr : vals) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+            continue;
+        }
+
+        switch (constr->AlignmentType) {
+        case Sketcher::EllipseMajorDiameter:
+            major = true;
+            break;
+        case Sketcher::EllipseMinorDiameter:
+            minor = true;
+            break;
+        case Sketcher::EllipseFocus1:
+            focus1 = true;
+            break;
+        case Sketcher::EllipseFocus2:
+            focus2 = true;
+            break;
+        default:
+            return -1;
+        }
+    }
+
+    int currentgeoid = getHighestCurveIndex();
+    int incrgeo = 0;
+
+    Base::Vector3d center;
+    double majord;
+    double minord;
+    Base::Vector3d majdir;
+
+    std::vector<Part::Geometry*> igeo;
+    std::vector<Constraint*> icon;
+
+    const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo);
+
+    center = ellipse->getCenter();
+    majord = ellipse->getMajorRadius();
+    minord = ellipse->getMinorRadius();
+    majdir = ellipse->getMajorAxisDir();
+
+    Base::Vector3d mindir = Vector3d(-majdir.y, majdir.x);
+
+    Base::Vector3d majorpositiveend = center + majord * majdir;
+    Base::Vector3d majornegativeend = center - majord * majdir;
+    Base::Vector3d minorpositiveend = center + minord * mindir;
+    Base::Vector3d minornegativeend = center - minord * mindir;
+
+    double df = sqrt(majord * majord - minord * minord);
+
+    Base::Vector3d focus1P = center + df * majdir;
+    Base::Vector3d focus2P = center - df * majdir;
+
+    if (!major) {
+        Part::GeomLineSegment* lmajor = new Part::GeomLineSegment();
+        lmajor->setPoints(majorpositiveend, majornegativeend);
+
+        igeo.push_back(lmajor);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseMajorDiameter;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+    if (!minor) {
+        Part::GeomLineSegment* lminor = new Part::GeomLineSegment();
+        lminor->setPoints(minorpositiveend, minornegativeend);
+
+        igeo.push_back(lminor);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseMinorDiameter;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+    if (!focus1) {
+        Part::GeomPoint* pf1 = new Part::GeomPoint();
+        pf1->setPoint(focus1P);
+
+        igeo.push_back(pf1);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseFocus1;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->FirstPos = Sketcher::PointPos::start;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+    if (!focus2) {
+        Part::GeomPoint* pf2 = new Part::GeomPoint();
+        pf2->setPoint(focus2P);
+        igeo.push_back(pf2);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseFocus2;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->FirstPos = Sketcher::PointPos::start;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+    }
+
+    this->addGeometry(igeo, true);
+    this->addConstraints(icon);
+
+    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
+        delete *it;
+    }
+
+    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
+        delete *it;
+    }
+
+    icon.clear();
+    igeo.clear();
+
+    return incrgeo;// number of added elements
+}
+
+// TODO: This is a repeat of ellipse. Can we do some code reuse?
+template <>
+int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const int GeoId)
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    // First we search what has to be restored
+    bool major = false;
+    bool minor = false;
+    bool focus1 = false;
+    bool focus2 = false;
+
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    for (const auto& constr : vals) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+            continue;
+        }
+
+        switch (constr->AlignmentType) {
+        case Sketcher::EllipseMajorDiameter:
+            major = true;
+            break;
+        case Sketcher::EllipseMinorDiameter:
+            minor = true;
+            break;
+        case Sketcher::EllipseFocus1:
+            focus1 = true;
+            break;
+        case Sketcher::EllipseFocus2:
+            focus2 = true;
+            break;
+        default:
+            return -1;
+        }
+    }
+
+    int currentgeoid = getHighestCurveIndex();
+    int incrgeo = 0;
+
+    Base::Vector3d center;
+    double majord;
+    double minord;
+    Base::Vector3d majdir;
+
+    std::vector<Part::Geometry*> igeo;
+    std::vector<Constraint*> icon;
+
+    const Part::GeomArcOfEllipse* aoe = static_cast<const Part::GeomArcOfEllipse*>(geo);
+
+    center = aoe->getCenter();
+    majord = aoe->getMajorRadius();
+    minord = aoe->getMinorRadius();
+    majdir = aoe->getMajorAxisDir();
+
+    Base::Vector3d mindir = Vector3d(-majdir.y, majdir.x);
+
+    Base::Vector3d majorpositiveend = center + majord * majdir;
+    Base::Vector3d majornegativeend = center - majord * majdir;
+    Base::Vector3d minorpositiveend = center + minord * mindir;
+    Base::Vector3d minornegativeend = center - minord * mindir;
+
+    double df = sqrt(majord * majord - minord * minord);
+
+    Base::Vector3d focus1P = center + df * majdir;
+    Base::Vector3d focus2P = center - df * majdir;
+
+    if (!major) {
+        Part::GeomLineSegment* lmajor = new Part::GeomLineSegment();
+        lmajor->setPoints(majorpositiveend, majornegativeend);
+
+        igeo.push_back(lmajor);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseMajorDiameter;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+    if (!minor) {
+        Part::GeomLineSegment* lminor = new Part::GeomLineSegment();
+        lminor->setPoints(minorpositiveend, minornegativeend);
+
+        igeo.push_back(lminor);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseMinorDiameter;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+    if (!focus1) {
+        Part::GeomPoint* pf1 = new Part::GeomPoint();
+        pf1->setPoint(focus1P);
+
+        igeo.push_back(pf1);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseFocus1;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->FirstPos = Sketcher::PointPos::start;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+    if (!focus2) {
+        Part::GeomPoint* pf2 = new Part::GeomPoint();
+        pf2->setPoint(focus2P);
+        igeo.push_back(pf2);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = EllipseFocus2;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->FirstPos = Sketcher::PointPos::start;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+    }
+
+    this->addGeometry(igeo, true);
+    this->addConstraints(icon);
+
+    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
+        if (*it)
+            delete *it;
+    }
+
+    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
+        if (*it)
+            delete *it;
+    }
+
+    icon.clear();
+    igeo.clear();
+
+    return incrgeo;// number of added elements
+
+}
+
+template <>
+int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const int GeoId)
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    // First we search what has to be restored
+    bool major = false;
+    bool minor = false;
+    bool focus = false;
+
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    for (auto const& constr : vals) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+            continue;
+        }
+
+        switch (constr->AlignmentType) {
+        case Sketcher::HyperbolaMajor:
+            major = true;
+            break;
+        case Sketcher::HyperbolaMinor:
+            minor = true;
+            break;
+        case Sketcher::HyperbolaFocus:
+            focus = true;
+            break;
+        default:
+            return -1;
+        }
+    }
+
+    int currentgeoid = getHighestCurveIndex();
+    int incrgeo = 0;
+
+    const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
+
+    Base::Vector3d center = aoh->getCenter();
+    double majord = aoh->getMajorRadius();
+    double minord = aoh->getMinorRadius();
+    Base::Vector3d majdir = aoh->getMajorAxisDir();
+
+    std::vector<Part::Geometry*> igeo;
+    std::vector<Constraint*> icon;
+
+    Base::Vector3d mindir = Vector3d(-majdir.y, majdir.x);
+
+    Base::Vector3d majorpositiveend = center + majord * majdir;
+    Base::Vector3d majornegativeend = center - majord * majdir;
+    Base::Vector3d minorpositiveend = majorpositiveend + minord * mindir;
+    Base::Vector3d minornegativeend = majorpositiveend - minord * mindir;
+
+    double df = sqrt(majord * majord + minord * minord);
+
+    Base::Vector3d focus1P = center + df * majdir;
+
+    if (!major) {
+        Part::GeomLineSegment* lmajor = new Part::GeomLineSegment();
+        lmajor->setPoints(majorpositiveend, majornegativeend);
+
+        igeo.push_back(lmajor);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = Sketcher::HyperbolaMajor;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+    if (!minor) {
+        Part::GeomLineSegment* lminor = new Part::GeomLineSegment();
+        lminor->setPoints(minorpositiveend, minornegativeend);
+
+        igeo.push_back(lminor);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = Sketcher::HyperbolaMinor;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+
+        incrgeo++;
+    }
+    if (!focus) {
+        Part::GeomPoint* pf1 = new Part::GeomPoint();
+        pf1->setPoint(focus1P);
+
+        igeo.push_back(pf1);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = Sketcher::HyperbolaFocus;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->FirstPos = Sketcher::PointPos::start;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+
+    this->addGeometry(igeo, true);
+    this->addConstraints(icon);
+
+    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it)
+        if (*it)
+            delete *it;
+
+    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it)
+        if (*it)
+            delete *it;
+
+    icon.clear();
+    igeo.clear();
+
+    return incrgeo;// number of added elements
+}
+
+template <>
+int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const int GeoId)
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+    // First we search what has to be restored
+    bool focus = false;
+    bool focus_to_vertex = false;
+
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    for (auto const& constr : vals) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+            continue;
+        }
+
+        switch (constr->AlignmentType) {
+        case Sketcher::ParabolaFocus:
+            focus = true;
+            break;
+        case Sketcher::ParabolaFocalAxis:
+            focus_to_vertex = true;
+            break;
+        default:
+            return -1;
+        }
+    }
+
+    int currentgeoid = getHighestCurveIndex();
+    int incrgeo = 0;
+
+    const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
+
+    Base::Vector3d center = aop->getCenter();
+    Base::Vector3d focusp = aop->getFocus();
+
+    std::vector<Part::Geometry*> igeo;
+    std::vector<Constraint*> icon;
+
+    if (!focus) {
+        Part::GeomPoint* pf1 = new Part::GeomPoint();
+        pf1->setPoint(focusp);
+
+        igeo.push_back(pf1);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = Sketcher::ParabolaFocus;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->FirstPos = Sketcher::PointPos::start;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+        incrgeo++;
+    }
+
+    if (!focus_to_vertex) {
+        Part::GeomLineSegment* paxis = new Part::GeomLineSegment();
+        paxis->setPoints(center, focusp);
+
+        igeo.push_back(paxis);
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
+        newConstr->First = currentgeoid + incrgeo + 1;
+        newConstr->FirstPos = Sketcher::PointPos::none;
+        newConstr->Second = GeoId;
+
+        icon.push_back(newConstr);
+
+        incrgeo++;
+    }
+
+    this->addGeometry(igeo, true);
+    this->addConstraints(icon);
+
+    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
+        if (*it)
+            delete *it;
+    }
+
+    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
+        if (*it)
+            delete *it;
+    }
+
+    icon.clear();
+    igeo.clear();
+
+    return incrgeo;// number of added elements
+}
+
+template <>
+int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const int GeoId)
+{
+    const Part::Geometry* geo = getGeometry(GeoId);
+
+    const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+    // First we search what has to be restored
+    std::vector<int> controlpointgeoids(bsp->countPoles(), GeoEnum::GeoUndef);
+
+    std::vector<int> knotgeoids(bsp->countKnots(), GeoEnum::GeoUndef);
+
+    bool isfirstweightconstrained = false;
+
+    std::vector<int>::iterator it;
+
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    // search for existing poles
+    for (auto const& constr : vals) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+            continue;
+        }
+
+        switch (constr->AlignmentType) {
+        case Sketcher::BSplineControlPoint:
+            controlpointgeoids[constr->InternalAlignmentIndex] = constr->First;
+            break;
+        case Sketcher::BSplineKnotPoint:
+            knotgeoids[constr->InternalAlignmentIndex] = constr->First;
+            break;
+        default:
+            return -1;
+        }
+    }
+
+    if (controlpointgeoids[0] != GeoEnum::GeoUndef) {
+        // search for first pole weight constraint
+        auto it = std::find_if(vals.begin(),
+                               vals.end(),
+                               [&controlpointgeoids](const auto& constr) {return (constr->Type == Sketcher::Weight && constr->First == controlpointgeoids[0]);});
+        isfirstweightconstrained = (it != vals.end());
+    }
+
+    int currentgeoid = getHighestCurveIndex();
+    int incrgeo = 0;
+
+    std::vector<Part::Geometry*> igeo;
+    std::vector<Constraint*> icon;
+
+    std::vector<Base::Vector3d> poles = bsp->getPoles();
+    std::vector<double> weights = bsp->getWeights();
+    std::vector<double> knots = bsp->getKnots();
+
+    double distance_p0_p1 = (poles[1] - poles[0]).Length();// for visual purposes only
+
+    for (size_t index = 0; index < controlpointgeoids.size(); ++index) {
+        auto& cpGeoId = controlpointgeoids.at(index);
+        if (cpGeoId != GeoEnum::GeoUndef) {
+            continue;
+        }
+
+        // if controlpoint not existing
+        Part::GeomCircle* pc = new Part::GeomCircle();
+        pc->setCenter(poles[index]);
+        pc->setRadius(distance_p0_p1 / 6);
+
+        igeo.push_back(pc);
+        incrgeo++;
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = Sketcher::BSplineControlPoint;
+        newConstr->First = currentgeoid + incrgeo;
+        newConstr->FirstPos = Sketcher::PointPos::mid;
+        newConstr->Second = GeoId;
+        newConstr->InternalAlignmentIndex = index;
+
+        icon.push_back(newConstr);
+
+        if (index == 0) {
+            controlpointgeoids[0] = currentgeoid + incrgeo;
+            if (weights[0] == 1.0) {
+                // if the first weight is 1.0 it's probably going to be non-rational
+                Sketcher::Constraint* newConstr3 = new Sketcher::Constraint();
+                newConstr3->Type = Sketcher::Weight;
+                newConstr3->First = controlpointgeoids[0];
+                newConstr3->setValue(weights[0]);
+
+                icon.push_back(newConstr3);
+
+                isfirstweightconstrained = true;
+            }
+
+            continue;
+        }
+
+        if (isfirstweightconstrained && weights[0] == weights[index]) {
+            // if pole-weight newly created AND first weight is radius-constrained,
+            // AND these weights are equal, constrain them to be equal
+            Sketcher::Constraint* newConstr2 = new Sketcher::Constraint();
+            newConstr2->Type = Sketcher::Equal;
+            newConstr2->First = currentgeoid + incrgeo;
+            newConstr2->FirstPos = Sketcher::PointPos::none;
+            newConstr2->Second = controlpointgeoids[0];
+            newConstr2->SecondPos = Sketcher::PointPos::none;
+
+            icon.push_back(newConstr2);
+        }
+    }
+
+    for (size_t index = 0; index < knotgeoids.size(); ++index) {
+        auto& kGeoId = knotgeoids.at(index);
+        if (kGeoId != GeoEnum::GeoUndef) {
+            continue;
+        }
+
+        // if knot point not existing
+        Part::GeomPoint* kp = new Part::GeomPoint();
+
+        kp->setPoint(bsp->pointAtParameter(knots[index]));
+
+        igeo.push_back(kp);
+        incrgeo++;
+
+        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+        newConstr->Type = Sketcher::InternalAlignment;
+        newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
+        newConstr->First = currentgeoid + incrgeo;
+        newConstr->FirstPos = Sketcher::PointPos::start;
+        newConstr->Second = GeoId;
+        newConstr->InternalAlignmentIndex = index;
+
+        icon.push_back(newConstr);
+    }
+
+    Q_UNUSED(isfirstweightconstrained);
+
+    this->addGeometry(igeo, true);
+    this->addConstraints(icon);
+
+    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
+        delete *it;
+    }
+
+    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
+        delete *it;
+    }
+
+    icon.clear();
+    igeo.clear();
+
+    return incrgeo;// number of added elements
+}
+
 int SketchObject::exposeInternalGeometry(int GeoId)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
@@ -5929,540 +6585,20 @@ int SketchObject::exposeInternalGeometry(int GeoId)
 
     const Part::Geometry* geo = getGeometry(GeoId);
     // Only for supported types
-    if (geo->is<Part::GeomEllipse>()
-        || geo->is<Part::GeomArcOfEllipse>()) {
-        // First we search what has to be restored
-        bool major = false;
-        bool minor = false;
-        bool focus1 = false;
-        bool focus2 = false;
-
-        const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
-
-        for (const auto& constr : vals) {
-            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
-                continue;
-            }
-
-            switch (constr->AlignmentType) {
-            case Sketcher::EllipseMajorDiameter:
-                major = true;
-                break;
-            case Sketcher::EllipseMinorDiameter:
-                minor = true;
-                break;
-            case Sketcher::EllipseFocus1:
-                focus1 = true;
-                break;
-            case Sketcher::EllipseFocus2:
-                focus2 = true;
-                break;
-            default:
-                return -1;
-            }
-        }
-
-        int currentgeoid = getHighestCurveIndex();
-        int incrgeo = 0;
-
-        Base::Vector3d center;
-        double majord;
-        double minord;
-        Base::Vector3d majdir;
-
-        std::vector<Part::Geometry*> igeo;
-        std::vector<Constraint*> icon;
-
-        if (geo->is<Part::GeomEllipse>()) {
-            const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo);
-
-            center = ellipse->getCenter();
-            majord = ellipse->getMajorRadius();
-            minord = ellipse->getMinorRadius();
-            majdir = ellipse->getMajorAxisDir();
-        }
-        else {
-            const Part::GeomArcOfEllipse* aoe = static_cast<const Part::GeomArcOfEllipse*>(geo);
-
-            center = aoe->getCenter();
-            majord = aoe->getMajorRadius();
-            minord = aoe->getMinorRadius();
-            majdir = aoe->getMajorAxisDir();
-        }
-
-        Base::Vector3d mindir = Vector3d(-majdir.y, majdir.x);
-
-        Base::Vector3d majorpositiveend = center + majord * majdir;
-        Base::Vector3d majornegativeend = center - majord * majdir;
-        Base::Vector3d minorpositiveend = center + minord * mindir;
-        Base::Vector3d minornegativeend = center - minord * mindir;
-
-        double df = sqrt(majord * majord - minord * minord);
-
-        Base::Vector3d focus1P = center + df * majdir;
-        Base::Vector3d focus2P = center - df * majdir;
-
-        if (!major) {
-            Part::GeomLineSegment* lmajor = new Part::GeomLineSegment();
-            lmajor->setPoints(majorpositiveend, majornegativeend);
-
-            igeo.push_back(lmajor);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = EllipseMajorDiameter;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-            incrgeo++;
-        }
-        if (!minor) {
-            Part::GeomLineSegment* lminor = new Part::GeomLineSegment();
-            lminor->setPoints(minorpositiveend, minornegativeend);
-
-            igeo.push_back(lminor);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = EllipseMinorDiameter;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-            incrgeo++;
-        }
-        if (!focus1) {
-            Part::GeomPoint* pf1 = new Part::GeomPoint();
-            pf1->setPoint(focus1P);
-
-            igeo.push_back(pf1);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = EllipseFocus1;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->FirstPos = Sketcher::PointPos::start;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-            incrgeo++;
-        }
-        if (!focus2) {
-            Part::GeomPoint* pf2 = new Part::GeomPoint();
-            pf2->setPoint(focus2P);
-            igeo.push_back(pf2);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = EllipseFocus2;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->FirstPos = Sketcher::PointPos::start;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-        }
-
-        this->addGeometry(igeo, true);
-        this->addConstraints(icon);
-
-        for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
-            if (*it)
-                delete *it;
-        }
-
-        for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
-            if (*it)
-                delete *it;
-        }
-
-        icon.clear();
-        igeo.clear();
-
-        return incrgeo;// number of added elements
+    if (geo->is<Part::GeomEllipse>()) {
+        return exposeInternalGeometryForType<Part::GeomEllipse>(GeoId);
+    }
+    else if (geo->is<Part::GeomArcOfEllipse>()) {
+        return exposeInternalGeometryForType<Part::GeomArcOfEllipse>(GeoId);
     }
     else if (geo->is<Part::GeomArcOfHyperbola>()) {
-        // First we search what has to be restored
-        bool major = false;
-        bool minor = false;
-        bool focus = false;
-
-        const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
-
-        for (auto const& constr : vals) {
-            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
-                continue;
-            }
-
-            switch (constr->AlignmentType) {
-            case Sketcher::HyperbolaMajor:
-                major = true;
-                break;
-            case Sketcher::HyperbolaMinor:
-                minor = true;
-                break;
-            case Sketcher::HyperbolaFocus:
-                focus = true;
-                break;
-            default:
-                return -1;
-            }
-        }
-
-        int currentgeoid = getHighestCurveIndex();
-        int incrgeo = 0;
-
-        const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
-
-        Base::Vector3d center = aoh->getCenter();
-        double majord = aoh->getMajorRadius();
-        double minord = aoh->getMinorRadius();
-        Base::Vector3d majdir = aoh->getMajorAxisDir();
-
-        std::vector<Part::Geometry*> igeo;
-        std::vector<Constraint*> icon;
-
-        Base::Vector3d mindir = Vector3d(-majdir.y, majdir.x);
-
-        Base::Vector3d majorpositiveend = center + majord * majdir;
-        Base::Vector3d majornegativeend = center - majord * majdir;
-        Base::Vector3d minorpositiveend = majorpositiveend + minord * mindir;
-        Base::Vector3d minornegativeend = majorpositiveend - minord * mindir;
-
-        double df = sqrt(majord * majord + minord * minord);
-
-        Base::Vector3d focus1P = center + df * majdir;
-
-        if (!major) {
-            Part::GeomLineSegment* lmajor = new Part::GeomLineSegment();
-            lmajor->setPoints(majorpositiveend, majornegativeend);
-
-            igeo.push_back(lmajor);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = Sketcher::HyperbolaMajor;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-            incrgeo++;
-        }
-        if (!minor) {
-            Part::GeomLineSegment* lminor = new Part::GeomLineSegment();
-            lminor->setPoints(minorpositiveend, minornegativeend);
-
-            igeo.push_back(lminor);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = Sketcher::HyperbolaMinor;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-
-            incrgeo++;
-        }
-        if (!focus) {
-            Part::GeomPoint* pf1 = new Part::GeomPoint();
-            pf1->setPoint(focus1P);
-
-            igeo.push_back(pf1);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = Sketcher::HyperbolaFocus;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->FirstPos = Sketcher::PointPos::start;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-            incrgeo++;
-        }
-
-        this->addGeometry(igeo, true);
-        this->addConstraints(icon);
-
-        for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it)
-            if (*it)
-                delete *it;
-
-        for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it)
-            if (*it)
-                delete *it;
-
-        icon.clear();
-        igeo.clear();
-
-        return incrgeo;// number of added elements
+        return exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(GeoId);
     }
     else if (geo->is<Part::GeomArcOfParabola>()) {
-        // First we search what has to be restored
-        bool focus = false;
-        bool focus_to_vertex = false;
-
-        const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
-
-        for (auto const& constr : vals) {
-            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
-                continue;
-            }
-
-            switch (constr->AlignmentType) {
-            case Sketcher::ParabolaFocus:
-                focus = true;
-                break;
-            case Sketcher::ParabolaFocalAxis:
-                focus_to_vertex = true;
-                break;
-            default:
-                return -1;
-            }
-        }
-
-        int currentgeoid = getHighestCurveIndex();
-        int incrgeo = 0;
-
-        const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
-
-        Base::Vector3d center = aop->getCenter();
-        Base::Vector3d focusp = aop->getFocus();
-
-        std::vector<Part::Geometry*> igeo;
-        std::vector<Constraint*> icon;
-
-        if (!focus) {
-            Part::GeomPoint* pf1 = new Part::GeomPoint();
-            pf1->setPoint(focusp);
-
-            igeo.push_back(pf1);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = Sketcher::ParabolaFocus;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->FirstPos = Sketcher::PointPos::start;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-            incrgeo++;
-        }
-
-        if (!focus_to_vertex) {
-            Part::GeomLineSegment* paxis = new Part::GeomLineSegment();
-            paxis->setPoints(center, focusp);
-
-            igeo.push_back(paxis);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->FirstPos = Sketcher::PointPos::none;
-            newConstr->Second = GeoId;
-
-            icon.push_back(newConstr);
-
-            incrgeo++;
-        }
-
-        this->addGeometry(igeo, true);
-        this->addConstraints(icon);
-
-        for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
-            if (*it)
-                delete *it;
-        }
-
-        for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
-            if (*it)
-                delete *it;
-        }
-
-        icon.clear();
-        igeo.clear();
-
-        return incrgeo;// number of added elements
+        return exposeInternalGeometryForType<Part::GeomArcOfParabola>(GeoId);
     }
     else if (geo->is<Part::GeomBSplineCurve>()) {
-
-        const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
-        // First we search what has to be restored
-        std::vector<bool> controlpoints(bsp->countPoles());
-        std::vector<int> controlpointgeoids(bsp->countPoles());
-
-        std::vector<bool> knotpoints(bsp->countKnots());
-        std::vector<int> knotgeoids(bsp->countKnots());
-
-        bool isfirstweightconstrained = false;
-
-        std::vector<bool>::iterator itb;
-        std::vector<int>::iterator it;
-
-        for (it = controlpointgeoids.begin(), itb = controlpoints.begin();
-             it != controlpointgeoids.end() && itb != controlpoints.end();
-             ++it, ++itb) {
-            (*it) = -1;
-            (*itb) = false;
-        }
-
-        for (it = knotgeoids.begin(), itb = knotpoints.begin();
-             it != knotgeoids.end() && itb != knotpoints.end();
-             ++it, ++itb) {
-            (*it) = -1;
-            (*itb) = false;
-        }
-
-        const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
-
-        // search for existing poles
-        for (auto const& constr : vals) {
-            if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
-                continue;
-            }
-
-            switch (constr->AlignmentType) {
-            case Sketcher::BSplineControlPoint:
-                controlpoints[constr->InternalAlignmentIndex] = true;
-                controlpointgeoids[constr->InternalAlignmentIndex] = constr->First;
-                break;
-            case Sketcher::BSplineKnotPoint:
-                knotpoints[constr->InternalAlignmentIndex] = true;
-                knotgeoids[constr->InternalAlignmentIndex] = constr->First;
-                break;
-            default:
-                return -1;
-            }
-        }
-
-        if (controlpoints[0]) {
-            // search for first pole weight constraint
-            for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin();
-                 it != vals.end();
-                 ++it) {
-                if ((*it)->Type == Sketcher::Weight && (*it)->First == controlpointgeoids[0]) {
-                    isfirstweightconstrained = true;
-                }
-            }
-        }
-
-        int currentgeoid = getHighestCurveIndex();
-        int incrgeo = 0;
-
-        std::vector<Part::Geometry*> igeo;
-        std::vector<Constraint*> icon;
-
-        std::vector<Base::Vector3d> poles = bsp->getPoles();
-        std::vector<double> weights = bsp->getWeights();
-        std::vector<double> knots = bsp->getKnots();
-
-        double distance_p0_p1 = (poles[1] - poles[0]).Length();// for visual purposes only
-
-        int index = 0;
-
-        for (it = controlpointgeoids.begin(), itb = controlpoints.begin();
-             it != controlpointgeoids.end() && itb != controlpoints.end();
-             ++it, ++itb, index++) {
-
-            if (*itb) {
-                continue;
-            }
-
-            // if controlpoint not existing
-            Part::GeomCircle* pc = new Part::GeomCircle();
-            pc->setCenter(poles[index]);
-            pc->setRadius(distance_p0_p1 / 6);
-
-            igeo.push_back(pc);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = Sketcher::BSplineControlPoint;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->FirstPos = Sketcher::PointPos::mid;
-            newConstr->Second = GeoId;
-            newConstr->InternalAlignmentIndex = index;
-
-            icon.push_back(newConstr);
-
-            if (it != controlpointgeoids.begin()) {
-                if (isfirstweightconstrained && weights[0] == weights[index]) {
-                    // if pole-weight newly created AND first weight is radius-constrained,
-                    // AND these weights are equal, constrain them to be equal
-                    Sketcher::Constraint* newConstr2 = new Sketcher::Constraint();
-                    newConstr2->Type = Sketcher::Equal;
-                    newConstr2->First = currentgeoid + incrgeo + 1;
-                    newConstr2->FirstPos = Sketcher::PointPos::none;
-                    newConstr2->Second = controlpointgeoids[0];
-                    newConstr2->SecondPos = Sketcher::PointPos::none;
-
-                    icon.push_back(newConstr2);
-                }
-            }
-            else {
-                controlpointgeoids[0] = currentgeoid + incrgeo + 1;
-                if (weights[0] == 1.0) {
-                    // if the first weight is 1.0 it's probably going to be non-rational
-                    Sketcher::Constraint* newConstr3 = new Sketcher::Constraint();
-                    newConstr3->Type = Sketcher::Weight;
-                    newConstr3->First = controlpointgeoids[0];
-                    newConstr3->setValue(weights[0]);
-
-                    icon.push_back(newConstr3);
-
-                    isfirstweightconstrained = true;
-                }
-            }
-            incrgeo++;
-        }
-
-        index = 0;
-
-        for (it = knotgeoids.begin(), itb = knotpoints.begin();
-             it != knotgeoids.end() && itb != knotpoints.end();
-             ++it, ++itb, index++) {
-            if (*itb) {
-                continue;
-            }
-
-            // if knot point not existing
-            Part::GeomPoint* kp = new Part::GeomPoint();
-
-            kp->setPoint(bsp->pointAtParameter(knots[index]));
-
-            igeo.push_back(kp);
-
-            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-            newConstr->Type = Sketcher::InternalAlignment;
-            newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
-            newConstr->First = currentgeoid + incrgeo + 1;
-            newConstr->FirstPos = Sketcher::PointPos::start;
-            newConstr->Second = GeoId;
-            newConstr->InternalAlignmentIndex = index;
-
-            icon.push_back(newConstr);
-
-            incrgeo++;
-        }
-
-        Q_UNUSED(isfirstweightconstrained);
-
-        this->addGeometry(igeo, true);
-        this->addConstraints(icon);
-
-        for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it)
-            if (*it)
-                delete *it;
-
-        for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it)
-            if (*it)
-                delete *it;
-
-        icon.clear();
-        igeo.clear();
-
-        return incrgeo;// number of added elements
+        return exposeInternalGeometryForType<Part::GeomBSplineCurve>(GeoId);
     }
     else
         return -1;// not supported type
