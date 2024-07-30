@@ -606,9 +606,12 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     std::vector<App::Property*> props;
                     getPropertyList(props);
                     // lambda for copying values of copy-on-change properties
-                    const auto copyPropertyValues = [this, &recomputeCopy, &props, copied](const bool to_parent) {
+                    const auto copyPropertyValues = [this, &recomputeCopy, &props, copied](const bool to_support) {
                         for (auto prop : props) {
                             if (!App::LinkBaseExtension::isCopyOnChangeProperty(this, *prop))
+                                continue;
+                            // we only copy read-only and output properties from support to binder
+                            if (!to_support && !(prop->testStatus(App::Property::Output) && prop->testStatus(App::Property::ReadOnly)))
                                 continue;
                             auto p = copied->getPropertyByName(prop->getName());
                             if (p && p->getContainer() == copied
@@ -616,8 +619,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                                 && !p->isSame(*prop))
                             {
                                 recomputeCopy = true;
-                                auto* const from = to_parent ? prop : p;
-                                auto* const to = to_parent ? p : prop;
+                                auto* const from = to_support ? prop : p;
+                                auto* const to = to_support ? p : prop;
 
                                 std::unique_ptr<App::Property> pcopy(from->Copy());
                                 to->Paste(*pcopy);
