@@ -664,7 +664,7 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>A mértékegység szövege</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>

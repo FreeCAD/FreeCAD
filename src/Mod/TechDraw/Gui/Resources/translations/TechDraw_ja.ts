@@ -38,7 +38,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="865"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="978"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1791"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1792"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../Command.cpp" line="651"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="652"/>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1742"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1743"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="533"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="534"/>
@@ -129,17 +129,17 @@
     <message>
       <location filename="../../Command.cpp" line="1603"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Insert BIM Workbench Object</source>
-      <translation type="unfinished">Insert BIM Workbench Object</translation>
+      <translation>BIMワークベンチオブジェクトを挿入</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Insert a View of a Section Plane from BIM Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from BIM Workbench</translation>
+      <translation>BIMワークベンチから断面平面ビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -147,7 +147,7 @@
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="576"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="577"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="1292"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1293"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1329"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1413"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1414"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../../Command.cpp" line="836"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="837"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1283"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1284"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="394"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="395"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="207"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="208"/>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1401"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1402"/>
@@ -297,7 +297,7 @@
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="963"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1543"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1544"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1401"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1402"/>
@@ -345,17 +345,17 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1540"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1541"/>
       <source>Insert Draft Workbench Object</source>
-      <translation>ドラフトワークベンチ・オブジェクトの挿入</translation>
+      <translation>基本設計ワークベンチ・オブジェクトの挿入</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1542"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>ドラフトワークベンチオブジェクトのビューを挿入</translation>
+      <translation>基本設計ワークベンチオブジェクトのビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -368,17 +368,17 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1780"/>
       <source>Export Page as DXF</source>
-      <translation>ページをDXFとしてエクスポート</translation>
+      <translation>用紙をDXFファイルにエクスポート</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1814"/>
       <source>Save DXF file</source>
-      <translation>DXF ファイルを保存</translation>
+      <translation>DXFファイルを保存</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1815"/>
       <source>DXF (*.dxf)</source>
-      <translation>DXF (*.dxf)</translation>
+      <translation>DXF（*.dxf）</translation>
     </message>
   </context>
   <context>
@@ -391,7 +391,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1739"/>
       <source>Export Page as SVG</source>
-      <translation>ページをSVGとしてエクスポート</translation>
+      <translation>用紙をSVGファイルにエクスポート</translation>
     </message>
   </context>
   <context>
@@ -399,7 +399,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1662"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1663"/>
@@ -417,7 +417,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1766"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1767"/>
@@ -435,7 +435,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1154"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1155"/>
@@ -453,7 +453,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="976"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="977"/>
@@ -473,7 +473,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1118"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1119"/>
@@ -493,7 +493,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1043"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1044"/>
@@ -513,7 +513,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2184"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2185"/>
@@ -531,7 +531,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="780"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="781"/>
@@ -549,7 +549,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="248"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="249"/>
@@ -569,7 +569,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="282"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="283"/>
@@ -587,7 +587,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1532"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1533"/>
@@ -605,7 +605,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1923"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1924"/>
@@ -623,7 +623,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1308"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1309"/>
@@ -643,7 +643,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2082"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2083"/>
@@ -663,7 +663,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1685"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1686"/>
@@ -683,7 +683,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2284"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2285"/>
@@ -701,7 +701,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1498"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1499"/>
@@ -721,7 +721,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1887"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1888"/>
@@ -741,7 +741,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1375"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1376"/>
@@ -761,7 +761,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2151"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2152"/>
@@ -781,7 +781,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1758"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1759"/>
@@ -801,12 +801,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2335"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2336"/>
       <source>Customize Format Label</source>
-      <translation>フォーマット・ラベルをカスタマイズ</translation>
+      <translation>ラベルをカスタマイズ</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2337"/>
@@ -819,7 +819,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="503"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="504"/>
@@ -839,7 +839,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1106"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1107"/>
@@ -857,7 +857,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="941"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="942"/>
@@ -877,7 +877,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1005"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1006"/>
@@ -897,7 +897,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1071"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1072"/>
@@ -921,7 +921,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1592"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1593"/>
@@ -941,7 +941,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="173"/>
@@ -961,7 +961,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="470"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="471"/>
@@ -981,7 +981,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="536"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="537"/>
@@ -999,7 +999,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="155"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="156"/>
@@ -1011,7 +1011,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="157"/>
       <location filename="../../CommandExtensionDims.cpp" line="396"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>寸法テキストの先頭にプレフィックス記号 &apos;⌀&apos; を挿入:&lt;br&gt;- 1つ以上の寸法を選択&lt;br&gt;- このツールをクリック</translation>
+      <translation>寸法数値の前に直径の寸法補助記号⌀を挿入します。&lt;br&gt;寸法を選択&lt;br&gt;このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -1019,7 +1019,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="313"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="314"/>
@@ -1029,7 +1029,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation>寸法テキストの先頭にプレフィックス記号 &apos;⌀&apos; を挿入:&lt;br&gt;- 1つ以上の寸法を選択&lt;br&gt;- このツールをクリック</translation>
+      <translation>寸法数値の前に直径の寸法補助記号⌀を挿入します。&lt;br&gt;寸法を選択&lt;br&gt;このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -1037,7 +1037,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="188"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="189"/>
@@ -1057,7 +1057,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1356"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1357"/>
@@ -1075,7 +1075,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1287"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1288"/>
@@ -1095,7 +1095,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1321"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1322"/>
@@ -1115,7 +1115,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1464"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1465"/>
@@ -1133,7 +1133,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="827"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="828"/>
@@ -1151,7 +1151,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="663"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="664"/>
@@ -1171,7 +1171,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="792"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="793"/>
@@ -1191,7 +1191,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="725"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="726"/>
@@ -1211,7 +1211,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="280"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="281"/>
@@ -1229,7 +1229,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="745"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="746"/>
@@ -1247,7 +1247,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1627"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1628"/>
@@ -1267,19 +1267,19 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="569"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="570"/>
       <location filename="../../CommandExtensionPack.cpp" line="717"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
-      <translation>表示用のねじボルト底面ビューを追加</translation>
+      <translation>装飾用おねじの端面ビューを追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="572"/>
       <location filename="../../CommandExtensionPack.cpp" line="719"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation>ボルト/ねじ/棒の上面または底面のビューに表示用のねじ山を追加します:&lt;br&gt;- 線属性を指定 (オプション)&lt;br&gt;- 1つ以上の円を選択&lt;br&gt;- このツールをクリック</translation>
+      <translation>おねじの端面ビューに装飾用のねじ山を追加します。&lt;br&gt;線の属性を指定（オプション）&lt;br&gt;1つ以上の円を選択してください&lt;br&gt;このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -1287,19 +1287,19 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="461"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="462"/>
       <location filename="../../CommandExtensionPack.cpp" line="707"/>
       <source>Add Cosmetic Thread Bolt Side View</source>
-      <translation>表示用のねじボルト側面ビューを追加</translation>
+      <translation>装飾おねじの外観ビューを追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="463"/>
       <location filename="../../CommandExtensionPack.cpp" line="710"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>ボルト/ねじ/棒の側面ビューに表示用のねじ山を追加します:&lt;br&gt;- 線属性を指定 (オプション)&lt;br&gt;- 2本の平行な線を選択&lt;br&gt;- このツールをクリック</translation>
+      <translation>おねじの外観ビューに装飾のねじ山を追加します。&lt;br&gt;線の属性を指定（オプション）&lt;br&gt;2本の平行な線を選択してください&lt;br&gt;このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -1307,7 +1307,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="515"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="516"/>
@@ -1327,19 +1327,19 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="407"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="408"/>
       <location filename="../../CommandExtensionPack.cpp" line="688"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation>表示用のねじ穴側面ビューを追加</translation>
+      <translation>装飾ねじ穴の断面ビューを追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="409"/>
       <location filename="../../CommandExtensionPack.cpp" line="690"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>穴の側面ビューに表示用のねじ山を追加します:&lt;br&gt;- 線属性を指定 (オプション)&lt;br&gt;- 2本の平行な線を選択&lt;br&gt;- このツールをクリック</translation>
+      <translation>ねじ穴の断面ビューに装飾のねじ山を追加します:&lt;br&gt;線の属性を指定（オプション）&lt;br&gt;2本の平行な線を選択してください&lt;br&gt;このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -1347,17 +1347,17 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="604"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="605"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation>表示用のねじ穴側面ビューを追加</translation>
+      <translation>装飾ねじ穴の断面ビューを追加</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="606"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation>穴の側面ビューに表示用のねじ山を追加します:&lt;br&gt;- 線属性を指定 (オプション)&lt;br&gt;- 2本の平行な線を選択&lt;br&gt;- このツールをクリック</translation>
+      <translation>ねじ穴の断面ビューに装飾のねじ山を追加します。&lt;br&gt;線の属性を指定（オプション）&lt;br&gt;2本の平行な線を選択してください&lt;br&gt;このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -1365,7 +1365,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="841"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="842"/>
@@ -1383,7 +1383,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1973"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1974"/>
@@ -1406,7 +1406,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
@@ -1419,7 +1419,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="170"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="171"/>
@@ -1432,7 +1432,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="74"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -1445,7 +1445,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1642"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1643"/>
@@ -1458,7 +1458,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2070"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2071"/>
@@ -1471,7 +1471,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="241"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="242"/>
@@ -1482,7 +1482,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandDecorate.cpp" line="243"/>
       <location filename="../../CommandDecorate.cpp" line="245"/>
       <source>Insert Bitmap from a file into a page</source>
-      <translation>ページにファイルからビットマップを挿入</translation>
+      <translation>ファイルから用紙にビットマップを挿入</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="260"/>
@@ -1500,7 +1500,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2273"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2274"/>
@@ -1513,12 +1513,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="93"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="94"/>
       <source>Add Leaderline to View</source>
-      <translation>ビューに引き出し線を追加</translation>
+      <translation>ビューに引出線を追加</translation>
     </message>
   </context>
   <context>
@@ -1526,7 +1526,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1593"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1594"/>
@@ -1539,12 +1539,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1893"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1894"/>
       <source>Link Dimension to 3D Geometry</source>
-      <translation>寸法を3Dジオメトリーとリンク</translation>
+      <translation>寸法を3Dジオメトリとリンク</translation>
     </message>
   </context>
   <context>
@@ -1552,7 +1552,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="455"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="456"/>
@@ -1565,12 +1565,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Insert Default Page</source>
-      <translation>デフォルトページを挿入</translation>
+      <translation>既定の用紙を挿入</translation>
     </message>
   </context>
   <context>
@@ -1578,22 +1578,22 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="166"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="167"/>
       <source>Insert Page using Template</source>
-      <translation>テンプレートを使用してページを挿入</translation>
+      <translation>テンプレートを使用して用紙を挿入</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Select a Template File</source>
-      <translation>テンプレートファイルを選択</translation>
+      <translation>用紙のテンプレートファイルを選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
       <source>Template (*.svg)</source>
-      <translation>テンプレート (*.svg)</translation>
+      <translation>テンプレートファイル（*.svg）</translation>
     </message>
   </context>
   <context>
@@ -1601,12 +1601,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Print All Pages</source>
-      <translation>すべてのページを印刷</translation>
+      <translation>全ての用紙を印刷</translation>
     </message>
   </context>
   <context>
@@ -1614,7 +1614,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1842"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1843"/>
@@ -1627,7 +1627,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1006"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1007"/>
@@ -1645,7 +1645,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="494"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="495"/>
@@ -1658,7 +1658,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1493"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1494"/>
@@ -1671,12 +1671,12 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>Redraw Page</source>
-      <translation>ページを再描画</translation>
+      <translation>用紙を再描画</translation>
     </message>
   </context>
   <context>
@@ -1684,7 +1684,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="155"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="156"/>
@@ -1697,7 +1697,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="682"/>
@@ -1720,7 +1720,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="774"/>
@@ -1733,7 +1733,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1480"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1481"/>
@@ -1746,7 +1746,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1675"/>
@@ -1764,7 +1764,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="237"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="238"/>
@@ -1777,7 +1777,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="357"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="358"/>
@@ -1790,7 +1790,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="64"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="65"/>
@@ -1823,7 +1823,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="177"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="178"/>
@@ -1836,7 +1836,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandStack.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="298"/>
@@ -1849,7 +1849,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1609"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1610"/>
@@ -1867,7 +1867,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1486"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1487"/>
@@ -1885,7 +1885,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandDecorate.cpp" line="294"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="295"/>
@@ -1899,7 +1899,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1692"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1693"/>
@@ -1912,7 +1912,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2184"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2185"/>
@@ -1925,7 +1925,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="298"/>
@@ -1949,7 +1949,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Do not show this message again</source>
-      <translation type="unfinished">Do not show this message again</translation>
+      <translation>今後、このメッセージを表示しない</translation>
     </message>
   </context>
   <context>
@@ -1957,7 +1957,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1545"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1546"/>
@@ -1971,12 +1971,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../Command.cpp" line="121"/>
       <location filename="../../Command.cpp" line="191"/>
       <source>Drawing create page</source>
-      <translation>図面作成ページ</translation>
+      <translation>用紙を作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="359"/>
       <source>Create BIM View</source>
-      <translation type="unfinished">Create BIM View</translation>
+      <translation>BIMビューを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
@@ -1986,7 +1986,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Create broken view</source>
-      <translation type="unfinished">Create broken view</translation>
+      <translation>壊れたビューを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1090"/>
@@ -2011,7 +2011,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="1822"/>
       <source>Save page to DXF</source>
-      <translation type="unfinished">Save page to DXF</translation>
+      <translation>用紙をDXFファイルに保存</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
@@ -2022,12 +2022,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="1576"/>
       <source>Create DraftView</source>
-      <translation>ドラフトビューを作成</translation>
+      <translation>基本設計ビューを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Create ArchView</source>
-      <translation>Archビューを作成</translation>
+      <translation>建築ビューを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
@@ -2038,7 +2038,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../PagePrinter.cpp" line="395"/>
       <source>Save page to dxf</source>
-      <translation>ページをDXFに保存</translation>
+      <translation>用紙をDXFファイルに保存</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="341"/>
@@ -2172,7 +2172,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1086"/>
       <source>Add Diameter dimension</source>
-      <translation type="unfinished">Add Diameter dimension</translation>
+      <translation>直径寸法を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1181"/>
@@ -2312,14 +2312,14 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>詳細を更新</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="349"/>
+      <location filename="../../TaskLeaderLine.cpp" line="348"/>
       <source>Create Leader</source>
-      <translation>引き出し線を作成</translation>
+      <translation>引出線を作成</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="429"/>
+      <location filename="../../TaskLeaderLine.cpp" line="437"/>
       <source>Edit Leader</source>
-      <translation>引き出し線を編集</translation>
+      <translation>引出線を編集</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="290"/>
@@ -2365,7 +2365,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="110"/>
       <source>TechDraw Insert Prefix</source>
-      <translation type="unfinished">TechDraw Insert Prefix</translation>
+      <translation>技術図面 プレフィックスの挿入</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="136"/>
@@ -2375,7 +2375,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="252"/>
       <source>TechDraw Remove Prefix</source>
-      <translation type="unfinished">TechDraw Remove Prefix</translation>
+      <translation>技術図面 プレフィックスの削除</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="256"/>
@@ -2465,7 +2465,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="107"/>
       <source>TechDraw Hole Circle</source>
-      <translation>TechDraw 穴円</translation>
+      <translation>技術図面 穴</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="128"/>
@@ -2475,7 +2475,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="206"/>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>技術図面 円の中心線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="209"/>
@@ -2485,27 +2485,27 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="387"/>
       <source>TechDraw Thread Hole Side</source>
-      <translation>TechDraw ねじ穴側面</translation>
+      <translation>技術図面 ねじ穴の断面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="390"/>
       <source>Cosmetic Thread Hole Side</source>
-      <translation>表示用のねじ穴側面</translation>
+      <translation>装飾ねじ穴の断面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="441"/>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>技術図面 おねじの外観</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="444"/>
       <source>Cosmetic Thread Bolt Side</source>
-      <translation>表示用のねじボルト側面</translation>
+      <translation>装飾おねじの外観</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="495"/>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>技術図面 ねじ穴の端面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="498"/>
@@ -2515,17 +2515,17 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="549"/>
       <source>TechDraw Thread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Thread Bolt Bottom</translation>
+      <translation>技術図面 おねじの端面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="552"/>
       <source>Cosmetic Thread Bolt Bottom</source>
-      <translation>表示用のねじボルト底面</translation>
+      <translation>装飾用おねじの端面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
       <source>TechDraw Change Line Attributes</source>
-      <translation type="unfinished">TechDraw Change Line Attributes</translation>
+      <translation>技術図面 線属性の変更</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="800"/>
@@ -2535,7 +2535,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="858"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">TechDraw Cosmetic Intersection Vertex(es)</translation>
+      <translation>技術図面 装飾交差頂点</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="861"/>
@@ -2545,7 +2545,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="904"/>
       <source>TechDraw Cosmetic Arc</source>
-      <translation type="unfinished">TechDraw Cosmetic Arc</translation>
+      <translation>技術図面 装飾円弧</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="907"/>
@@ -2555,37 +2555,37 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="977"/>
       <source>TechDraw Cosmetic Circle</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle</translation>
+      <translation>技術図面 装飾円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="980"/>
       <source>Cosmetic Circle</source>
-      <translation>表示用の円</translation>
+      <translation>装飾円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1040"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">TechDraw Cosmetic Circle 3 Points</translation>
+      <translation>技術図面 装飾3点指定円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1043"/>
       <source>Cosmetic Circle 3 Points</source>
-      <translation>表示用の3点円</translation>
+      <translation>装飾3点指定円</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1231"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
-      <translation type="unfinished">TechDraw Cosmetic Line Parallel/Perpendicular</translation>
+      <translation>技術図面 装飾平行/垂直線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1234"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
-      <translation>表示用の線 平行/垂直</translation>
+      <translation>装飾平行/垂直線</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1480"/>
       <source>TechDraw Lock/Unlock View</source>
-      <translation>TechDraw ビューのロック/ロック解除</translation>
+      <translation>技術図面 ビューのロック/ロック解除</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1483"/>
@@ -2595,7 +2595,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1508"/>
       <source>TechDraw Extend/Shorten Line</source>
-      <translation>TechDraw 線の延長/短縮</translation>
+      <translation>技術図面 線の伸縮</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1511"/>
@@ -2605,7 +2605,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1780"/>
       <source>TechDraw calculate selected area</source>
-      <translation type="unfinished">TechDraw calculate selected area</translation>
+      <translation>技術図面で選択範囲を計算する</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1822"/>
@@ -2615,7 +2615,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1912"/>
       <source>TechDraw calculate selected arc length</source>
-      <translation type="unfinished">TechDraw calculate selected arc length</translation>
+      <translation>技術図面で選択した円弧の長さを計算する</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1949"/>
@@ -2635,7 +2635,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskCenterLine.cpp" line="406"/>
       <source>Create Centerline</source>
-      <translation type="unfinished">Create Centerline</translation>
+      <translation>中心線を作成</translation>
     </message>
   </context>
   <context>
@@ -2944,12 +2944,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="439"/>
       <source>Select a SVG or Image file to open</source>
-      <translation type="unfinished">Select a SVG or Image file to open</translation>
+      <translation>開きたいSVGまたは画像ファイルを選択してください</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>SVG or Image files</source>
-      <translation type="unfinished">SVG or Image files</translation>
+      <translation>SVGまたは画像ファイル</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="566"/>
@@ -2990,7 +2990,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="1638"/>
       <source>No BIM Sections in selection.</source>
-      <translation type="unfinished">No BIM Sections in selection.</translation>
+      <translation>BIM断面が選択されていません。</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="368"/>
@@ -3027,7 +3027,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandCreateDims.cpp" line="2585"/>
       <location filename="../../Command.cpp" line="1160"/>
       <source>Create a page first.</source>
-      <translation>最初にページを作成してください</translation>
+      <translation>最初に用紙を作成してください</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2106"/>
@@ -3054,7 +3054,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>Clip and View must be from same Page.</source>
-      <translation>クリップとビューは同じページのものである必要があります。</translation>
+      <translation>クリップとビューは同じ用紙のものである必要があります。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1427"/>
@@ -3090,7 +3090,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="1689"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>スプレッドシートオブジェクトを1 つだけ選択して下さい。</translation>
+      <translation>スプレッドシートオブジェクトを一つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1763"/>
@@ -3110,7 +3110,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="1800"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
-      <translation>ページにはエクスポートできない DrawViewArch が含まれています。継続しますか?</translation>
+      <translation>エクスポートできないDrawViewArchが用紙に含まれています。エクスポートを実行しますか？</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2449"/>
@@ -3120,7 +3120,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2460"/>
       <source>BSpline Curve Warning</source>
-      <translation>Bスプライン曲線の警告</translation>
+      <translation>B-スプライン曲線の警告</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="389"/>
@@ -3142,12 +3142,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2471"/>
       <source>BSpline Curve Error</source>
-      <translation>Bスプライン曲線のエラー</translation>
+      <translation>B-スプライン曲線のエラー</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2121"/>
       <source>Selection contains both 2d and 3d geometry</source>
-      <translation type="unfinished">Selection contains both 2d and 3d geometry</translation>
+      <translation>選択範囲に2Dと3Dのジオメトリを含んでいます</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2146"/>
@@ -3167,12 +3167,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2420"/>
       <source>Can not make 2D dimension from selection</source>
-      <translation type="unfinished">Can not make 2D dimension from selection</translation>
+      <translation>選択したものからは2D寸法を作成できません</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2436"/>
       <source>Can not make 3D dimension from selection</source>
-      <translation type="unfinished">Can not make 3D dimension from selection</translation>
+      <translation>選択したものからは3D寸法を作成できません</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2450"/>
@@ -3413,7 +3413,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1074"/>
       <source>Selection is not a Cosmetic Line.</source>
-      <translation>選択されているのは表示用の線ではありません。</translation>
+      <translation>選択されているのは装飾線ではありません。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1110"/>
@@ -3469,7 +3469,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1578"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
-      <translation>引き出し線または溶接シンボルを一つだけ選択して下さい。</translation>
+      <translation>引出線または溶接記号を一つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1638"/>
@@ -3504,12 +3504,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandDecorate.cpp" line="316"/>
       <source>No TechDraw Page</source>
-      <translation>TechDrawページがありません。</translation>
+      <translation>技術図面の用紙がありません。</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="317"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation>このコマンドにはTechDrawページが必要です。</translation>
+      <translation>このコマンドには技術図面の用紙が必要です。</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="369"/>
@@ -3519,12 +3519,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandDecorate.cpp" line="376"/>
       <source>No TechDraw object in selection</source>
-      <translation>選択対象にTechDrawオブジェクトが含まれていません。</translation>
+      <translation>選択対象に技術図面オブジェクトが含まれていません。</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="383"/>
       <source>Create a page to insert.</source>
-      <translation>挿入するページを作成</translation>
+      <translation>挿入する用紙を作成</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="390"/>
@@ -3533,53 +3533,53 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>このセクションにはハッチングをする面がありません。</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="305"/>
-      <location filename="../../DrawGuiUtil.cpp" line="339"/>
-      <source>No page found</source>
-      <translation>ページが見つかりません</translation>
-    </message>
-    <message>
       <location filename="../../DrawGuiUtil.cpp" line="306"/>
-      <source>No Drawing Pages available.</source>
-      <translation>利用可能な図面ページがありません。</translation>
+      <location filename="../../DrawGuiUtil.cpp" line="340"/>
+      <source>No page found</source>
+      <translation>用紙が見つかりませんでした</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="340"/>
+      <location filename="../../DrawGuiUtil.cpp" line="307"/>
+      <source>No Drawing Pages available.</source>
+      <translation>技術図面の用紙がありません。</translation>
+    </message>
+    <message>
+      <location filename="../../DrawGuiUtil.cpp" line="341"/>
       <source>No Drawing Pages in document.</source>
-      <translation>ドキュメントに図面ページがありません。</translation>
+      <translation>ドキュメントに技術図面の用紙がありません。</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="312"/>
       <source>PDF (*.pdf)</source>
-      <translation>PDF (*.pdf)</translation>
+      <translation>PDF（*.pdf）</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="313"/>
       <location filename="../../MDIViewPage.cpp" line="500"/>
       <source>All Files (*.*)</source>
-      <translation>すべてのファイル (*.*)</translation>
+      <translation>全てのファイル（*.*）</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="315"/>
       <source>Export Page As PDF</source>
-      <translation>ページをPDFとしてエクスポート</translation>
+      <translation>用紙をPDFファイルにエクスポート</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="499"/>
       <source>SVG (*.svg)</source>
-      <translation>SVG (*.svg)</translation>
+      <translation>SVG（*.svg）</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="502"/>
       <source>Export page as SVG</source>
-      <translation>ページをSVGとしてエクスポート</translation>
+      <translation>用紙をSVGファイルにエクスポート</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
-      <translation>本当に続行しますか？</translation>
+      <translation>実行しますか？</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="233"/>
@@ -3594,17 +3594,17 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TemplateTextField.cpp" line="51"/>
       <source>Click to update text</source>
-      <translation>クリックしてテキストをアップデート</translation>
+      <translation>クリックしてテキストを更新</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="220"/>
       <source>New Leader Line</source>
-      <translation>新しい引き出し線</translation>
+      <translation>新規の引出線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="263"/>
       <source>Edit Leader Line</source>
-      <translation>引き出し線を編集</translation>
+      <translation>引出線を編集</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="140"/>
@@ -3740,13 +3740,13 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="438"/>
       <source>TechDraw Increase/Decrease Decimal</source>
-      <translation type="unfinished">TechDraw Increase/Decrease Decimal</translation>
+      <translation>技術図面の小数点以下の桁数を増加/減少</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="633"/>
       <location filename="../../CommandExtensionDims.cpp" line="642"/>
       <source>TechDraw PosHorizChainDimension</source>
-      <translation>TechDraw 水平連鎖寸法の配置</translation>
+      <translation>技術図面 水平方向の直列寸法の配置</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="643"/>
@@ -3758,7 +3758,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="694"/>
       <location filename="../../CommandExtensionDims.cpp" line="703"/>
       <source>TechDraw PosVertChainDimension</source>
-      <translation>TechDraw 垂直連鎖寸法の配置</translation>
+      <translation>技術図面 垂直方向の直列寸法の配置</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="704"/>
@@ -3770,7 +3770,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="756"/>
       <location filename="../../CommandExtensionDims.cpp" line="765"/>
       <source>TechDraw PosObliqueChainDimension</source>
-      <translation>TechDraw 斜め連鎖寸法の配置</translation>
+      <translation>技術図面 斜め方向の直列寸法の配置</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="766"/>
@@ -3782,69 +3782,69 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
       <location filename="../../CommandExtensionDims.cpp" line="951"/>
       <source>TechDraw CascadeHorizDimension</source>
-      <translation>TechDraw カスケード水平寸法</translation>
+      <translation>技術図面 カスケード水平寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1008"/>
       <location filename="../../CommandExtensionDims.cpp" line="1017"/>
       <source>TechDraw CascadeVertDimension</source>
-      <translation>TechDraw カスケード垂直寸法</translation>
+      <translation>技術図面 カスケード垂直寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1075"/>
       <location filename="../../CommandExtensionDims.cpp" line="1084"/>
       <source>TechDraw CascadeObliqueDimension</source>
-      <translation>TechDraw カスケード斜め寸法</translation>
+      <translation>技術図面 カスケード斜め寸法</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1274"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
-      <translation>TechDraw 水平方向の連鎖寸法を作成</translation>
+      <translation>技術図面 水平方向に直列寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1340"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
-      <translation>TechDraw 垂直方向の連鎖寸法を作成</translation>
+      <translation>技術図面 垂直方向に直列寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1406"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
-      <translation>TechDraw 斜め方向の連鎖寸法を作成</translation>
+      <translation>技術図面 斜め方向に直列寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1645"/>
       <source>TechDraw Create Horizontal Coord Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Coord Dimension</translation>
+      <translation>技術図面 水平方向に座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1718"/>
       <source>TechDraw Create Vertical Coord Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Coord Dimension</translation>
+      <translation>技術図面 垂直方向に座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1791"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
-      <translation type="unfinished">TechDraw Create Oblique Coord Dimension</translation>
+      <translation>技術図面 斜め方向に座標寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2044"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">TechDraw Create Horizontal Chamfer Dimension</translation>
+      <translation>技術図面 水平方向に面取り寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2113"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
-      <translation type="unfinished">TechDraw Create Vertical Chamfer Dimension</translation>
+      <translation>技術図面 垂直方向に面取り寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2299"/>
       <source>TechDraw Create Arc Length Dimension</source>
-      <translation type="unfinished">TechDraw Create Arc Length Dimension</translation>
+      <translation>技術図面 円弧の長さ寸法を作成</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2349"/>
       <source>TechDraw Customize Format</source>
-      <translation type="unfinished">TechDraw Customize Format</translation>
+      <translation>技術図面 形式のカスタマイズ</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2458"/>
@@ -3866,7 +3866,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="124"/>
       <source>TechDraw Hole Circle</source>
-      <translation>TechDraw 穴円</translation>
+      <translation>技術図面 穴</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="125"/>
@@ -3886,7 +3886,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2151"/>
       <source>TechDraw Thread Hole Side</source>
-      <translation>TechDraw ねじ穴側面</translation>
+      <translation>技術図面 ねじ穴の断面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2152"/>
@@ -3897,13 +3897,13 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../TaskDimension.cpp" line="146"/>
       <location filename="../../TaskDimension.cpp" line="161"/>
       <source>Missing Dimension</source>
-      <translation type="unfinished">Missing Dimension</translation>
+      <translation>寸法がありません</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="147"/>
       <location filename="../../TaskDimension.cpp" line="162"/>
       <source>Dimension not found.  Was it deleted? Can not continue.</source>
-      <translation type="unfinished">Dimension not found.  Was it deleted? Can not continue.</translation>
+      <translation>寸法が見つかりませんでした。</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="443"/>
@@ -3913,7 +3913,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="229"/>
       <source>Please select a Line Group</source>
-      <translation>ライングループを選択して下さい。</translation>
+      <translation>ライングループを選択してください</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotationImp.cpp" line="240"/>
@@ -4000,7 +4000,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../AppTechDrawGui.cpp" line="176"/>
       <location filename="../../AppTechDrawGui.cpp" line="177"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="119"/>
@@ -4020,7 +4020,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../PagePrinter.cpp" line="332"/>
       <source>Document Name:</source>
-      <translation>ドキュメント名:</translation>
+      <translation>ドキュメント名</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.cpp" line="170"/>
@@ -4039,7 +4039,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../ViewProviderLeader.cpp" line="211"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
-      <translation>壊れてしまう溶接記号があるため、この引き出し線を削除することはできません。</translation>
+      <translation>溶接記号が破損するため、この引出線を削除できません。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderViewPart.cpp" line="371"/>
@@ -4079,13 +4079,13 @@ it has a weld symbol that would become broken.</source>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="177"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
-      <translation>壊れてしまう引き出し線があるため、このビューを削除することはできません。</translation>
+      <translation>引出線が破損するため、このビューを削除できません。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="206"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
-      <translation>ページが空ではないため、以下の参照オブジェクトが失われる可能性があります:</translation>
+      <translation>用紙が空ではないため、以下の参照オブジェクトが失われる可能性があります。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="142"/>
@@ -4184,12 +4184,12 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From Page</source>
-      <translation>移動元ページ</translation>
+      <translation>移動元の用紙</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To Page</source>
-      <translation>移動先ページ</translation>
+      <translation>移動先の用紙</translation>
     </message>
   </context>
   <context>
@@ -4197,7 +4197,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="488"/>
       <source> updates pending</source>
-      <translation> アップデートを保留中</translation>
+      <translation>更新を保留中</translation>
     </message>
   </context>
   <context>
@@ -4297,8 +4297,7 @@ Angle, surface finish, root</source>
       <location filename="../../TaskWeldingSymbol.ui" line="238"/>
       <source>Adds the &apos;Field Weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation>引き出し線の基線に &apos;現場溶接&apos; 記号 (旗) を追加
-</translation>
+      <translation>矢と基線の交点に現場溶接記号（旗）を追加</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="242"/>
@@ -4309,8 +4308,7 @@ at the kink in the leader line</source>
       <location filename="../../TaskWeldingSymbol.ui" line="249"/>
       <source>Adds the &apos;All Around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation>引き出し線の基線に &apos;全周溶接&apos; 記号 (円) を追加
-</translation>
+      <translation>矢と基線の交点に全周溶接記号（円）を追加</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="253"/>
@@ -4330,24 +4328,24 @@ at the kink in the leader line</source>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="274"/>
       <source>Tail Text</source>
-      <translation>末尾テキスト</translation>
+      <translation>補足的指示</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="287"/>
       <source>Text at end of symbol</source>
-      <translation>記号終端のテキスト</translation>
+      <translation>補足的指示</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="294"/>
       <source>Symbol Directory</source>
-      <translation>記号ディレクトリ</translation>
+      <translation>溶接記号のディレクトリ</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="301"/>
       <source>Directory path for welding symbols.
 This directory will be used for the symbol selection.</source>
       <translation>溶接記号のディレクトリパス。
-このディレクトリは記号選択で使用されます。</translation>
+溶接記号の選択に使われます。</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="308"/>
@@ -4360,183 +4358,182 @@ This directory will be used for the symbol selection.</source>
     <message>
       <location filename="../../DlgPageChooser.ui" line="17"/>
       <source>Page Chooser</source>
-      <translation>ページ選択</translation>
+      <translation>用紙の選択</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which Page to use.  Please select a Page.</source>
-      <translation>FreeCAD は使用するページを決定できませんでした。ページを選択してください。</translation>
+      <translation>使用する用紙を選択してください。</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
       <source>Select a Page that should be used</source>
-      <translation>使用するページを選択</translation>
+      <translation>使用する用紙を選択</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawAdvancedImp</name>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="14"/>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="38"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="26"/>
       <source>Advanced</source>
       <translation>高度な設定</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="378"/>
       <source>If checked, TechDraw will attempt to build faces using the
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
 can be a performance penalty in complex models.</source>
-      <translation>ここにチェックを入れると、TechDraw は、隠線削除アルゴリズムの結果より線分のセグメントを用いた面を構築しようとします。
-ハッチングを用いるために面検出を必要としていますが、複雑なモデルになるとパフォーマンス低下する可能性があります。</translation>
+      <translation>ここにチェックを入れると、技術図面は、かくれ線削除アルゴリズムの結果より線分のセグメントを用いた面を構築しようとします。
+ハッチングを用いるために面検出を必要としていますが、複雑なモデルになるとパフォーマンスが低下する可能性があります。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="456"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="384"/>
       <source>Detect Faces</source>
       <translation>面を検出</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="368"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="296"/>
       <source>Highlights border of section cut in section views</source>
       <translation>セクションビューでカットされたセクションの境界線をハイライトさせます</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="371"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>Show Section Edges</source>
       <translation>断面エッジを表示</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="85"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="67"/>
       <source>Dump intermediate results during Section view processing</source>
       <translation>断面ビューの処理中に中間結果をダンプ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="88"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="70"/>
       <source>Debug Section</source>
       <translation>断面をデバッグ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="340"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="274"/>
       <source>Dump intermediate results during Detail view processing</source>
       <translation>詳細ビュー処理中に中間結果をダンプ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="343"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="277"/>
       <source>Debug Detail</source>
       <translation>詳細をデバッグ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="167"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="131"/>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
       <translation>予期しないジオメトリ(長さゼロなど) のエッジを結果に含める</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="170"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="134"/>
       <source>Allow Crazy Edges</source>
       <translation>おかしなエッジを許可する</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="63"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="45"/>
       <source>Perform a fuse operation on input shape(s) before Section view processing</source>
       <translation>断面ビュー処理の前に入力形状に対して結合操作を実行</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="66"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="48"/>
       <source>Fuse Before Section</source>
       <translation>切断前に一体化</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="154"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="118"/>
       <source>Edge Fuzz</source>
       <translation>エッジの誤差</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="119"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="95"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
       <translation>エッジ周囲の選択領域のサイズ
 1単位の幅は約0.1mmです。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="224"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="176"/>
       <source>Mark Fuzz</source>
       <translation>記号の誤差</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="262"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="208"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
-      <translation>中心マーク周囲の選択領域
-1単位の幅は約0.1mmです。</translation>
+      <translation>中心マーク周辺の選択領域
+1単位の幅は約0.1 mmです。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="422"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="350"/>
       <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
       <translation>チェックされている場合、モデル変更時にシステムは自動的に寸法参照の修正を試みます。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="428"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="356"/>
       <source>Auto Correct Dimension Refs</source>
       <translation>寸法参照の自動修正</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="406"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="334"/>
       <source>Use New Face Finder Algorithm</source>
       <translation>新しい面検出アルゴリズムを使用</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="491"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="419"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
       <translation type="unfinished">The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="285"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="231"/>
       <source>Max SVG Hatch Tiles</source>
       <translation>SVGハッチタイルの最大数</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="484"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="412"/>
       <source>Max PAT Hatch Segments</source>
       <translation>PATハッチングの最大数</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="189"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="147"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
-      <translation>PATパターンで面をハッチングする際に
-に使用するハッチング線分の最大数</translation>
+      <translation>PATパターンで面をハッチングする際に使用するハッチング線分の最大数</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="298"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="238"/>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about too many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>1つの面をハッチングするのに使われる64×64ピクセルSVGタイルの上限。
+大規模な拡大縮小では、SVGタイルが多くなりエラーが発生する可能性があります。
+その場合はタイルの上限を増やす必要があります。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="387"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="315"/>
       <source>Issue progress messages while building View geometry</source>
       <translation type="unfinished">Issue progress messages while building View geometry</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="390"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="318"/>
       <source>Report Progress</source>
       <translation>進捗状況をレポート</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="403"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="331"/>
       <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</source>
       <translation>チェックされている場合、FreeCADは新しい面検出アルゴリズムを使用します。チェックされていない場合、FreeCADは元の面検出を使用します。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="477"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="405"/>
       <source>Overlap Edges Scrub Passes</source>
       <translation type="unfinished">Overlap Edges Scrub Passes</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="527"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="455"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt;表記の項目は新しいオブジェクトでのデフォルト値です。既存のオブジェクトには影響しません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4545,257 +4542,257 @@ Then you need to increase the tile limit.</translation>
     <name>TechDrawGui::DlgPrefsTechDrawAnnotationImp</name>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="32"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="26"/>
       <source>Annotation</source>
       <translation>注釈</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="627"/>
       <source>Section Line Style</source>
       <translation>切断線のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="95"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="80"/>
       <source>Section Cut Surface</source>
       <translation>断面の切断平面</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="404"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="353"/>
       <source>Default appearance of cut surface in section view</source>
       <translation>断面ビューにおける、切断平面のデフォルトの外観</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="417"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="366"/>
       <source>Hide</source>
       <translation>非表示</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="422"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="371"/>
       <source>Solid Color</source>
       <translation>ソリッドカラー</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="427"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="376"/>
       <source>SVG Hatch</source>
       <translation>SVGハッチング</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="381"/>
       <source>PAT Hatch</source>
       <translation>PATハッチング</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="224"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="203"/>
       <source>If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</source>
       <translation type="unfinished">If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="227"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="206"/>
       <source>Show Section Line in Source View</source>
       <translation type="unfinished">Show Section Line in Source View</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="71"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="56"/>
       <source>This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</source>
       <translation type="unfinished">This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="74"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="59"/>
       <source>Detail Source Show Highlight</source>
-      <translation type="unfinished">Detail Source Show Highlight</translation>
+      <translation>詳細なソースをハイライトで表示</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="144"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="123"/>
       <source>If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</source>
       <translation type="unfinished">If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="147"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="126"/>
       <source>Include Cut Line in Section Annotation</source>
       <translation type="unfinished">Include Cut Line in Section Annotation</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="510"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation type="unfinished">Broken View Break Type</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="527"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="464"/>
       <source>No Break Lines</source>
-      <translation type="unfinished">No Break Lines</translation>
+      <translation>改行しない</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="532"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
       <source>ZigZag Lines</source>
-      <translation type="unfinished">ZigZag Lines</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="537"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="474"/>
       <source>Simple Lines</source>
       <translation type="unfinished">Simple Lines</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="556"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="493"/>
       <source>Lines</source>
       <translation>線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="616"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="547"/>
       <source>Standard to be used to draw non-continuous lines.</source>
       <translation type="unfinished">Standard to be used to draw non-continuous lines.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="830"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="749"/>
       <source>Line group used to set line widths</source>
       <translation>線幅の設定に使用される線グループ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="752"/>
       <source>Line Width Group</source>
       <translation>線幅グループ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="248"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="227"/>
       <source>Detail View Outline Shape</source>
       <translation>詳細ビューの輪郭形状</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="452"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="395"/>
       <source>Outline shape for detail views</source>
       <translation>詳細ビューの輪郭形状</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="781"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="700"/>
       <source>Square</source>
       <translation>正方形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="687"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="612"/>
       <source>Line style of detail highlight on base view</source>
-      <translation>ベースビュー上の詳細の注目位置の線スタイル</translation>
+      <translation>ベースビュー上の詳細の注目位置の線のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="690"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="615"/>
       <source>Detail Highlight Style</source>
       <translation>詳細の注目位置のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="597"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="534"/>
       <source>Center Line Style</source>
       <translation>中心線のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="391"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
       <source>Balloon Shape</source>
       <translation>吹き出し形状</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="477"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="414"/>
       <source>Shape of balloon annotations</source>
       <translation>吹き出し注釈の形状</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="132"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="111"/>
       <source>Balloon Leader End</source>
       <translation>吹き出し引き出し線の終端</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="200"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="179"/>
       <source>This checkbox controls whether or not to display the outline around a detail view.</source>
       <translation type="unfinished">This checkbox controls whether or not to display the outline around a detail view.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="203"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="182"/>
       <source>Detail View Show Matting</source>
       <translation type="unfinished">Detail View Show Matting</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="114"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="93"/>
       <source>Style for balloon leader line ends</source>
-      <translation>吹き出し引き出し線の終端スタイル</translation>
+      <translation>吹き出しの引出線の終端スタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="495"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>吹き出し引き出し線の水平部の長さ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="498"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
       <source>Ballon Leader Kink Length</source>
       <translation>吹き出しの引き出し線の基線長さ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="52"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
       <source>Length of balloon leader line kink</source>
       <translation>吹き出し引き出し線の基線の長さ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="267"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="240"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
       <translation>塗りつぶし三角形線終端を垂直または水平方向に制限</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="270"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
       <source>Balloon Orthogonal Triangle</source>
       <translation>吹き出しの直角三角形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="331"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="292"/>
       <source>Forces last leader line segment to be horizontal</source>
-      <translation>引き出し線の最後の線分を水平に設定</translation>
+      <translation>引出線の最後の線分を水平する</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="334"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="295"/>
       <source>Leader Line Auto Horizontal</source>
-      <translation>引き出し線の自動水平化</translation>
+      <translation>引出線を自動で水平にする</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="367"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="322"/>
       <source>Show arc center marks in views</source>
-      <translation>円弧の中心点をビューに表示</translation>
+      <translation>円弧の中心マークをビューに表示</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="370"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="325"/>
       <source>Show Center Marks</source>
-      <translation>中心点をビューに表示</translation>
+      <translation>中心マークを表示</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="298"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="265"/>
       <source>Show arc centers in printed output</source>
       <translation>円弧の中心点を印刷出力に表示</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="301"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="268"/>
       <source>Print Center Marks</source>
-      <translation>中心点を印刷</translation>
+      <translation>中心マークを印刷</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="181"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="160"/>
       <source>Show or hide marks at direction changes on ComplexSection lines.</source>
       <translation type="unfinished">Show or hide marks at direction changes on ComplexSection lines.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="184"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="163"/>
       <source>Complex Section Line Marks</source>
       <translation type="unfinished">Complex Section Line Marks</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="852"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="771"/>
       <source>Hidden Line Style</source>
-      <translation type="unfinished">Hidden Line Style</translation>
+      <translation>かくれ線のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="739"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="664"/>
       <source>Line Standard</source>
       <translation type="unfinished">Line Standard</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="845"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="764"/>
       <source>Line End Cap Shape</source>
       <translation type="unfinished">Line End Cap Shape</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="763"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="682"/>
       <source>Shape of line end caps.  The default (round) should almost
 always be the right choice.   Flat or square caps are useful 
 if you are planning to use a drawing as a 1:1 cutting guide.
@@ -4806,27 +4803,27 @@ if you are planning to use a drawing as a 1:1 cutting guide.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="776"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="695"/>
       <source>Round</source>
       <translation type="unfinished">Round</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="786"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="705"/>
       <source>Flat</source>
       <translation>フラット</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="877"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="796"/>
       <source>Break Line Style</source>
-      <translation type="unfinished">Break Line Style</translation>
+      <translation>改行のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="884"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="803"/>
       <source>Style of line to be used in BrokenView.</source>
       <translation type="unfinished">Style of line to be used in BrokenView.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="908"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt;表記の項目は新しいオブジェクトでのデフォルト値です。既存のオブジェクトには影響しません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4852,12 +4849,12 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="604"/>
       <source>Hidden Line</source>
-      <translation>隠線</translation>
+      <translation>かくれ線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
       <source>Hidden line color</source>
-      <translation>隠線の色</translation>
+      <translation>かくれ線の色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="248"/>
@@ -4907,7 +4904,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="112"/>
       <source>Background color around pages</source>
-      <translation>ページ周りの背景色</translation>
+      <translation>用紙の周囲の背景色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="404"/>
@@ -4957,7 +4954,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="411"/>
       <source>Page Color</source>
-      <translation>ページの色</translation>
+      <translation>用紙の色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="300"/>
@@ -4987,12 +4984,12 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
       <source>If checked FreeCAD will use a single color for all text and lines.</source>
-      <translation type="unfinished">If checked FreeCAD will use a single color for all text and lines.</translation>
+      <translation>チェックした場合、FreeCADはすべてのテキストと線に単一の色を使用します。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Leaderline</source>
-      <translation>引き出し線</translation>
+      <translation>引出線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="461"/>
@@ -5007,7 +5004,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
       <source>Check this to use light text and lines on dark backgrounds. Set Page Color to a dark color. Transparent or light color faces are recommended with this option.</source>
-      <translation>暗い背景に明るいテキストと線を使用するには、これをチェックし、ページの色を暗い色に設定します。 このオプションでは透明または明るい色の面が推奨されます。</translation>
+      <translation>暗い色の用紙に明るい色の文字と線を使用できます。このオプションでは、透明または明るい色のフェースを推奨します。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="492"/>
@@ -5032,7 +5029,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Template Underline</source>
-      <translation type="unfinished">Template Underline</translation>
+      <translation>下線のテンプレート</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="678"/>
@@ -5044,77 +5041,77 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <name>TechDrawGui::DlgPrefsTechDrawDimensionsImp</name>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="20"/>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="44"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="32"/>
       <source>Dimensions</source>
       <translation>寸法</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="181"/>
       <source>Standard and Style</source>
       <translation>規格とスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="142"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="109"/>
       <source>Standard to be used for dimensional values</source>
       <translation>寸法値に使用する規格</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="152"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="119"/>
       <source>ISO Oriented</source>
       <translation>ISO 指向</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="157"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="124"/>
       <source>ISO Referencing</source>
       <translation>ISO 参照</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="129"/>
       <source>ASME Inlined</source>
       <translation>ASME インライン</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="167"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="134"/>
       <source>ASME Referencing</source>
       <translation>ASME 参照</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="437"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="356"/>
       <source>Use system setting for number of decimals</source>
       <translation>小数点以下桁数にシステムの設定を使用</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="440"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="359"/>
       <source>Use Global Decimals</source>
       <translation>グローバルな小数点を使用</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="517"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</source>
       <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
       <translation>ISO 寸法での寸法線と寸法テキストの間隔を調整します。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="576"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
       <source>Line Spacing - ISO</source>
       <translation>線間隔 - ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="537"/>
       <source>Tools</source>
       <translation>ツール</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="636"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="543"/>
       <source>Dimensioning tools:</source>
-      <translation type="unfinished">Dimensioning tools:</translation>
+      <translation>寸法ツール：</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="643"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="550"/>
       <source>Select the type of dimensioning tools for your toolbar:
 &apos;Single tool&apos;: A single tool for all dimensioning in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 &apos;Separated tools&apos;: Individual tools for each dimensioning tool.
@@ -5127,12 +5124,12 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="654"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="561"/>
       <source>Dimension tool diameter/radius mode:</source>
-      <translation>寸法ツール 直径/半径モード:</translation>
+      <translation>寸法ツール 直径/半径モード</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="661"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="568"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 &apos;Auto&apos;: The tool will apply radius to arcs and diameter to circles.
 &apos;Diameter&apos;: The tool will apply diameter to all.
@@ -5143,104 +5140,104 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 &apos;Radius&apos;: The tool will apply radius to all.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="160"/>
       <source>Append unit to dimension values</source>
       <translation>寸法に単位を追加</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="202"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="163"/>
       <source>Show Units</source>
       <translation>単位を表示</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="474"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="393"/>
       <source>Alternate Decimals</source>
       <translation>代替の小数点</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="371"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="302"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
       <translation>&apos;グローバルな小数点を使用&apos; が無効な場合の小数点以下桁数</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="88"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="67"/>
       <source>Dimension Format</source>
       <translation>寸法フォーマット</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="489"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
       <source>Extension Gap Factor - ISO</source>
       <translation>延長ギャップ係数 - ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="180"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
       <source>Font Size</source>
       <translation>フォントサイズ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="245"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="194"/>
       <source>Dimension text font size</source>
       <translation>寸法テキストのフォントサイズ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="349"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="286"/>
       <source>Tolerance Text Scale</source>
       <translation>公差テキストの拡大縮小率</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="306"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="252"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
       <translation>許容差テキストの拡大縮小率
  &apos;フォントサイズ&apos; に対する倍数</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="123"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="96"/>
       <source>Diameter Symbol</source>
       <translation>直径記号</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="329"/>
       <source>Character used to indicate diameter dimensions</source>
-      <translation>直径寸法を表すために使用する文字</translation>
+      <translation>直径寸法を表すために使用する記号</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="281"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="227"/>
       <source>Arrow Style</source>
       <translation>矢印のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="107"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="80"/>
       <source>Arrowhead style</source>
       <translation>矢印先端のスタイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="269"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="215"/>
       <source>Arrow Size</source>
       <translation>矢印のサイズ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="64"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="46"/>
       <source>Arrowhead size</source>
       <translation>矢印先端のサイズ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</source>
       <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="496"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="415"/>
       <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
       <translation>自動寸法形式の場合は空白のままにします。上書きするには %f、 %g または %w 指定子を使用します。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="520"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
       <source>Extension Gap Factor - ASME</source>
       <translation>延長ギャップ係数 - ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="443"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</source>
@@ -5249,21 +5246,21 @@ Multiplier of &apos;Font Size&apos;</source>
  Normally, no gap is used. If using a gap, the recommended value is 8.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</source>
       <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="583"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="493"/>
       <source>Controls the size of spacing between dimension line and dimension text.
  Value * linewidth is the line spacing.</source>
       <translation>寸法線と寸法テキストの間隔を調整します。
 「値 × 線幅」が線の間隔です。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="614"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="521"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt;表記の項目は新しいオブジェクトでのデフォルト値です。既存のオブジェクトには影響しません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5306,293 +5303,293 @@ Multiplier of &apos;Font Size&apos;</source>
       <translation>標準</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="47"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="35"/>
       <source>Drawing Update</source>
-      <translation>図面の更新</translation>
+      <translation>図面を更新</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="61"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="49"/>
       <source>Whether or not pages are updated every time the 3D model is changed</source>
-      <translation>3Dモデルが変更されるたびにページを更新するかどうか</translation>
+      <translation>3Dモデルを変更したら用紙を更新する</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="64"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
       <source>Update With 3D (global policy)</source>
       <translation>3Dと同時に更新 (グローバルな設定)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation>ページの&apos;自動更新&apos; プロパティで、グローバルな &apos;3Dと同時に更新&apos; パラメーターを上書きするかどうか</translation>
+      <translation>用紙の「自動更新」プロパティは全体設定の「3Dと同時に更新」のパラメーターを上書きする</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>
       <source>Allow Page Override (global policy)</source>
-      <translation>ページの上書きを許可(グローバルポリシー)</translation>
+      <translation>用紙の上書きを許可（グローバルポリシー）</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="123"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="105"/>
       <source>Keep drawing pages in sync with changes of 3D model in real time.
 This can slow down the response time.</source>
-      <translation>図面ページを3Dモデルの変更とリアルタイムで同期させ続けます。
+      <translation>図面の用紙を3Dモデルの変更とリアルタイムで同期します。
 応答が遅くなる可能性があります。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="127"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="109"/>
       <source>Keep Page Up To Date</source>
-      <translation>ページを常に最新状態にする</translation>
+      <translation>用紙を常に最新にする</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="160"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="136"/>
       <source>Automatically distribute secondary views
 for ProjectionGroups</source>
       <translation>第2ビューを投影グループで自動配置</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="164"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="140"/>
       <source>Auto-distribute Secondary Views</source>
       <translation>第2ビューの自動配置</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="197"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="167"/>
       <source>Labels</source>
       <translation>ラベル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="217"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="181"/>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
       <translation>* このフォントは寸法にも使用されます。
    変更は既存の寸法には反映されません。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="221"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="185"/>
       <source>Label Font*</source>
       <translation>ラベルのフォント*</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="268"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
       <source>Font for labels</source>
       <translation>ラベルのフォント</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="287"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="239"/>
       <source>Label Size</source>
       <translation>ラベルのサイズ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="313"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="265"/>
       <source>Label size</source>
       <translation>ラベルのサイズ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="361"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="301"/>
       <source>Conventions</source>
       <translation>規則</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="382"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="322"/>
       <source>Projection Group Angle</source>
       <translation>投影グループ角度</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="401"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="335"/>
       <source>Use first- or third-angle multiview projection convention</source>
-      <translation>第１角法または第３角法の多重図投影規則を使用します</translation>
+      <translation>第一角法または第三角法の多重図投影規則を使用します</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="424"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="358"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="444"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="372"/>
       <source>Standard to be used to draw section lines.  This affects the position of arrows and symbol.</source>
       <translation type="unfinished">Standard to be used to draw section lines.  This affects the position of arrows and symbol.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="457"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="385"/>
       <source>ANSI</source>
       <translation>ANSI</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="462"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="390"/>
       <source>ISO</source>
       <translation>ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="475"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
       <source>Section Line Convention</source>
       <translation type="unfinished">Section Line Convention</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="499"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="421"/>
       <source>Files</source>
       <translation>ファイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="550"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="460"/>
       <source>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</source>
-      <translation type="unfinished">Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</translation>
+      <translation>ハッチングにはSVGまたはビットマップファイルを使用します。この値はハッチングパターンを選択するための初期ディレクトリも制御します。 これを使用すると、ローカルディレクトリからハッチングファイルを取得できます。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="771"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="627"/>
       <source>Default Template</source>
       <translation>デフォルトのテンプレート</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="600"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="498"/>
       <source>Default template file for new pages</source>
-      <translation>新規ページのためのデフォルトのテンプレートファイル</translation>
+      <translation>新規の用紙のための既定のテンプレートファイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="718"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="586"/>
       <source>Template Directory</source>
       <translation>テンプレート・ディレクトリ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="696"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="570"/>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
-      <translation>メニュー「テンプレートを用いてページを挿入」の開始ディレクトリ</translation>
+      <translation>「テンプレートを使用して用紙を挿入」の開始ディレクトリ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="758"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="620"/>
       <source>Hatch Pattern File</source>
       <translation>ハッチングパターンファイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="832"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
       <source>Line Group File</source>
       <translation>ライングループファイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="575"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="479"/>
       <source>Alternate file for personal LineGroup definition</source>
       <translation>個人用ライングループ定義の代替ファイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="624"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="516"/>
       <source>Welding Directory</source>
       <translation>溶接ディレクトリ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="668"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="548"/>
       <source>Default directory for welding symbols</source>
-      <translation>溶接記号のためのデフォルトのディレクトリ</translation>
+      <translation>溶接記号の既定のディレクトリ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="531"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="447"/>
       <source>PAT File</source>
       <translation>PATファイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="643"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="529"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
       <translation>幾何ハッチングのためのデフォルトのPATパターン定義ファイル</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="688"/>
       <source>Pattern Name</source>
       <translation>パターン名</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="802"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="652"/>
       <source>Name of the default PAT pattern</source>
       <translation>デフォルトPATパターンの名前</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="414"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="348"/>
       <source>First-angle</source>
-      <translation type="unfinished">First-angle</translation>
+      <translation>第一角法</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="419"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="353"/>
       <source>Third-angle</source>
-      <translation type="unfinished">Third-angle</translation>
+      <translation>第三角法</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="731"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="599"/>
       <source>Alternate directory to search for SVG symbol files.</source>
       <translation type="unfinished">Alternate directory to search for SVG symbol files.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="783"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="639"/>
       <source>Symbol Directory</source>
-      <translation>記号ディレクトリ</translation>
+      <translation>溶接記号のディレクトリ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="805"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="655"/>
       <source>Diamond</source>
       <translation>ダイヤモンド　　</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="862"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="700"/>
       <source>Grid</source>
       <translation>グリッド</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="888"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="726"/>
       <source>Set ShowGrid property to true on new Pages.</source>
-      <translation>新しいページで ShowGrid プロパティを true に設定します。</translation>
+      <translation>新しい用紙にグリッドを表示します。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="891"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="729"/>
       <source>Show Grid</source>
-      <translation>グリッドを表示</translation>
+      <translation>グリッドを表示する</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="912"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="750"/>
       <source>Grid Spacing</source>
-      <translation>グリッド間隔</translation>
+      <translation>グリッド線の間隔</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="919"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="757"/>
       <source>Distance between Page grid lines.</source>
-      <translation>ページのグリッド線間の距離。</translation>
+      <translation>用紙のグリッド線の間隔。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="961"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="787"/>
       <source>Selection</source>
       <translation>選択範囲</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="975"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="801"/>
       <source>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</source>
       <translation type="unfinished">If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="978"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="804"/>
       <source>Enable Multiselection Mode</source>
       <translation type="unfinished">Enable Multiselection Mode</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1005"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="831"/>
       <source>View Defaults</source>
-      <translation type="unfinished">View Defaults</translation>
+      <translation>既定のビュー</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1024"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
       <source>If checked, the 3d camera direction (or normal of a selected face) will be used as the view direction.  If not checked, Views will be created as Front Views.</source>
       <translation type="unfinished">If checked, the 3d camera direction (or normal of a selected face) will be used as the view direction.  If not checked, Views will be created as Front Views.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1027"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>Use 3d Camera Direction</source>
       <translation type="unfinished">Use 3d Camera Direction</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1045"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="871"/>
       <source>If checked, view labels will be displayed even when frames are suppressed.</source>
       <translation type="unfinished">If checked, view labels will be displayed even when frames are suppressed.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1048"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="874"/>
       <source>Always Show Label</source>
-      <translation type="unfinished">Always Show Label</translation>
+      <translation>常にラベルを表示する</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1072"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="898"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt;表記の項目は新しいオブジェクトでのデフォルト値です。既存のオブジェクトには影響しません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5607,7 +5604,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="47"/>
       <source>Hidden Line Removal</source>
-      <translation>隠線を削除</translation>
+      <translation>かくれ線を削除</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="66"/>
@@ -5722,12 +5719,12 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
       <source>Page Scale</source>
-      <translation>ページの拡大縮小率</translation>
+      <translation>用紙の尺度</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
       <source>Default scale for new pages</source>
-      <translation>新規ページでのデフォルト拡大縮小率</translation>
+      <translation>新しい用紙の既定の尺度</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
@@ -5742,7 +5739,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="143"/>
@@ -5782,7 +5779,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="292"/>
       <source>Center Mark Scale</source>
-      <translation>中心点の拡大縮小率</translation>
+      <translation>中心マークの拡大縮小率</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="324"/>
@@ -5807,7 +5804,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="394"/>
       <source>Multiplier for size of welding symbols</source>
-      <translation>溶接シンボルのサイズの倍率</translation>
+      <translation>溶接記号の大きさの倍率</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="427"/>
@@ -5830,22 +5827,22 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>&amp;Export SVG</source>
-      <translation>&amp;SVGをエクスポート</translation>
+      <translation>&amp;SVGファイルにエクスポート</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="103"/>
       <source>Export DXF</source>
-      <translation>DXFをエクスポート</translation>
+      <translation>DXFファイルにエクスポート</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="106"/>
       <source>Export PDF</source>
-      <translation>PDFファイル形式でエクスポート</translation>
+      <translation>PDFファイルにエクスポート</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>Print All Pages</source>
-      <translation>すべてのページを印刷</translation>
+      <translation>全ての用紙を印刷</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="406"/>
@@ -5856,7 +5853,7 @@ Fast, but result is a collection of short straight lines.</source>
       <location filename="../../MDIViewPage.cpp" line="407"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-      <translation>プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
+      <translation>プリンターは図面とは異なる向きで印刷します。このまま印刷しますか？</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="416"/>
@@ -5867,43 +5864,42 @@ Do you want to continue?</source>
       <location filename="../../MDIViewPage.cpp" line="417"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>プリンターでは、図面とは異なる用紙サイズを使用します。
-続行しますか？</translation>
+      <translation>プリンターは図面とは異なるサイズの用紙に印刷します。このまま印刷しますか？</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="431"/>
       <source>Opening file failed</source>
-      <translation>ファイルを開けませんでした。</translation>
+      <translation>ファイルを開けませんでした</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="432"/>
       <source>Can not open file %1 for writing.</source>
-      <translation>書き込み用ファイル %1 を開くことができません。</translation>
+      <translation>書き込み用ファイル %1 を開けませんでした</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="523"/>
       <source>Save DXF file</source>
-      <translation>DXF ファイルを保存</translation>
+      <translation>DXFファイルを保存</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="524"/>
       <source>DXF (*.dxf)</source>
-      <translation>DXF (*.dxf)</translation>
+      <translation>DXF（*.dxf）</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>Save PDF file</source>
-      <translation>PDF ファイルを保存</translation>
+      <translation>PDFファイルを保存</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="545"/>
       <source>PDF (*.pdf)</source>
-      <translation>PDF (*.pdf)</translation>
+      <translation>PDF（*.pdf）</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1089"/>
       <source>Selected:</source>
-      <translation>選択:</translation>
+      <translation>選択済み</translation>
     </message>
   </context>
   <context>
@@ -6054,7 +6050,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="266"/>
       <source>Whether the leader line is visible or not</source>
-      <translation>引き出し線が表示されているかどうか</translation>
+      <translation>引出線の表示の有無</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="273"/>
@@ -6202,7 +6198,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="183"/>
       <source>Style</source>
-      <translation>スタイル</translation>
+      <translation>線のスタイル</translation>
     </message>
   </context>
   <context>
@@ -6241,12 +6237,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="105"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation>拡大縮小率 ページ/自動/カスタム</translation>
+      <translation>尺度 用紙/自動/カスタム</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="109"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="114"/>
@@ -6287,7 +6283,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="202"/>
       <source>NoParallel</source>
-      <translation type="unfinished">NoParallel</translation>
+      <translation>非平行</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="210"/>
@@ -6569,7 +6565,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="202"/>
       <source>derived geometry element</source>
-      <translation>派生ジオメトリー要素</translation>
+      <translation>派生ジオメトリ要素</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="217"/>
@@ -6589,7 +6585,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="262"/>
       <source>Least square geometry element</source>
-      <translation>最小正方形ジオメトリー要素</translation>
+      <translation>最小正方形ジオメトリ要素</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="277"/>
@@ -6604,7 +6600,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="307"/>
       <source>least inscribed geometry element</source>
-      <translation>最小内接ジオメトリー要素</translation>
+      <translation>最小内接ジオメトリ要素</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="322"/>
@@ -6634,7 +6630,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="397"/>
       <source>most inscribed geometry element</source>
-      <translation>最大内接ジオメトリー要素</translation>
+      <translation>最大内接ジオメトリ要素</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="409"/>
@@ -6654,12 +6650,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="438"/>
       <source>Radius of sphere</source>
-      <translation>球の半径</translation>
+      <translation>球体の半径</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="448"/>
       <source>Diameter of sphere</source>
-      <translation>球の直径</translation>
+      <translation>球体の直径</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="458"/>
@@ -6704,7 +6700,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="543"/>
       <source>Slope</source>
-      <translation>傾斜</translation>
+      <translation>勾配</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="553"/>
@@ -6866,14 +6862,14 @@ Do you want to continue?</source>
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
 Custom: custom scale factor is used</source>
-      <translation>ページ: ページの拡大縮小率が使用されます。
-自動: 詳細ビューがページより大きい場合にはページに収まる様に縮小されます。
-カスタム: カスタムの拡大縮小率が使用されます。</translation>
+      <translation>用紙：用紙の尺度を使います。
+自動：詳細ビューが用紙より大きい場合は、用紙に収まるように縮小されます。
+カスタム：カスタムの尺度を使います。</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="216"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="221"/>
@@ -7265,22 +7261,22 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an SVG or Bitmap file as a pattern</source>
-      <translation type="unfinished">Choose an SVG or Bitmap file as a pattern</translation>
+      <translation>SVGまたはビットマップファイルをパターンとして選択</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
       <source>Enlarges/shrinks the pattern (SVG Only)</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern (SVG Only)</translation>
+      <translation>パターンの拡大/縮小（SVGのみ）</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
       <source>Color of pattern lines (SVG Only)</source>
-      <translation type="unfinished">Color of pattern lines (SVG Only)</translation>
+      <translation>パターンの線の色（SVGのみ）</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="159"/>
       <source>SVG Pattern Scale</source>
-      <translation type="unfinished">SVG Pattern Scale</translation>
+      <translation>SVGパターンの大きさ</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
@@ -7300,7 +7296,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>Svg Line Color</source>
-      <translation>SVG 線の色</translation>
+      <translation>SVGの線の色</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
@@ -7313,7 +7309,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="26"/>
       <source>Leader Line</source>
-      <translation>引き出し線</translation>
+      <translation>引出線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
@@ -7336,7 +7332,7 @@ You can pick further points to get line segments.</source>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
-      <location filename="../../TaskLeaderLine.cpp" line="499"/>
+      <location filename="../../TaskLeaderLine.cpp" line="507"/>
       <source>Pick Points</source>
       <translation>点をピック</translation>
     </message>
@@ -7368,17 +7364,17 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="242"/>
       <source>Line width</source>
-      <translation>ライン幅</translation>
+      <translation>線幅</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="258"/>
       <source>Style</source>
-      <translation>スタイル</translation>
+      <translation>線のスタイル</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="271"/>
       <source>Line style</source>
-      <translation>ラインのスタイル</translation>
+      <translation>線のスタイル</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="278"/>
@@ -7388,7 +7384,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="287"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>実線</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="296"/>
@@ -7413,55 +7409,55 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="227"/>
       <source>Pick points</source>
-      <translation>点をピック</translation>
+      <translation>点を選択</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="276"/>
-      <location filename="../../TaskLeaderLine.cpp" line="686"/>
-      <location filename="../../TaskLeaderLine.cpp" line="743"/>
-      <location filename="../../TaskLeaderLine.cpp" line="765"/>
+      <location filename="../../TaskLeaderLine.cpp" line="694"/>
+      <location filename="../../TaskLeaderLine.cpp" line="751"/>
+      <location filename="../../TaskLeaderLine.cpp" line="773"/>
       <source>Edit points</source>
       <translation>点を編集</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="513"/>
+      <location filename="../../TaskLeaderLine.cpp" line="521"/>
       <source>Edit Points</source>
       <translation>点を編集</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="530"/>
-      <location filename="../../TaskLeaderLine.cpp" line="582"/>
+      <location filename="../../TaskLeaderLine.cpp" line="538"/>
+      <location filename="../../TaskLeaderLine.cpp" line="590"/>
       <source>Pick a starting point for leader line</source>
-      <translation>引き出し線の始点をピック</translation>
+      <translation>引出線の始点を選択</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="533"/>
+      <location filename="../../TaskLeaderLine.cpp" line="541"/>
       <source>Save Points</source>
       <translation>点を保存</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="565"/>
+      <location filename="../../TaskLeaderLine.cpp" line="573"/>
       <source>Click and drag markers to adjust leader line</source>
-      <translation>マーカーをクリック、ドラッグして引き出し線を調整</translation>
+      <translation>引出線の調整はマーカーをクリック、ドラッグしてください</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="568"/>
-      <location filename="../../TaskLeaderLine.cpp" line="585"/>
+      <location filename="../../TaskLeaderLine.cpp" line="576"/>
+      <location filename="../../TaskLeaderLine.cpp" line="593"/>
       <source>Save changes</source>
       <translation>変更を保存</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="616"/>
+      <location filename="../../TaskLeaderLine.cpp" line="624"/>
       <source>Left click to set a point</source>
       <translation>左クリックで点を設定</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="642"/>
+      <location filename="../../TaskLeaderLine.cpp" line="650"/>
       <source>Press OK or Cancel to continue</source>
       <translation>OK またはキャンセルを押すと続行します</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="760"/>
+      <location filename="../../TaskLeaderLine.cpp" line="768"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>処理中の編集を破棄しました。やり直してください。</translation>
     </message>
@@ -7486,7 +7482,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
       <source>Style</source>
-      <translation>スタイル</translation>
+      <translation>線のスタイル</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="85"/>
@@ -7534,7 +7530,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLinkDim.ui" line="54"/>
       <source>Link This 3D Geometry</source>
-      <translation>この3Dジオメトリーとリンク</translation>
+      <translation>この3Dジオメトリとリンク</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="67"/>
@@ -7544,7 +7540,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLinkDim.ui" line="87"/>
       <source>Geometry1:</source>
-      <translation>ジオメトリー1:</translation>
+      <translation>ジオメトリ1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="107"/>
@@ -7554,7 +7550,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
       <source>Geometry2:</source>
-      <translation type="unfinished">Geometry2:</translation>
+      <translation>ジオメトリ2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="153"/>
@@ -7597,7 +7593,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="559"/>
       <source>First or Third Angle</source>
-      <translation>第1角度または第3角度</translation>
+      <translation>第一角法または第三角法</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="563"/>
@@ -7613,7 +7609,7 @@ You can pick further points to get line segments.</source>
       <location filename="../../TaskProjGroup.ui" line="45"/>
       <location filename="../../TaskProjGroup.ui" line="573"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="34"/>
@@ -7903,7 +7899,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="39"/>
       <source>Geometry</source>
-      <translation>ジオメトリー</translation>
+      <translation>ジオメトリ</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="56"/>
@@ -7976,7 +7972,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskRichAnno.ui" line="198"/>
       <source>Line style</source>
-      <translation>ラインのスタイル</translation>
+      <translation>線のスタイル</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="205"/>
@@ -7986,7 +7982,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskRichAnno.ui" line="210"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>実線</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="215"/>
@@ -8049,12 +8045,12 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSectionView.ui" line="94"/>
       <source>Scale Page/Auto/Custom</source>
-      <translation>拡大縮小率 ページ/自動/カスタム</translation>
+      <translation>尺度 用紙/自動/カスタム</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="98"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="103"/>
@@ -8179,7 +8175,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
       <source>Line style:</source>
-      <translation>線のスタイル:</translation>
+      <translation>線のスタイル</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="48"/>
@@ -8293,27 +8289,27 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="29"/>
       <source>Hole /Shaft Fit ISO 286</source>
-      <translation type="unfinished">Hole /Shaft Fit ISO 286</translation>
+      <translation>ISO 286 穴及び軸のはめあい公差</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="37"/>
       <source>Shaft fit</source>
-      <translation type="unfinished">Shaft fit</translation>
+      <translation>軸のはめあい公差</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="47"/>
       <source>Hole fit</source>
-      <translation type="unfinished">Hole fit</translation>
+      <translation>穴のはめあい公差</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="62"/>
       <source>c11</source>
-      <translation type="unfinished">c11</translation>
+      <translation>c11</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="67"/>
       <source>f7</source>
-      <translation type="unfinished">f7</translation>
+      <translation>f7</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="72"/>
@@ -8323,49 +8319,49 @@ using the given X/Y Spacing</source>
       <location filename="../../TaskHoleShaftFit.ui" line="112"/>
       <location filename="../../TaskHoleShaftFit.ui" line="117"/>
       <source>h6</source>
-      <translation type="unfinished">h6</translation>
+      <translation>h6</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="77"/>
       <source>h7</source>
-      <translation type="unfinished">h7</translation>
+      <translation>h7</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="82"/>
       <location filename="../../TaskHoleShaftFit.ui" line="87"/>
       <location filename="../../TaskHoleShaftFit.ui" line="92"/>
       <source>h9</source>
-      <translation type="unfinished">h9</translation>
+      <translation>h9</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="122"/>
       <source>k6</source>
-      <translation type="unfinished">k6</translation>
+      <translation>k6</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="127"/>
       <source>n6</source>
-      <translation type="unfinished">n6</translation>
+      <translation>n6</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="132"/>
       <source>r6</source>
-      <translation type="unfinished">r6</translation>
+      <translation>r6</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="137"/>
       <source>s6</source>
-      <translation type="unfinished">s6</translation>
+      <translation>s6</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="145"/>
       <source>loose fit</source>
-      <translation type="unfinished">loose fit</translation>
+      <translation>すきまばめ</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="152"/>
       <source>             H11/</source>
-      <translation type="unfinished">             H11/</translation>
+      <translation>             H11/</translation>
     </message>
   </context>
   <context>
@@ -8381,7 +8377,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="384"/>
       <source>arrow</source>
-      <translation>矢印</translation>
+      <translation>矢</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="385"/>
@@ -8419,7 +8415,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>
       <source>Autofill</source>
-      <translation type="unfinished">Autofill</translation>
+      <translation>自動入力</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
@@ -8582,7 +8578,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Stacking</source>
-      <translation type="unfinished">Stacking</translation>
+      <translation>スタック</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -8597,32 +8593,32 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>TechDraw Attributes</source>
-      <translation>TechDraw属性</translation>
+      <translation>技術図面 属性</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>TechDraw Centerlines</source>
-      <translation>TechDraw中心線</translation>
+      <translation>技術図面 中心線</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>TechDraw Extend Dimensions</source>
-      <translation>TechDraw拡張寸法</translation>
+      <translation>技術図面 拡張寸法</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>TechDraw Pages</source>
-      <translation>TechDrawページ</translation>
+      <translation>技術図面 用紙</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -8632,32 +8628,32 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>TechDraw Views</source>
-      <translation>TechDrawビュー</translation>
+      <translation>技術図面 ビュー</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>TechDraw Dimensions</source>
-      <translation>TechDraw寸法</translation>
+      <translation>技術図面 寸法</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>TechDraw Tool Attributes</source>
-      <translation>TechDraw ツール属性</translation>
+      <translation>技術図面 ツールの属性</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>TechDraw File Access</source>
-      <translation>TechDrawファイルアクセス</translation>
+      <translation>技術図面 ファイルアクセス</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>TechDraw Decoration</source>
-      <translation>TechDraw装飾</translation>
+      <translation>技術図面 装飾</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Annotation</source>
-      <translation>TechDraw注釈</translation>
+      <translation>技術図面 注記</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
@@ -8700,7 +8696,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="48"/>
       <source>Move View to a different Page</source>
-      <translation>ビューを別のページに移動</translation>
+      <translation>ビューを別の用紙に移動</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="80"/>
@@ -8715,18 +8711,18 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
       <source>Select From Page.</source>
-      <translation>移動元ページを選択します。</translation>
+      <translation>移動元の用紙を選択してください。</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="104"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="127"/>
       <source>Select Page</source>
-      <translation>ページを選択</translation>
+      <translation>用紙を選択</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
       <source>Select To Page.</source>
-      <translation>移動先ページを選択します。</translation>
+      <translation>移動先の用紙を選択してください。</translation>
     </message>
   </context>
   <context>
@@ -8739,12 +8735,12 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation>第 2 ページでビューを共有</translation>
+      <translation>2つ目の用紙でビューを共有</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
       <source>Share View with another Page</source>
-      <translation>別のページとビューを共有</translation>
+      <translation>別の用紙とビューを共有</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="48"/>
@@ -8764,18 +8760,18 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
       <source>Select From Page.</source>
-      <translation>移動元ページを選択します。</translation>
+      <translation>移動元の用紙を選択してください。</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="104"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="128"/>
       <source>Select Page</source>
-      <translation>ページを選択</translation>
+      <translation>用紙を選択</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
       <source>Select To Page.</source>
-      <translation>移動先ページを選択します。</translation>
+      <translation>移動先の用紙を選択してください。</translation>
     </message>
   </context>
   <context>
@@ -8823,7 +8819,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskDimRepair.ui" line="138"/>
       <source>Geometry</source>
-      <translation>ジオメトリー</translation>
+      <translation>ジオメトリ</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="163"/>
@@ -8854,7 +8850,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2224"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2225"/>
@@ -8890,7 +8886,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
       <source>Axonometric length dimension</source>
-      <translation type="unfinished">Axonometric length dimension</translation>
+      <translation>軸測投影長さ寸法</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="61"/>
@@ -8899,11 +8895,11 @@ using the given X/Y Spacing</source>
                 - select second edge to define the direction of the extension lines&lt;br&gt;
                 - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
                   of the first selected edge</source>
-      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
-                - select first edge to define direction and length of the dimension line&lt;br&gt;
-                - select second edge to define the direction of the extension lines&lt;br&gt;
-                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
-                  of the first selected edge</translation>
+      <translation>軸測投影長さ寸法&lt;br&gt;
+                - 寸法線の方向と長さを定義する最初のエッジを選択します。&lt;br&gt;
+                - 拡張線&lt;br&gt;
+                - オプション：最初に選択したエッジの長さ&lt;br&gt;
+                  の代わりに測定を定義する2つの頂点を選択します。</translation>
     </message>
   </context>
   <context>
@@ -8911,7 +8907,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="51"/>
       <source>Add hole or shaft fit</source>
-      <translation type="unfinished">Add hole or shaft fit</translation>
+      <translation>穴や軸のはめあい公差を追加します</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="59"/>
@@ -8920,41 +8916,41 @@ using the given X/Y Spacing</source>
 - click the tool button, a panel opens
 - select shaft fit / hole fit
 - select the desired ISO 286 fit field using the combo box</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension
-- select one length dimension or diameter dimension
-- click the tool button, a panel opens
-- select shaft fit / hole fit
-- select the desired ISO 286 fit field using the combo box</translation>
+      <translation>寸法に穴や軸のはめあい公差を追加します
+- 長さ寸法または直径寸法を選択します。
+- ツールボタンをクリックしてパネルを開きます。
+- 穴と軸のはめあい公差を選択します。
+- コンボボックスを使用して、必要なISO 286の適合フィールドを選択します。</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="74"/>
       <source>Add a hole or shaft fit to a dimension</source>
-      <translation type="unfinished">Add a hole or shaft fit to a dimension</translation>
+      <translation>寸法に穴や軸のはめあい公差を追加します</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="78"/>
       <source>Please select one length dimension or diameter dimension and retry</source>
-      <translation type="unfinished">Please select one length dimension or diameter dimension and retry</translation>
+      <translation>長さ寸法または直径寸法を選択してください</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="43"/>
       <source>loose fit</source>
-      <translation type="unfinished">loose fit</translation>
+      <translation>すきまばめ</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="44"/>
       <source>snug fit</source>
-      <translation type="unfinished">snug fit</translation>
+      <translation>中間ばめ</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="45"/>
       <source>press fit</source>
-      <translation type="unfinished">press fit</translation>
+      <translation>しまりばめ</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="92"/>
       <source>Hole / Shaft Fit ISO 286</source>
-      <translation type="unfinished">Hole / Shaft Fit ISO 286</translation>
+      <translation>ISO 286 穴及び軸のはめあい公差</translation>
     </message>
   </context>
   <context>
@@ -9072,7 +9068,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="56"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
   </context>
   <context>
@@ -9160,7 +9156,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Arch</source>
-      <translation>Arch</translation>
+      <translation>建築</translation>
     </message>
   </context>
   <context>
@@ -9176,7 +9172,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
-      <translation>引き出し線</translation>
+      <translation>引出線</translation>
     </message>
   </context>
   <context>
@@ -9224,7 +9220,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="26"/>
       <source>Cosmetic Circle</source>
-      <translation>表示用の円</translation>
+      <translation>装飾円</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="34"/>
@@ -9322,12 +9318,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>Add Cosmetic Circle</source>
-      <translation>表示用の円を追加</translation>
+      <translation>装飾円を追加</translation>
     </message>
   </context>
   <context>
@@ -9335,7 +9331,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1896"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1897"/>
@@ -9353,7 +9349,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="14"/>
       <source>Cosmetic Vertex</source>
-      <translation>表示用の頂点</translation>
+      <translation>装飾頂点</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="31"/>
@@ -9363,7 +9359,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="34"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>位置</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
@@ -9430,7 +9426,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="352"/>
       <source>Update All</source>
-      <translation>すべて更新</translation>
+      <translation>全てを更新</translation>
     </message>
   </context>
   <context>
@@ -9467,7 +9463,7 @@ there is an open task dialog.</source>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
       <source>Select at least </source>
-      <translation type="unfinished">Select at least </translation>
+      <translation>少なくとも選択してください</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
@@ -9488,203 +9484,203 @@ there is an open task dialog.</source>
   <context>
     <name>ISOLineTypeEnum</name>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="34"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="59"/>
       <source>NoLine</source>
-      <translation>表示しない</translation>
+      <translation>線なし</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="35"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="60"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>実線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="36"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="61"/>
       <source>Dashed</source>
       <translation>破線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="37"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="62"/>
       <source>DashedSpaced</source>
-      <translation type="unfinished">DashedSpaced</translation>
+      <translation>跳び破線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="38"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="63"/>
       <source>LongDashedDotted</source>
-      <translation type="unfinished">LongDashedDotted</translation>
+      <translation>一点長鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="39"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="64"/>
       <source>LongDashedDoubleDotted</source>
-      <translation type="unfinished">LongDashedDoubleDotted</translation>
+      <translation>二点長鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="40"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="65"/>
       <source>LongDashedTripleDotted</source>
-      <translation type="unfinished">LongDashedTripleDotted</translation>
+      <translation>三点長鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="41"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="66"/>
       <source>Dotted</source>
       <translation>点線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="42"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="67"/>
       <source>LongDashShortDash</source>
-      <translation type="unfinished">LongDashShortDash</translation>
+      <translation>一点鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="43"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="68"/>
       <source>LongDashDoubleShortDash</source>
-      <translation type="unfinished">LongDashDoubleShortDash</translation>
+      <translation>二点鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="44"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="69"/>
       <source>DashedDotted</source>
-      <translation type="unfinished">DashedDotted</translation>
+      <translation>一点短鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="45"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="70"/>
       <source>DoubleDashedDotted</source>
-      <translation type="unfinished">DoubleDashedDotted</translation>
+      <translation>一点二短鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="46"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="71"/>
       <source>DashedDoubleDotted</source>
-      <translation type="unfinished">DashedDoubleDotted</translation>
+      <translation>二点短鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="47"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="72"/>
       <source>DoubleDashedDoubleDotted</source>
-      <translation type="unfinished">DoubleDashedDoubleDotted</translation>
+      <translation>二点二短鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="48"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="73"/>
       <source>DashedTripleDotted</source>
-      <translation type="unfinished">DashedTripleDotted</translation>
+      <translation>三点短鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="49"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="74"/>
       <source>DoubleDashedTripleDotted</source>
-      <translation type="unfinished">DoubleDashedTripleDotted</translation>
+      <translation>三点二短鎖線</translation>
     </message>
   </context>
   <context>
     <name>ANSILineTypeEnum</name>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="55"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="80"/>
       <source>NoLine</source>
       <translation>表示しない</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="56"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="81"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>実線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="57"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="82"/>
       <source>Dashed</source>
       <translation>破線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="58"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="83"/>
       <source>LongDashDashed</source>
-      <translation type="unfinished">LongDashDashed</translation>
+      <translation>一点鎖線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="59"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="84"/>
       <source>LongDashDoubleDashed</source>
-      <translation type="unfinished">LongDashDoubleDashed</translation>
+      <translation>二点鎖線</translation>
     </message>
   </context>
   <context>
     <name>ASMELineTypeEnum</name>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="65"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="90"/>
       <source>NoLine</source>
       <translation>表示しない</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="66"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="91"/>
       <source>Visible</source>
       <translation>表示</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="67"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="92"/>
       <source>Hidden</source>
       <translation>非表示</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="68"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="93"/>
       <source>Section</source>
       <translation>セクション</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="69"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="94"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="70"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="95"/>
       <source>Symmetry</source>
-      <translation>対称</translation>
+      <translation>対称中心線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="71"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="96"/>
       <source>Dimension</source>
       <translation>寸法</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="72"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="97"/>
       <source>Extension</source>
       <translation>拡張</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="73"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="98"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>引出線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="74"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="99"/>
       <source>CuttingPlane</source>
-      <translation type="unfinished">CuttingPlane</translation>
+      <translation>切断線</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="75"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="100"/>
       <source>ViewingPlane</source>
       <translation type="unfinished">ViewingPlane</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="76"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="101"/>
       <source>OtherPlane</source>
       <translation type="unfinished">OtherPlane</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="77"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="102"/>
       <source>Break1</source>
       <translation type="unfinished">Break1</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="78"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="103"/>
       <source>Break2</source>
       <translation type="unfinished">Break2</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="79"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="104"/>
       <source>Phantom</source>
       <translation type="unfinished">Phantom</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="80"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="105"/>
       <source>Stitch1</source>
       <translation type="unfinished">Stitch1</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="81"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="106"/>
       <source>Stitch2</source>
       <translation type="unfinished">Stitch2</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="82"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="107"/>
       <source>Chain</source>
       <translation>連鎖</translation>
     </message>
@@ -9715,7 +9711,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="221"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="222"/>
@@ -9757,13 +9753,13 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <location filename="../../Command.cpp" line="528"/>
       <source>Insert Broken View</source>
-      <translation type="unfinished">Insert Broken View</translation>
+      <translation>壊れたビューを挿入</translation>
     </message>
   </context>
   <context>
@@ -9822,12 +9818,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1840"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>技術図面</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1841"/>
       <source>Insert Area Annotation</source>
-      <translation type="unfinished">Insert Area Annotation</translation>
+      <translation>範囲の注釈を挿入</translation>
     </message>
   </context>
   <context>
@@ -9840,7 +9836,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="104"/>

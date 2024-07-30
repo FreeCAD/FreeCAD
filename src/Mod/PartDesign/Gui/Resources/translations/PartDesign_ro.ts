@@ -1473,29 +1473,29 @@ Dacă zero, este egală cu Radius2</translation>
       <translation>Parametrii primitivei</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="830"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="835"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="840"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="911"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="916"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="921"/>
       <source>Invalid wedge parameters</source>
       <translation>Parametri de perete invalizi</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="831"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="912"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min nu trebuie să fie egal cu X max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min nu trebuie să fie egal cu Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min nu trebuie să fie egal cu Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="879"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
       <source>Create primitive</source>
       <translation>Creează o primitivă</translation>
     </message>
@@ -1567,7 +1567,7 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Unghi</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="323"/>
+      <location filename="../../TaskChamferParameters.cpp" line="327"/>
       <source>Empty chamfer created !
 </source>
       <translation>Camferul gol a fost creat!
@@ -1608,7 +1608,7 @@ faceți clic din nou pentru a încheia selecția</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="130"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
       <source>Input error</source>
       <translation>Eroare de intrare</translation>
     </message>
@@ -1663,7 +1663,7 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Inversa directiei de tragere</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="281"/>
+      <location filename="../../TaskDraftParameters.cpp" line="284"/>
       <source>Empty draft created !
 </source>
       <translation>Gol ciornă creată!
@@ -1701,64 +1701,64 @@ faceți clic din nou pentru a încheia selecția</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
       <source>No face selected</source>
       <translation>Nici o faţă selectată</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="997"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="157"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1016"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="172"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="173"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="258"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
       <source>Preview</source>
       <translation>Previzualizare</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="261"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
       <source>Select faces</source>
       <translation>Selectaţi o față</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="481"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
       <source>No shape selected</source>
       <translation>Nici o forma selectata</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="583"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
       <source>Sketch normal</source>
       <translation>Schiță normală</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="585"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="591"/>
       <source>Face normal</source>
       <translation>Faţă normală</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="588"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
       <source>Select reference...</source>
       <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
       <source>Custom direction</source>
       <translation>Direcție personalizată</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
       <source>Click on a shape in the model</source>
       <translation type="unfinished">Click on a shape in the model</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
       <source>Click on a face in the model</source>
       <translation>Faceți clic pe o față din model</translation>
     </message>
@@ -1883,7 +1883,7 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Folosește toate marginile</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="190"/>
+      <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created!</source>
       <translation>Fișier gol creata!</translation>
     </message>
@@ -1907,43 +1907,43 @@ faceți clic din nou pentru a încheia selecția</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="232"/>
+      <location filename="../../TaskHelixParameters.cpp" line="228"/>
       <source>Base X axis</source>
       <translation>Axa X</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="233"/>
+      <location filename="../../TaskHelixParameters.cpp" line="229"/>
       <source>Base Y axis</source>
       <translation>Axa Y</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="234"/>
+      <location filename="../../TaskHelixParameters.cpp" line="230"/>
       <source>Base Z axis</source>
       <translation>Axa Z</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="215"/>
+      <location filename="../../TaskHelixParameters.cpp" line="212"/>
       <source>Horizontal sketch axis</source>
       <translation>Axa orizontală a schiţei</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="214"/>
+      <location filename="../../TaskHelixParameters.cpp" line="211"/>
       <source>Vertical sketch axis</source>
       <translation>Axa verticală a schiţei</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="213"/>
+      <location filename="../../TaskHelixParameters.cpp" line="210"/>
       <source>Normal sketch axis</source>
       <translation type="unfinished">Normal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="197"/>
+      <location filename="../../TaskHelixParameters.cpp" line="196"/>
       <source>Select reference...</source>
       <translation>Selectați o referință...</translation>
     </message>
@@ -2018,27 +2018,27 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Actualizeaza vizualizarea</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="51"/>
+      <location filename="../../TaskHelixParameters.cpp" line="52"/>
       <source>Helix parameters</source>
       <translation>Parametrii Helix</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="217"/>
+      <location filename="../../TaskHelixParameters.cpp" line="214"/>
       <source>Construction line %1</source>
       <translation>%1 linie de construcție</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="281"/>
+      <location filename="../../TaskHelixParameters.cpp" line="277"/>
       <source>Warning: helix might be self intersecting</source>
       <translation>Atenție: helix ar putea fi auto-intersectat</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="286"/>
+      <location filename="../../TaskHelixParameters.cpp" line="282"/>
       <source>Error: helix touches itself</source>
       <translation>Eroare: helix se atinge singur</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="334"/>
+      <location filename="../../TaskHelixParameters.cpp" line="330"/>
       <source>Error: unsupported mode</source>
       <translation>Eroare: mod neacceptat</translation>
     </message>
@@ -2568,12 +2568,12 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="534"/>
+      <location filename="../../TaskPipeParameters.cpp" line="536"/>
       <source>Section orientation</source>
       <translation>Orientarea Secțiunii</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="560"/>
+      <location filename="../../TaskPipeParameters.cpp" line="562"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
@@ -2637,13 +2637,13 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Elimină</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
-      <location filename="../../TaskPipeParameters.cpp" line="520"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
+      <location filename="../../TaskPipeParameters.cpp" line="522"/>
       <source>Input error</source>
       <translation>Eroare de intrare</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
       <source>No active body</source>
       <translation>Nici un corp activ</translation>
     </message>
@@ -2681,12 +2681,12 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Lista poate fi reordonată prin tragere</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="802"/>
+      <location filename="../../TaskPipeParameters.cpp" line="816"/>
       <source>Section transformation</source>
       <translation>Transformarea Secţiunii</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="818"/>
+      <location filename="../../TaskPipeParameters.cpp" line="832"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
@@ -2790,7 +2790,7 @@ măsurată de-a lungul direcției specificate</translation>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="972"/>
       <source>Attachment</source>
       <translation>Ataşament</translation>
     </message>
@@ -2815,19 +2815,19 @@ măsurată de-a lungul direcției specificate</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
       <source>Base X axis</source>
       <translation>Axa X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
       <source>Base Y axis</source>
       <translation>Axa Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
       <source>Base Z axis</source>
       <translation>Axa Z</translation>
     </message>
@@ -2843,7 +2843,7 @@ măsurată de-a lungul direcției specificate</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="226"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="227"/>
       <source>Select reference...</source>
       <translation>Selectați o referință...</translation>
     </message>
@@ -2870,7 +2870,7 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="443"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="444"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
@@ -2910,7 +2910,7 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Două dimensiuni</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="429"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="430"/>
       <source>No face selected</source>
       <translation>Nici o faţă selectată</translation>
     </message>
@@ -2959,7 +2959,7 @@ măsurată de-a lungul direcției specificate</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="174"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
@@ -3032,7 +3032,7 @@ faceți clic din nou pentru a încheia selecția</translation>
       <translation>Faceți grosimea spre interior</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="265"/>
       <source>Empty thickness created !
 </source>
       <translation>S-a creat grosimea goala !</translation>
@@ -3707,23 +3707,23 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="441"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Vertical sketch axis</source>
       <translation>Axa verticală a schiţei</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="442"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
       <source>Horizontal sketch axis</source>
       <translation>Axa orizontală a schiţei</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="207"/>
       <source>Construction line %1</source>
       <translation>%1 linie de construcție</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="80"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
@@ -4257,20 +4257,20 @@ este disponibil numai pentru găuri fără fir</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="622"/>
-      <location filename="../../TaskHoleParameters.cpp" line="633"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="643"/>
       <source>Close</source>
       <translation>Închide</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="623"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Wide</source>
       <translation>Lat</translation>
     </message>
@@ -4409,12 +4409,12 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Inversat</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="642"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="634"/>
+      <location filename="../../TaskHoleParameters.cpp" line="644"/>
       <source>Loose</source>
       <translation>Desprins</translation>
     </message>

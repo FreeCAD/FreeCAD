@@ -215,7 +215,7 @@
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Fit sphere</source>
-      <translation>球に合わせる</translation>
+      <translation>球体に合わせる</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="375"/>
@@ -236,7 +236,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>B-スプラインに合わせる</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
@@ -632,37 +632,37 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="96"/>
       <source>C0</source>
-      <translation type="unfinished">C0</translation>
+      <translation>C0</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="101"/>
       <source>G1</source>
-      <translation type="unfinished">G1</translation>
+      <translation>G1</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="106"/>
       <source>C1</source>
-      <translation type="unfinished">C1</translation>
+      <translation>C1</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="111"/>
       <source>G2</source>
-      <translation type="unfinished">G2</translation>
+      <translation>G2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="116"/>
       <source>C2</source>
-      <translation type="unfinished">C2</translation>
+      <translation>C2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="121"/>
       <source>C3</source>
-      <translation type="unfinished">C3</translation>
+      <translation>C3</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="126"/>
       <source>CN</source>
-      <translation type="unfinished">CN</translation>
+      <translation>CN</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
@@ -687,7 +687,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="167"/>
       <source>Curve length</source>
-      <translation type="unfinished">Curve length</translation>
+      <translation>曲線の長さ</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="174"/>

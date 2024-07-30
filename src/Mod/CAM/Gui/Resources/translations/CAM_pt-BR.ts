@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Creates a toolpath from a selected shape</source>
-      <translation type="unfinished">Creates a toolpath from a selected shape</translation>
+      <translation>Cria uma trajetória a partir de uma forma selecionada</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@ Quaisquer valores da Folha de Configuração que são alterados de seus padrões
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="120"/>
       <source>Enable to include the default coolant mode in the template.</source>
-      <translation type="unfinished">Enable to include the default coolant mode in the template.</translation>
+      <translation>Ative para incluir o modo de resfriamento padrão no modelo.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
@@ -224,11 +224,7 @@ Quaisquer valores da Folha de Configuração que são alterados de seus padrões
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
-
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
-
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+      <translation>Se ativado, a criação do bruto será incluída no template. Se um modelo não incluir uma definição de bruto, o algoritmo de criação de padrão será usado (criação a partir da caixa vinculada do objeto Base).Esta opção é mais útil se o bruto for uma caixa ou cilindro, ou se a máquina tiver um posicionamento padrão para máquinas.Note que esta opção está desabilitada se um objeto de bruto de um sólido existente é usado no job - ele não pode ser armazenado em um template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
@@ -238,7 +234,7 @@ Note that this option is disabled if a stock object from an existing solid is us
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
       <source>If enabled the current placement of the stock solid is stored in the template.</source>
-      <translation type="unfinished">If enabled the current placement of the stock solid is stored in the template.</translation>
+      <translation>Se ativado o posicionamento atual do sólido do bruto é armazenado no template.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="210"/>
@@ -710,7 +706,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
       <source>Clears list of base geometries</source>
-      <translation type="unfinished">Clears list of base geometries</translation>
+      <translation>Limpar lista de base geométricas</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
@@ -4681,37 +4677,32 @@ Default: 3 mm</translation>
       <translation type="unfinished">Extra allowance from part bound box in positive Z direction</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation>Um material para este objeto</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation type="unfinished">Length of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation type="unfinished">Width of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation type="unfinished">Height of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation type="unfinished">Radius of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation type="unfinished">Height of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation type="unfinished">Internal representation of stock type</translation>
     </message>
@@ -5774,12 +5765,12 @@ Default: 3 mm</translation>
       <translation type="unfinished">Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation type="unfinished">Unsupported stock type named {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation type="unfinished">Unsupported PathStock template version {}</translation>
     </message>
@@ -6866,7 +6857,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="264"/>
       <source>Lathe</source>
-      <translation type="unfinished">Lathe</translation>
+      <translation>Lathe</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="265"/>

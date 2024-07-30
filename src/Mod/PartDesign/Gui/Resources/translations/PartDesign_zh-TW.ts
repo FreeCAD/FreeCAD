@@ -1470,29 +1470,29 @@ If zero, it is equal to Radius2</source>
       <translation>幾何形體參數</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="830"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="835"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="840"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="911"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="916"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="921"/>
       <source>Invalid wedge parameters</source>
       <translation>無效的楔形體參數</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="831"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="912"/>
       <source>X min must not be equal to X max!</source>
       <translation>X 最小值必須不等於 X 最大值!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y 最小值必須不等於 Y 最大值!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z 最小值必須不等於 Z 最大值!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="879"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
       <source>Create primitive</source>
       <translation>建立幾何形體</translation>
     </message>
@@ -1563,7 +1563,7 @@ click again to end selection</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="323"/>
+      <location filename="../../TaskChamferParameters.cpp" line="327"/>
       <source>Empty chamfer created !
 </source>
       <translation type="unfinished">Empty chamfer created !
@@ -1604,7 +1604,7 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="130"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
       <source>Input error</source>
       <translation>輸入錯誤</translation>
     </message>
@@ -1658,7 +1658,7 @@ click again to end selection</source>
       <translation>反轉拔模方向</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="281"/>
+      <location filename="../../TaskDraftParameters.cpp" line="284"/>
       <source>Empty draft created !
 </source>
       <translation>已建立空草稿!</translation>
@@ -1695,64 +1695,64 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
       <source>No face selected</source>
       <translation>無選定之面</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="997"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="157"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1016"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="172"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="173"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="258"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
       <source>Preview</source>
       <translation>預覽</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="261"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
       <source>Select faces</source>
       <translation>選取面</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="481"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
       <source>No shape selected</source>
       <translation>無選取物件</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="583"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
       <source>Sketch normal</source>
       <translation>草圖法線</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="585"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="591"/>
       <source>Face normal</source>
       <translation>面法線</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="588"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
       <source>Select reference...</source>
       <translation>選取參考...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
       <source>Custom direction</source>
       <translation>自訂方向</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
       <source>Click on a shape in the model</source>
       <translation type="unfinished">Click on a shape in the model</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
       <source>Click on a face in the model</source>
       <translation>點擊模型中的一個面</translation>
     </message>
@@ -1876,7 +1876,7 @@ click again to end selection</source>
       <translation>使用所有邊線</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="190"/>
+      <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created!</source>
       <translation type="unfinished">Empty fillet created!</translation>
     </message>
@@ -1900,43 +1900,43 @@ click again to end selection</source>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="232"/>
+      <location filename="../../TaskHelixParameters.cpp" line="228"/>
       <source>Base X axis</source>
       <translation>基本 X 軸</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="233"/>
+      <location filename="../../TaskHelixParameters.cpp" line="229"/>
       <source>Base Y axis</source>
       <translation>物體原點的Y軸</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="234"/>
+      <location filename="../../TaskHelixParameters.cpp" line="230"/>
       <source>Base Z axis</source>
       <translation>Z 軸</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="215"/>
+      <location filename="../../TaskHelixParameters.cpp" line="212"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草圖軸</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="214"/>
+      <location filename="../../TaskHelixParameters.cpp" line="211"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草圖軸</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="213"/>
+      <location filename="../../TaskHelixParameters.cpp" line="210"/>
       <source>Normal sketch axis</source>
       <translation>垂直草圖軸</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="197"/>
+      <location filename="../../TaskHelixParameters.cpp" line="196"/>
       <source>Select reference...</source>
       <translation>選取參考...</translation>
     </message>
@@ -2011,27 +2011,27 @@ click again to end selection</source>
       <translation>更新視圖</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="51"/>
+      <location filename="../../TaskHelixParameters.cpp" line="52"/>
       <source>Helix parameters</source>
       <translation>螺旋參數</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="217"/>
+      <location filename="../../TaskHelixParameters.cpp" line="214"/>
       <source>Construction line %1</source>
       <translation>結構線 %1：</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="281"/>
+      <location filename="../../TaskHelixParameters.cpp" line="277"/>
       <source>Warning: helix might be self intersecting</source>
       <translation>警告：螺旋可能自相交</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="286"/>
+      <location filename="../../TaskHelixParameters.cpp" line="282"/>
       <source>Error: helix touches itself</source>
       <translation>錯誤：螺旋碰觸到自己</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="334"/>
+      <location filename="../../TaskHelixParameters.cpp" line="330"/>
       <source>Error: unsupported mode</source>
       <translation>錯誤：不支援的模式</translation>
     </message>
@@ -2558,12 +2558,12 @@ measured along the specified direction</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="534"/>
+      <location filename="../../TaskPipeParameters.cpp" line="536"/>
       <source>Section orientation</source>
       <translation>輪廓圖方向</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="560"/>
+      <location filename="../../TaskPipeParameters.cpp" line="562"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
@@ -2627,13 +2627,13 @@ measured along the specified direction</source>
       <translation>移除</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
-      <location filename="../../TaskPipeParameters.cpp" line="520"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
+      <location filename="../../TaskPipeParameters.cpp" line="522"/>
       <source>Input error</source>
       <translation>輸入錯誤</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
       <source>No active body</source>
       <translation>沒有活躍的實體</translation>
     </message>
@@ -2671,12 +2671,12 @@ measured along the specified direction</source>
       <translation>清單可以通過拖曳來重新排序</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="802"/>
+      <location filename="../../TaskPipeParameters.cpp" line="816"/>
       <source>Section transformation</source>
       <translation>輪廓圖轉換</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="818"/>
+      <location filename="../../TaskPipeParameters.cpp" line="832"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
@@ -2780,7 +2780,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="972"/>
       <source>Attachment</source>
       <translation>附件</translation>
     </message>
@@ -2805,19 +2805,19 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
       <source>Base X axis</source>
       <translation>基本 X 軸</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
       <source>Base Y axis</source>
       <translation>物體原點的Y軸</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
       <source>Base Z axis</source>
       <translation>Z 軸</translation>
     </message>
@@ -2833,7 +2833,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="226"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="227"/>
       <source>Select reference...</source>
       <translation>選取參考...</translation>
     </message>
@@ -2860,7 +2860,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="443"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="444"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -2900,7 +2900,7 @@ measured along the specified direction</source>
       <translation>雙向填充</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="429"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="430"/>
       <source>No face selected</source>
       <translation>無選定之面</translation>
     </message>
@@ -2949,7 +2949,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="174"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -3021,7 +3021,7 @@ click again to end selection</source>
       <translation>壁厚朝內</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="265"/>
       <source>Empty thickness created !
 </source>
       <translation>空厚度被創建！
@@ -3699,23 +3699,23 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="441"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草圖軸</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="442"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草圖軸</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="207"/>
       <source>Construction line %1</source>
       <translation>結構線 %1：</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="80"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -4252,20 +4252,20 @@ Only available for holes without thread</source>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Standard</source>
       <translation>標準</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="622"/>
-      <location filename="../../TaskHoleParameters.cpp" line="633"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="643"/>
       <source>Close</source>
       <translation>關閉</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="623"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Wide</source>
       <translation>寬</translation>
     </message>
@@ -4402,12 +4402,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>反轉</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="642"/>
       <source>Normal</source>
       <translation>垂直</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="634"/>
+      <location filename="../../TaskHoleParameters.cpp" line="644"/>
       <source>Loose</source>
       <translation>寬鬆</translation>
     </message>

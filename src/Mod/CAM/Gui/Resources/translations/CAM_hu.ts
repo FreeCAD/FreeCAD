@@ -521,7 +521,7 @@ Az alap tárgy határoló keretéből származó készletek esetében ez az öss
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Válasszon egy CAM-munkát</translation>
     </message>
   </context>
   <context>
@@ -2330,7 +2330,7 @@ Ha a sugár nagyobb, mint amit maga a címke alakja támogat, akkor az eredmény
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G-Code</source>
-      <translation type="unfinished">G-Code</translation>
+      <translation>G-kód</translation>
     </message>
   </context>
   <context>
@@ -2480,31 +2480,31 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Adja meg az utófeldolgozói export alapértelmezettként használandó elérési útvonalát és opcionálisan a fájl nevét (lásd alább).
+A következő helyettesítések a név feloldása előtt történnek az utófeldolgozáskor:
+A helyettesítés a következőket teszi lehetővé:
+%D ... az aktív dokumentum könyvtára
+%d ... az aktív dokumentum neve (kiterjesztéssel)
+%M ... felhasználói makró könyvtár
+%j ... az aktív feladatobjektum neve
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+A következő használható, ha a kimenet felosztása történik. Ha a kimenet nincs felosztva
+ezek figyelmen kívül maradnak.
+%T ... Szerszám száma
+%t ... Szerszámvezérlő címke
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... Munkakoordináta-rendszer
+%O ... Művelet címke
 
-When splitting output, a sequence number will always be added.
+A kimenet felosztásakor mindig hozzáadódik egy sorszám.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+Ha a %S szerepel, akkor megadhatja, hogy hol szerepel a szám.  Enélkül a szám a karakterlánc végére kerül.
 
-%S ... Sequence Number
+%S ... Sorszám
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+A következő példa a dokumentummal azonos nevű fájlokat a /home/freecad könyvtárban tárolja (kérjük, vegye ki az idézőjeleket):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+A névkonfliktusok kezeléséről lásd az alábbi fájlmentési szabályzatot.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -3023,7 +3023,7 @@ Ha több azonos nevű eszköz vagy szerszámforma létezik különböző könyvt
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A sarokszögek helyének listája (az összes bevágást az adott helyen), amelyek részei ennek az átalakításnak. A listát a profilban lévő sarkok és a felülvágások kiválasztott &lt;span style=&quot; font-weight:600;&quot;&gt; oldala &lt;/span&gt; határozza meg. &lt;/p&gt;&lt;p&gt;Kijelölheti &lt;span style=&quot; font-weight:600;&quot;&gt; azokat&lt;/span&gt; a levágásokat, amelyeket nem szeretne felöltöztetni.&lt;/p&gt;&lt;p&gt;Ha egy bevágás &lt;span style=&quot; font-weight:600;&quot;&gt; kiszürkített &lt;/span&gt; szelvényszelvényszelvényaz azt jelenti, hogy egy korábbi felöltöztetéssel már felöltöztette. Vagy másképpen fogalmazva, ha újra ezt a sarokbevágást újra befejezi, csak azokat a bevágásokat tudja majd kiválasztani, amelyek itt nincsenek bejelölve.&lt;/p&gt;&lt;p&gt;;Ha ez a lista üres, az valószínűleg azt jelenti, hogy a profil rossz oldalán próbál bevágást létrehozni.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3383,12 +3383,12 @@ Ha több azonos nevű eszköz vagy szerszámforma létezik különböző könyvt
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation type="unfinished">Launch CAMotics</translation>
+      <translation>Indítsa el a CAMotics-ot</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make CAMotics File</source>
-      <translation type="unfinished">Make CAMotics File</translation>
+      <translation>CAMotics fájl létrehozás</translation>
     </message>
   </context>
   <context>
@@ -3588,31 +3588,31 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Adja meg az utófeldolgozói export alapértelmezettként használandó elérési útvonalát és opcionálisan a fájl nevét (lásd alább).
+A következő helyettesítések a név feloldása előtt történnek az utófeldolgozáskor:
+A helyettesítés a következőket teszi lehetővé:
+%D ... az aktív dokumentum könyvtára
+%d ... az aktív dokumentum neve (kiterjesztéssel)
+%M ... felhasználói makró könyvtár
+%j ... az aktív feladatobjektum neve
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+A következő használható, ha a kimenet felosztása történik. Ha a kimenet nincs felosztva
+ezek figyelmen kívül maradnak.
+%T ... Szerszám száma
+%t ... Szerszámvezérlő címke
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... Munkakoordináta-rendszer
+%O ... Művelet címke
 
-When splitting output, a sequence number will always be added.
+A kimenet felosztásakor mindig hozzáadódik egy sorszám.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+Ha a %S szerepel, akkor megadhatja, hogy hol szerepel a szám.  Enélkül a szám a karakterlánc végére kerül.
 
-%S ... Sequence Number
+%S ... Sorszám
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+A következő példa a dokumentummal azonos nevű fájlokat a /home/freecad könyvtárban tárolja (kérjük, vegye ki az idézőjeleket):
 &quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+A névkonfliktusok kezeléséről lásd az alábbi fájlmentési szabályzatot.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
@@ -3665,8 +3665,8 @@ A művelet szerinti rendezés minden műveletet elvégez az összes koordináta-
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Munkakoordináta-rendszerek&lt;/span&gt; más néven &lt;span style=&quot; font-style:italic;&quot;&gt;Munkapontok&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Vagy tartozékeltolás &lt;/span&gt;, vagy &lt;span style=&quot; font-style:italic;&quot;&gt;berendezési tárgyak &lt;/span&gt;hasznosak olyan hatékony gyártási munkák létrehozásához, ahol ugyanazt az alkatrészt többször is elkészítik a gépen.
+A FreeCAD nem tudja, hogy egy adott koordináta-rendszer hol található a gépi koordináta-rendszerben, így további koordináta-rendszerek hozzáadása a munkához nem fog vizuális változást okozni a munkán belül. Ez azonban megváltoztatja a G-kód kimenetét. A kimenet pontos befolyásolásának módját a &apos;rendezés alapján&apos;beállítás szabályozza.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -4153,7 +4153,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>CAMotics Project (*.camotics)</source>
-      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
+      <translation>CAMotics terv (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4220,7 +4220,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Válasszon egy CAM-munkát</translation>
     </message>
   </context>
   <context>
@@ -4673,37 +4673,32 @@ Default: 3 mm</source>
       <translation>Extra távtartás az alkatrészé határolókeretétől pozitív Z irányban</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation>Egy anyag ehhez a tárgyhoz</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation>Ennek az alaptest mezőnek a hossza</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation>Ennek az alaptest mezőnek a szélessége</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation>Ennek az alaptest mezőnek a magassága</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation>Ennek az alaptest hengernek a sugara</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation>Ennek az alaptest hengernek a magassága</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation>Alaptest típusának belső ábrázolása</translation>
     </message>
@@ -5201,7 +5196,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
+      <translation>Maximális távolság a gérvágás csonkja előtt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5291,7 +5286,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
+      <translation>Ívek/köríves élek esetén a szerszámpálya sugarát eltolja.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5766,12 +5761,12 @@ Default: 3 mm</source>
       <translation>A készlet anyag tulajdonság elavult. Az anyag tulajdonság eltávolítása. Kérjük, használja a natív anyagrendszert a ShapeMaterial hozzárendeléséhez</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation>Nem támogatott alaptest típus név {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>Nem támogatott AlaptestUtvonal sablon változat {}</translation>
     </message>
@@ -5907,7 +5902,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
       <source>No job</source>
-      <translation type="unfinished">No job</translation>
+      <translation>Nincs munka</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -6334,7 +6329,7 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid G-code line: %s</source>
-      <translation type="unfinished">Invalid G-code line: %s</translation>
+      <translation>Érvénytelen G-kód sor: %s</translation>
     </message>
   </context>
   <context>
@@ -7153,7 +7148,7 @@ Például:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>Output (G-code)</source>
-      <translation type="unfinished">Output (G-code)</translation>
+      <translation>Kimenet (G-kód)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
@@ -7163,7 +7158,7 @@ Például:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Surface Speed HSS</source>
-      <translation type="unfinished">Surface Speed HSS</translation>
+      <translation>Felületi sebesség HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -8530,7 +8525,7 @@ Például:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
       <source>CAMotics tooltable (*.json)</source>
-      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
+      <translation>CAMotics eszköztábla (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8610,12 +8605,12 @@ Például:
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
       <source>CAMotics</source>
-      <translation type="unfinished">CAMotics</translation>
+      <translation>CAMotics</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>Simulate using CAMotics</source>
-      <translation type="unfinished">Simulate using CAMotics</translation>
+      <translation>Szimuláció CAMotics használatával</translation>
     </message>
   </context>
 </TS>

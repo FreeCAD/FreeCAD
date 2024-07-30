@@ -2567,42 +2567,42 @@ Note: The placement is expressed in local space of object being attached.</trans
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Εξαγωγή</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Μονάδες για την εξαγωγή αρχείων STEP</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Χιλιοστόμετρα</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Μέτρα</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Ίντσες</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Απαλοιφή καμπύλων στον παραμετρικό χώρο της επιφάνειας</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
       <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
@@ -2613,22 +2613,22 @@ placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation type="unfinished">Export invisible objects</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation type="unfinished">Export single object placement</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation type="unfinished">Use legacy export function</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Σχέδιο</translation>
     </message>
@@ -4013,7 +4013,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Ψηφιδωτό&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Καθορίζει τη μέγιστη απόκλιση του ελεγμένου πλέγματος στην επιφάνεια. Όσο μικρότερη είναι η τιμή η πιο αργή είναι η ταχύτητα απόδοσης που οδηγεί σε αυξημένη λεπτομέρεια/ανάλυση.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -6351,7 +6351,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Άκρες</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>

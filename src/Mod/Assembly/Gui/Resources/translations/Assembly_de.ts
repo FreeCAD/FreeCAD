@@ -89,17 +89,17 @@
     <message>
       <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Create Distance Joint</source>
-      <translation>Parallelverbindung erstellen</translation>
+      <translation>Abstandsverbindung erstellen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="227"/>
       <source>Create a Distance Joint: Fix the distance between the selected objects.</source>
-      <translation>Erzeuge eine Parallelverbindung: Fixiert die Entfernung zwischen den ausgewählten Objekten.</translation>
+      <translation>Erstellt eine Abstandsverbindung: Fixiert die Entfernung zwischen den ausgewählten Objekten.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="233"/>
       <source>Create one of several different joints based on the selection.For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
-      <translation>Einen von mehreren Verbindungen aus der Auswahl erstellen. Ein Abstand von 0 zwischen einer Ebene und einem Zylinder erstellt eine tangentiale Verbindung. Ein Abstand von 0 zwischen zwei Ebenen macht diese koplanar.</translation>
+      <translation>Erstellt eine von mehreren unterschiedlichen Verbindungen, basierend auf der Auswahl. Ein Abstand von 0 zwischen einer Ebene und einem Zylinder erstellt eine tangentiale Verbindung. Ein Abstand von 0 zwischen zwei Ebenen macht diese komplanar.</translation>
     </message>
   </context>
   <context>
@@ -123,7 +123,7 @@
       <translation>ASMT-Datei exportieren</translation>
     </message>
     <message>
-      <location filename="../../../CommandExportASMT.py" line="52"/>
+      <location filename="../../../CommandExportASMT.py" line="51"/>
       <source>Export currently active assembly as a ASMT file.</source>
       <translation>Exportiert die aktuell aktive Baugruppe als ASMT-Datei.</translation>
     </message>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../../InitGui.py" line="74"/>
       <source>Assembly</source>
-      <translation>Baugruppe</translation>
+      <translation>Assembly</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../../InitGui.py" line="108"/>
       <source>Assembly</source>
-      <translation>Baugruppe</translation>
+      <translation>Assembly</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="109"/>
@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1533"/>
+      <location filename="../../../JointObject.py" line="1556"/>
       <source>Distance</source>
       <translation>Abstand</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1535"/>
+      <location filename="../../../JointObject.py" line="1558"/>
       <source>Angle</source>
       <translation>Winkel</translation>
     </message>
@@ -265,17 +265,17 @@
       <translation>Riemen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1365"/>
+      <location filename="../../../JointObject.py" line="1413"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Es müssen 2 Elemente von 2 separaten Bauteilen ausgewählt werden.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1537"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Radius 1</source>
       <translation>Radius 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1539"/>
+      <location filename="../../../JointObject.py" line="1562"/>
       <source>Pitch radius</source>
       <translation>Steigungsradius</translation>
     </message>
@@ -378,144 +378,140 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="192"/>
+      <location filename="../../../JointObject.py" line="188"/>
       <source>The type of the joint</source>
       <translation>Der Typ der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
-      <location filename="../../../JointObject.py" line="449"/>
+      <location filename="../../../JointObject.py" line="210"/>
+      <location filename="../../../JointObject.py" line="474"/>
+      <source>The first reference of the joint</source>
+      <translation type="unfinished">The first reference of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="221"/>
+      <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
+      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="241"/>
+      <location filename="../../../JointObject.py" line="497"/>
+      <source>The second reference of the joint</source>
+      <translation type="unfinished">The second reference of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="252"/>
+      <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
+      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="430"/>
       <source>The first object of the joint</source>
       <translation>Das erste Objekt der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
-      <source>The first part of the joint</source>
-      <translation>Das erste Bauteil der Verbindung</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="232"/>
-      <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation>Dies ist das lokale Koordinatensystem des ersten Objekts, welches für die Verbindung verwendet wird.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="243"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Dies verhindert die Neuberechnung der ersten Platzierung, wodurch eine benuzerdefinierte Platzierung ermöglicht wird.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="252"/>
-      <location filename="../../../JointObject.py" line="468"/>
+      <location filename="../../../JointObject.py" line="449"/>
       <source>The second object of the joint</source>
       <translation>Das zweite Objekt der Verbindung</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="260"/>
-      <source>The second part of the joint</source>
-      <translation>Das zweite Bauteil der Verbindung</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="271"/>
-      <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation>Dies ist das lokale Koordinatensystem des zweiten Objekts, welches für die Verbindung verwendet wird.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="263"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Dies verhindert die Neuberechnung der zweiten Platzierung, wodurch eine benuzerdefinierte Platzierung ermöglicht wird.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="294"/>
+      <location filename="../../../JointObject.py" line="275"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</translation>
+      <translation>Dies ist der Abstand der Verbindung. Dieser wird nur von der Parallelverbindung, Zahnstange-Ritzel-Verbindung (Steigungsradius), Schraubverbindung, Zahnrad- und Riemenverbindung (Radius 1) verwendet</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="305"/>
+      <location filename="../../../JointObject.py" line="286"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Dies ist der zweite Abstand der Verbindung. Er wird nur von der Zahnrad- und Riemenverbindung für den zweiten Radius verwendert.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="297"/>
       <source>This is the rotation of the joint.</source>
       <translation>Dies ist die Drehung der Verbindung.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="327"/>
+      <location filename="../../../JointObject.py" line="308"/>
       <source>This is the offset vector of the joint.</source>
       <translation>Dies ist der Versatz-Vektor der Verbindung.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="338"/>
+      <location filename="../../../JointObject.py" line="319"/>
       <source>This indicates if the joint is active.</source>
       <translation>Dies zeigt an, ob die Verbindung aktiv ist.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="350"/>
+      <location filename="../../../JointObject.py" line="331"/>
       <source>Enable the minimum length limit of the joint.</source>
       <translation>Aktiviere die minimale Längenbegrenzung der Verbindung.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="362"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum length limit of the joint.</source>
       <translation>Aktiviere die maximale Längenbegrenzung der Verbindung.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="374"/>
+      <location filename="../../../JointObject.py" line="355"/>
       <source>Enable the minimum angle limit of the joint.</source>
       <translation>Aktiviere die minimale Winkelbegrenzung der Verbindung.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="367"/>
       <source>Enable the minimum length of the joint.</source>
       <translation>Aktiviere die maximale Länge der Verbindung.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Dies ist der minimale Grenzwert für den Abstand zwischen beiden Koordinatensystemen (entlang ihrer Z-Achse).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="409"/>
+      <location filename="../../../JointObject.py" line="390"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Dies ist der maximale Grenzwert für den Abstand zwischen beiden Koordinatensystemen (entlang ihrer Z-Achse).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="401"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Dies ist der minimale Grenzwert für den Winkel zwischen beiden Koordinatensystemen (zwischen ihrer X-Achse).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="431"/>
+      <location filename="../../../JointObject.py" line="412"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Dies ist der maximale Grenzwert für den Winkel zwischen beiden Koordinatensystemen (zwischen ihrer X-Achse).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1021"/>
+      <location filename="../../../JointObject.py" line="1070"/>
       <source>The object to ground</source>
       <translation>Das festzusetzende Objekt</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1033"/>
+      <location filename="../../../JointObject.py" line="1082"/>
       <source>This is where the part is grounded.</source>
       <translation>Dies ist die Position, an der das Objekt festgesetzt wird.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="235"/>
-      <source>The object moved by the move</source>
-      <translation>Das Objekt wurde durch die Verschiebung bewegt</translation>
+      <location filename="../../../CommandCreateView.py" line="246"/>
+      <location filename="../../../CommandCreateView.py" line="280"/>
+      <source>The objects moved by the move</source>
+      <translation type="unfinished">The objects moved by the move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="242"/>
-      <source>The containing parts of objects moved by the move</source>
-      <translation>Die enthaltenen Bauteile von Objekten wurden durch die Verschiebung bewegt</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateView.py" line="252"/>
+      <location filename="../../../CommandCreateView.py" line="257"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Dies ist die Verschiebung der Bewegung. Die Endplatzierung ist das Ergebnis aus der Startplatzierung * dieser Platzierung.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
+      <location filename="../../../CommandCreateView.py" line="265"/>
       <source>The type of the move</source>
       <translation>Die Art der Bewegung</translation>
     </message>
@@ -636,7 +632,7 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leaves edit mode</source>
-      <translation type="unfinished">Esc leaves edit mode</translation>
+      <translation>Mit Esc den Bearbeitungsmodus verlassen</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
@@ -664,22 +660,17 @@ Die Dateien heißen "runPreDrag.asmt" und "dragging.log" befinden sich im Standa
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="150"/>
-      <source>Delete associated joints</source>
-      <translation>Zugehörige Verbindungen löschen</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="162"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="176"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Das Objekt gehört zu einer oder mehreren Verbindungen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="164"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Soll das Objekt bewegt und zugehörige Verbindungen gelöscht werden?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="780"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="805"/>
       <source>Move part</source>
       <translation>Bauteil verschieben</translation>
     </message>
@@ -852,7 +843,7 @@ ESC zum abbrechen.</translation>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
       <source>Only parts</source>
-      <translation>Nur Parts</translation>
+      <translation>Nur Bauteile</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
@@ -924,7 +915,7 @@ ESC zum abbrechen.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</source>
-      <translation>Erstelle eine Materialrechnung der aktuellen Assembly. Falls eine Assembly aktiv ist, wird die Materialrechnung für diese Assembly erstellt, andernfalls für das gesamte Dokument.</translation>
+      <translation>Erstelle eine Stückliste der aktuellen Baugruppe. Falls eine Baugruppe aktiv ist, wird die Stückliste für diese Baugruppe erstellt, andernfalls für das gesamte Dokument.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>

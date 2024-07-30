@@ -527,7 +527,7 @@ W przypadku zapasów z obwiedni obiektu podstawowego oznacza to dodatkowy materi
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Wybierz zadanie CAM</translation>
     </message>
   </context>
   <context>
@@ -2355,7 +2355,7 @@ wynikowy kształt będzie kopułą.</translation>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G-Code</source>
-      <translation type="unfinished">G-Code</translation>
+      <translation>G-Code</translation>
     </message>
   </context>
   <context>
@@ -2505,31 +2505,30 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Wprowadź ścieżkę i opcjonalnie nazwę pliku (patrz poniżej), która będzie używana jako domyślna dla eksportu postprocesora.
+Następujące podstawienia są wykonywane zanim nazwa zostanie zbudowana w czasie przetwarzania końcowego:
+Zastępowanie pozwala na następujące działania:
+%D . . katalog aktywnego dokumentu
+%d . . nazwa aktywnego dokumentu (z rozszerzeniem)
+%M ... katalog makrodefinicji użytkownika
+%j ... nazwa aktywnego obiektu Zadania
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+Poniższa opcja może być użyta, jeśli wyjście jest dzielone. Jeśli wyjście nie jest podzielone zostaną one zignorowane.
+%T ... Numer narzędzia
+%t ... Etykieta kontrolera narzędzi
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... Roboczy Układ współrzędnych
+%O ... Etykieta operacji
 
-When splitting output, a sequence number will always be added.
+Podczas rozdzielania danych wyjściowych zawsze zostanie dodany numer sekwencji.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+jeśli %S jest dołączony, możesz określić gdzie występuje numer. Bez tego, numer zostanie dodany na końcu ciągu.
 
-%S ... Sequence Number
+%S ... Numer sekwencyjny
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+Poniższy przykład zapisuje wszystkie pliki o tej samej nazwie co dokument w katalogu /home/freecad (proszę usunąć cudzysłowy):
+"/home/cnc/%d. -code"
+Zobacz zasady zapisywania plików poniżej, aby dowiedzieć się, jak radzić sobie z konfliktami nazw.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -3054,7 +3053,8 @@ UWAGA: Włączenie OpenCAMLib w tym miejscu wymaga ponownego uruchomienia FreeCA
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html>&lt;head/>&lt;body>&lt;p>Lista lokalizacji zacięć (wraz z wszystkimi zacięciami w tej lokalizacji), które są częścią tego wykończenia. 
+Lista ta jest określana na podstawie narożników w profilu i wybranej&lt;span style=" font-weight:600;">Strony&lt;/span> dla zacięć. &lt;/p>&lt;p>Możesz &lt;span style=" font-weight:600;">odznaczyć&lt;/span> zacięcia, których nie chcesz wykańczać.&lt;/p>&lt;p>Jeśli zacięcie jest &lt;span style=" font-weight:600;">wyszarzone&lt;/span> to znaczy, że zostało już wykończone. Innymi słowy, jeśli wykończysz to zacięcie ponownie, będziesz mógł wybrać tylko zacięcia, które są tu odznaczone.&lt;/p>&lt;p>Jeśli ta lista jest pusta, prawdopodobnie próbujesz utworzyć zacięcia po złej stronie profilu.&lt;/p>&lt;/body>&lt;/html></translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3418,12 +3418,12 @@ Znaczniki są automatycznie wyłączane, jeśli nakładają się na poprzedni zn
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation type="unfinished">Launch CAMotics</translation>
+      <translation>Uruchom CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make CAMotics File</source>
-      <translation type="unfinished">Make CAMotics File</translation>
+      <translation>Utwórz plik CAMotics</translation>
     </message>
   </context>
   <context>
@@ -3623,31 +3623,30 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Wprowadź ścieżkę i opcjonalnie nazwę pliku (patrz poniżej), która będzie używana jako domyślna dla eksportu postprocesora.
+Następujące podstawienia są wykonywane zanim nazwa zostanie zbudowana w czasie przetwarzania końcowego:
+Zastępowanie pozwala na następujące działania:
+%D . . katalog aktywnego dokumentu
+%d . . nazwa aktywnego dokumentu (z rozszerzeniem)
+%M ... katalog makrodefinicji użytkownika
+%j ... nazwa aktywnego obiektu Zadania
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+Poniższa opcja może być użyta, jeśli wyjście jest dzielone. Jeśli wyjście nie jest podzielone zostaną one zignorowane.
+%T ... Numer narzędzia
+%t ... Etykieta kontrolera narzędzi
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... Roboczy Układ współrzędnych
+%O ... Etykieta operacji
 
-When splitting output, a sequence number will always be added.
+Podczas rozdzielania danych wyjściowych zawsze zostanie dodany numer sekwencji.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+jeśli %S jest dołączony, możesz określić gdzie występuje numer. Bez tego, numer zostanie dodany na końcu ciągu.
 
-%S ... Sequence Number
+%S ... Numer sekwencyjny
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+Poniższy przykład zapisuje wszystkie pliki o tej samej nazwie co dokument w katalogu /home/freecad (proszę usunąć cudzysłowy):
+"/home/cnc/%d. -code"
+Zobacz zasady zapisywania plików poniżej, aby dowiedzieć się, jak radzić sobie z konfliktami nazw.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
@@ -3700,8 +3699,7 @@ Porządkowanie według operacji spowoduje wykonanie każdej operacji we wszystki
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html>&lt;head/>&lt;body>&lt;p>&lt;span style=" font-style:italic;">Układy współrzędnych pracy&lt;/span> nazywane również &lt;span style=" font-style:italic;">Przesunięciem roboczym&lt;/span> &lt;span style=" font-style:italic;">Przesunięciem uchwytów&lt;/span>, lub &lt;span style=" font-style:italic;">Uchwyty &lt;/span>są przydatne do budowania wydajnych miejsc pracy, gdzie ta sama część jest wykonywana wiele razy na maszynie.&lt;/p>&lt;p>FreeCAD nie ma wiedzy na temat tego, gdzie istnieje konkretny system współrzędnych w systemie współrzędnych maszynowych, więc dodanie dodatkowych systemów współrzędnych do Twojego zadania nie spowoduje żadnych zmian wizualnych w Twoim zadaniu. Zmieni to jednak Twój wynikowy G-Code. Dokładny sposób wpływu na dane wyjściowe jest kontrolowany przez opcje w ustawieniach "Sortuj według".&lt;/p>&lt;/body>&lt;/html></translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -4187,7 +4185,7 @@ Domyślnie: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>CAMotics Project (*.camotics)</source>
-      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
+      <translation>Projekt CAMotics (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4254,7 +4252,7 @@ Domyślnie: 3 mm</translation>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Wybierz zadanie CAM</translation>
     </message>
   </context>
   <context>
@@ -4707,37 +4705,32 @@ Domyślnie: 3 mm</translation>
       <translation>Dodatkowy naddatek z ramki otaczającej części w dodatnim kierunku Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation>Materiał dla tego obiektu</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation>Długość prostopadłościanu półfabrykatu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation>Szerokość prostopadłościanu półfabrykatu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation>Wysokość prostopadłościanu półfabrykatu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation>Promień tego walca półfabrykatu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation>Wysokość tego walca półfabrykatu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation>Wewnętrzna reprezentacja typu półfabrykatu</translation>
     </message>
@@ -5236,7 +5229,7 @@ lub przeciwnie do ruchu wskazówek zegara (konwencjonalnie)</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
+      <translation>Maksymalna odległość przed obcięciem połączenia skośnego</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5326,7 +5319,7 @@ lub przeciwnie do ruchu wskazówek zegara (konwencjonalnie)</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
+      <translation>Dla łuków/krawędzi okrągłych, przesuń promień ścieżki narzędzia.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5808,12 +5801,12 @@ Usunięcie właściwości Materiał.
 Użyj wbudowanego systemu materiałów, aby przypisać właściwość MateriałKształtu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation>Nieobsługiwany typ półfabrykatu o nazwie {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>Nieobsługiwana wersja szablonu półfabrykatu {}</translation>
     </message>
@@ -5949,7 +5942,7 @@ Użyj wbudowanego systemu materiałów, aby przypisać właściwość MateriałK
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
       <source>No job</source>
-      <translation type="unfinished">No job</translation>
+      <translation>Brak zadania</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -6376,7 +6369,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid G-code line: %s</source>
-      <translation type="unfinished">Invalid G-code line: %s</translation>
+      <translation>Nieprawidłowy wiersz G-code: %s</translation>
     </message>
   </context>
   <context>
@@ -7196,7 +7189,7 @@ Na przykład:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>Output (G-code)</source>
-      <translation type="unfinished">Output (G-code)</translation>
+      <translation>Wyjście (G-Code)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
@@ -7206,7 +7199,7 @@ Na przykład:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Surface Speed HSS</source>
-      <translation type="unfinished">Surface Speed HSS</translation>
+      <translation>Prędkość powierzchniowa HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -8577,7 +8570,7 @@ Czy geometria bazowa została wybrana?</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
       <source>CAMotics tooltable (*.json)</source>
-      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
+      <translation>Zestaw narzędzi CAMotics (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8657,12 +8650,12 @@ Czy geometria bazowa została wybrana?</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
       <source>CAMotics</source>
-      <translation type="unfinished">CAMotics</translation>
+      <translation>CAMotics</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>Simulate using CAMotics</source>
-      <translation type="unfinished">Simulate using CAMotics</translation>
+      <translation>Symuluj używając CAMotics</translation>
     </message>
   </context>
 </TS>

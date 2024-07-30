@@ -698,7 +698,7 @@
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>Спеціальний режим для складання багатогранників. Виберіть 4 ребра у порядку: ребро, що згинається, лінія згину, інша лінія згину, інше ребро, що згинається. Площина буде вирівняна по лінії згину першої грані.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="181"/>
@@ -907,7 +907,7 @@
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+      <translation>Спеціальний режим для складання багатогранників. Виберіть 4 ребра у порядку: ребро, що згинається, лінія згину, інша лінія згину, інше ребро, що згинається. Площина XY буде вирівняна по лінії згину першої грані.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="103"/>
@@ -2568,68 +2568,67 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Експорт</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Одиниці для експорту STEP</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Міліметри</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Метри</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Дюйми</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation type="unfinished">Write out curves in parametric space of surface</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
       <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Позначте цю опцію, щоб зберегти інформацію про розташування при експорті
+одного об'єкта. Зверніть увагу, що при зворотному імпорті STEP-файлу, розташування буде закодовано в геометрію фігури, замість того, щоб зберігати
+замість того, щоб зберігати його у властивості «Розташування».</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation type="unfinished">Export invisible objects</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation type="unfinished">Export single object placement</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation type="unfinished">Use legacy export function</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Схема</translation>
     </message>
@@ -2638,9 +2637,9 @@ it inside the Placement property.</translation>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation type="unfinished">This parameter indicates whether parametric curves (curves in parametric space of surface)
-should be written into the STEP file. This parameter can be set to off in order to minimize
-the size of the resulting STEP file.</translation>
+      <translation>Цей параметр вказує, чи параметричні криві (криві в параметричному просторі поверхні)
+повинні бути записані у файл STEP. Цей параметр може бути вимкнений для того, щоб мінімізувати
+розмір кінцевого STEP-файлу.</translation>
     </message>
   </context>
   <context>
@@ -4244,10 +4243,10 @@ during file reading (slower but higher details).</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Нижній бік поверхні буде візуалізовано так само, як і верхній.
+Якщо галочку не встановлено, це залежить від опції «Колір підсвічування»
+(розділ налаштувань Дисплей -&gt; 3D-Вигляд); буде використано або колір підсвічування
+буде використано або чорний.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4558,10 +4557,10 @@ the sketch plane's normal vector will be used</translation>
 will be taken from the cut objects.
 Works only properly if all objects
 have the same values.</source>
-      <translation type="unfinished">If checked, the color and transparency
-will be taken from the cut objects.
-Works only properly if all objects
-have the same values.</translation>
+      <translation>Якщо позначено, колір і прозорість
+будуть взяті з вирізаних об'єктів.
+Працює коректно, тільки якщо всі об'єкти
+мають однакові значення.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="308"/>
@@ -5030,9 +5029,9 @@ of object being attached.</translation>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always
-mean the checked object is unusable.  Default: false</translation>
+      <translation>Додаткова перевірка булевих операцій, яка іноді може виявити помилки, які
+які стандартна перевірка геометрії BRep пропускає. Ці помилки не завжди
+означають, що перевірений об'єкт непридатний для використання.  За замовчуванням: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
@@ -6147,7 +6146,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Виберіть принаймні два об'єкти, або одну чи кілька сполук. Якщо вибрано лише одне з'єднання, складені фігури перетинатимуться між собою (в іншому випадку з'єднання з самоперетинами будуть недійсними).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
@@ -6169,10 +6168,10 @@ Do you want to continue?</source>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Відфільтруйте об'єкти з вибраного з'єднання за такими характеристиками, як об'єм,
+площею або довжиною, або вибравши певні об'єкти.
+Якщо вибрано другий об'єкт, його буде використано як опорний, наприклад
+для фільтрації за зіткненням або відстанню.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
@@ -6471,11 +6470,11 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Створіть об'єкт «»Логічні фрагменти«» з двох або більше виділених об'єктів,
+або з фігур усередині об'єднання.
+Це логічне об'єднання, яке потім розрізається на перетинах
+початкових фігур.
+Для виокремлення окремих фрагментів можна скористатися фільтром «Складений».</translation>
     </message>
   </context>
   <context>
@@ -6490,9 +6489,9 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Розріжте вибраний об'єкт, використовуючи інші об'єкти як ріжучі інструменти.
+Отримані фрагменти будуть збережені у з'єднанні.
+Для вилучення окремих фрагментів можна скористатися фільтром з'єднання.</translation>
     </message>
   </context>
   <context>
@@ -6523,10 +6522,10 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Виконати логічну операцію «виключне АБО» з двома або більше виділеними об'єктами,
+або з фігурами всередині об'єднання.
+Це означає, що об'єми фігур, які перекриваються, буде вилучено.
+Для вилучення решти фігур можна скористатися фільтром складних об'єктів.</translation>
     </message>
   </context>
   <context>

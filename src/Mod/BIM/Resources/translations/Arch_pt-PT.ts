@@ -1297,13 +1297,13 @@ Utils -&gt; Make IFC project</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="85"/>
-      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
+      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
+      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="95"/>
-      <source>The BIM workbench also has a &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
+      <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
+      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="105"/>
@@ -2685,37 +2685,37 @@ instead of the FreeCAD web workbench</translation>
       <translation>Importar IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="41"/>
+      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Show this dialog when importing</source>
       <translation>Mostrar esta caixa de diálogo quando importar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="54"/>
+      <location filename="../ui/preferences-ifc.ui" line="45"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation>Mostra mensagens de depuração detalhadas durante a importação e exportação de
 de ficheiros IFC no painel de vista de relatório</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="58"/>
+      <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Show debug messages</source>
       <translation>Mostrar as mensagens de depuração</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="71"/>
+      <location filename="../ui/preferences-ifc.ui" line="62"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation>Clones são usados quando objetos têm geometria partilhada
 Um objeto é o objeto base, os outros são clones.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="75"/>
+      <location filename="../ui/preferences-ifc.ui" line="66"/>
       <source>Create clones when objects have shared geometry</source>
       <translation>Criar clones quando os objetos têm geometria compartilhada</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="99"/>
-      <location filename="../ui/preferences-ifc.ui" line="119"/>
+      <location filename="../ui/preferences-ifc.ui" line="90"/>
+      <location filename="../ui/preferences-ifc.ui" line="110"/>
       <source>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
@@ -2734,189 +2734,189 @@ Defina 1 para usar o modo multicore no modo single-core; isto é mais seguro
 se você começar a receber falhas quando você definir vários núcleos.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="129"/>
+      <location filename="../ui/preferences-ifc.ui" line="120"/>
       <source>Number of cores to use (experimental)</source>
       <translation>Número de núcleos a utilizar (experimental)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="157"/>
+      <location filename="../ui/preferences-ifc.ui" line="148"/>
       <source>Import options</source>
       <translation>Opções de importação</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="165"/>
+      <location filename="../ui/preferences-ifc.ui" line="156"/>
       <source>Import arch IFC objects as</source>
       <translation>Importar objetos IFC de arquitetura como</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="172"/>
-      <location filename="../ui/preferences-ifc.ui" line="221"/>
+      <location filename="../ui/preferences-ifc.ui" line="163"/>
+      <location filename="../ui/preferences-ifc.ui" line="212"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Especifica que tipo de objetos serão criados no FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="182"/>
+      <location filename="../ui/preferences-ifc.ui" line="173"/>
       <source>Parametric BIM objects</source>
       <translation type="unfinished">Parametric BIM objects</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="187"/>
-      <location filename="../ui/preferences-ifc.ui" line="231"/>
+      <location filename="../ui/preferences-ifc.ui" line="178"/>
+      <location filename="../ui/preferences-ifc.ui" line="222"/>
       <source>Non-parametric BIM objects</source>
       <translation type="unfinished">Non-parametric BIM objects</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="192"/>
-      <location filename="../ui/preferences-ifc.ui" line="236"/>
+      <location filename="../ui/preferences-ifc.ui" line="183"/>
+      <location filename="../ui/preferences-ifc.ui" line="227"/>
       <source>Simple Part shapes</source>
       <translation>Formas simples de Peça (Part)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="197"/>
+      <location filename="../ui/preferences-ifc.ui" line="188"/>
       <source>One compound per floor</source>
       <translation>Um composto por Piso (andar)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="202"/>
+      <location filename="../ui/preferences-ifc.ui" line="193"/>
       <source>Do not import Arch objects</source>
       <translation>Não importar objetos de arquitetura</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="214"/>
+      <location filename="../ui/preferences-ifc.ui" line="205"/>
       <source>Import struct IFC objects as</source>
       <translation>Importar objetos IFC estruturais como</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="241"/>
+      <location filename="../ui/preferences-ifc.ui" line="232"/>
       <source>One compound for all</source>
       <translation>Um composto para todos</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="246"/>
+      <location filename="../ui/preferences-ifc.ui" line="237"/>
       <source>Do not import structural objects</source>
       <translation>Não importar objetos estruturais</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="258"/>
+      <location filename="../ui/preferences-ifc.ui" line="249"/>
       <source>Root element:</source>
       <translation>Elemento raiz:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="265"/>
+      <location filename="../ui/preferences-ifc.ui" line="256"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
       <translation>Apenas os subtipos do elemento especificado serão importados. Manter o valor como "IfcProduct" para importar todos os elementos de construção.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="284"/>
+      <location filename="../ui/preferences-ifc.ui" line="275"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
       <translation>As aberturas(vãos) serão importadas como subtrações, caso contrário as paredes
 já terão as aberturas subtraídas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="288"/>
+      <location filename="../ui/preferences-ifc.ui" line="279"/>
       <source>Separate openings</source>
       <translation>Separar aberturas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="301"/>
+      <location filename="../ui/preferences-ifc.ui" line="292"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
       <translation>O importador tentará detectar extrusões.
 Note que isso pode deixar as coisas mais lentas.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="305"/>
+      <location filename="../ui/preferences-ifc.ui" line="296"/>
       <source>Detect extrusions</source>
       <translation>Detectar extrusões</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="318"/>
+      <location filename="../ui/preferences-ifc.ui" line="309"/>
       <source>Split walls made of multiple layers</source>
       <translation>Separar paredes feitas de várias camadas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="321"/>
+      <location filename="../ui/preferences-ifc.ui" line="312"/>
       <source>Split multilayer walls</source>
       <translation>Separar paredes multicamadas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="334"/>
+      <location filename="../ui/preferences-ifc.ui" line="325"/>
       <source>Object names will be prefixed with the IFC ID number</source>
       <translation>Os nomes dos objetos terão os prefixos com o número do ID IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="337"/>
+      <location filename="../ui/preferences-ifc.ui" line="328"/>
       <source>Prefix names with ID number</source>
       <translation>Adicionar prefixo com número ID</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="350"/>
+      <location filename="../ui/preferences-ifc.ui" line="341"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
       <translation>Se forem encontrados vários materiais com o mesmo nome e cor no ficheiro IFC, eles serão tratados como um só.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="354"/>
+      <location filename="../ui/preferences-ifc.ui" line="345"/>
       <source>Merge materials with same name and same color</source>
       <translation>Fundir materiais com o mesmo nome e a mesma cor</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="367"/>
+      <location filename="../ui/preferences-ifc.ui" line="358"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
       <translation>Cada objeto terá as suas propriedades IFC armazenadas numa folha de cálculo</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="370"/>
+      <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>Import IFC properties in spreadsheet</source>
       <translation>Importar propriedades IFC na folha de cálculo</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="383"/>
+      <location filename="../ui/preferences-ifc.ui" line="374"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
       <translation>Os ficheiros IFC podem conter geometria não limpa ou não sólida. Se esta opção for marcada, toda a geometria é importada, independentemente da sua validade.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="386"/>
+      <location filename="../ui/preferences-ifc.ui" line="377"/>
       <source>Allow invalid shapes</source>
       <translation>Permitir formas inválidas</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="401"/>
+      <location filename="../ui/preferences-ifc.ui" line="392"/>
       <source>Exclude list:</source>
       <translation>Lista de exclusão:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="408"/>
+      <location filename="../ui/preferences-ifc.ui" line="399"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
       <translation>Lista separada por vírgulas de entidades IFC a serem excluídas da importação</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="429"/>
+      <location filename="../ui/preferences-ifc.ui" line="420"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
       <translation>Enquadrar a vista durante a importação. A importação fica mais lenta, mas o progresso pode ser monitorizado mais facilmente.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="433"/>
+      <location filename="../ui/preferences-ifc.ui" line="424"/>
       <source>Fit view while importing</source>
       <translation>Enquadrar a vista ao importar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="446"/>
+      <location filename="../ui/preferences-ifc.ui" line="437"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
       <translation>Cria um modelo paramétrico completo ao importar usando
 propriedades do objeto FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="450"/>
+      <location filename="../ui/preferences-ifc.ui" line="441"/>
       <source>Import full FreeCAD parametric definitions if available</source>
       <translation>Importar todas as definições paramétricas do FreeCAD se disponíveis</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="463"/>
+      <location filename="../ui/preferences-ifc.ui" line="454"/>
       <source>If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
@@ -2927,7 +2927,7 @@ são colocados num 'Grupo'.
 'Construções' e 'Pisos' ainda são importados se houver mais de um.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="469"/>
+      <location filename="../ui/preferences-ifc.ui" line="460"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
       <translation>Substituir 'Projeto', 'Sítio', 'Construção', e 'Piso' por 'Grupo'</translation>
     </message>
@@ -2937,7 +2937,7 @@ são colocados num 'Grupo'.
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="48"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export options</source>
       <translation>Opções de Exportação</translation>
@@ -3069,19 +3069,19 @@ O gradiente do tamanho da malha local h(x) está vinculado por ├h(x)├1/valor
       <translation>Exportar IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
-      <location filename="../ui/preferences-ifc.ui" line="35"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="26"/>
+      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General options</source>
       <translation>Opções gerais</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="41"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="32"/>
       <source>Show this dialog when exporting</source>
       <translation>Mostrar esta caixa de diálogo quando exportar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="65"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="78"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="56"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="69"/>
       <source>The type of objects that you wish to export:
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
@@ -3092,60 +3092,60 @@ O gradiente do tamanho da malha local h(x) está vinculado por ├h(x)├1/valor
 — Padrão + estrutural: ambos os tipos de modelos.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="71"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="62"/>
       <source>Export type</source>
       <translation>Tipo de exportação</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="91"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="82"/>
       <source>Standard model</source>
       <translation>Modelo padrão</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="96"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="87"/>
       <source>Structural analysis</source>
       <translation>Análise estrutural</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="92"/>
       <source>Standard + structural</source>
       <translation>Padrão + estrutural</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="111"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="102"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
       <translation>Alguns visualizadores IFC não gostam de objetos exportados como extrusões. Use isto para forçar todos os objetos a serem exportados como geometria BREP.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="115"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="106"/>
       <source>Force export as Brep</source>
       <translation>Forçar exportação como Brep</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="128"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="119"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>Usar opções de triangulação definidas na página de opções do formato DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="131"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="122"/>
       <source>Use DAE triangulation options</source>
       <translation>Usar opções de triangulação DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="144"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="135"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
       <translation>Formas curvas que não podem ser representadas como curvas no formato IFC são decompostas em faces planas. Se esta opção for marcada, um cálculo adicional será feito para juntar as faces complanares.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="149"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Juntar faces complanares aquando da triangulação</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="153"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
@@ -3154,12 +3154,12 @@ será armazenado no objeto FreeCAD para reutilizar na próxima vez que o objeto
 for exportado. Isto leva a diferenças menores entre as versões do arquivo.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="158"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
       <translation>Armazenar o ID único IFC em objetos FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="174"/>
       <source>IFCOpenShell is a library that allows to import IFC files.
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
@@ -3170,45 +3170,45 @@ produzir uma geometria IFC adequada: NURBS, face ou qualquer outra.
 Nota: O serializador ainda é um recurso experimental!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="189"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="180"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>Use o serializador IfcOpenShell se disponível</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="202"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="193"/>
       <source>2D objects will be exported as IfcAnnotation</source>
       <translation>Objetos 2D serão exportados como IfcAnotação</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="205"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="196"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>Exportar objetos 2D como IfcAnnotations</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="221"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="212"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
       <translation>Todas as propriedades de objeto FreeCAD serão armazenadas dentro dos objetos exportados, permitindo recriar um modelo paramétrico completo na reimportação.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="225"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="216"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>Exportar o modelo paramétrico completo do FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="238"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="229"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
       <translation>Quando possível, entidades similares serão usadas apenas uma vez no ficheiro.
 Isto pode reduzir muito o tamanho do ficheiro, mas irá torná-lo menos legível.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="233"/>
       <source>Reuse similar entities</source>
       <translation>Reusar entidades similares</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="258"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="249"/>
       <source>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
@@ -3219,62 +3219,62 @@ No entanto, algumas aplicações podem ter problemas ao importar essa entidade.
 Se este é o seu caso, você pode desativar esta definição e então todos os perfis serão exportados como IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="264"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="255"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>Desativar IfcRectangleProfileDef</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="277"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="268"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
       <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="396"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="387"/>
       <source>Add default building if one is not found in the document</source>
       <translation type="unfinished">Add default building if one is not found in the document</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="412"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="403"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</source>
       <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="415"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="406"/>
       <source>Export nested groups as assemblies</source>
       <translation type="unfinished">Export nested groups as assemblies</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="281"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="272"/>
       <source>Auto-detect and export as standard cases when applicable</source>
       <translation>Detecção automática e exportar como casos padrão quando aplicável</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="294"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="285"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
       <translation>Se nenhum sítio for encontrado no documento FreeCAD, um padrão será adicionado.
 Um sítio não é obrigatório, mas uma prática comum é ter pelo menos um no arquivo.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="298"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="289"/>
       <source>Add default site if one is not found in the document</source>
       <translation>Adicionar sítio padrão se não for encontrado no documento</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="375"/>
-      <location filename="../ui/preferences-ifc.ui" line="482"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="366"/>
+      <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</source>
       <translation type="unfinished">Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="385"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="376"/>
       <source>IFC standard compliance</source>
       <translation type="unfinished">IFC standard compliance</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="391"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="382"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
@@ -3283,20 +3283,20 @@ Aviso: O padrão IFC pede pelo menos uma construção em cada ficheiro. Ao desat
 No entanto, no FreeCAD, acreditamos que ter uma construção não deve ser obrigatório. e esta opção existe para ter a oportunidade de demonstrar o nosso ponto de vista.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="311"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="302"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
       <translation>Se nenhum piso de construção for encontrado no documento FreeCAD, será adicionado um por defeito.
 Um piso de construção não é obrigatório, mas é prática comum ter pelo menos um no ficheiro.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="315"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="306"/>
       <source>Add default building storey if one is not found in the document</source>
       <translation>Adicionar por defeito um piso de construção se não se encontrar um no documento</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="330"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="345"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="321"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="336"/>
       <source>The units you want your IFC file to be exported to.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
@@ -3310,17 +3310,17 @@ resultam apenas da aplicação de um fator de conversão.
 No entanto, alguns aplicativos BIM usarão este fator para escolher com qual unidade trabalhar ao abrir o ficheiro.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="329"/>
       <source>IFC file units</source>
       <translation>Unidades do ficheiro IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="360"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="351"/>
       <source>Metric</source>
       <translation>Métrico</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="365"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="356"/>
       <source>Imperial</source>
       <translation>Imperial</translation>
     </message>
@@ -4112,7 +4112,7 @@ Se executar = 0, então a execução é calculada de modo que a altura seja a me
       <location filename="../../ArchAxis.py" line="752"/>
       <location filename="../../ArchComponent.py" line="1949"/>
       <location filename="../../ArchSectionPlane.py" line="1324"/>
-      <location filename="../../ArchSpace.py" line="744"/>
+      <location filename="../../ArchSpace.py" line="738"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
@@ -4121,7 +4121,7 @@ Se executar = 0, então a execução é calculada de modo que a altura seja a me
       <location filename="../../ArchAxisSystem.py" line="324"/>
       <location filename="../../ArchAxis.py" line="753"/>
       <location filename="../../ArchComponent.py" line="1950"/>
-      <location filename="../../ArchSpace.py" line="738"/>
+      <location filename="../../ArchSpace.py" line="732"/>
       <source>Add</source>
       <translation>Adicionar</translation>
     </message>
@@ -5227,12 +5227,12 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="727"/>
+      <location filename="../../ArchSpace.py" line="721"/>
       <source>Set text position</source>
       <translation type="unfinished">Set text position</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="731"/>
+      <location filename="../../ArchSpace.py" line="725"/>
       <source>Space boundaries</source>
       <translation type="unfinished">Space boundaries</translation>
     </message>
@@ -5473,7 +5473,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="51"/>
+      <location filename="../../bimcommands/BimFence.py" line="52"/>
       <source>Create Fence</source>
       <translation type="unfinished">Create Fence</translation>
     </message>
@@ -7463,13 +7463,13 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="918"/>
-      <location filename="../../ArchSpace.py" line="456"/>
+      <location filename="../../ArchSpace.py" line="454"/>
       <source>The name of the font</source>
       <translation type="unfinished">The name of the font</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
-      <location filename="../../ArchSpace.py" line="462"/>
+      <location filename="../../ArchSpace.py" line="460"/>
       <source>The size of the text font</source>
       <translation type="unfinished">The size of the text font</translation>
     </message>
@@ -7549,42 +7549,42 @@ Building creation aborted.</translation>
       <translation type="unfinished">Defines the calculation type for the horizontal area and its perimeter length</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="453"/>
+      <location filename="../../ArchSpace.py" line="451"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
       <translation type="unfinished">The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="459"/>
+      <location filename="../../ArchSpace.py" line="457"/>
       <source>The color of the area text</source>
       <translation type="unfinished">The color of the area text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="465"/>
+      <location filename="../../ArchSpace.py" line="463"/>
       <source>The size of the first line of text</source>
       <translation type="unfinished">The size of the first line of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="468"/>
+      <location filename="../../ArchSpace.py" line="466"/>
       <source>The space between the lines of text</source>
       <translation type="unfinished">The space between the lines of text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="471"/>
+      <location filename="../../ArchSpace.py" line="469"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="473"/>
+      <location filename="../../ArchSpace.py" line="471"/>
       <source>The justification of the text</source>
       <translation type="unfinished">The justification of the text</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="477"/>
+      <location filename="../../ArchSpace.py" line="475"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation type="unfinished">The number of decimals to use for calculated texts</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="480"/>
+      <location filename="../../ArchSpace.py" line="478"/>
       <source>Show the unit suffix</source>
       <translation type="unfinished">Show the unit suffix</translation>
     </message>
@@ -8553,7 +8553,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     </message>
     <message>
       <location filename="../../InitGui.py" line="40"/>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="136"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
@@ -9071,7 +9071,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Delete unused</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="89"/>
       <location filename="../../bimcommands/BimMaterial.py" line="169"/>
       <source>Rename</source>
       <translation>Renomear</translation>
@@ -9087,7 +9087,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Merge to...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="87"/>
+      <location filename="../../bimcommands/BimViews.py" line="85"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Delete</source>
       <translation>Apagar</translation>
@@ -9455,72 +9455,72 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Please select exactly one object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="85"/>
+      <location filename="../../bimcommands/BimViews.py" line="83"/>
       <source>Add level</source>
       <translation type="unfinished">Add level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="86"/>
+      <location filename="../../bimcommands/BimViews.py" line="84"/>
       <source>Add proxy</source>
       <translation type="unfinished">Add proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="86"/>
       <source>Toggle on/off</source>
       <translation>Ligar/desligar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
+      <location filename="../../bimcommands/BimViews.py" line="87"/>
       <source>Isolate</source>
       <translation>Isolar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="88"/>
       <source>Save view position</source>
       <translation type="unfinished">Save view position</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Creates a new level</source>
       <translation type="unfinished">Creates a new level</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="109"/>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Creates a new Working Plane Proxy</source>
       <translation type="unfinished">Creates a new Working Plane Proxy</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="110"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <source>Deletes the selected item</source>
       <translation type="unfinished">Deletes the selected item</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="111"/>
+      <location filename="../../bimcommands/BimViews.py" line="109"/>
       <source>Toggles selected items on/off</source>
       <translation type="unfinished">Toggles selected items on/off</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="112"/>
+      <location filename="../../bimcommands/BimViews.py" line="110"/>
       <source>Turns all items off except the selected ones</source>
       <translation type="unfinished">Turns all items off except the selected ones</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="113"/>
+      <location filename="../../bimcommands/BimViews.py" line="111"/>
       <source>Saves the current camera position to the selected items</source>
       <translation type="unfinished">Saves the current camera position to the selected items</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="114"/>
+      <location filename="../../bimcommands/BimViews.py" line="112"/>
       <source>Renames the selected item</source>
       <translation type="unfinished">Renames the selected item</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="260"/>
+      <location filename="../../bimcommands/BimViews.py" line="267"/>
       <source>2D Views</source>
       <translation type="unfinished">2D Views</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="274"/>
+      <location filename="../../bimcommands/BimViews.py" line="281"/>
       <source>Sheets</source>
       <translation type="unfinished">Sheets</translation>
     </message>
@@ -10422,12 +10422,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="42"/>
+      <location filename="../../bimcommands/BimViews.py" line="40"/>
       <source>Views manager</source>
       <translation type="unfinished">Views manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="43"/>
       <source>Shows or hides the views manager</source>
       <translation type="unfinished">Shows or hides the views manager</translation>
     </message>
@@ -10578,12 +10578,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="217"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="220"/>
       <source>Saves the current IFC document as another file</source>
       <translation type="unfinished">Saves the current IFC document as another file</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="219"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="222"/>
       <source>Save IFC file as...</source>
       <translation type="unfinished">Save IFC file as...</translation>
     </message>

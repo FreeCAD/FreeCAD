@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Тачка се поставља на позицију одређену у опцији Положај објекта. Функционише са објектима који имају опцију Положај и елиптичним, параболичним и хиперболичним ивицама.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Извези CAD датотеку...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Увези CAD датотеку...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2567,68 +2567,67 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Извези</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Јединице за извоз STEP-а</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Милиметар</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Метар</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Инч</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Испиши криве у параметарском простору површине</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Онемогући да би прескочио невидљививе објекте приликом извоза, ово је корисно за CAD програме који не подржавају могућност невидљивости у STEP формату.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Чекирај ову опцију да би задржао информације о положају приликом извоза објекта. 
+Имај на уму да када увезеш назад STEP датотеку,
+положај ће бити кодиран у геометрији облика, а не унутар особине Положај.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Извези невидљиве објекте</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Извези положај објекта</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>Користи застарелу функцију извоза</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Шема</translation>
     </message>
@@ -2969,7 +2968,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Параметри обарања ивица</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3081,7 +3080,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Извези пуна тела и љуске као</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3212,7 +3211,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Не користи име инстанце. Корисно за неке старе СТЕП датотеке са без смисла аутоматски генерисаним именима инстанци.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3387,7 +3386,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>STEP улазна датотека</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4241,10 +4240,10 @@ during file reading (slower but higher details).</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Доња страна површине ће бити приказана на исти начин као горња страна.
+Ако није означено, зависиће од опције „Омогући боју позадинског осветљења“
+(Подешавања -&gt; Приказ -&gt; 3Д приказ). Или ће се користити боја позадинског 
+осветљења или црна боја.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4500,7 +4499,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Исеци пресек</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5136,7 +5135,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Прескочи ову страницу са подешавањима</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5565,12 +5564,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>За одређивање преклопа изабери два или више облика, изабери једно састављено тело које садржи два или више облика.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>За унију изабери два или више облика, изабери једно састављено тело које садржи два или више облика.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6777,14 +6776,14 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Сопствени изглед:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Када је означено, можеш изабрати више страница
+повлачењем правоугаоног оквира у 3Д погледу</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

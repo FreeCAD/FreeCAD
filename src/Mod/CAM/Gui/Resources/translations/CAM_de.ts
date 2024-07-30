@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation>Eine Vorlage wählen, die für den Auftrag benutzt werden soll. Sofern keine Vorlagen zur Auswahl stehen, kann eine solche über das Popup-Menü für einen der existieren Aufträge erstellt werden.Die Datei job_*.json bennenen und im Macro- oder Path-Verzeichnis (siehe Einstellungen) platzieren, um die neu erstellte Vorlage über die Liste auswählen zu können.</translation>
+      <translation>Eine Vorlage wählen, die für den Auftrag benutzt werden soll. Sofern keine Vorlagen zur Auswahl stehen, kann eine solche über das Popup-Menü für einen der existieren Aufträge erstellt werden.Die Datei job_*.json benennen und im Macro- oder Path-Verzeichnis (siehe Einstellungen) platzieren, um die neu erstellte Vorlage über die Liste auswählen zu können.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="75"/>
       <source>Setup Sheet</source>
-      <translation>Einrichtunstabelle</translation>
+      <translation>Einrichteblatt</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
@@ -232,7 +232,7 @@ Beachte, dass diese Option deaktiviert ist, wenn als Rohteil ein vorhandenes Vol
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
       <source>Hint about the current stock extent setting.</source>
-      <translation>Hinweis auf die aktuelle Einstellung des Rohmaterials.</translation>
+      <translation>Hinweis auf die aktuelle Einstellung der Rohmaterialabmaße.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="191"/>
@@ -384,7 +384,7 @@ Für Rohmaterial aus dem Basis-Objekt Hüllkörper ist es zusätzliches Material
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
-      <translation>Name der Eigenschaft. Kann Buchstaben, Zahlen und Unterstriche enthalten. Gemischte Groß- und Kleinschreibung wird mit Leerzeichen angezeigt &quot;Mixed Case&quot;</translation>
+      <translation>Name der Eigenschaft. Darf nur Buchstaben, Zahlen und Unterstriche enthalten. Gemischte Groß- und Kleinschreibung wird mit Leerzeichen angezeigt &quot;Mixed Case&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -522,7 +522,7 @@ Für Rohmaterial aus dem Basis-Objekt Hüllkörper ist es zusätzliches Material
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Einen CAM-Auftrag auswählen</translation>
     </message>
   </context>
   <context>
@@ -648,7 +648,7 @@ Für Rohmaterial aus dem Basis-Objekt Hüllkörper ist es zusätzliches Material
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation>Wenn aktiviert, dann ist der Pfad durch den Festkörper festgelegt. Andererseits beschreibt das Volumen des Festkörpers eine &apos;Sperr&apos; bereich</translation>
+      <translation>Wenn aktiviert, dann ist der Pfad durch den Festkörper festgelegt. Ansonsten beschreibt das Volumen des Festkörpers einen &apos;Sperr&apos; bereich</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -855,7 +855,7 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
       <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.</source>
-      <translation>Die Tiefe in der Z-Achse, um welche sich die Bearbeitung zwischen den Schichten nach unten bewegt. Dieser Wert hängt von dem verwendeten Werkzeug, dem zu schneidenden Material, der verfügbaren Kühlung und vielen anderen Faktoren ab. Bitte die Datenblätter der Werkzeughersteller konsultieren, um den richtigen Wert zu ermitteln.</translation>
+      <translation>Zustelltiefe in Z-Richtung, um welche sich die Bearbeitung zwischen den Schichten nach unten bewegt. Dieser Wert hängt vom verwendeten Werkzeug, dem zu schneidenden Material, der verfügbaren Kühlung und vielen anderen Faktoren ab. Bitte die Datenblätter der Werkzeughersteller konsultieren, um den richtigen Wert zu ermitteln.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
@@ -1057,7 +1057,7 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
-      <translation>Wie viel soll man das Werkzeug auf schnellen Verbindungsfahrten über freien Regionen abheben? Wenn der Weg für die Verbindungsfahrt nicht frei ist, wird das Werkzeug auf den voreingestellten vertikalen Sicherheitsabstand (Clearance Height) angehoben.</translation>
+      <translation>Wie weit soll das Werkzeug bei schnellen Verbindungsfahrten über freien Flächen angehoben werden? Wenn der Weg für die Verbindungsfahrt nicht frei ist, wird das Werkzeug auf den voreingestellten vertikalen Sicherheitsabstand (Clearance Height) angehoben.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
@@ -1072,12 +1072,12 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="237"/>
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles.</source>
-      <translation>Der Betrag, um den das Werkzeug bei jedem Zyklus des Musters seitlich verschoben wird, angegeben in Prozent des Werkzeugdurchmessers. Ein Versatz von 100 % führt zu keiner Überlappung zwischen zwei verschiedenen Zyklen.</translation>
+      <translation>Der Betrag, um den das Werkzeug bei jedem Durchlauf des Musters seitlich verschoben wird, angegeben in Prozent des Werkzeugdurchmessers. Ein Versatz von 100 % führt zu keiner Überlappung zwischen zwei verschiedenen Zyklen.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
       <source>Angle of the helix ramp entry</source>
-      <translation>Winkel der Helixrampen-Einfahrt</translation>
+      <translation>Winkel der Helixrampen-Anfahrt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="266"/>
@@ -1225,7 +1225,7 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start.</source>
-      <translation>Ddie Knotennummer der zugrunde liegenden Form angeben, an der die Gravur beginnen soll.</translation>
+      <translation>Die Knotennummer der zugrunde liegenden Form angeben, an der die Gravur beginnen soll.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
@@ -1379,9 +1379,9 @@ Reset löscht alle aktuellen Elemente aus der Liste und füllt die Liste mit all
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</source>
-      <translation>Festlegen, ob die Fläche durch die tatsächliche Form der ausgewählten Fläche (oder das Bauteil, wenn keine Fläche ausgewählt ist) eingeschränkt werden soll oder ob die Begrenzungsbox verwendet werden soll.
+      <translation>Festlegen, ob die Fläche durch die tatsächliche Form der ausgewählten Fläche (oder das Bauteil, wenn keine Fläche ausgewählt ist) eingeschränkt werden soll oder ob stattdessen die Begrenzungsbox verwendet werden soll.
 
-Letzteres kann zur Deckung der gesamten Lagerfläche verwendet werden, um für die folgenden Bearbeitungen einheitliche Höhen zu gewährleisten</translation>
+Letzteres kann zur Bearbeitung der gesamten Rohmaterialfläche verwendet werden, um für nachfolgende Bearbeitungsschritte einheitliche Höhen zu gewährleisten</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
@@ -1391,7 +1391,7 @@ Letzteres kann zur Deckung der gesamten Lagerfläche verwendet werden, um für d
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
       <source>Pattern the tool bit is moved in to clear the material</source>
-      <translation>Muster, in dem das Werkzeug bewegt wird, um das Material zu entfernen</translation>
+      <translation>Werkzeugpfad, auf dem das Werkzeug bewegt wird, um das Material zu entfernen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="126"/>
@@ -1466,7 +1466,7 @@ Letzteres kann zur Deckung der gesamten Lagerfläche verwendet werden, um für d
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
       <source>Material Allowance</source>
-      <translation>Materialzulage</translation>
+      <translation>Bearbeitungszugabe</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
@@ -2079,7 +2079,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Pitch</source>
-      <translation>De</translation>
+      <translation>Steigung</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
@@ -2333,7 +2333,7 @@ Wenn der Radius größer ist als der Radius, den der Steg selbst unterstützt, w
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G-Code</source>
-      <translation type="unfinished">G-Code</translation>
+      <translation>G-Code</translation>
     </message>
   </context>
   <context>
@@ -2483,31 +2483,31 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Einen Pfad und optional einen Dateinamen eingeben (siehe unten), der als Standard für den Postprozessor-Export verwendet werden soll.
+Die folgenden Substitutionen werden durchgeführt, bevor der Name zum Zeitpunkt der Nachbearbeitung aufgelöst wird:
+Die Substitution erlaubt Folgendes:
+%D ... Verzeichnis des aktiven Dokuments
+%d ... Name des aktiven Dokuments (mit Erweiterung)
+%M ... Verzeichnis des Benutzermakros
+%j ... Name des aktiven Auftrags-Objekts
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+Das Folgende kann verwendet werden, wenn die Ausgabe geteilt wird. Wenn die Ausgabe nicht geteilt ist
+werden diese Angaben ignoriert.
+%T ... Werkzeugnummer
+%t ... Bezeichnung der Werkzeugsteuerung
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... Arbeits-Koordinatensystem
+%O ... Bezeichnung der Bearbeitungen
 
-When splitting output, a sequence number will always be added.
+Beim Aufteilen der Ausgabe wird immer eine laufende Nummer hinzugefügt.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+Wenn %S enthalten ist, kann angegeben werden, wo die Nummer steht.  Ohne diese Angabe wird die Nummer an das Ende der Zeichenkette angehängt.
 
-%S ... Sequence Number
+%S ... Sequenznummer
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+Das folgende Beispiel speichert alle Dateien mit dem gleichen Namen wie das Dokument im Verzeichnis /home/freecad (bitte Anführungszeichen entfernen):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Speichern von Dateien entnommen werden.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -3026,7 +3026,7 @@ Sollten mehrere Werkzeuge oder Werkzeugformen mit dem gleichen Namen in verschie
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html>&lt;head/>&lt;body>&lt;p>Liste der Knochenpositionen (mit allen Knochen an dieser Position), die Teil dieser Aufbereitung sind. Die Liste wird durch die Ecken im Profil und die ausgewählte &lt;span style=" font-weight:600;">Seite&lt;/span> für die Knochen bestimmt. &lt;/p>&lt;p>Die Knochen, die nicht aufbereiten werden sollen, &lt;span style=" font-weight:600;">deaktivieren&lt;/span>.&lt;/p>&lt;p>Wenn ein Knochen &lt;span style=" font-weight:600;">ausgegraut&lt;/span> ist, bedeutet das, dass er bereits durch eine vorherige Aufbereitung bearbeitet wurde. Oder anders ausgedrückt: Bei erneuter Anwendung dieser Hundeknochen, können nur die Knochen ausgewählt werden, die hier nicht markiert sind.&lt;/p>&lt;p>Wenn diese Liste leer ist, bedeutet das wahrscheinlich, dass versucht wird, Knochen auf der falschen Seite des Profils zu erstellen.&lt;/p>&lt;/body>&lt;/html></translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3386,12 +3386,12 @@ Sollten mehrere Werkzeuge oder Werkzeugformen mit dem gleichen Namen in verschie
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation type="unfinished">Launch CAMotics</translation>
+      <translation>Starte CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make CAMotics File</source>
-      <translation type="unfinished">Make CAMotics File</translation>
+      <translation>CAMotics Datei erstellen</translation>
     </message>
   </context>
   <context>
@@ -3591,31 +3591,31 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Einen Pfad und optional einen Dateinamen eingeben (siehe unten), der als Standard für den Postprozessor-Export verwendet werden soll.
+Die folgenden Substitutionen werden durchgeführt, bevor der Name zum Zeitpunkt der Nachbearbeitung aufgelöst wird:
+Die Substitution erlaubt Folgendes:
+%D ... Verzeichnis des aktiven Dokuments
+%d ... Name des aktiven Dokuments (mit Erweiterung)
+%M ... Verzeichnis des Benutzermakros
+%j ... Name des aktiven Auftrags-Objekts
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+Das Folgende kann verwendet werden, wenn die Ausgabe geteilt wird. Wenn die Ausgabe nicht geteilt ist
+werden diese Angaben ignoriert.
+%T ... Werkzeugnummer
+%t ... Bezeichnung der Werkzeugsteuerung
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... Arbeits-Koordinatensystem
+%O ... Bezeichnung der Bearbeitungen
 
-When splitting output, a sequence number will always be added.
+Beim Aufteilen der Ausgabe wird immer eine laufende Nummer hinzugefügt.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+Wenn %S enthalten ist, kann angegeben werden, wo die Nummer steht.  Ohne diese Angabe wird die Nummer an das Ende der Zeichenkette angehängt.
 
-%S ... Sequence Number
+%S ... Sequenznummer
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+Das folgende Beispiel speichert alle Dateien mit dem gleichen Namen wie das Dokument im Verzeichnis /home/freecad (bitte Anführungszeichen entfernen):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Speichern von Dateien entnommen werden.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
@@ -3668,8 +3668,8 @@ Bei der Anordnung nach Bearbeitung wird jede Bearbeitung in allen Koordinatensys
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html>&lt;head/>&lt;body>&lt;p>&lt;span style=" font-style:italic;">Arbeitskoordinatensysteme&lt;/span> auch &lt;span style=" font-style:italic;">Arbeitsversatz&lt;/span>, &lt;span style=" font-style:italic;">Befestigungs-Versatz&lt;/span>, oder &lt;span style=" font-style:italic;">Befestigungen&lt;/span> genannt, sind nützlich, um effiziente Produktionsaufträge zu erstellen, bei denen das gleiche Teil mehrmals auf der Maschine erledigt wird.
+FreeCAD hat keine Kenntnis davon, wo ein bestimmtes Koordinatensystem innerhalb des Koordinatensystems existiert, so dass das Hinzufügen zusätzlicher Koordinatensysteme zum Auftrag keine visuellen Veränderungen haben wird. Es ändert jedoch die G-Code-Ausgabeode. Die genaue Art und Weise, wie die Ausgabe beeinflusst wird, wird durch die Einstellung 'Reihenfolge nach' geregelt.&lt;/p>&lt;/body>&lt;/html></translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -4158,7 +4158,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>CAMotics Project (*.camotics)</source>
-      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
+      <translation>CAMotics Projekt (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4225,7 +4225,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Einen CAM-Auftrag auswählen</translation>
     </message>
   </context>
   <context>
@@ -4233,7 +4233,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Geom.py" line="183"/>
       <source>face %s not handled, assuming not vertical</source>
-      <translation>Fläche %s nicht behandelt, es wird angenommen sie ist nicht Vertikal</translation>
+      <translation>Fläche %s nicht bearbeitet da diese nicht als vertikal angenommen wird</translation>
     </message>
     <message>
       <location filename="../../../Path/Geom.py" line="200"/>
@@ -4391,7 +4391,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="958"/>
       <source>Angle of tag plunge and ascent.</source>
-      <translation>Winkel der Ein- und Ausfahrt bei Haltestegen.</translation>
+      <translation>Winkel der An- und Abfahrt bei Haltestegen.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="964"/>
@@ -4678,44 +4678,39 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <translation>Vergrößerung der Begrenzungsbox in positiver Z-Richtung</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation>Ein Material für dieses Objekt</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation>Länge des Rohmaterials</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation>Breite des Rohmaterials</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation>Höhe des Rohmaterials</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation>Radius des zylindrischen Rohmaterials</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation>Höhe dieses zylindrischen Rohmaterials</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation>Interne Darstellung des Rohmaterials Typs</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="38"/>
       <source>Fixture Offset Number</source>
-      <translation>Abstand von der Einspannung</translation>
+      <translation>Nummer der Koordinatensystemverschiebung</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="172"/>
@@ -4902,7 +4897,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Base.py" line="290"/>
       <source>The height needed to clear clamps and obstructions</source>
-      <translation>Die erforderliche Höhe, um Spanmittel und Hindernisse zu überwinden</translation>
+      <translation>Die erforderliche Höhe, um Spannmittel und Hindernisse zu überwinden</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="298"/>
@@ -4997,7 +4992,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="131"/>
       <source>Enable pecking</source>
-      <translation>Spanbrechen aktivieren</translation>
+      <translation>Bohrzyklus mit Spanbrechen aktivieren</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="143"/>
@@ -5201,12 +5196,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Profile.py" line="126"/>
       <source>Controls how tool moves around corners. Default=Round</source>
-      <translation>Kontrolliert wie sich das Werkzeug um Ecken bewegt. Standard=rund</translation>
+      <translation>Steuert, wie sich das Werkzeug um Ecken bewegt. Standard=rund</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
+      <translation>Maximale Entfernung, bevor Gehrungsverbindungen abgeschnitten werden</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5296,7 +5291,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
+      <translation>Bei Bogen/Kreiskanten wird der Radius für den Werkzeugweg versetzt.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5532,7 +5527,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="404"/>
       <source>Set to True to get lead in and lead out arcs at the start and end of the thread cut</source>
-      <translation>Setze auf "Wahr" um am Anfang und Ende des Gewinde-Schnitts mit Kurven Ein-/ Auszufaheren</translation>
+      <translation>Setze auf "Wahr" um am Anfang und Ende des Gewinde-Schnitts in einem Bogen Ein-/ Auszufahren</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="412"/>
@@ -5648,13 +5643,13 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="119"/>
       <source>Maximum random offset of copies</source>
-      <translation>Maximaler zufälliger Versatzes von Kopien</translation>
+      <translation>Maximaler zufälliger Versatz von Kopien</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="125"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="175"/>
       <source>Seed value for jitter randomness</source>
-      <translation>Seed Wert für Jitter Zufall</translation>
+      <translation>Startwert für Jitter Zufallswert</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="134"/>
@@ -5670,7 +5665,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="42"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation>Optionaler oder obligatorischer Stop zum Programm hinzufügen</translation>
+      <translation>Optionalen oder obligatorischen Stop zum Programm hinzufügen</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Bit.py" line="144"/>
@@ -5767,15 +5762,15 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Main/Stock.py" line="107"/>
       <source>Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</source>
-      <translation>Ausgangsmaterialeigenschaften sind veraltet. Materialeigenschaft entfernen. Bitte das native Materialsystem verwenden, um ein ShapeMaterial zuzuweisen</translation>
+      <translation>Veraltete Ausgangsmaterialeigenschaften. Materialeigenschaft wird entfernt. Bitte das native Materialsystem verwenden, um ein ShapeMaterial zuzuweisen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation>Nicht unterstützter Rohmaterial Typ namens {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>Nicht unterstützte "PathStock" Vorlagen Version {}</translation>
     </message>
@@ -5896,7 +5891,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Surface.py" line="44"/>
       <source>This operation requires OpenCamLib to be installed.</source>
-      <translation>Diese Operation benötigt eine Installation von OpenCamLib.</translation>
+      <translation>Diese Operation benötigt die Installation von OpenCamLib.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="560"/>
@@ -5911,7 +5906,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
       <source>No job</source>
-      <translation type="unfinished">No job</translation>
+      <translation>Kein Auftrag</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -5984,7 +5979,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="121"/>
       <source>Cannot calculate the Center Of Mass.</source>
-      <translation>Der Schwerpunkt kann nicht berechnet werden.</translation>
+      <translation>Schwerpunkt kann nicht berechnet werden.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="126"/>
@@ -6338,7 +6333,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid G-code line: %s</source>
-      <translation type="unfinished">Invalid G-code line: %s</translation>
+      <translation>Ungültige G-Code-Zeile: %s</translation>
     </message>
   </context>
   <context>
@@ -6507,7 +6502,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
       <source>Tangent</source>
-      <translation>Tangente</translation>
+      <translation>Tangential</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
@@ -6612,7 +6607,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="565"/>
       <source>Creates a Tag Dress-up object from a selected toolpath</source>
-      <translation>Erzeugt eine Haltesteg-Modifiktion aus dem gewählten Pfad</translation>
+      <translation>Erzeugt eine Haltesteg-Modifikation aus dem gewählten Pfad</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="580"/>
@@ -6625,12 +6620,12 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="263"/>
       <source>Axis Map</source>
-      <translation>Achsen mapping</translation>
+      <translation>Achsen-Zuordnung</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="267"/>
       <source>Remap one axis to another.</source>
-      <translation>Ordne eine Achse einer anderen zu.</translation>
+      <translation>Neue Achsenzuordnung.</translation>
     </message>
   </context>
   <context>
@@ -6794,7 +6789,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="292"/>
       <source>Select Probe Point File</source>
-      <translation>Sondierungspunkedatei wählen</translation>
+      <translation>Tastpunktedatei wählen</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="106"/>
@@ -7027,7 +7022,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="156"/>
       <source>Creates a Fixture Offset</source>
-      <translation>Erzeugt einen Fixierungsoffset</translation>
+      <translation>Arbeitskoordinatensystemoffset erzeugen</translation>
     </message>
   </context>
   <context>
@@ -7098,7 +7093,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
       <source>Run Summary</source>
-      <translation>Durchlaufszusammenfassung</translation>
+      <translation>Durchlaufzusammenfassung</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
@@ -7113,7 +7108,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="62"/>
       <source>Fixtures</source>
-      <translation>Armaturen</translation>
+      <translation>Halterungen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
@@ -7158,7 +7153,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>Output (G-code)</source>
-      <translation type="unfinished">Output (G-code)</translation>
+      <translation>Ausgabe (G-Code)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
@@ -7168,7 +7163,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Surface Speed HSS</source>
-      <translation type="unfinished">Surface Speed HSS</translation>
+      <translation>Oberflächengeschwindigkeit für HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -7208,12 +7203,12 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="65"/>
       <source>Setup Report for CAM Job</source>
-      <translation>Bericht für CAM-Auftrag einrichten</translation>
+      <translation>Einrichteblatt für CAM-Auftrag</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Surface Speed Carbide</source>
-      <translation>Oberflächengeschwindigkeit für Hartmetall</translation>
+      <translation>Oberflächengeschwindigkeit für Hartmetallwerkzeug</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
@@ -7457,7 +7452,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Gui/Adaptive.py" line="176"/>
       <source>Adaptive clearing and profiling</source>
-      <translation>Adaptives Räumen und Profillieren</translation>
+      <translation>Adaptives Räumen und Profilieren</translation>
     </message>
   </context>
   <context>
@@ -7493,12 +7488,12 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Base.py" line="796"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
-      <translation>Es ist keine Werkzeugsteuerung ausgewählt. Es wird einer benötigt um den Pfad zu berechnen.</translation>
+      <translation>Keine Werkzeugsteuerung ausgewählt. Werkzeugsteuerung wird benötigt, um den Pfad zu erstellen.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="810"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
-      <translation>Kein Werkzeug gefunden oder Durchmesser ist Null. Wir brauchen ein Werkzeug, um einen Pfad zu erstellen.</translation>
+      <translation>Kein Werkzeug gefunden oder Durchmesser ist Null. Werkzeug wird benötigt, um einen Pfad zu erstellen.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="845"/>
@@ -8330,7 +8325,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="73"/>
       <source>Creates a pocket toolpath from a face or faces</source>
-      <translation>Erzeugt eine Taschen-Wekzeugweg für eine oder mehrere Flächen</translation>
+      <translation>Erzeugt eine Taschen-Werkzeugweg für eine oder mehrere Flächen</translation>
     </message>
   </context>
   <context>
@@ -8362,7 +8357,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="113"/>
       <source>Add Optional or Mandatory Stop to the program</source>
-      <translation>Optionaler oder obligatorischer Stop zum Programm hinzufügen</translation>
+      <translation>Optionalen oder obligatorischen Stop zum Programm hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -8476,7 +8471,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Tool/Gui/BitCmd.py" line="141"/>
       <source>Load an existing ToolBit object from a file</source>
-      <translation>Werkzeugspitze Objekt aus Datei importieren</translation>
+      <translation>Werkzeugspitze-Objekt aus Datei importieren</translation>
     </message>
   </context>
   <context>
@@ -8484,7 +8479,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="80"/>
       <source>Toolbit working directory not set up. Do that now?</source>
-      <translation>Das Werkzeugspitzen Arbeitsverzeichnis ist nicht eingerichtet. Möchten Sie das jetzt tun?</translation>
+      <translation>Kein Werkzeugspitzen-Arbeitsverzeichnis eingerichtet. Jetzt einrichten?</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="88"/>
@@ -8496,7 +8491,7 @@ Zum Beispiel:
       <source>Toolbit Working directory {} needs these sudirectories:
  {} 
  Create them?</source>
-      <translation>Das Werkzeugspitzen Arbeitsverzeichnis {} benötigt diese Unterverzeichnisse:
+      <translation>Das Werkzeugspitzen Arbeitsverzeichnis {} benötigt folgende Unterverzeichnisse:
  {} 
  Sollen diese erstellt werden?</translation>
     </message>
@@ -8535,7 +8530,7 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
       <source>CAMotics tooltable (*.json)</source>
-      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
+      <translation>CAMotics-Werkzeugtabelle (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8615,12 +8610,12 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
       <source>CAMotics</source>
-      <translation type="unfinished">CAMotics</translation>
+      <translation>CAMotics</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>Simulate using CAMotics</source>
-      <translation type="unfinished">Simulate using CAMotics</translation>
+      <translation>Mit CAMotics simulieren</translation>
     </message>
   </context>
 </TS>

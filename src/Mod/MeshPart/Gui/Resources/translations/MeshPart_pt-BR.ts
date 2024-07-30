@@ -580,12 +580,12 @@ Por favor, selecione uma forma diferente.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Desenvolver malha</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Encontre uma representação plana de uma malha.</translation>
     </message>
   </context>
   <context>
@@ -593,12 +593,12 @@ Por favor, selecione uma forma diferente.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Desenvolver face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Encontre uma representação plana de uma face.</translation>
     </message>
   </context>
 </TS>

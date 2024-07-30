@@ -11,7 +11,7 @@
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="20"/>
       <source>Source</source>
-      <translation>Źródło</translation>
+      <translation>Źródła</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -21,9 +21,9 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy.
-Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków
-i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka
+      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy. 
+Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków 
+i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka 
 pliki pomocy w domyślnej lokalizacji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -85,7 +85,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Uwaga: Jeśli komponenty PySide nie zostaną znalezione w Twoim systemie, strony pomocy zostaną otwarte w domyślnej przeglądarce internetowej niezależnie od poniższych opcji</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -102,7 +102,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
       <translation>Dokumentacja otworzy się w dokowanym oknie dialogowym wewnątrz okna FreeCAD,
-co pozwala na pozostawienie go otwartego podczas pracy w widoku 3D.
+co pozwala na pozostawienie go otwartego podczas pracy w widoku 3D. 
 Wymaga to komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
@@ -154,13 +154,13 @@ Wymaga to komponentu PySide QtWebengineWidgets</translation>
     <message>
       <location filename="../../Help.py" line="80"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny.
+      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny. 
 Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>W systemie nie ma zainstalowanego renderera Markdown, więc ta strona pomocy jest renderowana tak, jak jest. Zainstaluj moduły Markdown lub Pandoc Python, aby poprawić jakość renderowania tej strony.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

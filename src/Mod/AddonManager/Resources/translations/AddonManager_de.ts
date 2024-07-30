@@ -76,7 +76,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation>Wahlweise?</translation>
+      <translation>Optional?</translation>
     </message>
   </context>
   <context>
@@ -99,7 +99,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>FreeCAD Erweiterungen</translation>
+      <translation>FreeCAD-Addons</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -117,12 +117,12 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation>Werkzeuge für Erweiterungsentwickler</translation>
+      <translation>Addon-Entwicklungswerkzeuge</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation>Pfad zur Erweiterung</translation>
+      <translation>Pfad zum Addon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -174,7 +174,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation>Auf heute setzen (CalVer style)</translation>
+      <translation>Auf heute setzen (CalVer Stil)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -203,22 +203,22 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>Projektarchiv Internetadresse</translation>
+      <translation>URL des Projektarchivs</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation>Internetadresse der Webseite</translation>
+      <translation>URL der Webseite</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation>Internetadresse der Dokumentation</translation>
+      <translation>URL der Dokumentation</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation>Erweiterungsname</translation>
+      <translation>Addon-Name</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -248,7 +248,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation>Ereiterungsinhalte</translation>
+      <translation>Addon-Inhalte</translation>
     </message>
   </context>
   <context>
@@ -266,12 +266,12 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation>Durch Kommas getrennte Liste von Schlagwörtern, die dieses Element beschreiben:</translation>
+      <translation>Durch Kommas getrennte Liste von Tags, die dieses Element beschreiben:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>HInweis: Gängige Schlagwörter einschließlich &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot; usw.</translation>
+      <translation>HInweis: Gängige Tags einschließlich &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot; usw.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -284,37 +284,37 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Man sollte sich sicher sein, dass man weiß, was man installiert!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
+      <location filename="../../first_run.ui" line="39"/>
       <source>Download Settings</source>
       <translation>Einstellungen fürs Herunterladen</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="53"/>
+      <location filename="../../first_run.ui" line="46"/>
       <source>Automatically check installed Addons for updates</source>
       <translation>Automatisch nach Updates für installierte Addons suchen</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="60"/>
+      <location filename="../../first_run.ui" line="53"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Makro-Metadaten herunterladen (ca. 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="70"/>
+      <location filename="../../first_run.ui" line="63"/>
       <source>No proxy</source>
       <translation>Kein Proxy</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="75"/>
+      <location filename="../../first_run.ui" line="68"/>
       <source>System proxy</source>
       <translation>System Proxy</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="80"/>
+      <location filename="../../first_run.ui" line="73"/>
       <source>User-defined proxy:</source>
       <translation>Benutzerdefinierter Proxy:</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="93"/>
+      <location filename="../../first_run.ui" line="86"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
       <translation>Diese und andere Einstellungen sind im FreeCAD Einstellungsfenster verfügbar.</translation>
     </message>
@@ -324,7 +324,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation>Abhängigkeiten bearbeiten</translation>
+      <translation>Abhängigkeit bearbeiten</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
@@ -509,139 +509,139 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <translation>Addon-Manager-Optionen</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="20"/>
+      <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
       <translation>Wenn diese Option ausgewählt ist, werden beim Starten des Addon-Managers
 installierte Addons auf verfügbare Updates überprüft</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="24"/>
+      <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Beim Start automatisch nach Updates suchen (erfordert git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="40"/>
+      <location filename="../../AddonManagerOptions.ui" line="43"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Makro-Metadaten herunterladen (ca. 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="55"/>
+      <location filename="../../AddonManagerOptions.ui" line="58"/>
       <source>Cache update frequency</source>
       <translation>Häufigkeit der Cache-Aktualisierung</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="75"/>
+      <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>Manual (no automatic updates)</source>
       <translation>Manuell (keine automatischen Aktualisierungen)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="80"/>
+      <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
       <translation>Täglich</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="85"/>
+      <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
       <translation>Wöchentlich</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="95"/>
+      <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
       <translation>Addons ohne Lizenz ausblenden</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="111"/>
+      <location filename="../../AddonManagerOptions.ui" line="114"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation>Addons mit Nicht-FSF-Free- oder Libre-Lizenz ausblenden</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="127"/>
+      <location filename="../../AddonManagerOptions.ui" line="130"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation>Addons mit nicht-OSI-anerkannter Lizenz ausblenden</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="143"/>
+      <location filename="../../AddonManagerOptions.ui" line="146"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Nur für Python 2 markierte Addons ausblenden</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="159"/>
+      <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Veraltete Addons ausblenden</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="175"/>
+      <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Addons ausblenden, die eine neuere Version von FreeCAD voraussetzen</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="197"/>
+      <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
       <translation>Eigene Projektarchive</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="251"/>
+      <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="257"/>
+      <location filename="../../AddonManagerOptions.ui" line="260"/>
       <source>No proxy</source>
       <translation>Kein Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="273"/>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
       <translation>Benutzer-System-Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="286"/>
+      <location filename="../../AddonManagerOptions.ui" line="289"/>
       <source>User-defined proxy:</source>
       <translation>Benutzerdefinierter Proxy:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="323"/>
+      <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
       <translation>Bewertung Quellen-URL</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="342"/>
+      <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation>Die URL für die Bewertungs-Daten von Erweiterungen (siehe Dokumentation für Formatierung und Hosting Details).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="353"/>
+      <location filename="../../AddonManagerOptions.ui" line="350"/>
       <source>Path to Git executable (optional):</source>
-      <translation type="unfinished">Path to Git executable (optional):</translation>
+      <translation>Pfad zu Git (optional):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="372"/>
+      <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>Der Pfad zur ausführbaren Git-Datei. Wird automatisch erkannt, falls erforderlich und nicht angegeben.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="393"/>
+      <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
       <translation>Erweiterte Wahlmöglichkeiten</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="399"/>
+      <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Option zum Ändern von Zweigen anzeigen (erfordert git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="412"/>
+      <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Git deaktivieren (reine ZIP-Downloads)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="425"/>
+      <location filename="../../AddonManagerOptions.ui" line="422"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Addon-Manager-Optionen für Entwickler neuer Addons aktivieren.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="428"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
       <translation>Addon-Entwickler-Modus</translation>
     </message>
@@ -880,7 +880,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation>Auf heute setzen (CalVer style)</translation>
+      <translation>Auf heute setzen (CalVer Stil)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -1218,7 +1218,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Keine Aktualisierungen verfügbar</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="826"/>
@@ -1646,7 +1646,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation>Add-on &apos;{}&apos; benötigt die folgenden Arbeitsbereiche, welche nicht in FreeCAD verfügbar sind:</translation>
+      <translation>Addon &apos;{}&apos; benötigt die folgenden Arbeitsbereiche, welche nicht in FreeCAD verfügbar sind:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
@@ -1662,12 +1662,12 @@ installierte Addons auf verfügbare Updates überprüft</translation>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
+      <translation>Dieses Addon benötigt Python-Pakete, die nicht installiert sind und nicht automatisch installiert werden können. Um diesen Arbeitsbereich nutzen zu können, müssen die folgenden Python-Pakete manuell installiert werden:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="246"/>
       <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>Dieses Addon (oder eine seiner Abhängigkeiten) erfordert Python {}.{}, und auf dem System läuft {}.{}. Installation abgebrochen.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="267"/>
@@ -2100,32 +2100,32 @@ installierte Addons auf verfügbare Updates überprüft</translation>
       <translation>Installation des Addons {} fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="165"/>
+      <location filename="../../addonmanager_workers_installation.py" line="195"/>
       <source>Downloaded package.xml for {}</source>
       <translation>package.xml für {} heruntergeladen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="196"/>
+      <location filename="../../addonmanager_workers_installation.py" line="233"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Datei {} für Add-on &apos;{}&apos; konnte nicht dekodiert werden</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="205"/>
+      <location filename="../../addonmanager_workers_installation.py" line="242"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Alle Abhängigkeitsinformationen in dieser Datei werden ignoriert</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="212"/>
+      <location filename="../../addonmanager_workers_installation.py" line="249"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>metadata.txt für {} heruntergeladen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="255"/>
+      <location filename="../../addonmanager_workers_installation.py" line="292"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>requirements.txt für {} heruntergeladen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="273"/>
+      <location filename="../../addonmanager_workers_installation.py" line="310"/>
       <source>Downloaded icon for {}</source>
       <translation>Symbol für {} heruntergeladen</translation>
     </message>
@@ -2211,126 +2211,126 @@ installierte Addons auf verfügbare Updates überprüft</translation>
       <translation>Fehler beim Entfernen der Makrodatei {}:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="122"/>
+      <location filename="../../addonmanager_workers_startup.py" line="121"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Verbindung zu GitHub fehlgeschlagen. Bitte die Verbindungs- und Proxy-Einstellungen überprüfen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="180"/>
+      <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>WARNUNG: Duplizieren des Addons {} wird ignoriert</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
+      <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
       <translation>Die Liste der Arbeitsbereiche wurde aktualisiert.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git ist deaktiviert, Git-Makros werden übersprungen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
+      <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Änderungsversuch des Nicht-Git-Makro-Einstellung, um git zu verwenden
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Fehler beim Aktualisieren von Makros von GitHub, sauberer Checkout-Versuch wird ausgeführt...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="338"/>
+      <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Sauberer Checkout-Versuch...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="350"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
       <translation>Sauberer Checkout war erfolgreich</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="360"/>
+      <location filename="../../addonmanager_workers_startup.py" line="359"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Aktualisierung der GitHub Makros fehlgeschlagen -- Löschen des Caches des Addon-Managers versuchen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="383"/>
+      <location filename="../../addonmanager_workers_startup.py" line="382"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Fehler beim Verbinden mit dem Wiki, FreeCAD kann die Wiki-Makroliste zu diesem Zeitpunkt nicht abrufen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="592"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Git-Updates für den Arbeitsbereich {} können nicht abgerufen werden</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="605"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
       <translation>git Status fehlgeschlagen für {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="671"/>
+      <location filename="../../addonmanager_workers_startup.py" line="670"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Fehler beim Lesen der Metadaten von {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="694"/>
+      <location filename="../../addonmanager_workers_startup.py" line="693"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Fehler beim Abrufen des Codes für Makro &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="747"/>
+      <location filename="../../addonmanager_workers_startup.py" line="746"/>
       <source>Caching macro code...</source>
       <translation>Makro-Code wird zwischengespeichert...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="770"/>
+      <location filename="../../addonmanager_workers_startup.py" line="769"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Addon-Manager: Ein Arbeitsprozess konnte während des Abrufs von {name} nicht abgeschlossen werden</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="785"/>
+      <location filename="../../addonmanager_workers_startup.py" line="784"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Von {num_macros} Makros wurden {num_failed} während der Verarbeitung nicht rechtzeitig beendet</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="808"/>
+      <location filename="../../addonmanager_workers_startup.py" line="807"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Addon-Manager: Ein Arbeitsprozess ({name}) konnte nicht angehalten werden</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="847"/>
+      <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Getting metadata from macro {}</source>
       <translation>Herauslesen von Metadaten aus Makro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="861"/>
+      <location filename="../../addonmanager_workers_startup.py" line="860"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Timeout beim Abrufen von Metadaten für Makro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="871"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Fehler beim Beenden des Prozesses für Makro {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
+      <location filename="../../addonmanager_workers_startup.py" line="892"/>
       <source>Retrieving macro description...</source>
       <translation>Makro-Beschreibung wird abgerufen...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="894"/>
       <source>Retrieving info from git</source>
       <translation>Informationen werden von Git abgerufen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
+      <location filename="../../addonmanager_workers_startup.py" line="897"/>
       <source>Retrieving info from wiki</source>
       <translation>Informationen werden aus den Wiki abgerufen</translation>
     </message>
@@ -2421,17 +2421,17 @@ installierte Addons auf verfügbare Updates überprüft</translation>
       <translation>Fehler beim Herunterladen der Daten von {} -- Empfangener Antwortcode {}.</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="158"/>
       <source>Composite view</source>
       <translation>Zusammengesetzte Ansicht</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Expanded view</source>
       <translation>Erweiterte Ansicht</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Compact view</source>
       <translation>Kompakte Ansicht</translation>
     </message>

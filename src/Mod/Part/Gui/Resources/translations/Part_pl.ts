@@ -148,7 +148,8 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Punkt jest umieszczany w miejscu umiejscowienia obiektu. 
+Działa na obiektach z rozmieszczeniem i krawędziami elipsy lub paraboli lub hiperboli.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -1572,7 +1573,7 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Eksportuj plik CAD ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1644,7 +1645,7 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Importuje plik CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -1955,7 +1956,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="2200"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation>Tworzy trwałą reprezentację przekroju widocznych obiektów części</translation>
+      <translation>Tworzy wycinek przekroju widocznych obiektów części</translation>
     </message>
   </context>
   <context>
@@ -2576,68 +2577,68 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Eksport</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Jednostki dla eksportu w formacie STEP</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Milimetr</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Metr</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Cal</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Opisz krzywe w przestrzeni parametrycznej powierzchni</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Usuń zaznaczenie tej opcji, aby podczas eksportowania pominąć niewidoczne obiekty, co jest przydatne w przypadku programów CAD, które nie obsługują stylizacji niewidocznych obiektów STEP.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Zaznacz tę opcję, jeśli chcesz zachować informacje o umiejscowieniu podczas eksportu
+pojedynczego obiektu. Należy pamiętać, że podczas ponownego importu pliku STEP,
+umiejscowienie zostanie zakodowane w geometrii kształtu, natomiast nie zostanie lokowane
+wewnątrz właściwości Umiejscowienie.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Eksportuj niewidoczne obiekty</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Eksportuj umiejscowienie pojedynczego obiektu</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>Użyj starszej funkcji eksportu</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Schemat</translation>
     </message>
@@ -2980,7 +2981,7 @@ Wymagana wartość musi być różna od zera.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Parametry sfazowania</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3094,7 +3095,7 @@ Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Zapisz bryły i powłoki jako</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3225,7 +3226,8 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Nie używaj nazw instancji. 
+Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi automatycznie generowanymi nazwami instancji.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3400,7 +3402,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>Plik wejściowy STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4155,7 +4157,7 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation>Kolor odblasku kształtu</translation>
+      <translation>Kolor odbicia kształtu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
@@ -4254,10 +4256,10 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Dolna strona powierzchni będzie renderowana w taki sam sposób jak górna.
+Jeśli opcja nie jest zaznaczona, jest to zależne od opcji "Kolor podświetlenia"
+(sekcja preferencji Wyświetlanie v→ Widok 3D). 
+Użyty zostanie albo kolor podświetlenia albo czarny.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4513,7 +4515,7 @@ zostanie użyty wektor normalnej płaszczyzny szkicu</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Wycinanie przekroju</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5147,7 +5149,7 @@ Pojedyncze kontrole operacji logicznych:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Pomiń ustawienia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5576,12 +5578,13 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>Wybierz dwa lub więcej kształtów. Lub wybierz jedno złożenie z dwóch lub więcej kształtów, aby obliczyć ich część wspólną.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Proszę, wybierz dwa lub więcej kształtów. 
+Lub, wybierz jedno złożenie zawierające dwa lub więcej kształtów, które mają być połączone.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -5960,7 +5963,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="878"/>
       <source>Set appearance per face...</source>
-      <translation>Ustaw wygląd dla każdej ściany ...</translation>
+      <translation>Ustaw wygląd dla ściany ...</translation>
     </message>
   </context>
   <context>
@@ -6773,7 +6776,7 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Set appearance per face</source>
-      <translation>Ustaw wygląd dla każdej ściany</translation>
+      <translation>Ustaw wygląd dla ściany</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
@@ -6793,14 +6796,14 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Wygląd niestandardowy:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Gdy opcja jest zaznaczona, można wybrać wiele ścian
+przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

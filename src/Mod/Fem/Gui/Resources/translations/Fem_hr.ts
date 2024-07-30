@@ -1364,7 +1364,7 @@ dok ne budu prepisani novim pokretanjem rješavača</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation>Rezultati će se otvoriti u dijalogu
+      <translation>Rezultati će se otvoriti u dijalogu 
 sa posljednjim korištenim postavkama dijaloga</translation>
     </message>
     <message>
@@ -1398,7 +1398,7 @@ when the results dialog is opened</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Zadani alat za rješavanje koji će biti dodan kada
+      <translation>Zadani alat za rješavanje koji će biti dodan kada 
 se dodaje kontejner za analizu</translation>
     </message>
     <message>
@@ -1504,7 +1504,7 @@ Objekt FreeCAD rezultata: Uvezeni podaci bit će pretvoreni u FreeCAD FEM objekt
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
       <source>FreeCAD result object</source>
-      <translation>FreeCAD Objekt rezultata
+      <translation>FreeCAD Objekt rezultata 
 </translation>
     </message>
   </context>
@@ -1631,8 +1631,8 @@ You might need to increase this when using the
 Cholesky solver and you get the error message
 that "MAXGS" needs to be increased.</source>
       <translation>Maksimalan broj mjesta u matrici krutosti.
-Možda ćete to morati povećati kada koristite
-Choleskyov rješavač i dobijete poruku o pogrešci
+Možda ćete to morati povećati kada koristite 
+Choleskyov rješavač i dobijete poruku o pogrešci 
 da se "MAXGS" mora povećati."</translation>
     </message>
     <message>
@@ -1649,12 +1649,12 @@ da se "MAXGS" mora povećati."</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation>Maksimalan broj mjesta u vektoru koincidencije.
+      <translation>Maksimalan broj mjesta u vektoru koincidencije. 
 (broj čvorova po elementu množeno sa
  broj konačnih elementa)
 
-Možda ćete to morati povećati kada koristite
-iterativni rješavač i dobijete poruku o pogrešci
+Možda ćete to morati povećati kada koristite 
+iterativni rješavač i dobijete poruku o pogrešci 
 da se "MAXKOI" mora povećati</translation>
     </message>
     <message>
@@ -1709,13 +1709,13 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="217"/>
-      <location filename="../../TaskFemConstraint.cpp" line="235"/>
+      <location filename="../../TaskFemConstraint.cpp" line="211"/>
+      <location filename="../../TaskFemConstraint.cpp" line="229"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="218"/>
+      <location filename="../../TaskFemConstraint.cpp" line="212"/>
       <source>You must specify at least one reference</source>
       <translation>Morate odabrati najmanje jednu referencu</translation>
     </message>
@@ -1723,7 +1723,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="381"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="376"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1739,7 +1739,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="739"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="602"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1747,7 +1747,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1097"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1092"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1755,7 +1755,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="467"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="462"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1771,7 +1771,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="530"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="525"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1787,7 +1787,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="312"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1803,7 +1803,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="326"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1811,7 +1811,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="390"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="385"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1819,7 +1819,7 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="609"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="604"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1861,7 +1861,7 @@ Navedi drugu datoteku molim.</translation>
       <translation>Parametri elemenata analize</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="150"/>
+      <location filename="../../TaskFemConstraint.cpp" line="170"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
@@ -1991,28 +1991,28 @@ Navedi drugu datoteku molim.</translation>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="318"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="328"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="366"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="288"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="318"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="328"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="286"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) je dopuštena po elementu analize!</translation>
     </message>
@@ -3095,7 +3095,7 @@ Navedi drugu datoteku molim.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Imaginarni dio se koristi samo za jednadžbe
+      <translation>Imaginarni dio se koristi samo za jednadžbe 
 s harmoničnim/oscilirajućim pogonskim silom.</translation>
     </message>
     <message>
@@ -3159,14 +3159,14 @@ s harmoničnim/oscilirajućim pogonskim silom.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne x-komponente
+      <translation>Realni dio potencijalne x-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne x-komponente
+      <translation>Imaginarni dio potencijalne x-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3180,14 +3180,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne -komponente
+      <translation>Realni dio potencijalne -komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne y-komponente
+      <translation>Imaginarni dio potencijalne y-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3201,14 +3201,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne z-komponente
+      <translation>Realni dio potencijalne z-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne z-komponente
+      <translation>Imaginarni dio potencijalne z-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3578,13 +3578,13 @@ Napomena: u 2D je moguće samo podešavanje za x
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="949"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="963"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="950"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="964"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
@@ -3594,18 +3594,18 @@ Napomena: u 2D je moguće samo podešavanje za x
       <translation>Meshing (Putanje mreže)</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="179"/>
-      <location filename="../../AppFemGui.cpp" line="180"/>
       <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
       <location filename="../../AppFemGui.cpp" line="183"/>
       <location filename="../../AppFemGui.cpp" line="184"/>
+      <location filename="../../AppFemGui.cpp" line="185"/>
+      <location filename="../../AppFemGui.cpp" line="186"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="187"/>
-      <location filename="../../AppFemGui.cpp" line="188"/>
+      <location filename="../../AppFemGui.cpp" line="189"/>
+      <location filename="../../AppFemGui.cpp" line="190"/>
       <source>Import-Export</source>
       <translation>Uvoz / izvoz</translation>
     </message>
@@ -4264,77 +4264,67 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="119"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="170"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="199"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="275"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="301"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="327"/>
-      <source>Fixed</source>
-      <translation>Fiksno</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="126"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="159"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="152"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="185"/>
       <source>Formulas are only valid
 for the Elmer solver</source>
       <translation>Formule  su samo valjane za Elmerov rješavač</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="130"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="123"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="156"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="189"/>
       <source>Formula</source>
       <translation>Formula</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="140"/>
       <source>Displacement y</source>
       <translation>Premještanje y</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="187"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="173"/>
       <source>Displacement z</source>
       <translation>Premještanje z</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="217"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="196"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="227"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
       <source>Flow solution is used to determine
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>Rješavanje protoka se koristi
+      <translation>Rješavanje protoka se koristi 
 za određivanje površinske sile
- (i time pomaka) generirane strujom
+ (i time pomaka) generirane strujom 
 (Opcija vrijedi samo za Elmerov rješavač)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="233"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="212"/>
       <source>Surface force by flow</source>
       <translation>Površinska sila kod protoka</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="253"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
       <translation>Rotacije vrijede samo za elemente nosača i lima.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="266"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation x</source>
       <translation>Rotacija x</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="292"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation y</source>
       <translation>Rotacija y</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation z</source>
       <translation>Rotacija z</translation>
     </message>
@@ -4428,7 +4418,7 @@ za određivanje površinske sile
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog
+      <translation>Smjer ruba ili smjer normalnog 
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4513,7 +4503,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog
+      <translation>Smjer ruba ili smjer normalnog 
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4688,7 +4678,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Koja krutost bi se trebala
+      <translation>Koja krutost bi se trebala 
 koristiti za Elmerov rješavač</translation>
     </message>
     <message>
@@ -5674,12 +5664,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="792"/>
+      <location filename="../../../femcommands/commands.py" line="800"/>
       <source>FEM mesh group</source>
       <translation>FEM grupa mreže</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="793"/>
+      <location filename="../../../femcommands/commands.py" line="801"/>
       <source>Creates a FEM mesh group</source>
       <translation>Stvara grupu FEM mreže</translation>
     </message>
@@ -5687,12 +5677,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="805"/>
+      <location filename="../../../femcommands/commands.py" line="813"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>FEM mreža od Netgen forme</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="809"/>
+      <location filename="../../../femcommands/commands.py" line="817"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Stvara FEM mreže iz krutog tijela ili oblika lica uz pomoć Netgenovog internog kreatora mreža</translation>
     </message>
@@ -5700,12 +5690,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="861"/>
+      <location filename="../../../femcommands/commands.py" line="869"/>
       <source>Show result</source>
       <translation>Pokaži rezultat</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="865"/>
+      <location filename="../../../femcommands/commands.py" line="873"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Pokazuje i vizualizira odabrane rezultate podataka</translation>
     </message>
@@ -5713,12 +5703,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="877"/>
+      <location filename="../../../femcommands/commands.py" line="885"/>
       <source>Purge results</source>
       <translation>Brisanje rezultata</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="881"/>
+      <location filename="../../../femcommands/commands.py" line="889"/>
       <source>Purges all results from active analysis</source>
       <translation>Briše sve rezultate iz aktivne analize</translation>
     </message>
@@ -5726,12 +5716,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="991"/>
+      <location filename="../../../femcommands/commands.py" line="999"/>
       <source>Solver CalculiX Standard</source>
       <translation>Alat za rješavanje CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="996"/>
+      <location filename="../../../femcommands/commands.py" line="1004"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Stvara standardni FEM CalculiX rješavač sa ccx alatom</translation>
     </message>
@@ -5739,12 +5729,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1044"/>
+      <location filename="../../../femcommands/commands.py" line="1052"/>
       <source>Solver job control</source>
       <translation>Kontrola posla rješavača</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1049"/>
+      <location filename="../../../femcommands/commands.py" line="1057"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Mijenja atribute rješavača i izvodi izračune za odabrani alat za rješavanje</translation>
     </message>
@@ -5752,12 +5742,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1061"/>
+      <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Solver Elmer</source>
       <translation>Alat za rješavanje Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1063"/>
+      <location filename="../../../femcommands/commands.py" line="1071"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Stvara FEM rješavača Elmer</translation>
     </message>
@@ -5765,12 +5755,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1074"/>
+      <location filename="../../../femcommands/commands.py" line="1082"/>
       <source>Solver Mystran</source>
       <translation>Alat za rješavanje Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1084"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Stvara FEM rješavač Mystran</translation>
     </message>
@@ -5778,12 +5768,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1086"/>
+      <location filename="../../../femcommands/commands.py" line="1094"/>
       <source>Run solver calculations</source>
       <translation>Pokrenuti rješavanje izračuna</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1090"/>
+      <location filename="../../../femcommands/commands.py" line="1098"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Izvodi izračune sa odabranim alatom za rješavanje</translation>
     </message>
@@ -5791,12 +5781,12 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1106"/>
+      <location filename="../../../femcommands/commands.py" line="1114"/>
       <source>Solver Z88</source>
       <translation>Rješavač Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1108"/>
+      <location filename="../../../femcommands/commands.py" line="1116"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Stvara FEM rješavača Z88</translation>
     </message>
@@ -6239,12 +6229,12 @@ Molimo odaberite vrstu rezultata prvo.
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1019"/>
+      <location filename="../../../femcommands/commands.py" line="1027"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>Alat za rješavanje CalculiX (new framework)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1024"/>
+      <location filename="../../../femcommands/commands.py" line="1032"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Stvori FEM alat za rješavanje CalculiX new framework (manje rukovanje pogreškama rezultata)</translation>
     </message>
@@ -6395,12 +6385,12 @@ Molimo odaberite vrstu rezultata prvo.
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="850"/>
+      <location filename="../../../femcommands/commands.py" line="858"/>
       <source>FEM mesh refinement</source>
       <translation>FEM izglađivanje mreže</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="851"/>
+      <location filename="../../../femcommands/commands.py" line="859"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Stvori FEM izglađivanje mreže</translation>
     </message>
@@ -6551,7 +6541,7 @@ Molimo odaberite vrstu rezultata prvo.
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="748"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="743"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>

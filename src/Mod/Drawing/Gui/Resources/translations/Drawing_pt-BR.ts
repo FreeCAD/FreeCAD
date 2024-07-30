@@ -232,7 +232,7 @@
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
       <source>Inserts a symbol from a SVG file in the active drawing</source>
-      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
+      <translation>Insere um símbolo de um arquivo svg no desenho ativo</translation>
     </message>
   </context>
   <context>
@@ -336,7 +336,7 @@
       <location filename="../../DrawingView.cpp" line="595"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation>A impressora utiliza uma orientação diferente do que o desenho.
+      <translation>A impressora utiliza uma orientação diferente do que o desenho. 
 Deseja continuar?</translation>
     </message>
     <message>

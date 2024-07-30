@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>El Punt es posa a la ubicació de la posició de l'objecte. Treballs sobre objectes amb les ubicacions i vores el·lipse/paràbola/hipèrbola.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -441,7 +441,7 @@
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Intersection of two faces.</translation>
+      <translation>Intersecció de dues cares.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="256"/>
@@ -570,13 +570,13 @@
       <location filename="../../AttacherTexts.cpp" line="145"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY paral·lel al pla</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</translation>
+      <translation>El pla X' Y' és paral·lel al pla (XY de l'objecte) i passa a través del vèrtex</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="148"/>
@@ -779,13 +779,13 @@
       <location filename="../../AttacherTexts.cpp" line="67"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY paral·lel al pla</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</translation>
+      <translation>El pla X' Y' és paral·lel al pla (XY de l'objecte) i passa a través del vèrtex.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="70"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Exporta el fitxer CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Importa el fitxer CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2259,7 +2259,7 @@ de projecció.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
       <source>Project on surface</source>
-      <translation type="unfinished">Project on surface</translation>
+      <translation>Projectar en una superfície</translation>
     </message>
   </context>
   <context>
@@ -2567,70 +2567,70 @@ Nota: La ubicació s'expressa en l'espai local de l'objecte que s'adjunta.</tran
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Unitats de PAS per a l'exportació</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation type="unfinished">Millimeter</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation type="unfinished">Meter</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation type="unfinished">Inch</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Escriure les corbes en paramètriques espai de superfície</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Desmarqueu-ho per saltar els objectes invisibles quan s'exporti, cosa que és útil per als CAD que no admeten l'estil STEP d'invisibilitat.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Marqueu aquesta opció per mantenir la informació de la ubicació quan exporteu
+un sol objecte. Tingueu en compte que quan torneu a importar el fitxer STEP, el fitxer
+la ubicació es codificarà a la geometria de la forma, en lloc de mantenir-la
+dins de la propietat Placement.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Exporta objectes invisibles
 
 </translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Exporta la ubicació d'un sol objecte</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>Useu la funció d'exportació heretada</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Esquema</translation>
     </message>
@@ -2970,7 +2970,7 @@ Si les dues longituds són zero, s'utilitza la magnitud de la direcció.</transl
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Paràmetres de Xamfrà</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3057,7 +3057,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="20"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Exporta</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
@@ -3067,22 +3067,22 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
       <source>Millimeter</source>
-      <translation type="unfinished">Millimeter</translation>
+      <translation>Mil·límetre</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="52"/>
       <source>Meter</source>
-      <translation type="unfinished">Meter</translation>
+      <translation>Metre</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="57"/>
       <source>Inch</source>
-      <translation type="unfinished">Inch</translation>
+      <translation>Polzada</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Exporta sòlids i escenari com a</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3213,7 +3213,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>No utilitzeu els noms de la instància. Útil per a fitxers STEP heretats amb noms d'instàncies generats automàticament no significatius.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3223,7 +3223,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="150"/>
       <source>CodePage</source>
-      <translation type="unfinished">CodePage</translation>
+      <translation>Pàgina de codis</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="177"/>
@@ -3339,7 +3339,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="92"/>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Direcció:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
@@ -3388,7 +3388,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>Arxiu STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4008,7 +4008,7 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessel·lació&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defineix la desviació màxima de la malla tessel·lada a la superfície. Com més petit sigui el valor, més lenta serà la velocitat de renderització, la qual cosa augmentarà el detall/resolució.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4071,17 +4071,17 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="108"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>Experimental</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="117"/>
       <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</translation>
+      <translation>Aquestes preferències són experimentals i poden resultar en una menor estabilitat, més problemes i comportaments no definits.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Allow multiple solids in Part Design Body by default (experimental)</source>
-      <translation type="unfinished">Allow multiple solids in Part Design Body by default (experimental)</translation>
+      <translation>Permetre múltiples sòlids al Cos del Disseny de Peces per defecte (experimental)</translation>
     </message>
   </context>
   <context>
@@ -4119,32 +4119,32 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Color de forma ambiental</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>El color ambiental per defecte per a les noves formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Color de forma emissiu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>El color emissiu per defecte per a les noves formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Color de forma especular</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>El color especular per defecte per a les noves formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4159,12 +4159,12 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Brillantor de forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>La brillantor per defecte per a les noves formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4238,10 +4238,10 @@ durant la lectura del fitxer (detalls més lents però més alts).</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>La part inferior de la superfície es representarà de la mateixa manera que la part superior.
+Si no està marcat, depèn de l'opció "Color de llum de fons"
+(secció de preferències Pantalla -&gt; Vista 3D); o el color de la llum de fons
+s'utilitzarà o negre.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4428,7 +4428,7 @@ s'utilitzarà el vector normal del pla d'esbós</translation>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>Referència del pla mirall</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
@@ -4497,7 +4497,7 @@ s'utilitzarà el vector normal del pla d'esbós</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Tall de Secció Persistent</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5125,7 +5125,7 @@ Comprovacions d'operació booleana individual:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Omet aquesta pàgina de configuració</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5220,7 +5220,7 @@ Comprovacions d'operació booleana individual:</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>%n invalid shapes.</source>
       <translation type="unfinished">
-        <numerusform>%n forma invàlida.</numerusform>
+        <numerusform>%n formes invàlides.</numerusform>
         <numerusform>%n invalid shapes.</numerusform>
       </translation>
     </message>
@@ -5553,12 +5553,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>Si us plau, seleccioni dues formes o més. O bé, seleccioneu un compost que contingui dues o més formes per a calcular la intersecció entre elles.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Si us plau, seleccioni dues formes o més. O bé, seleccioneu un compost que contingui dues o més formes per a ser fusionats.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -5602,7 +5602,7 @@ Do you want to continue?</source>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Vèrtex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -5932,12 +5932,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
       <source>Edit projection</source>
-      <translation type="unfinished">Edit projection</translation>
+      <translation>Editar projecció</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="878"/>
       <source>Set appearance per face...</source>
-      <translation type="unfinished">Set appearance per face...</translation>
+      <translation>Estableix l'aparença per cara...</translation>
     </message>
   </context>
   <context>
@@ -6536,32 +6536,32 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>Escali l'objecte per un sol factor en totes les direccions.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>Escalat Uniforme</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Factor Y</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction.</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction.</translation>
+      <translation>Especifiqui un factor d'escalat diferent per a cada direcció cardinal.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-Uniform Scaling</source>
-      <translation type="unfinished">Non-Uniform Scaling</translation>
+      <translation>Escalat No-Uniforme</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shape(s) that should be scaled</source>
-      <translation type="unfinished">Select shape(s) that should be scaled</translation>
+      <translation>Seleccioneu les formes que s'han d'escalar</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6571,19 +6571,19 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>No hi ha formes escalables seleccionades</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>El document '%1' no existeix.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
       <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
-      <translation type="unfinished">Creating Scale failed.
+      <translation>La creació de l'escalat ha fallat.
 %1</translation>
     </message>
   </context>
@@ -6602,7 +6602,7 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Scale a selected shape</source>
-      <translation type="unfinished">Scale a selected shape</translation>
+      <translation>Escalar forma seleccionada</translation>
     </message>
   </context>
   <context>
@@ -6610,13 +6610,13 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Filtre de Selecció</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>Canvia el filtre de selecció</translation>
     </message>
   </context>
   <context>
@@ -6624,13 +6624,13 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Selecció de Vèrtexs</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <location filename="../../CommandFilter.cpp" line="176"/>
       <source>Only allow the selection of vertices</source>
-      <translation type="unfinished">Only allow the selection of vertices</translation>
+      <translation>Només permet la selecció de vèrtexs</translation>
     </message>
   </context>
   <context>
@@ -6638,13 +6638,13 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge selection</source>
-      <translation type="unfinished">Edge selection</translation>
+      <translation>Selecció d'Arestes</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <location filename="../../CommandFilter.cpp" line="201"/>
       <source>Only allow the selection of edges</source>
-      <translation type="unfinished">Only allow the selection of edges</translation>
+      <translation>Només permet la selecció d'arestes</translation>
     </message>
   </context>
   <context>
@@ -6652,13 +6652,13 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face selection</source>
-      <translation type="unfinished">Face selection</translation>
+      <translation>Selecció de Cares</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <location filename="../../CommandFilter.cpp" line="226"/>
       <source>Only allow the selection of faces</source>
-      <translation type="unfinished">Only allow the selection of faces</translation>
+      <translation>Només permet la selecció de cares</translation>
     </message>
   </context>
   <context>
@@ -6668,7 +6668,7 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>S'han esborrat tots els filtres de selecció</translation>
     </message>
   </context>
   <context>
@@ -6676,7 +6676,7 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="75"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+      <translation>La forma ha de ser un filferro, una aresta o un compost. S'ha subministrat una altra cosa.</translation>
     </message>
   </context>
   <context>
@@ -6736,7 +6736,7 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
-      <translation type="unfinished">Wire is not closed.</translation>
+      <translation>El filferro no està tancat.</translation>
     </message>
   </context>
   <context>
@@ -6744,7 +6744,7 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Set appearance per face</source>
-      <translation type="unfinished">Set appearance per face</translation>
+      <translation>Estableix l'aparença per cara</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
@@ -6759,19 +6759,18 @@ Es pot utilitzar un "Filtre compost" per extreure les peces restants.</translati
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="66"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Aparença personalitzada:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Quan seleccionat, pots seleccionar múltiples cares arrossegant un rectangle de selecció a la vista 3D</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

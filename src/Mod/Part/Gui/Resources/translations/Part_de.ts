@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Punkt ist auf Position der Objektplatzierung gesetzt. Dies funktioniert für Objekte mit Platzierungen oder Ellipsen/Parabeln/Hyperbeln.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -214,7 +214,7 @@
       <location filename="../../AttacherTexts.cpp" line="298"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Schnitt</translation>
+      <translation>Schnittpunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="299"/>
@@ -435,13 +435,13 @@
       <location filename="../../AttacherTexts.cpp" line="253"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Schnittstelle</translation>
+      <translation>Schnittkante</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Schnittstelle von zwei Flächen.</translation>
+      <translation>Schnittkante zweier Flächen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="256"/>
@@ -1347,7 +1347,7 @@
     <message>
       <location filename="../../Command.cpp" line="359"/>
       <source>Make an intersection of two shapes</source>
-      <translation>Schnitt aus zwei Formen</translation>
+      <translation>Erstellt ein Schnittobjekt aus zwei Formen</translation>
     </message>
   </context>
   <context>
@@ -1365,7 +1365,7 @@
     <message>
       <location filename="../../Command.cpp" line="736"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Verbund Werkzeuge: Arbeiten mit Listen von Formen.</translation>
+      <translation>Verbundwerkzeuge: Arbeiten mit Listen von Formen.</translation>
     </message>
   </context>
   <context>
@@ -1432,12 +1432,12 @@
     <message>
       <location filename="../../Command.cpp" line="842"/>
       <source>Make compound</source>
-      <translation>Erzeuge Verbund</translation>
+      <translation>Verbund erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="843"/>
       <source>Make a compound of several shapes</source>
-      <translation>Erzeuge einen Verbund aus mehreren Formen</translation>
+      <translation>Erstellt einen Verbund aus mehreren Formen</translation>
     </message>
   </context>
   <context>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>In CAD-Datei exportieren...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Aus CAD-Datei importieren...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2520,7 +2520,7 @@ Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargest
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="432"/>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation>Schnittmenge von Nicht-Volumenkörpern nicht möglich</translation>
+      <translation>Schnittobjekte aus Nicht-Festkörpern sind nicht möglich</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="440"/>
@@ -2567,68 +2567,68 @@ Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargest
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Exportieren</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Einheiten für den Export nach STEP</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Millimeter</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Meter</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Zoll</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Kurven im Parameterraum der Oberfläche ausgeben</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Dieses Kontrollkästchen deaktivieren, um unsichtbare Objekte beim Exportieren zu überspringen. Dies ist nützlich für CAD-Systeme, die das STEP-Styling für Unsichtbarkeit nicht unterstützen.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Diese Option aktivieren, um die Platzierungsinformationen beim Exportieren
+eines einzelnen Objekts zu behalten. Bitte beachten, dass beim Rückimport der STEP-Datei die
+Platzierung in die Formgeometrie kodiert wird, anstatt sie in der
+in der Eigenschaft Platzierung zu speichern.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Unsichtbare Objekte exportieren</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Einzelne Objektplatzierung exportieren</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>Alte Exportfunktion verwenden</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Schema</translation>
     </message>
@@ -2969,7 +2969,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Parameter der Fase</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3083,7 +3083,7 @@ Bitte zuerst ein oder mehrere Kantenelemente markieren.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Exportieren von Festkörpern und Hüllflächen als</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3213,7 +3213,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Keine Instanznamen verwenden. Nützlich für alte STEP-Dateien mit nicht aussagekräftigen automatisch generierten Instanznamen.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3388,7 +3388,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>STEP-Eingabedatei</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -4239,10 +4239,10 @@ during file reading (slower but higher details).</source>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Die Unterseite der Oberfläche wird auf die gleiche Weise gerendert wie die Oberseite.
+Wenn diese Option nicht aktiviert ist, hängt es von der Option "Farbe der Hintergrundbeleuchtung" ab
+(Voreinstellungen, Abschnitt Anzeige -&gt; 3D-Ansicht); entweder wird die Farbe der Hintergrundbeleuchtung
+oder Schwarz verwendet werden.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4498,7 +4498,7 @@ der Normalenvektor der Skizze verwendet</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Dauerhafte Schnittdarstellung</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5021,7 +5021,7 @@ Hinweis: Die Positionierung wird im lokalen Koordinatensystem des befestigten Ob
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>Zusätzliche Prüfung boolescher Verknüpfungen, die manchmal Fehler findet, die
-von der Standardprüfung der BRep-Geometrie übersehen werden. Diese Fehler
+von der Standardprüfung der B-rep-Geometrie übersehen werden. Diese Fehler
 bedeuten nicht immer, dass das geprüfte Objekt unbrauchbar ist. Standardwert: falsch</translation>
     </message>
     <message>
@@ -5127,7 +5127,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Diese Einstellungsseite überspringen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5555,12 +5555,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>Bitte zwei oder mehr Formen selektieren. Alternativ einen Verbund von zwei oder mehr Formen selektieren um Schnitt zu berechnen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Bitte zwei oder mehr Formen selektieren. Alternativ einen Verbund von zwei oder mehr Formen selektieren, welche verbunden werden sollen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6192,8 +6192,8 @@ für Kollisions- oder Abstandsfilterung.</translation>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation>Aufteilen eines Verbundobjekts aus Formen in separate Objekte.
-Es wird ein 'Compound-Filter'-Objekt für jede Form erzeugt.</translation>
+      <translation>Teilt einen Verbund aus Formen in separate Objekte auf.
+Es wird ein 'Verbunfilter'-Objekt für jede Form erstellt.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6766,14 +6766,14 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Benutzerdefinierte Darstellung:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Wenn aktiviert, können mehrere Flächen durch Aufziehen 
+eines Auswahlrechtecks in der 3D-Ansicht ausgewählt werden</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

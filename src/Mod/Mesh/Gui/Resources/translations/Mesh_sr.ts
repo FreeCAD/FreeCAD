@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Мрежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
@@ -1428,7 +1428,7 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>Доња страна површине ће бити приказана на исти начин као горња страна.
 Ако није означено, зависи од опције „Омогући боју позадинског осветљења“
-(Подешавања -&gt; Приказ -&gt; 3Д приказ). Или ће се користити боја позадинског
+(Подешавања -&gt; Приказ -&gt; 3Д приказ). Или ће се користити боја позадинског 
 осветљења или црна боја.</translation>
     </message>
     <message>
