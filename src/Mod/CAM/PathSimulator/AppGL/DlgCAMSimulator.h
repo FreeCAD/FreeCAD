@@ -104,7 +104,6 @@ private:
     QOpenGLContext* mLastContext = nullptr;
     MillSim::MillSimulation* mMillSimulator = nullptr;
     static DlgCAMSimulator* mInstance;
-    //SimStock mStock = {0, 0, 0, 1, 1, 1, 1};
     float mQuality = 10;
 };
 

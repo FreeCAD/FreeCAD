@@ -37,10 +37,6 @@
         var[idx++] = z;                                                                            \
     }
 
-// #define SET_TRIPLE(var, idx, x, y, z) {var[idx] = x; var[idx+1] = y; var[idx+2] = z;}
-// #define SET_TRIPLE_OFFS(var, idx, offs, x, y, z) {var[idx] = x + offs; var[idx+1] = y + offs;
-// var[idx+2] = z + offs;}
-
 #define SET_TRIPLE_OFFS(var, idx, offs, x, y, z)                                                   \
     {                                                                                              \
         var[idx++] = x + offs;                                                                     \

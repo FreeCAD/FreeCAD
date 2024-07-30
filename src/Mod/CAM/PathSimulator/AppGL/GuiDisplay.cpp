@@ -198,9 +198,12 @@ void GuiDisplay::MouseCursorPos(int x, int y)
         if (g->actionKey == 0) {
             continue;
         }
-        g->mouseOver = !g->hidden
-            && (x > g->posx() && y > g->posy() && x < (g->posx() + g->texItem.w)
-                && y < (g->posy() + g->texItem.h));
+        bool mouseCursorContained = 
+            x > g->posx() && x < (g->posx() + g->texItem.w) &&
+            y > g->posy() && y < (g->posy() + g->texItem.h);
+
+        g->mouseOver = !g->hidden && mouseCursorContained;
+
         if (g->mouseOver) {
             mMouseOverItem = g;
         }
@@ -209,7 +212,7 @@ void GuiDisplay::MouseCursorPos(int x, int y)
 
 void MillSim::GuiDisplay::HandleActionItem(GuiItem* guiItem)
 {
-    if (guiItem->actionKey >= 32) {
+    if (guiItem->actionKey >= ' ') {
         if (guiItem->flags & GUIITEM_CHECKABLE) {
             guiItem->flags ^= GUIITEM_CHECKED;
         }
@@ -222,7 +225,6 @@ void GuiDisplay::MousePressed(int button, bool isPressed, bool isSimRunning)
 {
     if (button == MS_MOUSE_LEFT) {
         if (isPressed) {
-            //mPressedItem = nullptr;
             if (mMouseOverItem != nullptr) {
                 mPressedItem = mMouseOverItem;
                 HandleActionItem(mPressedItem);

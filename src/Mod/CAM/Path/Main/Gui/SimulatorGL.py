@@ -19,6 +19,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""
+Command and task window handler for the OpenGL based CAM simulator
+"""
+
 
 import math
 import os
@@ -29,7 +33,7 @@ from   PathScripts import PathUtils
 import Path.Main.Job as PathJob
 import CAMSimulator
 
-from FreeCAD import Vector, Base
+from FreeCAD import Vector
 
 
 # lazily loaded modules
@@ -186,7 +190,6 @@ class CAMSimulation:
                 nsegments = int(edge.Length / resolution) + 1
                 step = (p2 - p1) / nsegments
                 location = p1 + step
-                # print (edge.Length, nsegments, step)
                 while nsegments > 0:
                     endrad = RadiusAt(edge, location)
                     endz = edge.valueAt(location).z
@@ -347,8 +350,6 @@ class CAMSimulation:
     def cancel(self):
         """ Cancel the simulation
         """
-        #self.EndSimulation()
-        pass
 
 
 class CommandCAMSimulate:

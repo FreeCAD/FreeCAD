@@ -53,7 +53,7 @@ SET(CAMSimulator_SRCS_Core
     GuiDisplay.h
     linmath.h
     MillMotion.h
-	MillPathLine.cpp
+    MillPathLine.cpp
 	MillPathLine.h
     MillPathSegment.cpp
     MillPathSegment.h

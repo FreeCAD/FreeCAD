@@ -409,8 +409,6 @@ void SimDisplay::RenderResultSSAO()
     glDisable(GL_CULL_FACE);
     // generate SSAO texture
     glBindFramebuffer(GL_FRAMEBUFFER, mSsaoFbo);
-    //glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
-    //glClear(GL_COLOR_BUFFER_BIT);
     shaderSSAO.Activate();
 
     glActiveTexture(GL_TEXTURE0);
@@ -434,8 +432,6 @@ void SimDisplay::RenderResultSSAO()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // lighting pass: deferred Blinn-Phong lighting with added screen-space ambient occlusion
-    //glClearColor(0.6f, 0.8f, 1.0f, 1.0f);
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shaderSSAOLighting.Activate();
     shaderSSAOLighting.UpdateAlbedoTexSlot(0);
     shaderSSAOLighting.UpdatePositionTexSlot(1);
@@ -457,7 +453,6 @@ void SimDisplay::RenderResultSSAO()
 
 void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
 {
-    //glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_FALSE);
     glDepthFunc(isHidden ? GL_GREATER : GL_LESS);
@@ -538,7 +533,6 @@ void SimDisplay::UpdateProjection()
     // Setup projection
     mat4x4 projmat;
     mat4x4_perspective(projmat, 0.7f, (float)gWindowSizeW / gWindowSizeH, 1.0f, maxFar);
-    // mat4x4_perspective(projmat, 0.7f, 4.0f / 3.0f, 1, 100);
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);
     shaderInv3D.Activate();

@@ -153,32 +153,32 @@ void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
 {
     std::vector<int> normalCount;
     int nVerts = 0;
-    for (auto& s : tshape.getSubTopoShapes(TopAbs_FACE)) {
+    for (auto& shape : tshape.getSubTopoShapes(TopAbs_FACE)) {
         std::vector<Base::Vector3d> points;
         std::vector<Data::ComplexGeoData::Facet> facets;
-        s.getFaces(points, facets, resolution);
+        shape.getFaces(points, facets, resolution);
 
         std::vector<Base::Vector3d> normals(points.size());
         std::vector<int> normalCount(points.size());
 
         // copy triangle indices and calculate normals
-        for (auto f : facets) {
-            indices.push_back(f.I1 + nVerts);
-            indices.push_back(f.I2 + nVerts);
-            indices.push_back(f.I3 + nVerts);
+        for (auto face : facets) {
+            indices.push_back(face.I1 + nVerts);
+            indices.push_back(face.I2 + nVerts);
+            indices.push_back(face.I3 + nVerts);
 
             // calculate normal
-            Base::Vector3d vAB = points[f.I2] - points[f.I1];
-            Base::Vector3d vAC = points[f.I3] - points[f.I1];
+            Base::Vector3d vAB = points[face.I2] - points[face.I1];
+            Base::Vector3d vAC = points[face.I3] - points[face.I1];
             Base::Vector3d vNorm = vAB.Cross(vAC).Normalize();
 
-            normals[f.I1] += vNorm;
-            normals[f.I2] += vNorm;
-            normals[f.I3] += vNorm;
+            normals[face.I1] += vNorm;
+            normals[face.I2] += vNorm;
+            normals[face.I3] += vNorm;
 
-            normalCount[f.I1]++;
-            normalCount[f.I2]++;
-            normalCount[f.I3]++;
+            normalCount[face.I1]++;
+            normalCount[face.I2]++;
+            normalCount[face.I3]++;
         }
 
         // copy points and set normals
@@ -242,8 +242,7 @@ void DlgCAMSimulator::doGlCleanup()
     if (mLastContext != nullptr) {
         mLastContext->makeCurrent(this);
     }
-    if (mContext != nullptr)
-    {
+    if (mContext != nullptr) {
         mContext->deleteLater();
         mContext = nullptr;
     }
@@ -306,11 +305,11 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
     return mInstance;
 }
 
-void DlgCAMSimulator::SetStockShape(const Part::TopoShape& tshape, float resolution)
+void DlgCAMSimulator::SetStockShape(const Part::TopoShape& shape, float resolution)
 {
     std::vector<Vertex> verts;
     std::vector<GLushort> indices;
-    GetMeshData(tshape, resolution, verts, indices);
+    GetMeshData(shape, resolution, verts, indices);
     mMillSimulator->SetArbitraryStock(verts, indices);
 }
 
