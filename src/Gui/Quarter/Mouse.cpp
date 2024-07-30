@@ -45,8 +45,8 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
-#include <Gui/SoMouseWheelEvent.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SoMouseWheelEvent.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoEvents.h>
 

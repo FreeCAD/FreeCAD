@@ -51,7 +51,7 @@
 #include <Base/Quantity.h>
 
 #include "SoFCCSysDragger.h"
-#include "So3DAnnotation.h"
+#include "Inventor/So3DAnnotation.h"
 
 #include "MainWindow.h"
 #include "SoFCDB.h"

@@ -27,8 +27,8 @@
 # include <QApplication>
 #endif
 
+#include "Inventor/SoMouseWheelEvent.h"
 #include "NavigationStyle.h"
-#include "SoMouseWheelEvent.h"
 #include "View3DInventorViewer.h"
 
 
