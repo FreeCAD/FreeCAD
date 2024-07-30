@@ -384,10 +384,6 @@ SubShapeBinder::~SubShapeBinder() {
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
-
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
-    this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
 App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject** pyObj,
