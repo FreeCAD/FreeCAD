@@ -33,7 +33,6 @@ import FreeCAD
 import FreeCADGui
 from femguiutils import selection_widgets
 
-from femtools import femutils
 from femtools import membertools
 
 
@@ -62,7 +61,7 @@ class _TaskPanel:
         if analysis is not None:
             self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         if self._mesh is not None:
-            self._part = femutils.get_part_to_mesh(self._mesh)
+            self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
 

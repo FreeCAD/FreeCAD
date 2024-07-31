@@ -54,20 +54,19 @@ class BIM_Views:
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
         statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
-        if statuswidget:
-            if hasattr(statuswidget, "bimviewsbutton"):
-                bimviewsbutton = statuswidget.bimviewsbutton
+        if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
+            bimviewsbutton = statuswidget.bimviewsbutton
         if vm:
             if vm.isVisible():
                 vm.hide()
                 if bimviewsbutton:
                     bimviewsbutton.setChecked(False)
-                    PARAMS.SetBool("RestoreBimViews", False)
+                PARAMS.SetBool("RestoreBimViews", False)
             else:
                 vm.show()
                 if bimviewsbutton:
                     bimviewsbutton.setChecked(True)
-                    PARAMS.SetBool("RestoreBimViews", True)
+                PARAMS.SetBool("RestoreBimViews", True)
                 self.update()
         else:
             vm = QtGui.QDockWidget()
@@ -76,6 +75,7 @@ class BIM_Views:
             self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogViews.ui")
             vm.setWidget(self.dialog)
             vm.tree = self.dialog.tree
+            vm.closeEvent = self.onClose
 
             # set context menu
             self.dialog.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -158,6 +158,15 @@ class BIM_Views:
             PARAMS.SetBool("RestoreBimViews", True)
 
             self.update()
+
+    def onClose(self, event):
+        from PySide import QtGui
+
+        st = FreeCADGui.getMainWindow().statusBar()
+        statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+        if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
+            statuswidget.bimviewsbutton.setChecked(False)
+        PARAMS.SetBool("RestoreBimViews", False)
 
     def connectDock(self):
         "watch for dock location"

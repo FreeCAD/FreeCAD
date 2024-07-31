@@ -265,14 +265,14 @@ App::DocumentObjectExecReturn* Helix::execute()
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
             // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+            TopoShape boolOp = this->getSolid(mkFuse.Shape());
 
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
 
-            if (!isSingleSolidRuleSatisfied(boolOp)) {
+            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
@@ -281,7 +281,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
-            TopoDS_Shape boolOp;
+            TopoShape boolOp;
 
             if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
                 BRepAlgoAPI_Common mkCom(result, base.getShape());
@@ -298,10 +298,10 @@ App::DocumentObjectExecReturn* Helix::execute()
             }
 
             // lets check if the result is a solid
-            if (boolOp.IsNull())
+            if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
-            if (!isSingleSolidRuleSatisfied(boolOp)) {
+            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 

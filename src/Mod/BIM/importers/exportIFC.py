@@ -2080,10 +2080,22 @@ def getRepresentation(
                                 profile = profiledefs[pstr]
                                 shapetype = "reusing profile"
                             else:
-                                profile = getProfile(ifcfile,pi)
-                                if profile:
-                                    profiledefs[pstr] = profile
-                            if profile and not(DraftVecUtils.isNull(evi)):
+                                # Fix bug in Forum Discussion
+                                # https://forum.freecad.org/viewtopic.php?p=771954#p771954
+                                if not isinstance(pi, Part.Compound):
+                                    profile = getProfile(ifcfile,pi)
+                                    if profile:
+                                        profiledefs[pstr] = profile
+                                        profiles=[profile]
+                                else:  # i.e. Part.Compound
+                                    profiles=[]
+                                    for pif in pi.Faces:
+                                        profile = getProfile(ifcfile,pif)
+                                        if profile:
+                                            profiledefs[pstr] = profile
+                                            profiles.append(profile)
+                            if profiles and not(DraftVecUtils.isNull(evi)):
+                              for profile in profiles:
                                 #ev = pl.Rotation.inverted().multVec(evi)
                                 #print("evi:",evi)
                                 if not tostore:

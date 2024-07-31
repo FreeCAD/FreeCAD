@@ -443,8 +443,6 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = params.get_param_view("DefaultShapeLineWidth")
         vobj.LineColor = ArchCommands.getDefaultColor("Space")
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][params.get_param_arch("defaultSpaceStyle")]
-        if vobj.Transparency == 100:
-            vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
@@ -666,13 +664,9 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             else:
                 self.label.whichChild = -1
 
-        elif prop == "ShapeColor":
-            if hasattr(vobj,"ShapeColor"):
-                self.fmat = vobj.ShapeColor.getValue()
-
         elif prop == "Transparency":
-            if hasattr(vobj,"Transparency"):
-                self.fmat.transparency.setValue(vobj.Transparency/100.0)
+            if hasattr(vobj,"DisplayMode"):
+                vobj.DisplayMode = "Wireframe" if vobj.Transparency == 100 else "Flat Lines"
 
     def setEdit(self, vobj, mode):
         if mode != 0:

@@ -287,9 +287,19 @@ PreferencePage* DlgPreferencesImp::createPreferencePage(const std::string& pageN
         return nullptr;
     }
 
+    auto resetMargins = [](QWidget* widget) {
+        widget->setContentsMargins(0, 0, 0, 0);
+        widget->layout()->setContentsMargins(0, 0, 0, 0);
+    };
+
     // settings layout already takes care for margins, we need to reset everything to 0
-    page->setContentsMargins(0, 0, 0, 0);
-    page->layout()->setContentsMargins(0, 0, 0, 0);
+    resetMargins(page);
+
+    // special handling for PreferenceUiForm to reset margins for forms too
+    if (auto uiFormPage = qobject_cast<PreferenceUiForm*>(page)) {
+        resetMargins(uiFormPage->form());
+    }
+
     page->setProperty(GroupNameProperty, QString::fromStdString(groupName));
     page->setProperty(PageNameProperty, QString::fromStdString(pageName));
 
@@ -352,15 +362,20 @@ int DlgPreferencesImp::minimumPageWidth() const
 
 int DlgPreferencesImp::minimumDialogWidth(int pageWidth) const
 {
+    // this is additional safety spacing to ensure that everything fits with scrollbar etc.
+    const auto additionalMargin = style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 8;
+    
     QSize size = ui->groupWidgetStack->sizeHint();
+
     int diff = pageWidth - size.width();
     int dw = width();
+
     if (diff > 0) {
         const int offset = 2;
         dw += diff + offset;
     }
 
-    return dw;
+    return dw + additionalMargin;
 }
 
 void DlgPreferencesImp::updatePageDependentWidgets()
