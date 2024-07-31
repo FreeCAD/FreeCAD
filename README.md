@@ -60,7 +60,6 @@ FreeCAD requires several dependencies to correctly compile for development and p
 - [Linux](https://wiki.freecad.org/Compile_on_Linux)
 - [Windows](https://wiki.freecad.org/Compile_on_Windows)
 - [macOS](https://wiki.freecad.org/Compile_on_MacOS)
-- [Cygwin](https://wiki.freecad.org/Compile_on_Cygwin)
 - [MinGW](https://wiki.freecad.org/Compile_on_MinGW)
 
 
