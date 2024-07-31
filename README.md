@@ -55,15 +55,7 @@ To learn more visit the [wiki Download page](https://wiki.freecad.org/Download)
 Compiling
 ---------
 
-Compiling FreeCAD requires installation of several libraries and their 
-development files such as OCCT (Open Cascade), Coin and Qt, listed in the 
-pages below. Once this is done, FreeCAD can be compiled with 
-CMake. On Windows, these libraries are bundled and offered by the 
-FreeCAD team in a convenient package. On Linux, they are usually found 
-in your distribution's repositories, and on macOS and other platforms, 
-you will usually have to compile them yourself.
-
-The pages below contain up-to-date build instructions:
+FreeCAD requires several dependencies to correctly compile for development and production builds. The following pages contain updated build instructions for their respective platforms:
 
 - [Linux](https://wiki.freecad.org/Compile_on_Linux)
 - [Windows](https://wiki.freecad.org/Compile_on_Windows)
