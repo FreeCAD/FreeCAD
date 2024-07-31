@@ -1584,7 +1584,7 @@ void MainWindow::delayedStartup()
     if (App::Application::Config()["RunMode"] == "Internal") {
         QTimer::singleShot(1000, this, []{
             try {
-                Base::Interpreter().runString(
+                    string command =
                     "import sys\n"
                     "import FreeCAD\n"
                     "import QtUnitGui\n\n"
@@ -1592,8 +1592,11 @@ void MainWindow::delayedStartup()
                     "QtUnitGui.addTest(testCase)\n"
                     "QtUnitGui.setTest(testCase)\n"
                     "result = QtUnitGui.runTest()\n"
-                    "sys.stdout.flush()\n"
-                    "sys.exit(0 if result else 1)");
+                    "sys.stdout.flush()\n";
+                    if (App::Application::Config()["ExitTests"] == "yes") {
+                        command += "sys.exit(0 if result else 1)";
+                    }
+                    Base::Interpreter().runString(command.c_str());
             }
             catch (const Base::SystemExitException&) {
                 throw;
