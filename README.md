@@ -17,21 +17,16 @@
 Overview
 --------
 
-* **Freedom to build what you want**  FreeCAD is an open-source parametric 3D 
-modeler made primarily to design real-life objects of any size. 
-Parametric modeling allows you to easily modify your design by going back into 
-your model history to change its parameters. 
+* **Freedom to build what you want:**
+with integrated tools for part design, analysis, documentation, assembly, and manufacturing, FreeCAD is the world leading open source software solution for bringing concepts to reality using parametric design. FreeCAD is suitable for designing projects of all sizes including tools, boats, and even buildings. 
 
-* **Create 3D from 2D and back** FreeCAD lets you to sketch geometry constrained
- 2D shapes and use them as a base to build other objects. 
- It contains many components to adjust dimensions or extract design details from 
- 3D models to create high quality production-ready drawings.
+* **Create models from drawings and back again:** draw simple or complex sketches and transform your ideas into parts. FreeCAD lets you to build models from 2D geometry constrained shapes and use them to build assemblies. Production drawings are ready to be made with the high quality Draft workbench.
 
-* **Designed for your needs** FreeCAD is designed to fit a wide range of uses
-including product design, mechanical engineering and architecture,
-whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
+* **Own the data you create:** FreeCAD has an industry first <i>open</i> data format. This ensures data made with FreeCAD will always remain accessible to the people who work with it.
 
-* **Cross platform** FreeCAD runs on Windows, macOS and Linux operating systems.
+* **Designed for your needs:** FreeCAD is designed to fit a wide range of uses including product design, mechanical engineering and architecture, whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
+
+* **Cross platform:** FreeCAD runs on Windows, macOS and Linux operating systems.
 <details>
   <summary><b>Underlying technology</b></summary>
  
