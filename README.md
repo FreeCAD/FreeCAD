@@ -32,13 +32,14 @@ including product design, mechanical engineering and architecture,
 whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
 
 * **Cross platform** FreeCAD runs on Windows, macOS and Linux operating systems.
-
-* **Underlying technology**
-    * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
-    * **Coin3D library** Open Inventor-compliant 3D scene representation model
-    * **Python** FreeCAD offers a broad Python API
-    * **Qt** Graphical user interface built with Qt
-
+<details>
+  <summary><b>Underlying technology</b></summary>
+ 
+  * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
+  *  **Coin3D library** Open Inventor-compliant 3D scene representation model
+  *  **Python** FreeCAD offers a broad Python API
+  *  **Qt** Graphical user interface built with Qt
+</details>
 
 Installing
 ----------
