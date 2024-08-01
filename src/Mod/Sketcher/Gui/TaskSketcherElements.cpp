@@ -1452,6 +1452,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                                     static_cast<ElementItem*>(ui->listWidgetElements->item(i));
                                 if (item->ElementNbr == ElementId) {
                                     item->isLineSelected = select;
+                                    modified_item = item;
                                     break;
                                 }
                             }
