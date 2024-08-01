@@ -81,14 +81,10 @@ For more details visit:
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
 - [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
 
----
-**NOTE:**
-
+> [!NOTE]
 The [FPA](https://fpa.freecad.org) offers developers the opportunity
 to apply for a grant to work on projects of their choosing. Check
 [jobs and funding](https://blog.freecad.org/jobs/) to know more.
-
----
 
 Usage & Getting Help
 --------------------
