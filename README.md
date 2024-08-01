@@ -112,6 +112,7 @@ The [FreeCAD forum](https://forum.freecad.org) is also a great place
 to find help and solve specific problems you might encounter when
 learning to use FreeCAD.
 
+---
 
 <p>This project receives generous infrastructure support from
   <a href="https://www.digitalocean.com/">
