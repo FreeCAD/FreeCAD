@@ -90,12 +90,12 @@ to apply for a grant to work on projects of their choosing. Check
 
 ---
 
-Usage & Getting help
+Usage & Getting Help
 --------------------
 
 The FreeCAD wiki contains documentation on 
-general FreeCAD usage, Python scripting, and development. These 
-pages might help you get started:
+general FreeCAD usage, Python scripting, and development.
+View these pages for more information:
 
 - [Getting started](https://wiki.freecad.org/Getting_started)
 - [Features list](https://wiki.freecad.org/Feature_list)
@@ -104,9 +104,8 @@ pages might help you get started:
 - [Scripting](https://wiki.freecad.org/Power_users_hub)
 - [Development](https://wiki.freecad.org/Developer_hub)
 
-The [FreeCAD forum](https://forum.freecad.org) is also a great place
-to find help and solve specific problems you might encounter when
-learning to use FreeCAD.
+The [FreeCAD forum](https://forum.freecad.org) is a great place
+to find help and solve specific problems when learning to use FreeCAD.
 
 ---
 
