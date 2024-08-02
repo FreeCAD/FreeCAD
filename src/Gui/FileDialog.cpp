@@ -673,7 +673,7 @@ FileChooser::FileChooser ( QWidget * parent )
 
     button = new QPushButton(QLatin1String("..."), this);
 
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
 
