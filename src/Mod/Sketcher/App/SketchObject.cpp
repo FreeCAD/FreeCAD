@@ -580,16 +580,15 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     // achieved.
     if (err == 0) {
         FullyConstrained.setValue(lastDoF == 0);
-    }
-
-    if (err == 0 && updateGeoAfterSolving) {
-        // set the newly solved geometry
-        std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
-        Part::PropertyGeometryList tmp;
-        tmp.setValues(std::move(geomlist));
-        // Only set values if there is actual changes
-        if (!Geometry.isSame(tmp))
-            Geometry.moveValues(std::move(tmp));
+        if (updateGeoAfterSolving) {
+            // set the newly solved geometry
+            std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
+            Part::PropertyGeometryList tmp;
+            tmp.setValues(std::move(geomlist));
+            // Only set values if there is actual changes
+            if (!Geometry.isSame(tmp))
+                Geometry.moveValues(std::move(tmp));
+        }
     }
     else if (err < 0) {
         // if solver failed, invalid constraints were likely added before solving
@@ -3043,9 +3042,6 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
                 Base::Vector3d refp1 = curve1->pointAtParameter(refparam1);
                 Base::Vector3d refp2 = curve2->pointAtParameter(refparam2);
-
-                // Base::Console().Log("refpoints:
-                // (%f,%f,%f);(%f,%f,%f)",refp1.x,refp1.y,refp1.z,refp2.x,refp2.y,refp2.z);
 
                 Base::Vector3d normalintersect(
                     (-dir1.x * dir2.x * refp1.y + dir1.x * dir2.x * refp2.y
@@ -7576,17 +7572,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         }
     }
 
-    // We shall solve in all cases, because recompute may fail, and leave the
-    // sketch in an inconsistent state. A concrete example. If the copied sketch
-    // has broken external geometry, its recomputation will fail. And because we
-    // use expression for copied constraint to add dependency to the copied
-    // sketch, this sketch will not be recomputed (because its dependency fails
-    // to recompute).
-#if 0
-    if (noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-#endif
-        solve();
-
+    solve();
 
     return svals.size();
 }
@@ -7872,7 +7858,6 @@ int SketchObject::delAllExternal()
     const std::vector<std::string> originalSubElements = SubElements;
 
     Objects.clear();
-
     SubElements.clear();
 
     const std::vector<Constraint*>& constraints = Constraints.getValues();
@@ -8116,14 +8101,6 @@ static gp_Vec ProjVecOnPlane_UVN(const gp_Vec& V, const gp_Pln& Pl)
     return gp_Vec(vector.X(), vector.Y(), 0.0);
 }
 
-// Auxiliary Method: returns vector projection in XYZ space
-#if 0
-static gp_Vec ProjVecOnPlane_XYZ( const gp_Vec& V, const gp_Pln& Pl)
-{
-  return V.Dot(Pl.Position().XDirection()) * Pl.Position().XDirection() +
-         V.Dot(Pl.Position().YDirection()) * Pl.Position().YDirection();
-}
-#endif
 
 // Auxiliary Method: returns point projection in UV space of plane
 static gp_Vec2d ProjPointOnPlane_UV(const gp_Pnt& P, const gp_Pln& Pl)
@@ -9559,7 +9536,6 @@ const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenc
 void SketchObject::isCoincidentWithExternalGeometry(int GeoId, bool& start_external,
                                                     bool& mid_external, bool& end_external)
 {
-
     start_external = false;
     mid_external = false;
     end_external = false;
