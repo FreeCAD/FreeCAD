@@ -63,7 +63,6 @@ void DlgSettingsNotificationArea::saveSettings()
 
     bool isNotificationAreaEnabled = ui->NotificationAreaEnabled->isChecked();
     hGrp->SetBool("NotificationAreaEnabled", isNotificationAreaEnabled);
-    
     bool isNonIntrusiveNotificationsEnabled = ui->NotificationAreaEnabled->isChecked();
     hGrp->SetBool("NonIntrusiveNotificationsEnabled", isNonIntrusiveNotificationsEnabled);
 
