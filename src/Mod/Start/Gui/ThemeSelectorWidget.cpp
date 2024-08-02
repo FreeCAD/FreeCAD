@@ -173,7 +173,7 @@ void ThemeSelectorWidget::retranslateUi()
 
     _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") + QLatin1String("</h2>"));
     _descriptionLabel->setText(tr("Looking for more themes? You can obtain them using ")
-                               + QLatin1String("<a href=\"freecad:Std_AddonMgr\" style=\" color: ")
+                               + QLatin1String(R"(<a href="freecad:Std_AddonMgr" style=" color: )")
                                + QString::fromStdString(col.asHexString()) + QLatin1String("\">")
                                + tr("Addon Manager") + QLatin1String("</a>."));
     _buttons[static_cast<int>(Theme::Dark)]->setText(tr("FreeCAD Dark", "Visual theme name"));
