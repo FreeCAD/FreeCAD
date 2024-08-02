@@ -162,26 +162,21 @@ bool ThemeSelectorWidget::eventFilter(QObject* object, QEvent* event)
     return QWidget::eventFilter(object, event);
 }
 
-void ThemeSelectorWidget::retranslateUi() {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Themes");
+void ThemeSelectorWidget::retranslateUi()
+{
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
     const unsigned long defaultAccentColor = 1434171135;
-    unsigned long packed =
-        hGrp->GetUnsigned("ThemeAccentColor1", defaultAccentColor);
+    unsigned long packed = hGrp->GetUnsigned("ThemeAccentColor1", defaultAccentColor);
     App::Color col;
     col.setPackedValue(packed);
-  
-    _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") +
-                         QLatin1String("</h2>"));
-    _descriptionLabel->setText(
-        tr("Looking for more themes? You can obtain them using ") +
-        QLatin1String("<a href=\"freecad:Std_AddonMgr\" style=\" color: ") +
-        QString::fromStdString(col.asHexString()) + QLatin1String("\">") +
-        tr("Addon Manager") + QLatin1String("</a>."));
-    _buttons[static_cast<int>(Theme::Dark)]->setText(
-        tr("FreeCAD Dark", "Visual theme name"));
-    _buttons[static_cast<int>(Theme::Light)]->setText(
-        tr("FreeCAD Light", "Visual theme name"));
-    _buttons[static_cast<int>(Theme::Classic)]->setText(
-        tr("FreeCAD Classic", "Visual theme name"));
+
+    _titleLabel->setText(QLatin1String("<h2>") + tr("Theme") + QLatin1String("</h2>"));
+    _descriptionLabel->setText(tr("Looking for more themes? You can obtain them using ")
+                               + QLatin1String("<a href=\"freecad:Std_AddonMgr\" style=\" color: ")
+                               + QString::fromStdString(col.asHexString()) + QLatin1String("\">")
+                               + tr("Addon Manager") + QLatin1String("</a>."));
+    _buttons[static_cast<int>(Theme::Dark)]->setText(tr("FreeCAD Dark", "Visual theme name"));
+    _buttons[static_cast<int>(Theme::Light)]->setText(tr("FreeCAD Light", "Visual theme name"));
+    _buttons[static_cast<int>(Theme::Classic)]->setText(tr("FreeCAD Classic", "Visual theme name"));
 }
