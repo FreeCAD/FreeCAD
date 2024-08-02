@@ -1069,7 +1069,7 @@ LabelButton::LabelButton (QWidget * parent)
     layout->addWidget(label);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
@@ -1456,7 +1456,7 @@ LabelEditor::LabelEditor (QWidget * parent)
             this, &LabelEditor::validateText);
 
     button = new QPushButton(QLatin1String("..."), this);
-#if defined (Q_OS_MAC)
+#if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
     layout->addWidget(button);
