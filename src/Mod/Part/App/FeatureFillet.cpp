@@ -98,23 +98,22 @@ App::DocumentObjectExecReturn *Fillet::execute()
 
         return App::DocumentObject::StdReturn;
 #else
-        const auto &vals = EdgeLinks.getSubValues();
-        const auto &subs = EdgeLinks.getShadowSubs();
-        if(subs.size()!=(size_t)Edges.getSize())
+        const auto& vals = EdgeLinks.getSubValues();
+        const auto& subs = EdgeLinks.getShadowSubs();
+        if (subs.size() != (size_t)Edges.getSize())
             return new App::DocumentObjectExecReturn("Edge link size mismatch");
-        size_t i=0;
-        for(const auto &info : Edges.getValues()) {
-            auto &sub = subs[i];
-            auto &ref = sub.newName.size()?sub.newName:vals[i];
+        size_t i = 0;
+        for (const auto& info : Edges.getValues()) {
+            auto& sub = subs[i];
+            auto& ref = sub.newName.size() ? sub.newName : vals[i];
             ++i;
-            // Toponaming project March 2024:  Replaced this code because it wouldn't work:
-//            TopoDS_Shape edge;
-//            try {
-//                edge = baseTopoShape.getSubShape(ref.c_str());
-//            }catch(...){}
-            auto id = Data::MappedName(ref.c_str()).toIndexedName().getIndex();
-            const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges.FindKey(id));
-            if(edge.IsNull())
+            TopoDS_Shape edge;
+            try {
+                edge = baseTopoShape.getSubShape(ref.c_str());
+            }
+            catch (...) {
+            }
+            if (edge.IsNull())
                 return new App::DocumentObjectExecReturn("Invalid edge link");
             double radius1 = info.radius1;
             double radius2 = info.radius2;
@@ -126,7 +125,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopoShape res(0);
-        this->Shape.setValue(res.makeElementShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
+        this->Shape.setValue(res.makeElementShape(mkFillet, baseTopoShape, Part::OpCodes::Fillet));
         return Part::Feature::execute();
 #endif
     }
