@@ -454,7 +454,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
             joiner.getResultWires(result, "SKF");
             result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
                     /*op*/"",
-                    /*maker*/"Part::FaceMakerRing",
+                    /*maker*/"Part::FaceMakerBullseye",
                     /*pln*/nullptr
             );
         }
