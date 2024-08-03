@@ -66,8 +66,6 @@ public:
     /// Returns the absolute file names of icons found in the given search paths
     QStringList findIconFiles() const;
     /// Adds a build in XPM pixmap under a given name
-    void addXPM(const char* name, const char** pXPM);
-    /// Adds a build in XPM pixmap under a given name
     void addPixmapToCache(const char* name, const QPixmap& icon);
     /// Checks whether the pixmap is already registered.
     bool findPixmapInCache(const char* name, QPixmap& icon) const;
