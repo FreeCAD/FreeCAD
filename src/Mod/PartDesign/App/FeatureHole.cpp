@@ -67,7 +67,7 @@ namespace PartDesign {
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
-const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "BSP", nullptr};
+const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", nullptr};
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
@@ -400,6 +400,29 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
         { "1 5/8",      41.275, 1.411,   40.10 },
         { "1 11/16",    42.862, 1.411,   41.60 },
     },
+    /* NPT National pipe threads */
+    // Asme B1.20.1
+    {
+        { "1/16",   7.938,      0.941,  0.0   },
+        { "1/8",    10.287,     0.941,  0.0   },
+        { "1/4",    13.716,     1.411,  0.0   },
+        { "3/8",    17.145,     1.411,  0.0   },
+        { "1/2",    21.336,     1.814,  0.0   },
+        { "3/4",    26.670,     1.814,  0.0   },
+        { "1",      33.401,     2.209,  0.0   },
+        { "1 1/4",  42.164,     2.209,  0.0   },
+        { "1 1/2",  48.260,     2.209,  0.0   },
+        { "2",      60.325,     2.209,  0.0   },
+        { "2 1/2",  73.025,     3.175,  0.0   },
+        { "3",      88.900,     3.175,  0.0   },
+        { "3 1/2",  101.600,    3.175,  0.0   },
+        { "4",      114.300,    3.175,  0.0   },
+        { "5",      141.300,    3.175,  0.0   },
+        { "6",      168.275,    3.175,  0.0   },
+        { "8",      219.075,    3.175,  0.0   },
+        { "10",     273.050,    3.175,  0.0   },
+        { "12",     323.850,    3.175,  0.0   },
+    },
     /* BSP */
     // Parallel - ISO 228-1
     // Tapered  - ISO 7-1
@@ -681,6 +704,14 @@ const char* Hole::ThreadSize_UNEF_Enums[]  = { "#12", "1/4", "5/16", "3/8", "7/1
                                                "1 5/16", "1 3/8", "1 7/16", "1 1/2", "1 9/16",
                                                "1 5/8", "1 11/16", nullptr };
 const char* Hole::ThreadClass_UNEF_Enums[] = { "1B", "2B", "3B", nullptr };
+
+/* NPT */
+const char* Hole::HoleCutType_NPT_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
+const char* Hole::ThreadSize_NPT_Enums[]  = {  "1/16", "1/8", "1/4", "3/8", "1/2", "3/4",
+                                               "1", "1 1/4", "1 1/2",
+                                               "2", "2 1/2",
+                                               "3", "3 1/2",
+                                               "4", "5", "6", "8", "10", "12", nullptr };
 
 /* BSP */
 const char* Hole::HoleCutType_BSP_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
@@ -1154,6 +1185,10 @@ std::optional<double> Hole::determineDiameter() const
             // truncation is allowed by ISO-228 and BS 84
             diameter = diameter - thread * 0.75 + clearance;
         }
+        else if (threadTypeStr == "NPT") {
+            double thread = 2 * (0.8 * pitch);
+            diameter = diameter - thread * 0.75 + clearance;
+        }
         else {
             // this fits exactly the definition for ISO metric fine
             diameter = diameter - pitch + clearance;
@@ -1418,6 +1453,20 @@ void Hole::onChanged(const App::Property* prop)
             ThreadSize.setEnums(ThreadSize_BSP_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_BSP_Enums);
+            Threaded.setReadOnly(false);
+            ThreadSize.setReadOnly(false);
+            ThreadFit.setReadOnly(Threaded.getValue());
+            Diameter.setReadOnly(true);
+            ModelThread.setReadOnly(!Threaded.getValue());
+            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
+            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
+            ThreadDepthType.setReadOnly(!Threaded.getValue());
+            ThreadDepth.setReadOnly(!Threaded.getValue());
+        }
+        else if (type == "NPT") {
+            ThreadSize.setEnums(ThreadSize_NPT_Enums);
+            ThreadClass.setEnums(ThreadClass_None_Enums);
+            HoleCutType.setEnums(HoleCutType_NPT_Enums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             ThreadFit.setReadOnly(Threaded.getValue());
