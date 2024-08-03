@@ -313,6 +313,9 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                 auto names =
                     shape.decodeElementComboName(idxName, mapped.name, idxName.getType(), &postfix);
                 std::vector<int> ancestors;
+                // TODO:  if names.empty() then the existing heuristic has failed to find anything
+                //   and we're going to flag this element as missing.  This is the place to add
+                //   heuristics as we develop them.
                 for (auto& name : names) {
                     auto index = shape.getIndexedName(name);
                     if (!index) {
@@ -1695,6 +1698,16 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char*
     }
 
     return GeoFeature::getCameraAlignmentDirection(direction, subname);
+}
+
+void Feature::guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink) {
+    for (auto &element : Part::Feature::getRelatedElements(base, oldLink)) {
+        replacementName.clear();
+        element.index.appendToStringBuffer(replacementName);
+        FC_WARN("Feature guess element reference " << oldLink << " -> " << replacementName);
+        return;
+    }
+    replacementName = oldLink;
 }
 
 // ---------------------------------------------------------

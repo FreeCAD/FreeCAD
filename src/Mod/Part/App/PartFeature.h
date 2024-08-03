@@ -153,7 +153,10 @@ public:
 
     static bool isElementMappingDisabled(App::PropertyContainer *container);
 
-    bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const override;
+    bool getCameraAlignmentDirection(Base::Vector3d &direction, const char *subname) const override;
+
+    static void guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink);
+
 #ifdef FC_USE_TNP_FIX
 
     const std::vector<std::string>& searchElementCache(const std::string &element,
