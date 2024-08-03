@@ -2318,34 +2318,28 @@ static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape>& shap
 {
     std::vector<TopoShape> ret;
     for (size_t i = offset; i < shapes.size(); ++i) {
-        auto sh = shapes[i];
-        if (sh.isNull()) {
+        auto shape = shapes[i];
+        if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
-        auto shape = sh.getShape();
-        // Allow compounds with a single face, wire or vertex or
-        // if there are only edges building one wire
-        if (shape.ShapeType() == TopAbs_COMPOUND) {
-            sh = sh.makeElementWires();
-            if (sh.isNull()) {
-                FC_THROWM(NullShapeException, "Null input shape");
-            }
-            shape = sh.getShape();
+        if (shape.countSubShapes(TopAbs_FACE) == 1) {
+            shape = shape.getSubTopoShape(TopAbs_FACE, 1).splitWires();
         }
-        if (shape.ShapeType() == TopAbs_FACE) {
-            shape = sh.splitWires().getShape();
+        else if (shape.countSubShapes(TopAbs_WIRE) == 0 && shape.countSubShapes(TopAbs_EDGE) > 0) {
+            shape = shape.makeElementWires();
         }
-        else if (shape.ShapeType() == TopAbs_WIRE) {
-            // do nothing
+
+        if (shape.countSubShapes(TopAbs_WIRE) == 1) {
+            ret.push_back(shape.getSubTopoShape(TopAbs_WIRE, 1));
+            continue;
         }
-        else if (shape.ShapeType() == TopAbs_EDGE) {
-            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
-            shape = mkWire.Wire();
+        else if (shape.countSubShapes(TopAbs_VERTEX) == 1) {
+            ret.push_back(shape.getSubTopoShape(TopAbs_VERTEX, 1));
+            continue;
         }
-        else if (shape.ShapeType() != TopAbs_VERTEX) {
-            FC_THROWM(Base::CADKernelError, "Profile shape is not a vertex, edge, wire nor face.");
-        }
-        ret.push_back(shape);
+
+        FC_THROWM(Base::CADKernelError,
+                  "Profile shape is not a single vertex, edge, wire nor face.");
     }
     if (ret.empty()) {
         FC_THROWM(Base::CADKernelError, "No profile");
