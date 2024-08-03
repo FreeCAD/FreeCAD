@@ -316,11 +316,7 @@ public:
      *
      * @return Returns the existing element map.
      */
-    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap = ElementMapPtr())
-    {
-        _elementMap.swap(elementMap);
-        return elementMap;
-    }
+    virtual ElementMapPtr resetElementMap(ElementMapPtr elementMap = ElementMapPtr());
 
     /// Get the entire element map
     std::vector<MappedElement> getElementMap() const;

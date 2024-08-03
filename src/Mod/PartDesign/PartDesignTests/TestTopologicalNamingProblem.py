@@ -577,15 +577,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)
-        self.assertEqual(loft.Shape.ElementMapSize, 30)
-        revMap = body.Shape.childShapes()[0].ElementReverseMap
-        # 4 vertexes and 4 edges in each of the two sketches = 16.
-        # Loft is a rectangular prism and so 26.
-        # End map is 12 Edge + 6 face + 8 vertexes (with 4 duplicates)
-        # Why only 4 dup vertexes in the map, not 8 and 8 dup edges?
-        # Theory:  only vertexes on the actual profile matter to the mapper.
-        # Has newnames, so we must have done a boolean to attach the ends to the pipe.
+        # 6 face 12 edge 8 vertexes = 26
+        # 4 edges are duplicated (the originals from the sketch loft profile, and then those in the loft)
+        # 4 vertexes are quad dups for 12 more.  26 + 4 + 12 = 42
+        self.assertEqual(body.Shape.ElementMapSize, 42)
+        revMap = body.Shape.ElementReverseMap
         self.assertNotEqual(loft.Shape.ElementReverseMap['Vertex1'],"Vertex1")
         self.assertNotEqual(revMap['Vertex1'],"Vertex1")
         self.assertEqual(self.countFacesEdgesVertexes(loft.Shape.ElementReverseMap),(6,12,8))
