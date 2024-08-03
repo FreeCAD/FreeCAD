@@ -26,7 +26,6 @@
 
 import FreeCAD
 import FreeCADGui
-import ifcopenshell
 from PySide.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -122,6 +121,7 @@ class BIM_IfcProfiles:
 
     def updateProfileInfo(self):
         from PySide import QtGui
+        import ifcopenshell
 
         # update thumbnail
         sel_profile_index = self.form.profileTree.currentIndex().row()
@@ -206,6 +206,8 @@ class BIM_IfcProfiles:
             self.edit_ab_dialog.form.buttonBox.rejected.connect(self.show)
 
     def update_arbitrary_profile(self):
+        import ifcopenshell
+
         selections = FreeCADGui.Selection.getSelection()
         if not bool(selections):
             QMessageBox.warning(None, "Error", "Please select one profile shape")
@@ -291,6 +293,7 @@ class AddNewProfileDialog(QDialog):
         super().__init__()
 
         from PySide import QtCore
+        import ifcopenshell
         from ifcopenshell.util.doc import get_entity_doc
 
         self.ifc_file = ifc_file
@@ -437,6 +440,7 @@ class EditArbitraryProfile:
 class EditProfileDialog(QDialog):
     def __init__(self, ifc_file, profile):
         super().__init__()
+        import ifcopenshell
 
         self.ifc_file = ifc_file
         self.profile = profile
@@ -519,7 +523,7 @@ class EditProfileDialog(QDialog):
         attributes["ProfileName"] = self.name_input.text()
         attributes["ProfileType"] = "AREA"
 
-        ifcopenshell.api.run(
+        ifc_tools.api_run(
             "profile.edit_profile",
             self.ifc_file,
             profile=self.profile,
@@ -566,10 +570,9 @@ class HyperlinkLabel(QLabel):
 
 
 # general function
-def draw_image_for_ifc_profile(
-    draw, profile: ifcopenshell.entity_instance, size: float
-):
+def draw_image_for_ifc_profile(draw, profile, size: float):
     """generates image based on `profile` using `PIL.ImageDraw`"""
+    import ifcopenshell
 
     settings = ifcopenshell.geom.settings()
     # ifcopenshell ver 0.7
@@ -634,6 +637,7 @@ def clear_layout(layout):
 # dealing profile shape
 def display_arbitrary_closed_profile(profile):
     import Draft
+    import ifcopenshell
 
     ifc_file = profile.file
     edit_doc_name = "EditProfile"
