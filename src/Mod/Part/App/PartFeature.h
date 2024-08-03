@@ -59,6 +59,7 @@ public:
 
     PropertyPartShape Shape;
     Materials::PropertyMaterial ShapeMaterial;
+    App::PropertyEnumeration FixShape;
 
     /** @name methods override feature */
     //@{
@@ -163,6 +164,7 @@ public:
                                                        Data::SearchOptions options = Data::SearchOption::CheckGeometry,
                                                        double tol = 1e-7,
                                                        double atol = 1e-10) const override;
+    void fixShape(TopoShape &s) const;
 #endif
 protected:
     /// recompute only this object

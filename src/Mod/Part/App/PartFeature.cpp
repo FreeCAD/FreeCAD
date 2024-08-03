@@ -91,9 +91,27 @@ Feature::Feature()
     auto mat = Materials::MaterialManager::defaultMaterial();
     // ADD_PROPERTY_TYPE(ShapeMaterial, (mat), osgroup, App::Prop_None, "Shape material");
     ADD_PROPERTY(ShapeMaterial, (*mat));
+    // TODO:  add this parameter?
+    // ADD_PROPERTY_TYPE(FixShape, (PartParams::getFixShape()?1l:0l), "", App::Prop_None,
+    ADD_PROPERTY_TYPE(FixShape, (1), "", App::Prop_None,
+        "Fix shape content.\n"
+        "Disabled: no fix.\n"
+        "Enabled: validate shape and only fix invalid one.\n"
+        "Always: always try to fix shape without validating first.\n");
+    static const char *FixShapeEnum[] = {"Disabled", "Enabled", "Always", nullptr};
+    FixShape.setEnums(FixShapeEnum);
+
 }
 
 Feature::~Feature() = default;
+
+void Feature::fixShape(TopoShape &s) const
+{
+    if (FixShape.getValue()) {
+        if (FixShape.getValue() == 2 || !s.isValid())
+            s.fix();
+    }
+}
 
 short Feature::mustExecute() const
 {
@@ -313,7 +331,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                 auto names =
                     shape.decodeElementComboName(idxName, mapped.name, idxName.getType(), &postfix);
                 std::vector<int> ancestors;
-                // TODO:  if names.empty() then the existing heuristic has failed to find anything
+                // TODO:  if names.empty() then the exisiting heuristic has failed to find anythibg
                 //   and we're going to flag this element as missing.  This is the place to add
                 //   heuristics as we develop them.
                 for (auto& name : names) {

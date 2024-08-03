@@ -90,7 +90,7 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
 {
     if (this->Refine.getValue()) {
         TopoShape shape(oldShape);
-        //        this->fixShape(shape);        // Todo:  Not clear that this is required
+        this->fixShape(shape);
         return shape.makeElementRefine();
     }
     return oldShape;

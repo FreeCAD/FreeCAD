@@ -342,7 +342,7 @@ App::DocumentObjectExecReturn *Groove::execute()
                 default:
                     maker = Part::OpCodes::Cut;
             }
-//            this->fixShape(result);
+            this->fixShape(result);
             boolOp.makeElementBoolean(maker, {base,result});
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Failed to cut base feature");
