@@ -37,7 +37,7 @@ from PySide.QtWidgets import (
     QDialogButtonBox,
     QFormLayout,
 )
-from nativeifc import ifc_tools, ifc_commands
+# from nativeifc import ifc_tools, ifc_commands
 
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -56,6 +56,8 @@ class BIM_IfcProfiles:
         }
 
     def IsActive(self):
+        from nativeifc import ifc_tools, ifc_commands
+
         "Only Activated when have a IfcFile is selected or it open a IfcFile(Lock Mode)"
         project = ifc_commands.get_project()
         if project:
@@ -66,6 +68,7 @@ class BIM_IfcProfiles:
 
     def Activated(self):
         from PySide import QtGui
+        from nativeifc import ifc_commands
 
         # load the form and set the tree model up
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogIfcProfiles.ui")
@@ -207,6 +210,7 @@ class BIM_IfcProfiles:
 
     def update_arbitrary_profile(self):
         import ifcopenshell
+        from nativeifc import ifc_tools
 
         selections = FreeCADGui.Selection.getSelection()
         if not bool(selections):
@@ -243,6 +247,8 @@ class BIM_IfcProfiles:
         self.form.show()
 
     def delete_profile(self):
+        from nativeifc import ifc_tools
+
         sel_profile_index = self.form.profileTree.currentIndex().row()
 
         if sel_profile_index is None:  # No selection made
@@ -268,6 +274,8 @@ class BIM_IfcProfiles:
         self.update()
 
     def prune_profile(self):
+        from nativeifc import ifc_tools
+
         reply = QMessageBox.information(
             None,
             "Confirm",
@@ -363,6 +371,8 @@ class AddNewProfileDialog(QDialog):
         self.adjustSize()
 
     def add_profile(self):
+        from nativeifc import ifc_tools
+
         scaling = ifc_tools.get_scale(self.ifc_file)
         self.prop_editors = {}
         for prop_name, editor in self.prop_sliders:
@@ -477,6 +487,7 @@ class EditProfileDialog(QDialog):
 
     # signals
     def update_props(self):
+        from nativeifc import ifc_tools
         from ifcopenshell.util.doc import get_entity_doc
 
         clear_layout(self.prop_layout)
@@ -512,6 +523,8 @@ class EditProfileDialog(QDialog):
         self.adjustSize()
 
     def edit_profile(self):
+        from nativeifc import ifc_tools
+
         self.prop_editors = {}
         for prop_name, editor in self.prop_sliders:
             prop_value = editor.get_value()
@@ -638,6 +651,7 @@ def clear_layout(layout):
 def display_arbitrary_closed_profile(profile):
     import Draft
     import ifcopenshell
+    from nativeifc import ifc_tools
 
     ifc_file = profile.file
     edit_doc_name = "EditProfile"
