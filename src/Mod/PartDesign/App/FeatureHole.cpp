@@ -2297,7 +2297,9 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
                 helixLength = holeDepth + Pitch / 8;
         }
     }
-    TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Dmaj, 0.0, leftHanded);
+    double helixAngle =
+        Tapered.getValue() ? TaperedAngle.getValue() - 90 : 0.0;
+    TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Dmaj, helixAngle, leftHanded);
 
     gp_Pnt origo(0.0, 0.0, 0.0);
     gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
