@@ -41,10 +41,10 @@ __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "russ4262 (Russell Johnson) davidgilkaufman (David Kaufman)"
 
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
+# Uncomment here for debugging mode:
+#    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+#    Path.Log.trackModule(Path.Log.thisModule())
+# Uncomment here for non-debugging mode:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
