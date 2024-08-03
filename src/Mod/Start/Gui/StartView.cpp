@@ -392,6 +392,15 @@ void StartView::newArchFile() const
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
+bool StartView::onHasMsg(const char* pMsg) const
+{
+    if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return false;
+    }
+
+    return MDIView::onHasMsg(pMsg);
+}
+
 void StartView::postStart(PostStartBehavior behavior) const
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(

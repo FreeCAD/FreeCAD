@@ -169,8 +169,13 @@ OverlayProxyWidget::HitTest OverlayProxyWidget::hitTest(const QPoint &globalPt, 
             drawLine = true;
             update();
         }
+
+        auto view = getMainWindow()->activeWindow();
+        auto overlayOnHoverAllowed = view && view->onHasMsg("AllowsOverlayOnHover");
+
         if(owner->getState() != OverlayTabWidget::State::Hidden
                 && hit == HitTest::HitOuter
+                && overlayOnHoverAllowed
                 && OverlayParams::getDockOverlayActivateOnHover()) {
             if (owner->isVisible() && owner->tabBar()->isVisible()) {
                 QSize size = owner->tabBar()->size();
@@ -494,8 +499,10 @@ void OverlayTabWidget::setAnimation(qreal t)
 
 void OverlayTabWidget::startShow()
 {
-    if (isVisible() || _state > State::Normal)
+    if (isVisible() || _state > State::Normal) {
         return;
+    }
+
     int duration = OverlayParams::getDockOverlayAnimationDuration();
     bool setmode = _state != State::Showing;
     if (duration) {
@@ -1129,25 +1136,36 @@ void OverlayTabWidget::setState(State state)
 
 bool OverlayTabWidget::checkAutoHide() const
 {
-    if(autoMode == AutoMode::AutoHide)
+    if (autoMode == AutoMode::AutoHide) {
         return true;
-
-    if(OverlayParams::getDockOverlayAutoView()) {
-        auto view = getMainWindow()->activeWindow();
-        if (!view) return true;
-        if(!view->onHasMsg("CanPan")
-                && view->parentWidget()
-                && view->parentWidget()->isMaximized())
-            return true;
     }
 
-    if(autoMode == AutoMode::EditShow) {
+    if (OverlayParams::getDockOverlayAutoView()) {
+        auto view = getMainWindow()->activeWindow();
+
+        if (!view) {
+            return true;
+        }
+
+        if (!view->onHasMsg("AllowsOverlayOnHover")) {
+            return true;
+        }
+
+        if (!view->onHasMsg("CanPan")
+                && view->parentWidget()
+                && view->parentWidget()->isMaximized()) {
+            return true;
+        }
+    }
+
+    if (autoMode == AutoMode::EditShow) {
         return !Application::Instance->editDocument()
             && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
     }
 
-    if(autoMode == AutoMode::EditHide && Application::Instance->editDocument())
+    if (autoMode == AutoMode::EditHide && Application::Instance->editDocument()) {
         return true;
+    }
 
     return false;
 }
@@ -1548,7 +1566,7 @@ void OverlayTabWidget::setRect(QRect rect)
         break;
     }
 
-    if(hGrp && rect.size() != rectOverlay.size()) {
+    if (hGrp && rect.size() != rectOverlay.size()) {
         Base::StateLocker lock(_saving);
         hGrp->SetInt("Width", rect.width());
         hGrp->SetInt("Height", rect.height());
@@ -1557,7 +1575,7 @@ void OverlayTabWidget::setRect(QRect rect)
 
     QPoint offset = getMainWindow()->getMdiArea()->pos();
 
-    if(getAutoHideRect(rect) || _state == State::Hint || _state == State::Hidden) {
+    if (getAutoHideRect(rect) || _state == State::Hint || _state == State::Hidden) {
         QRect rectHint = rect;
         if (_state != State::Hint && _state != State::Hidden)
             startHide();
@@ -1597,10 +1615,11 @@ void OverlayTabWidget::setRect(QRect rect)
     } else {
         setGeometry(rectOverlay.translated(offset));
 
-        for(int i=0, count=splitter->count(); i<count; ++i)
+        for (int i = 0, count = splitter->count(); i < count; ++i) {
             splitter->widget(i)->show();
+        }
 
-        if(!isVisible() && count()) {
+        if (!isVisible() && count()) {
             proxyWidget->hide();
             startShow();
         }
