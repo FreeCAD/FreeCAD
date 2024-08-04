@@ -126,7 +126,7 @@ class Tracker:
 
         So it doesn't obscure the other objects.
         """
-        if self.switch:
+        if hasattr(Draft.get3DView(), "getSceneGraph") and self.switch:
             sg = Draft.get3DView().getSceneGraph()
             sg.removeChild(self.switch)
             sg.addChild(self.switch)
@@ -136,7 +136,7 @@ class Tracker:
 
         So it obscures the other objects.
         """
-        if self.switch:
+        if hasattr(Draft.get3DView(), "getSceneGraph") and self.switch:
             sg = Draft.get3DView().getSceneGraph()
             sg.removeChild(self.switch)
             sg.insertChild(self.switch, 0)
