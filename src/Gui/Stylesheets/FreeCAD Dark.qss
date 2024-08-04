@@ -1535,7 +1535,7 @@ border-top: 1px solid #020202;
 border-left: 1px solid #020202;
 border-right: 1px solid #020202;
 /*background-color: #d4d4d4; /* Task Panel Header background color */
-background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #000000 stop:1 #002147);
+background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #000000 stop:1 #181d2a);
 border-top-left-radius: 3px;
 border-top-right-radius: 3px;
 border-bottom-left-radius: 0px;
@@ -1584,7 +1584,7 @@ QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
 }
 
 QSint--ActionGroup QFrame[class="content"] {
-background-color: #002147; /* Task Panel background color */
+background-color: #181d2a; /* Task Panel background color */
 margin: 0px;
 padding: 0px;
 border-bottom: 1px solid #020202;
