@@ -76,7 +76,7 @@ class CommandCreateBom:
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateBom",
-                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.",
+                "The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(

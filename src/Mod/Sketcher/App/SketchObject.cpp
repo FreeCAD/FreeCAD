@@ -454,7 +454,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
             joiner.getResultWires(result, "SKF");
             result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
                     /*op*/"",
-                    /*maker*/"Part::FaceMakerRing",
+                    /*maker*/"Part::FaceMakerBullseye",
                     /*pln*/nullptr
             );
         }
@@ -7763,7 +7763,36 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
     solverNeedsUpdate = true;
     return ExternalGeometry.getValues().size() - 1;
 }
+#ifdef FC_USE_TNP_FIX
+int SketchObject::delExternal(int ExtGeoId)
+{
+    return delExternal(std::vector<int>{ExtGeoId});
+}
 
+int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
+{
+    std::set<long> geoIds;
+    for (int ExtGeoId : ExtGeoIds) {
+        int GeoId = GeoEnum::RefExt - ExtGeoId;
+        if (GeoId > GeoEnum::RefExt || -GeoId - 1 >= ExternalGeo.getSize())
+            return -1;
+
+        auto geo = getGeometry(GeoId);
+        if (!geo)
+            return -1;
+
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        geoIds.insert(egf->getId());
+        if (egf->getRef().size()) {
+            auto& refs = externalGeoRefMap[egf->getRef()];
+            geoIds.insert(refs.begin(), refs.end());
+        }
+    }
+
+    delExternalPrivate(geoIds, true);
+    return 0;
+}
+#else
 int SketchObject::delExternal(int ExtGeoId)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -7829,7 +7858,7 @@ int SketchObject::delExternal(int ExtGeoId)
     acceptGeometry();// This may need to be refactored into OnChanged for ExternalGeometry.
     return 0;
 }
-
+#endif
 void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef) {
 
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.

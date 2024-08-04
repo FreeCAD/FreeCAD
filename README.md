@@ -65,19 +65,19 @@ Reporting Issues
 FreeCAD, unlike proprietary, closed source, solutions, relies heavily on the community to give feedback on problems, or issues, on their experience using the software. This process gives the developers insight to help make the software better.
 
 To start the process of filing an issue:
-
-- Consider visiting the FreeCAD forum to see whether or not your issue has been discussed. Please note that FreeCAD has over two decades of history and feedback that is over a few years old may not reflect the current state of the project. If in doubt, start a new thread!
-- Search the issues page for any related issues. If no similar issues are found, a new issue can be created. Please read the issue template before submitting the new issue. A maintainer will likely get back within a few days. If you happened to start a new thread or found a related thread on the forums, please provide a link to and from it.
-- Issue tickets are best suited to be from the latest development or stable releases from V1.0 and onward. Any other versions may have limited support from the community and maintainers.
-- The version info can be obtained from `Help > About FreeCAD > Copy to clipboard`.
-- Please don't forget to provide a repeatable step by step guide on how to reproduce the issue. This will help ensure a timely response from the developers.
-- If an example file will help demonstrate the problem, feel free to provide one. 
+- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/F4hdxzYZfc) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
+- Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
+- Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) of FreeCAD; 
+- Post version info from e.g. `Help > About FreeCAD > Copy to clipboard`; 
+- Start recording a macro `Macro > Macro recording...` and repeat all steps. Stop recording after the issue occurs and upload the saved macro or copy the macro code in the issue; 
+- Post a Step-By-Step explanation on how to recreate the issue; 
+- Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
 
 For more details visit:
 
 - [Issue Tracker](https://github.com/FreeCAD/FreeCAD/issues)
 - [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
-- [Contributing Guide](https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md)
+- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
 - [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
 
