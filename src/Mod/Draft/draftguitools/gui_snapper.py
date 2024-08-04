@@ -1152,7 +1152,7 @@ class Snapper:
         # src/Mod/Mesh/Gui/MeshSelection.cpp
         # src/Mod/Sketcher/Gui/CommandConstraints.cpp
 
-        # The code below is follows the Sketcher example.
+        # The code below follows the Sketcher example.
 
         #   +--------+
         #   |  base  |          vertical offset = 0.5*w
