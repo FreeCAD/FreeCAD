@@ -78,13 +78,13 @@ Reporting Issues
 
 To report an issue please:
 
-- First post to forum to verify the issue and search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
+- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/F4hdxzYZfc) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
+- Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
 - Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) of FreeCAD; 
 - Post version info from e.g. `Help > About FreeCAD > Copy to clipboard`; 
-- Start recording a macro `Macro > Macro recording...` and repeat all steps. Stop recording after the issue occurs and upload the saved macro or copy the macro code in the issue.
+- Start recording a macro `Macro > Macro recording...` and repeat all steps. Stop recording after the issue occurs and upload the saved macro or copy the macro code in the issue; 
 - Post a Step-By-Step explanation on how to recreate the issue; 
-- Upload an example file (FCStd as ZIP file) to demonstrate the problem. 
-- Link forum thread to GitHub issue and vice-a-versa; 
+- Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
 
 For more detail see:
 
