@@ -1248,25 +1248,24 @@ QToolButton {
 }
 
 QToolButton:disabled {
-  /* background-color: rgba(0, 0, 0, 0.065); */
-  color: #adadad;
+  padding: 2px;
 }
 
 QToolButton:checked {
-  background-color: @ThemeAccentColor2;
-  border-radius: 2px;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:0.7 #252525, stop:1 #252525);
+  border-radius: 3px;
+  border-left: 1px solid #020202;
+  border-top: 1px solid #020202;
+  border-right: 1px solid #444444;
+  border-bottom: 1px solid #444444;
 }
 
 QToolButton:checked:disabled {
-  background-color: @ThemeAccentColor1;
-  color: #adadad;
-  border-radius: 2px;
-  padding: 0px;
-  outline: none;
+  background-color: transparent;
 }
 
 QToolButton:checked:hover {
-  background-color: @ThemeAccentColor1;
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:0.7 #444444, stop:1 #444444);
   border: 1px solid #020202;
 }
 
@@ -1275,9 +1274,9 @@ QToolButton:checked:pressed {
 }
 
 QToolButton:checked:selected {
-  background-color: @ThemeAccentColor2;
-  color: white;
-}
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:0.7 #444444, stop:1 #444444);
+  border: 1px solid @ThemeAccentColor1;
+  }
 
 QToolButton:hover {
   color: white;
