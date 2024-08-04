@@ -1533,7 +1533,7 @@ border-top: 1px solid #ffffff;
 border-left: 1px solid #ffffff;
 border-right: 1px solid #ffffff;
 /*background-color: #d4d4d4; /* Task Panel Header background color */
-background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #e8f2fb, stop:1 #418FDE);
+background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #e8f2fb, stop:1 @ThemeAccentColor3);
 border-top-left-radius: 3px;
 border-top-right-radius: 3px;
 border-bottom-left-radius: 0px;
@@ -1557,32 +1557,32 @@ margin: 0px;
 padding: 0px;
 }
 
-QSint--ActionGroup QFrame[class="header"] QLabel{
+QSint--ActionGroup QFrame[class="header"] QLabel[fold="false"] {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/Qsint_header_Unfold_Blue-light.png);
+  image: url(qss:images_classic/Qsint_header_unfold_lightgray.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel:hover[fold="false"] {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/Qsint_header_UnfoldOver_Blue_light.png);
+  image: url(qss:images_classic/Qsint_header_unfold_black.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"] {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/Qsint_header_Fold_Blue-light.png);
+  image: url(qss:images_classic/Qsint_header_fold_lightgray.png);
 }
 
 QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
   width: 30px;
   height: 30px;
-  image: url(qss:images_classic/Qsint_header_FoldOver_Blue-light.png) ;
+  image: url(qss:images_classic/Qsint_header_fold_black.png);
 }
 
 QSint--ActionGroup QFrame[class="content"] {
-background-color: #c7def5; /* Task Panel background color */
+background-color: @ThemeAccentColor3; /* Task Panel background color */
 margin: 0px;
 padding: 0px;
 border-bottom: 1px solid #ffffff;
