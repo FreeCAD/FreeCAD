@@ -123,7 +123,7 @@
       <translation>Export souboru ASMT</translation>
     </message>
     <message>
-      <location filename="../../../CommandExportASMT.py" line="52"/>
+      <location filename="../../../CommandExportASMT.py" line="51"/>
       <source>Export currently active assembly as a ASMT file.</source>
       <translation>Exportovat aktuálně aktivní sestavu jako soubor ASMT.</translation>
     </message>
@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1533"/>
+      <location filename="../../../JointObject.py" line="1556"/>
       <source>Distance</source>
       <translation>Vzdálenost</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1535"/>
+      <location filename="../../../JointObject.py" line="1558"/>
       <source>Angle</source>
       <translation>Úhel</translation>
     </message>
@@ -265,17 +265,17 @@
       <translation>Řemen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1365"/>
+      <location filename="../../../JointObject.py" line="1413"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Musíte vybrat 2 prvky ze 2 samostatných dílů.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1537"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Radius 1</source>
       <translation>Poloměr 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1539"/>
+      <location filename="../../../JointObject.py" line="1562"/>
       <source>Pitch radius</source>
       <translation>Poloměr rozteče</translation>
     </message>
@@ -378,144 +378,140 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="192"/>
+      <location filename="../../../JointObject.py" line="188"/>
       <source>The type of the joint</source>
       <translation>Druh kloubu</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
-      <location filename="../../../JointObject.py" line="449"/>
+      <location filename="../../../JointObject.py" line="210"/>
+      <location filename="../../../JointObject.py" line="474"/>
+      <source>The first reference of the joint</source>
+      <translation type="unfinished">The first reference of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="221"/>
+      <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
+      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="241"/>
+      <location filename="../../../JointObject.py" line="497"/>
+      <source>The second reference of the joint</source>
+      <translation type="unfinished">The second reference of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="252"/>
+      <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
+      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="430"/>
       <source>The first object of the joint</source>
       <translation>Prvním předmětem společného</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
-      <source>The first part of the joint</source>
-      <translation>První část společného</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="232"/>
-      <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation>Jedná se o lokální souřadnicový systém v rámci objektu1, který bude použit pro spojení.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="243"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Tím se zabrání přepočítávání umístění1 a umožní se vlastní umístění.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="252"/>
-      <location filename="../../../JointObject.py" line="468"/>
+      <location filename="../../../JointObject.py" line="449"/>
       <source>The second object of the joint</source>
       <translation>Druhý předmět společného</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="260"/>
-      <source>The second part of the joint</source>
-      <translation>Druhá část společného</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="271"/>
-      <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation>Jedná se o lokální souřadnicový systém v rámci objektu2, který bude použit pro spojení.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="263"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Tím se zabrání přepočítávání umístění2 a umožní se vlastní umístění.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="294"/>
+      <location filename="../../../JointObject.py" line="275"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</translation>
+      <translation>Toto je vzdálenost spoje. Používá ji pouze spoj distanční, hřebenu a pastorku (poloměr rozteče), šroubový, ozubených kol a řemenu (poloměr1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="305"/>
+      <location filename="../../../JointObject.py" line="286"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Toto je druhá vzdálenost spoje. Používá ji pouze spoje ozubených kol pro uložení druhého poloměru.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="297"/>
       <source>This is the rotation of the joint.</source>
       <translation>Jedná se o otáčení kloubu.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="327"/>
+      <location filename="../../../JointObject.py" line="308"/>
       <source>This is the offset vector of the joint.</source>
       <translation>Jedná se o vektor posunu spoje.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="338"/>
+      <location filename="../../../JointObject.py" line="319"/>
       <source>This indicates if the joint is active.</source>
       <translation>Ukazuje, zda je spoj aktivní.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="350"/>
+      <location filename="../../../JointObject.py" line="331"/>
       <source>Enable the minimum length limit of the joint.</source>
       <translation>Povolit limit pro minimální délku spoje.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="362"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum length limit of the joint.</source>
       <translation>Povolit limit pro maximální délku spoje.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="374"/>
+      <location filename="../../../JointObject.py" line="355"/>
       <source>Enable the minimum angle limit of the joint.</source>
       <translation>Povolit limit pro minimální úhel spoje.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="367"/>
       <source>Enable the minimum length of the joint.</source>
       <translation>Povolit minimální délku spoje.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Toto je minimální mez délky mezi oběma souřadnicovými systémy (podél jejich osy Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="409"/>
+      <location filename="../../../JointObject.py" line="390"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Toto je maximální mez délky mezi oběma souřadnicovými systémy (podél jejich osy Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="401"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Toto je minimální mez úhlu mezi oběma souřadnicovými systémy (mezi jejich osami X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="431"/>
+      <location filename="../../../JointObject.py" line="412"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Toto je maximální mez úhlu mezi oběma souřadnicovými systémy (mezi jejich osami X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1021"/>
+      <location filename="../../../JointObject.py" line="1070"/>
       <source>The object to ground</source>
       <translation>Objekt k uzemnění</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1033"/>
+      <location filename="../../../JointObject.py" line="1082"/>
       <source>This is where the part is grounded.</source>
       <translation>Zde je součást uzemněna.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="235"/>
-      <source>The object moved by the move</source>
-      <translation>Objekt přesunut tahem</translation>
+      <location filename="../../../CommandCreateView.py" line="246"/>
+      <location filename="../../../CommandCreateView.py" line="280"/>
+      <source>The objects moved by the move</source>
+      <translation type="unfinished">The objects moved by the move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="242"/>
-      <source>The containing parts of objects moved by the move</source>
-      <translation>Díly obsažené v objektech přesunuty tahem</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateView.py" line="252"/>
+      <location filename="../../../CommandCreateView.py" line="257"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Toto je pohyb tahu. Konečné umístění je výsledkem počáteční polohy * tohoto umístění.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
+      <location filename="../../../CommandCreateView.py" line="265"/>
       <source>The type of the move</source>
       <translation>Typ tahu</translation>
     </message>
@@ -636,7 +632,7 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leaves edit mode</source>
-      <translation type="unfinished">Esc leaves edit mode</translation>
+      <translation>Esc opustí režim úprav</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
@@ -664,22 +660,17 @@ Soubory jsou pojmenovány "runPreDrag.asmt" a "dragging.log" a jsou umístěny v
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="150"/>
-      <source>Delete associated joints</source>
-      <translation>Odstranění přidružených spojů</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="162"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="176"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objekt je přiřazen k jednomu nebo více spojům.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="164"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Chcete objekt přesunout a odstranit související spoje?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="780"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="805"/>
       <source>Move part</source>
       <translation>Přesunout část</translation>
     </message>

@@ -123,7 +123,7 @@
       <translation>ASMT fájl exportálás</translation>
     </message>
     <message>
-      <location filename="../../../CommandExportASMT.py" line="52"/>
+      <location filename="../../../CommandExportASMT.py" line="51"/>
       <source>Export currently active assembly as a ASMT file.</source>
       <translation>Aktuálisan aktív szerelvény exportálása ASMT fájlként.</translation>
     </message>
@@ -226,7 +226,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1533"/>
+      <location filename="../../../JointObject.py" line="1556"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
@@ -242,7 +242,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1535"/>
+      <location filename="../../../JointObject.py" line="1558"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
@@ -267,17 +267,17 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <translation>Szíj</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1365"/>
+      <location filename="../../../JointObject.py" line="1413"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>2 elemet kell kiválasztania 2 különálló részből.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1537"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Radius 1</source>
       <translation>Sugár 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1539"/>
+      <location filename="../../../JointObject.py" line="1562"/>
       <source>Pitch radius</source>
       <translation>Sugár lejtése</translation>
     </message>
@@ -380,145 +380,141 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="192"/>
+      <location filename="../../../JointObject.py" line="188"/>
       <source>The type of the joint</source>
       <translation>Csatlakozás típusa</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
-      <location filename="../../../JointObject.py" line="449"/>
+      <location filename="../../../JointObject.py" line="210"/>
+      <location filename="../../../JointObject.py" line="474"/>
+      <source>The first reference of the joint</source>
+      <translation type="unfinished">The first reference of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="221"/>
+      <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
+      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="241"/>
+      <location filename="../../../JointObject.py" line="497"/>
+      <source>The second reference of the joint</source>
+      <translation type="unfinished">The second reference of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="252"/>
+      <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
+      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="430"/>
       <source>The first object of the joint</source>
       <translation>Csatlakozás első tárgya</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
-      <source>The first part of the joint</source>
-      <translation>Csatlakozás első alkatrésze</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="232"/>
-      <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation>Ez az a helyi koordináta-rendszer az tárgy1-en belül, amelyet a csatlakozáshoz használni fogunk.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="243"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Ez megakadályozza a beillesztés1 újraszámítását, lehetővé téve az elhelyezés egyéni pozicionálását.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="252"/>
-      <location filename="../../../JointObject.py" line="468"/>
+      <location filename="../../../JointObject.py" line="449"/>
       <source>The second object of the joint</source>
       <translation>Csatlakozás második tárgya</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="260"/>
-      <source>The second part of the joint</source>
-      <translation>Csatlakozás második alkatrésze</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="271"/>
-      <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation>Ez az a helyi koordináta-rendszer az tárgy2-n belül, amelyet a csatlakozáshoz használni fogunk.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="263"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Ez megakadályozza a beillesztés2 újraszámítását, lehetővé téve az elhelyezés egyéni pozicionálását.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="294"/>
+      <location filename="../../../JointObject.py" line="275"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</translation>
+      <translation>Ez a kapcsolási távolság. Csak a csatlakozási távolság, a fogaskerék (osztási sugár), a csigakerék, a fogaskerék és az ékszíj (1. sugár) használja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="305"/>
+      <location filename="../../../JointObject.py" line="286"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Ez a második csatlakozási távolság.
 Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
+      <location filename="../../../JointObject.py" line="297"/>
       <source>This is the rotation of the joint.</source>
       <translation>Ez a csatlakozás elfordulása.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="327"/>
+      <location filename="../../../JointObject.py" line="308"/>
       <source>This is the offset vector of the joint.</source>
       <translation>Ez a csatlakozás eltolási vektora.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="338"/>
+      <location filename="../../../JointObject.py" line="319"/>
       <source>This indicates if the joint is active.</source>
       <translation>Ez jelzi, hogy a csatlakozás aktív-e.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="350"/>
+      <location filename="../../../JointObject.py" line="331"/>
       <source>Enable the minimum length limit of the joint.</source>
       <translation>Engedélyezi a csatlakozás minimális hosszhatárát.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="362"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum length limit of the joint.</source>
       <translation>Engedélyezi a csatlakozás maximális hosszhatárát.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="374"/>
+      <location filename="../../../JointObject.py" line="355"/>
       <source>Enable the minimum angle limit of the joint.</source>
       <translation>Engedélyezi a csatlakozás minimális szöghatárát.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="367"/>
       <source>Enable the minimum length of the joint.</source>
       <translation>Engedélyezi a csatlakozás minimális hosszát.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Ez a két koordináta rendszer közötti legkisebb hosszhatár (a Z tengelyük mentén).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="409"/>
+      <location filename="../../../JointObject.py" line="390"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Ez a két koordinátarendszer közötti legnagyobb hosszhatár (a Z tengelyük mentén).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="401"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Ez a két koordinátarendszer (X-tengelyük) közötti szög minimális határa.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="431"/>
+      <location filename="../../../JointObject.py" line="412"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Ez a két koordinátarendszer (X-tengelyük) közötti szög maximum határa.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1021"/>
+      <location filename="../../../JointObject.py" line="1070"/>
       <source>The object to ground</source>
       <translation>A rögzitendő tárgy</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1033"/>
+      <location filename="../../../JointObject.py" line="1082"/>
       <source>This is where the part is grounded.</source>
       <translation>Itt van az alkatrész rögzítve.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="235"/>
-      <source>The object moved by the move</source>
-      <translation>A mozgással mozgatott tárgy</translation>
+      <location filename="../../../CommandCreateView.py" line="246"/>
+      <location filename="../../../CommandCreateView.py" line="280"/>
+      <source>The objects moved by the move</source>
+      <translation type="unfinished">The objects moved by the move</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="242"/>
-      <source>The containing parts of objects moved by the move</source>
-      <translation>A mozgással mozgatott tárgyak részeit tartalmazza</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateView.py" line="252"/>
+      <location filename="../../../CommandCreateView.py" line="257"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ez a mozgás a mozgás mozdulata. A véghelyzet a kezdőhelyzet * ennek a helyzetnek az eredménye.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
+      <location filename="../../../CommandCreateView.py" line="265"/>
       <source>The type of the move</source>
       <translation>A mozgás típusa</translation>
     </message>
@@ -639,7 +635,7 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leaves edit mode</source>
-      <translation type="unfinished">Esc leaves edit mode</translation>
+      <translation>Esc kilép a szerkesztési módból</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
@@ -667,22 +663,17 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="150"/>
-      <source>Delete associated joints</source>
-      <translation>Kapcsolódó csatlakozás törlése</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="162"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="176"/>
       <source>The object is associated to one or more joints.</source>
       <translation>A tárgy egy vagy több csatlakozással rendelkezik.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="164"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>El akarja mozgatni a tárgyat és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="780"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="805"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
     </message>

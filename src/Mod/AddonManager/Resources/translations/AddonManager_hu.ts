@@ -284,37 +284,37 @@ A bővítmény kezelő automatikusan telepítse őket? Válassza a &quot;Elvet&q
       <translation>Az itt telepíthető bővítmények hivatalosan nem részei a FreeCAD-nek, és azokat nem vizsgálja felül a FreeCAD csapata. Győződjön meg róla, hogy ismeri, amit telepíteni akar!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
+      <location filename="../../first_run.ui" line="39"/>
       <source>Download Settings</source>
       <translation>Letöltés beállításai</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="53"/>
+      <location filename="../../first_run.ui" line="46"/>
       <source>Automatically check installed Addons for updates</source>
       <translation>Automatikusan ellenőrzi a telepített bővítmények frissítéseit</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="60"/>
+      <location filename="../../first_run.ui" line="53"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Makró metaadatok letöltése (kb. 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="70"/>
+      <location filename="../../first_run.ui" line="63"/>
       <source>No proxy</source>
       <translation>Nincs proxy</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="75"/>
+      <location filename="../../first_run.ui" line="68"/>
       <source>System proxy</source>
       <translation>Rendszer proxy</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="80"/>
+      <location filename="../../first_run.ui" line="73"/>
       <source>User-defined proxy:</source>
       <translation>Felhasználó által meghatározott proxy:</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="93"/>
+      <location filename="../../first_run.ui" line="86"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
       <translation>Ezek és más beállítások a FreeCAD beállítások ablakában érhetők el.</translation>
     </message>
@@ -509,139 +509,139 @@ A bővítmény kezelő automatikusan telepítse őket? Válassza a &quot;Elvet&q
       <translation>Bővítmény kezelő lehetőségei</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="20"/>
+      <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
       <translation>Ha ez a beállítás be van jelölve, az Bővítmény kezelője indításakor,
 a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítésekre vonatkozóan</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="24"/>
+      <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Automatikus frissítések keresése induláskor (git szükséges)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="40"/>
+      <location filename="../../AddonManagerOptions.ui" line="43"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Makró metaadatok letöltése (kb. 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="55"/>
+      <location filename="../../AddonManagerOptions.ui" line="58"/>
       <source>Cache update frequency</source>
       <translation>Gyorsítótár frissítési gyakoriság</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="75"/>
+      <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>Manual (no automatic updates)</source>
       <translation>Manuális (nincs automatikus frissítés)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="80"/>
+      <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
       <translation>Napi</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="85"/>
+      <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
       <translation>Heti</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="95"/>
+      <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
       <translation>Licenc nélküli bővítmények elrejtése</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="111"/>
+      <location filename="../../AddonManagerOptions.ui" line="114"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation>Nem FSF Free/Libre licenccel rendelkező bővítmények elrejtése</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="127"/>
+      <location filename="../../AddonManagerOptions.ui" line="130"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation>Nem OSI által jóváhagyott licenccel rendelkező bővítmény elrejtése</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="143"/>
+      <location filename="../../AddonManagerOptions.ui" line="146"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Csak Python v. 2 bővítmények elrejtése</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="159"/>
+      <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Az elavultként megjelölt bővítmények elrejtése</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="175"/>
+      <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>A FreeCAD újabb verzióját igénylő bővítmények elrejtése</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="197"/>
+      <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
       <translation>Egyéni adattárak</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="251"/>
+      <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="257"/>
+      <location filename="../../AddonManagerOptions.ui" line="260"/>
       <source>No proxy</source>
       <translation>Nincs proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="273"/>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
       <translation>Felhasználói rendszer proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="286"/>
+      <location filename="../../AddonManagerOptions.ui" line="289"/>
       <source>User-defined proxy:</source>
       <translation>Felhasználó által meghatározott proxy:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="323"/>
+      <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
       <translation>Forrás pontszám URL</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="342"/>
+      <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation>Az Bővítmény pontozási adatok URL címe (lásd az Bővítmény kezelője wiki oldalát a formázás és a tárhely részleteiért).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="353"/>
+      <location filename="../../AddonManagerOptions.ui" line="350"/>
       <source>Path to Git executable (optional):</source>
-      <translation type="unfinished">Path to Git executable (optional):</translation>
+      <translation>Git futtatható fájl elérési útja (opcionális):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="372"/>
+      <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>A git végrehajtható fájl elérési útja. Szükség esetén automatikusan észlelve, és nincs megadva.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="393"/>
+      <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
       <translation>Haladó beállítások</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="399"/>
+      <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires git)</source>
       <translation>A változat módosításának lehetősége (git szükséges)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="412"/>
+      <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>A git letiltása (csak ZIP-letöltésekre való visszalépés)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="425"/>
+      <location filename="../../AddonManagerOptions.ui" line="422"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Aktiválja az új Bővítmény kezelőkhöz a fejlesztőknek szánt Bítmény kezelő lehetőségeket.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="428"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
       <translation>Bővítmény fejlesztői mód</translation>
     </message>
@@ -1218,7 +1218,7 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Nincs elérhető frissítés</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="826"/>
@@ -1662,12 +1662,12 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
+      <translation>Ez a bővítmény olyan Python-csomagokat igényel, amelyek nincsenek telepítve, és nem is telepíthetők automatikusan. A bővítmény használatához a következő Python csomagokat magának kell telepítenie:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="246"/>
       <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>Ez a bővítmény (vagy valamelyik függősége) Python {}.{}-t igényel, és az Ön rendszerén {}.{} fut. A telepítés törlődött.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="267"/>
@@ -2100,32 +2100,32 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>A {} bővítmény telepítése sikertelen</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="165"/>
+      <location filename="../../addonmanager_workers_installation.py" line="195"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Letöltött package.xml a(z) {} számára</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="196"/>
+      <location filename="../../addonmanager_workers_installation.py" line="233"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Nem sikerült dekódolni a {} fájlt a &apos;{}&apos; hozzáadásához</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="205"/>
+      <location filename="../../addonmanager_workers_installation.py" line="242"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Az ebben a fájlban lévő függőségi információkat figyelmen kívül hagyjuk</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="212"/>
+      <location filename="../../addonmanager_workers_installation.py" line="249"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Letöltött metadata.txt a(z) {} részére</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="255"/>
+      <location filename="../../addonmanager_workers_installation.py" line="292"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Letöltött requirements.txt a(z) {} részére</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="273"/>
+      <location filename="../../addonmanager_workers_installation.py" line="310"/>
       <source>Downloaded icon for {}</source>
       <translation>Letöltött ikon ehhez: {}</translation>
     </message>
@@ -2211,126 +2211,126 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>Hiba a {} makrófájl eltávolítása közben:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="122"/>
+      <location filename="../../addonmanager_workers_startup.py" line="121"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Nem sikerült csatlakozni a GitHubhoz. Ellenőrizze a kapcsolat és a proxy beállításait.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="180"/>
+      <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>FIGYELMEZTETÉS: A {} bővítmény duplikátuma elhagyva</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
+      <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
       <translation>A munkafelületek listája frissítve.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git le van tiltva, kihagyja a git makrókat</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
+      <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Kísérlet a nem-git makró beállítások megváltoztatására a git használatára
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Hiba történt a makrók frissítésében a GitHubról, próbálom tisztán ellenőrizni a...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="338"/>
+      <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Megpróbálok egy tiszta kijelentkezést végezni...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="350"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
       <translation>A tiszta kilépés sikerült</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="360"/>
+      <location filename="../../addonmanager_workers_startup.py" line="359"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Nem sikerült frissíteni a makrókat a GitHubról -- próbálja meg törölni a bővítmény kezelő&apos;s cache-t.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="383"/>
+      <location filename="../../addonmanager_workers_startup.py" line="382"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Hiba a Wikihez csatlakozásban, a FreeCAD jelenleg nem tudja lekérdezni a Wiki makrólistáját</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="592"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Nem lehet letölteni a git-frissítéseket a(z) {} munkafelületekhez</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="605"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
       <translation>git állapot nem sikerült ehhez: {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="671"/>
+      <location filename="../../addonmanager_workers_startup.py" line="670"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Nem sikerült beolvasni a metaadatokat innen {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="694"/>
+      <location filename="../../addonmanager_workers_startup.py" line="693"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Nem sikerült kódot lekérni a &apos;{name}&apos; makróhoz</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="747"/>
+      <location filename="../../addonmanager_workers_startup.py" line="746"/>
       <source>Caching macro code...</source>
       <translation>Makro kód ellenörzése...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="770"/>
+      <location filename="../../addonmanager_workers_startup.py" line="769"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Bővítmény kezelő: a {name} letöltése során nem sikerült befejezni a feldolgozást</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="785"/>
+      <location filename="../../addonmanager_workers_startup.py" line="784"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>A {num_macros} makrók közül {num_failed} a feldolgozás során letelt az idő</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="808"/>
+      <location filename="../../addonmanager_workers_startup.py" line="807"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Bővítmény kezelő: egy munkafolyamat nem állt le ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="847"/>
+      <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Getting metadata from macro {}</source>
       <translation>Metaadatok kinyerése ebből a makróból: {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="861"/>
+      <location filename="../../addonmanager_workers_startup.py" line="860"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Időkiesés a makró metaadatainak lekérése közben innen: {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="871"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Nem sikerült leállítani a {} makró folyamatát!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
+      <location filename="../../addonmanager_workers_startup.py" line="892"/>
       <source>Retrieving macro description...</source>
       <translation>Makró leírásának lekérése...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="894"/>
       <source>Retrieving info from git</source>
       <translation>Információ beolvasása git-ből</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
+      <location filename="../../addonmanager_workers_startup.py" line="897"/>
       <source>Retrieving info from wiki</source>
       <translation>Információ beolvasása wiki-ből</translation>
     </message>
@@ -2421,17 +2421,17 @@ a telepített bővítményeket a rendszer ellenőrzi az elérhető frissítések
       <translation>Nem sikerült letölteni az adatokat innen {} - a válaszkód {}.</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="158"/>
       <source>Composite view</source>
       <translation>Összetett nézet</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Expanded view</source>
       <translation>Bővített nézet</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Compact view</source>
       <translation>Kompakt nézet</translation>
     </message>

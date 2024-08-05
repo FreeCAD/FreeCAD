@@ -2,6 +2,1050 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="be" sourcelanguage="en">
   <context>
+    <name>CmdInspectAppearance</name>
+    <message>
+      <location filename="../../Command.cpp" line="147"/>
+      <source>Inspect Appearance...</source>
+      <translation>Праверыць знешні выгляд...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="150"/>
+      <source>Inspect the appearance properties of the selected object</source>
+      <translation>Праверыць уласцівасці знешняга выгляду абранага аб'екта</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdInspectMaterial</name>
+    <message>
+      <location filename="../../Command.cpp" line="174"/>
+      <source>Inspect Material...</source>
+      <translation>Праверыць матэрыял...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="175"/>
+      <location filename="../../Command.cpp" line="177"/>
+      <source>Inspect the material properties of the selected object</source>
+      <translation>Праверыць уласцівасці матэрыялу абранага аб'екта</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMaterialsEdit</name>
+    <message>
+      <location filename="../../Command.cpp" line="52"/>
+      <source>Material</source>
+      <translation>Матэрыял</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="53"/>
+      <source>Edit...</source>
+      <translation>Змяніць...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="54"/>
+      <source>Edit material properties</source>
+      <translation>Праўка ўласцівасцяў матэрыялу</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::Array2D</name>
+    <message>
+      <location filename="../../Array2D.ui" line="14"/>
+      <source>2D Array</source>
+      <translation>Двухмерны масіў</translation>
+    </message>
+    <message>
+      <location filename="../../Array2D.cpp" line="76"/>
+      <source>Delete row</source>
+      <translation>Выдаліць радок</translation>
+    </message>
+    <message>
+      <location filename="../../Array2D.cpp" line="134"/>
+      <source>Context menu</source>
+      <translation>Кантэкстнае меню</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::Array3D</name>
+    <message>
+      <location filename="../../Array3D.ui" line="14"/>
+      <source>3D Array</source>
+      <translation>Трохмерны масіў</translation>
+    </message>
+    <message>
+      <location filename="../../Array3D.cpp" line="77"/>
+      <location filename="../../Array3D.cpp" line="81"/>
+      <source>Delete row</source>
+      <translation>Выдаліць радок</translation>
+    </message>
+    <message>
+      <location filename="../../Array3D.cpp" line="231"/>
+      <location filename="../../Array3D.cpp" line="302"/>
+      <source>Context menu</source>
+      <translation>Кантэкстнае меню</translation>
+    </message>
+    <message>
+      <location filename="../../Array3D.cpp" line="263"/>
+      <location filename="../../Array3D.cpp" line="335"/>
+      <source>Confirm Delete</source>
+      <translation>Пацвердзіць выдаленне</translation>
+    </message>
+    <message>
+      <location filename="../../Array3D.cpp" line="265"/>
+      <location filename="../../Array3D.cpp" line="337"/>
+      <source>Are you sure you want to delete the row?</source>
+      <translation>Ці сапраўды вы жадаеце працягнуць?</translation>
+    </message>
+    <message>
+      <location filename="../../Array3D.cpp" line="267"/>
+      <source>Removing this will also remove all 2D contents.</source>
+      <translation>Выдаленне гэтага элементу таксама прывядзе да выдалення ўсяго двухмернага зместу.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::ArrayDelegate</name>
+    <message>
+      <location filename="../../ArrayDelegate.cpp" line="153"/>
+      <source>False</source>
+      <translation>Хлусня</translation>
+    </message>
+    <message>
+      <location filename="../../ArrayDelegate.cpp" line="154"/>
+      <source>True</source>
+      <translation>Ісціна</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::BaseDelegate</name>
+    <message>
+      <location filename="../../BaseDelegate.cpp" line="441"/>
+      <source>False</source>
+      <translation>Хлусня</translation>
+    </message>
+    <message>
+      <location filename="../../BaseDelegate.cpp" line="442"/>
+      <source>True</source>
+      <translation>Ісціна</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgDisplayProperties</name>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="14"/>
+      <source>Display properties</source>
+      <translation>Адлюстраванне ўласцівасцяў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="20"/>
+      <source>Viewing mode</source>
+      <translation>Налады рэжыму адлюстравання</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="55"/>
+      <source>Document window:</source>
+      <translation>Акно дакумента:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="87"/>
+      <source>Plot mode:</source>
+      <translation>Рэжым чарчэння:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="106"/>
+      <source>Display</source>
+      <translation>Праецыраванне</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="144"/>
+      <source>Point size:</source>
+      <translation>Памер кропкі:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="199"/>
+      <source>Line width:</source>
+      <translation>Шырыня лініі:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="237"/>
+      <source>Transparency:</source>
+      <translation>Празрыстасць:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="289"/>
+      <source>Line transparency:</source>
+      <translation>Празрыстасць лініі:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="338"/>
+      <source>Material</source>
+      <translation>Матэрыял</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="365"/>
+      <source>Color plot:</source>
+      <translation>Колер дыяграмы:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="372"/>
+      <source>Custom appearance:</source>
+      <translation>Карыстальніцкі знешні выгляд:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="382"/>
+      <source>Point color:</source>
+      <translation>Колер кропкі:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="389"/>
+      <source>Line color:</source>
+      <translation>Колер лініі:</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgDisplayPropertiesImp</name>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
+      <source>Basic Appearance</source>
+      <translation>Асноўны знешні выгляд</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
+      <source>Texture Appearance</source>
+      <translation>Знешні выгляд тэкстуры</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
+      <source>All Materials</source>
+      <translation>Усе матэрыялы</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgInspectAppearance</name>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="14"/>
+      <source>Form</source>
+      <translation>Форма</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="35"/>
+      <source>Document</source>
+      <translation>Дакумент</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="50"/>
+      <source>Document Name</source>
+      <translation>Назва дакументу</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="57"/>
+      <source>Name of the active document</source>
+      <translation>Назва бягучага дакументу</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="64"/>
+      <source>Label / Internal Name</source>
+      <translation>Label / Internal Name</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="74"/>
+      <source>Sub.Shape / Type</source>
+      <translation>Sub.Shape / Type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="81"/>
+      <source>Shape.TypeID / TypeID</source>
+      <translation>Shape.TypeID / TypeID</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="100"/>
+      <source>Appearance</source>
+      <translation>Знешні выгляд</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="107"/>
+      <source>Tab 1</source>
+      <translation>Укладка 1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.ui" line="112"/>
+      <source>Tab 2</source>
+      <translation>Укладка 2</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="202"/>
+      <source>Diffuse Color</source>
+      <translation>Рассеяны колер</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="211"/>
+      <source>Ambient Color</source>
+      <translation>Навакольны колер</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="220"/>
+      <source>Emissive Color</source>
+      <translation>Выпускаючы колер</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="229"/>
+      <source>Specular Color</source>
+      <translation>Бліскучы колер</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="238"/>
+      <source>Shininess</source>
+      <translation>Бляск</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgInspectMaterial</name>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="14"/>
+      <source>Form</source>
+      <translation>Форма</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="35"/>
+      <source>Document</source>
+      <translation>Дакумент</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="50"/>
+      <source>Document Name</source>
+      <translation>Назва дакументу</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="57"/>
+      <source>Name of the active document</source>
+      <translation>Назва бягучага дакументу</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="64"/>
+      <source>Label / Internal Name</source>
+      <translation>Label / Internal Name</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="74"/>
+      <source>Sub.Shape / Type</source>
+      <translation>Sub.Shape / Type</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="81"/>
+      <source>Shape.TypeID / TypeID</source>
+      <translation>Shape.TypeID / TypeID</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="94"/>
+      <source>Material</source>
+      <translation>Матэрыял</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.ui" line="128"/>
+      <source>Copy to clipboard</source>
+      <translation>Капіраваць у буфер абмену</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="151"/>
+      <source>Document: </source>
+      <translation>Дакумент: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="166"/>
+      <source>Label: </source>
+      <translation>Метка: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="172"/>
+      <source>Internal Name: </source>
+      <translation>Унутраная назва: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="190"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="331"/>
+      <source>Type: </source>
+      <translation>Тып: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="192"/>
+      <source>TypeID: </source>
+      <translation>Ідэнтыфікатар тыпу: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="221"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="233"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="252"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="292"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="314"/>
+      <source>Name: </source>
+      <translation>Назва: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="246"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="285"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="309"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="360"/>
+      <source>None</source>
+      <translation>Нічога</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="266"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="341"/>
+      <source>UUID: </source>
+      <translation>UUID: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="269"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="343"/>
+      <source>Library: </source>
+      <translation>Бібліятэка: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="273"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="346"/>
+      <source>Library Directory: </source>
+      <translation>Каталог бібліятэкі: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="276"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="348"/>
+      <source>Sub Directory: </source>
+      <translation>Укладзены каталог: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="279"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="350"/>
+      <source>Inherits:</source>
+      <translation>Успадкаваны:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="329"/>
+      <source>Model UUID: </source>
+      <translation>UUID мадэлі: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
+      <source>Has value: </source>
+      <translation>Мае значэнне: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
+      <source>No</source>
+      <translation>Не</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="333"/>
+      <source>Yes</source>
+      <translation>Так</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
+      <source>Appearance Models:</source>
+      <translation>Мадэлі знешняга выгляду:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
+      <source>Physical Models:</source>
+      <translation>Фізічныя мадэлі:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
+      <source>Appearance Properties:</source>
+      <translation>Уласцівасці знешняга выгляду:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
+      <source>Physical Properties:</source>
+      <translation>Фізічныя ўласцівасці:</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgMaterial</name>
+    <message>
+      <location filename="../../DlgMaterial.ui" line="14"/>
+      <source>Material</source>
+      <translation>Матэрыял</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgSettingsDefaultMaterial</name>
+    <message>
+      <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
+      <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
+      <source>Default Material</source>
+      <translation>Першапачатковы матэрыял</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
+      <source>Physical</source>
+      <translation>Фізічны</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgSettingsMaterial</name>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="14"/>
+      <source>General</source>
+      <translation>Асноўныя</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="23"/>
+      <source>Card resources</source>
+      <translation>Бібліятэка картак матэрыялаў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="31"/>
+      <source>The cards built-in to FreeCAD will be listed as available.</source>
+      <translation>Карткі, якія ўбудаваныя ў FreeCAD, будуць пералічаныя як даступныя.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="34"/>
+      <source>Use built-in materials</source>
+      <translation>Ужываць убудаваныя матэрыялы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="50"/>
+      <source>Use materials added by external workbenches.</source>
+      <translation>Ужываць матэрыялы, якія дададзеныя на вонкавых варштатах.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="53"/>
+      <source>Use materials from external workbenches</source>
+      <translation>Ужываць матэрыялы з вонкавых варштатах</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="69"/>
+      <source>Also cards from FreeCAD&apos;s preferences directory will be listed as available.</source>
+      <translation>Карткі з каталогу пераваг FreeCAD будуць пералічаныя як даступныя.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="72"/>
+      <source>Use materials from Materials directory in user&apos;s FreeCAD preference directory</source>
+      <translation>Ужываць матэрыялы з каталогу Матэрыялы ў каталогу пераваг карыстальніка FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="88"/>
+      <source>Also material cards also from the specified directory
+will be listed as available.</source>
+      <translation>Карткі матэрыялаў з паказанага каталогу будуць пералічаныя як даступныя.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="92"/>
+      <source>Use materials from user defined directory</source>
+      <translation>Ужываць матэрыялы з каталогу, які абраны карыстальнікам</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="119"/>
+      <source>User directory</source>
+      <translation>Каталог карыстальніка</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="152"/>
+      <source>Card sorting and duplicates</source>
+      <translation>Парадкаванне картак і паўторныя</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="158"/>
+      <source>Duplicate cards will be deleted from the displayed material card list.</source>
+      <translation>Паўторныя карткі будуць выдаленыя з спісу картак матэрыялаў, які адлюстроўваецца.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
+      <source>Delete card duplicates</source>
+      <translation>Выдаліць паўторныя карткі</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="177"/>
+      <source>Material cards appear sorted by their resources (locations).
+If unchecked, they will be sorted by their name.</source>
+      <translation>Карткі матэрыялаў адлюстроўваюцца ўпарадкаванымі па іх рэсурсах (месцазнаходжанню).
+Калі не птушка, яны будуць упарадкаваныя па іх назве.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="181"/>
+      <source>Sort by resources</source>
+      <translation>Парадкаваць па рэсурсах</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="200"/>
+      <source>Material Selector</source>
+      <translation>Выбар матэрыялу</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="206"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="289"/>
+      <source>Show favorites</source>
+      <translation>Паказаць абраныя</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="222"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="305"/>
+      <source>Show recent</source>
+      <translation>Паказаць нядаўнія</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="238"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="321"/>
+      <source>Show empty libraries</source>
+      <translation>Паказаць пустыя бібліятэкі</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="254"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="337"/>
+      <source>Show empty folders</source>
+      <translation>Паказаць пустыя каталогі</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="267"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="350"/>
+      <source>Show legacy files</source>
+      <translation>Паказаць састарэлыя файлы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="283"/>
+      <source>Material Editor</source>
+      <translation>Рэдактар матэрыялу</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::ImageEdit</name>
+    <message>
+      <location filename="../../ImageEdit.ui" line="14"/>
+      <source>Image</source>
+      <translation>Выява</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.ui" line="30"/>
+      <source>Thumbnail</source>
+      <translation>Мініяцюра</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.ui" line="95"/>
+      <source>File...</source>
+      <translation>Файл...</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.ui" line="104"/>
+      <source>Height</source>
+      <translation>Вышыня</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.ui" line="111"/>
+      <source>Width</source>
+      <translation>Шырыня</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="195"/>
+      <source>Select an image</source>
+      <translation>Абраць выяву</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="206"/>
+      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
+      <translation>Файлы выяў (*.jpg *.jpeg *.png *.bmp);;Усе файлы (*)</translation>
+    </message>
+    <message>
+      <location filename="../../ImageEdit.cpp" line="218"/>
+      <source>Image files (*.svg);;All files (*)</source>
+      <translation>Файлы выяў (*.svg);;Усе файлы (*)</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::ListEdit</name>
+    <message>
+      <location filename="../../ListEdit.ui" line="14"/>
+      <source>List Edit</source>
+      <translation>Змяніць спіс</translation>
+    </message>
+    <message>
+      <location filename="../../ListEdit.ui" line="41"/>
+      <source>Delete Row</source>
+      <translation>Выдаліць радок</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::MaterialDelegate</name>
+    <message>
+      <location filename="../../MaterialDelegate.cpp" line="449"/>
+      <source>False</source>
+      <translation>Хлусня</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialDelegate.cpp" line="450"/>
+      <source>True</source>
+      <translation>Ісціна</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::MaterialSave</name>
+    <message>
+      <location filename="../../MaterialSave.ui" line="14"/>
+      <source>Save Material</source>
+      <translation>Захаваць матэрыял</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="22"/>
+      <source>Library:</source>
+      <translation>Бібліятэка:</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="59"/>
+      <location filename="../../MaterialSave.cpp" line="476"/>
+      <location filename="../../MaterialSave.cpp" line="486"/>
+      <source>New Folder</source>
+      <translation>Новы каталог</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="70"/>
+      <source>Filename:</source>
+      <translation>Імя файла:</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="104"/>
+      <source>Save as Inherited</source>
+      <translation>Захаваць як успадкаваны</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="89"/>
+      <source>Delete</source>
+      <translation>Выдаліць</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="184"/>
+      <source>Are you sure you want to save over &apos;%1&apos;?</source>
+      <translation>Ці сапраўды вы жадаеце захаваць &apos;%1&apos; нанова?</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="187"/>
+      <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
+      <translation>Захаванне па-над зыходным файлам можа прывесці да пашкоджання іншых дакументаў.
+Гэтае не рэкамендуецца.</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="209"/>
+      <source>Confirm Save As New Material</source>
+      <translation>Пацвердзіць захаванне як новага матэрыялу</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="211"/>
+      <source>Save as new material</source>
+      <translation>Захаваць як новы матэрыял</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="214"/>
+      <source>This material already exists in this library. Would you like to save as a new material?</source>
+      <translation>Дадзены матэрыял ужо існуе ў гэтай бібліятэцы.
+Ці жадаеце вы захаваць яго як новы матэрыял?</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="236"/>
+      <source>Confirm Save As Copy</source>
+      <translation>Пацвердзіць захаванне як копіі</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="238"/>
+      <source>Save as Copy</source>
+      <translation>Захаваць як копію</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="241"/>
+      <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
+      <translation>Захоўваць копію не рэкамендуецца, бо гэтае можа прывесці да пашкоджання іншых дакументаў.
+Мы рэкамендуем вам захаваць яе як новы матэрыял.</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="244"/>
+      <source>Save Copy</source>
+      <translation>Захаваць копію</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="245"/>
+      <source>Save As New</source>
+      <translation>Захаваць як новы</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="526"/>
+      <source>Context menu</source>
+      <translation>Кантэкстнае меню</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::MaterialTreeWidget</name>
+    <message>
+      <location filename="../../MaterialTreeWidget.cpp" line="142"/>
+      <source>Launch editor</source>
+      <translation>Запусціць рэдактар</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="546"/>
+      <source>Favorites</source>
+      <translation>Абраныя</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="553"/>
+      <source>Recent</source>
+      <translation>Нядаўнія</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::MaterialsEditor</name>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="20"/>
+      <source>Materials</source>
+      <translation>Матэрыялы</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="51"/>
+      <source>General</source>
+      <translation>Асноўныя</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="74"/>
+      <source>Parent</source>
+      <translation>Быцькі</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="84"/>
+      <source>Tags</source>
+      <translation>Меткі</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="91"/>
+      <source>Source URL</source>
+      <translation>URL-адрас крыніцы</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="101"/>
+      <source>Description</source>
+      <translation>Апісанне</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="108"/>
+      <source>Name</source>
+      <translation>Назва</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="141"/>
+      <source>Author</source>
+      <translation>Аўтар</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="151"/>
+      <source>Source Reference</source>
+      <translation>Спасылак на крыніцу</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="164"/>
+      <source>License</source>
+      <translation>Ліцэнзія</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="188"/>
+      <source>&amp;New</source>
+      <translation>&amp;Новы</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="195"/>
+      <source>Inherit New</source>
+      <translation>Успадкаваць новыя</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="202"/>
+      <source>Add to favorites</source>
+      <translation>Дадаць у абранае</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="215"/>
+      <source>Physical</source>
+      <translation>Фізічная</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="236"/>
+      <source>Add physical model</source>
+      <translation>Дадаць фізічную мадэль</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="246"/>
+      <source>Delete physical model</source>
+      <translation>Выдаліць фізічную мадэль</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="262"/>
+      <source>Appearance</source>
+      <translation>Знешні выгляд</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="286"/>
+      <source>Add appearance model</source>
+      <translation>Дадаць мадэль знешняга выгляду</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="296"/>
+      <source>Delete appearance model</source>
+      <translation>Выдаліць мадэль знешняга выгляду</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="481"/>
+      <source>Unnamed</source>
+      <translation>Без назвы</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="603"/>
+      <source>Old Format Material</source>
+      <translation>Стары фармат матэрыялу</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="605"/>
+      <source>This file is in the old material card format.</source>
+      <translation>Гэты файл прадстаўлены ў старым фармаце карткі матэрыялаў.</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="687"/>
+      <source>This card uses the old format and must be saved before use</source>
+      <translation>На гэтай карце ўжываецца стары фармат, і яго неабходна захаваць перад тым, як ужываць</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="745"/>
+      <location filename="../../MaterialsEditor.cpp" line="777"/>
+      <location filename="../../MaterialsEditor.cpp" line="1051"/>
+      <location filename="../../MaterialsEditor.cpp" line="1113"/>
+      <source>Property</source>
+      <translation>Уласцівасць</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="746"/>
+      <location filename="../../MaterialsEditor.cpp" line="778"/>
+      <location filename="../../MaterialsEditor.cpp" line="1052"/>
+      <location filename="../../MaterialsEditor.cpp" line="1114"/>
+      <source>Value</source>
+      <translation>Значэнне</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="747"/>
+      <location filename="../../MaterialsEditor.cpp" line="779"/>
+      <location filename="../../MaterialsEditor.cpp" line="1053"/>
+      <location filename="../../MaterialsEditor.cpp" line="1115"/>
+      <source>Type</source>
+      <translation>Тып</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="843"/>
+      <source>Favorites</source>
+      <translation>Абраныя</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="850"/>
+      <source>Recent</source>
+      <translation>Нядаўнія</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="1116"/>
+      <source>Units</source>
+      <translation>Адзінкі вымярэння</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="1283"/>
+      <source>Context menu</source>
+      <translation>Кантэкстнае меню</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="1285"/>
+      <source>Inherit from</source>
+      <translation>Успадкаваць з</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.cpp" line="1289"/>
+      <source>Inherit new material</source>
+      <translation>Успадкаваць новы матэрыял</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::ModelSelect</name>
+    <message>
+      <location filename="../../ModelSelect.ui" line="14"/>
+      <source>Material Models</source>
+      <translation>Мадэлі матэрыялу</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="41"/>
+      <source>General</source>
+      <translation>Асноўныя</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="49"/>
+      <location filename="../../ModelSelect.cpp" line="360"/>
+      <source>URL</source>
+      <translation>URL-адрас</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="56"/>
+      <location filename="../../ModelSelect.cpp" line="359"/>
+      <source>Description</source>
+      <translation>Апісанне</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="63"/>
+      <source>DOI</source>
+      <translation>Ідэнтыфікатар лічбавага аб'екта (DOI)</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="87"/>
+      <source>Name</source>
+      <translation>Назва</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="159"/>
+      <source>Add to favorites</source>
+      <translation>Дадаць у абранае</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="172"/>
+      <location filename="../../ModelSelect.cpp" line="438"/>
+      <location filename="../../ModelSelect.cpp" line="454"/>
+      <source>Properties</source>
+      <translation>Уласцівасці</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.cpp" line="332"/>
+      <source>Favorites</source>
+      <translation>Абраныя</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.cpp" line="337"/>
+      <source>Recent</source>
+      <translation>Нядаўнія</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.cpp" line="356"/>
+      <source>Inherited</source>
+      <translation>Успадкаваны</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.cpp" line="357"/>
+      <source>Property</source>
+      <translation>Уласцівасць</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.cpp" line="358"/>
+      <source>Units</source>
+      <translation>Адзінкі вымярэння</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.cpp" line="441"/>
+      <source>Appearance</source>
+      <translation>Знешні выгляд</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::TextEdit</name>
+    <message>
+      <location filename="../../TextEdit.ui" line="14"/>
+      <source>Text Edit</source>
+      <translation>Змяніць тэкст</translation>
+    </message>
+  </context>
+  <context>
     <name>MaterialEditor</name>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
@@ -65,1197 +1109,125 @@
     </message>
   </context>
   <context>
-    <name>Material</name>
+    <name>QDockWidget</name>
     <message>
-      <location filename="../../MaterialEditor.py" line="264"/>
-      <location filename="../../MaterialEditor.py" line="332"/>
-      <source>The document has been modified.</source>
-      <translation type="unfinished">The document has been modified.</translation>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="54"/>
+      <source>Display properties</source>
+      <translation>Адлюстраванне ўласцівасцяў</translation>
     </message>
     <message>
-      <location filename="../../MaterialEditor.py" line="265"/>
-      <location filename="../../MaterialEditor.py" line="333"/>
-      <source>Do you want to save your changes?</source>
-      <translation type="unfinished">Do you want to save your changes?</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialEditor.py" line="310"/>
-      <source>Product URL</source>
-      <translation>URL-адрас прадукту</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialEditor.py" line="398"/>
-      <source>UserDefined</source>
-      <translation>Зададзена карыстальнікам</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialEditor.py" line="658"/>
-      <source>Name</source>
-      <translation>Назва</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::Array2D</name>
-    <message>
-      <location filename="../../Gui/Array2D.ui" line="14"/>
-      <source>2D Array</source>
-      <translation type="unfinished">2D Array</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Array2D.cpp" line="76"/>
-      <source>Delete row</source>
-      <translation type="unfinished">Delete row</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Array2D.cpp" line="134"/>
-      <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::Array3D</name>
-    <message>
-      <location filename="../../Gui/Array3D.ui" line="14"/>
-      <source>3D Array</source>
-      <translation type="unfinished">3D Array</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Array3D.cpp" line="77"/>
-      <location filename="../../Gui/Array3D.cpp" line="82"/>
-      <source>Delete row</source>
-      <translation type="unfinished">Delete row</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Array3D.cpp" line="233"/>
-      <location filename="../../Gui/Array3D.cpp" line="304"/>
-      <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Array3D.cpp" line="265"/>
-      <location filename="../../Gui/Array3D.cpp" line="337"/>
-      <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Array3D.cpp" line="267"/>
-      <location filename="../../Gui/Array3D.cpp" line="339"/>
-      <source>Are you sure you want to delete the row?</source>
-      <translation type="unfinished">Are you sure you want to delete the row?</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Array3D.cpp" line="269"/>
-      <source>Removing this will also remove all 2D contents.</source>
-      <translation type="unfinished">Removing this will also remove all 2D contents.</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgSettingsMaterial</name>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="14"/>
-      <source>General</source>
-      <translation>Асноўныя</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="23"/>
-      <source>Card resources</source>
-      <translation type="unfinished">Card resources</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="31"/>
-      <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="34"/>
-      <source>Use built-in materials</source>
-      <translation type="unfinished">Use built-in materials</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="50"/>
-      <source>Use materials added by external workbenches.</source>
-      <translation type="unfinished">Use materials added by external workbenches.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="53"/>
-      <source>Use materials from external workbenches</source>
-      <translation type="unfinished">Use materials from external workbenches</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="69"/>
-      <source>Also cards from FreeCAD&apos;s preferences directory will be listed as available.</source>
-      <translation type="unfinished">Also cards from FreeCAD&apos;s preferences directory will be listed as available.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="72"/>
-      <source>Use materials from Materials directory in user&apos;s FreeCAD preference directory</source>
-      <translation type="unfinished">Use materials from Materials directory in user&apos;s FreeCAD preference directory</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="88"/>
-      <source>Also material cards also from the specified directory
-will be listed as available.</source>
-      <translation type="unfinished">Also material cards also from the specified directory
-will be listed as available.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="92"/>
-      <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="119"/>
-      <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="164"/>
-      <source>Card sorting and duplicates</source>
-      <translation type="unfinished">Card sorting and duplicates</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="170"/>
-      <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="173"/>
-      <source>Delete card duplicates</source>
-      <translation type="unfinished">Delete card duplicates</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="189"/>
-      <source>Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</source>
-      <translation type="unfinished">Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="193"/>
-      <source>Sort by resources</source>
-      <translation type="unfinished">Sort by resources</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="295"/>
-      <source>Material Editor</source>
-      <translation>Рэдактар матэрыялу</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="212"/>
-      <source>Material Selector</source>
-      <translation type="unfinished">Material Selector</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="218"/>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="301"/>
-      <source>Show favorites</source>
-      <translation type="unfinished">Show favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="234"/>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="317"/>
-      <source>Show recent</source>
-      <translation type="unfinished">Show recent</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="250"/>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="333"/>
-      <source>Show empty libraries</source>
-      <translation type="unfinished">Show empty libraries</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="266"/>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="349"/>
-      <source>Show empty folders</source>
-      <translation type="unfinished">Show empty folders</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="279"/>
-      <location filename="../../Gui/DlgSettingsMaterial.ui" line="362"/>
-      <source>Show legacy files</source>
-      <translation type="unfinished">Show legacy files</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::MaterialSave</name>
-    <message>
-      <location filename="../../Gui/MaterialSave.ui" line="14"/>
-      <source>Save Material</source>
-      <translation type="unfinished">Save Material</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.ui" line="22"/>
-      <source>Library:</source>
-      <translation type="unfinished">Library:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.ui" line="59"/>
-      <location filename="../../Gui/MaterialSave.cpp" line="476"/>
-      <location filename="../../Gui/MaterialSave.cpp" line="486"/>
-      <source>New Folder</source>
-      <translation type="unfinished">New Folder</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.ui" line="70"/>
-      <source>Filename:</source>
-      <translation type="unfinished">Filename:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.ui" line="104"/>
-      <source>Save as Inherited</source>
-      <translation type="unfinished">Save as Inherited</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="89"/>
-      <source>Delete</source>
-      <translation>Выдаліць</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="184"/>
-      <source>Are you sure you want to save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Are you sure you want to save over &apos;%1&apos;?</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="187"/>
-      <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation type="unfinished">Saving over the original file may cause other documents to break. This is not recommended.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="209"/>
-      <source>Confirm Save As New Material</source>
-      <translation type="unfinished">Confirm Save As New Material</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="211"/>
-      <source>Save as new material</source>
-      <translation type="unfinished">Save as new material</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="214"/>
-      <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Would you like to save as a new material?</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="236"/>
-      <source>Confirm Save As Copy</source>
-      <translation type="unfinished">Confirm Save As Copy</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="238"/>
-      <source>Save as Copy</source>
-      <translation type="unfinished">Save as Copy</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="241"/>
-      <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="244"/>
-      <source>Save Copy</source>
-      <translation type="unfinished">Save Copy</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="245"/>
-      <source>Save As New</source>
-      <translation type="unfinished">Save As New</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="526"/>
-      <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::MaterialsEditor</name>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="20"/>
-      <source>Materials</source>
-      <translation>Матэрыялы</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="51"/>
-      <source>General</source>
-      <translation>Асноўныя</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="101"/>
-      <source>Description</source>
-      <translation>Апісанне</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="108"/>
-      <source>Name</source>
-      <translation>Назва</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="151"/>
-      <source>Source Reference</source>
-      <translation type="unfinished">Source Reference</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="74"/>
-      <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="84"/>
-      <source>Tags</source>
-      <translation>Меткі</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="91"/>
-      <source>Source URL</source>
-      <translation type="unfinished">Source URL</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="141"/>
-      <source>Author</source>
-      <translation>Аўтар</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="164"/>
-      <source>License</source>
-      <translation>Ліцэнзія</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="188"/>
-      <source>&amp;New</source>
-      <translation>&amp;Новы</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="195"/>
-      <source>Inherit New</source>
-      <translation type="unfinished">Inherit New</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="202"/>
-      <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="236"/>
-      <source>Add physical model</source>
-      <translation type="unfinished">Add physical model</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="246"/>
-      <source>Delete physical model</source>
-      <translation type="unfinished">Delete physical model</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="286"/>
-      <source>Add appearance model</source>
-      <translation type="unfinished">Add appearance model</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="296"/>
-      <source>Delete appearance model</source>
-      <translation type="unfinished">Delete appearance model</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="215"/>
-      <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.ui" line="262"/>
-      <source>Appearance</source>
-      <translation>Знешні выгляд</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="481"/>
-      <source>Unnamed</source>
-      <translation>Без назвы</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="603"/>
-      <source>Old Format Material</source>
-      <translation type="unfinished">Old Format Material</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="605"/>
-      <source>This file is in the old material card format.</source>
-      <translation type="unfinished">This file is in the old material card format.</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="687"/>
-      <source>This card uses the old format and must be saved before use</source>
-      <translation type="unfinished">This card uses the old format and must be saved before use</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="745"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="777"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1051"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1113"/>
-      <source>Property</source>
-      <translation>Уласцівасць</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="746"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="778"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1052"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1114"/>
-      <source>Value</source>
-      <translation>Значэнне</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="747"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="779"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1053"/>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1115"/>
-      <source>Type</source>
-      <translation>Тып</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="843"/>
-      <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="850"/>
-      <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1116"/>
-      <source>Units</source>
-      <translation>Адзінкі вымярэння</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1283"/>
-      <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1285"/>
-      <source>Inherit from</source>
-      <translation type="unfinished">Inherit from</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1290"/>
-      <source>Inherit new material</source>
-      <translation type="unfinished">Inherit new material</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::ModelSelect</name>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="14"/>
-      <source>Material Models</source>
-      <translation type="unfinished">Material Models</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="41"/>
-      <source>General</source>
-      <translation>Асноўныя</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="49"/>
-      <location filename="../../Gui/ModelSelect.cpp" line="360"/>
-      <source>URL</source>
-      <translation>URL-адрас</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="56"/>
-      <location filename="../../Gui/ModelSelect.cpp" line="359"/>
-      <source>Description</source>
-      <translation>Апісанне</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="63"/>
-      <source>DOI</source>
-      <translation type="unfinished">DOI</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="87"/>
-      <source>Name</source>
-      <translation>Назва</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="159"/>
-      <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.ui" line="172"/>
-      <location filename="../../Gui/ModelSelect.cpp" line="438"/>
-      <location filename="../../Gui/ModelSelect.cpp" line="454"/>
-      <source>Properties</source>
-      <translation>Уласцівасці</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.cpp" line="332"/>
-      <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.cpp" line="337"/>
-      <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.cpp" line="356"/>
-      <source>Inherited</source>
-      <translation type="unfinished">Inherited</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.cpp" line="357"/>
-      <source>Property</source>
-      <translation>Уласцівасць</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.cpp" line="358"/>
-      <source>Units</source>
-      <translation>Адзінкі вымярэння</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ModelSelect.cpp" line="441"/>
-      <source>Appearance</source>
-      <translation>Знешні выгляд</translation>
+      <location filename="../../DlgMaterialImp.cpp" line="57"/>
+      <source>Material</source>
+      <translation>Матэрыял</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Gui/AppMatGui.cpp" line="106"/>
+      <location filename="../../AppMatGui.cpp" line="106"/>
       <source>Material workbench</source>
-      <translation type="unfinished">Material workbench</translation>
+      <translation>Варштат для кіравання матэрыяламі</translation>
     </message>
     <message>
-      <location filename="../../Gui/AppMatGui.cpp" line="108"/>
-      <location filename="../../Gui/AppMatGui.cpp" line="110"/>
+      <location filename="../../AppMatGui.cpp" line="108"/>
+      <location filename="../../AppMatGui.cpp" line="110"/>
       <source>Material</source>
       <translation>Матэрыял</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="181"/>
+      <location filename="../../MaterialSave.cpp" line="181"/>
       <source>Confirm Overwrite</source>
-      <translation type="unfinished">Confirm Overwrite</translation>
+      <translation>Пацвердзіць перазапіс</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="370"/>
-      <location filename="../../Gui/MaterialSave.cpp" line="371"/>
+      <location filename="../../MaterialSave.cpp" line="370"/>
+      <location filename="../../MaterialSave.cpp" line="371"/>
       <source>No writeable library</source>
-      <translation type="unfinished">No writeable library</translation>
+      <translation>Няма бібліятэкі для запісу</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="564"/>
+      <location filename="../../MaterialSave.cpp" line="558"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Are you sure you want to delete &apos;%1&apos;?</translation>
+      <translation>Ці сапраўды вы жадаеце выдаліць &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialSave.cpp" line="568"/>
+      <location filename="../../MaterialSave.cpp" line="562"/>
       <source>Removing this will also remove all contents.</source>
-      <translation type="unfinished">Removing this will also remove all contents.</translation>
+      <translation>Выдаленне гэтага элементу таксама прывядзе да выдалення ўсяго зместу.</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>You must save the material before using it.</source>
-      <translation type="unfinished">You must save the material before using it.</translation>
+      <translation>Вы павінны захаваць матэрыял перад яго ўжываннем.</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1312"/>
+      <location filename="../../MaterialsEditor.cpp" line="1310"/>
       <source>Unsaved Material</source>
-      <translation type="unfinished">Unsaved Material</translation>
+      <translation>Незахаваны матэрыял</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1313"/>
+      <location filename="../../MaterialsEditor.cpp" line="1311"/>
       <source>Do you want to save your changes to the material before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to the material before closing?</translation>
+      <translation>Ці жадаеце вы захаваць свае змены ў матэрыяле перад тым, як зачыніць?</translation>
     </message>
     <message>
-      <location filename="../../Gui/MaterialsEditor.cpp" line="1315"/>
+      <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
-      <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
+      <translation>Калі вы не захаваеце, вашыя змены будуць незваротна страчаныя.</translation>
     </message>
     <message>
-      <location filename="../../Gui/Array2D.cpp" line="166"/>
-      <location filename="../../Gui/ListEdit.cpp" line="142"/>
-      <location filename="../../Gui/MaterialSave.cpp" line="561"/>
+      <location filename="../../Array2D.cpp" line="166"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../MaterialSave.cpp" line="555"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>Пацвердзіць выдаленне</translation>
     </message>
     <message>
-      <location filename="../../Gui/Array2D.cpp" line="168"/>
-      <location filename="../../Gui/ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="168"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
-      <translation type="unfinished">Are you sure you want to delete the row?</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMaterialsEdit</name>
-    <message>
-      <location filename="../../Gui/Command.cpp" line="52"/>
-      <source>Material</source>
-      <translation>Матэрыял</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Command.cpp" line="53"/>
-      <source>Edit...</source>
-      <translation>Змяніць...</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Command.cpp" line="54"/>
-      <source>Edit material properties</source>
-      <translation type="unfinished">Edit material properties</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::ArrayDelegate</name>
-    <message>
-      <location filename="../../Gui/ArrayDelegate.cpp" line="153"/>
-      <source>False</source>
-      <translation>Хлусня</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ArrayDelegate.cpp" line="154"/>
-      <source>True</source>
-      <translation>Ісціна</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::MaterialDelegate</name>
-    <message>
-      <location filename="../../Gui/MaterialDelegate.cpp" line="449"/>
-      <source>False</source>
-      <translation>Хлусня</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialDelegate.cpp" line="450"/>
-      <source>True</source>
-      <translation>Ісціна</translation>
-    </message>
-  </context>
-  <context>
-    <name>Workbench</name>
-    <message>
-      <location filename="../../Gui/Workbench.cpp" line="34"/>
-      <source>&amp;Materials</source>
-      <translation>&amp;Матэрыялы</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Workbench.cpp" line="35"/>
-      <source>Materials</source>
-      <translation>Матэрыялы</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::ListEdit</name>
-    <message>
-      <location filename="../../Gui/ListEdit.ui" line="14"/>
-      <source>List Edit</source>
-      <translation type="unfinished">List Edit</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ListEdit.ui" line="41"/>
-      <source>Delete Row</source>
-      <translation type="unfinished">Delete Row</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::TextEdit</name>
-    <message>
-      <location filename="../../Gui/TextEdit.ui" line="14"/>
-      <source>Text Edit</source>
-      <translation type="unfinished">Text Edit</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::ImageEdit</name>
-    <message>
-      <location filename="../../Gui/ImageEdit.ui" line="14"/>
-      <source>Image</source>
-      <translation>Выява</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ImageEdit.ui" line="30"/>
-      <source>Thumbnail</source>
-      <translation type="unfinished">Thumbnail</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ImageEdit.ui" line="95"/>
-      <source>File...</source>
-      <translation type="unfinished">File...</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ImageEdit.ui" line="104"/>
-      <source>Height</source>
-      <translation>Вышыня</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ImageEdit.ui" line="111"/>
-      <source>Width</source>
-      <translation>Шырыня</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ImageEdit.cpp" line="195"/>
-      <source>Select an image</source>
-      <translation>Абраць выяву</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Файлы выяў (*.jpg *.jpeg *.png *.bmp);;Усе файлы (*)</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation type="unfinished">Image files (*.svg);;All files (*)</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::BaseDelegate</name>
-    <message>
-      <location filename="../../Gui/BaseDelegate.cpp" line="441"/>
-      <source>False</source>
-      <translation>Хлусня</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/BaseDelegate.cpp" line="442"/>
-      <source>True</source>
-      <translation>Ісціна</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgDisplayProperties</name>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="14"/>
-      <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="20"/>
-      <source>Viewing mode</source>
-      <translation>Налады рэжыму адлюстравання</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="55"/>
-      <source>Document window:</source>
-      <translation>Акно дакумента:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="87"/>
-      <source>Plot mode:</source>
-      <translation>Рэжым чарчэння:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="106"/>
-      <source>Display</source>
-      <translation>Праецыраванне</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="144"/>
-      <source>Point size:</source>
-      <translation>Памер кропкі:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="199"/>
-      <source>Line width:</source>
-      <translation>Шырыня лініі:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="237"/>
-      <source>Transparency:</source>
-      <translation>Празрыстасць:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="289"/>
-      <source>Line transparency:</source>
-      <translation type="unfinished">Line transparency:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="338"/>
-      <source>Material</source>
-      <translation>Матэрыял</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="365"/>
-      <source>Color plot:</source>
-      <translation type="unfinished">Color plot:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="372"/>
-      <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="382"/>
-      <source>Point color:</source>
-      <translation type="unfinished">Point color:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayProperties.ui" line="389"/>
-      <source>Line color:</source>
-      <translation>Колер лініі:</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgMaterial</name>
-    <message>
-      <location filename="../../Gui/DlgMaterial.ui" line="14"/>
-      <source>Material</source>
-      <translation>Матэрыял</translation>
+      <translation>Ці сапраўды вы жадаеце працягнуць?</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../../Gui/Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="89"/>
       <source>Appearance...</source>
-      <translation type="unfinished">Appearance...</translation>
+      <translation>Знешні выгляд...</translation>
     </message>
     <message>
-      <location filename="../../Gui/Command.cpp" line="90"/>
-      <location filename="../../Gui/Command.cpp" line="92"/>
+      <location filename="../../Command.cpp" line="90"/>
+      <location filename="../../Command.cpp" line="92"/>
       <source>Sets the display properties of the selected object</source>
-      <translation type="unfinished">Sets the display properties of the selected object</translation>
+      <translation>Задае ўласцівасці адлюстравання абранага аб'екту</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetMaterial</name>
     <message>
-      <location filename="../../Gui/Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="118"/>
       <source>Material...</source>
-      <translation type="unfinished">Material...</translation>
+      <translation>Матэрыял...</translation>
     </message>
     <message>
-      <location filename="../../Gui/Command.cpp" line="119"/>
-      <location filename="../../Gui/Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="119"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Sets the material of the selected object</source>
-      <translation type="unfinished">Sets the material of the selected object</translation>
+      <translation>Задае матэрыял абранага аб'екту</translation>
     </message>
   </context>
   <context>
-    <name>QDockWidget</name>
+    <name>Workbench</name>
     <message>
-      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="54"/>
-      <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <location filename="../../Workbench.cpp" line="34"/>
+      <source>&amp;Materials</source>
+      <translation>&amp;Матэрыялы</translation>
     </message>
     <message>
-      <location filename="../../Gui/DlgMaterialImp.cpp" line="57"/>
-      <source>Material</source>
-      <translation>Матэрыял</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::MaterialTreeWidget</name>
-    <message>
-      <location filename="../../Gui/MaterialTreeWidget.cpp" line="112"/>
-      <source>Launch editor</source>
-      <translation type="unfinished">Launch editor</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
-      <location filename="../../Gui/MaterialTreeWidget.cpp" line="507"/>
-      <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/MaterialTreeWidget.cpp" line="276"/>
-      <location filename="../../Gui/MaterialTreeWidget.cpp" line="514"/>
-      <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgDisplayPropertiesImp</name>
-    <message>
-      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="214"/>
-      <source>Basic Appearance</source>
-      <translation type="unfinished">Basic Appearance</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="219"/>
-      <source>Texture Appearance</source>
-      <translation type="unfinished">Texture Appearance</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgDisplayPropertiesImp.cpp" line="224"/>
-      <source>All Materials</source>
-      <translation type="unfinished">All Materials</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgSettingsDefaultMaterial</name>
-    <message>
-      <location filename="../../Gui/DlgSettingsDefaultMaterial.ui" line="14"/>
-      <location filename="../../Gui/DlgSettingsDefaultMaterial.ui" line="20"/>
-      <source>Default Material</source>
-      <translation type="unfinished">Default Material</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgSettingsDefaultMaterial.cpp" line="51"/>
-      <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgInspectAppearance</name>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="14"/>
-      <source>Form</source>
-      <translation>Форма</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="35"/>
-      <source>Document</source>
-      <translation>Дакумент</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>Назва дакументу</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="57"/>
-      <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="64"/>
-      <source>Label / Internal Name</source>
-      <translation type="unfinished">Label / Internal Name</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="74"/>
-      <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="81"/>
-      <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="100"/>
-      <source>Appearance</source>
-      <translation>Знешні выгляд</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="107"/>
-      <source>Tab 1</source>
-      <translation>Укладка 1</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.ui" line="112"/>
-      <source>Tab 2</source>
-      <translation>Укладка 2</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="202"/>
-      <source>Diffuse Color</source>
-      <translation type="unfinished">Diffuse Color</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="211"/>
-      <source>Ambient Color</source>
-      <translation type="unfinished">Ambient Color</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="220"/>
-      <source>Emissive Color</source>
-      <translation type="unfinished">Emissive Color</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="229"/>
-      <source>Specular Color</source>
-      <translation type="unfinished">Specular Color</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectAppearance.cpp" line="238"/>
-      <source>Shininess</source>
-      <translation type="unfinished">Shininess</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgInspectMaterial</name>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="14"/>
-      <source>Form</source>
-      <translation>Форма</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="35"/>
-      <source>Document</source>
-      <translation>Дакумент</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>Назва дакументу</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="57"/>
-      <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="64"/>
-      <source>Label / Internal Name</source>
-      <translation type="unfinished">Label / Internal Name</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="74"/>
-      <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="81"/>
-      <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="94"/>
-      <source>Material</source>
-      <translation>Матэрыял</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.ui" line="128"/>
-      <source>Copy to clipboard</source>
-      <translation>Капіраваць у буфер абмену</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="151"/>
-      <source>Document: </source>
-      <translation type="unfinished">Document: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="166"/>
-      <source>Label: </source>
-      <translation type="unfinished">Label: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="172"/>
-      <source>Internal Name: </source>
-      <translation type="unfinished">Internal Name: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="190"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="331"/>
-      <source>Type: </source>
-      <translation type="unfinished">Type: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="192"/>
-      <source>TypeID: </source>
-      <translation type="unfinished">TypeID: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="221"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="233"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="252"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="292"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="314"/>
-      <source>Name: </source>
-      <translation type="unfinished">Name: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="246"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="285"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="309"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="360"/>
-      <source>None</source>
-      <translation>Нічога</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="266"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="341"/>
-      <source>UUID: </source>
-      <translation type="unfinished">UUID: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="269"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="343"/>
-      <source>Library: </source>
-      <translation type="unfinished">Library: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="273"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="346"/>
-      <source>Library Directory: </source>
-      <translation type="unfinished">Library Directory: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="276"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="348"/>
-      <source>Sub Directory: </source>
-      <translation type="unfinished">Sub Directory: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="279"/>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="350"/>
-      <source>Inherits:</source>
-      <translation type="unfinished">Inherits:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="329"/>
-      <source>Model UUID: </source>
-      <translation type="unfinished">Model UUID: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="333"/>
-      <source>Has value: </source>
-      <translation type="unfinished">Has value: </translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="333"/>
-      <source>No</source>
-      <translation>Не</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="333"/>
-      <source>Yes</source>
-      <translation>Так</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="365"/>
-      <source>Appearance Models:</source>
-      <translation type="unfinished">Appearance Models:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="371"/>
-      <source>Physical Models:</source>
-      <translation type="unfinished">Physical Models:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="377"/>
-      <source>Appearance Properties:</source>
-      <translation type="unfinished">Appearance Properties:</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/DlgInspectMaterial.cpp" line="383"/>
-      <source>Physical Properties:</source>
-      <translation type="unfinished">Physical Properties:</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdInspectAppearance</name>
-    <message>
-      <location filename="../../Gui/Command.cpp" line="147"/>
-      <source>Inspect Appearance...</source>
-      <translation type="unfinished">Inspect Appearance...</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Command.cpp" line="148"/>
-      <location filename="../../Gui/Command.cpp" line="150"/>
-      <source>Inspect the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspect the appearance properties of the selected object</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdInspectMaterial</name>
-    <message>
-      <location filename="../../Gui/Command.cpp" line="174"/>
-      <source>Inspect Material...</source>
-      <translation type="unfinished">Inspect Material...</translation>
-    </message>
-    <message>
-      <location filename="../../Gui/Command.cpp" line="175"/>
-      <location filename="../../Gui/Command.cpp" line="177"/>
-      <source>Inspect the material properties of the selected object</source>
-      <translation type="unfinished">Inspect the material properties of the selected object</translation>
+      <location filename="../../Workbench.cpp" line="35"/>
+      <source>Materials</source>
+      <translation>Матэрыялы</translation>
     </message>
   </context>
 </TS>

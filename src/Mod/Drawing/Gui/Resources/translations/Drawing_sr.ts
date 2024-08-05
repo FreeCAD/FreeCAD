@@ -232,7 +232,7 @@
       <location filename="../../Command.cpp" line="617"/>
       <location filename="../../Command.cpp" line="619"/>
       <source>Inserts a symbol from a SVG file in the active drawing</source>
-      <translation type="unfinished">Inserts a symbol from a SVG file in the active drawing</translation>
+      <translation>Уметни cимбол из svg датотеке у активни цртеж</translation>
     </message>
   </context>
   <context>
@@ -480,7 +480,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="588"/>
       <source>Top left x / y</source>
-      <translation>Горе лево x / y</translation>
+      <translation>Одозго слева x / y</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="636"/>

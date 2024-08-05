@@ -664,7 +664,7 @@ změnit konfiguraci návrhu. Pokud vlastnost neexistuje, bude vytvořena.</trans
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Text pro jednotku</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>

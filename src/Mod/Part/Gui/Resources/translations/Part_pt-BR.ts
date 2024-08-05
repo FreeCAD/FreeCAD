@@ -441,7 +441,7 @@
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Intersection of two faces.</translation>
+      <translation>Interseção de duas faces.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="256"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Exportar um arquivo CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Importar um arquivo CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -1796,12 +1796,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation type="unfinished">Create points object from geometry</translation>
+      <translation>Criar objeto de pontos a partir da geometria</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation type="unfinished">Create selectable points object from selected geometric object</translation>
+      <translation>Criar objeto de pontos selecionáveis do objeto geométrico selecionado</translation>
     </message>
   </context>
   <context>
@@ -1938,12 +1938,12 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2199"/>
       <source>Persistent section cut</source>
-      <translation type="unfinished">Persistent section cut</translation>
+      <translation>Seção persistente cortada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2200"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation type="unfinished">Creates a persistent section cut of visible part objects</translation>
+      <translation>Cria um corte de seção persistente de objetos de peças visíveis</translation>
     </message>
   </context>
   <context>
@@ -2185,7 +2185,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Pontos da geometria</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2256,7 +2256,7 @@ of projection.</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
       <source>Project on surface</source>
-      <translation type="unfinished">Project on surface</translation>
+      <translation>Projeto na superfície</translation>
     </message>
   </context>
   <context>
@@ -2564,42 +2564,42 @@ Nota: As coordenadas da posição são relacionadas ao sistema local de coordena
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Exportação</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Unidades para exportação no formato STEP</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Milímetro</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Metro</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Polegada</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Gravar as curvas no espaço paramétrico da superfície</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
       <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
@@ -2610,22 +2610,22 @@ placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Exportar objetos invisíveis</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Exportar posicionamento único de objeto</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
-      <translation type="unfinished">Use legacy export function</translation>
+      <translation>Usar função de exportação legada</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Esquema</translation>
     </message>
@@ -4423,7 +4423,7 @@ o vetor normal ao plano de esboço será usado</translation>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>Espelhar plano de referência</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
@@ -4587,7 +4587,7 @@ will get the same color</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
       <source>Color for all objects</source>
-      <translation type="unfinished">Color for all objects</translation>
+      <translation>Cor para todos os objetos</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="511"/>
@@ -4597,7 +4597,7 @@ will get the same color</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh view</source>
-      <translation type="unfinished">Refresh view</translation>
+      <translation>Atualizar Exibição</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="544"/>
@@ -4609,7 +4609,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="548"/>
       <source>Keep only cuts visible when closing</source>
-      <translation type="unfinished">Keep only cuts visible when closing</translation>
+      <translation>Manter somente cortes visíveis ao fechar</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.cpp" line="1103"/>
@@ -4622,7 +4622,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="222"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Não suportado</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="222"/>
@@ -5075,22 +5075,22 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1075"/>
       <source>Bad type</source>
-      <translation type="unfinished">Bad type</translation>
+      <translation>Tipo inválido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1083"/>
       <source>Self-intersect</source>
-      <translation type="unfinished">Self-intersect</translation>
+      <translation>Auto-intersecção</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Too small edge</source>
-      <translation type="unfinished">Too small edge</translation>
+      <translation>Margem muito pequena</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1099"/>
       <source>Nonrecoverable face</source>
-      <translation type="unfinished">Nonrecoverable face</translation>
+      <translation>Face não-recuperável</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1107"/>
@@ -5100,22 +5100,22 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
       <source>Incompatibility of face</source>
-      <translation type="unfinished">Incompatibility of face</translation>
+      <translation>Incompatibilidade de face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1123"/>
       <source>Incompatibility of vertex</source>
-      <translation type="unfinished">Incompatibility of vertex</translation>
+      <translation>Incompatibilidade de vértice</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1131"/>
       <source>Incompatibility of edge</source>
-      <translation type="unfinished">Incompatibility of edge</translation>
+      <translation>Incompatibilidade de margem</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
       <source>Invalid curve on surface</source>
-      <translation type="unfinished">Invalid curve on surface</translation>
+      <translation>Curva inválida na superfície</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1076"/>
@@ -5125,7 +5125,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Ignorar página de configurações</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5193,7 +5193,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="417"/>
       <source>Boolean operation check...</source>
-      <translation type="unfinished">Boolean operation check...</translation>
+      <translation>Verificação de operação booleana...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="419"/>
@@ -5209,7 +5209,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="478"/>
       <source>Checking</source>
-      <translation type="unfinished">Checking</translation>
+      <translation>Verificando</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="501"/>
@@ -5248,7 +5248,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="208"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Não mostrar este diálogo novamente</translation>
     </message>
   </context>
   <context>
@@ -5400,7 +5400,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>Caixa de seleção...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5510,7 +5510,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="240"/>
       <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>Partes/Parte Design</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="242"/>
@@ -5817,7 +5817,7 @@ Deseja continuar?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: Unknown check</source>
-      <translation type="unfinished">Boolean operation: Unknown check</translation>
+      <translation>Operação booleana: Verificação desconhecida</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
@@ -5872,7 +5872,7 @@ Deseja continuar?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>Boolean operation: Not valid</source>
-      <translation type="unfinished">Boolean operation: Not valid</translation>
+      <translation>Operação booleana: Não válida</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="699"/>
@@ -5917,22 +5917,22 @@ Deseja continuar?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Criar tubo</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Distance in parameter space</source>
-      <translation type="unfinished">Distance in parameter space</translation>
+      <translation>Distância no espaço dos parâmetros</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="174"/>
       <source>Enter distance:</source>
-      <translation type="unfinished">Enter distance:</translation>
+      <translation>Digite a distância:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
       <source>Edit projection</source>
-      <translation type="unfinished">Edit projection</translation>
+      <translation>Editar projeção</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="878"/>
@@ -6003,7 +6003,7 @@ Deseja continuar?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Criar tubo</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
@@ -6057,7 +6057,7 @@ Deseja continuar?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Conectar objetos</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
@@ -6201,7 +6201,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Erro de seleção</translation>
     </message>
   </context>
   <context>
@@ -6296,7 +6296,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>Erro: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
@@ -6314,7 +6314,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Anexo...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
@@ -6327,7 +6327,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Tipo de forma</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6337,7 +6337,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Margem</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
@@ -6432,7 +6432,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="229"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Posicionamento global</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="231"/>
@@ -6522,7 +6522,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X Factor</source>
-      <translation type="unfinished">X Factor</translation>
+      <translation>Fator X</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -6532,7 +6532,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z Factor</source>
-      <translation type="unfinished">Z Factor</translation>
+      <translation>Fator Z</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
@@ -6547,7 +6547,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Fator Y</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
@@ -6603,7 +6603,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Scale a selected shape</source>
-      <translation type="unfinished">Scale a selected shape</translation>
+      <translation>Escalar uma forma selecionada</translation>
     </message>
   </context>
   <context>
@@ -6737,7 +6737,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
-      <translation type="unfinished">Wire is not closed.</translation>
+      <translation>A linha não está fechada.</translation>
     </message>
   </context>
   <context>
@@ -6745,7 +6745,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Set appearance per face</source>
-      <translation type="unfinished">Set appearance per face</translation>
+      <translation>Definir aparência por face</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
@@ -6765,14 +6765,14 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Aparência personalizada:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Quando ativo, você pode selecionar múltiplas faces
+fazendo um retângulo de seleção na vista 3D</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>
@@ -6795,7 +6795,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Não mostrar este diálogo novamente</translation>
     </message>
   </context>
 </TS>

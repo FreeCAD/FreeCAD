@@ -87,7 +87,7 @@ egyéni stílustáblával alakítható ki, és szebben nézhet ki, mint a wiki o
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Megjegyzés: ha a PySide Web komponensek nem találhatók a rendszerben, a súgóoldalak az alapértelmezett böngészőben fognak megnyílni, függetlenül az alábbi beállításoktól</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -161,7 +161,7 @@ Markdown fenti verziót választotta.</translation>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Nincs telepítve Markdown renderelő az Ön rendszerén, így ez a súgóoldal úgy jelenik meg, ahogy van. Kérjük, telepítse a Markdown vagy Pandoc Python modulokat, hogy javítsa az oldal megjelenítését.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1604"/>
       <source>Insert BIM Workbench Object</source>
-      <translation type="unfinished">Insert BIM Workbench Object</translation>
+      <translation>Wstaw obiekt środowiska pracy BIM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Insert a View of a Section Plane from BIM Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from BIM Workbench</translation>
+      <translation>Wstaw widok płaszczyzny przekroju ze środowiska pracy BIM</translation>
     </message>
   </context>
   <context>
@@ -222,12 +222,12 @@
     <message>
       <location filename="../../Command.cpp" line="837"/>
       <source>Insert Complex Section View</source>
-      <translation type="unfinished">Insert Complex Section View</translation>
+      <translation>Wstaw widok przekroju złożonego</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="838"/>
       <source>Insert a Complex Section View</source>
-      <translation type="unfinished">Insert a Complex Section View</translation>
+      <translation>Wstawia widok przekroju złożonego</translation>
     </message>
   </context>
   <context>
@@ -431,7 +431,8 @@ Kliknięcie prawym przyciskiem myszy lub naciśnięcie Esc spowoduje anulowanie.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1768"/>
       <source>Select several faces then click this tool</source>
-      <translation type="unfinished">Select several faces then click this tool</translation>
+      <translation>Wybierz kilka ścian,
+ a następnie kliknij to narzędzie</translation>
     </message>
   </context>
   <context>
@@ -2044,7 +2045,7 @@ aby wstawić plik SVG lub obraz.</translation>
     <message>
       <location filename="../../Command.cpp" line="359"/>
       <source>Create BIM View</source>
-      <translation type="unfinished">Create BIM View</translation>
+      <translation>Utwórz widok BIM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
@@ -2079,7 +2080,7 @@ aby wstawić plik SVG lub obraz.</translation>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
       <source>Save page to DXF</source>
-      <translation type="unfinished">Save page to DXF</translation>
+      <translation>Zapisz stronę do pliku DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
@@ -2380,12 +2381,12 @@ aby wstawić plik SVG lub obraz.</translation>
       <translation>Zaktualizuj szczegóły</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="349"/>
+      <location filename="../../TaskLeaderLine.cpp" line="348"/>
       <source>Create Leader</source>
       <translation>Utwórz linię odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="429"/>
+      <location filename="../../TaskLeaderLine.cpp" line="437"/>
       <source>Edit Leader</source>
       <translation>Edytuj linię odniesienia</translation>
     </message>
@@ -2703,7 +2704,7 @@ aby wstawić plik SVG lub obraz.</translation>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="406"/>
       <source>Create Centerline</source>
-      <translation type="unfinished">Create Centerline</translation>
+      <translation>Utwórz linię środkową</translation>
     </message>
   </context>
   <context>
@@ -3053,12 +3054,12 @@ aby wstawić plik SVG lub obraz.</translation>
     <message>
       <location filename="../../Command.cpp" line="1632"/>
       <source>Please select only 1 BIM Section.</source>
-      <translation type="unfinished">Please select only 1 BIM Section.</translation>
+      <translation>Proszę wybrać tylko jeden przekrój środowiska BIM.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1638"/>
       <source>No BIM Sections in selection.</source>
-      <translation type="unfinished">No BIM Sections in selection.</translation>
+      <translation>Brak przekrojów środowiska BIM w zaznaczeniu.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="368"/>
@@ -3235,27 +3236,31 @@ aby wstawić plik SVG lub obraz.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2420"/>
       <source>Can not make 2D dimension from selection</source>
-      <translation type="unfinished">Can not make 2D dimension from selection</translation>
+      <translation>Nie można utworzyć wymiaru 2D dla zaznaczonego obiektu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2436"/>
       <source>Can not make 3D dimension from selection</source>
-      <translation type="unfinished">Can not make 3D dimension from selection</translation>
+      <translation>Nie można utworzyć wymiaru 3D dla zaznaczonego obiektu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2450"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
-      <translation type="unfinished">Selected edge is an Ellipse. Value will be approximate. Continue?</translation>
+      <translation>Wybrana krawędź jest Elipsą. 
+Wartość będzie przybliżona. 
+Kontynuować?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2461"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
-      <translation type="unfinished">Selected edge is a B-spline. Value will be approximate. Continue?</translation>
+      <translation>Wybrana krawędź jest Krzywą złożoną. 
+Wartość będzie przybliżona. 
+Kontynuować?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2472"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
-      <translation type="unfinished">Selected edge is a B-spline and a radius/diameter can not be calculated.</translation>
+      <translation>Wybrana krawędź jest krzywą złożoną i promień lub średnica nie może zostać obliczona.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1934"/>
@@ -3601,18 +3606,18 @@ aby wstawić plik SVG lub obraz.</translation>
       <translation>Brak ściany do zakreskowania w tym zaznaczeniu</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="305"/>
-      <location filename="../../DrawGuiUtil.cpp" line="339"/>
+      <location filename="../../DrawGuiUtil.cpp" line="306"/>
+      <location filename="../../DrawGuiUtil.cpp" line="340"/>
       <source>No page found</source>
       <translation>Strony nie znaleziono</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="306"/>
+      <location filename="../../DrawGuiUtil.cpp" line="307"/>
       <source>No Drawing Pages available.</source>
       <translation>Brak dostępnych stron rysunku.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="340"/>
+      <location filename="../../DrawGuiUtil.cpp" line="341"/>
       <source>No Drawing Pages in document.</source>
       <translation>Brak rysunków w dokumencie.</translation>
     </message>
@@ -3657,7 +3662,7 @@ aby wstawić plik SVG lub obraz.</translation>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="235"/>
       <source>Toggle Keep Updated</source>
-      <translation type="unfinished">Toggle Keep Updated</translation>
+      <translation>Włącz / wyłącz automatyczną aktualizację</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="51"/>
@@ -3989,10 +3994,10 @@ aby wstawić plik SVG lub obraz.</translation>
  thin: %2
  graphic: %3
  thick: %4</source>
-      <translation type="unfinished">%1 defines these line widths:
- thin: %2
- graphic: %3
- thick: %4</translation>
+      <translation>%1 definiuje te szerokości linii:
+ cienka: %2
+ graficzna: %3
+ gruba: %4</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="97"/>
@@ -4450,12 +4455,12 @@ Katalog ten będzie używany do wyboru symboli.</translation>
     <name>TechDrawGui::DlgPrefsTechDrawAdvancedImp</name>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="14"/>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="38"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="26"/>
       <source>Advanced</source>
       <translation>Zaawansowane</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="378"/>
       <source>If checked, TechDraw will attempt to build faces using the
 line segments returned by the hidden line removal algorithm.
 Faces must be detected in order to use hatching, but there
@@ -4467,152 +4472,152 @@ usuwania ukrytych linii.
 może to mieć negatywny wpływ na wydajność w złożonych modelach.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="456"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="384"/>
       <source>Detect Faces</source>
       <translation>Wykrywaj ściany</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="368"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="296"/>
       <source>Highlights border of section cut in section views</source>
       <translation>Podświetla granicę przekroju w widokach przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="371"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>Show Section Edges</source>
       <translation>Pokaż krawędzie przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="85"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="67"/>
       <source>Dump intermediate results during Section view processing</source>
       <translation>Tworzenie zrzutu wyników pośrednich podczas przetwarzania widoku przekrojów</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="88"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="70"/>
       <source>Debug Section</source>
       <translation>Debugowanie przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="340"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="274"/>
       <source>Dump intermediate results during Detail view processing</source>
       <translation>Tworzenie zrzutu wyników pośrednich podczas przetwarzania widoku szczegółów</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="343"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="277"/>
       <source>Debug Detail</source>
       <translation>Debugowanie szczegółu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="167"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="131"/>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
       <translation>Uwzględnij w wynikach krawędzie o niespodziewanej geometrii (zerowa długość itp.)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="170"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="134"/>
       <source>Allow Crazy Edges</source>
       <translation>Zezwalaj na nieprawidłowe krawędzie</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="63"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="45"/>
       <source>Perform a fuse operation on input shape(s) before Section view processing</source>
       <translation>Wykonaj operację sumy logicznej na podanych kształtach przed przetworzeniem widoku przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="66"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="48"/>
       <source>Fuse Before Section</source>
       <translation>Operacja złączenia przed przekrojem</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="154"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="118"/>
       <source>Edge Fuzz</source>
       <translation>Wykrywanie krawędzi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="119"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="95"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
       <translation>Wielkość obszaru wyboru wokół krawędzi
 Każda jednostka ma szerokość ok. 0,1 mm</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="224"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="176"/>
       <source>Mark Fuzz</source>
       <translation>Wykrywanie wyśrodkowania</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="262"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="208"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
       <translation>Obszar wyboru wokół znaczników środka.
 Szerokość każdej jednostki wynosi ok. 0,1 mm</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="422"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="350"/>
       <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
       <translation>Jeśli opcja jest zaznaczona, system będzie próbował automatycznie korygować odniesienia wymiarów, gdy model ulegnie zmianie.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="428"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="356"/>
       <source>Auto Correct Dimension Refs</source>
       <translation>Automatyczna korekcja odniesień wymiarów</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="406"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="334"/>
       <source>Use New Face Finder Algorithm</source>
       <translation>Użyj nowego algorytmu wyszukiwania ścian</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="491"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="419"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the Hidden Line Removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
       <translation>Liczba powtórzeń, które FreeCAD powinien próbować wykonać, aby usunąć nakładające się krawędzie zwrócone przez algorytm usuwania ukrytych linii. Wartość 0 oznacza brak oczyszczania, 1 oznacza pojedyncze przejście, a 2 oznacza, że należy wykonać drugie przejście. Wartości powyżej 2 są generalnie nieproduktywne. Każde przejście zwiększa czas wymagany do utworzenia rysunku.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="285"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="231"/>
       <source>Max SVG Hatch Tiles</source>
       <translation>Maksymalna ilość kafelków SVG do kreskowania</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="484"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="412"/>
       <source>Max PAT Hatch Segments</source>
       <translation>Maksymalna ilość kafelków PAT do kreskowania</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="189"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="147"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
       <translation>Maksymalna dozwolona liczba segmentów linii kreskowania
 podczas kreskowania powierzchni wzorem PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="298"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="238"/>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation type="unfinished">Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about too many SVG tiles.
-Then you need to increase the tile limit.</translation>
+      <translation>Limit kafelków SVG (64 × 64 pikseli) używanych do kreskowania pojedynczej powierzchni.
+W przypadku dużych rozmiarów może pojawić się błąd dotyczący zbyt dużej liczby kafelków SVG.
+W takim przypadku należy zwiększyć limit kafelków.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="387"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="315"/>
       <source>Issue progress messages while building View geometry</source>
       <translation>Wyświetlaj komunikaty o postępie podczas budowania geometrii widoku</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="390"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="318"/>
       <source>Report Progress</source>
       <translation>Raportuj postęp</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="403"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="331"/>
       <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</source>
       <translation>Jeśli opcja jest zaznaczona, FreeCAD użyje nowego algorytmu wyszukiwania ścian.  Jeśli nie jest zaznaczone, FreeCAD będzie używał oryginalnego algorytmu znajdowania ścian.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="477"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="405"/>
       <source>Overlap Edges Scrub Passes</source>
       <translation>Przejścia narzędzia do usuwania nakładających się na siebie krawędzi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="527"/>
+      <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="455"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Pozycje zapisane &lt;span style=&quot; font-style:italic;&quot;&gt;kursywą&lt;/span&gt; są wartościami domyślnymi dla nowych obiektów. Nie mają one wpływu na istniejące obiekty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4621,47 +4626,47 @@ Then you need to increase the tile limit.</translation>
     <name>TechDrawGui::DlgPrefsTechDrawAnnotationImp</name>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="32"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="26"/>
       <source>Annotation</source>
       <translation>Adnotacja</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="627"/>
       <source>Section Line Style</source>
       <translation>Styl linii przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="95"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="80"/>
       <source>Section Cut Surface</source>
       <translation>Wygląd przeciętej powierzchni</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="404"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="353"/>
       <source>Default appearance of cut surface in section view</source>
       <translation>Domyślny wygląd powierzchni cięcia w widoku przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="417"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="366"/>
       <source>Hide</source>
       <translation>Ukryj</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="422"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="371"/>
       <source>Solid Color</source>
       <translation>Kolor bryły</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="427"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="376"/>
       <source>SVG Hatch</source>
       <translation>Kreskowanie SVG</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="381"/>
       <source>PAT Hatch</source>
       <translation>Kreskowanie PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="224"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="203"/>
       <source>If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</source>
       <translation>Jeśli ta opcja jest zaznaczona, 
 adnotacja przekroju zostanie narysowana w widoku źródła.  
@@ -4669,22 +4674,22 @@ Jeśli opcja ta nie jest zaznaczona,
 w widoku źródła nie będzie wyświetlana linia przekroju, strzałki ani symbol.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="227"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="206"/>
       <source>Show Section Line in Source View</source>
       <translation>Pokaż linię przekroju w widoku źródłowym</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="71"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="56"/>
       <source>This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</source>
       <translation>To pole wyboru kontroluje czy wyświetlać wyróżnienie wokół obszaru szczegółów w widoku źródłowym.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="74"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="59"/>
       <source>Detail Source Show Highlight</source>
       <translation>Pokaż podświetlenie źródła szczegółów</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="144"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="123"/>
       <source>If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</source>
       <translation>Jeśli opcja ta jest zaznaczona, 
 linia cięcia zostanie narysowana w widoku źródła.  
@@ -4692,192 +4697,192 @@ Jeśli opcja ta nie jest zaznaczona,
 wyświetlane będą tylko znaczniki zmian, strzałki i symbole.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="147"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="126"/>
       <source>Include Cut Line in Section Annotation</source>
       <translation>Uwzględnij linię cięcia w adnotacji przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="510"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation>Typ widoku z przerwaniem</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="527"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="464"/>
       <source>No Break Lines</source>
       <translation>Brak linii przerywanej</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="532"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
       <source>ZigZag Lines</source>
       <translation>Linia zygzak</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="537"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="474"/>
       <source>Simple Lines</source>
       <translation>Linia pojedyncza</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="556"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="493"/>
       <source>Lines</source>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="616"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="547"/>
       <source>Standard to be used to draw non-continuous lines.</source>
       <translation>Norma stosowana do kreślenia linii przerywanych.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="830"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="749"/>
       <source>Line group used to set line widths</source>
       <translation>Grupa linii użyta do ustawiania szerokości linii</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="752"/>
       <source>Line Width Group</source>
       <translation>Szerokość linii w grupie</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="248"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="227"/>
       <source>Detail View Outline Shape</source>
       <translation>Kształt konturu widoku szczegółu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="452"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="395"/>
       <source>Outline shape for detail views</source>
       <translation>Kształt konturu dla widoku szczegółów</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="781"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="700"/>
       <source>Square</source>
       <translation>Kwadrat</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="687"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="612"/>
       <source>Line style of detail highlight on base view</source>
       <translation>Styl linii podświetlonego detalu w widoku podstawowym</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="690"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="615"/>
       <source>Detail Highlight Style</source>
       <translation>Styl podświetlenia szczegółu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="597"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="534"/>
       <source>Center Line Style</source>
       <translation>Styl linii środkowej</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="391"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
       <source>Balloon Shape</source>
       <translation>Kształt dymka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="477"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="414"/>
       <source>Shape of balloon annotations</source>
       <translation>Kształt dymka adnotacji</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="132"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="111"/>
       <source>Balloon Leader End</source>
       <translation>Zakończenie linii odniesienia dymka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="200"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="179"/>
       <source>This checkbox controls whether or not to display the outline around a detail view.</source>
       <translation>To pole wyboru kontroluje czy wyświetlić obrys wokół widoku szczegółów.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="203"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="182"/>
       <source>Detail View Show Matting</source>
       <translation>Widok szczegółów pokazuje dopasowanie</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="114"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="93"/>
       <source>Style for balloon leader line ends</source>
       <translation>Styl dla linii odniesienia balonika kończy się</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="495"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Długość poziomej linii odniesienia balonika</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="498"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
       <source>Ballon Leader Kink Length</source>
       <translation>Długość zagięcia linii odniesienia dymka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="52"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
       <source>Length of balloon leader line kink</source>
       <translation>Długość linii odniesienia balonika od węzła</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="267"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="240"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
       <translation>Ograniczenie wypełnionego trójkąta końca linii do kierunku pionowego lub poziomego</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="270"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
       <source>Balloon Orthogonal Triangle</source>
       <translation>Trójkąt ortogonalny dymka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="331"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="292"/>
       <source>Forces last leader line segment to be horizontal</source>
       <translation>Wymusza, kierunek poziomy ostatniego segmentu linii odniesienia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="334"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="295"/>
       <source>Leader Line Auto Horizontal</source>
       <translation>Linia odniesienia automatycznie poziomo</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="367"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="322"/>
       <source>Show arc center marks in views</source>
       <translation>Pokaż znak środka łuku w widoku</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="370"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="325"/>
       <source>Show Center Marks</source>
       <translation>Pokaż punkty środkowe</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="298"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="265"/>
       <source>Show arc centers in printed output</source>
       <translation>Pokaż środki łuku na wydruku</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="301"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="268"/>
       <source>Print Center Marks</source>
       <translation>Pokaż symbol środka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="181"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="160"/>
       <source>Show or hide marks at direction changes on ComplexSection lines.</source>
       <translation>Pokaż lub ukryj znaczniki przy zmianach kierunku na liniach przekroju złożonego.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="184"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="163"/>
       <source>Complex Section Line Marks</source>
       <translation>Znaczniki linii przekroju złożonego</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="852"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="771"/>
       <source>Hidden Line Style</source>
       <translation>Styl ukrytej linii</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="739"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="664"/>
       <source>Line Standard</source>
       <translation>Standard linii</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="845"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="764"/>
       <source>Line End Cap Shape</source>
       <translation>Kształt elementu zakończenia linii</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="763"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="682"/>
       <source>Shape of line end caps.  The default (round) should almost
 always be the right choice.   Flat or square caps are useful 
 if you are planning to use a drawing as a 1:1 cutting guide.
@@ -4888,27 +4893,27 @@ jeśli planujesz użyć rysunku jako szablonu przekroju 1:1.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="776"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="695"/>
       <source>Round</source>
       <translation>Zaokrąglony</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="786"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="705"/>
       <source>Flat</source>
       <translation>Płaski</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="877"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="796"/>
       <source>Break Line Style</source>
       <translation>Styl linii przerywanej</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="884"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="803"/>
       <source>Style of line to be used in BrokenView.</source>
       <translation>Styl linii do użycia w widoku z przerwaniem.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="908"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Pozycje zapisane &lt;span style=&quot; font-style:italic;&quot;&gt;kursywą&lt;/span&gt; są wartościami domyślnymi dla nowych obiektów. Nie mają one wpływu na istniejące obiekty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5069,7 +5074,7 @@ jeśli planujesz użyć rysunku jako szablonu przekroju 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
       <source>If checked FreeCAD will use a single color for all text and lines.</source>
-      <translation type="unfinished">If checked FreeCAD will use a single color for all text and lines.</translation>
+      <translation>Jeśli opcja jest zaznaczona, program FreeCAD będzie używać jednego koloru dla wszystkich tekstów i linii.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
@@ -5126,77 +5131,77 @@ jeśli planujesz użyć rysunku jako szablonu przekroju 1:1.
     <name>TechDrawGui::DlgPrefsTechDrawDimensionsImp</name>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="20"/>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="44"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="32"/>
       <source>Dimensions</source>
       <translation>Wymiarowanie</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="181"/>
       <source>Standard and Style</source>
       <translation>Standard i styl</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="142"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="109"/>
       <source>Standard to be used for dimensional values</source>
       <translation>Standard używany dla wartości wymiarów</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="152"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="119"/>
       <source>ISO Oriented</source>
       <translation>Ukierunkowane na ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="157"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="124"/>
       <source>ISO Referencing</source>
       <translation>Odniesienie do ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="162"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="129"/>
       <source>ASME Inlined</source>
       <translation>Wbudowany ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="167"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="134"/>
       <source>ASME Referencing</source>
       <translation>Odniesienie do ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="437"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="356"/>
       <source>Use system setting for number of decimals</source>
       <translation>Użyj ustawień systemowych dla liczby miejsc dziesiętnych</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="440"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="359"/>
       <source>Use Global Decimals</source>
       <translation>Użyj globalnych ustawień odnośnie liczb miejsc po przecinku</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="517"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</source>
-      <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</translation>
+      <translation>Definiuje rozmiar odstępu pomiędzy punktem wymiarowanym a początkiem linii pomocniczej dla wymiarów ASME.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
       <source>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</source>
       <translation>Określa wielkość odstępu między linią wymiarową a tekstem wymiaru dla wymiarów ISO.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="576"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
       <source>Line Spacing - ISO</source>
       <translation>Odstęp linii — ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="537"/>
       <source>Tools</source>
       <translation>Narzędzia</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="636"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="543"/>
       <source>Dimensioning tools:</source>
       <translation>Narzędzie wymiarowania:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="643"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="550"/>
       <source>Select the type of dimensioning tools for your toolbar:
 &apos;Single tool&apos;: A single tool for all dimensioning in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 &apos;Separated tools&apos;: Individual tools for each dimensioning tool.
@@ -5212,12 +5217,12 @@ To ustawienie dotyczy tylko paska narzędzi.
  Niezależnie od wyboru, wszystkie narzędzia są zawsze dostępne w menu i za pomocą skrótów.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="654"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="561"/>
       <source>Dimension tool diameter/radius mode:</source>
       <translation>Narzędzie wymiarowania w trybie średnicy / promienia:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="661"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="568"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 &apos;Auto&apos;: The tool will apply radius to arcs and diameter to circles.
 &apos;Diameter&apos;: The tool will apply diameter to all.
@@ -5228,127 +5233,127 @@ To ustawienie dotyczy tylko paska narzędzi.
 "Promień": Narzędzie zastosuje promień dla wszystkich obiektów.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="160"/>
       <source>Append unit to dimension values</source>
       <translation>Dołącz jednostkę / tekst do wartości wymiaru</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="202"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="163"/>
       <source>Show Units</source>
       <translation>Wyświetlaj jednostki</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="474"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="393"/>
       <source>Alternate Decimals</source>
       <translation>Alternatywna ilość miejsc dziesiętnych</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="371"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="302"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
       <translation>Liczba miejsc po przecinku, jeśli "Użycie globalnych miejsc po przecinku" nie jest brane pod uwagę</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="88"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="67"/>
       <source>Dimension Format</source>
       <translation>Format wymiaru</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="489"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
       <source>Extension Gap Factor - ISO</source>
       <translation>Współczynnik zwiększenia odstępu - ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="180"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
       <source>Font Size</source>
       <translation>Rozmiar czcionki</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="245"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="194"/>
       <source>Dimension text font size</source>
       <translation>Rozmiar czcionki tekstu wymiaru</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="349"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="286"/>
       <source>Tolerance Text Scale</source>
       <translation>Skala tekstu tolerancji</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="306"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="252"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
       <translation>Skala tekstu tolerancji
 Mnożnik "Rozmiar czcionki"</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="123"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="96"/>
       <source>Diameter Symbol</source>
       <translation>Symbol średnicy</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="407"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="329"/>
       <source>Character used to indicate diameter dimensions</source>
       <translation>Znak używany do oznaczania wymiarów średnicy</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="281"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="227"/>
       <source>Arrow Style</source>
       <translation>Styl strzałki</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="107"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="80"/>
       <source>Arrowhead style</source>
       <translation>Styl grotu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="269"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="215"/>
       <source>Arrow Size</source>
       <translation>Rozmiar strzałki</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="64"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="46"/>
       <source>Arrowhead size</source>
       <translation>Rozmiar grotu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</source>
-      <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</translation>
+      <translation>Definiuje rozmiar odstępu pomiędzy punktem wymiarowanym a początkiem linii pomocniczej dla wymiarów ISO.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="496"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="415"/>
       <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
       <translation>Pozostaw to pole puste dla automatycznego formatu wymiaru. Użyj %f, %g lub %w w celu zastąpienia.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="520"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
       <source>Extension Gap Factor - ASME</source>
       <translation>Współczynnik zwiększenia odstępu - ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="527"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="443"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</source>
-      <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.
- Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 8.</translation>
+      <translation>Kontroluje rozmiar odstępu między punktem wymiarowym, a początkiem linii pomocniczej w odniesieniu do wymiarów ISO.
+ Wartość * szerokość linii jest odstępem.
+ Zwykle nie stosuje się odstępu. Jeśli odstęp jest stosowany, zalecana wartość to 8.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
       <source>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</source>
-      <translation type="unfinished">Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
- Normally, no gap is used. If using a gap, the recommended value is 6.</translation>
+      <translation>Kontroluje rozmiar odstępu między punktem wymiarowym, a początkiem linii pomocniczej w odniesieniu do wymiarów ASME. Wartość * szerokość linii jest odstępem.
+ Zwykle nie stosuje się odstępu. Jeśli odstęp jest stosowany, zalecana wartość to 6.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="583"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="493"/>
       <source>Controls the size of spacing between dimension line and dimension text.
  Value * linewidth is the line spacing.</source>
       <translation>Określa wielkość odstępu pomiędzy linią wymiarową a tekstem wymiarowym.
 Wartość x szerokość linii wyznacza odstęp między wierszami.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="614"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="521"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Pozycje zapisane &lt;span style=&quot; font-style:italic;&quot;&gt;kursywą&lt;/span&gt; są wartościami domyślnymi dla nowych obiektów. Nie mają one wpływu na istniejące obiekty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5391,135 +5396,135 @@ Wartość x szerokość linii wyznacza odstęp między wierszami.</translation>
       <translation>Ogólne</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="47"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="35"/>
       <source>Drawing Update</source>
       <translation>Aktualizacja rysunku</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="61"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="49"/>
       <source>Whether or not pages are updated every time the 3D model is changed</source>
       <translation>Tak czy owak - strony są uaktualniane za każdym razem kiedy model 3D jest zmieniany</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="64"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
       <source>Update With 3D (global policy)</source>
       <translation>Aktualizuj za widokiem 3D (polityka globalna)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
       <translation>Tak czy owak, strona właściwości "Włącz / wyłącz automatyczną aktualizację"
 może zastąpić globalny parametr "Aktualizuj z widokiem 3D (polityka globalna)"</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>
       <source>Allow Page Override (global policy)</source>
       <translation>Zezwalaj na zastępowanie strony (globalna polityka)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="123"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="105"/>
       <source>Keep drawing pages in sync with changes of 3D model in real time.
 This can slow down the response time.</source>
       <translation>Pozostaw rysowanie stron w synchronizacji ze zmianami modelu 3D w czasie rzeczywistym.
 To może spowolnić czas reakcji.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="127"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="109"/>
       <source>Keep Page Up To Date</source>
       <translation>Aktualizuj stronę na bieżąco</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="160"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="136"/>
       <source>Automatically distribute secondary views
 for ProjectionGroups</source>
       <translation>Automatycznie dystrybuuj dodatkowe widoki
 dla grup projektowych</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="164"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="140"/>
       <source>Auto-distribute Secondary Views</source>
       <translation>Automatyczne rozmieszczaj widoki dodatkowe</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="197"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="167"/>
       <source>Labels</source>
       <translation>Etykiety</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="217"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="181"/>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
       <translation>* ta czcionka jest również używana dla wymiarów
    Zmiany nie mają wpływu na istniejące wymiary.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="221"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="185"/>
       <source>Label Font*</source>
       <translation>Czcionka dla etykiet</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="268"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
       <source>Font for labels</source>
       <translation>Czcionka dla etykiet</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="287"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="239"/>
       <source>Label Size</source>
       <translation>Rozmiar etykiety</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="313"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="265"/>
       <source>Label size</source>
       <translation>Wielkość etykiety</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="361"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="301"/>
       <source>Conventions</source>
       <translation>Wymagania</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="382"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="322"/>
       <source>Projection Group Angle</source>
       <translation>Kąt projekcji grupy</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="401"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="335"/>
       <source>Use first- or third-angle multiview projection convention</source>
       <translation>Użyj rzutowania europejskiego lub amerykańskiego dla widoku wielokrotnego</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="424"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="358"/>
       <source>Page</source>
       <translation>Strona</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="444"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="372"/>
       <source>Standard to be used to draw section lines.  This affects the position of arrows and symbol.</source>
       <translation>Standard używany do rysowania linii przekroju.  Ma to wpływ na położenie strzałek i symboli.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="457"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="385"/>
       <source>ANSI</source>
       <translation>ANSI</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="462"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="390"/>
       <source>ISO</source>
       <translation>ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="475"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
       <source>Section Line Convention</source>
       <translation>Wybór linii przekroju</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="499"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="421"/>
       <source>Files</source>
       <translation>Pliki</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="550"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="460"/>
       <source>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</source>
       <translation>Preferowany plik SVG lub bitmapy do kreskowania.  
 Ta wartość będzie również kontrolować początkowy katalog 
@@ -5527,162 +5532,163 @@ do wyboru wzorców kreskowania.
 Można jej użyć do pobrania plików kreskowania z lokalnego katalogu.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="771"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="627"/>
       <source>Default Template</source>
       <translation>Szablon domyślny</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="600"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="498"/>
       <source>Default template file for new pages</source>
       <translation>Domyślny plik szablonu dla nowych stron</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="718"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="586"/>
       <source>Template Directory</source>
       <translation>Katalog szablonów</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="696"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="570"/>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
       <translation>Katalog domyślny dla menu "Wstaw stronę za pomocą szablonu"</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="758"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="620"/>
       <source>Hatch Pattern File</source>
       <translation>Plik szablonu do zakreskowania</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="832"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
       <source>Line Group File</source>
       <translation>Plik grupy linii</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="575"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="479"/>
       <source>Alternate file for personal LineGroup definition</source>
       <translation>Alternatywny plik do osobistej definicji grupy linii</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="624"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="516"/>
       <source>Welding Directory</source>
       <translation>Katalog spawalniczy</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="668"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="548"/>
       <source>Default directory for welding symbols</source>
       <translation>Domyślny katalog symboli spawania</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="531"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="447"/>
       <source>PAT File</source>
       <translation>Plik w formacie PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="643"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="529"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
       <translation>Domyślny plik definicji wzoru PAT dla geometrycznego kreskowania</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="688"/>
       <source>Pattern Name</source>
       <translation>Nazwa wzoru</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="802"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="652"/>
       <source>Name of the default PAT pattern</source>
       <translation>Nazwa domyślnego wzoru PAT</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="414"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="348"/>
       <source>First-angle</source>
-      <translation type="unfinished">First-angle</translation>
+      <translation>Pierwszy kąt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="419"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="353"/>
       <source>Third-angle</source>
-      <translation type="unfinished">Third-angle</translation>
+      <translation>Trzeci kąt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="731"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="599"/>
       <source>Alternate directory to search for SVG symbol files.</source>
-      <translation type="unfinished">Alternate directory to search for SVG symbol files.</translation>
+      <translation>Alternatywny katalog do wyszukiwania plików symboli SVG.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="783"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="639"/>
       <source>Symbol Directory</source>
       <translation>Katalog symboli</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="805"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="655"/>
       <source>Diamond</source>
       <translation>Diament</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="862"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="700"/>
       <source>Grid</source>
       <translation>Siatka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="888"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="726"/>
       <source>Set ShowGrid property to true on new Pages.</source>
       <translation>Jeśli ta opcja jest zaznaczona, siatka będzie wyświetlana na nowych stronach.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="891"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="729"/>
       <source>Show Grid</source>
       <translation>Pokaż siatkę</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="912"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="750"/>
       <source>Grid Spacing</source>
       <translation>Odstęp siatki</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="919"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="757"/>
       <source>Distance between Page grid lines.</source>
       <translation>Odległość między liniami siatki na stronie.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="961"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="787"/>
       <source>Selection</source>
       <translation>Zaznaczanie</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="975"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="801"/>
       <source>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</source>
       <translation>Jeśli opcja ta jest zaznaczona, kliknięcie bez wciśniętego klawisza Ctrl nie usuwa zaznaczenia wierzchołków , krawędzi, powierzchni.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="978"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="804"/>
       <source>Enable Multiselection Mode</source>
       <translation>Włącz tryb wielokrotnego wyboru</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1005"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="831"/>
       <source>View Defaults</source>
-      <translation type="unfinished">View Defaults</translation>
+      <translation>Widoki domyślne</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1024"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
       <source>If checked, the 3d camera direction (or normal of a selected face) will be used as the view direction.  If not checked, Views will be created as Front Views.</source>
-      <translation type="unfinished">If checked, the 3d camera direction (or normal of a selected face) will be used as the view direction.  If not checked, Views will be created as Front Views.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, kierunek kamery 3D (lub normalna wybranej ściany) będzie używany jako kierunek widoku.  Jeśli opcja ta nie jest zaznaczona, widoki będą tworzone jako widoki z przodu.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1027"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>Use 3d Camera Direction</source>
-      <translation type="unfinished">Use 3d Camera Direction</translation>
+      <translation>Użycie kierunku kamery 3D</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1045"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="871"/>
       <source>If checked, view labels will be displayed even when frames are suppressed.</source>
-      <translation type="unfinished">If checked, view labels will be displayed even when frames are suppressed.</translation>
+      <translation>Jeśli opcja ta jest zaznaczona, 
+etykiety widoku będą wyświetlane nawet po wyłączeniu ramek.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1048"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="874"/>
       <source>Always Show Label</source>
-      <translation type="unfinished">Always Show Label</translation>
+      <translation>Zawsze pokazuj etykietę</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1072"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="898"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Uwaga:&lt;/span&gt; Pozycje zapisane &lt;span style=&quot; font-style:italic;&quot;&gt;kursywą&lt;/span&gt; są wartościami domyślnymi dla nowych obiektów. Nie mają one wpływu na istniejące obiekty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -7301,7 +7307,7 @@ wartość pola "Określenie formatu", zamiast wartości wymiaru</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="124"/>
       <source>Line Width</source>
-      <translation type="unfinished">Line Width</translation>
+      <translation>Szerokość linii</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
@@ -7354,27 +7360,27 @@ wartość pola "Określenie formatu", zamiast wartości wymiaru</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Select an SVG or Bitmap file</source>
-      <translation type="unfinished">Select an SVG or Bitmap file</translation>
+      <translation>Wybierz plik svg lub bitmapę</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an SVG or Bitmap file as a pattern</source>
-      <translation type="unfinished">Choose an SVG or Bitmap file as a pattern</translation>
+      <translation>Wybierz plik svg lub bitmapę jako wzór</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
       <source>Enlarges/shrinks the pattern (SVG Only)</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern (SVG Only)</translation>
+      <translation>Powiększa / pomniejsza wzór (tylko SVG)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
       <source>Color of pattern lines (SVG Only)</source>
-      <translation type="unfinished">Color of pattern lines (SVG Only)</translation>
+      <translation>Kolor linii wzoru (tylko SVG)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="159"/>
       <source>SVG Pattern Scale</source>
-      <translation type="unfinished">SVG Pattern Scale</translation>
+      <translation>Skala wzoru SVG</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
@@ -7430,7 +7436,7 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
-      <location filename="../../TaskLeaderLine.cpp" line="499"/>
+      <location filename="../../TaskLeaderLine.cpp" line="507"/>
       <source>Pick Points</source>
       <translation>Wybierz punkty</translation>
     </message>
@@ -7511,51 +7517,51 @@ Możesz wybrać kolejne punkty, aby uzyskać odcinki linii.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="276"/>
-      <location filename="../../TaskLeaderLine.cpp" line="686"/>
-      <location filename="../../TaskLeaderLine.cpp" line="743"/>
-      <location filename="../../TaskLeaderLine.cpp" line="765"/>
+      <location filename="../../TaskLeaderLine.cpp" line="694"/>
+      <location filename="../../TaskLeaderLine.cpp" line="751"/>
+      <location filename="../../TaskLeaderLine.cpp" line="773"/>
       <source>Edit points</source>
       <translation>Edytuj punkty</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="513"/>
+      <location filename="../../TaskLeaderLine.cpp" line="521"/>
       <source>Edit Points</source>
       <translation>Edytuj punkty</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="530"/>
-      <location filename="../../TaskLeaderLine.cpp" line="582"/>
+      <location filename="../../TaskLeaderLine.cpp" line="538"/>
+      <location filename="../../TaskLeaderLine.cpp" line="590"/>
       <source>Pick a starting point for leader line</source>
       <translation>Wybierz punkt startowy dla linii odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="533"/>
+      <location filename="../../TaskLeaderLine.cpp" line="541"/>
       <source>Save Points</source>
       <translation>Zapisz punkty</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="565"/>
+      <location filename="../../TaskLeaderLine.cpp" line="573"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>Kliknij i przeciągnij znaczniki, aby dostosować linię odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="568"/>
-      <location filename="../../TaskLeaderLine.cpp" line="585"/>
+      <location filename="../../TaskLeaderLine.cpp" line="576"/>
+      <location filename="../../TaskLeaderLine.cpp" line="593"/>
       <source>Save changes</source>
       <translation>Zapisz zmiany</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="616"/>
+      <location filename="../../TaskLeaderLine.cpp" line="624"/>
       <source>Left click to set a point</source>
       <translation>Kliknij lewy przycisk myszki, aby ustawić punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="642"/>
+      <location filename="../../TaskLeaderLine.cpp" line="650"/>
       <source>Press OK or Cancel to continue</source>
       <translation>Naciśnij przycisk OK lub Anuluj, aby kontynuować</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="760"/>
+      <location filename="../../TaskLeaderLine.cpp" line="768"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>W trakcie edycji - przerwano. Zacznij od początku.</translation>
     </message>
@@ -7863,12 +7869,12 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="640"/>
       <source>Horizontal space between borders of projections</source>
-      <translation type="unfinished">Horizontal space between borders of projections</translation>
+      <translation>Odstęp poziomy między granicami wystających elementów</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="687"/>
       <source>Vertical space between borders of projections</source>
-      <translation type="unfinished">Vertical space between borders of projections</translation>
+      <translation>Odstęp pionowy między granicami wystających elementów</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="668"/>
@@ -8396,12 +8402,12 @@ przy użyciu podanego odstępu X/Y</translation>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="37"/>
       <source>Shaft fit</source>
-      <translation type="unfinished">Shaft fit</translation>
+      <translation>Pasowanie wału</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="47"/>
       <source>Hole fit</source>
-      <translation type="unfinished">Hole fit</translation>
+      <translation>Pasowanie otworu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleShaftFit.ui" line="62"/>
@@ -9385,7 +9391,8 @@ jest otwarte okno dialogowe zadania.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="212"/>
       <source>Check this box to make an arc from start angle to end angle in a clockwise direction.</source>
-      <translation type="unfinished">Check this box to make an arc from start angle to end angle in a clockwise direction.</translation>
+      <translation>Zaznacz to pole, aby utworzyć łuk od kąta początkowego do kąta końcowego 
+w kierunku zgodnym z ruchem wskazówek zegara.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="215"/>
@@ -9590,82 +9597,82 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>ISOLineTypeEnum</name>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="34"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="59"/>
       <source>NoLine</source>
       <translation>Brak linii</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="35"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="60"/>
       <source>Continuous</source>
       <translation>ciągła</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="36"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="61"/>
       <source>Dashed</source>
       <translation>Kreskowana</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="37"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="62"/>
       <source>DashedSpaced</source>
       <translation>przerywana</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="38"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="63"/>
       <source>LongDashedDotted</source>
       <translation>kreska długa, kropka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="39"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="64"/>
       <source>LongDashedDoubleDotted</source>
       <translation>kreska długa, kropka, kropka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="40"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="65"/>
       <source>LongDashedTripleDotted</source>
       <translation>kreska długa, kropka, kropka, kropka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="41"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="66"/>
       <source>Dotted</source>
       <translation>Kropkowana</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="42"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="67"/>
       <source>LongDashShortDash</source>
       <translation>kreska długa, kreska krótka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="43"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="68"/>
       <source>LongDashDoubleShortDash</source>
       <translation>kreska długa, kreska krótka, kreska krótka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="44"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="69"/>
       <source>DashedDotted</source>
       <translation>kreska, kropka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="45"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="70"/>
       <source>DoubleDashedDotted</source>
       <translation>kreska, kreska, kropka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="46"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="71"/>
       <source>DashedDoubleDotted</source>
       <translation>kreska, kropka, kropka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="47"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="72"/>
       <source>DoubleDashedDoubleDotted</source>
       <translation>podwójna przerywana, podwójna kropkowana</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="48"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="73"/>
       <source>DashedTripleDotted</source>
       <translation>przerywana, potrójna kropka</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="49"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="74"/>
       <source>DoubleDashedTripleDotted</source>
       <translation>podwójna przerywana, potrójna kropka</translation>
     </message>
@@ -9673,27 +9680,27 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>ANSILineTypeEnum</name>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="55"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="80"/>
       <source>NoLine</source>
       <translation>Brak linii</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="56"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="81"/>
       <source>Continuous</source>
       <translation>ciągła</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="57"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="82"/>
       <source>Dashed</source>
       <translation>Kreskowana</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="58"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="83"/>
       <source>LongDashDashed</source>
       <translation>Długa kreska przerywana</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="59"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="84"/>
       <source>LongDashDoubleDashed</source>
       <translation>długa kreska podwójna kreska</translation>
     </message>
@@ -9701,92 +9708,92 @@ jest otwarte okno dialogowe zadania.</translation>
   <context>
     <name>ASMELineTypeEnum</name>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="65"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="90"/>
       <source>NoLine</source>
       <translation>Brak linii</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="66"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="91"/>
       <source>Visible</source>
       <translation>Widoczność</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="67"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="92"/>
       <source>Hidden</source>
       <translation>Niewidoczne</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="68"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="93"/>
       <source>Section</source>
       <translation>Przecięcie</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="69"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="94"/>
       <source>Center</source>
       <translation>Wyśrodkowane</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="70"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="95"/>
       <source>Symmetry</source>
       <translation>Odbicie lustrzane</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="71"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="96"/>
       <source>Dimension</source>
       <translation>Wymiar</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="72"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="97"/>
       <source>Extension</source>
       <translation>Wyciągnięcie</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="73"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="98"/>
       <source>Leader</source>
       <translation>Linia odniesienia</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="74"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="99"/>
       <source>CuttingPlane</source>
       <translation>Płaszczyzna cięcia</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="75"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="100"/>
       <source>ViewingPlane</source>
       <translation>Płaszczyzna widoku</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="76"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="101"/>
       <source>OtherPlane</source>
       <translation>Inna płaszczyzna</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="77"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="102"/>
       <source>Break1</source>
       <translation>Przerwa 1</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="78"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="103"/>
       <source>Break2</source>
       <translation>Przerwa 2</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="79"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="104"/>
       <source>Phantom</source>
       <translation>Złudzenie</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="80"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="105"/>
       <source>Stitch1</source>
       <translation>Szew 1</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="81"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="106"/>
       <source>Stitch2</source>
       <translation>Szew 2</translation>
     </message>
     <message>
-      <location filename="../../../App/LineNameEnum.cpp" line="82"/>
+      <location filename="../../../App/LineNameEnum.cpp" line="107"/>
       <source>Chain</source>
       <translation>Łańcuch</translation>
     </message>
@@ -9933,7 +9940,7 @@ ponieważ jest otwarte okno dialogowe zadania.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1841"/>
       <source>Insert Area Annotation</source>
-      <translation type="unfinished">Insert Area Annotation</translation>
+      <translation>Wstaw adnotację obszaru</translation>
     </message>
   </context>
   <context>

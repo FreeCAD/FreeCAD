@@ -236,7 +236,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Save...</source>
-      <translation type="unfinished">Save...</translation>
+      <translation>保存...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
@@ -259,7 +259,7 @@
       <location filename="../../OpenSCADCommands.py" line="430"/>
       <location filename="../../OpenSCADCommands.py" line="444"/>
       <source>OpenSCAD Files</source>
-      <translation type="unfinished">OpenSCAD Files</translation>
+      <translation>OpenSCADファイル</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="442"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>ミンコフスキー和</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="654"/>
@@ -480,7 +480,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="569"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>OpenSCADを使用して凸包を作成</translation>
     </message>
   </context>
   <context>
@@ -488,7 +488,7 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCADツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>
@@ -501,12 +501,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="586"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>ミンコフスキー和</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="589"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>OpenSCADを使用してミンコフスキー和を作成</translation>
     </message>
   </context>
 </TS>

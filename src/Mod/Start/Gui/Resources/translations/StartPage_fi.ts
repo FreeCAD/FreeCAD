@@ -59,82 +59,82 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="179"/>
+      <location filename="../../StartView.cpp" line="189"/>
       <source>Empty file</source>
       <translation>Tyhjä tiedosto</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="180"/>
+      <location filename="../../StartView.cpp" line="190"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Luo uusi tyhjä FreeCAD tiedosto</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="182"/>
+      <location filename="../../StartView.cpp" line="192"/>
       <source>Open File</source>
       <translation>Avaa tiedosto</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="183"/>
+      <location filename="../../StartView.cpp" line="193"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Avaa olemassa oleva CAD-tiedosto tai 3D-malli</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="185"/>
+      <location filename="../../StartView.cpp" line="195"/>
       <source>Parametric Part</source>
       <translation>Parametrinen osa</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="186"/>
+      <location filename="../../StartView.cpp" line="196"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Luo osa Part Design työpöydällä</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="188"/>
+      <location filename="../../StartView.cpp" line="198"/>
       <source>Assembly</source>
       <translation>Kokoonpano</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="189"/>
+      <location filename="../../StartView.cpp" line="199"/>
       <source>Create an assembly project</source>
       <translation>Luo kokoonpanoprojekti</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="191"/>
+      <location filename="../../StartView.cpp" line="201"/>
       <source>2D Draft</source>
       <translation>2D-piirustus</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="192"/>
+      <location filename="../../StartView.cpp" line="202"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Luo 2D-piirustus Draft-työpöydällä</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="194"/>
+      <location filename="../../StartView.cpp" line="204"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arkkitehtuuri</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="195"/>
+      <location filename="../../StartView.cpp" line="205"/>
       <source>Create an architectural project</source>
       <translation>Luo arkkitehtoninen projekti</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="437"/>
+      <location filename="../../StartView.cpp" line="447"/>
       <source>New File</source>
       <translation>Uusi tiedosto</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="438"/>
+      <location filename="../../StartView.cpp" line="448"/>
       <source>Examples</source>
       <translation>Esimerkit</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="439"/>
+      <location filename="../../StartView.cpp" line="449"/>
       <source>Recent Files</source>
       <translation>Viimeisimmät tiedostot</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="443"/>
+      <location filename="../../StartView.cpp" line="453"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Älä näytä tätä aloitussivua uudelleen (aloita tyhjältä näytöltä)</translation>
     </message>
@@ -142,7 +142,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="431"/>
+      <location filename="../../StartView.cpp" line="441"/>
       <source>Start</source>
       <translation>Aloita</translation>
     </message>
@@ -151,46 +151,46 @@
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="58"/>
-      <source>Classic</source>
-      <translation>Klassinen</translation>
+      <source>FreeCAD Classic</source>
+      <translation type="unfinished">FreeCAD Classic</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
-      <source>Dark theme</source>
-      <translation type="unfinished">Dark theme</translation>
+      <source>FreeCAD Dark</source>
+      <translation type="unfinished">FreeCAD Dark</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
-      <source>Light theme</source>
-      <translation type="unfinished">Light theme</translation>
+      <source>FreeCAD Light</source>
+      <translation type="unfinished">FreeCAD Light</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="156"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="166"/>
       <source>Theme</source>
       <translation>Teema</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="157"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="167"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="159"/>
-      <source>Dark theme</source>
+      <location filename="../../ThemeSelectorWidget.cpp" line="169"/>
+      <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Dark theme</translation>
+      <translation type="unfinished">FreeCAD Dark</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="160"/>
-      <source>Light theme</source>
+      <location filename="../../ThemeSelectorWidget.cpp" line="170"/>
+      <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Light theme</translation>
+      <translation type="unfinished">FreeCAD Light</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="161"/>
-      <source>Classic</source>
+      <location filename="../../ThemeSelectorWidget.cpp" line="171"/>
+      <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">Classic</translation>
+      <translation type="unfinished">FreeCAD Classic</translation>
     </message>
   </context>
 </TS>

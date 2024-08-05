@@ -441,7 +441,7 @@
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Intersection of two faces.</translation>
+      <translation>两面相交线</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="256"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>导出 CAD 文件...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>导入 CAD 文件...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2566,42 +2566,42 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>导出</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>输出STEP的单位</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>毫米</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>米</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>英寸</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>在曲面的参数空间中写出曲线</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
       <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
@@ -2612,22 +2612,22 @@ placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>导出不可见对象</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>导出单个物体位置</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>使用旧版导出函数</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>格式</translation>
     </message>
@@ -4148,7 +4148,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>形状透明度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="189"/>
@@ -4158,7 +4158,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>形状光泽度</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
@@ -4422,7 +4422,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../Mirroring.ui" line="150"/>
       <location filename="../../Mirroring.cpp" line="215"/>
       <source>Selecting</source>
-      <translation type="unfinished">Selecting</translation>
+      <translation>正在选择</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>

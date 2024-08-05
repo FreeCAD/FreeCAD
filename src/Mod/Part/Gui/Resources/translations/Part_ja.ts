@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>点がオブジェクトの配置位置に置かれます。配置情報を持つオブジェクト、楕円、放物線、双曲線エッジで動作します。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -477,7 +477,7 @@
       <location filename="../../AttacherTexts.cpp" line="263"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>第２慣性主軸に揃った線。</translation>
+      <translation>第2慣性主軸に揃った線。</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="265"/>
@@ -1470,12 +1470,12 @@
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Cross-sections...</source>
-      <translation>断面...</translation>
+      <translation>横断面...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Cross-sections</source>
-      <translation>断面</translation>
+      <translation>横断面</translation>
     </message>
   </context>
   <context>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>CADファイルをエクスポート...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>CADファイルをインポート...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -1796,12 +1796,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
       <source>Create points object from geometry</source>
-      <translation>ジオメトリーから点オブジェクトを作成</translation>
+      <translation>ジオメトリから点オブジェクトを作成</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="136"/>
       <source>Create selectable points object from selected geometric object</source>
-      <translation>選択したジオメトリーオブジェクトから選択可能な点オブジェクトを作成</translation>
+      <translation>選択したジオメトリオブジェクトから選択可能な点オブジェクトを作成</translation>
     </message>
   </context>
   <context>
@@ -2008,7 +2008,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="148"/>
       <source>Part</source>
-      <translation>部品</translation>
+      <translation>パーツ</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="149"/>
@@ -2188,7 +2188,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
       <source>Points from geometry</source>
-      <translation>ジオメトリーからの点</translation>
+      <translation>ジオメトリからの点</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="369"/>
@@ -2368,7 +2368,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>断面</translation>
+      <translation>横断面</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -2413,7 +2413,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance:</source>
-      <translation>距離:</translation>
+      <translation>距離：</translation>
     </message>
   </context>
   <context>
@@ -2567,68 +2567,66 @@ Note: The placement is expressed in local space of object being attached.</sourc
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>エクスポート</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>STEPエクスポート時の単位</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>ミリメートル</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>メートル</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>インチ</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>表面のパラメトリック空間で曲線を描く</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>エクスポート時に不可視オブジェクトをスキップするにはチェックを外してください。これは、不可視STEPスタイルをサポートしていないCADで役立ちます。</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>単一オブジェクトのエクスポート時に配置情報を保持するには、このオプションをオンにします。 
+STEPファイルを再インポートする場合、配置プロパティ内にある配置は維持されず、形状ジオメトリにエンコードされます。</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>非表示オブジェクトをエクスポート</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>単一のオブジェクト配置をエクスポート</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>旧エクスポート機能を使用</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>スキーム</translation>
     </message>
@@ -2967,7 +2965,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>面取りパラメーター</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -3081,7 +3079,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>ソリッドとシェルを次の形式でエクスポート</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3185,7 +3183,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="75"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>Link配列を使用したオブジェクトの数を減らす</translation>
+      <translation>リンク配列複写を使用したオブジェクトの数を減らす</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="78"/>
@@ -3211,7 +3209,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>インスタンス名を使用しないでください。意味のない自動生成されたインスタンス名を持つ従来のSTEPファイルには役立ちます。</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3304,7 +3302,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="161"/>
       <source>Height:</source>
-      <translation>高さ:</translation>
+      <translation>高さ：</translation>
     </message>
   </context>
   <context>
@@ -3352,7 +3350,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="141"/>
       <source>Height:</source>
-      <translation>高さ:</translation>
+      <translation>高さ：</translation>
     </message>
   </context>
   <context>
@@ -3386,7 +3384,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>STEP入力ファイル</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -3528,7 +3526,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgPrimitives.ui" line="1419"/>
       <location filename="../../DlgPrimitives.ui" line="1745"/>
       <source>Height:</source>
-      <translation>高さ:</translation>
+      <translation>高さ：</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="445"/>
@@ -3655,12 +3653,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
       <source>Pitch:</source>
-      <translation>ピッチ:</translation>
+      <translation>ピッチ：</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
       <source>Coordinate system:</source>
-      <translation>座標系:</translation>
+      <translation>座標系：</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1810"/>
@@ -4174,12 +4172,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>The default line color for new shapes</source>
-      <translation>新規図形での既定の線色</translation>
+      <translation>新規シェイプの既定の線色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="288"/>
       <source>Line width</source>
-      <translation>ライン幅</translation>
+      <translation>線幅</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="295"/>
@@ -4238,10 +4236,8 @@ during file reading (slower but higher details).</source>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>サーフェスの底部側は、上側と同様にレンダリングされます。
+チェックされていない場合、オプション「バックライトの色を有効」（セクション表示→3Dビューの設定）に依存します。バックライトの色が用いられるか黒くなります。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4294,7 +4290,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation>3D</translation>
+      <translation>3Dビュー</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -4497,7 +4493,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>永続的な断面カット</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -5000,7 +4996,7 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1015"/>
       <source>Skip this settings page and run the geometry check automatically.</source>
-      <translation>この設定をスキップし、ジオメトリーチェックを自動的に実行します。</translation>
+      <translation>この設定をスキップし、ジオメトリチェックを自動的に実行します。</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1017"/>
@@ -5017,7 +5013,7 @@ of object being attached.</source>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation>ブーリアン演算の追加検査。標準の BRep ジオメトリー検査では見落とされるようなエラーを発見できる場合があります。これらのエラーは、必ずしも検査されたオブジェクトが使用できないことを意味するものではありません。デフォルト: false</translation>
+      <translation>ブーリアン演算の追加検査。標準の BRep ジオメトリ検査では見落とされるようなエラーを発見できる場合があります。これらのエラーは、必ずしも検査されたオブジェクトが使用できないことを意味するものではありません。既定: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1035"/>
@@ -5050,7 +5046,7 @@ but more stable.  Default: false</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。デフォルト：false</translation>
+      <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。既定：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1063"/>
@@ -5061,7 +5057,7 @@ the check geometry tool.  Default: false</source>
       <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。デフォルト：false</translation>
+      <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。既定：false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
@@ -5123,7 +5119,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>この設定ページをスキップ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5181,7 +5177,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="375"/>
       <source>Check Geometry Results</source>
-      <translation>ジオメトリーの結果を確認</translation>
+      <translation>ジオメトリの結果を確認</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="394"/>
@@ -5197,7 +5193,7 @@ Individual boolean operation checks:</source>
       <location filename="../../TaskCheckGeometry.cpp" line="419"/>
       <location filename="../../TaskCheckGeometry.cpp" line="424"/>
       <source>Check geometry</source>
-      <translation>ジオメトリーをチェック</translation>
+      <translation>ジオメトリを確認</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="459"/>
@@ -5460,7 +5456,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
       <source>Height:</source>
-      <translation>高さ:</translation>
+      <translation>高さ：</translation>
     </message>
   </context>
   <context>
@@ -5550,12 +5546,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>複数のシェイプ、または交差部分を計算する複数のシェイプが入ったコンパウンドを1つ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>複数のシェイプ、または結合する複数のシェイプが入ったコンパウンドを1つ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6757,14 +6753,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>外観をカスタマイズ:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>オンにすると、3D ビューで選択範囲をドラッグして複数の面を選択できます</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

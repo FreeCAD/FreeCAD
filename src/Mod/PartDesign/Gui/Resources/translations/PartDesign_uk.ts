@@ -93,17 +93,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
       <source>Module of the gear</source>
-      <translation type="unfinished">Module of the gear</translation>
+      <translation>Модуль шестерні</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
       <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
-      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
+      <translation>True = 2 криві з кожними 3 контрольними точками, False = 1 крива з 4 контрольними точками.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
       <source>True=external Gear, False=internal Gear</source>
-      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
+      <translation>True=зовнішня шестерня, False=внутрішня шестерня</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -131,7 +131,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>PartDesign</source>
-      <translation>ДизайнДеталі</translation>
+      <translation>Проєктування деталі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1536"/>
@@ -159,7 +159,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1436"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Лофт виділеного профілю по інших ділянках профілю</translation>
+      <translation>Лофт виділеного профілю по інших перерізах профілю</translation>
     </message>
   </context>
   <context>
@@ -167,7 +167,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1332"/>
       <source>PartDesign</source>
-      <translation>ДизайнДеталі</translation>
+      <translation>Проєктування деталі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1333"/>
@@ -185,7 +185,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
       <source>PartDesign</source>
-      <translation>ДизайнДеталі</translation>
+      <translation>Проєктування деталі</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="87"/>
@@ -203,7 +203,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2379"/>
       <source>PartDesign</source>
-      <translation>ДизайнДеталі</translation>
+      <translation>Проєктування деталі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2380"/>
@@ -257,7 +257,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="429"/>
       <source>PartDesign</source>
-      <translation>ДизайнДеталі</translation>
+      <translation>Проєктування деталі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
@@ -311,7 +311,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
       <source>PartDesign</source>
-      <translation>ДизайнДеталі</translation>
+      <translation>Проєктування деталі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1802"/>
@@ -713,7 +713,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1487"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Лофт виділеного профілю по інших ділянках профілю з подальшим відніманням отриманої фігури з тіла, що нею перетинається</translation>
+      <translation>Лофт виділеного профілю через інші перерізи профілю та видалення його з тіла</translation>
     </message>
   </context>
   <context>
@@ -917,7 +917,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="434"/>
       <source>Migrate legacy Part Design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy Part Design features to Bodies</translation>
+      <translation>Перенесіть застарілі функції "Проєктування деталей" до тіла</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="579"/>
@@ -1471,29 +1471,29 @@ If zero, it is equal to Radius2</source>
       <translation>Параметри примітива</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="830"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="835"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="840"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="911"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="916"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="921"/>
       <source>Invalid wedge parameters</source>
       <translation>Невірні параметри клина</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="831"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="912"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min не повинен дорівнювати Х max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min не повинен дорівнювати Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min не повинен дорівнювати Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="879"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
       <source>Create primitive</source>
       <translation>Створити примітив</translation>
     </message>
@@ -1565,7 +1565,7 @@ click again to end selection</source>
       <translation>Кут</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="323"/>
+      <location filename="../../TaskChamferParameters.cpp" line="327"/>
       <source>Empty chamfer created !
 </source>
       <translation>Створено порожню фаску!
@@ -1606,7 +1606,7 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="130"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
       <source>Input error</source>
       <translation>Помилка вводу</translation>
     </message>
@@ -1661,7 +1661,7 @@ click again to end selection</source>
       <translation>Зворотний напрямок витягування</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="281"/>
+      <location filename="../../TaskDraftParameters.cpp" line="284"/>
       <source>Empty draft created !
 </source>
       <translation>Створено порожню чернетку!
@@ -1699,64 +1699,64 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
       <source>No face selected</source>
       <translation>Грань не виділена</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="997"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="157"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1016"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="172"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="173"/>
       <source>Remove</source>
       <translation>Видалити</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="258"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
       <source>Preview</source>
       <translation>Попередній перегляд</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="261"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
       <source>Select faces</source>
       <translation>Обрати грані</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="481"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
       <source>No shape selected</source>
       <translation>Немає обраної форми</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="583"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
       <source>Sketch normal</source>
       <translation>Нормаль Ескізу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="585"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="591"/>
       <source>Face normal</source>
       <translation>Нормаль Грані</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="588"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
       <source>Select reference...</source>
       <translation>Виберіть посилання...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
       <source>Custom direction</source>
       <translation>Довільний напрямок</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
       <source>Click on a shape in the model</source>
       <translation>Натисніть на фігуру в моделі</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
       <source>Click on a face in the model</source>
       <translation>Натисніть на грань в моделі</translation>
     </message>
@@ -1881,7 +1881,7 @@ click again to end selection</source>
       <translation>Використовувати Всі Ребра</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="190"/>
+      <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created!</source>
       <translation>Створено порожнє скруглення!</translation>
     </message>
@@ -1905,43 +1905,43 @@ click again to end selection</source>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="232"/>
+      <location filename="../../TaskHelixParameters.cpp" line="228"/>
       <source>Base X axis</source>
       <translation>Базова вісь X</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="233"/>
+      <location filename="../../TaskHelixParameters.cpp" line="229"/>
       <source>Base Y axis</source>
       <translation>Базова вісь Y</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="234"/>
+      <location filename="../../TaskHelixParameters.cpp" line="230"/>
       <source>Base Z axis</source>
       <translation>Базова вісь Z</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="215"/>
+      <location filename="../../TaskHelixParameters.cpp" line="212"/>
       <source>Horizontal sketch axis</source>
       <translation>Горизонтальна вісь ескізу</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="214"/>
+      <location filename="../../TaskHelixParameters.cpp" line="211"/>
       <source>Vertical sketch axis</source>
       <translation>Вертикальна вісь ескізу</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="213"/>
+      <location filename="../../TaskHelixParameters.cpp" line="210"/>
       <source>Normal sketch axis</source>
       <translation>Нормаль до осі ескізу</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="197"/>
+      <location filename="../../TaskHelixParameters.cpp" line="196"/>
       <source>Select reference...</source>
       <translation>Виберіть посилання...</translation>
     </message>
@@ -2016,27 +2016,27 @@ click again to end selection</source>
       <translation>Оновити вигляд</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="51"/>
+      <location filename="../../TaskHelixParameters.cpp" line="52"/>
       <source>Helix parameters</source>
       <translation>Параметри спіралі</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="217"/>
+      <location filename="../../TaskHelixParameters.cpp" line="214"/>
       <source>Construction line %1</source>
       <translation>Допоміжна лінія %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="281"/>
+      <location filename="../../TaskHelixParameters.cpp" line="277"/>
       <source>Warning: helix might be self intersecting</source>
       <translation>Попередження: спіраль може самоперетинатися</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="286"/>
+      <location filename="../../TaskHelixParameters.cpp" line="282"/>
       <source>Error: helix touches itself</source>
       <translation>Помилка: спіраль торкається самої себе</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="334"/>
+      <location filename="../../TaskHelixParameters.cpp" line="330"/>
       <source>Error: unsupported mode</source>
       <translation>Помилка: не підтримуваний режим</translation>
     </message>
@@ -2163,12 +2163,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation>Додати розріз</translation>
+      <translation>Додати переріз</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation>Видалити розріз</translation>
+      <translation>Видалити переріз</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
@@ -2565,12 +2565,12 @@ measured along the specified direction</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="534"/>
+      <location filename="../../TaskPipeParameters.cpp" line="536"/>
       <source>Section orientation</source>
-      <translation>Орієнтація перетину</translation>
+      <translation>Орієнтація перерізу</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="560"/>
+      <location filename="../../TaskPipeParameters.cpp" line="562"/>
       <source>Remove</source>
       <translation>Видалити</translation>
     </message>
@@ -2634,13 +2634,13 @@ measured along the specified direction</source>
       <translation>Видалити</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
-      <location filename="../../TaskPipeParameters.cpp" line="520"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
+      <location filename="../../TaskPipeParameters.cpp" line="522"/>
       <source>Input error</source>
       <translation>Помилка вводу</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
       <source>No active body</source>
       <translation>Немає активного тіла</translation>
     </message>
@@ -2660,17 +2660,17 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Багатосекційний</translation>
+      <translation>Багатоперерізний</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation>Додати розріз</translation>
+      <translation>Додати переріз</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation>Видалити розріз</translation>
+      <translation>Видалити переріз</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
@@ -2678,12 +2678,12 @@ measured along the specified direction</source>
       <translation>Список можна змінити шляхом перетягування</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="802"/>
+      <location filename="../../TaskPipeParameters.cpp" line="816"/>
       <source>Section transformation</source>
-      <translation>Перетворення розрізу</translation>
+      <translation>Перетворення перерізу</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="818"/>
+      <location filename="../../TaskPipeParameters.cpp" line="832"/>
       <source>Remove</source>
       <translation>Видалити</translation>
     </message>
@@ -2787,7 +2787,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="972"/>
       <source>Attachment</source>
       <translation>Приєднання</translation>
     </message>
@@ -2812,19 +2812,19 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
       <source>Base X axis</source>
       <translation>Базова вісь X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
       <source>Base Y axis</source>
       <translation>Базова вісь Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
       <source>Base Z axis</source>
       <translation>Базова вісь Z</translation>
     </message>
@@ -2840,7 +2840,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="226"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="227"/>
       <source>Select reference...</source>
       <translation>Виберіть посилання...</translation>
     </message>
@@ -2867,7 +2867,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="443"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="444"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
@@ -2907,7 +2907,7 @@ measured along the specified direction</source>
       <translation>Два розміри</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="429"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="430"/>
       <source>No face selected</source>
       <translation>Грань не виділена</translation>
     </message>
@@ -2956,7 +2956,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="174"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
@@ -3029,7 +3029,7 @@ click again to end selection</source>
       <translation>Створити товщину всередину</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="265"/>
       <source>Empty thickness created !
 </source>
       <translation>Створено порожню товщину!
@@ -3709,23 +3709,23 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="441"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Vertical sketch axis</source>
       <translation>Вертикальна вісь ескізу</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="442"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
       <source>Horizontal sketch axis</source>
       <translation>Горизонтальна вісь ескізу</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="207"/>
       <source>Construction line %1</source>
       <translation>Допоміжна лінія %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="80"/>
       <source>Face</source>
       <translation>Грань</translation>
     </message>
@@ -3884,12 +3884,12 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
       <source>One transformed shape does not intersect the support</source>
-      <translation type="unfinished">One transformed shape does not intersect the support</translation>
+      <translation>Одна перетворена фігура не перетинає основу</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
       <source>%1 transformed shapes do not intersect the support</source>
-      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
+      <translation>%1 перетворених фігур не перетинають елементи основи</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3986,7 +3986,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameters</source>
-      <translation type="unfinished">Sprocket parameters</translation>
+      <translation>Параметри зірки ланцюга</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4166,7 +4166,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
       <source>Tooth Width:</source>
-      <translation type="unfinished">Tooth Width:</translation>
+      <translation>Ширина зубця:</translation>
     </message>
   </context>
   <context>
@@ -4262,20 +4262,20 @@ Only available for holes without thread</source>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Standard</source>
       <translation>Стандартний</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="622"/>
-      <location filename="../../TaskHoleParameters.cpp" line="633"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="643"/>
       <source>Close</source>
       <translation>Закрити</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="623"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Wide</source>
       <translation>Wide (макс. відхилення)</translation>
     </message>
@@ -4414,12 +4414,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>Зворотній</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="642"/>
       <source>Normal</source>
       <translation>Звичайна</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="634"/>
+      <location filename="../../TaskHoleParameters.cpp" line="644"/>
       <source>Loose</source>
       <translation>Loose (макс. допуск)</translation>
     </message>
@@ -4586,12 +4586,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 1</source>
-      <translation>Розділ 1</translation>
+      <translation>Переріз 1</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 2</source>
-      <translation>Розділ 2</translation>
+      <translation>Переріз 2</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
@@ -4601,7 +4601,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
       <source>Section %s</source>
-      <translation>Розділ %s</translation>
+      <translation>Переріз %s</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
@@ -4977,7 +4977,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="128"/>
       <source>Error: Pitch too small!</source>
-      <translation type="unfinished">Error: Pitch too small!</translation>
+      <translation>Помилка: Занадто малий крок!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>
@@ -5156,7 +5156,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
       <location filename="../../../App/FeatureLoft.cpp" line="409"/>
       <source>Loft: At least one section is needed</source>
-      <translation>Лофт: Потрібен хоча б один перетин</translation>
+      <translation>Лофт: Потрібен хоча б один переріз</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="142"/>
@@ -5171,7 +5171,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="163"/>
       <source>Loft: All sections need to be part features</source>
-      <translation>Лофт: Усі секції мають бути окремими елементами</translation>
+      <translation>Лофт: Усі перерізи мають бути окремими елементами</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="168"/>
@@ -5181,12 +5181,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation>Лофт: Перетин не містить ліній і не є єдиною точкою</translation>
+      <translation>Лофт: Переріз не містить ліній і не є єдиною точкою</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation>Лофт: Вершинами можуть бути тільки профіль і остання секція</translation>
+      <translation>Лофт: Вершинами можуть бути тільки профіль і останній переріз</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="188"/>
@@ -5300,7 +5300,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../../App/FeaturePipe.cpp" line="222"/>
       <location filename="../../../App/FeaturePipe.cpp" line="556"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation>Профіль по траєкторії: У разі використання точки як профілю потрібна щонайменше одна секція</translation>
+      <translation>Профіль по траєкторії: У разі використання точки як профілю потрібна щонайменше один переріз</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="236"/>
@@ -5318,13 +5318,13 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../../App/FeaturePipe.cpp" line="251"/>
       <location filename="../../../App/FeaturePipe.cpp" line="585"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation>Профіль по траєкторії: вершинами можуть бути тільки профіль і остання секція</translation>
+      <translation>Профіль по траєкторії: вершинами можуть бути тільки профіль і останній переріз</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="260"/>
       <location filename="../../../App/FeaturePipe.cpp" line="594"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation>Різні секції повинні мати таку саму кількість внутрішніх поліліній, як і базова секція</translation>
+      <translation>Різні перерізи повинні мати таку саму кількість внутрішніх поліліній, як і базовий переріз</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="287"/>

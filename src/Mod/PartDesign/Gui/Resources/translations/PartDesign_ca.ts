@@ -93,17 +93,17 @@ de manera que s'evita l'autointersecció.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
       <source>Module of the gear</source>
-      <translation type="unfinished">Module of the gear</translation>
+      <translation>Mòdul de l'engranatge</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
       <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
-      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
+      <translation>Cert=2 corbes amb 3 punts de control cadascuna Fals=1 corba amb 4 punts de control.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
       <source>True=external Gear, False=internal Gear</source>
-      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
+      <translation>Cert=Engranatge extern, Fals=Engranatge intern</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -917,7 +917,7 @@ de manera que s'evita l'autointersecció.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="434"/>
       <source>Migrate legacy Part Design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy Part Design features to Bodies</translation>
+      <translation>Migreu les funcions de disseny de peces heretades a Cossos</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="579"/>
@@ -1008,22 +1008,22 @@ de manera que s'evita l'autointersecció.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Edge tools</source>
-      <translation type="unfinished">Edge tools</translation>
+      <translation>Eines d'aresta</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Boolean tools</source>
-      <translation type="unfinished">Boolean tools</translation>
+      <translation>Eines booleanes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Helper tools</source>
-      <translation type="unfinished">Helper tools</translation>
+      <translation>Eines d'ajuda</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Modeling tools</source>
-      <translation type="unfinished">Modeling tools</translation>
+      <translation>Eines de modelatge</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -1471,29 +1471,29 @@ Si el valor és zero, serà igual al Radi2</translation>
       <translation>Paràmetres primitius</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="830"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="835"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="840"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="911"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="916"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="921"/>
       <source>Invalid wedge parameters</source>
       <translation>Paràmetres invàlids de la falca</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="831"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="912"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min no ha de ser igual a X max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min no ha de ser igual a Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min no ha de ser igual a Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="879"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
       <source>Create primitive</source>
       <translation>Crea un primitiu</translation>
     </message>
@@ -1565,7 +1565,7 @@ clica altre cop per finalitzar la selecció</translation>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="323"/>
+      <location filename="../../TaskChamferParameters.cpp" line="327"/>
       <source>Empty chamfer created !
 </source>
       <translation>S'ha creat un xamfrà buit!
@@ -1606,7 +1606,7 @@ clica altre cop per finalitzar la selecció</translation>
   <context>
     <name>PartDesignGui::TaskDlgFeatureParameters</name>
     <message>
-      <location filename="../../TaskFeatureParameters.cpp" line="130"/>
+      <location filename="../../TaskFeatureParameters.cpp" line="133"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
@@ -1661,7 +1661,7 @@ clica altre cop per finalitzar la selecció</translation>
       <translation>Direcció de tracció invertida</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="281"/>
+      <location filename="../../TaskDraftParameters.cpp" line="284"/>
       <source>Empty draft created !
 </source>
       <translation>S'ha creat un dibuix buit!
@@ -1699,64 +1699,64 @@ clica altre cop per finalitzar la selecció</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1159"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
       <source>No face selected</source>
       <translation>Cap cara seleccionada</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="997"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="157"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1016"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="172"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="173"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="258"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
       <source>Preview</source>
       <translation>Previsualització</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="261"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
       <source>Select faces</source>
       <translation>Seleccioneu cares</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="481"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
       <source>No shape selected</source>
       <translation>Forma no seleccionada</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="583"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
       <source>Sketch normal</source>
       <translation>Croquis normal</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="585"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="591"/>
       <source>Face normal</source>
       <translation>Cara Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="588"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
       <source>Select reference...</source>
       <translation>Seleccioneu referència...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="592"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
       <source>Custom direction</source>
       <translation>Direcció personalitzada</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="950"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
       <source>Click on a shape in the model</source>
-      <translation type="unfinished">Click on a shape in the model</translation>
+      <translation>Clica en una forma del model</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1154"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
       <source>Click on a face in the model</source>
       <translation>Clica en una cara del model</translation>
     </message>
@@ -1846,7 +1846,7 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="80"/>
       <source>Select attachment</source>
-      <translation type="unfinished">Select attachment</translation>
+      <translation>Selecciona el fitxer adjunt</translation>
     </message>
   </context>
   <context>
@@ -1881,7 +1881,7 @@ clica altre cop per finalitzar la selecció</translation>
       <translation>Utilitzeu totes les arestes</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="190"/>
+      <location filename="../../TaskFilletParameters.cpp" line="194"/>
       <source>Empty fillet created!</source>
       <translation>S'ha creat un arrodoniment buit!</translation>
     </message>
@@ -1905,43 +1905,43 @@ clica altre cop per finalitzar la selecció</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="232"/>
+      <location filename="../../TaskHelixParameters.cpp" line="228"/>
       <source>Base X axis</source>
       <translation>Eix base X</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="233"/>
+      <location filename="../../TaskHelixParameters.cpp" line="229"/>
       <source>Base Y axis</source>
       <translation>Eix base Y</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="234"/>
+      <location filename="../../TaskHelixParameters.cpp" line="230"/>
       <source>Base Z axis</source>
       <translation>Eix base Z</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="215"/>
+      <location filename="../../TaskHelixParameters.cpp" line="212"/>
       <source>Horizontal sketch axis</source>
       <translation>Eix horitzontal de croquis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="214"/>
+      <location filename="../../TaskHelixParameters.cpp" line="211"/>
       <source>Vertical sketch axis</source>
       <translation>Eix vertical de croquis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="213"/>
+      <location filename="../../TaskHelixParameters.cpp" line="210"/>
       <source>Normal sketch axis</source>
       <translation>Eix normal al croquis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="197"/>
+      <location filename="../../TaskHelixParameters.cpp" line="196"/>
       <source>Select reference...</source>
       <translation>Seleccioneu referència...</translation>
     </message>
@@ -2016,27 +2016,27 @@ clica altre cop per finalitzar la selecció</translation>
       <translation>Actualització vista</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="51"/>
+      <location filename="../../TaskHelixParameters.cpp" line="52"/>
       <source>Helix parameters</source>
       <translation>Paràmetres d’hèlix</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="217"/>
+      <location filename="../../TaskHelixParameters.cpp" line="214"/>
       <source>Construction line %1</source>
       <translation>Construcció línia %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="281"/>
+      <location filename="../../TaskHelixParameters.cpp" line="277"/>
       <source>Warning: helix might be self intersecting</source>
       <translation>Atenció: l'hèlix pot ser autointerferent</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="286"/>
+      <location filename="../../TaskHelixParameters.cpp" line="282"/>
       <source>Error: helix touches itself</source>
       <translation>Error: l'hèlix es toca a si mateixa</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="334"/>
+      <location filename="../../TaskHelixParameters.cpp" line="330"/>
       <source>Error: unsupported mode</source>
       <translation>Error: mode no compatible</translation>
     </message>
@@ -2051,7 +2051,7 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Countersink</source>
-      <translation>Countersink</translation>
+      <translation>Avellanat</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
@@ -2307,7 +2307,7 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Fins a la forma</translation>
     </message>
   </context>
   <context>
@@ -2335,19 +2335,19 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="130"/>
       <source>Select shape</source>
-      <translation type="unfinished">Select shape</translation>
+      <translation>Selecciona forma</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="148"/>
       <source>Select all faces</source>
-      <translation type="unfinished">Select all faces</translation>
+      <translation>Seleccioni totes les cares</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="170"/>
       <source>Click button to enter selection mode,
          click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-         click again to end selection</translation>
+      <translation>Clica al botó per entrar en mode de selecció,
+         clica altre cop per finalitzar la selecció</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
@@ -2566,12 +2566,12 @@ mesurada al llarg de la direcció especificada</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="534"/>
+      <location filename="../../TaskPipeParameters.cpp" line="536"/>
       <source>Section orientation</source>
       <translation>Orientació de la secció</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="560"/>
+      <location filename="../../TaskPipeParameters.cpp" line="562"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
@@ -2635,13 +2635,13 @@ mesurada al llarg de la direcció especificada</translation>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
-      <location filename="../../TaskPipeParameters.cpp" line="520"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
+      <location filename="../../TaskPipeParameters.cpp" line="522"/>
       <source>Input error</source>
       <translation>Error d'entrada</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="422"/>
+      <location filename="../../TaskPipeParameters.cpp" line="424"/>
       <source>No active body</source>
       <translation>Cap cos actiu</translation>
     </message>
@@ -2679,12 +2679,12 @@ mesurada al llarg de la direcció especificada</translation>
       <translation>La llista es pot reordenar arrossegant</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="802"/>
+      <location filename="../../TaskPipeParameters.cpp" line="816"/>
       <source>Section transformation</source>
       <translation>Transformació de la secció</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="818"/>
+      <location filename="../../TaskPipeParameters.cpp" line="832"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
@@ -2734,7 +2734,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Fins a la forma</translation>
     </message>
   </context>
   <context>
@@ -2747,7 +2747,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="46"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Inverteix la direcció</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="55"/>
@@ -2762,7 +2762,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Offset Angle</source>
-      <translation type="unfinished">Offset Angle</translation>
+      <translation>Desplaçament de l'Angle</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="93"/>
@@ -2788,7 +2788,7 @@ mesurada al llarg de la direcció especificada</translation>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="972"/>
       <source>Attachment</source>
       <translation>Adjunt</translation>
     </message>
@@ -2813,19 +2813,19 @@ mesurada al llarg de la direcció especificada</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
       <source>Base X axis</source>
       <translation>Eix base X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="218"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
       <source>Base Y axis</source>
       <translation>Eix base Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="219"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
       <source>Base Z axis</source>
       <translation>Eix base Z</translation>
     </message>
@@ -2841,7 +2841,7 @@ mesurada al llarg de la direcció especificada</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="226"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="227"/>
       <source>Select reference...</source>
       <translation>Seleccioneu referència...</translation>
     </message>
@@ -2868,7 +2868,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="443"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="444"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
@@ -2908,7 +2908,7 @@ mesurada al llarg de la direcció especificada</translation>
       <translation>Dues dimensions</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="429"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="430"/>
       <source>No face selected</source>
       <translation>Cap cara seleccionada</translation>
     </message>
@@ -2957,7 +2957,7 @@ mesurada al llarg de la direcció especificada</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="160"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="174"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
@@ -3030,7 +3030,7 @@ clica altre cop per finalitzar la selecció</translation>
       <translation>Fer gruix interior</translation>
     </message>
     <message>
-      <location filename="../../TaskThicknessParameters.cpp" line="262"/>
+      <location filename="../../TaskThicknessParameters.cpp" line="265"/>
       <source>Empty thickness created !
 </source>
       <translation>S'ha creat un gruix buit!
@@ -3112,12 +3112,12 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="35"/>
       <source>Transform body</source>
-      <translation type="unfinished">Transform body</translation>
+      <translation>Transforma el cos</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="48"/>
       <source>Transform tool shapes</source>
-      <translation type="unfinished">Transform tool shapes</translation>
+      <translation>Transforma les formes d'eines</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
@@ -3708,23 +3708,23 @@ Això pot portar a resultats inesperats.</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="441"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Vertical sketch axis</source>
       <translation>Eix vertical de croquis</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="442"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
       <source>Horizontal sketch axis</source>
       <translation>Eix horitzontal de croquis</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="206"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="207"/>
       <source>Construction line %1</source>
       <translation>Construcció línia %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="77"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="80"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
@@ -3882,12 +3882,12 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
       <source>One transformed shape does not intersect the support</source>
-      <translation type="unfinished">One transformed shape does not intersect the support</translation>
+      <translation>Una forma transformada no intersecta amb el suport</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
       <source>%1 transformed shapes do not intersect the support</source>
-      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
+      <translation>%1 formes transformades no intersecten amb el suport</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3984,7 +3984,7 @@ Tot i que podreu migrar en qualsevol moment més tard amb 'Disseny de peces -&gt
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameters</source>
-      <translation type="unfinished">Sprocket parameters</translation>
+      <translation>Paràmetres de la roda dentada</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4164,7 +4164,7 @@ Tot i que podreu migrar en qualsevol moment més tard amb 'Disseny de peces -&gt
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
       <source>Tooth Width:</source>
-      <translation type="unfinished">Tooth Width:</translation>
+      <translation>Amplada de les dents:</translation>
     </message>
   </context>
   <context>
@@ -4219,12 +4219,12 @@ Tingueu en compte que el càlcul pot trigar una mica</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="470"/>
       <source>Update thread view</source>
-      <translation type="unfinished">Update thread view</translation>
+      <translation>Actualitza la vista del fll</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="486"/>
       <source>Custom Clearance</source>
-      <translation type="unfinished">Custom Clearance</translation>
+      <translation>Tolerància Personalitzada</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="499"/>
@@ -4260,20 +4260,20 @@ Només disponible per a forats sense rosca</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="621"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Standard</source>
       <translation>Estàndard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="622"/>
-      <location filename="../../TaskHoleParameters.cpp" line="633"/>
+      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="643"/>
       <source>Close</source>
       <translation>Tanca</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="623"/>
+      <location filename="../../TaskHoleParameters.cpp" line="633"/>
       <source>Wide</source>
       <translation>Amplada</translation>
     </message>
@@ -4290,7 +4290,7 @@ Només disponible per a forats sense rosca</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="692"/>
       <source>Drill Point</source>
-      <translation type="unfinished">Drill Point</translation>
+      <translation>Punt de Perforació</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="134"/>
@@ -4355,7 +4355,7 @@ the screw's top below the surface</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="530"/>
       <source>Hole Cut Type</source>
-      <translation type="unfinished">Hole Cut Type</translation>
+      <translation>Tipus del tall del forat</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
@@ -4412,12 +4412,12 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <translation>Invertit</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="632"/>
+      <location filename="../../TaskHoleParameters.cpp" line="642"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="634"/>
+      <location filename="../../TaskHoleParameters.cpp" line="644"/>
       <source>Loose</source>
       <translation>Solt</translation>
     </message>
@@ -4697,48 +4697,48 @@ més de 90: radi de forat més gran a la part inferior</translation>
     <message>
       <location filename="../../../App/Body.cpp" line="408"/>
       <source>Tip shape is empty</source>
-      <translation type="unfinished">Tip shape is empty</translation>
+      <translation>La forma de la punta està buida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="64"/>
       <source>BaseFeature link is not set</source>
-      <translation type="unfinished">BaseFeature link is not set</translation>
+      <translation>L'enllaç de la característica Base no està establert</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="69"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation type="unfinished">BaseFeature must be a Part::Feature</translation>
+      <translation>La característica Base ha de ser una Part::Feature</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="78"/>
       <source>BaseFeature has an empty shape</source>
-      <translation type="unfinished">BaseFeature has an empty shape</translation>
+      <translation>La característica Base té una forma buida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="80"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation type="unfinished">Cannot do boolean cut without BaseFeature</translation>
+      <translation>No pots fer un tall booleà sense una característica Base</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="94"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="115"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
-      <translation type="unfinished">Cannot do boolean with anything but Part::Feature and its derivatives</translation>
+      <translation>No pots fer un booleà amb res més que Part::Feature i els seus derivats</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="101"/>
       <source>Cannot do boolean operation with invalid base shape</source>
-      <translation type="unfinished">Cannot do boolean operation with invalid base shape</translation>
+      <translation>No pots fer una operació booleana amb una forma de base invàlida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="107"/>
       <source>Cannot do boolean on feature which is not in a body</source>
-      <translation type="unfinished">Cannot do boolean on feature which is not in a body</translation>
+      <translation>No es pot fer un booleà en una característica que no està en un cos</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="125"/>
       <source>Base shape is null</source>
-      <translation type="unfinished">Base shape is null</translation>
+      <translation>La forma base és nul·la</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="128"/>
@@ -4773,12 +4773,12 @@ més de 90: radi de forat més gran a la part inferior</translation>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="142"/>
       <source>Cut out failed</source>
-      <translation type="unfinished">Cut out failed</translation>
+      <translation>El tall ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="147"/>
       <source>Common operation failed</source>
-      <translation type="unfinished">Common operation failed</translation>
+      <translation>L'operació comuna ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="740"/>
@@ -4807,7 +4807,7 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <location filename="../../../App/FeatureGroove.cpp" line="357"/>
       <source>Result has multiple solids: that is not currently supported.</source>
-      <translation type="unfinished">Result has multiple solids: that is not currently supported.</translation>
+      <translation>El resultat té múltiples sòlids: que actualment no està suportat.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="184"/>
@@ -4828,60 +4828,60 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <location filename="../../../App/FeatureChamfer.cpp" line="273"/>
       <location filename="../../../App/FeatureFillet.cpp" line="195"/>
       <source>Resulting shape is invalid</source>
-      <translation type="unfinished">Resulting shape is invalid</translation>
+      <translation>La forma resultant és invàlida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="125"/>
       <source>No edges specified</source>
-      <translation type="unfinished">No edges specified</translation>
+      <translation>No s'ha especificat cap aresta</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="346"/>
       <source>Size must be greater than zero</source>
-      <translation type="unfinished">Size must be greater than zero</translation>
+      <translation>La mida ha de ser major a 0</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="355"/>
       <source>Size2 must be greater than zero</source>
-      <translation type="unfinished">Size2 must be greater than zero</translation>
+      <translation>La mida 2 ha de ser major a 0</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="360"/>
       <source>Angle must be greater than 0 and less than 180</source>
-      <translation type="unfinished">Angle must be greater than 0 and less than 180</translation>
+      <translation>L'angle ha de ser major a 0 i menor a 180</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureDraft.cpp" line="315"/>
       <source>Failed to create draft</source>
-      <translation type="unfinished">Failed to create draft</translation>
+      <translation>No s'ha pogut crear l'esbós</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="82"/>
       <source>Fillet not possible on selected shapes</source>
-      <translation type="unfinished">Fillet not possible on selected shapes</translation>
+      <translation>El cantell no és possible amb les formes seleccionades</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="89"/>
       <location filename="../../../App/FeatureFillet.cpp" line="157"/>
       <source>Fillet radius must be greater than zero</source>
-      <translation type="unfinished">Fillet radius must be greater than zero</translation>
+      <translation>El radi del cantell ha de ser major a 0</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="180"/>
       <source>Failed to create fillet</source>
-      <translation type="unfinished">Failed to create fillet</translation>
+      <translation>No s'ha pogut crear el cantell</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="89"/>
       <location filename="../../../App/FeatureGroove.cpp" line="251"/>
       <source>Angle of groove too large</source>
-      <translation type="unfinished">Angle of groove too large</translation>
+      <translation>L'angle de la ranura és massa gran</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="93"/>
       <location filename="../../../App/FeatureGroove.cpp" line="255"/>
       <source>Angle of groove too small</source>
-      <translation type="unfinished">Angle of groove too small</translation>
+      <translation>L'angle de la ranura és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1669"/>
@@ -4898,27 +4898,27 @@ més de 90: radi de forat més gran a la part inferior</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="446"/>
       <source>Length too small</source>
-      <translation type="unfinished">Length too small</translation>
+      <translation>Longitud massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="453"/>
       <source>Second length too small</source>
-      <translation type="unfinished">Second length too small</translation>
+      <translation>Segona longitud massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="487"/>
       <source>Failed to obtain profile shape</source>
-      <translation type="unfinished">Failed to obtain profile shape</translation>
+      <translation>L'obtenció de la forma del perfil ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="539"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>La creació ha fallat perquè la direcció és ortogonal al vector normal del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="598"/>
       <source>Extrude: Can only offset one face</source>
-      <translation type="unfinished">Extrude: Can only offset one face</translation>
+      <translation>Extrusió: Només pots fer l'extrusió d'una cara</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
@@ -4926,41 +4926,41 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <location filename="../../../App/FeatureGroove.cpp" line="132"/>
       <location filename="../../../App/FeatureGroove.cpp" line="291"/>
       <source>Creating a face from sketch failed</source>
-      <translation type="unfinished">Creating a face from sketch failed</translation>
+      <translation>La creació de la cara del croquis ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="635"/>
       <source>Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Up to face: Could not get SubShape!</translation>
+      <translation>Fins a la cara: No s'ha pogut obtenir la subforma!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="677"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
-      <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
+      <translation>La magnitud de l'angle cònic coincideix o supera els 90 graus</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="688"/>
       <source>Padding with draft angle failed</source>
-      <translation type="unfinished">Padding with draft angle failed</translation>
+      <translation>El farciment amb l'angle d'esbós ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="158"/>
       <location filename="../../../App/FeatureGroove.cpp" line="148"/>
       <location filename="../../../App/FeatureGroove.cpp" line="313"/>
       <source>Revolve axis intersects the sketch</source>
-      <translation type="unfinished">Revolve axis intersects the sketch</translation>
+      <translation>L'eix de revolució intersecta amb el croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="213"/>
       <source>Cut out of base feature failed</source>
-      <translation type="unfinished">Cut out of base feature failed</translation>
+      <translation>El tall de la característica base ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="265"/>
       <location filename="../../../App/FeatureGroove.cpp" line="203"/>
       <location filename="../../../App/FeatureGroove.cpp" line="321"/>
       <source>Could not revolve the sketch!</source>
-      <translation type="unfinished">Could not revolve the sketch!</translation>
+      <translation>No s'ha pogut revolucionar el croquis!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="277"/>
@@ -4968,13 +4968,13 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <location filename="../../../App/FeatureGroove.cpp" line="365"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities in a sketch are not allowed.</translation>
+      <translation>No s'ha pogut crear una cara del croquis.
+No es permet la intersecció d'entitats d'un croquis.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="128"/>
       <source>Error: Pitch too small!</source>
-      <translation type="unfinished">Error: Pitch too small!</translation>
+      <translation>Error: el radi és massa petit!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>
@@ -4985,19 +4985,19 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="136"/>
       <source>Error: pitch too small!</source>
-      <translation type="unfinished">Error: pitch too small!</translation>
+      <translation>Error: el radi és massa petit!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="138"/>
       <location filename="../../../App/FeatureHelix.cpp" line="146"/>
       <location filename="../../../App/FeatureHelix.cpp" line="152"/>
       <source>Error: turns too small!</source>
-      <translation type="unfinished">Error: turns too small!</translation>
+      <translation>Error: voltes massa petites!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="156"/>
       <source>Error: either height or growth must not be zero!</source>
-      <translation type="unfinished">Error: either height or growth must not be zero!</translation>
+      <translation>Error: L'alçada o el creixement no poden ser 0!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="170"/>
@@ -5007,116 +5007,116 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="182"/>
       <source>Error: No valid sketch or face</source>
-      <translation type="unfinished">Error: No valid sketch or face</translation>
+      <translation>Error: Croquis o cara no vàlida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="191"/>
       <source>Error: Face must be planar</source>
-      <translation type="unfinished">Error: Face must be planar</translation>
+      <translation>Error: La cara ha de ser planar</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2157"/>
       <location filename="../../../App/FeatureHelix.cpp" line="272"/>
       <location filename="../../../App/FeatureHelix.cpp" line="302"/>
       <source>Error: Result is not a solid</source>
-      <translation type="unfinished">Error: Result is not a solid</translation>
+      <translation>Error: El resultat no és un sòlid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="252"/>
       <source>Error: There is nothing to subtract</source>
-      <translation type="unfinished">Error: There is nothing to subtract</translation>
+      <translation>Error: No hi ha res a restar</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="255"/>
       <location filename="../../../App/FeatureHelix.cpp" line="276"/>
       <location filename="../../../App/FeatureHelix.cpp" line="305"/>
       <source>Error: Result has multiple solids</source>
-      <translation type="unfinished">Error: Result has multiple solids</translation>
+      <translation>Error: El resultat té múltiples sòlids</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="266"/>
       <source>Error: Adding the helix failed</source>
-      <translation type="unfinished">Error: Adding the helix failed</translation>
+      <translation>Error: L'afegit de l'hèlix ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="289"/>
       <source>Error: Intersecting the helix failed</source>
-      <translation type="unfinished">Error: Intersecting the helix failed</translation>
+      <translation>Error: La intersecció de l'hèlix ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="296"/>
       <source>Error: Subtracting the helix failed</source>
-      <translation type="unfinished">Error: Subtracting the helix failed</translation>
+      <translation>Error: La sostracció de l'hèlix ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="317"/>
       <source>Error: Could not create face from sketch</source>
-      <translation type="unfinished">Error: Could not create face from sketch</translation>
+      <translation>Error: No s'ha pogut crear la cara del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1687"/>
       <source>Hole error: Creating a face from sketch failed</source>
-      <translation type="unfinished">Hole error: Creating a face from sketch failed</translation>
+      <translation>Error de forat: La creació de la cara del croquis ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1712"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation type="unfinished">Hole error: Unsupported length specification</translation>
+      <translation>Error de forat: Especificació de longitud no suportada</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1715"/>
       <source>Hole error: Invalid hole depth</source>
-      <translation type="unfinished">Hole error: Invalid hole depth</translation>
+      <translation>Error de forat: Profunditat del forat invàlida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1738"/>
       <source>Hole error: Invalid taper angle</source>
-      <translation type="unfinished">Hole error: Invalid taper angle</translation>
+      <translation>Error de forat: Angle cònic invàlid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1759"/>
       <source>Hole error: Hole cut diameter too small</source>
-      <translation type="unfinished">Hole error: Hole cut diameter too small</translation>
+      <translation>Error de forat: El diàmetre del tall del forat és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1763"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be less than hole depth</translation>
+      <translation>Error de forat: La profunditat del tall del forat ha de ser menor que la profunditat del forat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1767"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be greater or equal to zero</translation>
+      <translation>Error de forat: La profunditat del tall del forat ha de ser major o igual a 0</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
       <source>Hole error: Invalid countersink</source>
-      <translation type="unfinished">Hole error: Invalid countersink</translation>
+      <translation>Error de forat: Avellanat invàlid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1822"/>
       <source>Hole error: Invalid drill point angle</source>
-      <translation type="unfinished">Hole error: Invalid drill point angle</translation>
+      <translation>Error de forat: Angle de la punta del trepant invàlid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1832"/>
       <source>Hole error: Invalid drill point</source>
-      <translation type="unfinished">Hole error: Invalid drill point</translation>
+      <translation>Error de forat: Punta del trepant invàlida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1866"/>
       <source>Hole error: Could not revolve sketch</source>
-      <translation type="unfinished">Hole error: Could not revolve sketch</translation>
+      <translation>Error de forat: No s'ha pogut revolucionar el croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1870"/>
       <source>Hole error: Resulting shape is empty</source>
-      <translation type="unfinished">Hole error: Resulting shape is empty</translation>
+      <translation>Error de forat: La forma resultant és buida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1880"/>
       <source>Error: Adding the thread failed</source>
-      <translation type="unfinished">Error: Adding the thread failed</translation>
+      <translation>Error: L'afegit de la rosca ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="375"/>
@@ -5124,477 +5124,477 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <location filename="../../../App/FeatureTransformed.cpp" line="411"/>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
-      <translation type="unfinished">Boolean operation failed</translation>
+      <translation>L'operació booleana ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="249"/>
       <location filename="../../../App/FeatureHole.cpp" line="1916"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</translation>
+      <translation>No s'ha pogut crear una cara del croquis.
+No es permet la intersecció d'entitats o múltiples cares d'un croquis per crear un buidatge en una cara.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2037"/>
       <source>Thread type out of range</source>
-      <translation type="unfinished">Thread type out of range</translation>
+      <translation>Tipus de rosca fora de rang</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2040"/>
       <source>Thread size out of range</source>
-      <translation type="unfinished">Thread size out of range</translation>
+      <translation>Mida de rosca fora de rang</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2132"/>
       <source>Error: Thread could not be built</source>
-      <translation type="unfinished">Error: Thread could not be built</translation>
+      <translation>Error: No s'ha pogut construir la rosca</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
       <location filename="../../../App/FeatureLoft.cpp" line="409"/>
       <source>Loft: At least one section is needed</source>
-      <translation type="unfinished">Loft: At least one section is needed</translation>
+      <translation>Altell: es necessita almenys una secció</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="142"/>
       <source>Loft: Could not obtain profile shape</source>
-      <translation type="unfinished">Loft: Could not obtain profile shape</translation>
+      <translation>Altell: No s'ha pogut obtenir una forma del perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="155"/>
       <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
-      <translation type="unfinished">Loft: When using points for profile/sections, the sketch should have a single point</translation>
+      <translation>Altell: Quan s'utilitzen punts pel perfil/seccions, el croquis ha de tenir un sol punt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="163"/>
       <source>Loft: All sections need to be part features</source>
-      <translation type="unfinished">Loft: All sections need to be part features</translation>
+      <translation>Altell: Totes les seccions han de ser característiques de peça</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="168"/>
       <source>Loft: Could not obtain section shape</source>
-      <translation type="unfinished">Loft: Could not obtain section shape</translation>
+      <translation>Altell: No s'ha pogut obtenir una secció del perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="184"/>
       <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation type="unfinished">Loft: A section doesn't contain any wires nor is a single vertex</translation>
+      <translation>Altell: Una secció no conté cap filferro ni és un sol vèrtex</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="186"/>
       <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation type="unfinished">Loft: Only the profile and the last section can be vertices</translation>
+      <translation>Altell: Només el perfil i l'última secció poden ser vèrtexs</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="188"/>
       <source>Loft: For closed lofts only the profile can be a vertex</source>
-      <translation type="unfinished">Loft: For closed lofts only the profile can be a vertex</translation>
+      <translation>Altell: Per als altells creats només el perfil pot ser un vèrtex</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="195"/>
       <source>Loft: all loft sections need to have the same amount of inner wires</source>
-      <translation type="unfinished">Loft: all loft sections need to have the same amount of inner wires</translation>
+      <translation>Altell: totes les seccions de l'altell requereixen tenir la mateixa quantitat de filferros interns</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="234"/>
       <source>Loft could not be built</source>
-      <translation type="unfinished">Loft could not be built</translation>
+      <translation>No s'ha pogut construir l'altell</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="267"/>
       <source>Loft: Result is not a solid</source>
-      <translation type="unfinished">Loft: Result is not a solid</translation>
+      <translation>Altell: El resultat no és un sòlid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="280"/>
       <source>Loft: There is nothing to subtract from</source>
-      <translation type="unfinished">Loft: There is nothing to subtract from</translation>
+      <translation>Altell: No hi ha res a restar</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="290"/>
       <source>Loft: Adding the loft failed</source>
-      <translation type="unfinished">Loft: Adding the loft failed</translation>
+      <translation>Altell: L'afegit de l'altell ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="310"/>
       <source>Loft: Subtracting the loft failed</source>
-      <translation type="unfinished">Loft: Subtracting the loft failed</translation>
+      <translation>Altell: La sostracció de l'altell ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="336"/>
       <location filename="../../../App/FeatureLoft.cpp" line="549"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation type="unfinished">Loft: A fatal error occurred when making the loft</translation>
+      <translation>Altell: S'ha produït un error fatal en crear l'altell</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="448"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Altell: La creació de la cara del croquis ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="481"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Altell: La creació d'un entorn ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="106"/>
       <source>Pad: Can't pad up to shape without base shape.</source>
-      <translation type="unfinished">Pad: Can't pad up to shape without base shape.</translation>
+      <translation>Extrusió: No es pot fer una extrusió sense una forma base.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="138"/>
       <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pad: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Extrusió: La creació ha fallat perquè la direcció és ortogonal al vector normal del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="149"/>
       <source>Pad: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pad: Creating a face from sketch failed</translation>
+      <translation>Extrusió: La creació de la cara del croquis ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="220"/>
       <source>Pad: Resulting shape is empty</source>
-      <translation type="unfinished">Pad: Resulting shape is empty</translation>
+      <translation>Extrusió: La forma resultant és buida</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePad.cpp" line="231"/>
       <source>Pad: Fusion with base feature failed</source>
-      <translation type="unfinished">Pad: Fusion with base feature failed</translation>
+      <translation>Extrusió: La fusió amb la característica base ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="770"/>
       <location filename="../../../App/FeaturePad.cpp" line="261"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>No s'ha pogut crear una cara del croquis.
+No es permet la intersecció d'entitats o múltiples cares d'un croquis.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="177"/>
       <location filename="../../../App/FeaturePipe.cpp" line="511"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation type="unfinished">Pipe: Could not obtain profile shape</translation>
+      <translation>Tub: No s'ha pogut obtenir una forma del perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="182"/>
       <location filename="../../../App/FeaturePipe.cpp" line="516"/>
       <source>No spine linked</source>
-      <translation type="unfinished">No spine linked</translation>
+      <translation>No hi ha cap columna enllaçada</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="195"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <source>No auxiliary spine linked.</source>
-      <translation type="unfinished">No auxiliary spine linked.</translation>
+      <translation>No hi ha cap columna auxiliar enllaçada.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="216"/>
       <location filename="../../../App/FeaturePipe.cpp" line="550"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation type="unfinished">Pipe: Only one isolated point is needed if using a sketch with isolated points for section</translation>
+      <translation>Tub: Només en necessita un punt aïllat si s'utilitza un croquis amb punts aïllats per a la selecció</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="222"/>
       <location filename="../../../App/FeaturePipe.cpp" line="556"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation type="unfinished">Pipe: At least one section is needed when using a single point for profile</translation>
+      <translation>Tub: Es necessita almenys una secció quan s'utilitza un sol punt pel perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="236"/>
       <location filename="../../../App/FeaturePipe.cpp" line="570"/>
       <source>Pipe: All sections need to be part features</source>
-      <translation type="unfinished">Pipe: All sections need to be part features</translation>
+      <translation>Tub: Totes les seccions han de ser característiques de peça</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="242"/>
       <location filename="../../../App/FeaturePipe.cpp" line="576"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation type="unfinished">Pipe: Could not obtain section shape</translation>
+      <translation>Tub: No s'ha pogut obtenir una secció del perfil</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="251"/>
       <location filename="../../../App/FeaturePipe.cpp" line="585"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation type="unfinished">Pipe: Only the profile and last section can be vertices</translation>
+      <translation>Tub: Només el perfil i l'última secció poden ser vèrtexs</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="260"/>
       <location filename="../../../App/FeaturePipe.cpp" line="594"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation type="unfinished">Multisections need to have the same amount of inner wires as the base section</translation>
+      <translation>Les multiseccions han de tenir la mateixa quantitat de filferros interns que la secció base</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="287"/>
       <location filename="../../../App/FeaturePipe.cpp" line="621"/>
       <source>Path must not be a null shape</source>
-      <translation type="unfinished">Path must not be a null shape</translation>
+      <translation>La trajectòria no pot ser una forma nul·la</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="322"/>
       <location filename="../../../App/FeaturePipe.cpp" line="656"/>
       <source>Pipe could not be built</source>
-      <translation type="unfinished">Pipe could not be built</translation>
+      <translation>No s'ha pogut construir el tub</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="702"/>
       <source>Result is not a solid</source>
-      <translation type="unfinished">Result is not a solid</translation>
+      <translation>El resultat no és un sòlid</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="383"/>
       <location filename="../../../App/FeaturePipe.cpp" line="717"/>
       <source>Pipe: There is nothing to subtract from</source>
-      <translation type="unfinished">Pipe: There is nothing to subtract from</translation>
+      <translation>Tub: No hi ha res a restar</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="394"/>
       <location filename="../../../App/FeaturePipe.cpp" line="728"/>
       <source>Adding the pipe failed</source>
-      <translation type="unfinished">Adding the pipe failed</translation>
+      <translation>L'afegit del tub ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="413"/>
       <location filename="../../../App/FeaturePipe.cpp" line="748"/>
       <source>Subtracting the pipe failed</source>
-      <translation type="unfinished">Subtracting the pipe failed</translation>
+      <translation>La sostracció del tub ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="436"/>
       <location filename="../../../App/FeaturePipe.cpp" line="772"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation type="unfinished">A fatal error occurred when making the pipe</translation>
+      <translation>Tub: S'ha produït un error fatal en crear el tub</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="896"/>
       <source>Invalid element in spine.</source>
-      <translation type="unfinished">Invalid element in spine.</translation>
+      <translation>Element invàlid a la columna.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="899"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Element in spine is neither an edge nor a wire.</translation>
+      <translation>L'element de la columna no és una aresta ni un fil.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="912"/>
       <source>Spine is not connected.</source>
-      <translation type="unfinished">Spine is not connected.</translation>
+      <translation>La columna no està connectada.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="916"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Spine is neither an edge nor a wire.</translation>
+      <translation>La columna no és una aresta ni un fil.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="920"/>
       <source>Invalid spine.</source>
-      <translation type="unfinished">Invalid spine.</translation>
+      <translation>Columna invàlida.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="141"/>
       <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Pocket: Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>Buidatge: La creació ha fallat perquè la direcció és ortogonal al vector normal del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="152"/>
       <source>Pocket: Creating a face from sketch failed</source>
-      <translation type="unfinished">Pocket: Creating a face from sketch failed</translation>
+      <translation>Buidatge: La creació de la cara del croquis ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="158"/>
       <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
-      <translation type="unfinished">Pocket: Extruding up to a face is only possible if the sketch is located on a face</translation>
+      <translation>Buidatge: L'extrusió d'una cara només és possible si el croquis està situat a una cara</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="193"/>
       <source>Pocket: Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Pocket: Up to face: Could not get SubShape!</translation>
+      <translation>Buidatge: Fins a la cara: No s'ha pogut obtenir la subforma!</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="216"/>
       <source>Pocket: Resulting shape is empty</source>
-      <translation type="unfinished">Pocket: Resulting shape is empty</translation>
+      <translation>Buidatge: La forma resultant és buida</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePocket.cpp" line="225"/>
       <source>Pocket: Cut out of base feature failed</source>
-      <translation type="unfinished">Pocket: Cut out of base feature failed</translation>
+      <translation>Buidatge: El tall de la característica base ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="105"/>
       <source>Cannot subtract primitive feature without base feature</source>
-      <translation type="unfinished">Cannot subtract primitive feature without base feature</translation>
+      <translation>No pots sostreure una característica primitiva sense una característica base</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
       <source>Unknown operation type</source>
-      <translation type="unfinished">Unknown operation type</translation>
+      <translation>Tipus d'operació desconeguda</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="527"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
       <source>Failed to perform boolean operation</source>
-      <translation type="unfinished">Failed to perform boolean operation</translation>
+      <translation>No s'ha pogut realitzar l'operació booleana</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="145"/>
       <source>Adding the primitive failed</source>
-      <translation type="unfinished">Adding the primitive failed</translation>
+      <translation>L'afegit de la primitiva ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="161"/>
       <source>Subtracting the primitive failed</source>
-      <translation type="unfinished">Subtracting the primitive failed</translation>
+      <translation>La sostracció de la primitiva ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="233"/>
       <source>Length of box too small</source>
-      <translation type="unfinished">Length of box too small</translation>
+      <translation>La longitud de la caixa és massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="235"/>
       <source>Width of box too small</source>
-      <translation type="unfinished">Width of box too small</translation>
+      <translation>L'amplada de la caixa és massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="237"/>
       <source>Height of box too small</source>
-      <translation type="unfinished">Height of box too small</translation>
+      <translation>L'alçada de la caixa és massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="283"/>
       <source>Radius of cylinder too small</source>
-      <translation type="unfinished">Radius of cylinder too small</translation>
+      <translation>El radi del cilindre és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="285"/>
       <source>Height of cylinder too small</source>
-      <translation type="unfinished">Height of cylinder too small</translation>
+      <translation>L'alçada del cilindre és massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="287"/>
       <source>Rotation angle of cylinder too small</source>
-      <translation type="unfinished">Rotation angle of cylinder too small</translation>
+      <translation>L'angle de rotació del cilindre és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="340"/>
       <source>Radius of sphere too small</source>
-      <translation type="unfinished">Radius of sphere too small</translation>
+      <translation>El radi de l'esfera és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="389"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="391"/>
       <source>Radius of cone cannot be negative</source>
-      <translation type="unfinished">Radius of cone cannot be negative</translation>
+      <translation>El radi d'un con no pot ser negatiu</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="393"/>
       <source>Height of cone too small</source>
-      <translation type="unfinished">Height of cone too small</translation>
+      <translation>L'alçada del con és massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="456"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="458"/>
       <source>Radius of ellipsoid too small</source>
-      <translation type="unfinished">Radius of ellipsoid too small</translation>
+      <translation>El radi de l'el·lipsoide és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="540"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="542"/>
       <source>Radius of torus too small</source>
-      <translation type="unfinished">Radius of torus too small</translation>
+      <translation>El radi del torus és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="605"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
-      <translation type="unfinished">Polygon of prism is invalid, must have 3 or more sides</translation>
+      <translation>El polígon del prisma és invàlid, ha de tenir 3 costats o més</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="607"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
-      <translation type="unfinished">Circumradius of the polygon, of the prism, is too small</translation>
+      <translation>El circumradi del polígon, del prisma, és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="609"/>
       <source>Height of prism is too small</source>
-      <translation type="unfinished">Height of prism is too small</translation>
+      <translation>L'alçada del prisma és massa petita</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="690"/>
       <source>delta x of wedge too small</source>
-      <translation type="unfinished">delta x of wedge too small</translation>
+      <translation>delta x de falca massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="693"/>
       <source>delta y of wedge too small</source>
-      <translation type="unfinished">delta y of wedge too small</translation>
+      <translation>delta y de falca massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="696"/>
       <source>delta z of wedge too small</source>
-      <translation type="unfinished">delta z of wedge too small</translation>
+      <translation>delta z de falca massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="699"/>
       <source>delta z2 of wedge is negative</source>
-      <translation type="unfinished">delta z2 of wedge is negative</translation>
+      <translation>delta z2 de falca és negativa</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="702"/>
       <source>delta x2 of wedge is negative</source>
-      <translation type="unfinished">delta x2 of wedge is negative</translation>
+      <translation>delta x2 de falca és negativa</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="89"/>
       <source>Angle of revolution too large</source>
-      <translation type="unfinished">Angle of revolution too large</translation>
+      <translation>L'angle de revolució és massa gran</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="95"/>
       <source>Angle of revolution too small</source>
-      <translation type="unfinished">Angle of revolution too small</translation>
+      <translation>L'angle de revolució és massa petit</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="133"/>
       <source>Reference axis is invalid</source>
-      <translation type="unfinished">Reference axis is invalid</translation>
+      <translation>L'eix de referència és invàlid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="254"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="729"/>
       <source>Fusion with base feature failed</source>
-      <translation type="unfinished">Fusion with base feature failed</translation>
+      <translation>La fusió amb la característica base ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="111"/>
       <source>Transformation feature Linked object is not a Part object</source>
-      <translation type="unfinished">Transformation feature Linked object is not a Part object</translation>
+      <translation>La transformació de la característica Enllaç d'objecte ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="116"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation type="unfinished">No originals linked to the transformed feature.</translation>
+      <translation>No hi ha originals enllaçats amb la característica transformada.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="276"/>
       <source>Cannot transform invalid support shape</source>
-      <translation type="unfinished">Cannot transform invalid support shape</translation>
+      <translation>No es pot transformar la forma de suport invàlida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="305"/>
       <source>Transformation failed</source>
-      <translation type="unfinished">Transformation failed</translation>
+      <translation>La transformació ha fallat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="342"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation type="unfinished">Shape of additive/subtractive feature is empty</translation>
+      <translation>La forma de la característica additiva/subtractiva és buida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="334"/>
       <source>Only additive and subtractive features can be transformed</source>
-      <translation type="unfinished">Only additive and subtractive features can be transformed</translation>
+      <translation>Només es poden transformar característiques additives o sostractives</translation>
     </message>
   </context>
   <context>
@@ -5602,7 +5602,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Active body</source>
-      <translation type="unfinished">Active body</translation>
+      <translation>Cos actiu</translation>
     </message>
   </context>
   <context>
@@ -5610,12 +5610,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2442"/>
       <source>Create datum</source>
-      <translation type="unfinished">Create datum</translation>
+      <translation>Crear datum</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2443"/>
       <source>Create a datum object or local coordinate system</source>
-      <translation type="unfinished">Create a datum object or local coordinate system</translation>
+      <translation>Crea un objecte datum o un sistema de coordenades local</translation>
     </message>
   </context>
   <context>
@@ -5623,12 +5623,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2477"/>
       <source>Create datum</source>
-      <translation type="unfinished">Create datum</translation>
+      <translation>Crear datum</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2478"/>
       <source>Create a datum object or local coordinate system</source>
-      <translation type="unfinished">Create a datum object or local coordinate system</translation>
+      <translation>Crea un objecte datum o un sistema de coordenades local</translation>
     </message>
   </context>
 </TS>

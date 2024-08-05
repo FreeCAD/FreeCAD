@@ -48,12 +48,12 @@
     <message>
       <location filename="../../compact_view.py" line="93"/>
       <source>Update Available</source>
-      <translation>利用可能なアップデートがあります</translation>
+      <translation>更新があります</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation>利用可能なものを更新</translation>
+      <translation>更新が利用可能</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation>オプション?</translation>
+      <translation>オプション？</translation>
     </message>
   </context>
   <context>
@@ -94,22 +94,22 @@
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
       <translation>このアドオンには以下の必須依存関係、オプション依存関係があります。このアドオンを使用できるようにするにはこれらをインストールする必要があります。
 
-アドオン・マネージャーに自動的にインストールしますか？　依存関係をインストールせずにアドオンをインストールするには&quot;無視&quot; を選択してください。</translation>
+アドオンマネージャーに自動的にインストールしますか？　依存関係をインストールせずにアドオンをインストールするには&quot;無視&quot; を選択してください。</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>FreeCAD アドオン</translation>
+      <translation>FreeCADアドオン</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation>必要な Python モジュール</translation>
+      <translation>必須のPythonモジュール</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation>オプションの Python モジュール</translation>
+      <translation>オプションのPythonモジュール</translation>
     </message>
   </context>
   <context>
@@ -117,12 +117,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation>アドオン開発者ツール</translation>
+      <translation>拡張機能の開発者ツール</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation>アドオンのパス</translation>
+      <translation>拡張機能のパス</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -138,13 +138,13 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation>プライマリーブランチ</translation>
+      <translation>プライマリブランチ</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>このアドオンが提供するものの説明です。アドオンマネージャーに表示されます。FreeCADアドオン であることを示す必要ありません。</translation>
+      <translation>この拡張機能が提供することの説明です。「拡張機能の管理」に表示されます。FreeCADの拡張機能であることを書く必要はありません。</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -164,17 +164,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation>バグトラッカーのURL</translation>
+      <translation>バグ管理システムのURL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>セマンティック・スタイル (1.2.3-beta) 、CalVer スタイル (20202.08.30) をサポート</translation>
+      <translation>セマンティック（1.2.3-beta）かカレンダー（2022.08.30）バージョニングで入力</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation>今日に設定 (CalVer スタイル)</translation>
+      <translation>今日の日付を挿入</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -182,13 +182,13 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation>(オプション)</translation>
+      <translation>（オプション）</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation>アドオン・マネージャーのアドオンリストに表示されます。「FreeCAD」という単語を含まない、サポートされているすべてのオペレーティングシステムで利用可能なディレクトリ名でなければなりません。</translation>
+      <translation>「拡張機能の管理」で表示されます。「FreeCAD」という単語を含まず、FreeCADがサポートする全てのオペレーティングシステムで利用可能な名前にしてください。</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
@@ -198,7 +198,8 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation>TIP: これはFreeCAD内のアドオン・マネージャーに表示されるので、&quot;これはFreeCADのアドオンです...&quot; といったことを説明する必要はありません。単にこれが何かを説明してください。</translation>
+      <translation>拡張機能が提供することの説明
+補足：FreeCAD内の「拡張機能の管理」に表示されるので、「FreeCADの拡張機能」とは書かないでください。</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
@@ -218,7 +219,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation>アドオン名</translation>
+      <translation>拡張機能の名前</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -228,17 +229,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation>(推奨)</translation>
+      <translation>（入力を推奨）</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation>Python 最低要件</translation>
+      <translation>Pythonの最低要件</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
       <source>(Optional, only 3.x version supported)</source>
-      <translation>(オプション、3.x バージョンのみサポート)</translation>
+      <translation>（オプション。3.x バージョンのみサポート）</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
@@ -248,7 +249,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation>アドオンの内容</translation>
+      <translation>拡張機能の内容</translation>
     </message>
   </context>
   <context>
@@ -256,7 +257,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation>アドオン・マネージャー</translation>
+      <translation>拡張機能の管理</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
@@ -271,52 +272,52 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>ヒント: 一般的なタグには &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;などがあります。</translation>
+      <translation>ヒント：一般的なタグには &quot;Assembly&quot;、&quot;FEM&quot;、&quot;Mesh&quot;、&quot;NURBS&quot;等があります。</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation>アドオン・マネージャーへようこそ</translation>
+      <translation>拡張機能の管理へようこそ</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>ここにインストールできるアドオンはFreeCADの公式な機能ではなく、FreeCADチームによってレビューされていません。 何をインストールしているかをしっかり確認してください!</translation>
+      <translation>拡張機能はFreeCAD開発チームの精査を受けていません。気をつけてインストールしてください。</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
+      <location filename="../../first_run.ui" line="39"/>
       <source>Download Settings</source>
       <translation>ダウンロード設定</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="53"/>
+      <location filename="../../first_run.ui" line="46"/>
       <source>Automatically check installed Addons for updates</source>
-      <translation>インストールされているアドオンの更新を自動確認</translation>
+      <translation>インストールした拡張機能の更新を自動的に確認</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="60"/>
+      <location filename="../../first_run.ui" line="53"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>マクロメタデータ（約10MB）をダウンロード</translation>
+      <translation>マクロのメタデータ（約10MB）をダウンロード</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="70"/>
+      <location filename="../../first_run.ui" line="63"/>
       <source>No proxy</source>
       <translation>プロキシを使用しない</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="75"/>
+      <location filename="../../first_run.ui" line="68"/>
       <source>System proxy</source>
-      <translation>システムプロキシ</translation>
+      <translation>システムのプロキシ</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="80"/>
+      <location filename="../../first_run.ui" line="73"/>
       <source>User-defined proxy:</source>
       <translation>ユーザー定義プロキシ:</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="93"/>
+      <location filename="../../first_run.ui" line="86"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation>これらの設定は FreeCAD の設定ウィンドウで利用できます。</translation>
+      <translation>これらは「設定」で設定できます。</translation>
     </message>
   </context>
   <context>
@@ -339,17 +340,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation>パッケージ名、もし「その他...」の場合</translation>
+      <translation>パッケージ名が「その他...」の場合</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
       <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
-      <translation>注意: 「その他...」を選択すると、パッケージは ALLOWED_PYTHON_PACKAGES.txt ファイルに記載されず、アドオン・マネージャーは自動インストールを行ないません。パッケージを追加したい場合は &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; へ PR を投稿してください。</translation>
+      <translation>注意: 「その他...」を選択すると、パッケージは ALLOWED_PYTHON_PACKAGES.txt ファイルに記載されず、拡張機能の管理は自動インストールを行ないません。パッケージを追加したい場合は &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; へ PR を投稿してください。</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation>これがオプションの依存関係である場合、アドオン・マネージャーは (可能であれば) そのインストールを提供しますが、ユーザーがパッケージをインストールしない、またはできない場合でも、インストールをブロックはしません。</translation>
+      <translation>これがオプションの依存関係である場合、「拡張機能の管理」は（可能な場合）インストールを提案しますが、ユーザーがオプションのパッケージをインストールしない場合でも、インストールを中止しません。</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
@@ -381,7 +382,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="127"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation>(タグ)</translation>
+      <translation>（タグ）</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="130"/>
@@ -393,12 +394,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="131"/>
       <location filename="../../expanded_view.ui" line="178"/>
       <source>Maintainer</source>
-      <translation>メンテナー</translation>
+      <translation>保守担当者</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="134"/>
       <source>Update Available</source>
-      <translation>利用可能なアップデートがあります</translation>
+      <translation>更新があります</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="128"/>
@@ -408,7 +409,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="193"/>
       <source>UpdateAvailable</source>
-      <translation>利用可能なものを更新</translation>
+      <translation>更新が利用可能</translation>
     </message>
   </context>
   <context>
@@ -431,12 +432,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation>人々</translation>
+      <translation>貢献者</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation>種類</translation>
+      <translation>役割</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -459,17 +460,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation>FreeCADアドオン・マネージャーの今後のバージョンでは、特定のバージョンのFreeCADで使用するための特定のブランチやタグを開発者が設定する機能がサポートされます (例えば v0.19 をサポートする自作アドオンの最新バージョンとして特定のタグを設定するなど)</translation>
+      <translation>「拡張機能の管理」の今後のバージョンでは、特定のバージョンのFreeCADで使用するためのブランチやタグを開発者が設定する機能がサポートされます（バージョン0.19をサポートする自作の拡張機能の最新バージョンとして、特定のタグを設定する等）</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation>FreeCAD バージョン</translation>
+      <translation>FreeCADのバージョン</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation>最も利用に適したブランチ、タグ、またはコミット</translation>
+      <translation>最良のブランチ、タグ、またはコミット</translation>
     </message>
   </context>
   <context>
@@ -477,7 +478,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation>サポートされている FreeCAD バージョン</translation>
+      <translation>サポートされているFreeCADのバージョン</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
@@ -506,143 +507,143 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation>アドオン・マネージャーのオプション</translation>
+      <translation>拡張機能の管理のオプション</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="20"/>
+      <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
-      <translation>このオプションが選択されている場合、アドオン・マネージャーの起動時にインストール済みアドオンの利用可能な更新をチェックします。</translation>
+      <translation>このオプションを選択すると、「拡張機能の管理」の起動時にインストールした拡張機能に更新があるかを確認します。</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="24"/>
+      <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation>開始時に更新を自動確認 (Gitが必要)</translation>
+      <translation>起動時に更新を自動的に確認（Gitが必要）</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="40"/>
+      <location filename="../../AddonManagerOptions.ui" line="43"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation>マクロメタデータ（約10MB）をダウンロード</translation>
+      <translation>マクロのメタデータ（約10MB）をダウンロード</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="55"/>
+      <location filename="../../AddonManagerOptions.ui" line="58"/>
       <source>Cache update frequency</source>
-      <translation>キャッシュ更新頻度</translation>
+      <translation>キャッシュの更新頻度</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="75"/>
+      <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>Manual (no automatic updates)</source>
-      <translation>手動 (自動更新なし)</translation>
+      <translation>手動（自動で更新しません）</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="80"/>
+      <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
-      <translation>日次</translation>
+      <translation>毎日</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="85"/>
+      <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
-      <translation>週次</translation>
+      <translation>毎週</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="95"/>
+      <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
-      <translation>ライセンスの無いアドオンを非表示</translation>
+      <translation>ライセンスの無い拡張機能を非表示</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="111"/>
+      <location filename="../../AddonManagerOptions.ui" line="114"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
-      <translation>非FSF Free/Libre ライセンスのアドオンを非表示</translation>
+      <translation>非FSF Free/Libre ライセンスの拡張機能を非表示</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="127"/>
+      <location filename="../../AddonManagerOptions.ui" line="130"/>
       <source>Hide Addons with non-OSI-approved license</source>
-      <translation>OSI非承認ライセンスのアドオンを非表示</translation>
+      <translation>OSI非承認ライセンスの拡張機能を非表示</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="143"/>
+      <location filename="../../AddonManagerOptions.ui" line="146"/>
       <source>Hide Addons marked Python 2 Only</source>
-      <translation>Python 2 専用のアドオンを非表示</translation>
+      <translation>Python 2専用の拡張機能を非表示</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="159"/>
+      <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
-      <translation>廃止されたアドオンを非表示</translation>
+      <translation>廃止された拡張機能を非表示</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="175"/>
+      <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
-      <translation>新しいバージョンの FreeCAD が必要なアドオンを非表示</translation>
+      <translation>新しいバージョンのFreeCADが必要な拡張機能を非表示</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="197"/>
+      <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
       <translation>カスタムリポジトリ</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="251"/>
+      <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
       <translation>プロキシ</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="257"/>
+      <location filename="../../AddonManagerOptions.ui" line="260"/>
       <source>No proxy</source>
       <translation>プロキシを使用しない</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="273"/>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
       <translation>ユーザーシステムプロキシ</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="286"/>
+      <location filename="../../AddonManagerOptions.ui" line="289"/>
       <source>User-defined proxy:</source>
-      <translation>ユーザー定義プロキシ:</translation>
+      <translation>手動でプロキシを設定する</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="323"/>
+      <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
-      <translation>スコア元URL</translation>
+      <translation>スコア元のURL</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="342"/>
+      <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
-      <translation>アドオンスコアデータの URL (フォーマットとホスティングの詳細についてはアドオン・マネージャーのWikiページを参照)</translation>
+      <translation>拡張機能スコアデータのURL（フォーマットとホスティングの詳細については「拡張機能の管理」のWiki参照）</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="353"/>
+      <location filename="../../AddonManagerOptions.ui" line="350"/>
       <source>Path to Git executable (optional):</source>
-      <translation type="unfinished">Path to Git executable (optional):</translation>
+      <translation>Gitの実行ファイルのパス（オプション）</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="372"/>
+      <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation>Git実行ファイルのパス。指定されていない場合には必要時に自動検出されます。</translation>
+      <translation>Gitの実行ファイルのパス。未入力でも必要な時は自動で検出されます。</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="393"/>
+      <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
       <translation>詳細設定</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="399"/>
+      <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires git)</source>
-      <translation>ブランチ変更オプションを表示 (gitが必要)</translation>
+      <translation>ブランチの変更オプションを表示（gitが必要）</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="412"/>
+      <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation>Git を無効にする (ZIP ダウンロードのみに戻ります)</translation>
+      <translation>Gitを無効にする（ZIPダウンロードのみになります）</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManagerOptions.ui" line="422"/>
+      <source>Activate Addon Manager options intended for developers of new Addons.</source>
+      <translation>拡張機能開発者向けの「拡張機能の管理」のオプションを有効にします。</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="425"/>
-      <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation>新しいアドオン開発者向けのアドオン・マネージャー・オプションを有効にします。</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="428"/>
       <source>Addon developer mode</source>
-      <translation>アドオン開発者モード</translation>
+      <translation>拡張機能開発者モード</translation>
     </message>
   </context>
   <context>
@@ -660,7 +661,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_details.ui" line="59"/>
       <source>Uninstall</source>
-      <translation>アンインストール·</translation>
+      <translation>アンインストール</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="66"/>
@@ -670,7 +671,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_details.ui" line="73"/>
       <source>Run Macro</source>
-      <translation>マクロの実行</translation>
+      <translation>マクロを実行</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="80"/>
@@ -683,12 +684,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation>Python依存関係の管理</translation>
+      <translation>Pythonの依存関係の管理</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation>以下の Python パッケージはアドオンの依存関係を満たすようにアドオン・マネージャーによってローカルにインストールされています。インストール場所:</translation>
+      <translation>以下のPythonのパッケージは拡張機能の依存関係を満たすように「拡張機能の管理」によってインストールされています。インストール先：</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
@@ -698,7 +699,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation>インストール済のバージョン</translation>
+      <translation>インストール済みのバージョン</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
@@ -713,12 +714,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation>&quot;使用先&quot; 列で使用されるアスタリスク (*) は、オプションの依存関係を示します。使用先にはアドオンで直接インポートされているもののみ記録されることに注意してください。依存している他のPythonパッケージもインストールされている可能性があります。</translation>
+      <translation>「使用先」のアスタリスク（*）はオプションの依存関係を示します。「使用先」には拡張機能で直接インポートされたもののみ記録されることに注意してください。依存している他のPythonパッケージもインストールされている可能性があります。</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation>利用可能な全てを更新</translation>
+      <translation>全てを更新</translation>
     </message>
   </context>
   <context>
@@ -739,12 +740,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../update_all.ui" line="14"/>
       <source>Updating Addons</source>
-      <translation>アドオンを更新</translation>
+      <translation>拡張機能を更新</translation>
     </message>
     <message>
       <location filename="../../update_all.ui" line="23"/>
       <source>Updating out-of-date addons...</source>
-      <translation>廃止されたアドオンを更新...</translation>
+      <translation>廃止された拡張機能を更新...</translation>
     </message>
   </context>
   <context>
@@ -757,7 +758,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="25"/>
       <source>Content type:</source>
-      <translation>コンテンツの種類:</translation>
+      <translation>コンテンツの種類</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
@@ -767,7 +768,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
       <source>Preference Pack</source>
-      <translation>ユーザー設定パック</translation>
+      <translation>環境設定パック</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
@@ -777,17 +778,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation>これがアドオン内で唯一のものである場合、他のすべてのメタデータはトップレベルから継承でき、ここで指定する必要はありません。</translation>
+      <translation>これが拡張機能内で唯一のものである場合、他のすべてのメタデータはトップレベルから継承でき、ここで指定する必要はありません。</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
       <source>This is the only item in the Addon</source>
-      <translation>これはアドオンの中の唯一のアイテムです。</translation>
+      <translation>これは拡張機能の中の唯一のアイテムです</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation>メインマクロファイル</translation>
+      <translation>メインのマクロファイル</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
@@ -804,7 +805,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
       <source>Preference Pack Name</source>
-      <translation>ユーザー設定パック名</translation>
+      <translation>環境設定パック名</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
@@ -824,7 +825,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
       <source>Optional, defaults to name of content item</source>
-      <translation>省略可能、デフォルトではコンテンツ項目の名前</translation>
+      <translation>省略可能、既定ではコンテンツアイテムの名前</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
@@ -834,7 +835,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
-      <translation>省略可能、デフォルトでは最上位のアドオンから継承</translation>
+      <translation>省略可能、デフォルトでは最上位の拡張機能から継承</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
@@ -849,7 +850,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
       <source>FreeCAD Versions...</source>
-      <translation>FreeCAD バージョン...</translation>
+      <translation>FreeCADのバージョン...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
@@ -859,7 +860,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation>アドオン・マネージャーのアドオン一覧に表示されます。&quot;FreeCAD&quot; という単語が含まれないようにしてください。</translation>
+      <translation>「拡張機能の管理」の拡張機能の一覧に表示されます。「FreeCAD」という単語が含まれないようにしてください。</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -874,12 +875,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation>セマンティック・スタイル (1.2.3-beta) 、CalVer スタイル (20202.08.30) をサポート</translation>
+      <translation>セマンティック（1.2.3-beta）かカレンダー（2022.08.30）バージョニングで入力</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation>今日に設定 (CalVer スタイル)</translation>
+      <translation>今日の日付を挿入</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -889,7 +890,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation>空白のフィールドは、トップレベルの Addon メタデータから継承されるため、実質的にはすべてオプションです。 複数のコンテンツアイテムを持つアドオンでは、各アイテムには一意な表示名と説明を指定する必要があります。</translation>
+      <translation>空白のフィールドは、トップレベルの拡張機能メタデータから継承されるため、実質的にはすべてオプションです。 複数のコンテンツアイテムを持つ拡張機能では、各アイテムには一意な表示名と説明を指定する必要があります。</translation>
     </message>
   </context>
   <context>
@@ -902,7 +903,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation>このマクロのツールバーボタンを追加しますか？</translation>
+      <translation>ツールバーにこのマクロを追加しますか？</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
@@ -917,7 +918,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="46"/>
       <source>Never</source>
-      <translation>しない</translation>
+      <translation>常にしない</translation>
     </message>
   </context>
   <context>
@@ -930,7 +931,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../change_branch.ui" line="23"/>
       <source>Change to branch:</source>
-      <translation>ブランチの変更:</translation>
+      <translation>ブランチの変更</translation>
     </message>
   </context>
   <context>
@@ -943,12 +944,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation>著作権者:</translation>
+      <translation>著作権者</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation>著作権年:</translation>
+      <translation>著作権年</translation>
     </message>
   </context>
   <context>
@@ -956,27 +957,27 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation>人物の追加</translation>
+      <translation>人物を追加</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation>メンテナーはこのプロジェクトで現在コミットアクセス権を持っている人物、作成車はあなたがクレジット表記したいと思う任意の人物です。</translation>
+      <translation>保守担当者はこのプロジェクトで現在コミットアクセス権を持っている人です。作成者はあなたがクレジット表記したいと思う任意の人です。</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation>名前:</translation>
+      <translation>名前</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation>Eメール:</translation>
+      <translation>Eメール</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation>メンテナーの場合はメールが必要ですが、作成者の場合はどちらでも構いません。</translation>
+      <translation>保守担当者はEメールアドレスが必要です。</translation>
     </message>
   </context>
   <context>
@@ -984,17 +985,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../proxy_authentication.ui" line="14"/>
       <source>Proxy login required</source>
-      <translation>プロキシログインが必要です。</translation>
+      <translation>プロキシにログインしてください</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="20"/>
       <source>Proxy requires authentication</source>
-      <translation>プロキシに認証が必要です。</translation>
+      <translation>プロキシに認証が必要です</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="29"/>
       <source>Proxy:</source>
-      <translation>プロキシ:</translation>
+      <translation>プロキシ</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="42"/>
@@ -1004,12 +1005,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../proxy_authentication.ui" line="49"/>
       <source>Realm:</source>
-      <translation>レルム:</translation>
+      <translation>レルム</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="56"/>
       <source>Placeholder for proxy realm</source>
-      <translation>プロキシレルムのプレースホルダー</translation>
+      <translation>プロキシのレルムのプレースホルダー</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="67"/>
@@ -1027,7 +1028,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation>ライセンスを選択</translation>
+      <translation>ライセンスの選択</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
@@ -1037,17 +1038,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation>ライセンス名:</translation>
+      <translation>ライセンス名</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation>ライセンスファイルへのパス:</translation>
+      <translation>ライセンスファイルのパス</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation>(ライセンスで要求された場合)</translation>
+      <translation>（必要なライセンスの場合）</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
@@ -1073,7 +1074,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
       <source>Select a toolbar to add this macro to:</source>
-      <translation>このマクロを追加するツールバーを選択:</translation>
+      <translation>このマクロを追加するツールバーを選択</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
@@ -1092,7 +1093,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation>このマクロのツールバーボタンを追加しますか？</translation>
+      <translation>ツールバーにこのマクロを追加しますか？</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>
@@ -1107,7 +1108,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../toolbar_button.ui" line="46"/>
       <source>Never</source>
-      <translation>しない</translation>
+      <translation>常にしない</translation>
     </message>
   </context>
   <context>
@@ -1115,41 +1116,40 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="296"/>
       <source>Starting up...</source>
-      <translation>起動中...</translation>
+      <translation>起動しています…</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="332"/>
       <source>Loading addon information</source>
-      <translation>アドオンの情報を読み込んでいます...</translation>
+      <translation>拡張機能の情報を読み込んでいます</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation>ワーカープロセス {} は停止するのに長い時間がかかっています...</translation>
+      <translation>ワーカープロセス {} の停止に時間がかかっています…</translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="95"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation>以前のキャッシュプロセスが中断されました。再起動中...
+      <translation>キャッシュプロセスが中断されました。再起動しています…
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="116"/>
       <source>Custom repo list changed, forcing recache...
 </source>
-      <translation>カスタムリポジトリリストが変更されました。強制的に再キャッシュをしています...
-</translation>
+      <translation>カスタムリポジトリの一覧が変更されました。強制的に再キャッシュをしています…</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="416"/>
       <source>Addon manager</source>
-      <translation>アドオン・マネージャー</translation>
+      <translation>拡張機能の管理</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="423"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation>変更を有効にするにはFreeCADを再起動する必要があります。</translation>
+      <translation>変更を有効にするにはFreeCADを再起動してください。</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="429"/>
@@ -1170,18 +1170,18 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="626"/>
       <source>Updating cache...</source>
-      <translation>キャッシュを更新しています...</translation>
+      <translation>キャッシュを更新しています…</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="686"/>
       <location filename="../../AddonManager.py" line="721"/>
       <source>Checking for updates...</source>
-      <translation>アップデートを確認中…</translation>
+      <translation>更新を確認しています…</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="936"/>
       <source>Temporary installation of macro failed.</source>
-      <translation>マクロの一時インストールに失敗しました。</translation>
+      <translation>マクロを一時インストールできませんでした。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1192,12 +1192,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="96"/>
       <source>Update all addons</source>
-      <translation>すべてのアドオンを更新</translation>
+      <translation>全ての拡張機能を更新</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="97"/>
       <source>Check for updates</source>
-      <translation>アップデートをチェック</translation>
+      <translation>更新を確認</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="98"/>
@@ -1212,12 +1212,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
-      <translation>%n の利用可能なアップデートを適用</translation>
+      <translation>%n を更新</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>更新はありません</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="826"/>
@@ -1232,7 +1232,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../package_list.py" line="379"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
-      <translation>メンテナー</translation>
+      <translation>保守担当者</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
@@ -1245,17 +1245,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../manage_python_dependencies.py" line="164"/>
       <source>New Python Version Detected</source>
-      <translation>新しいPythonバージョンが検出されました。</translation>
+      <translation>新しいバージョンのPythonが検出されました。</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="169"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
-      <translation>このバージョンの Python がアドオンマネージャーで使用されたのは初めてのようです。 同じ自動インストール依存関係をインストールしますか？</translation>
+      <translation>「拡張機能の管理」でこのバージョンのPythonを初めて使用しました。 自動インストールされた依存関係もインストールしますか？</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="198"/>
       <source>Processing, please wait...</source>
-      <translation>処理中です。しばらくお待ちください…</translation>
+      <translation>処理しています。しばらくお待ちください…</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="246"/>
@@ -1266,12 +1266,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
-      <translation>更新中...</translation>
+      <translation>更新しています…</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
       <source>Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</source>
-      <translation>QtNetworkをインポートできませんでした。システムにインストールされていないようです。あなたのプロバイダーがこの依存関係のパッケージを提供しているかもしれません (多くの場合 &quot;python3-pyside2.qtnetwork&quot; と呼ばれます)</translation>
+      <translation>QtNetwork をインポートできませんでした。依存関係のパッケージ（&quot;python3-pyside2.qtnetwork&quot;）をインストールしてください。</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="228"/>
@@ -1281,17 +1281,17 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../NetworkManager.py" line="257"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation>パラメーターエラー: 相互排他的なプロキシオプションが設定されています。デフォルトにリセットします。</translation>
+      <translation>パラメーターエラー：相互排他的なプロキシオプションが設定されています。既定のプロキシに再設定します。</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="272"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation>パラメーターエラー: ユーザープロキシが指定されましたが、プロキシが指定されていません。デフォルトにリセットします。</translation>
+      <translation>パラメーターエラー：「手動でプロキシを設定する」が選択されましたが、プロキシが提供されていません。既定のプロキシに再設定します。</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="421"/>
       <source>Addon Manager: Unexpected {} response from server</source>
-      <translation>アドオン・マネージャー: サーバーからの予期しない {} レスポンス</translation>
+      <translation>拡張機能の管理：サーバーから予期しない {} レスポンスがありました</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="511"/>
@@ -1303,7 +1303,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="61"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="71"/>
       <source>Confirm remove</source>
-      <translation>削除の確認</translation>
+      <translation>削除を確認</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="80"/>
@@ -1315,24 +1315,24 @@ installed addons will be checked for available updates</source>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="81"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="94"/>
       <source>Removing Addon</source>
-      <translation>アドオンを削除中</translation>
+      <translation>拡張機能を削除しています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="91"/>
       <source>Removing {}</source>
-      <translation>{} を削除</translation>
+      <translation>{}を削除しています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="114"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="109"/>
       <source>Uninstall complete</source>
-      <translation>アンインストール完了</translation>
+      <translation>アンインストールしました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="126"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="118"/>
       <source>Uninstall failed</source>
-      <translation>アンインストールに失敗しました</translation>
+      <translation>アンインストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="259"/>
@@ -1370,22 +1370,22 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="278"/>
       <source>Update check in progress</source>
-      <translation>アップデート確認中</translation>
+      <translation>更新を確認しています</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="122"/>
       <source>Installation location</source>
-      <translation>インストール場所</translation>
+      <translation>インストール先</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="186"/>
       <source>Changed to branch &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation>ブランチ &apos;{}&apos; に変更されました -- アドオンを使用するには再起動してください。</translation>
+      <translation>ブランチ &apos;{}&apos; に変更されました。拡張機能を使用するには再起動してください。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="197"/>
       <source>This Addon has been updated. Restart FreeCAD to see changes.</source>
-      <translation>このアドオンは更新されました。FreeCADを再起動して変更を確認してください。</translation>
+      <translation>この拡張機能を更新しました。FreeCADを再起動して変更を確認してください。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="231"/>
@@ -1395,59 +1395,59 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="302"/>
       <source>Currently on branch {}, update available to version {}</source>
-      <translation>現在のブランチは {} 、バージョン {} の更新を利用可能</translation>
+      <translation>現在のブランチ {} で 、バージョン {} に更新できます</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="308"/>
       <source>Update available to version {}</source>
-      <translation>バージョン {} の更新を利用可能</translation>
+      <translation>バージョン {} に更新できます</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="314"/>
       <source>This is the latest version available</source>
-      <translation>これは利用可能な最新バージョンです。</translation>
+      <translation>お使いのバージョンは最新です</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="336"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation>警告: このアドオンは廃止されています。</translation>
+      <translation>警告：この拡張機能は廃止されました</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="338"/>
       <source>WARNING: This addon is Python 2 only</source>
-      <translation>警告: このアドオンは Python 2 のみです。</translation>
+      <translation>警告：この拡張機能は Python 2専用です</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="339"/>
       <source>WARNING: This addon requires FreeCAD {}</source>
-      <translation>警告: このアドオンには FreeCAD {} が必要です。</translation>
+      <translation>警告：この拡張機能は FreeCAD {} が必要です</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="334"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation>警告: このアドオンは現在インストールされていますが無効になっています。再度有効にするには &apos;有効&apos; ボタンを使用してください。</translation>
+      <translation>警告：この拡張機能は現在インストールされていますが無効になっています。再度有効にするには「有効」ボタンを押してください。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="177"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation>このアドオンは次回 FreeCAD を再起動したときに有効になります。</translation>
+      <translation>この拡張機能は次にFreeCADを再起動したときに有効になります。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="173"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation>このアドオンは次回 FreeCAD を再起動したときに無効になります。</translation>
+      <translation>この拡張機能は次にFreeCADを再起動したときに無効になります。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../addonmanager_package_details_controller.py" line="245"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
-      <translation>成功</translation>
+      <translation>インストールしました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_package_details_controller.py" line="249"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
-      <translation>ブランチの変更に成功しました。新しいバージョンを使用するには再起動してください。</translation>
+      <translation>ブランチを変更しました。新しいバージョンを使用するには再起動してください。</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="111"/>
@@ -1457,7 +1457,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="112"/>
       <source>Uninstall</source>
-      <translation>アンインストール·</translation>
+      <translation>アンインストール</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="114"/>
@@ -1473,7 +1473,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_package_details_controller.py" line="125"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="110"/>
       <source>Check for update</source>
-      <translation>アップデートを確認</translation>
+      <translation>更新を確認</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="116"/>
@@ -1488,22 +1488,22 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="118"/>
       <source>Return to package list</source>
-      <translation>パッケージ一覧に戻る</translation>
+      <translation>パッケージの一覧に戻る</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="70"/>
       <source>Checking connection</source>
-      <translation>接続の確認中</translation>
+      <translation>接続を確認しています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="71"/>
       <source>Checking for connection to GitHub...</source>
-      <translation>GitHub への接続を確認しています...</translation>
+      <translation>GitHubへの接続を確認しています…</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="94"/>
       <source>Connection failed</source>
-      <translation>接続に失敗</translation>
+      <translation>接続できませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="100"/>
@@ -1513,50 +1513,49 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="105"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation>QtNetworkをインポートできませんでした。詳細についてはレポートビューを参照してください。アドオン・マネージャーは利用できません。</translation>
+      <translation>QtNetworkをインポートできませんでした。詳細についてはレポートビューを参照してください。拡張機能の管理は利用できません。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
       <source>Other...</source>
       <comment>For providing a license other than one listed</comment>
-      <translation>その他...</translation>
+      <translation>その他のライセンス...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
       <source>Select the corresponding license file in your Addon</source>
-      <translation>アドオンで対応するライセンスファイルを選択してください</translation>
+      <translation>拡張機能で対応するライセンスファイルを選択してください</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="237"/>
       <source>Location for new license file</source>
-      <translation>新しいライセンスファイルの場所</translation>
+      <translation>新規のライセンスファイルの保存先</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="355"/>
       <source>Received {} response code from server</source>
-      <translation>サーバーから {} のレスポンスコードを受信しました</translation>
+      <translation>サーバーから {} レスポンスがありました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="517"/>
       <source>Failed to install macro {}</source>
-      <translation>マクロ {} のインストールに失敗しました。</translation>
+      <translation>マクロ {} をインストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="551"/>
       <source>Failed to create installation manifest file:
 </source>
-      <translation>インストールマニフェストファイルの作成に失敗:
-</translation>
+      <translation>インストールマニフェストファイルを作成できませんでした。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="127"/>
       <source>Unrecognized content kind &apos;{}&apos;</source>
-      <translation>認識できないコンテンツ種別です &apos;{}&apos;</translation>
+      <translation>認識できないコンテンツ &apos;{}&apos; です</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="188"/>
       <source>Unable to locate icon at {}</source>
-      <translation>{} でアイコンを見つけられませんでした</translation>
+      <translation>{} でアイコンが見つかりませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="260"/>
@@ -1589,7 +1588,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
       <source>Addon</source>
-      <translation>アドオン</translation>
+      <translation>拡張機能</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="430"/>
@@ -1609,12 +1608,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="496"/>
       <source>External Addon</source>
-      <translation>外部アドオン</translation>
+      <translation>外部の拡張機能</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="497"/>
       <source>Python Package</source>
-      <translation>Python パッケージ</translation>
+      <translation>Pythonのパッケージ</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="559"/>
@@ -1625,7 +1624,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
-      <translation>多すぎて一覧にできません。</translation>
+      <translation>項目が多いため全てを一覧にできません</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="164"/>
@@ -1640,33 +1639,33 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="184"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
-      <translation>アドオン &apos;{}&apos; にはあなたのFreeCADには用意されていない &apos;{}&apos; が必要です。</translation>
+      <translation>拡張機能 &apos;{}&apos; には &apos;{}&apos; をインストールしてください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation>アドオン &apos;{}&apos; にはあなたのFreeCADには用意されていない以下のワークベンチが必要です。</translation>
+      <translation>拡張機能 &apos;{}&apos; には以下のワークベンチをインストールしてください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
       <source>Press OK to install anyway.</source>
-      <translation>とにかくインストールするにはOKを押してください。</translation>
+      <translation>インストールするにはOKをクリックしてください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="242"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="189"/>
       <source>Incompatible Python version</source>
-      <translation>Pythonのバージョンに互換性がありません。</translation>
+      <translation>Pythonのバージョンに互換性がありません</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
+      <translation>この拡張機能は必要なPythonパッケージがインストールされていないため、自動でインストールできません。 この拡張機能を使用するには、以下のPythonパッケージを手動でインストールしてください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="246"/>
       <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>この拡張機能（あるいは依存関係がある場合はその1つ）では Python {}.{} が必要ですが、システムが {}.{} で実行されているためインストールは中止されました。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="267"/>
@@ -1677,18 +1676,18 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_installer_gui.py" line="313"/>
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
       <source>Installing dependencies</source>
-      <translation>依存関係をインストール中</translation>
+      <translation>依存関係をインストールしています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="339"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
-      <translation>Pythonを実行できません</translation>
+      <translation>Pythonを実行できませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation>Pythonの実行ファイルの自動検索に失敗したか、あるいはパスが正しく設定されていません。アドオンマネージャーのユーザー設定でPythonのパスを確認してください。</translation>
+      <translation>Pythonの実行ファイルの自動検索に失敗したか、あるいはパスが正しく設定されていません。「拡張機能の管理」でPythonの実行ファイルのパスを確認してください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="348"/>
@@ -1704,7 +1703,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
-      <translation>pipの実行に失敗しました。インストールしたPythonに存在しない可能性があります。 システムにpipがインストールされていることを確認し、もう一度やり直してください。失敗したコマンドは次の通りです:</translation>
+      <translation>pipを実行できませんでした。システムにpipがインストールされていることを確認してください。失敗したコマンドは次の通りです。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="373"/>
@@ -1716,7 +1715,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_installer_gui.py" line="390"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
-      <translation>パッケージのインストールに失敗しました</translation>
+      <translation>パッケージをインストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="394"/>
@@ -1726,38 +1725,38 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
-      <translation>アドオンをインスール中</translation>
+      <translation>拡張機能をインストールしています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
-      <translation>FreeCAD アドオン &apos;{}&apos; をインストール中</translation>
+      <translation>拡張機能 &apos;{}&apos; をインストールしています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
-      <translation>キャンセル中</translation>
+      <translation>中止しています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
-      <translation>&apos;{}&apos; のインストールをキャンセルしています。</translation>
+      <translation>&apos;{}&apos; のインストールを中止しています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <source>{} was installed successfully</source>
-      <translation>{} は正常にインストールされました。</translation>
+      <translation>{} をインストールしました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
-      <translation>インストール失敗</translation>
+      <translation>インストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
-      <translation>{} のインストールに失敗しました。</translation>
+      <translation>{} をインストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="605"/>
@@ -1769,7 +1768,7 @@ installed addons will be checked for available updates</source>
       <location filename="../../addonmanager_installer_gui.py" line="731"/>
       <location filename="../../install_to_toolbar.py" line="251"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation>FreeCAD アドオンマネージャーでインストールされたマクロ</translation>
+      <translation>「拡張機能の管理」でインストールしたマクロ</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="733"/>
@@ -1781,22 +1780,22 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="76"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
-      <translation>GitHub からデータを読み取ることができません: インターネット接続とプロキシ設定を確認して、もう一度やり直してください。</translation>
+      <translation>GitHubからデータを読み込めませんでした。インターネット接続とプロキシ設定を確認してください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="192"/>
       <source>XML failure while reading metadata from file {}</source>
-      <translation>ファイル {} からメタデータを読み込み中にXMLエラーが発生しました。</translation>
+      <translation>ファイル {} のメタデータを読み込み中にXMLエラーが発生しました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="199"/>
       <source>Invalid metadata in file {}</source>
-      <translation>ファイル {} のメタデータが無効です。</translation>
+      <translation>ファイル {} のメタデータが無効です</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
-      <translation>警告: package.xmlメタデータで指定されたパスが現在チェックアウトされているブランチと一致しません。</translation>
+      <translation>警告：package.xmlメタデータで指定されたパスが現在チェックアウトされているブランチと一致しませんでした。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="263"/>
@@ -1826,61 +1825,61 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_devmode.py" line="433"/>
       <source>Select the folder containing your Addon</source>
-      <translation>Addonを保存しているフォルダを選択してください</translation>
+      <translation>拡張機能を保存したフォルダを選択してください</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="562"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
-      <translation>Vermin がありません。操作をキャンセルしています。</translation>
+      <translation>Verminがありません。操作を中止します。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="567"/>
       <source>Scanning Addon for Python version compatibility</source>
-      <translation>Pythonのバージョン互換性確認のためにアドオンをスキャン中</translation>
+      <translation>Pythonのバージョン互換性を確認するため、拡張機能をスキャンしています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="594"/>
       <source>Minimum Python Version Detected</source>
-      <translation>最低のPythonバージョンが検出されました</translation>
+      <translation>最小バージョンのPythonが検出されました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="598"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
-      <translation>Vermin は、必要なバージョンとして Python 3.{} を自動検出しました。</translation>
+      <translation>VerminはPython 3.{} を必要なバージョンとして検出しました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="610"/>
       <source>Install Vermin?</source>
-      <translation>Vermin をインストールしますか？</translation>
+      <translation>Verminをインストールしますか？</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="614"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
-      <translation>このアドオンに必要なバージョンの Python を自動検出するには Vermin (https://pypi.org/project/vermin/)が必要です。インストールしますか？</translation>
+      <translation>この拡張機能に必要なPythonのバージョンを自動的に検出するには、Vermin（https://pypi.org/project/vermin/）が必要です。Verminをインストールしますか？</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="620"/>
       <source>Attempting to install Vermin from PyPi</source>
-      <translation>PyPi から Vermin をインストールしようとしています。</translation>
+      <translation>PyPiからVerminをインストールしています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="645"/>
       <location filename="../../addonmanager_devmode.py" line="660"/>
       <source>Installation failed</source>
-      <translation>インストール失敗</translation>
+      <translation>インストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="650"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation>Vermin のインストールに失敗しました - 詳細についてはレポートビューを確認してください。</translation>
+      <translation>Verminをインストールできませんでした。詳細についてはレポートビューを確認してください。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="665"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
-      <translation>インストール後の Vermin のインポートに失敗しました - アドオンをスキャンできません。</translation>
+      <translation>インストールしたVerminをインポートできませんでした。拡張機能をスキャンできません。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="678"/>
@@ -1905,22 +1904,22 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="189"/>
       <source>Click for details about package {}</source>
-      <translation>パッケージの詳細についてはクリックしてください {}</translation>
+      <translation>パッケージ {} の詳細についてはクリックしてください</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="195"/>
       <source>Click for details about workbench {}</source>
-      <translation>ワークベンチの詳細についてはクリックしてください {}</translation>
+      <translation>ワークベンチ {} の詳細についてはクリックしてください</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="197"/>
       <source>Click for details about macro {}</source>
-      <translation>マクロの詳細についてはクリックしてください {}</translation>
+      <translation>マクロ {} の詳細についてはクリックしてください</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="384"/>
       <source>Maintainers:</source>
-      <translation>メンテナー:</translation>
+      <translation>保守担当者</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="333"/>
@@ -1935,7 +1934,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="414"/>
       <source>No ★, or not on GitHub</source>
-      <translation>★無し、またはGitHub上にありません</translation>
+      <translation>★がありません。またはGitHubにありません</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="419"/>
@@ -1950,7 +1949,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="430"/>
       <source>Score: </source>
-      <translation>スコア: </translation>
+      <translation>スコア</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="452"/>
@@ -1965,13 +1964,13 @@ installed addons will be checked for available updates</source>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="313"/>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="140"/>
       <source>Update available</source>
-      <translation>利用可能なアップデートがあります</translation>
+      <translation>更新があります</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="457"/>
       <location filename="../../package_list.py" line="514"/>
       <source>Pending restart</source>
-      <translation>再起動を保留中</translation>
+      <translation>再起動を保留しています</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="459"/>
@@ -1982,7 +1981,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../package_list.py" line="474"/>
       <source>Installed version</source>
-      <translation>インストール済のバージョン</translation>
+      <translation>インストール済みのバージョン</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="483"/>
@@ -2007,7 +2006,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="108"/>
       <source>Addon Type</source>
-      <translation>アドオンタイプ</translation>
+      <translation>拡張機能の種類</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="111"/>
@@ -2023,12 +2022,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="122"/>
       <source>Preference Pack</source>
-      <translation>ユーザー設定パック</translation>
+      <translation>環境設定パック</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="126"/>
       <source>Installation Status</source>
-      <translation>インストール状況</translation>
+      <translation>インストールの状態</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_filter_selector.py" line="132"/>
@@ -2043,12 +2042,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../change_branch.py" line="86"/>
       <source>DANGER: Developer feature</source>
-      <translation>危険: 開発者機能</translation>
+      <translation>危険：開発者機能</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="93"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation>危険: ブランチの切り替えは開発者とベータテスターを対象としており、壊れた後方互換性のないドキュメントファイル、不安定性、クラッシュ、および/または未熟ゆえの宇宙の熱的死を引き起こす可能性があります。 本当に続行しますか？</translation>
+      <translation>危険：ブランチの切り替えは開発者とベータテスターを対象としており、壊れた後方互換性のないドキュメントファイル、不安定な挙動、クラッシュを引き起こす可能性があります。 実行しますか？</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="102"/>
@@ -2058,7 +2057,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../change_branch.py" line="107"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation>警告: このリポジトリにはコミットされていないローカルな変更点があります。本当に (変更点を保持したまま) ブランチを変更しますか？</translation>
+      <translation>警告：このリポジトリにはコミットされていないローカルな変更があります。（変更を保持したまま）ブランチを変更しますか？</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="206"/>
@@ -2081,77 +2080,77 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="131"/>
       <source>Installation of Python package {} failed</source>
-      <translation>Pythonパッケージ {} のインストールに失敗しました。</translation>
+      <translation>Pythonのパッケージ {} をインストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="157"/>
       <source>Installation of optional package failed</source>
-      <translation>オプションのパッケージのインストールに失敗しました。</translation>
+      <translation>オプションのパッケージをインストールできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="185"/>
       <source>Installing required dependency {}</source>
-      <translation>必要な依存関係 {} をインストール中</translation>
+      <translation>必要な依存関係 {} をインストールしています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="195"/>
       <source>Installation of Addon {} failed</source>
-      <translation>アドオン {} のインストールに失敗しました。</translation>
+      <translation>拡張機能 {} をインストールできませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="165"/>
+      <location filename="../../addonmanager_workers_installation.py" line="195"/>
       <source>Downloaded package.xml for {}</source>
-      <translation>{} の package.xml をダウンロードしました。</translation>
+      <translation>{} のpackage.xmlをダウンロードしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="196"/>
+      <location filename="../../addonmanager_workers_installation.py" line="233"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
-      <translation>{} ファイルをアドオン &apos;{}&apos; のためにデコードすることに失敗しました</translation>
+      <translation>{} ファイルを拡張機能 &apos;{}&apos; 用にデコードできませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="205"/>
+      <location filename="../../addonmanager_workers_installation.py" line="242"/>
       <source>Any dependency information in this file will be ignored</source>
-      <translation>このファイル内の任意の依存関係情報は無視されます</translation>
+      <translation>このファイル内の依存関係の情報は無視されます</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="212"/>
+      <location filename="../../addonmanager_workers_installation.py" line="249"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation>{} の metadata.txt をダウンロードしました。</translation>
+      <translation>{} のmetadata.txtをダウンロードしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="255"/>
+      <location filename="../../addonmanager_workers_installation.py" line="292"/>
       <source>Downloaded requirements.txt for {}</source>
-      <translation>{} の requirements.txt をダウンロードしました。</translation>
+      <translation>{} のrequirements.txtをダウンロードしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="273"/>
+      <location filename="../../addonmanager_workers_installation.py" line="310"/>
       <source>Downloaded icon for {}</source>
-      <translation>{} のアイコンをダウンロードしました。</translation>
+      <translation>{} のアイコンをダウンロードしました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="152"/>
       <source>Unable to open macro wiki page at {}</source>
-      <translation>{} にあるマクロWikiページを開けません。</translation>
+      <translation>{} のマクロのWikiを開けませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="165"/>
       <source>Unable to fetch the code of this macro.</source>
-      <translation>このマクロのコードを取得できません。</translation>
+      <translation>このマクロのコードを取得できませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="180"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
-      <translation>マクロ {} の説明をウィキから取得できません。</translation>
+      <translation>マクロ {} の説明をWikiから取得できませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="213"/>
       <source>Unable to open macro code URL {}</source>
-      <translation>マクロコードの URL {} を開けません。</translation>
+      <translation>マクロのコードの URL {} を開けませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="374"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
-      <translation>マクロ指定ファイル {} を {} から取得できません。</translation>
+      <translation>マクロ指定ファイル {} を {} から取得できませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="382"/>
@@ -2161,23 +2160,23 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Addon.py" line="442"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
-      <translation>{}: 認識できない内部ワークベンチ &apos;{}&apos;</translation>
+      <translation>{}：認識できない内部ワークベンチ &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="475"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
-      <translation>アドオン開発者用警告: アドン {} ({}) のpackage.xmlファイルに設定されているリポジトリURLが ({}) から取得したURLと一致しません。</translation>
+      <translation>拡張機能開発者警告: 拡張機能 {} ({}) のpackage.xmlファイルに設定されているリポジトリURLが ({}) から取得したURLと一致しませんでした</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="483"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
-      <translation>アドオン開発者用警告: アドン {} ({}) のpackage.xmlファイルに設定されているリポジトリのブランチが ({}) から取得したブランチと一致しません。</translation>
+      <translation>拡張機能開発者警告: 拡張機能 {} ({}) のpackage.xmlファイルに設定されているリポジトリのブランチが ({}) から取得したブランチと一致しませんでした</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="859"/>
       <location filename="../../Addon.py" line="875"/>
       <source>Got an error when trying to import {}</source>
-      <translation>{} のインポートを試みましたがエラーが発生しました。</translation>
+      <translation>{} のインポートでエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>
@@ -2187,22 +2186,22 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="127"/>
       <source>Could not find addon {} to remove it.</source>
-      <translation>削除するアドオン {} が見つかりませんでした。</translation>
+      <translation>削除する拡張機能 {} が見つかりませんでした。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="151"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation>アドオンの uninstall.py スクリプトの実行に失敗しました。アンインストールを続行します...</translation>
+      <translation>拡張機能のuninstall.pyスクリプトを実行できませんでした。アンインストールしています…</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="170"/>
       <source>Removed extra installed file {}</source>
-      <translation>追加インストールされたファイル {} を削除しました</translation>
+      <translation>追加でインストールされたファイル {} を削除しました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="184"/>
       <source>Error while trying to remove extra installed file {}</source>
-      <translation>追加インストールされたファイル {} の削除中にエラーが発生しました</translation>
+      <translation>追加でインストールされたファイル {} の削除中にエラーが発生しました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="248"/>
@@ -2210,140 +2209,140 @@ installed addons will be checked for available updates</source>
       <translation>マクロファイル {} の削除中にエラーが発生しました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="122"/>
+      <location filename="../../addonmanager_workers_startup.py" line="121"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
-      <translation>GitHubへの接続に失敗しました。接続とプロキシ設定を確認してください。</translation>
+      <translation>GitHubに接続できませんでした。インターネット接続とプロキシ設定を確認してください。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="180"/>
+      <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
-      <translation>警告: 重複アドオン {} は無視されました</translation>
+      <translation>警告：重複する拡張機能 {} は無視されました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
+      <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
       <translation>ワークベンチの一覧を更新しました。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
-      <translation>Gitが無効化されています。Gitマクロをスキップしています。</translation>
+      <translation>Gitを無効にしているため、Gitマクロは拡張機能の一覧に表示されません。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
+      <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation>Gitを使用するために非Gitなマクロのセットップの変更を試みています
+      <translation>非GitなマクロがGitを使用するように設定を変更しています
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation>GitHubからのマクロを更新中にエラーが発生しました。チェックアウトのクリーンを試みています...</translation>
+      <translation>GitHubのマクロを更新中にエラーが発生しました。チェックアウトを削除しています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="338"/>
+      <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation>チェックアウトのクリーンを試みています...</translation>
+      <translation>チェックアウトを削除しています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="350"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
-      <translation>チェックアウトのクリーンアップに成功しました</translation>
+      <translation>チェックアウトを削除しました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="360"/>
+      <location filename="../../addonmanager_workers_startup.py" line="359"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation>GitHub からマクロを更新できませんでした -- アドオン・マネージャーのキャッシュをクリアしてみてください。</translation>
+      <translation>GitHub からマクロを更新できませんでした。「拡張機能の管理」のキャッシュを削除してみてください。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="383"/>
+      <location filename="../../addonmanager_workers_startup.py" line="382"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
-      <translation>Wikiへの接続中にエラーが発生しました。現在、FreeCADはWikiのマクロリストを取得できません。</translation>
+      <translation>Wikiへの接続中にエラーが発生しました。現在、FreeCADはWikiのマクロ一覧を取得できません。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="592"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
-      <translation>ワークベンチのGitアップデートを取得できません {}</translation>
+      <translation>ワークベンチ {} のGitの更新を取得できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="605"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
-      <translation>{} の git ステータスに失敗しました</translation>
+      <translation>{} にgit statusを実行できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="671"/>
+      <location filename="../../addonmanager_workers_startup.py" line="670"/>
       <source>Failed to read metadata from {name}</source>
-      <translation>{name} からのメタデータの読み込みに失敗しました</translation>
+      <translation>{name} からメタデータを読み込めませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="694"/>
+      <location filename="../../addonmanager_workers_startup.py" line="693"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
-      <translation>マクロ &apos;{name}&apos; のコードの取得に失敗しました</translation>
+      <translation>マクロ &apos;{name}&apos; のコードが取得できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="747"/>
+      <location filename="../../addonmanager_workers_startup.py" line="746"/>
       <source>Caching macro code...</source>
-      <translation>マクロコードをキャッシュ中...</translation>
+      <translation>マクロのコードをキャッシュしています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="770"/>
+      <location filename="../../addonmanager_workers_startup.py" line="769"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
-      <translation>アドオン・マネージャー: {name} の取得中にワーカープロセスが処理を完了できませんでした</translation>
+      <translation>拡張機能の管理：{name} の取得中にワーカープロセスが処理を完了できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="785"/>
+      <location filename="../../addonmanager_workers_startup.py" line="784"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
-      <translation>{num_macros} マクロがありません。処理中に {num_failed} 回タイムアウトしました。</translation>
+      <translation>{num_macros}個のマクロのうち、{num_failed}個が処理中にタイムアウトしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="808"/>
+      <location filename="../../addonmanager_workers_startup.py" line="807"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation>アドオン・マネージャー: ワーカープロセスの停止に失敗しました ({name})</translation>
+      <translation>拡張機能の管理：ワーカープロセスは停止できませんでした（{name}）</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="847"/>
+      <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Getting metadata from macro {}</source>
-      <translation>マクロ {} からのメタデータを取得中</translation>
+      <translation>マクロ {} のメタデータを取得しています</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="861"/>
+      <location filename="../../addonmanager_workers_startup.py" line="860"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>マクロ {} のメタデータを取得中にタイムアウトしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="871"/>
       <source>Failed to kill process for macro {}!
 </source>
-      <translation>マクロ {} のプロセスを強制終了できませんでした！
+      <translation>マクロ {} のプロセスを強制終了できませんでした。
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
+      <location filename="../../addonmanager_workers_startup.py" line="892"/>
       <source>Retrieving macro description...</source>
-      <translation>マクロの説明を取得...</translation>
+      <translation>マクロの説明を取得しています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="894"/>
       <source>Retrieving info from git</source>
-      <translation>Gitからの情報を取り込み中</translation>
+      <translation>Gitから情報を取得しています</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
+      <location filename="../../addonmanager_workers_startup.py" line="897"/>
       <source>Retrieving info from wiki</source>
-      <translation>Wikiからの情報を取り込み中</translation>
+      <translation>Wikiから情報を取得しています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="939"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
-      <translation>{} からのアドオン統計データの取得に失敗しました -- アルファベット順での並べ替えのみ正しいものになります</translation>
+      <translation>{} から拡張機能の統計データを取得できませんでした。アルファベット順での並べ替えのみ正しいものになります</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="971"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
-      <translation>&apos;{}&apos; からのアドオン・スコアの取得に失敗しました -- スコア順での並べ替えはできません
+      <translation>&apos;{}&apos; から拡張機能のスコアを取得できませんでした。スコア順での並べ替えはできません
 </translation>
     </message>
     <message>
@@ -2361,27 +2360,27 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_git.py" line="153"/>
       <source>Basic git update failed with the following message:</source>
-      <translation>基本の git update が以下のメッセージで失敗しました:</translation>
+      <translation>gitの更新ができませんでした。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="161"/>
       <source>Backing up the original directory and re-cloning</source>
-      <translation>元のディレクトリをバックアップして再クローン</translation>
+      <translation>元のディレクトリをバックアップして再クローンします</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="266"/>
       <source>Failed to clone {} into {} using git</source>
-      <translation>Git を使用した {} の {} へのクローンが失敗しました</translation>
+      <translation>Gitを使用して {} を {} へクローンできませんでした</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="407"/>
       <source>Git branch rename failed with the following message:</source>
-      <translation>Git ブランチの名前変更が以下のメッセージで失敗しました:</translation>
+      <translation>Giのブランチ名を変更できませんでした。</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
       <source>Installing</source>
-      <translation>インストール中</translation>
+      <translation>インストールしています</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
@@ -2396,22 +2395,22 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="198"/>
       <source>Update was cancelled</source>
-      <translation>更新がキャンセルされました。</translation>
+      <translation>更新を中止しました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>some addons may have been updated</source>
-      <translation>一部のアドオンが更新されます。</translation>
+      <translation>一部の拡張機能が更新されます</translation>
     </message>
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="82"/>
       <source>Loading info for {} from the FreeCAD Macro Recipes wiki...</source>
-      <translation>FreeCADマクロレシピのWikiから {} の情報を読み込み中...</translation>
+      <translation>マクロのWikiから {} の情報を読み込んでいます…</translation>
     </message>
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="90"/>
       <source>Loading page for {} from {}...</source>
-      <translation>{} のページを {} から読み込み中...</translation>
+      <translation>{} のページを {} から読み込んでいます…</translation>
     </message>
     <message>
       <location filename="../../addonmanager_readme_controller.py" line="108"/>
@@ -2419,17 +2418,17 @@ installed addons will be checked for available updates</source>
       <translation>{} からデータをダウンロードできませんでした -- レスポンスコード {} を受信しました。</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="158"/>
       <source>Composite view</source>
       <translation>コンポジットビュー</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Expanded view</source>
       <translation>拡張ビュー</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Compact view</source>
       <translation>コンパクトビュー</translation>
     </message>
@@ -2469,7 +2468,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="233"/>
       <source>&amp;Addon manager</source>
-      <translation>アドオンマネージャー(&amp;A)</translation>
+      <translation>&amp;拡張機能の管理</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="237"/>
@@ -2482,12 +2481,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="115"/>
       <source>Finished removing {}</source>
-      <translation>削除完了: {}</translation>
+      <translation>{}を削除しました</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="127"/>
       <source>Failed to remove some files</source>
-      <translation>一部のファイルを削除できませんでした。</translation>
+      <translation>一部のファイルを削除できませんでした</translation>
     </message>
   </context>
   <context>
@@ -2495,7 +2494,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="192"/>
       <source>Finished updating the following addons</source>
-      <translation>以下のアドオンの更新が完了しました。</translation>
+      <translation>以下の拡張機能を更新しました</translation>
     </message>
   </context>
   <context>
@@ -2503,7 +2502,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="650"/>
       <source>Auto-Created Macro Toolbar</source>
-      <translation>マクロツールバーの自動作成</translation>
+      <translation>自動で作成されたマクロのツールバー</translation>
     </message>
   </context>
   <context>
@@ -2511,7 +2510,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="187"/>
       <source>Addon Manager</source>
-      <translation>アドオン・マネージャー</translation>
+      <translation>拡張機能の管理</translation>
     </message>
   </context>
 </TS>

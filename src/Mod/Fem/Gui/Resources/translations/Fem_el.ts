@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="290"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="291"/>
       <source>Contact constraint</source>
-      <translation type="unfinished">Contact constraint</translation>
+      <translation>Περιορισμός επαφής</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="292"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="356"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="357"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a displacement boundary condition for a geometric entity</translation>
+      <translation>Δημιουργεί μια οριακή συνθήκη μετατόπισης για μια γεωμετρική οντότητα</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="508"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="509"/>
@@ -96,12 +96,12 @@
     <message>
       <location filename="../../Command.cpp" line="560"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="561"/>
       <source>Force load</source>
-      <translation type="unfinished">Force load</translation>
+      <translation>Δύναμή Φορτίου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="562"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="618"/>
@@ -132,12 +132,12 @@
     <message>
       <location filename="../../Command.cpp" line="665"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="666"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Φορτίο θερμικής ροής</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="667"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="777"/>
@@ -186,12 +186,12 @@
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="828"/>
       <source>Pressure load</source>
-      <translation type="unfinished">Pressure load</translation>
+      <translation>Φορτίο πίεσης</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="829"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="938"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="939"/>
@@ -222,17 +222,17 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Spring</source>
-      <translation type="unfinished">Spring</translation>
+      <translation>Ελατήριο</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="885"/>
       <source>Creates a spring acting on a face</source>
-      <translation type="unfinished">Creates a spring acting on a face</translation>
+      <translation>Δημιουργεί ένα ελατήριο που δρα σε μια όψη</translation>
     </message>
   </context>
   <context>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../Command.cpp" line="991"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="992"/>
       <source>Temperature boundary condition</source>
-      <translation type="unfinished">Temperature boundary condition</translation>
+      <translation>Κατάσταση ορίου θερμοκρασίας</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="993"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="1042"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1043"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Command.cpp" line="1188"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1189"/>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="2663"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2664"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2010"/>
@@ -374,7 +374,7 @@
     <message>
       <location filename="../../Command.cpp" line="2062"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2063"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="2114"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2115"/>
@@ -410,7 +410,7 @@
     <message>
       <location filename="../../Command.cpp" line="2163"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2164"/>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../../Command.cpp" line="2436"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2437"/>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../../Command.cpp" line="2638"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Κουτί</translation>
     </message>
   </context>
   <context>
@@ -473,25 +473,25 @@
       <location filename="../../Command.cpp" line="1912"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
-      <translation type="unfinished">Stress [MPa]</translation>
+      <translation>Πίεση [MPa]</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1916"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
-      <translation type="unfinished">Linearized Stresses</translation>
+      <translation>Γραμμικές Τάσεις</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1920"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
-      <translation type="unfinished">Membrane</translation>
+      <translation>Μεμβράνη</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1924"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
-      <translation type="unfinished">Membrane and Bending</translation>
+      <translation>Μεμβράνη και κάμψη</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1928"/>
@@ -502,12 +502,12 @@
     <message>
       <location filename="../../Command.cpp" line="2213"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2214"/>
       <source>Stress linearization plot</source>
-      <translation type="unfinished">Stress linearization plot</translation>
+      <translation>Διάγραμμα γραμμοποίησης τάσεων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2215"/>
@@ -532,7 +532,7 @@
     <message>
       <location filename="../../Command.cpp" line="2704"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2705"/>
@@ -560,7 +560,7 @@
     <message>
       <location filename="../../Command.cpp" line="2288"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2289"/>
@@ -578,7 +578,7 @@
     <message>
       <location filename="../../Command.cpp" line="2338"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2339"/>
@@ -677,7 +677,7 @@
       <location filename="../../Command.cpp" line="1110"/>
       <location filename="../../Command.cpp" line="1261"/>
       <source>Place robot</source>
-      <translation type="unfinished">Place robot</translation>
+      <translation>Τοποθέτηση ρομπότ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1204"/>
@@ -962,7 +962,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="406"/>
       <source>Use non ccx defaults</source>
-      <translation type="unfinished">Use non ccx defaults</translation>
+      <translation>Χρησιμοποιήστε προεπιλογές που δεν είναι ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="454"/>
@@ -975,17 +975,17 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="596"/>
       <location filename="../../DlgSettingsFemCcx.ui" line="651"/>
       <source>s</source>
-      <translation type="unfinished">s</translation>
+      <translation>s</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="509"/>
       <source>Time End</source>
-      <translation type="unfinished">Time End</translation>
+      <translation>Τέλος Χρόνου</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="665"/>
       <source>3D Output, unchecked for 2D</source>
-      <translation type="unfinished">3D Output, unchecked for 2D</translation>
+      <translation>Έξοδος 3D, χωρίς επιλογή για 2D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="686"/>
@@ -1000,7 +1000,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="701"/>
       <source>Use steady state</source>
-      <translation type="unfinished">Use steady state</translation>
+      <translation>Χρήση σταθερής κατάστασης</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="422"/>
@@ -1020,12 +1020,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
       <source>Time Minimum Step</source>
-      <translation type="unfinished">Time Minimum Step</translation>
+      <translation>Βήμα Ελάχιστου χρόνου</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="603"/>
       <source>Time Maximum Step</source>
-      <translation type="unfinished">Time Maximum Step</translation>
+      <translation>Βήμα Μέγιστου χρόνου</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
@@ -1118,7 +1118,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="272"/>
       <source>Filter results</source>
-      <translation type="unfinished">Filter results</translation>
+      <translation>Φιλτράρισμα αποτελεσμάτων</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
@@ -1153,7 +1153,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>Αριθμός Πυρήνες CPU που θα χρησιμοποιηθούν:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="227"/>
@@ -1163,7 +1163,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="108"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Το αρχείο δεν υπάρχει</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="109"/>
@@ -1202,7 +1202,7 @@ Therefore an executable with the suffix '_mpi' is required.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="14"/>
       <source>INP</source>
-      <translation type="unfinished">INP</translation>
+      <translation>INP</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="20"/>
@@ -1328,7 +1328,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="268"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="279"/>
@@ -1338,7 +1338,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Αποτελέσματα</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
@@ -1448,7 +1448,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="14"/>
       <source>VTK</source>
-      <translation type="unfinished">VTK</translation>
+      <translation>VTK</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="23"/>
@@ -1496,7 +1496,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="71"/>
       <source>FEM mesh object</source>
-      <translation type="unfinished">FEM mesh object</translation>
+      <translation>FEM αντικείμενο με πλέγμα</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
@@ -1519,7 +1519,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="40"/>
       <source>Search in known binary directories</source>
-      <translation type="unfinished">Search in known binary directories</translation>
+      <translation>Αναζήτηση σε γνωστούς δυαδικούς καταλόγους</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="65"/>
@@ -1534,7 +1534,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="112"/>
       <source>Comments</source>
-      <translation type="unfinished">Comments</translation>
+      <translation>Σχόλια</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="119"/>
@@ -1563,12 +1563,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="14"/>
       <source>Z88</source>
-      <translation type="unfinished">Z88</translation>
+      <translation>Z88</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="29"/>
       <source>Z88 binary</source>
-      <translation type="unfinished">Z88 binary</translation>
+      <translation>Z88 δυαδικό</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="46"/>
@@ -1578,27 +1578,27 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="77"/>
       <source>z88r binary path</source>
-      <translation type="unfinished">z88r binary path</translation>
+      <translation>z88r δυαδική διαδρομή</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
       <source>Leave blank to use default Z88, z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
+      <translation>Αφήστε κενό για να χρησιμοποιήσετε το προεπιλεγμένο αρχείο Z88, z88r δυαδικό</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
       <source>Solver settings</source>
-      <translation type="unfinished">Solver settings</translation>
+      <translation>Ρυθμίσεις επιλυτή</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="149"/>
       <source>Solver method</source>
-      <translation type="unfinished">Solver method</translation>
+      <translation>Μέθοδος επιλυτή</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="165"/>
       <source>Solver method to be used</source>
-      <translation type="unfinished">Solver method to be used</translation>
+      <translation>Μέθοδος επίλυσης που πρέπει να χρησιμοποιείται</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
@@ -1670,7 +1670,7 @@ Specify another file please.</translation>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="120"/>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="126"/>
       <source>Wrong file</source>
-      <translation type="unfinished">Wrong file</translation>
+      <translation>Λάθος αρχείο</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="121"/>
@@ -1702,13 +1702,13 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="217"/>
-      <location filename="../../TaskFemConstraint.cpp" line="235"/>
+      <location filename="../../TaskFemConstraint.cpp" line="211"/>
+      <location filename="../../TaskFemConstraint.cpp" line="229"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="218"/>
+      <location filename="../../TaskFemConstraint.cpp" line="212"/>
       <source>You must specify at least one reference</source>
       <translation>Πρέπει να καθορίσετε τουλάχιστον μια αναφορά</translation>
     </message>
@@ -1716,7 +1716,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="381"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="376"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1732,7 +1732,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="739"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="602"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1740,7 +1740,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1097"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1092"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1748,7 +1748,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="467"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="462"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1764,7 +1764,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="530"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="525"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1780,7 +1780,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="312"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1796,7 +1796,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="326"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1804,7 +1804,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="390"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="385"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1812,7 +1812,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="609"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="604"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -1854,7 +1854,7 @@ Specify another file please.</translation>
       <translation type="unfinished">Analysis feature parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="150"/>
+      <location filename="../../TaskFemConstraint.cpp" line="170"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
@@ -1984,28 +1984,28 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="318"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="328"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="366"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="288"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Selection error</source>
       <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="318"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
       <source>Nothing selected!</source>
       <translation>Τίποτα δεν επιλέχθηκε!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="328"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Selected object is not a part!</source>
       <translation>Το επιλεγμένο αντικείμενο δεν είναι εξάρτημα!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="286"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
     </message>
@@ -2044,17 +2044,17 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="331"/>
       <source>Basic</source>
-      <translation type="unfinished">Basic</translation>
+      <translation>Βασικό</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="332"/>
       <source>Turbulence</source>
-      <translation type="unfinished">Turbulence</translation>
+      <translation>Αστάθεια</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="333"/>
       <source>Thermal</source>
-      <translation type="unfinished">Thermal</translation>
+      <translation>Θερμική</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="335"/>
@@ -2069,43 +2069,43 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="509"/>
       <source>Dissipation Rate [m2/s3]</source>
-      <translation type="unfinished">Dissipation Rate [m2/s3]</translation>
+      <translation>Ρυθμός διάχυσης [m2/s3]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
       <source>Length Scale [m]</source>
-      <translation type="unfinished">Length Scale [m]</translation>
+      <translation>Κλίμακα Μήκους [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
       <source>Viscosity Ratio [1]</source>
-      <translation type="unfinished">Viscosity Ratio [1]</translation>
+      <translation>Λόγος Ιξώδους [1]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="518"/>
       <source>Hydraulic Diameter [m]</source>
-      <translation type="unfinished">Hydraulic Diameter [m]</translation>
+      <translation>Υδραυλική Διάμετρος [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="547"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="552"/>
       <source>Gradient [K/m]</source>
-      <translation type="unfinished">Gradient [K/m]</translation>
+      <translation>Κλίση [K/m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
       <source>Flux [W/m2]</source>
-      <translation type="unfinished">Flux [W/m2]</translation>
+      <translation>Ροή [W/m2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
       <source>Empty selection</source>
-      <translation type="unfinished">Empty selection</translation>
+      <translation>Κενή επιλογή</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation> Παρακαλώ Επιλέξτε μια άκρη ή μια όψη.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
@@ -2119,27 +2119,27 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="646"/>
       <source>Selected object is not a part object!</source>
-      <translation type="unfinished">Selected object is not a part object!</translation>
+      <translation>Το επιλεγμένο αντικείμενο δεν είναι μέρος του αντικειμένου!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation type="unfinished">Only one planar face or edge can be selected!</translation>
+      <translation>Μόνο μία επίπεδη όψη ή άκρη μπορεί να επιλεγεί!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="671"/>
       <source>Only planar faces can be picked for 3D</source>
-      <translation type="unfinished">Only planar faces can be picked for 3D</translation>
+      <translation>Μόνο επίπεδες όψεις μπορούν να επιλεγούν για 3D</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="679"/>
       <source>Only planar edges can be picked for 2D</source>
-      <translation type="unfinished">Only planar edges can be picked for 2D</translation>
+      <translation>Μόνο επίπεδες όψεις μπορούν να επιλεγούν για 2D</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="686"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
-      <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
+      <translation>Μπορούν να επιλεγούν μόνο όψεις για τρισδιάστατο μέρος ή ακμές για 2D</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
@@ -2165,7 +2165,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Μόνο ένας τύπος επιλογής (κορυφή, επιφάνεια ή άκρη) ανά χαρακτηριστικό ανάλυσης επιτρέπεται!</translation>
     </message>
   </context>
   <context>
@@ -2194,7 +2194,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="174"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Μόνο ένας τύπος επιλογής (κορυφή, επιφάνεια ή άκρη) ανά χαρακτηριστικό ανάλυσης επιτρέπεται!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
@@ -2205,7 +2205,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation> Παρακαλώ Επιλέξτε μια άκρη ή μια όψη.</translation>
     </message>
   </context>
   <context>
@@ -2261,7 +2261,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="292"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="358"/>
       <source>Selection must only consist of faces!</source>
-      <translation type="unfinished">Selection must only consist of faces!</translation>
+      <translation>Η επιλογή πρέπει να αποτελείται μόνο από Επιφάνειες!</translation>
     </message>
   </context>
   <context>
@@ -2282,7 +2282,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="201"/>
       <source>Only one face can be selected for a plane multi-point constraint!</source>
-      <translation type="unfinished">Only one face can be selected for a plane multi-point constraint!</translation>
+      <translation>Μόνο μία επιφάνεια μπορεί να επιλεγεί για έναν περιορισμό πολλαπλών σημείων επιπέδου!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="137"/>
@@ -2406,7 +2406,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="202"/>
       <source>Analysis feature update error</source>
-      <translation type="unfinished">Analysis feature update error</translation>
+      <translation>Σφάλμα ενημέρωσης λειτουργίας ανάλυσης</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="203"/>
@@ -2447,7 +2447,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="397"/>
       <source>Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</translation>
+      <translation>Μπορούν να επιλεγούν μόνο μεταμορφώσιμες επιφάνειες! Εφαρμόστε πρώτα τη συνθήκη ορίου μετατόπισης στην επιφάνεια και εφαρμόστε το τοπικό σύστημα συντεταγμένων στην επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="330"/>
@@ -2514,7 +2514,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1244"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
-      <translation type="unfinished">%1 at (%2; %3; %4) is: %5 %6</translation>
+      <translation>%1 at (%2; %3; %4) is: %5 %6</translation>
     </message>
   </context>
   <context>
@@ -2584,7 +2584,7 @@ Specify another file please.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
-      <translation type="unfinished">FEM material</translation>
+      <translation>Υλικό FEM</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
@@ -2611,7 +2611,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="64"/>
       <source>Material name</source>
-      <translation type="unfinished">Material name</translation>
+      <translation>Όνομα υλικού</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
@@ -2628,22 +2628,22 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="99"/>
       <source>Editing material</source>
-      <translation type="unfinished">Editing material</translation>
+      <translation>Επεξεργασία υλικού</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
       <source>Use FreeCAD material editor</source>
-      <translation type="unfinished">Use FreeCAD material editor</translation>
+      <translation>Χρήση επεξεργαστή υλικού FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
       <source>Use this task panel</source>
-      <translation type="unfinished">Use this task panel</translation>
+      <translation>Χρήση αυτού του πίνακα εργασιών</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
       <source>Basic Properties</source>
-      <translation type="unfinished">Basic Properties</translation>
+      <translation>Βασικές Ιδιότητες</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
@@ -2658,7 +2658,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="213"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Μηχανικές Ιδιότητες</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="224"/>
@@ -2678,37 +2678,37 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="323"/>
       <source>Fluidic Properties</source>
-      <translation type="unfinished">Fluidic Properties</translation>
+      <translation>Ιδιότητες Ρευστών Υλικών</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="334"/>
       <source>Kinematic viscosity:</source>
-      <translation type="unfinished">Kinematic viscosity:</translation>
+      <translation>Κινηματικό ιξώδες:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="356"/>
       <source>0 m^2/s</source>
-      <translation type="unfinished">0 m^2/s</translation>
+      <translation>0 m^2/s</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
       <source>Thermal Properties</source>
-      <translation type="unfinished">Thermal Properties</translation>
+      <translation>Θερμικές ιδιότητες</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="497"/>
       <source>Specific Heat Capacity:</source>
-      <translation type="unfinished">Specific Heat Capacity:</translation>
+      <translation>Ειδική Θερμοχωρητικότητα:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
       <source>Thermal Conductivity:</source>
-      <translation type="unfinished">Thermal Conductivity:</translation>
+      <translation>Θερμική Αγωγιμότητα:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="425"/>
       <source>0 W/m/K</source>
-      <translation type="unfinished">0 W/m/K</translation>
+      <translation>0 W/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="450"/>
@@ -2719,12 +2719,12 @@ Specify another file please.</translation>
       <location filename="../ui/Material.ui" line="472"/>
       <location filename="../ui/Material.ui" line="566"/>
       <source>0 m/m/K</source>
-      <translation type="unfinished">0 m/m/K</translation>
+      <translation>0 m/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="519"/>
       <source>0 J/kg/K</source>
-      <translation type="unfinished">0 J/kg/K</translation>
+      <translation>0 J/kg/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="544"/>
@@ -2769,7 +2769,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="102"/>
       <source>Reinforcement Material</source>
-      <translation type="unfinished">Reinforcement Material</translation>
+      <translation>Υλικό Ενίσχυσης</translation>
     </message>
   </context>
   <context>
@@ -2777,12 +2777,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
-      <translation type="unfinished">Fluid Section Parameter</translation>
+      <translation>Παράμετρος Τμήματος Ρευστών</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid Section Parameter</source>
-      <translation type="unfinished">Liquid Section Parameter</translation>
+      <translation>Παράμετρος Υγρού τμήματος</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -2798,39 +2798,39 @@ Specify another file please.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="568"/>
       <location filename="../ui/ElementFluid1D.ui" line="724"/>
       <source>0 mm^2</source>
-      <translation type="unfinished">0 mm^2</translation>
+      <translation>0 mm^2</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
       <location filename="../ui/ElementFluid1D.ui" line="738"/>
       <source>Hydraulic Radius</source>
-      <translation type="unfinished">Hydraulic Radius</translation>
+      <translation>Υδραυλική Ακτίνα</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning Coefficient</source>
-      <translation type="unfinished">Manning Coefficient</translation>
+      <translation>Συντελεστής Manning</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
       <location filename="../ui/ElementFluid1D.ui" line="180"/>
       <source>Initial Area</source>
-      <translation type="unfinished">Initial Area</translation>
+      <translation>Αρχική Περιοχή</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged Area</source>
-      <translation type="unfinished">Enlarged Area</translation>
+      <translation>Διευρυμένη Περιοχή</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation type="unfinished">Contracted Area</translation>
+      <translation>Συμβεβλημένη Περιοχή</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
       <source>Inlet Pressure</source>
-      <translation type="unfinished">Inlet Pressure</translation>
+      <translation>Πίεση Εισόδου</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
@@ -2842,29 +2842,29 @@ Specify another file please.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="245"/>
       <location filename="../ui/ElementFluid1D.ui" line="315"/>
       <source>0 MPa</source>
-      <translation type="unfinished">0 MPa</translation>
+      <translation>0 MPa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="260"/>
       <source>Inlet Mass Flow Rate</source>
-      <translation type="unfinished">Inlet Mass Flow Rate</translation>
+      <translation>Ρυθμός Μάζας Ροής Εισόδου</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="271"/>
       <location filename="../ui/ElementFluid1D.ui" line="341"/>
       <source>Mass flow rate</source>
-      <translation type="unfinished">Mass flow rate</translation>
+      <translation>Ρυθμός ροής μάζας</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="278"/>
       <location filename="../ui/ElementFluid1D.ui" line="348"/>
       <source>0 kg/s</source>
-      <translation type="unfinished">0 kg/s</translation>
+      <translation>0 kg/s</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="297"/>
       <source>Outlet Pressure</source>
-      <translation type="unfinished">Outlet Pressure</translation>
+      <translation>Πίεση Εξόδου</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="330"/>
@@ -2924,7 +2924,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
-      <translation type="unfinished">Flow rate [mm^3/s]</translation>
+      <translation>Ρυθμός ροής [mm^3/s]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -2974,7 +2974,7 @@ Specify another file please.</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
@@ -2994,7 +2994,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="43"/>
       <source>Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</source>
-      <translation type="unfinished">Rotation frequency f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
+      <translation>Συχνότητα περιστροφής f&lt;sub&gt;rot&lt;/sub&gt; [rps]</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="74"/>
@@ -3004,12 +3004,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="80"/>
       <source>0 1/s</source>
-      <translation type="unfinished">0 1/s</translation>
+      <translation>0 1/s</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="92"/>
       <source>1/s</source>
-      <translation type="unfinished">1/s</translation>
+      <translation>1/s</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
@@ -3109,36 +3109,36 @@ with a harmonic/oscillating driving force</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
       <source>Capacity Body:</source>
       <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation type="unfinished">Capacity Body:</translation>
+      <translation>Χωρητικότητα Σώματος:</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
       <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
-      <translation type="unfinished">Real</translation>
+      <translation>Πραγματικό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
       <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
-      <translation type="unfinished">Imaginary</translation>
+      <translation>Φανταστικό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="140"/>
       <source>Scalar</source>
-      <translation type="unfinished">Scalar</translation>
+      <translation>Βαθμολογία</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="156"/>
       <source>Potential as specified above</source>
-      <translation type="unfinished">Potential as specified above</translation>
+      <translation>Δυνατότητα όπως ορίζεται παραπάνω</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="193"/>
       <source>Imaginary part of scalar potential</source>
-      <translation type="unfinished">Imaginary part of scalar potential</translation>
+      <translation>Φανταστικό μέρος του κλιμακωτού δυναμικού</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
@@ -3151,15 +3151,15 @@ with a harmonic/oscillating driving force</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Πραγματικό μέρος της δυνητικής στον Άξονα-Χ
+Σημείωση: Δεν έχει καμία επίδραση εάν επιλεχθεί στερεό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential x-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Φανταστικό μέρος της δυνητικής στον Άξονα-Χ
+Σημείωση: Δεν έχει καμία επίδραση αν επιλεχθεί ένα στερεό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
@@ -3172,15 +3172,15 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Πραγματικό μέρος της δυνητικής στον Άξονα-Υ
+Σημείωση: Δεν έχει αποτέλεσμα εάν έχει επιλεγεί στερεό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential y-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Φανταστικό μέρος της δυνητικής στον Άξονα-Υ
+Σημείωση: Δεν έχει καμία επίδραση αν επιλεχθεί ένα στερεό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
@@ -3193,46 +3193,46 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Real part of potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Πραγματικό μέρος της δυνητικής στον Άξονα-Ζ
+Σημείωση: Δεν έχει αποτέλεσμα εάν έχει επιλεγεί στερεό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation type="unfinished">Imaginary part of potential z-component
-Note: has no effect if a solid was selected</translation>
+      <translation>Φανταστικό μέρος της δυνητικής στον Άξονα-Ζ
+Σημείωση: Δεν έχει καμία επίδραση αν επιλεχθεί ένα στερεό</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="534"/>
       <source>Potential Constant</source>
-      <translation type="unfinished">Potential Constant</translation>
+      <translation>Πιθανή Σταθερά</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="547"/>
       <source>Farfield / Electric infinity</source>
-      <translation type="unfinished">Farfield / Electric infinity</translation>
+      <translation>Fairfield/Ηλεκτρικό άπειρο</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="557"/>
       <source>Calculate Electric Force</source>
-      <translation type="unfinished">Calculate Electric Force</translation>
+      <translation>Υπολογισμός Ηλεκτρικής Δύναμης</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="602"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation type="unfinished">Counter of the body (or face) with a capacitance</translation>
+      <translation>Μετρητής χωρητικότητας σώματος (ή επιφάνειας)</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
       <source>Beam section parameter</source>
-      <translation type="unfinished">Beam section parameter</translation>
+      <translation>Παράμετρος τμήματος δοκού</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
-      <translation type="unfinished">Cross section parameter</translation>
+      <translation>Παράμετρος διατομής</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="71"/>
@@ -3252,7 +3252,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="243"/>
       <source>Outer diameter:</source>
-      <translation type="unfinished">Outer diameter:</translation>
+      <translation>Εξωτερική διάμετρος:</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
@@ -3263,17 +3263,17 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation type="unfinished">Shell thickness parameter</translation>
+      <translation>Πάχος της πλάκας του κελύφους</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
       <source>Beam section rotation</source>
-      <translation type="unfinished">Beam section rotation</translation>
+      <translation>Περιστροφή τμήματος δοκού</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
       <source>0 degree</source>
-      <translation type="unfinished">0 degree</translation>
+      <translation>0 μοίρες</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
@@ -3288,55 +3288,55 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
-      <translation type="unfinished">formula</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
-      <translation type="unfinished">Velocity x:</translation>
+      <translation>Ταχύτητα ως προς τον Άξονα Χ:</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
-      <translation type="unfinished">Velocity y:</translation>
+      <translation>Ταχύτητα ως προς τον Άξονα Y:</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
-      <translation type="unfinished">Velocity z:</translation>
+      <translation>Ταχύτητα ως προς τον Άξονα Z:</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh boundary layer settings</source>
-      <translation type="unfinished">Mesh boundary layer settings</translation>
+      <translation>Ρυθμίσεις ορίου στρώματος πλέγματος</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="37"/>
       <source>Max Layers</source>
-      <translation type="unfinished">Max Layers</translation>
+      <translation>Μέγιστα Στρώσεις</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="88"/>
       <source>Min/1st thickness</source>
-      <translation type="unfinished">Min/1st thickness</translation>
+      <translation>Ελάχιστο /1ο πάχος</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
       <source>Growth ratio</source>
-      <translation type="unfinished">Growth ratio</translation>
+      <translation>Αναλογία ανάπτυξης</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh group</source>
-      <translation type="unfinished">Mesh group</translation>
+      <translation>Ομάδα πλέγματος</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier used for mesh export</source>
-      <translation type="unfinished">Identifier used for mesh export</translation>
+      <translation>Αναγνωριστικό που χρησιμοποιείται για την εξαγωγή πλέγματος</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3351,22 +3351,22 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh refinement</source>
-      <translation type="unfinished">Mesh refinement</translation>
+      <translation>Βελτίωση πλέγματος</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Max element size:</source>
-      <translation type="unfinished">Max element size:</translation>
+      <translation>Μέγιστο μέγεθος στοιχείου:</translation>
     </message>
     <message>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure:</source>
-      <translation type="unfinished">Pressure:</translation>
+      <translation>Πίεση:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="20"/>
       <source>Current density:</source>
-      <translation type="unfinished">Current density:</translation>
+      <translation>Τρέχουσα πυκνότητα:</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="66"/>
@@ -3374,10 +3374,10 @@ Note: has no effect if a solid was selected</translation>
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation type="unfinished">Real part of potential x-component
-Note: if a face was selected this will be the value
-          in normal face direction
-          settings for y and z will be ignored</translation>
+      <translation>Πραγματικό μέρος ως προς τον άξονα Χ
+Σημείωση: αν έχει επιλεγεί μια επιφάνεια θα είναι η τιμή
+          στην κανονική κατεύθυνση
+          ρυθμίσεις για τους άξονες Y και Ζ θα αγνοηθούν</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="113"/>
@@ -3385,19 +3385,19 @@ Note: if a face was selected this will be the value
 Note: if a face was selected this will be the value
           in normal face direction
           settings for y and z will be ignored</source>
-      <translation type="unfinished">Imaginary part of potential x-component
-Note: if a face was selected this will be the value
-          in normal face direction
-          settings for y and z will be ignored</translation>
+      <translation>Φανταστικό μέρος ως προς τον άξονα Χ
+Σημείωση: αν έχει επιλεγεί μια επιφάνεια θα είναι η τιμή
+          στην κανονική κατεύθυνση
+          ρυθμίσεις για τους άξονες Y και Ζ θα αγνοηθούν</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="170"/>
       <source>Real part of potential y-component
 Note: for 2D only setting for x is possible,
           setting for y will be ignored</source>
-      <translation type="unfinished">Real part of potential y-component
-Note: for 2D only setting for x is possible,
-          setting for y will be ignored</translation>
+      <translation>Πραγματικό μέρος ως προς τον άξονα Υ
+Σημείωση: Η ρύθμιση για τον άξονα Χ είνα δυνατή μόνο για 2D σχέδιο
+          για τον άξονα Υ θα αγνοηθεί</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="216"/>
@@ -3411,7 +3411,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/Magnetization.ui" line="20"/>
       <source>Magnetization</source>
-      <translation type="unfinished">Magnetization</translation>
+      <translation>Μαγνητοποίηση</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
@@ -3448,12 +3448,12 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
       <source>Normal to boundary</source>
-      <translation type="unfinished">Normal to boundary</translation>
+      <translation>Κανονική ως προς το όριο</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
       <source>Heat Source</source>
-      <translation type="unfinished">Heat Source</translation>
+      <translation>Πηγή Θερμότητας</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
@@ -3463,7 +3463,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="45"/>
       <source>Total Power:</source>
-      <translation type="unfinished">Total Power:</translation>
+      <translation>Συνολική Δύναμη:</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
@@ -3476,17 +3476,17 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation type="unfinished">FEM Mesh by Gmsh</translation>
+      <translation>Πλέγμα FEM από Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameters</source>
-      <translation type="unfinished">FEM Mesh Parameters</translation>
+      <translation>Παράμετροι Πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element dimension:</source>
-      <translation type="unfinished">Element dimension:</translation>
+      <translation>Διάσταση στοιχείου:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>
@@ -3497,7 +3497,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../ui/MeshGmsh.ui" line="66"/>
       <location filename="../ui/MeshGmsh.ui" line="110"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="91"/>
@@ -3507,7 +3507,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="138"/>
       <source>Element order:</source>
-      <translation type="unfinished">Element order:</translation>
+      <translation>Σειρά στοιχείου:</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="156"/>
@@ -3522,7 +3522,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="207"/>
       <source>Gmsh version</source>
-      <translation type="unfinished">Gmsh version</translation>
+      <translation>Έκδοση Gmsh</translation>
     </message>
   </context>
   <context>
@@ -3570,13 +3570,13 @@ Note: for 2D only setting for x is possible,
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="949"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="963"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="950"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="964"/>
       <source>Do you want to close this dialog?</source>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
@@ -3586,18 +3586,18 @@ Note: for 2D only setting for x is possible,
       <translation>Πλεγματοποίηση</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="179"/>
-      <location filename="../../AppFemGui.cpp" line="180"/>
       <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
       <location filename="../../AppFemGui.cpp" line="183"/>
       <location filename="../../AppFemGui.cpp" line="184"/>
+      <location filename="../../AppFemGui.cpp" line="185"/>
+      <location filename="../../AppFemGui.cpp" line="186"/>
       <source>FEM</source>
       <translation>FEM (Μέθοδος Πεπερασμένων Στοιχείων)</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="187"/>
-      <location filename="../../AppFemGui.cpp" line="188"/>
+      <location filename="../../AppFemGui.cpp" line="189"/>
+      <location filename="../../AppFemGui.cpp" line="190"/>
       <source>Import-Export</source>
       <translation>Εισαγωγή-Εξαγωγή</translation>
     </message>
@@ -3614,7 +3614,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="111"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Άκρες</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="112"/>
@@ -3624,17 +3624,17 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="113"/>
       <source>Polygons</source>
-      <translation type="unfinished">Polygons</translation>
+      <translation>Πολύγωνα</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="114"/>
       <source>Volumes</source>
-      <translation type="unfinished">Volumes</translation>
+      <translation>Εντάσεις</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="115"/>
       <source>Polyhedrons</source>
-      <translation type="unfinished">Polyhedrons</translation>
+      <translation>Πολύεδρα</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="116"/>
@@ -3644,7 +3644,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="332"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Είστε βέβαιοι ότι θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="159"/>
@@ -3931,7 +3931,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="98"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Κατάρρευση</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="110"/>
@@ -3946,7 +3946,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="130"/>
       <source>Run CalculiX</source>
-      <translation type="unfinished">Run CalculiX</translation>
+      <translation>Εκτέλεση Calculix</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="151"/>
@@ -4000,7 +4000,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation type="unfinished">Analysis features</translation>
+      <translation>Χαρακτηριστικά ανάλυσης</translation>
     </message>
   </context>
   <context>
@@ -4028,7 +4028,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Κουτί</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4048,7 +4048,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
-      <translation type="unfinished">Collect adjacent nodes</translation>
+      <translation>Συλλέξτε τους παρακείμενους κόμβους</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
@@ -4101,7 +4101,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Απόσταση</translation>
     </message>
   </context>
   <context>
@@ -4119,7 +4119,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="59"/>
       <source>Other pulley diameter</source>
-      <translation type="unfinished">Other pulley diameter</translation>
+      <translation>Άλλη διάμετρος τροχαλίας</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="80"/>
@@ -4169,7 +4169,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Απόσταση</translation>
     </message>
   </context>
   <context>
@@ -4256,47 +4256,37 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="119"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="170"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="199"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="275"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="301"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="327"/>
-      <source>Fixed</source>
-      <translation>Σταθερό</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="126"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="159"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="152"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="185"/>
       <source>Formulas are only valid
 for the Elmer solver</source>
       <translation type="unfinished">Formulas are only valid
 for the Elmer solver</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="130"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="123"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="156"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="189"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="140"/>
       <source>Displacement y</source>
       <translation>Μετακίνηση y</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="187"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="173"/>
       <source>Displacement z</source>
       <translation>Μετακίνηση z</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="217"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="196"/>
       <source>mm</source>
       <translation>χιλιοστά</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="227"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
       <source>Flow solution is used to determine
 surface force (and thus displacement)
 generated by the flow
@@ -4307,27 +4297,27 @@ generated by the flow
 (Option only applies for Elmer solver)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="233"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="212"/>
       <source>Surface force by flow</source>
       <translation type="unfinished">Surface force by flow</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="253"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
       <translation>Οι περιστροφές είναι έγκυρες μόνο για Δοκούς και Κελύφη.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="266"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation x</source>
       <translation>Περιστροφή x</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="292"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation y</source>
       <translation>Περιστροφή y</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation z</source>
       <translation>Περιστροφή z</translation>
     </message>
@@ -4355,12 +4345,12 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="28"/>
       <source>Boundary</source>
-      <translation type="unfinished">Boundary</translation>
+      <translation>Όριο</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="51"/>
       <source>Subtype</source>
-      <translation type="unfinished">Subtype</translation>
+      <translation>Δευτερεύων τύπος</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
@@ -4380,22 +4370,22 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="141"/>
       <source>Help text</source>
-      <translation type="unfinished">Help text</translation>
+      <translation>Κείμενο βοήθειας</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="161"/>
       <source>Tab 1</source>
-      <translation type="unfinished">Tab 1</translation>
+      <translation>Tab 1</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="176"/>
       <source>Value [Unit]</source>
-      <translation type="unfinished">Value [Unit]</translation>
+      <translation>Μονάδα Τιμής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="239"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>Επιλέξτε μια επίπεδη άκρη ή επιφάνεια και, στη συνέχεια, πατήστε αυτό το κουμπί</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="242"/>
@@ -4415,14 +4405,13 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
       <source>Temperature [K]</source>
-      <translation type="unfinished">Temperature [K]</translation>
+      <translation>Θερμοκρασία [K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Ως κατεύθυνση χρησιμοποιείται η κατεύθυνση της άκρης ή η κατεύθυνση του κανονικού διανύσματος της όψης</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
@@ -4437,27 +4426,27 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="312"/>
       <source>Turbulence specification</source>
-      <translation type="unfinished">Turbulence specification</translation>
+      <translation>Προδιαγραφή στροβιλισμού-αναταράξεων</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="357"/>
       <source>Length [m]</source>
-      <translation type="unfinished">Length [m]</translation>
+      <translation>Μήκος [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
       <source>Tab 2</source>
-      <translation type="unfinished">Tab 2</translation>
+      <translation>Tab 2</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
       <source>Heat flux [W/m2]</source>
-      <translation type="unfinished">Heat flux [W/m2]</translation>
+      <translation>Ροή θερμότητας [W/m2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="441"/>
       <source>HT coeff</source>
-      <translation type="unfinished">HT coeff</translation>
+      <translation>Συντελεστής Μεταφοράς Θερμότητας</translation>
     </message>
   </context>
   <context>
@@ -4465,12 +4454,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="26"/>
       <source>Prescribed Force</source>
-      <translation type="unfinished">Prescribed Force</translation>
+      <translation>Προδιαγεγραμμένη Δύναμη</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Click Add or Remove and select geometric element(s)</source>
-      <translation type="unfinished">Click Add or Remove and select geometric element(s)</translation>
+      <translation>Κάντε κλικ στην επιλογή Προσθήκη ή Κατάργηση και επιλέξτε γεωμετρικά στοιχεία</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4490,12 +4479,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>Επιλέξτε μια επίπεδη άκρη ή επιφάνεια και, στη συνέχεια, πατήστε αυτό το κουμπί</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="120"/>
@@ -4506,8 +4495,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Ως κατεύθυνση χρησιμοποιείται η κατεύθυνση της άκρης ή η κατεύθυνση του κανονικού διανύσματος της όψης</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
@@ -4520,12 +4508,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
       <source>Task Fem Heat flux Load</source>
-      <translation type="unfinished">Task Fem Heat flux Load</translation>
+      <translation>Φορτίο ροής θερμότητας Fem Εργασιών</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Click Add or Remove and select face(s)</source>
-      <translation type="unfinished">Click Add or Remove and select face(s)</translation>
+      <translation>Κάντε κλικ στην επιλογή Προσθήκη ή Κατάργηση και επιλέξτε επιφάνεια(ες)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4545,50 +4533,50 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="75"/>
       <source>Surface Radiation</source>
-      <translation type="unfinished">Surface Radiation</translation>
+      <translation>Επιφανειακή Ακτινοβολία</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="82"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="215"/>
       <source>Surface heat flux</source>
-      <translation type="unfinished">Surface heat flux</translation>
+      <translation>Επιφανειακή ροή θερμότητας</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="102"/>
       <source>Film coefficient</source>
-      <translation type="unfinished">Film coefficient</translation>
+      <translation>Συντελεστής Film</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="109"/>
       <source>1 W/m^2/K</source>
-      <translation type="unfinished">1 W/m^2/K</translation>
+      <translation>1 W/m^2/K</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="126"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="182"/>
       <source>Ambient Temperature</source>
-      <translation type="unfinished">Ambient Temperature</translation>
+      <translation>Θερμοκρασία περιβάλλοντος</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="133"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="189"/>
       <source>300 K</source>
-      <translation type="unfinished">300 K</translation>
+      <translation>300 Κ</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="161"/>
       <source>Emissivity</source>
-      <translation type="unfinished">Emissivity</translation>
+      <translation>Εκπομπή</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="168"/>
       <source>1 </source>
-      <translation type="unfinished">1 </translation>
+      <translation>1 </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="222"/>
       <source>1 W/m^2</source>
-      <translation type="unfinished">1 W/m^2</translation>
+      <translation>1 W/m^2</translation>
     </message>
   </context>
   <context>
@@ -4601,7 +4589,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.ui" line="20"/>
       <source>Insert component's initial temperature:</source>
-      <translation type="unfinished">Insert component's initial temperature:</translation>
+      <translation>Εισαγάγετε την αρχική θερμοκρασία:</translation>
     </message>
   </context>
   <context>
@@ -4609,7 +4597,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
-      <translation type="unfinished">Select a single face, click Add or Remove</translation>
+      <translation>Επιλέξτε μια επιφάνεια μόνο, κάντε κλικ στην επιλογή Προσθήκη ή Κατάργηση</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4627,7 +4615,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Click Add or Remove and select face(s)</source>
-      <translation type="unfinished">Click Add or Remove and select face(s)</translation>
+      <translation>Κάντε κλικ στην επιλογή Προσθήκη ή Κατάργηση και επιλέξτε επιφάνεια(ες)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4655,7 +4643,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Click Add or Remove and select face(s)</source>
-      <translation type="unfinished">Click Add or Remove and select face(s)</translation>
+      <translation>Κάντε κλικ στην επιλογή Προσθήκη ή Κατάργηση και επιλέξτε επιφάνεια(ες)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="35"/>
@@ -4670,24 +4658,24 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="95"/>
       <source>Normal Stiffness</source>
-      <translation type="unfinished">Normal Stiffness</translation>
+      <translation>Κανονική Ακαμψία</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="109"/>
       <source>Stiffness for Elmer</source>
-      <translation type="unfinished">Stiffness for Elmer</translation>
+      <translation>Ακαμψία για Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation type="unfinished">What stiffness should be
-used for the Elmer solver</translation>
+      <translation>Ποια ακαμψία πρέπει να
+χρησιμοποιηθεί για τον επιλύτη Elmer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="81"/>
       <source>Tangential Stiffness</source>
-      <translation type="unfinished">Tangential Stiffness</translation>
+      <translation>Εφαπτομένη Ακαμψία</translation>
     </message>
   </context>
   <context>
@@ -4695,7 +4683,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="20"/>
       <source>Click Add or Remove and select geometric element(s)</source>
-      <translation type="unfinished">Click Add or Remove and select geometric element(s)</translation>
+      <translation>Κάντε κλικ στην επιλογή Προσθήκη ή Κατάργηση και επιλέξτε γεωμετρικά στοιχεία</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="29"/>
@@ -4710,7 +4698,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="56"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Τύπος Περιορισμού</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="66"/>
@@ -4720,7 +4708,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="83"/>
       <source>Concentrated heat flux</source>
-      <translation type="unfinished">Concentrated heat flux</translation>
+      <translation>Συγκεντρωμένη θερμική ροή</translation>
     </message>
   </context>
   <context>
@@ -4753,7 +4741,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="110"/>
       <source>System Rotation</source>
-      <translation type="unfinished">System Rotation</translation>
+      <translation>Περιστροφή Συστήματος</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="116"/>
@@ -4792,12 +4780,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside Out</source>
-      <translation type="unfinished">Inside Out</translation>
+      <translation>Μέσα Έξω</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
       <source>Cut Cells</source>
-      <translation type="unfinished">Cut Cells</translation>
+      <translation>Αποκοπή Κελιών</translation>
     </message>
   </context>
   <context>
@@ -4813,7 +4801,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
-      <translation type="unfinished">Coordinates</translation>
+      <translation>Συντεταγμένες</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="64"/>
@@ -4833,22 +4821,22 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="32"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>Σημείο 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="48"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>Σημείο 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="184"/>
       <source>Select Points</source>
-      <translation type="unfinished">Select Points</translation>
+      <translation>Επιλογή Σημείων</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="193"/>
       <source>Resolution</source>
-      <translation type="unfinished">Resolution</translation>
+      <translation>Ανάλυση</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="236"/>
@@ -4858,7 +4846,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="263"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Πεδίο</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="273"/>
@@ -4868,7 +4856,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="292"/>
       <source>Create Plot</source>
-      <translation type="unfinished">Create Plot</translation>
+      <translation>Δημιουργία Σχεδίου</translation>
     </message>
   </context>
   <context>
@@ -4896,7 +4884,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="113"/>
       <source>Select Point</source>
-      <translation type="unfinished">Select Point</translation>
+      <translation>Επιλογή Σημείου</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="122"/>
@@ -4906,7 +4894,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="169"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Πεδίο</translation>
     </message>
   </context>
   <context>
@@ -4943,12 +4931,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
       <source>Coloring</source>
-      <translation type="unfinished">Coloring</translation>
+      <translation>Χρωματισμός</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Πεδίο</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>
@@ -4958,7 +4946,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="130"/>
       <source>Magnitute</source>
-      <translation type="unfinished">Magnitute</translation>
+      <translation>Μέγεθος</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="135"/>
@@ -4978,7 +4966,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="156"/>
       <source>Styling</source>
-      <translation type="unfinished">Styling</translation>
+      <translation>Στυλ</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="162"/>
@@ -4991,7 +4979,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="28"/>
       <source>Scalar</source>
-      <translation type="unfinished">Scalar</translation>
+      <translation>Βαθμολογία</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="42"/>
@@ -5016,22 +5004,22 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
       <source>Min scalar</source>
-      <translation type="unfinished">Min scalar</translation>
+      <translation>Ελάχιστη κλίμακα</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
       <source>Clip scalar</source>
-      <translation type="unfinished">Clip scalar</translation>
+      <translation>Κλιπ Κλίμακας</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Max scalar</source>
-      <translation type="unfinished">Max scalar</translation>
+      <translation>Μέγιστη κλίμακα</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>
       <source>Clip inside out</source>
-      <translation type="unfinished">Clip inside out</translation>
+      <translation>Κλιπ μέσα προς τα έξω</translation>
     </message>
   </context>
   <context>
@@ -5275,12 +5263,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>M&amp;esh</source>
-      <translation type="unfinished">M&amp;esh</translation>
+      <translation>&amp;Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="70"/>
@@ -5290,27 +5278,27 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../Workbench.cpp" line="71"/>
       <source>&amp;Solve</source>
-      <translation type="unfinished">&amp;Solve</translation>
+      <translation>&amp;Επίλυση</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Αποτελέσματα</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
       <source>&amp;Results</source>
-      <translation type="unfinished">&amp;Results</translation>
+      <translation>&amp;Αποτελέσματα</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Filter functions</source>
-      <translation type="unfinished">Filter functions</translation>
+      <translation>Λειτουργίες Φίλτρου</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
       <source>&amp;Filter functions</source>
-      <translation type="unfinished">&amp;Filter functions</translation>
+      <translation>&amp;Λειτουργία Φίλτρου</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
@@ -5461,12 +5449,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="407"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Εξίσωση ελαστικότητας</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
       <source>Creates a FEM equation for elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
+      <translation>Δημιουργεί μια εξίσωση FEM για την ελαστικότητα (Καταπόνηση)</translation>
     </message>
   </context>
   <context>
@@ -5474,12 +5462,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="446"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Εξίσωση ροής</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="447"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Δημιουργεί μια εξίσωση FEM για τη ροή</translation>
     </message>
   </context>
   <context>
@@ -5487,12 +5475,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="457"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Εξίσωση ροής</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="458"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Δημιουργεί μια εξίσωση FEM για τη ροή</translation>
     </message>
   </context>
   <context>
@@ -5526,12 +5514,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="512"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Ανοίξτε τα παραδείγματα FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="513"/>
       <source>Opens the FEM examples</source>
-      <translation type="unfinished">Opens the FEM examples</translation>
+      <translation>Ανοίγει τα παραδείγματα FEM</translation>
     </message>
   </context>
   <context>
@@ -5539,12 +5527,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="527"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Πρόγραμμα Επεξεργασίας υλικών</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="530"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Ανοίγει το πρόγραμμα επεξεργασίας υλικών του FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -5552,7 +5540,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="543"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Υλικό για υγρά - ρευστά</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="544"/>
@@ -5591,12 +5579,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Υλικό για στερεά</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="639"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Δημιουργεί ένα υλικό FEM για στερεά</translation>
     </message>
   </context>
   <context>
@@ -5604,12 +5592,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="649"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEM Από πλέγμα σε πλέγμα</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="652"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Converts the surface of a FEM mesh to a mesh</translation>
+      <translation>Μετατρέψτε την επιφάνεια ενός πλέγματος FEM σε πλέγμα</translation>
     </message>
   </context>
   <context>
@@ -5617,12 +5605,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="691"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>Στρώμα ορίου πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="694"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>Δημιουργεί ένα στρώμα ορίου πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -5630,12 +5618,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="704"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Καθαρισμός πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>
       <source>Clears the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clears the Mesh of a FEM mesh object</translation>
+      <translation>Καθαρίζει το Πλέγμα ενός πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -5643,12 +5631,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="724"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Εμφάνιση πληροφοριών πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="725"/>
       <source>Displays FEM mesh information</source>
-      <translation type="unfinished">Displays FEM mesh information</translation>
+      <translation>Εμφανίζει πληροφορίες πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -5656,7 +5644,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="748"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>Πλέγμα FEM από σχήμα με τη χρήση Gmsh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="751"/>
@@ -5667,12 +5655,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="792"/>
+      <location filename="../../../femcommands/commands.py" line="800"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>Ομάδα πλέγματος FEM</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="793"/>
+      <location filename="../../../femcommands/commands.py" line="801"/>
       <source>Creates a FEM mesh group</source>
       <translation type="unfinished">Creates a FEM mesh group</translation>
     </message>
@@ -5680,12 +5668,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="805"/>
+      <location filename="../../../femcommands/commands.py" line="813"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation type="unfinished">FEM mesh from shape by Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="809"/>
+      <location filename="../../../femcommands/commands.py" line="817"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation type="unfinished">Creates a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
     </message>
@@ -5693,12 +5681,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="861"/>
+      <location filename="../../../femcommands/commands.py" line="869"/>
       <source>Show result</source>
       <translation>Εμφανίστε το αποτέλεσμα</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="865"/>
+      <location filename="../../../femcommands/commands.py" line="873"/>
       <source>Shows and visualizes selected result data</source>
       <translation type="unfinished">Shows and visualizes selected result data</translation>
     </message>
@@ -5706,25 +5694,25 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="877"/>
+      <location filename="../../../femcommands/commands.py" line="885"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Εκκαθάριση αποτελεσμάτων</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="881"/>
+      <location filename="../../../femcommands/commands.py" line="889"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Διαγραφεί όλα τα αποτελέσματα από την ενεργή ανάλυση</translation>
     </message>
   </context>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="991"/>
+      <location filename="../../../femcommands/commands.py" line="999"/>
       <source>Solver CalculiX Standard</source>
       <translation type="unfinished">Solver CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="996"/>
+      <location filename="../../../femcommands/commands.py" line="1004"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
     </message>
@@ -5732,12 +5720,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1044"/>
+      <location filename="../../../femcommands/commands.py" line="1052"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Έλεγχος εργασίας επιλυτή</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1049"/>
+      <location filename="../../../femcommands/commands.py" line="1057"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
     </message>
@@ -5745,12 +5733,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1061"/>
+      <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Solver Elmer</source>
       <translation type="unfinished">Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1063"/>
+      <location filename="../../../femcommands/commands.py" line="1071"/>
       <source>Creates a FEM solver Elmer</source>
       <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
@@ -5758,12 +5746,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1074"/>
+      <location filename="../../../femcommands/commands.py" line="1082"/>
       <source>Solver Mystran</source>
       <translation type="unfinished">Solver Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1084"/>
       <source>Creates a FEM solver Mystran</source>
       <translation type="unfinished">Creates a FEM solver Mystran</translation>
     </message>
@@ -5771,12 +5759,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1086"/>
+      <location filename="../../../femcommands/commands.py" line="1094"/>
       <source>Run solver calculations</source>
       <translation type="unfinished">Run solver calculations</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1090"/>
+      <location filename="../../../femcommands/commands.py" line="1098"/>
       <source>Runs the calculations for the selected solver</source>
       <translation type="unfinished">Runs the calculations for the selected solver</translation>
     </message>
@@ -5784,14 +5772,14 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1106"/>
+      <location filename="../../../femcommands/commands.py" line="1114"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Επιλυτής Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1108"/>
+      <location filename="../../../femcommands/commands.py" line="1116"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Δημιουργεί έναν επιλυτή Z88 FEM</translation>
     </message>
   </context>
   <context>
@@ -5799,18 +5787,18 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="208"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Έλεγχος Επίλυσης</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="219"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Ευρετήριο Εργασίας</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="223"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="299"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Εγγραφή</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="224"/>
@@ -5823,7 +5811,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="241"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Χρόνος που πέρασε:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="301"/>
@@ -5835,17 +5823,17 @@ used for the Elmer solver</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="307"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Επανεγγραφή</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="309"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Επανεκτέλεση</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>Ματαίωση</translation>
     </message>
   </context>
   <context>
@@ -5866,7 +5854,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Επιλέξτε Όψεις/Ακμές/Κορυφές</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
@@ -5879,7 +5867,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="146"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Επιλογή Στερεών</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="152"/>
@@ -5892,7 +5880,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="265"/>
       <source>Geometry reference selector for a {}</source>
-      <translation type="unfinished">Geometry reference selector for a {}</translation>
+      <translation>Επιλογέας αναφοράς γεωμετρίας για {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="268"/>
@@ -5912,7 +5900,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="287"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Λειτουργία επιλογής</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="289"/>
@@ -5997,7 +5985,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="546"/>
       <source>Histogram of {}</source>
-      <translation type="unfinished">Histogram of {}</translation>
+      <translation>Ιστόγραμμα του {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="547"/>
@@ -6007,13 +5995,13 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="668"/>
       <source>Empty result mesh</source>
-      <translation type="unfinished">Empty result mesh</translation>
+      <translation>Κενό πλέγμα αποτελεσμάτων</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="681"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="690"/>
       <source>No result object</source>
-      <translation type="unfinished">No result object</translation>
+      <translation>Κανένα αντικείμενο αποτελέσματος</translation>
     </message>
   </context>
   <context>
@@ -6021,7 +6009,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="497"/>
       <source>Magnetodynamic2D equation</source>
-      <translation type="unfinished">Magnetodynamic2D equation</translation>
+      <translation>Μαγνητοδυναμική 2D εξίσωση</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
@@ -6034,7 +6022,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1399"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1400"/>
@@ -6048,7 +6036,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="481"/>
       <source>Magnetodynamic equation</source>
-      <translation type="unfinished">Magnetodynamic equation</translation>
+      <translation>Μαγνητοδυναμική εξίσωση</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
@@ -6061,12 +6049,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="25"/>
       <source>Vector:</source>
-      <translation type="unfinished">Vector:</translation>
+      <translation>Διάνυσμα:</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="35"/>
       <source>Field:</source>
-      <translation type="unfinished">Field:</translation>
+      <translation>Πεδίο:</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="79"/>
@@ -6076,7 +6064,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="82"/>
       <source>No color</source>
-      <translation type="unfinished">No color</translation>
+      <translation>Χωρίς χρώμα</translation>
     </message>
   </context>
   <context>
@@ -6084,7 +6072,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1524"/>
@@ -6102,12 +6090,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="2387"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2388"/>
       <source>Contours filter</source>
-      <translation type="unfinished">Contours filter</translation>
+      <translation>Φίλτρο περιγραμμάτων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2389"/>
@@ -6215,7 +6203,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1675"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1676"/>
@@ -6231,12 +6219,12 @@ Please select a result type first.</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1019"/>
+      <location filename="../../../femcommands/commands.py" line="1027"/>
       <source>Solver CalculiX (new framework)</source>
       <translation type="unfinished">Solver CalculiX (new framework)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1024"/>
+      <location filename="../../../femcommands/commands.py" line="1032"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
     </message>
@@ -6246,12 +6234,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="189"/>
       <source>Body heat source</source>
-      <translation type="unfinished">Body heat source</translation>
+      <translation>Πηγή θερμότητας σώματος</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="192"/>
       <source>Creates a body heat source</source>
-      <translation type="unfinished">Creates a body heat source</translation>
+      <translation>Δημιουργεί μια πηγή θερμότητας σώματος</translation>
     </message>
   </context>
   <context>
@@ -6259,12 +6247,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="202"/>
       <source>Centrifugal load</source>
-      <translation type="unfinished">Centrifugal load</translation>
+      <translation>Φυγοκεντρικό φορτίο</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="203"/>
       <source>Creates a centrifugal load</source>
-      <translation type="unfinished">Creates a centrifugal load</translation>
+      <translation>Δημιουργεί ένα φυγοκεντρικό φορτίο</translation>
     </message>
   </context>
   <context>
@@ -6350,7 +6338,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Section print feature</source>
-      <translation type="unfinished">Section print feature</translation>
+      <translation>Λειτουργία εκτύπωσης ενότητας</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="311"/>
@@ -6363,12 +6351,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="321"/>
       <source>Gravity load</source>
-      <translation type="unfinished">Gravity load</translation>
+      <translation>Βαρύτητα φορτίου</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="322"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>Δημιουργία φορτίου βαρύτητας</translation>
     </message>
   </context>
   <context>
@@ -6376,25 +6364,25 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Tie constraint</source>
-      <translation type="unfinished">Tie constraint</translation>
+      <translation>Περιορισμός Δεσίματος</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="333"/>
       <source>Creates a tie constraint</source>
-      <translation type="unfinished">Creates a tie constraint</translation>
+      <translation>Δημιουργεί έναν περιορισμό δεσίματος</translation>
     </message>
   </context>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="850"/>
+      <location filename="../../../femcommands/commands.py" line="858"/>
       <source>FEM mesh refinement</source>
-      <translation type="unfinished">FEM mesh refinement</translation>
+      <translation>Βελτίωση πλέγματος FEM</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="851"/>
+      <location filename="../../../femcommands/commands.py" line="859"/>
       <source>Creates a FEM mesh refinement</source>
-      <translation type="unfinished">Creates a FEM mesh refinement</translation>
+      <translation>Δημιουργεί βελτίωση πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -6407,7 +6395,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Click Add or Remove and select geometric element(s)</source>
-      <translation type="unfinished">Click Add or Remove and select geometric element(s)</translation>
+      <translation>Κάντε κλικ στην επιλογή Προσθήκη ή Κατάργηση και επιλέξτε γεωμετρικά στοιχεία</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -6422,7 +6410,8 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="77"/>
       <source>Reference Node</source>
-      <translation type="unfinished">Reference Node</translation>
+      <translation>Κόμβος Αναφοράς (Παραπομπή)
+</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="83"/>
@@ -6460,7 +6449,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="177"/>
       <source>Translational Mode</source>
-      <translation type="unfinished">Translational Mode</translation>
+      <translation>Λειτουργία Μετάφρασης</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="225"/>
@@ -6475,12 +6464,12 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="394"/>
       <source>Rotational Mode</source>
-      <translation type="unfinished">Rotational Mode</translation>
+      <translation>Λειτουργία Περιστροφής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -6490,7 +6479,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="531"/>
       <source>Moment</source>
-      <translation type="unfinished">Moment</translation>
+      <translation>Στιγμή</translation>
     </message>
   </context>
   <context>
@@ -6498,7 +6487,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="456"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="457"/>
@@ -6543,7 +6532,7 @@ Please select a result type first.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="748"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="743"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
@@ -6568,7 +6557,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
       <source>Restore</source>
-      <translation type="unfinished">Restore</translation>
+      <translation>Επαναφορά</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
@@ -6627,17 +6616,17 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <translation>Διαγραφή Στοιχείων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Creates a FEM mesh elements set</source>
-      <translation type="unfinished">Creates a FEM mesh elements set</translation>
+      <translation>Δημιουργία συνόλου στοιχείων με πλέγμα FEM</translation>
     </message>
   </context>
   <context>
@@ -6645,7 +6634,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="441"/>
       <source>Elements set</source>
-      <translation type="unfinished">Elements set</translation>
+      <translation>Σετ στοιχείων</translation>
     </message>
   </context>
   <context>
@@ -6653,7 +6642,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1282"/>

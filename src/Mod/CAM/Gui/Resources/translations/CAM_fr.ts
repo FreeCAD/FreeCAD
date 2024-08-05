@@ -522,7 +522,7 @@ Pour les bruts de la boîte englobante de l'objet de base, il s'agit de l'extra 
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Choisir une tâche CAM</translation>
     </message>
   </context>
   <context>
@@ -2336,7 +2336,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G-Code</source>
-      <translation type="unfinished">G-Code</translation>
+      <translation>G-code</translation>
     </message>
   </context>
   <context>
@@ -2484,31 +2484,30 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Saisir un chemin d'accès et éventuellement un nom de fichier (voir ci-dessous) à utiliser par défaut pour l'exportation du post-processeur.
+Les substitutions suivantes sont effectuées avant que le nom ne soit résolu au moment du post-traitement :
+La substitution permet ce qui suit :
+%D ... répertoire du document actif
+%d ... nom du document actif (avec extension)
+%M ... répertoire de la macro de l'utilisateur
+%j ... nom de l'objet de la taĉhe active
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+L'option suivante peut être utilisée si la sortie est séparée. Si la sortie n'est pas séparée, ces éléments seront ignorés.
+%T ... numéro d'outil
+%t ... étiquette du contrôleur d'outil
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... système de coordonnées de travail
+%O ... étiquette de l'opération
 
-When splitting output, a sequence number will always be added.
+Lors de la séparation de la sortie, un numéro de séquence sera toujours ajouté.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+Si %S est inclus, vous pouvez spécifier l'endroit où le numéro apparaît.  Sans cela, le numéro sera ajouté à la fin de la chaîne.
 
-%S ... Sequence Number
+%S ... numéro de séquence
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+L'exemple suivant enregistre tous les fichiers portant le même nom que le document dans le répertoire /home/freecad (enlever les guillemets) :
+"/home/cnc/%d.g-code"
+Voir la politique d'enregistrement des fichiers ci-dessous pour savoir comment traiter les conflits de noms.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -3036,7 +3035,10 @@ Remarque : l'activation d'OpenCAMLib ici nécessite un redémarrage de FreeCAD p
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Liste des emplacements des dégagements (avec tous les dégagements à cet emplacement) qui font partie de cette finition. La liste est déterminée par les coins du profil et le &lt;span style=&quot; font-weight:600;&quot;&gt;côté&lt;/span&gt; sélectionné pour les dégagements.
+Vous pouvez &lt;span style=&quot; font-weight:600;&quot;&gt;décocher&lt;/span&gt; les dégagements qui ne reçoivent pas de finition.
+Si un dégagement est &lt;span style=&quot; font-weight:600;&quot;&gt;grisé&lt;/span&gt;, cela signifie qu'il a déjà reçu une finition lors d'une précédente passe de finition. En d'autres termes, si vous appliquez une finition à nouveau à ce dégagement, vous ne pourrez sélectionner que les dégagements qui ne sont pas cochés ici.
+Si cette liste est vide, cela signifie probablement que vous essayez de créer des dégagements du mauvais côté du profil.</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3397,12 +3399,12 @@ Si le rayon est trop grand pour la forme de l'attache, il est réduit au rayon m
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation type="unfinished">Launch CAMotics</translation>
+      <translation>Lancer CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make CAMotics File</source>
-      <translation type="unfinished">Make CAMotics File</translation>
+      <translation>Créer un fichier CAMotics</translation>
     </message>
   </context>
   <context>
@@ -3602,31 +3604,30 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>Saisir un chemin d'accès et éventuellement un nom de fichier (voir ci-dessous) à utiliser par défaut pour l'exportation du post-processeur.
+Les substitutions suivantes sont effectuées avant que le nom ne soit résolu au moment du post-traitement :
+La substitution permet ce qui suit :
+%D ... répertoire du document actif
+%d ... nom du document actif (avec extension)
+%M ... répertoire de la macro de l'utilisateur
+%j ... nom de l'objet de la taĉhe active
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+L'option suivante peut être utilisée si la sortie est séparée. Si la sortie n'est pas séparée, ces éléments seront ignorés.
+%T ... numéro d'outil
+%t ... étiquette du contrôleur d'outil
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... système de coordonnées de travail
+%O ... étiquette de l'opération
 
-When splitting output, a sequence number will always be added.
+Lors de la séparation de la sortie, un numéro de séquence sera toujours ajouté.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+Si %S est inclus, vous pouvez spécifier l'endroit où le numéro apparaît.  Sans cela, le numéro sera ajouté à la fin de la chaîne.
 
-%S ... Sequence Number
+%S ... numéro de séquence
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+L'exemple suivant enregistre tous les fichiers portant le même nom que le document dans le répertoire /home/freecad (enlever les guillemets) :
+"/home/cnc/%d.g-code"
+Voir la politique d'enregistrement des fichiers ci-dessous pour savoir comment traiter les conflits de noms.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
@@ -3679,8 +3680,8 @@ Le classement par opération permet d'effectuer chaque opération dans tous les 
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>Les systèmes de coordonnées de travail&lt;/span&gt; également appelés &lt;span style=&quot; font-style:italic;&quot;&gt;Décalages de travail&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Décalages de fixation&lt;/span&gt; ou &lt;span style=&quot; font-style:italic;&quot;&gt;Fixations&lt;/span&gt; sont utiles pour construire des tâches de production efficaces où la même pièce est fabriquée plusieurs fois sur la machine.
+FreeCAD ne sait pas où se trouve un système de coordonnées particulier dans le système de coordonnées de la machine, de sorte que l'ajout de systèmes de coordonnées supplémentaires à votre tâche n'aura aucune incidence visuelle sur votre tâche. En revanche, la sortie du G-code sera modifiée. La manière exacte dont la sortie est affectée est contrôlée par le paramètre "Trier par".</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -4168,7 +4169,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>CAMotics Project (*.camotics)</source>
-      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
+      <translation>Projet CAMotics (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4235,7 +4236,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>Choisir une tâche CAM</translation>
     </message>
   </context>
   <context>
@@ -4688,37 +4689,32 @@ Par défaut : 3 mm</translation>
       <translation>Marge supplémentaire de la boîte englobante liée à la pièce dans la direction des Z positifs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation>Un matériau pour cet objet</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation>Longueur de ce brut cubique</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation>Largeur de ce brut cubique</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation>Hauteur de ce brut cubique</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation>Rayon de ce brut cylindrique</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation>Hauteur de ce brut cylindrique</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation>Représentation interne du type de brut</translation>
     </message>
@@ -5216,7 +5212,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
+      <translation>Distance maximale avant qu'un raccord en onglet soit tronqué</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5306,7 +5302,7 @@ Par défaut : 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
+      <translation>Pour les arcs/arêtes circulaires, décaler le rayon du parcours d'outil.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5782,12 +5778,12 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
       <translation>La propriété Stock Material est obsolète. Supprimer la propriété Material. Utiliser le système de matériaux natif pour attribuer un ShapeMaterial.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation>Type de brut nommé {} non pris en charge</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>Version {} non prise en charge du modèle du parcours du brut</translation>
     </message>
@@ -5922,7 +5918,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
       <source>No job</source>
-      <translation type="unfinished">No job</translation>
+      <translation>Aucune tâche</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -6349,7 +6345,7 @@ Abandon de la création de l'opération</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid G-code line: %s</source>
-      <translation type="unfinished">Invalid G-code line: %s</translation>
+      <translation>Ligne du G-code invalide : %s</translation>
     </message>
   </context>
   <context>
@@ -7164,7 +7160,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>Output (G-code)</source>
-      <translation type="unfinished">Output (G-code)</translation>
+      <translation>Sortie (G-code)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
@@ -7174,7 +7170,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Surface Speed HSS</source>
-      <translation type="unfinished">Surface Speed HSS</translation>
+      <translation>Vitesse de surface HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -8540,7 +8536,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
       <source>CAMotics tooltable (*.json)</source>
-      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
+      <translation>Table d'outils CAMotics (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8620,12 +8616,12 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
       <source>CAMotics</source>
-      <translation type="unfinished">CAMotics</translation>
+      <translation>CAMotics</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>Simulate using CAMotics</source>
-      <translation type="unfinished">Simulate using CAMotics</translation>
+      <translation>Simuler en utilisant CAMotics</translation>
     </message>
   </context>
 </TS>

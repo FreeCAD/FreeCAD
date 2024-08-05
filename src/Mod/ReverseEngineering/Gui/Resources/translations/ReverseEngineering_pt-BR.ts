@@ -236,7 +236,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>Encaixar B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
@@ -393,7 +393,7 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Please select a point cloud.</source>
-      <translation type="unfinished">Please select a point cloud.</translation>
+      <translation>Selecione uma nuvem de pontos.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
@@ -602,22 +602,22 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="26"/>
       <source>Maximum degree</source>
-      <translation type="unfinished">Maximum degree</translation>
+      <translation>Grau máximo</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="37"/>
       <source>Chord length</source>
-      <translation type="unfinished">Chord length</translation>
+      <translation>Comprimento da corda</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>Centripetal</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <translation>Iso-Paramétrico</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -627,7 +627,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>
       <source>Parametrization type</source>
-      <translation type="unfinished">Parametrization type</translation>
+      <translation>Tipo de parametrização</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="96"/>
@@ -667,12 +667,12 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
       <source>Minimum degree</source>
-      <translation type="unfinished">Minimum degree</translation>
+      <translation>Grau mínimo</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
       <source>Closed curve</source>
-      <translation type="unfinished">Closed curve</translation>
+      <translation>Curva fechada</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="151"/>
@@ -682,12 +682,12 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="160"/>
       <source>Torsion</source>
-      <translation type="unfinished">Torsion</translation>
+      <translation>Torsão</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="167"/>
       <source>Curve length</source>
-      <translation type="unfinished">Curve length</translation>
+      <translation>Comprimento da curva</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="174"/>
@@ -705,12 +705,12 @@
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Approximate B-spline curve...</source>
-      <translation type="unfinished">Approximate B-spline curve...</translation>
+      <translation>Aproximar uma curva B-spline...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>Approximate a B-spline curve</source>
-      <translation type="unfinished">Approximate a B-spline curve</translation>
+      <translation>Aproximar uma curva B-spline</translation>
     </message>
   </context>
   <context>
