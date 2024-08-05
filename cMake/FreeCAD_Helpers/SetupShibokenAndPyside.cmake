@@ -38,7 +38,7 @@ macro(SetupShibokenAndPyside)
             find_package(Shiboken${SHIBOKEN_MAJOR_VERSION} QUIET)
         endif()
 
-        if(SHIBOKEN_MAJOR_VERSION EQUAL 6)
+        if(TARGET Shiboken6::libshiboken AND SHIBOKEN_MAJOR_VERSION EQUAL 6)
             set_target_properties(Shiboken6::libshiboken PROPERTIES INTERFACE_COMPILE_DEFINITIONS "NDEBUG")
         endif()
     endif()
