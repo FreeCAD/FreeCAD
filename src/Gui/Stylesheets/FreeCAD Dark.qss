@@ -938,6 +938,8 @@ QToolBar::separator:vertical {
 QToolButton#qt_toolbar_ext_button {
 background-repeat: none;
 background-position: center center;
+background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #7c7c7c, stop:1 #898989);
+padding: 0px;
 }
 
 QToolButton#qt_toolbar_ext_button:hover {
