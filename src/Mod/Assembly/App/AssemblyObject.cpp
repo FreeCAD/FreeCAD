@@ -82,6 +82,7 @@
 #include <OndselSolver/ASMTTime.h>
 #include <OndselSolver/ASMTConstantGravity.h>
 
+#include "AssemblyLink.h"
 #include "AssemblyObject.h"
 #include "AssemblyObjectPy.h"
 #include "JointGroup.h"
@@ -445,6 +446,7 @@ void AssemblyObject::redrawJointPlacement(App::DocumentObject* joint)
 void AssemblyObject::recomputeJointPlacements(std::vector<App::DocumentObject*> joints)
 {
     // The Placement1 and Placement2 of each joint needs to be updated as the parts moved.
+    Base::PyGILStateLocker lock;
     for (auto* joint : joints) {
         if (!joint) {
             continue;
@@ -1773,17 +1775,17 @@ void AssemblyObject::setObjMasses(std::vector<std::pair<App::DocumentObject*, do
     objMasses = objectMasses;
 }
 
-std::vector<AssemblyObject*> AssemblyObject::getSubAssemblies()
+std::vector<AssemblyLink*> AssemblyObject::getSubAssemblies()
 {
-    std::vector<AssemblyObject*> subAssemblies = {};
+    std::vector<AssemblyLink*> subAssemblies = {};
 
     App::Document* doc = getDocument();
 
     std::vector<DocumentObject*> assemblies =
-        doc->getObjectsOfType(Assembly::AssemblyObject::getClassTypeId());
+        doc->getObjectsOfType(Assembly::AssemblyLink::getClassTypeId());
     for (auto assembly : assemblies) {
         if (hasObject(assembly)) {
-            subAssemblies.push_back(dynamic_cast<AssemblyObject*>(assembly));
+            subAssemblies.push_back(dynamic_cast<AssemblyLink*>(assembly));
         }
     }
 
@@ -2463,6 +2465,14 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
 
         if (obj->isLinkGroup()) {
             continue;
+        }
+
+        // We ignore dynamic sub-assemblies.
+        if (obj->isDerivedFrom<Assembly::AssemblyLink>()) {
+            auto* pRigid = dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("Rigid"));
+            if (pRigid && !pRigid->getValue()) {
+                continue;
+            }
         }
 
         return obj;

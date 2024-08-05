@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PartPy"
+      Name="AssemblyLinkPy"
+      Twin="AssemblyLink"
+      TwinPointer="AssemblyLink"
+      Include="Mod/Assembly/App/AssemblyLink.h"
+      Namespace="Assembly"
+      FatherInclude="App/PartPy.h"
+      FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
+      <UserDocu>This class handles document objects in Assembly</UserDocu>
+    </Documentation>
+
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

@@ -1146,6 +1146,10 @@ def getMovingPart(assembly, ref):
         if obj.TypeId == "App::DocumentObjectGroup":
             continue  # we ignore groups.
 
+        # We ignore dynamic sub-assemblies.
+        if obj.isDerivedFrom("Assembly::AssemblyLink") and obj.Rigid == False:
+            continue
+
         # If it is a LinkGroup then we skip it
         if isLinkGroup(obj):
             continue
