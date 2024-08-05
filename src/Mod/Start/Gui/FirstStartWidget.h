@@ -42,18 +42,17 @@ class FirstStartWidget: public QGroupBox
 public:
     explicit FirstStartWidget(QWidget* parent = nullptr);
     bool eventFilter(QObject* object, QEvent* event) override;
+    QPushButton* doneButton;
 
 private:
     void retranslateUi();
     void setupUi();
-    void doneClicked();
 
     ThemeSelectorWidget* _themeSelectorWidget;
     GeneralSettingsWidget* _generalSettingsWidget;
 
     QLabel* _welcomeLabel;
     QLabel* _descriptionLabel;
-    QPushButton* _doneButton;
 };
 
 }  // namespace StartGui

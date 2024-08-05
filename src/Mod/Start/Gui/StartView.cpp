@@ -33,6 +33,7 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QWidget>
+#include <QStackedWidget>
 #endif
 
 #include "StartView.h"
@@ -68,7 +69,7 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 20));       // NOLINT
+    const auto cardSpacing = static_cast<int>(hGrp->GetInt("FileCardSpacing", 25));       // NOLINT
     const auto newFileIconSize = static_cast<int>(hGrp->GetInt("NewFileIconSize", 48));   // NOLINT
     const auto cardLabelWith = static_cast<int>(hGrp->GetInt("FileCardLabelWith", 180));  // NOLINT
 
@@ -82,7 +83,8 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 
     auto textLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout);
     auto textLabelLine1 = gsl::owner<QLabel*>(new QLabel(button));
-    textLabelLine1->setText(QLatin1String("<b>") + newButton.heading + QLatin1String("</b>"));
+    textLabelLine1->setText(newButton.heading);
+    textLabelLine1->setStyleSheet(QLatin1String("font-weight: bold;"));
     auto textLabelLine2 = gsl::owner<QLabel*>(new QLabel(button));
     textLabelLine2->setText(newButton.description);
     textLabelLine2->setWordWrap(true);
@@ -102,7 +104,7 @@ gsl::owner<QPushButton*> createNewButton(const NewButton& newButton)
 
 StartView::StartView(QWidget* parent)
     : Gui::MDIView(nullptr, parent)
-    , _contents(new QScrollArea(parent))
+    , _contents(new QStackedWidget(parent))
     , _newFileLabel {nullptr}
     , _examplesLabel {nullptr}
     , _recentFilesLabel {nullptr}
@@ -111,72 +113,89 @@ StartView::StartView(QWidget* parent)
     setObjectName(QLatin1String("StartView"));
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
-    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 30);  // NOLINT
+    auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);  // NOLINT
 
-    auto scrolledWidget = gsl::owner<QWidget*>(new QWidget(this));
-    _contents->setWidget(scrolledWidget);
-    _contents->setHorizontalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
-    _contents->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
-    _contents->setWidgetResizable(true);
-    auto layout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(scrolledWidget));
-    layout->setSizeConstraint(QLayout::SizeConstraint::SetMinAndMaxSize);
+    // First start page
+    auto firstStartScrollArea = gsl::owner<QScrollArea*>(new QScrollArea(_contents));
+    auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout(firstStartScrollArea));
+    firstStartRegion->addStretch();
+    auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
+    connect(firstStartWidget->doneButton,
+            &QPushButton::clicked,
+            this,
+            &StartView::firstStartWidgetDoneClicked);
+    firstStartRegion->addWidget(firstStartWidget);
+    firstStartRegion->addStretch();
+    _contents->addWidget(firstStartScrollArea);
 
-    auto firstStart = hGrp->GetBool("FirstStart2024", true);  // NOLINT
-    if (firstStart) {
-        auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout);
-        firstStartRegion->addStretch();
-        auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
-        firstStartRegion->addWidget(firstStartWidget);
-        firstStartRegion->addStretch();
-        layout->addLayout(firstStartRegion);
+    // Documents page
+    auto documentsWidget = gsl::owner<QWidget*>(new QWidget());
+    _contents->addWidget(documentsWidget);
+    auto documentsMainLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout());
+    documentsWidget->setLayout(documentsMainLayout);
+    auto documentsScrollArea = gsl::owner<QScrollArea*>(new QScrollArea());
+    documentsScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarPolicy::ScrollBarAsNeeded);
+    documentsMainLayout->addWidget(documentsScrollArea);
+    auto documentsScrollWidget = gsl::owner<QWidget*>(new QWidget(documentsScrollArea));
+    documentsScrollArea->setWidget(documentsScrollWidget);
+    documentsScrollArea->setWidgetResizable(true);
+    auto documentsContentLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(documentsScrollWidget));
+    documentsContentLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinAndMaxSize);
 
-        // Try to further differentiate the checkbox below, when the First Start box is shown
-        auto line = new QFrame();
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
-        layout->addWidget(line);
-    }
+    _newFileLabel = gsl::owner<QLabel*>(new QLabel());
+    documentsContentLayout->addWidget(_newFileLabel);
 
-    // Launch start automatically?
+    auto createNewRow = gsl::owner<QWidget*>(new QWidget);
+    auto flowLayout = gsl::owner<FlowLayout*>(new FlowLayout);
+
+    // Reset margins of layout to provide consistent spacing
+    flowLayout->setContentsMargins({});
+
+    // This allows new file widgets to be targeted via QSS
+    createNewRow->setObjectName(QStringLiteral("CreateNewRow"));
+    createNewRow->setLayout(flowLayout);
+
+    documentsContentLayout->addWidget(createNewRow);
+    configureNewFileButtons(flowLayout);
+
+    _recentFilesLabel = gsl::owner<QLabel*>(new QLabel());
+    documentsContentLayout->addWidget(_recentFilesLabel);
+    auto recentFilesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
+    connect(recentFilesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
+    documentsContentLayout->addWidget(recentFilesListWidget);
+
+    _examplesLabel = gsl::owner<QLabel*>(new QLabel());
+    documentsContentLayout->addWidget(_examplesLabel);
+    auto examplesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
+    connect(examplesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
+    documentsContentLayout->addWidget(examplesListWidget);
+
+    documentsContentLayout->setSpacing(static_cast<int>(cardSpacing));
+    documentsContentLayout->addStretch();
+
+    // Documents page footer
+    auto footerLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(_contents));
+    documentsMainLayout->addLayout(footerLayout);
+
+    auto _openFirstStart = gsl::owner<QPushButton*>(new QPushButton(tr("Open first start setup")));
+    _openFirstStart->setIcon(QIcon(QLatin1String(":/icons/preferences-general.svg")));
+    connect(_openFirstStart, &QPushButton::clicked, this, &StartView::openFirstStartClicked);
+
     _showOnStartupCheckBox = gsl::owner<QCheckBox*>(new QCheckBox());
     bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
     _showOnStartupCheckBox->setCheckState(showOnStartup ? Qt::CheckState::Unchecked
                                                         : Qt::CheckState::Checked);
     connect(_showOnStartupCheckBox, &QCheckBox::toggled, this, &StartView::showOnStartupChanged);
-    layout->addWidget(_showOnStartupCheckBox);
 
-    _newFileLabel = gsl::owner<QLabel*>(new QLabel());
-    layout->addWidget(_newFileLabel);
-
-    auto createNewRow = gsl::owner<QWidget*>(new QWidget);
-    auto flowLayout = gsl::owner<FlowLayout*>(new FlowLayout);
-
-    // reset margins of layout to provide consistent spacing
-    flowLayout->setContentsMargins({});
-
-    // this allows new file widgets to be targeted via QSS
-    createNewRow->setObjectName(QStringLiteral("CreateNewRow"));
-    createNewRow->setLayout(flowLayout);
-
-    layout->addWidget(createNewRow);
-    configureNewFileButtons(flowLayout);
-
-    _recentFilesLabel = gsl::owner<QLabel*>(new QLabel());
-    layout->addWidget(_recentFilesLabel);
-    auto recentFilesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
-    connect(recentFilesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
-    layout->addWidget(recentFilesListWidget);
-
-    _examplesLabel = gsl::owner<QLabel*>(new QLabel());
-    layout->addWidget(_examplesLabel);
-    auto examplesListWidget = gsl::owner<FileCardView*>(new FileCardView(_contents));
-    connect(examplesListWidget, &QListView::clicked, this, &StartView::fileCardSelected);
-    layout->addWidget(examplesListWidget);
-
-    layout->setSpacing(static_cast<int>(cardSpacing));
-    layout->addStretch();
+    footerLayout->addWidget(_openFirstStart);
+    footerLayout->addStretch();
+    footerLayout->addWidget(_showOnStartupCheckBox);
 
     setCentralWidget(_contents);
+
+    // Set startup widget according to the first start parameter
+    auto firstStart = hGrp->GetBool("FirstStart2024", true);  // NOLINT
+    _contents->setCurrentWidget(firstStart ? firstStartScrollArea : documentsWidget);
 
     configureExamplesListWidget(examplesListWidget);
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
@@ -426,6 +445,19 @@ void StartView::showOnStartupChanged(bool checked)
         !checked);  // The sense of this option has been reversed: the checkbox actually says
                     // "*Don't* show on startup" now, but the option is preserved in its
                     // original sense, so is stored inverted.
+}
+
+void StartView::openFirstStartClicked()
+{
+    _contents->setCurrentIndex(0);
+}
+
+void StartView::firstStartWidgetDoneClicked()
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start");
+    hGrp->SetBool("FirstStart2024", false);
+    _contents->setCurrentIndex(1);
 }
 
 void StartView::changeEvent(QEvent* event)

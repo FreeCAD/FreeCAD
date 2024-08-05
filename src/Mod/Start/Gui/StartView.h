@@ -38,6 +38,7 @@ class QGridLayout;
 class QLabel;
 class QListView;
 class QScrollArea;
+class QStackedWidget;
 
 namespace Gui
 {
@@ -86,14 +87,16 @@ protected:
     void postStart(PostStartBehavior behavior) const;
 
     void fileCardSelected(const QModelIndex& index);
-
     void showOnStartupChanged(bool checked);
+    void openFirstStartClicked();
+    void firstStartWidgetDoneClicked();
+
     QString fileCardStyle() const;
 
 private:
     void retranslateUi();
 
-    QScrollArea* _contents = nullptr;
+    QStackedWidget* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
     Start::ExamplesModel _examplesModel;
 

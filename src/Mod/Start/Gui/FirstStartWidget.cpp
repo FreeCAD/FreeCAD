@@ -48,7 +48,7 @@ FirstStartWidget::FirstStartWidget(QWidget* parent)
     , _generalSettingsWidget {nullptr}
     , _welcomeLabel {nullptr}
     , _descriptionLabel {nullptr}
-    , _doneButton {nullptr}
+    , doneButton {nullptr}
 {
     setObjectName(QLatin1String("FirstStartWidget"));
     setupUi();
@@ -58,6 +58,7 @@ FirstStartWidget::FirstStartWidget(QWidget* parent)
 void FirstStartWidget::setupUi()
 {
     auto outerLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(this));
+    outerLayout->addStretch();
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _welcomeLabel = gsl::owner<QLabel*>(new QLabel);
     outerLayout->addWidget(_welcomeLabel);
@@ -70,22 +71,14 @@ void FirstStartWidget::setupUi()
     outerLayout->addWidget(_generalSettingsWidget);
     outerLayout->addWidget(_themeSelectorWidget);
 
-    _doneButton = gsl::owner<QPushButton*>(new QPushButton);
+    doneButton = gsl::owner<QPushButton*>(new QPushButton);
     auto buttonBar = gsl::owner<QHBoxLayout*>(new QHBoxLayout);
     buttonBar->addStretch();
-    buttonBar->addWidget(_doneButton);
+    buttonBar->addWidget(doneButton);
     outerLayout->addLayout(buttonBar);
+    outerLayout->addStretch();
 
-    connect(_doneButton, &QPushButton::clicked, this, &FirstStartWidget::doneClicked);
     retranslateUi();
-}
-
-void FirstStartWidget::doneClicked()
-{
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    hGrp->SetBool("FirstStart2024", false);
-    this->hide();
 }
 
 bool FirstStartWidget::eventFilter(QObject* object, QEvent* event)
@@ -98,7 +91,7 @@ bool FirstStartWidget::eventFilter(QObject* object, QEvent* event)
 
 void FirstStartWidget::retranslateUi()
 {
-    _doneButton->setText(tr("Done"));
+    doneButton->setText(tr("Done"));
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _welcomeLabel->setText(QLatin1String("<h1>") + tr("Welcome to %1").arg(application)
                            + QLatin1String("</h1>"));
