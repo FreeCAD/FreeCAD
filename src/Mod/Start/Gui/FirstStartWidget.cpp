@@ -48,7 +48,7 @@ FirstStartWidget::FirstStartWidget(QWidget* parent)
     , _generalSettingsWidget {nullptr}
     , _welcomeLabel {nullptr}
     , _descriptionLabel {nullptr}
-    , doneButton {nullptr}
+    , _doneButton {nullptr}
 {
     setObjectName(QLatin1String("FirstStartWidget"));
     setupUi();
@@ -71,10 +71,11 @@ void FirstStartWidget::setupUi()
     outerLayout->addWidget(_generalSettingsWidget);
     outerLayout->addWidget(_themeSelectorWidget);
 
-    doneButton = gsl::owner<QPushButton*>(new QPushButton);
+    _doneButton = gsl::owner<QPushButton*>(new QPushButton);
+    connect(_doneButton, &QPushButton::clicked, this, &FirstStartWidget::dismissed);
     auto buttonBar = gsl::owner<QHBoxLayout*>(new QHBoxLayout);
     buttonBar->addStretch();
-    buttonBar->addWidget(doneButton);
+    buttonBar->addWidget(_doneButton);
     outerLayout->addLayout(buttonBar);
     outerLayout->addStretch();
 
@@ -91,7 +92,7 @@ bool FirstStartWidget::eventFilter(QObject* object, QEvent* event)
 
 void FirstStartWidget::retranslateUi()
 {
-    doneButton->setText(tr("Done"));
+    _doneButton->setText(tr("Done"));
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _welcomeLabel->setText(QLatin1String("<h1>") + tr("Welcome to %1").arg(application)
                            + QLatin1String("</h1>"));

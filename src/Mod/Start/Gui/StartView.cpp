@@ -120,10 +120,10 @@ StartView::StartView(QWidget* parent)
     auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout(firstStartScrollArea));
     firstStartRegion->addStretch();
     auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
-    connect(firstStartWidget->doneButton,
-            &QPushButton::clicked,
+    connect(firstStartWidget,
+            &FirstStartWidget::dismissed,
             this,
-            &StartView::firstStartWidgetDoneClicked);
+            &StartView::firstStartWidgetDismissed);
     firstStartRegion->addWidget(firstStartWidget);
     firstStartRegion->addStretch();
     _contents->addWidget(firstStartScrollArea);
@@ -452,7 +452,7 @@ void StartView::openFirstStartClicked()
     _contents->setCurrentIndex(0);
 }
 
-void StartView::firstStartWidgetDoneClicked()
+void StartView::firstStartWidgetDismissed()
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");

@@ -42,7 +42,7 @@ class FirstStartWidget: public QGroupBox
 public:
     explicit FirstStartWidget(QWidget* parent = nullptr);
     bool eventFilter(QObject* object, QEvent* event) override;
-    QPushButton* doneButton;
+    Q_SIGNAL void dismissed();
 
 private:
     void retranslateUi();
@@ -53,6 +53,7 @@ private:
 
     QLabel* _welcomeLabel;
     QLabel* _descriptionLabel;
+    QPushButton* _doneButton;
 };
 
 }  // namespace StartGui

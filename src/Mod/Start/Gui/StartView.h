@@ -90,7 +90,7 @@ protected:
     void fileCardSelected(const QModelIndex& index);
     void showOnStartupChanged(bool checked);
     void openFirstStartClicked();
-    void firstStartWidgetDoneClicked();
+    void firstStartWidgetDismissed();
 
     QString fileCardStyle() const;
 
