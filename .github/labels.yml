@@ -2,6 +2,8 @@
 # source:
 # - any: ['src/**/*', '!src/docs/*']
 
+# 'Mod' related labels
+
 "Mod: Core":
 - changed-files:
   - any-glob-to-any-file: ['src/App/**/*', 'src/Base/**/*', 'src/Gui/**/*']
@@ -85,3 +87,9 @@
 "Mod: Test":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Test/**/*']
+
+# 'Topic' related labels
+
+"Topic: Stylesheets":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Gui/Stylesheets/**/*']
