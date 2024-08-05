@@ -168,8 +168,8 @@ public:
     Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
     bool validateNewPlacements();
     void setNewPlacements();
-    void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
-    void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
+    static void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
+    static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
 
 
     // Ondsel Solver interface
@@ -193,7 +193,8 @@ public:
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup();
     ViewGroup* getExplodedViewGroup();
-    std::vector<App::DocumentObject*> getJoints(bool updateJCS = true, bool delBadJoints = false);
+    std::vector<App::DocumentObject*>
+    getJoints(bool updateJCS = true, bool delBadJoints = false, bool subJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
@@ -217,7 +218,8 @@ public:
     bool isPartGrounded(App::DocumentObject* part);
     bool isPartConnected(App::DocumentObject* part);
 
-    std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part, App::DocumentObject* joint);
+    std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part,
+                                           App::DocumentObject* joint = nullptr);
     std::vector<App::DocumentObject*> getUpstreamParts(App::DocumentObject* part, int limit = 0);
     App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part,
                                                App::DocumentObject*& joint,
@@ -255,6 +257,8 @@ public:
 
     static DistanceType getDistanceType(App::DocumentObject* joint);
 
+    static JointGroup* getJointGroup(App::Part* part);
+
     // getters to get from properties
     static void setJointActivated(App::DocumentObject* joint, bool val);
     static bool getJointActivated(App::DocumentObject* joint);
@@ -264,6 +268,7 @@ public:
     static std::string getElementFromProp(App::DocumentObject* obj, const char* propName);
     static std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
     static App::DocumentObject* getObjFromProp(App::DocumentObject* joint, const char* propName);
+    static App::DocumentObject* getObjFromRef(App::DocumentObject* obj, std::string& sub);
     static App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop);
     static App::DocumentObject* getObjFromRef(App::DocumentObject* joint, const char* propName);
     App::DocumentObject* getMovingPartFromRef(App::DocumentObject* obj, std::string& sub);

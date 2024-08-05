@@ -132,6 +132,7 @@ bool ViewProviderAssembly::doubleClicked()
         getDocument()->setEdit(this);
     }
 
+    Gui::Selection().clearSelection();
     return true;
 }
 
@@ -443,13 +444,16 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
 
         prevPosition = newPos;
 
+        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Assembly");
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
-        if (solveOnMove) {
-            auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+        if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
             // assemblyPart->solve(/*enableRedo = */ false, /*updateJCS = */ false);
             assemblyPart->doDragStep();
+        }
+        else {
+            assemblyPart->redrawJointPlacements(assemblyPart->getJoints());
         }
     }
     return false;
@@ -612,16 +616,22 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
                 }
 
                 App::DocumentObject* selRoot = selObj.getObject();
-                App::DocumentObject* obj = assemblyPart->getMovingPartFromRef(selRoot, subNamesStr);
+                App::DocumentObject* obj = assemblyPart->getObjFromRef(selRoot, subNamesStr);
+                if (!obj) {
+                    // In case of sub-assembly, the jointgroup would trigger the dragger.
+                    continue;
+                }
+                App::DocumentObject* part =
+                    assemblyPart->getMovingPartFromRef(selRoot, subNamesStr);
 
-                if (!canDragObjectIn3d(obj)) {
+                if (!canDragObjectIn3d(part)) {
                     continue;
                 }
 
                 auto* pPlc =
-                    dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                    dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
 
-                MovingObject movingObj(obj, pPlc->getValue(), selRoot, subNamesStr);
+                MovingObject movingObj(part, pPlc->getValue(), selRoot, subNamesStr);
 
                 docsToMove.emplace_back(movingObj);
             }
@@ -669,13 +679,39 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
 
 ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
+    auto addPartsToMove = [&](const std::vector<Assembly::ObjRef>& refs) {
+        for (auto& partRef : refs) {
+            auto* pPlc =
+                dynamic_cast<App::PropertyPlacement*>(partRef.obj->getPropertyByName("Placement"));
+            if (pPlc) {
+                App::DocumentObject* selRoot = partRef.ref->getValue();
+                if (!selRoot) {
+                    continue;
+                }
+                std::vector<std::string> subs = partRef.ref->getSubValues();
+                if (subs.empty()) {
+                    continue;
+                }
+
+                docsToMove.emplace_back(partRef.obj, pPlc->getValue(), selRoot, subs[0]);
+            }
+        }
+    };
+
     if (docsToMove.size() == 1) {
         auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         std::string pName;
         movingJoint = assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].obj, pName);
 
         if (!movingJoint) {
-            return DragMode::Translation;
+            // In this case the user is moving an object that is not grounded
+            // Then we want to also move other parts that may be connected to it.
+            // In particular for case of flexible subassemblies or it looks really weird
+            std::vector<Assembly::ObjRef> connectedParts =
+                assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
+
+            addPartsToMove(connectedParts);
+            return DragMode::TranslationNoSolve;
         }
 
         JointType jointType = AssemblyObject::getJointType(movingJoint);
@@ -732,23 +768,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         // Add downstream parts so that they move together
         std::vector<Assembly::ObjRef> downstreamParts =
             assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
-        for (auto& partRef : downstreamParts) {
-            auto* pPlc =
-                dynamic_cast<App::PropertyPlacement*>(partRef.obj->getPropertyByName("Placement"));
-            if (pPlc) {
-                App::DocumentObject* selRoot = partRef.ref->getValue();
-                if (!selRoot) {
-                    return DragMode::None;
-                }
-                std::vector<std::string> subs = partRef.ref->getSubValues();
-                if (subs.empty()) {
-                    return DragMode::None;
-                }
-
-
-                docsToMove.emplace_back(partRef.obj, pPlc->getValue(), selRoot, subs[0]);
-            }
-        }
+        addPartsToMove(downstreamParts);
 
         jointVisibilityBackup = movingJoint->Visibility.getValue();
         if (!jointVisibilityBackup) {
@@ -827,22 +847,25 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
     // prevent selection while moving
     viewer->setSelectionEnabled(false);
 
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Assembly");
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
-    if (solveOnMove) {
+    if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
         objectMasses.clear();
         for (auto& movingObj : docsToMove) {
             objectMasses.push_back({movingObj.obj, 10.0});
         }
 
-        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         assemblyPart->setObjMasses(objectMasses);
         std::vector<App::DocumentObject*> dragParts;
         for (auto& movingObj : docsToMove) {
             dragParts.push_back(movingObj.obj);
         }
         assemblyPart->preDrag(dragParts);
+    }
+    else {
+        assemblyPart->redrawJointPlacements(assemblyPart->getJoints());
     }
 }
 
