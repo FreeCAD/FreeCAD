@@ -88,6 +88,12 @@
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Test/**/*']
 
+# 'Packaging' related labels
+
+"Packaging/building":
+- changed-files:
+  - any-glob-to-any-file:  ['cMake/**/*']
+
 # 'Topic' related labels
 
 "Topic: Stylesheets":
