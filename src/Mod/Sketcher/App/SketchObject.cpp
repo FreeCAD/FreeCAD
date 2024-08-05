@@ -2319,7 +2319,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
 
     // Add a vertex to preserve the original intersection of the filleted lines
     Part::GeomPoint* originalCorner = new Part::GeomPoint(getPoint(geoId1, posId1));
-    int originalCornerId = addGeometry(originalCorner);
+    int originalCornerId = addGeometry(originalCorner, true);
     delete originalCorner;
 
     // Constrain the vertex to the two lines
