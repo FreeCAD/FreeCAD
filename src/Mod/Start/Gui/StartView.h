@@ -39,6 +39,7 @@ class QLabel;
 class QListView;
 class QScrollArea;
 class QStackedWidget;
+class QPushButton;
 
 namespace Gui
 {
@@ -103,6 +104,7 @@ private:
     QLabel* _newFileLabel;
     QLabel* _examplesLabel;
     QLabel* _recentFilesLabel;
+    QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
 
 

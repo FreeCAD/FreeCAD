@@ -177,7 +177,7 @@ StartView::StartView(QWidget* parent)
     auto footerLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout());
     documentsMainLayout->addLayout(footerLayout);
 
-    auto _openFirstStart = gsl::owner<QPushButton*>(new QPushButton(tr("Open first start setup")));
+    _openFirstStart = gsl::owner<QPushButton*>(new QPushButton());
     _openFirstStart->setIcon(QIcon(QLatin1String(":/icons/preferences-general.svg")));
     connect(_openFirstStart, &QPushButton::clicked, this, &StartView::openFirstStartClicked);
 
@@ -481,6 +481,7 @@ void StartView::retranslateUi()
     _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
+    _openFirstStart->setText(tr("Open first start setup"));
     _showOnStartupCheckBox->setText(
         tr("Don't show this Start page again (start with blank screen)"));
 }
