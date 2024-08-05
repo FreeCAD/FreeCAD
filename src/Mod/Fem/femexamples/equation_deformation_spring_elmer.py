@@ -160,9 +160,9 @@ def setup(doc=None, solvertype="elmer"):
     DisplaceLeft.hasXFormula = True
     DisplaceLeft.xDisplacementFormula = 'Variable "time"; Real MATC "0.006*tx"'
     DisplaceLeft.yFree = False
-    DisplaceLeft.yFix = True
+    DisplaceLeft.yDisplacement = 0
     DisplaceLeft.zFree = False
-    DisplaceLeft.zFix = True
+    DisplaceLeft.zDisplacement = 0
     DisplaceLeft.References = [(SpringObject, "Face1")]
     analysis.addObject(DisplaceLeft)
 
@@ -171,9 +171,9 @@ def setup(doc=None, solvertype="elmer"):
     DisplaceRight.hasXFormula = True
     DisplaceRight.xDisplacementFormula = 'Variable "time"; Real MATC "-0.006*tx"'
     DisplaceRight.yFree = False
-    DisplaceRight.yFix = True
+    DisplaceRight.yDisplacement = 0
     DisplaceRight.zFree = False
-    DisplaceRight.zFix = True
+    DisplaceRight.zDisplacement = 0
     DisplaceRight.References = [(SpringObject, "Face5")]
     analysis.addObject(DisplaceRight)
 
