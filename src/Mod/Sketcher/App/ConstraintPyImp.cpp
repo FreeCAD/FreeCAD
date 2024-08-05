@@ -65,85 +65,105 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* oNumArg5;
     int any_index;
 
-    // ConstraintType, GeoIndex
-    if (PyArg_ParseTuple(args, "si", &ConstraintType, &FirstIndex)) {
+    PyObject* activated;
+    PyObject* driving;
+
+    Sketcher::Constraint* cstr = this->getConstraintPtr();
+
+    auto handleSi = [&]() -> bool {
         if (strcmp("Horizontal", ConstraintType) == 0) {
-            this->getConstraintPtr()->Type = Horizontal;
-            this->getConstraintPtr()->First = FirstIndex;
-            return 0;
+            cstr->Type = Horizontal;
         }
         else if (strcmp("Vertical", ConstraintType) == 0) {
-            this->getConstraintPtr()->Type = Vertical;
-            this->getConstraintPtr()->First = FirstIndex;
-            return 0;
+            cstr->Type = Vertical;
         }
         else if (strcmp("Block", ConstraintType) == 0) {
-            this->getConstraintPtr()->Type = Block;
-            this->getConstraintPtr()->First = FirstIndex;
+            cstr->Type = Block;
+        }
+        else {
+            return false;
+        }
+        cstr->First = FirstIndex;
+        return true;
+    };
+
+    // ConstraintType, GeoIndex
+    if (PyArg_ParseTuple(args, "si", &ConstraintType, &FirstIndex)) {
+        if (handleSi()) {
             return 0;
         }
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siO", &ConstraintType, &FirstIndex, &index_or_value)) {
+    // ConstraintType, GeoIndex, activated
+    if (PyArg_ParseTuple(args, "siO", &ConstraintType, &FirstIndex, &activated)) {
+        if (PyBool_Check(activated)) {
+            if (handleSi()) {
+                cstr->isActive = PyObject_IsTrue(activated);
+                return 0;
+            }
+        }
+    }
+    PyErr_Clear();
+
+
+    auto handleSiO = [&]() -> bool {
         // ConstraintType, GeoIndex1, GeoIndex2
         if (PyLong_Check(index_or_value)) {
             SecondIndex = PyLong_AsLong(index_or_value);
             bool valid = false;
             if (strcmp("Tangent", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
+                cstr->Type = Tangent;
                 valid = true;
             }
             else if (strcmp("Parallel", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Parallel;
+                cstr->Type = Parallel;
                 valid = true;
             }
             else if (strcmp("Perpendicular", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
+                cstr->Type = Perpendicular;
                 valid = true;
             }
             else if (strcmp("Equal", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Equal;
+                cstr->Type = Equal;
                 valid = true;
             }
             else if (strstr(ConstraintType, "InternalAlignment")) {
-                this->getConstraintPtr()->Type = InternalAlignment;
+                cstr->Type = InternalAlignment;
 
                 valid = true;
                 if (strstr(ConstraintType, "EllipseMajorDiameter")) {
-                    this->getConstraintPtr()->AlignmentType = EllipseMajorDiameter;
+                    cstr->AlignmentType = EllipseMajorDiameter;
                 }
                 else if (strstr(ConstraintType, "EllipseMinorDiameter")) {
-                    this->getConstraintPtr()->AlignmentType = EllipseMinorDiameter;
+                    cstr->AlignmentType = EllipseMinorDiameter;
                 }
                 else if (strstr(ConstraintType, "HyperbolaMajor")) {
-                    this->getConstraintPtr()->AlignmentType = HyperbolaMajor;
+                    cstr->AlignmentType = HyperbolaMajor;
                 }
                 else if (strstr(ConstraintType, "HyperbolaMinor")) {
-                    this->getConstraintPtr()->AlignmentType = HyperbolaMinor;
+                    cstr->AlignmentType = HyperbolaMinor;
                 }
                 else if (strstr(ConstraintType, "ParabolaFocalAxis")) {
-                    this->getConstraintPtr()->AlignmentType = ParabolaFocalAxis;
+                    cstr->AlignmentType = ParabolaFocalAxis;
                 }
                 else {
-                    this->getConstraintPtr()->AlignmentType = Undef;
+                    cstr->AlignmentType = Undef;
                     valid = false;
                 }
             }
 
             if (valid) {
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->Second = SecondIndex;
-                return 0;
+                cstr->First = FirstIndex;
+                cstr->Second = SecondIndex;
+                return true;
             }
         }
         // ConstraintType, GeoIndex, Value
         if (PyNumber_Check(index_or_value)) {  // can be float or int
             Value = PyFloat_AsDouble(index_or_value);
-            bool valid = false;
             if (strcmp("Distance", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Distance;
-                valid = true;
+                cstr->Type = Distance;
             }
             else if (strcmp("Angle", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
@@ -153,92 +173,126 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }
-                this->getConstraintPtr()->Type = Angle;
-                valid = true;
+                cstr->Type = Angle;
             }
             else if (strcmp("DistanceX", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceX;
-                valid = true;
+                cstr->Type = DistanceX;
             }
             else if (strcmp("DistanceY", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceY;
-                valid = true;
+                cstr->Type = DistanceY;
             }
             else if (strcmp("Radius", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Radius;
+                cstr->Type = Radius;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
-                this->getConstraintPtr()->LabelPosition = 10;
-                valid = true;
+                cstr->LabelPosition = 10;
             }
             else if (strcmp("Diameter", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Diameter;
+                cstr->Type = Diameter;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
-                this->getConstraintPtr()->LabelPosition = 10;
-                valid = true;
+                cstr->LabelPosition = 10;
             }
             else if (strcmp("Weight", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Weight;
+                cstr->Type = Weight;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
-                this->getConstraintPtr()->LabelPosition = 10;
-                valid = true;
+                cstr->LabelPosition = 10;
             }
-            if (valid) {
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->setValue(Value);
+            else {
+                return false;
+            }
+
+            cstr->First = FirstIndex;
+            cstr->setValue(Value);
+            return true;
+        }
+        return false;
+    };
+
+    if (PyArg_ParseTuple(args, "siO", &ConstraintType, &FirstIndex, &index_or_value)) {
+        if (handleSiO()) {
+            return 0;
+        }
+    }
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args, "siOO", &ConstraintType, &FirstIndex, &index_or_value, &activated)) {
+        if (PyBool_Check(activated)) {
+            if (handleSiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
                 return 0;
             }
         }
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siiO", &ConstraintType, &FirstIndex, &any_index, &index_or_value)) {
+    if (PyArg_ParseTuple(args,
+                         "siOOO",
+                         &ConstraintType,
+                         &FirstIndex,
+                         &index_or_value,
+                         &activated,
+                         &driving)) {
+        if (PyBool_Check(activated) && PyBool_Check(driving)) {
+            if (handleSiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
+                if (cstr->isDimensional()) {
+                    cstr->isDriving = PyObject_IsTrue(driving);
+                }
+                return 0;
+            }
+        }
+    }
+    PyErr_Clear();
+
+
+    auto handleSiiO = [&]() -> bool {
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2
         if (PyLong_Check(index_or_value)) {
             FirstPos = any_index;
             SecondIndex = PyLong_AsLong(index_or_value);
             bool valid = false;
             if (strcmp("Perpendicular", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
+                cstr->Type = Perpendicular;
                 valid = true;
             }
             else if (strcmp("Tangent", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
+                cstr->Type = Tangent;
                 valid = true;
             }
             else if (strcmp("PointOnObject", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = PointOnObject;
+                cstr->Type = PointOnObject;
                 valid = true;
             }
             else if (strstr(ConstraintType, "InternalAlignment")) {
-                this->getConstraintPtr()->Type = InternalAlignment;
+                cstr->Type = InternalAlignment;
 
                 valid = true;
 
                 if (strstr(ConstraintType, "EllipseFocus1")) {
-                    this->getConstraintPtr()->AlignmentType = EllipseFocus1;
+                    cstr->AlignmentType = EllipseFocus1;
                 }
                 else if (strstr(ConstraintType, "EllipseFocus2")) {
-                    this->getConstraintPtr()->AlignmentType = EllipseFocus2;
+                    cstr->AlignmentType = EllipseFocus2;
                 }
                 else if (strstr(ConstraintType, "HyperbolaFocus")) {
-                    this->getConstraintPtr()->AlignmentType = HyperbolaFocus;
+                    cstr->AlignmentType = HyperbolaFocus;
                 }
                 else if (strstr(ConstraintType, "ParabolaFocus")) {
-                    this->getConstraintPtr()->AlignmentType = ParabolaFocus;
+                    cstr->AlignmentType = ParabolaFocus;
                 }
                 else {
-                    this->getConstraintPtr()->AlignmentType = Undef;
+                    cstr->AlignmentType = Undef;
                     valid = false;
                 }
             }
+
             if (valid) {
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                this->getConstraintPtr()->Second = SecondIndex;
-                return 0;
+                cstr->First = FirstIndex;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+                cstr->Second = SecondIndex;
+                return true;
             }
         }
         // ConstraintType, GeoIndex1, GeoIndex2, Value
@@ -254,131 +308,54 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }
-                this->getConstraintPtr()->Type = Angle;
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->Second = SecondIndex;
-                this->getConstraintPtr()->setValue(Value);
-                return 0;
+                cstr->Type = Angle;
+                cstr->Second = SecondIndex;
             }
             else if (strcmp("Distance", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Distance;
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->Second = SecondIndex;
-                this->getConstraintPtr()->setValue(Value);
-                return 0;
+                cstr->Type = Distance;
+                cstr->Second = SecondIndex;
             }
             else if (strcmp("DistanceX", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
-                this->getConstraintPtr()->Type = DistanceX;
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                this->getConstraintPtr()->setValue(Value);
-                return 0;
+                cstr->Type = DistanceX;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
             }
             else if (strcmp("DistanceY", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
-                this->getConstraintPtr()->Type = DistanceY;
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                this->getConstraintPtr()->setValue(Value);
-                return 0;
+                cstr->Type = DistanceY;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
             }
+            else {
+                return false;
+            }
+
+            cstr->First = FirstIndex;
+            cstr->setValue(Value);
+            return true;
+        }
+        return false;
+    };
+
+
+    if (PyArg_ParseTuple(args, "siiO", &ConstraintType, &FirstIndex, &any_index, &index_or_value)) {
+        if (handleSiiO()) {
+            return 0;
         }
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4)) {
-        // Value, ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2
-        if (PyLong_Check(oNumArg4)) {
-            intArg4 = PyLong_AsLong(oNumArg4);
-            bool valid = false;
-            if (strcmp("Coincident", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Coincident;
-                valid = true;
-            }
-            else if (strcmp("Horizontal", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Horizontal;
-                valid = true;
-            }
-            else if (strcmp("Vertical", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Vertical;
-                valid = true;
-            }
-            else if (strcmp("Perpendicular", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
-                valid = true;
-            }
-            else if (strcmp("Tangent", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
-                valid = true;
-            }
-            else if (strcmp("TangentViaPoint", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Tangent;
-                // valid = true;//non-standard assignment
-                this->getConstraintPtr()->First = intArg1;
-                this->getConstraintPtr()->FirstPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Second = intArg2;
-                this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Third = intArg3;
-                this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
-                return 0;
-            }
-            else if (strcmp("PerpendicularViaPoint", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Perpendicular;
-                // valid = true;//non-standard assignment
-                this->getConstraintPtr()->First = intArg1;
-                this->getConstraintPtr()->FirstPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Second = intArg2;
-                this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Third = intArg3;
-                this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
-                return 0;
-            }
-            else if (strstr(ConstraintType,
-                            "InternalAlignment")) {  // InteralAlignment with
-                                                     // InternalElementIndex argument
-                this->getConstraintPtr()->Type = InternalAlignment;
-
-                valid = true;
-
-                if (strstr(ConstraintType, "BSplineControlPoint")) {
-                    this->getConstraintPtr()->AlignmentType = BSplineControlPoint;
-                }
-                else if (strstr(ConstraintType, "BSplineKnotPoint")) {
-                    this->getConstraintPtr()->AlignmentType = BSplineKnotPoint;
-                }
-                else {
-                    this->getConstraintPtr()->AlignmentType = Undef;
-                    valid = false;
-                }
-
-                if (valid) {
-                    this->getConstraintPtr()->First = intArg1;
-                    this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                    this->getConstraintPtr()->Second = intArg3;
-                    this->getConstraintPtr()->InternalAlignmentIndex = intArg4;
-                    return 0;
-                }
-            }
-            if (valid) {
-                this->getConstraintPtr()->First = intArg1;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                this->getConstraintPtr()->Second = intArg3;
-                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
-                return 0;
-            }
-        }
-        // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, Value
-        if (PyNumber_Check(oNumArg4)) {  // can be float or int
-            Value = PyFloat_AsDouble(oNumArg4);
-            if (strcmp("Distance", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Distance;
-                this->getConstraintPtr()->First = intArg1;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                this->getConstraintPtr()->Second = intArg3;
-                this->getConstraintPtr()->setValue(Value);
+    if (PyArg_ParseTuple(args,
+                         "siiOO",
+                         &ConstraintType,
+                         &FirstIndex,
+                         &any_index,
+                         &index_or_value,
+                         &activated)) {
+        if (PyBool_Check(activated)) {
+            if (handleSiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
                 return 0;
             }
         }
@@ -386,41 +363,193 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
 
     if (PyArg_ParseTuple(args,
-                         "siiiiO",
+                         "siiOOO",
+                         &ConstraintType,
+                         &FirstIndex,
+                         &any_index,
+                         &index_or_value,
+                         &activated,
+                         &driving)) {
+        if (PyBool_Check(activated) && PyBool_Check(driving)) {
+            if (handleSiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
+                if (cstr->isDimensional()) {
+                    cstr->isDriving = PyObject_IsTrue(driving);
+                }
+                return 0;
+            }
+        }
+    }
+    PyErr_Clear();
+
+
+    auto handleSiiiO = [&]() -> bool {
+        // Value, ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2
+        if (PyLong_Check(oNumArg4)) {
+            intArg4 = PyLong_AsLong(oNumArg4);
+            bool valid = false;
+            if (strcmp("Coincident", ConstraintType) == 0) {
+                cstr->Type = Coincident;
+                valid = true;
+            }
+            else if (strcmp("Horizontal", ConstraintType) == 0) {
+                cstr->Type = Horizontal;
+                valid = true;
+            }
+            else if (strcmp("Vertical", ConstraintType) == 0) {
+                cstr->Type = Vertical;
+                valid = true;
+            }
+            else if (strcmp("Perpendicular", ConstraintType) == 0) {
+                cstr->Type = Perpendicular;
+                valid = true;
+            }
+            else if (strcmp("Tangent", ConstraintType) == 0) {
+                cstr->Type = Tangent;
+                valid = true;
+            }
+            else if (strcmp("TangentViaPoint", ConstraintType) == 0) {
+                cstr->Type = Tangent;
+                // valid = true;//non-standard assignment
+                cstr->First = intArg1;
+                cstr->FirstPos = Sketcher::PointPos::none;
+                cstr->Second = intArg2;
+                cstr->SecondPos = Sketcher::PointPos::none;
+                cstr->Third = intArg3;
+                cstr->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                return true;
+            }
+            else if (strcmp("PerpendicularViaPoint", ConstraintType) == 0) {
+                cstr->Type = Perpendicular;
+                // valid = true;//non-standard assignment
+                cstr->First = intArg1;
+                cstr->FirstPos = Sketcher::PointPos::none;
+                cstr->Second = intArg2;
+                cstr->SecondPos = Sketcher::PointPos::none;
+                cstr->Third = intArg3;
+                cstr->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                return true;
+            }
+            else if (strstr(ConstraintType,
+                            "InternalAlignment")) {  // InteralAlignment with
+                                                     // InternalElementIndex argument
+                cstr->Type = InternalAlignment;
+
+                valid = true;
+
+                if (strstr(ConstraintType, "BSplineControlPoint")) {
+                    cstr->AlignmentType = BSplineControlPoint;
+                }
+                else if (strstr(ConstraintType, "BSplineKnotPoint")) {
+                    cstr->AlignmentType = BSplineKnotPoint;
+                }
+                else {
+                    cstr->AlignmentType = Undef;
+                    valid = false;
+                }
+
+                if (valid) {
+                    cstr->First = intArg1;
+                    cstr->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+                    cstr->Second = intArg3;
+                    cstr->InternalAlignmentIndex = intArg4;
+                    return true;
+                }
+            }
+            if (valid) {
+                cstr->First = intArg1;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+                cstr->Second = intArg3;
+                cstr->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+                return true;
+            }
+        }
+        // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, Value
+        if (PyNumber_Check(oNumArg4)) {  // can be float or int
+            Value = PyFloat_AsDouble(oNumArg4);
+            if (strcmp("Distance", ConstraintType) == 0) {
+                cstr->Type = Distance;
+                cstr->First = intArg1;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+                cstr->Second = intArg3;
+                cstr->setValue(Value);
+                return true;
+            }
+        }
+        return false;
+    };
+
+    if (PyArg_ParseTuple(args, "siiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4)) {
+        if (handleSiiiO()) {
+            return 0;
+        }
+    }
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args,
+                         "siiiOO",
                          &ConstraintType,
                          &intArg1,
                          &intArg2,
                          &intArg3,
-                         &intArg4,
-                         &oNumArg5)) {
+                         &oNumArg4,
+                         &activated)) {
+        if (PyBool_Check(activated)) {
+            if (handleSiiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
+                return 0;
+            }
+        }
+    }
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args,
+                         "siiiOOO",
+                         &ConstraintType,
+                         &intArg1,
+                         &intArg2,
+                         &intArg3,
+                         &oNumArg4,
+                         &activated,
+                         &driving)) {
+        if (PyBool_Check(activated) && PyBool_Check(driving)) {
+            if (handleSiiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
+                if (cstr->isDimensional()) {
+                    cstr->isDriving = PyObject_IsTrue(driving);
+                }
+                return 0;
+            }
+        }
+    }
+    PyErr_Clear();
+
+
+    auto handleSiiiiO = [&]() -> bool {
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3
         if (PyLong_Check(oNumArg5)) {
             intArg5 = PyLong_AsLong(oNumArg5);
             if (strcmp("Symmetric", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Symmetric;
-                this->getConstraintPtr()->First = intArg1;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                this->getConstraintPtr()->Second = intArg3;
-                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
-                this->getConstraintPtr()->Third = intArg5;
-                return 0;
+                cstr->Type = Symmetric;
+                cstr->First = intArg1;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+                cstr->Second = intArg3;
+                cstr->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+                cstr->Third = intArg5;
+                return true;
             }
         }
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, Value
         if (PyNumber_Check(oNumArg5)) {  // can be float or int
             Value = PyFloat_AsDouble(oNumArg5);
-            bool valid = false;
             if (strcmp("Distance", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Distance;
-                valid = true;
+                cstr->Type = Distance;
             }
             else if (strcmp("DistanceX", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceX;
-                valid = true;
+                cstr->Type = DistanceX;
             }
             else if (strcmp("DistanceY", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = DistanceY;
-                valid = true;
+                cstr->Type = DistanceY;
             }
             else if (strcmp("Angle", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
@@ -430,8 +559,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }
-                this->getConstraintPtr()->Type = Angle;
-                valid = true;
+                cstr->Type = Angle;
             }
             else if (strcmp("AngleViaPoint", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
@@ -441,28 +569,116 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                         Value = q.getValueAs(Base::Quantity::Radian);
                     }
                 }
-                this->getConstraintPtr()->Type = Angle;
+                cstr->Type = Angle;
                 // valid = true;//non-standard assignment
-                this->getConstraintPtr()->First = intArg1;
-                this->getConstraintPtr()->FirstPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Second = intArg2;  // let's goof up all the terminology =)
-                this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Third = intArg3;
-                this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
-                this->getConstraintPtr()->setValue(Value);
-                return 0;
+                cstr->First = intArg1;
+                cstr->FirstPos = Sketcher::PointPos::none;
+                cstr->Second = intArg2;  // let's goof up all the terminology =)
+                cstr->SecondPos = Sketcher::PointPos::none;
+                cstr->Third = intArg3;
+                cstr->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                cstr->setValue(Value);
+                return true;
             }
-            if (valid) {
-                this->getConstraintPtr()->First = intArg1;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                this->getConstraintPtr()->Second = intArg3;
-                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
-                this->getConstraintPtr()->setValue(Value);
+            else {
+                return false;
+            }
+
+            cstr->First = intArg1;
+            cstr->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+            cstr->Second = intArg3;
+            cstr->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+            cstr->setValue(Value);
+            return true;
+        }
+        return false;
+    };
+
+    if (PyArg_ParseTuple(args,
+                         "siiiiO",
+                         &ConstraintType,
+                         &intArg1,
+                         &intArg2,
+                         &intArg3,
+                         &intArg4,
+                         &oNumArg5)) {
+        if (handleSiiiiO()) {
+            return 0;
+        }
+    }
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args,
+                         "siiiiOO",
+                         &ConstraintType,
+                         &intArg1,
+                         &intArg2,
+                         &intArg3,
+                         &intArg4,
+                         &oNumArg5,
+                         &activated)) {
+        if (PyBool_Check(activated)) {
+            if (handleSiiiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
                 return 0;
             }
         }
     }
     PyErr_Clear();
+
+    if (PyArg_ParseTuple(args,
+                         "siiiiOOO",
+                         &ConstraintType,
+                         &intArg1,
+                         &intArg2,
+                         &intArg3,
+                         &intArg4,
+                         &oNumArg5,
+                         &activated,
+                         &driving)) {
+        if (PyBool_Check(activated) && PyBool_Check(driving)) {
+            if (handleSiiiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
+                if (cstr->isDimensional()) {
+                    cstr->isDriving = PyObject_IsTrue(driving);
+                }
+                return 0;
+            }
+        }
+    }
+    PyErr_Clear();
+
+    auto handleSiiiiiO = [&]() -> bool {
+        if (PyLong_Check(index_or_value)) {
+            ThirdPos = PyLong_AsLong(index_or_value);
+            // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
+            if (strcmp("Symmetric", ConstraintType) == 0) {
+                cstr->Type = Symmetric;
+                cstr->First = FirstIndex;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+                cstr->Second = SecondIndex;
+                cstr->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
+                cstr->Third = ThirdIndex;
+                cstr->ThirdPos = static_cast<Sketcher::PointPos>(ThirdPos);
+                return true;
+            }
+        }
+        if (PyNumber_Check(index_or_value)) {  // can be float or int
+            Value = PyFloat_AsDouble(index_or_value);
+            if (strcmp("SnellsLaw", ConstraintType) == 0) {
+                cstr->Type = SnellsLaw;
+                cstr->First = FirstIndex;
+                cstr->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+                cstr->Second = SecondIndex;
+                cstr->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
+                cstr->Third = ThirdIndex;
+                cstr->ThirdPos = Sketcher::PointPos::none;
+                cstr->setValue(Value);
+                return true;
+            }
+        }
+        return false;
+    };
 
     if (PyArg_ParseTuple(args,
                          "siiiiiO",
@@ -473,31 +689,48 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                          &SecondPos,
                          &ThirdIndex,
                          &index_or_value)) {
-        if (PyLong_Check(index_or_value)) {
-            ThirdPos = PyLong_AsLong(index_or_value);
-            // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
-            if (strcmp("Symmetric", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = Symmetric;
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                this->getConstraintPtr()->Second = SecondIndex;
-                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
-                this->getConstraintPtr()->Third = ThirdIndex;
-                this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(ThirdPos);
+        if (handleSiiiiiO()) {
+            return 0;
+        }
+    }
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args,
+                         "siiiiiOO",
+                         &ConstraintType,
+                         &FirstIndex,
+                         &FirstPos,
+                         &SecondIndex,
+                         &SecondPos,
+                         &ThirdIndex,
+                         &index_or_value,
+                         &activated)) {
+        if (PyBool_Check(activated)) {
+            if (handleSiiiiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
                 return 0;
             }
         }
-        if (PyNumber_Check(index_or_value)) {  // can be float or int
-            Value = PyFloat_AsDouble(index_or_value);
-            if (strcmp("SnellsLaw", ConstraintType) == 0) {
-                this->getConstraintPtr()->Type = SnellsLaw;
-                this->getConstraintPtr()->First = FirstIndex;
-                this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                this->getConstraintPtr()->Second = SecondIndex;
-                this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
-                this->getConstraintPtr()->Third = ThirdIndex;
-                this->getConstraintPtr()->ThirdPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->setValue(Value);
+    }
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args,
+                         "siiiiiOOO",
+                         &ConstraintType,
+                         &FirstIndex,
+                         &FirstPos,
+                         &SecondIndex,
+                         &SecondPos,
+                         &ThirdIndex,
+                         &index_or_value,
+                         &activated,
+                         &driving)) {
+        if (PyBool_Check(activated) && PyBool_Check(driving)) {
+            if (handleSiiiiiO()) {
+                cstr->isActive = PyObject_IsTrue(activated);
+                if (cstr->isDimensional()) {
+                    cstr->isDriving = PyObject_IsTrue(driving);
+                }
                 return 0;
             }
         }
