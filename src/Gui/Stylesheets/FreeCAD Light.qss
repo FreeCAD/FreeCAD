@@ -251,7 +251,7 @@ QCheckBox {
   outline: none;
   border: 1px solid transparent;
   background-color: transparent;
-  spacing:8px;
+  spacing: 8px;
 }
 
 QCheckBox:focus {
@@ -390,9 +390,9 @@ QRadioButton {
   background-color: transparent;
   color: black;
   border: none;
-  spacing: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  spacing: 8px;
+  /* padding-top: 4px;
+  padding-bottom: 4px; */
   outline: none;
 }
 
@@ -889,14 +889,14 @@ QToolBar {
 QToolBar:horizontal {
   border-bottom: 1px solid #ababab;
   padding-top: 3px;
-  padding-left: 5px;
+  padding-left: 4px;
 }
 
 QToolBar:vertical {
   border-left: 1px solid #ababab;
   border-right: 1px solid #ababab;
-  padding-top: 3px;
-  padding-left: 2px;
+  padding-top: 4px;
+  padding-left: 3px;
 }
 
 QToolBar:disabled {
@@ -924,13 +924,13 @@ QToolBar::handle:vertical:hover {
 
 QToolBar::separator:horizontal {
   width: 2px;
-  padding: 0px 5px;
+  padding: 0px 3px;
   image: url(qss:images_classic/Hsepartoolbar-lightgray.png);
 }
 
 QToolBar::separator:vertical {
   height: 2px;
-  padding: 5px 0px;
+  padding: 3px 0px;
   image: url(qss:images_classic/Vsepartoolbar-lightgray.png);
 }
 
@@ -958,7 +958,7 @@ QSpinBox {
   border: 1px solid #ababab;
   color: black;
   border-radius: 2px;
-  min-height: 1.7em;
+  min-height: 24px;
   padding-left: 4px;
   padding-right: 4px;
 }
@@ -1374,7 +1374,7 @@ QComboBox {
   /* padding-right = 36; 4 + 16*2 See scrollbar size */
   /* changed to 4px to fix #239 */
   /* Fixes #103, #111 */
-  min-height: 1.5em;
+  min-height: 23px;
   /*margin: 0px -1px 0px 0px;  hack for Mac... try it on Windows and Linux */
   /* padding-top: 2px;     removed to fix #132 */
   /* padding-bottom: 2px;  removed to fix #132 */
