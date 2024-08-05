@@ -59,6 +59,7 @@ class Rotation;
 namespace Assembly
 {
 
+class AssemblyLink;
 class JointGroup;
 class ViewGroup;
 
@@ -241,7 +242,7 @@ public:
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
-    std::vector<AssemblyObject*> getSubAssemblies();
+    std::vector<AssemblyLink*> getSubAssemblies();
     void updateGroundedJointsPlacements();
 
 private:
