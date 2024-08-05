@@ -116,7 +116,7 @@ StartView::StartView(QWidget* parent)
     auto cardSpacing = hGrp->GetInt("FileCardSpacing", 15);  // NOLINT
 
     // First start page
-    auto firstStartScrollArea = gsl::owner<QScrollArea*>(new QScrollArea(_contents));
+    auto firstStartScrollArea = gsl::owner<QScrollArea*>(new QScrollArea());
     auto firstStartRegion = gsl::owner<QHBoxLayout*>(new QHBoxLayout(firstStartScrollArea));
     firstStartRegion->addStretch();
     auto firstStartWidget = gsl::owner<FirstStartWidget*>(new FirstStartWidget(this));
@@ -174,7 +174,7 @@ StartView::StartView(QWidget* parent)
     documentsContentLayout->addStretch();
 
     // Documents page footer
-    auto footerLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout(_contents));
+    auto footerLayout = gsl::owner<QHBoxLayout*>(new QHBoxLayout());
     documentsMainLayout->addLayout(footerLayout);
 
     auto _openFirstStart = gsl::owner<QPushButton*>(new QPushButton(tr("Open first start setup")));
