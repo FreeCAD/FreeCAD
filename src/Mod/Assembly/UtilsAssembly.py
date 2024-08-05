@@ -279,7 +279,7 @@ def getRootPath(obj, part):
 
         # for bodies we need to add the tip to the path.
         if obj.TypeId == "PartDesign::Body":
-            path.append(obj.Tip.Name + ".")
+            path = path + obj.Tip.Name + "."
 
         return rootObj, path
 
