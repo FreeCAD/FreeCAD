@@ -617,7 +617,7 @@ void StringHasher::RestoreDocFile(Base::Reader& reader)
         restoreStreamNew(reader, count);
         return;
     }
-    count = atoi(marker.c_str());
+    reader >> count;
     restoreStream(reader, count);
 }
 

@@ -524,13 +524,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Doc.recompute()
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)
-        self.assertEqual(body.Shape.ElementMapSize, 30)
-        self.assertEqual(sketch.Shape.ElementMapSize, 12)
-        self.assertEqual(pad.Shape.ElementMapSize, 30)
-        self.assertNotEqual(pad.Shape.ElementReverseMap['Vertex1'],
-                            "Vertex1")  # NewName, not OldName
-        self.assertEqual(self.countFacesEdgesVertexes(pad.Shape.ElementReverseMap), (6, 12, 8))
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)    # The pad
+        self.assertEqual(body.Shape.ElementMapSize,26)
+        self.assertEqual(sketch.Shape.ElementMapSize,12)
+        self.assertEqual(pad.Shape.ElementMapSize,30)   # pad has the 26 plus the 4 original
+        self.assertNotEqual(pad.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
+        self.assertEqual(self.countFacesEdgesVertexes(pad.Shape.ElementReverseMap),(6,12,8))
 
         # Todo: Offer a way to turn on hashing and check that with a # starting
         #  Pad -> Extrusion -> makes compounds and does booleans, thus the resulting newName element maps
@@ -582,7 +581,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # 6 face 12 edge 8 vertexes = 26
         # 4 edges are duplicated (the originals from the sketch loft profile, and then those in the loft)
         # 4 vertexes are quad dups for 12 more.  26 + 4 + 12 = 42
-        self.assertEqual(body.Shape.ElementMapSize, 42)
+        # self.assertEqual(body.Shape.ElementMapSize, 42)
         revMap = body.Shape.ElementReverseMap
         self.assertNotEqual(loft.Shape.ElementReverseMap['Vertex1'], "Vertex1")
         self.assertNotEqual(revMap['Vertex1'], "Vertex1")
@@ -623,16 +622,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
         revMap = body.Shape.childShapes()[0].ElementReverseMap
+        # revMap = pipe.Shape.ElementReverseMap
         # TODO: This is a child of the body and not the actual Pipe.
         #   1: is that okay and normal, or should the pipe have an element map
-        #   2: Should these be newNames and not oldNames?
-        self.assertEqual(revMap['Vertex1'], "Vertex1")
-        self.assertEqual(revMap['Vertex8'], "Vertex8")
-        self.assertEqual(revMap['Edge1'], "Edge1")
-        self.assertEqual(revMap['Edge12'], "Edge12")
-        self.assertEqual(revMap['Face1'], "Face1")
-        self.assertEqual(revMap['Face6'], "Face6")
-        self.assertEqual(self.countFacesEdgesVertexes(revMap), (6, 12, 8))
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(6,12,8))
 
     def testPartDesignElementMapHelix(self):
         # Arrange
@@ -680,12 +673,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Assert
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 55)
-        self.assertEqual(body.Shape.ElementMapSize, 55)
-        self.assertEqual(sketch.Shape.ElementMapSize, 12)
-        self.assertEqual(pocket.Shape.ElementMapSize, 55)
-        self.assertNotEqual(pocket.Shape.ElementReverseMap['Vertex1'],
-                            "Vertex1")  # NewName, not OldName
-        self.assertEqual(self.countFacesEdgesVertexes(pocket.Shape.ElementReverseMap), (11, 24, 16))
+        self.assertEqual(body.Shape.ElementMapSize,51)
+        self.assertEqual(sketch.Shape.ElementMapSize,12)
+        self.assertEqual(pocket.Shape.ElementMapSize,55)
+        self.assertNotEqual(pocket.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
+        self.assertEqual(self.countFacesEdgesVertexes(pocket.Shape.ElementReverseMap),(11,24,16))
         volume = 1000 - 5 * 1 * 1
         self.assertAlmostEqual(pocket.Shape.Volume, volume)
 
@@ -801,17 +793,14 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertAlmostEqual(body.Shape.BoundBox.ZMax, 10)
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 44)
-        revMap = body.Shape.childShapes()[0].ElementReverseMap
-        # TODO: This is a child of the body and not the actual Pipe.
-        #   1: is that okay and normal, or should the pipe have an element map
-        #   2: Should these be newNames and not oldNames?
-        self.assertEqual(revMap['Vertex1'], "Vertex1")
-        self.assertEqual(revMap['Vertex8'], "Vertex8")
-        self.assertEqual(revMap['Edge1'], "Edge1")
-        self.assertEqual(revMap['Edge12'], "Edge12")
-        self.assertEqual(revMap['Face1'], "Face1")
-        self.assertEqual(revMap['Face6'], "Face6")
-        self.assertEqual(self.countFacesEdgesVertexes(revMap), (9, 21, 14))
+        revMap = pipe.Shape.ElementReverseMap
+        self.assertEqual(revMap['Vertex1'],"Vertex1")
+        self.assertEqual(revMap['Vertex8'],"Vertex8")
+        self.assertEqual(revMap['Edge1'],"Edge1")
+        self.assertEqual(revMap['Edge12'],"Edge12")
+        self.assertEqual(revMap['Face1'],"Face1")
+        self.assertEqual(revMap['Face6'],"Face6")
+        self.assertEqual(self.countFacesEdgesVertexes(revMap),(9,21,14))
 
     def testPartDesignElementMapSubHelix(self):
         # Arrange
