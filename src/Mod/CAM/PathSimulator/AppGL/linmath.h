@@ -6,7 +6,6 @@
 
 #include <string.h>
 #include <math.h>
-#include <string.h>
 
 #ifdef LINMATH_NO_INLINE
 #define LINMATH_H_FUNC static

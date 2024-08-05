@@ -27,8 +27,6 @@
 #endif
 
 #include "GCodeParser.h"
-#include <ctype.h>
-#include <stdio.h>
 
 using namespace MillSim;
 

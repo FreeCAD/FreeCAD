@@ -22,7 +22,6 @@
 
 #include "SolidObject.h"
 #include "Shader.h"
-#include <stdlib.h>
 #include <algorithm>
 
 #define NUM_PROFILE_POINTS 4

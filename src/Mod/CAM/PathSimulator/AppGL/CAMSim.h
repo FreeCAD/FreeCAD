@@ -56,8 +56,8 @@ private:
 
 
 public:
-    CAMSim();
-    ~CAMSim();
+    CAMSim() = default;
+    ~CAMSim() = default;
 
     void BeginSimulation(const Part::TopoShape& stock, float resolution);
     void resetSimulation();

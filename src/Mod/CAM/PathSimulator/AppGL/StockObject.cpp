@@ -22,7 +22,6 @@
 
 #include "StockObject.h"
 #include "Shader.h"
-#include <stdlib.h>
 
 #define NUM_PROFILE_POINTS 4
 using namespace MillSim;

@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 #include "CAMSim.h"
 #include "DlgCAMSimulator.h"
-#include <stdio.h>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepTools.hxx>
 #include <Mod/Part/App/BRepMesh.h>
@@ -36,13 +35,7 @@ using namespace CAMSimulator;
 
 TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
 
-#define MAX_GCODE_LINE_LEN 120
-
-CAMSim::CAMSim()
-{}
-
-CAMSim::~CAMSim()
-{}
+constexpr int MAX_GCODE_LINE_LEN = 120;
 
 void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 {

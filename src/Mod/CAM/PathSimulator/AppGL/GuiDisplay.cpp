@@ -24,7 +24,6 @@
 #include "OpenGlWrapper.h"
 #include "MillSimulation.h"
 #include <cstddef>
-#include <stdlib.h>
 
 using namespace MillSim;
 
