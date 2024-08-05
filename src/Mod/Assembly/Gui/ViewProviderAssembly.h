@@ -85,6 +85,7 @@ class AssemblyGuiExport ViewProviderAssembly: public Gui::ViewProviderPart,
     enum class DragMode
     {
         Translation,
+        TranslationNoSolve,
         TranslationOnAxis,
         TranslationOnPlane,
         Rotation,
