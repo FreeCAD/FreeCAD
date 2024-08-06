@@ -675,9 +675,9 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
 
     if (!constraint->isActive || !constraint->isDriving) {
         std::string active = constraint->isActive ? "True" : "False";
-        std::string driving = constraint->isDriving ? "True" : "False";
         resultStr += ", " + active;
         if (constraint->isDimensional()) {
+            std::string driving = constraint->isDriving ? "True" : "False";
             resultStr += ", " + driving;
         }
     }

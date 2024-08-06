@@ -1549,12 +1549,7 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry*>& geoList,
         Part::Geometry* copy = v->copy();
         generateId(copy);
 
-        if (copy->is<Part::GeomPoint>()) {
-            // creation mode for points is always construction not to
-            // break legacy code
-            GeometryFacade::setConstruction(copy, true);
-        }
-        else if (construction) {
+        if (construction) {
             GeometryFacade::setConstruction(copy, construction);
         }
 
@@ -1588,12 +1583,7 @@ int SketchObject::addGeometry(std::unique_ptr<Part::Geometry> newgeo, bool const
     auto* geoNew = newgeo.release();
     generateId(geoNew);
 
-    if (geoNew->is<Part::GeomPoint>()) {
-        // creation mode for points is always construction not to
-        // break legacy code
-        GeometryFacade::setConstruction(geoNew, true);
-    }
-    else if (construction) {
+    if (construction) {
         GeometryFacade::setConstruction(geoNew, construction);
     }
 
