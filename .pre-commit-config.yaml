@@ -4,6 +4,8 @@
 # See https://pre-commit.com/hooks.html for more hooks
 files: |
     (?x)^(
+        cMakeLists.txt|
+        cMake/|
         src/Base|
         src/Main|
         src/Tools|
@@ -65,3 +67,7 @@ repos:
     rev: ea59a72ffc9a1ce6b79b02a8076d031aa7ea7805 # frozen: v15.0.7
     hooks:
         -   id: clang-format
+-   repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.13
+    hooks:
+        -   id: cmake-format
