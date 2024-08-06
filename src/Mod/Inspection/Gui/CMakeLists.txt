@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
@@ -8,27 +8,19 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(InspectionGui_LIBS
-    Inspection
-    FreeCADGui
-)
+set (InspectionGui_LIBS Inspection FreeCADGui)
 
-set(Dialogs_UIC_SRCS
-    VisualInspection.ui
-)
+set (Dialogs_UIC_SRCS VisualInspection.ui)
 
-qt_add_resources(Inspection_QRC_SRCS Resources/Inspection.qrc)
+qt_add_resources (Inspection_QRC_SRCS Resources/Inspection.qrc)
 
-SET(Dialogs_SRCS
-    ${Dialogs_UIC_HDRS}
-    VisualInspection.cpp
-    VisualInspection.h
-)
-SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
+set (Dialogs_SRCS ${Dialogs_UIC_HDRS} VisualInspection.cpp VisualInspection.h)
+source_group ("Dialogs" FILES ${Dialogs_SRCS})
 
-SET(InspectionGui_SRCS
+set (
+    InspectionGui_SRCS
     ${Inspection_QRC_SRCS}
     ${Dialogs_SRCS}
     AppInspectionGui.cpp
@@ -41,37 +33,38 @@ SET(InspectionGui_SRCS
     Workbench.h
 )
 
-set(InspectionGui_Scripts
-    ../InitGui.py
+set (InspectionGui_Scripts ../InitGui.py)
+
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${InspectionGui_SRCS})
+    add_msvc_precompiled_header (InspectionGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
+
+set (InspectionGuiIcon_SVG Resources/icons/InspectionWorkbench.svg)
+
+add_library (
+    InspectionGui SHARED ${InspectionGui_SRCS} ${InspectionGui_Scripts} ${InspectionGuiIcon_SVG}
 )
-
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${InspectionGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(InspectionGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
-SET(InspectionGuiIcon_SVG
-    Resources/icons/InspectionWorkbench.svg
-)
-
-add_library(InspectionGui SHARED ${InspectionGui_SRCS} ${InspectionGui_Scripts} ${InspectionGuiIcon_SVG})
-target_link_libraries(InspectionGui ${InspectionGui_LIBS})
+target_link_libraries (InspectionGui ${InspectionGui_LIBS})
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(InspectionGui)
-endif()
+    target_compile_warn_error (InspectionGui)
+endif ()
 
-
-fc_target_copy_resource_flat(InspectionGui
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Inspection
+fc_target_copy_resource_flat (
+    InspectionGui ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Inspection
     ${InspectionGui_Scripts}
 )
 
-SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
-SET_PYTHON_PREFIX_SUFFIX(InspectionGui)
+set_bin_dir (InspectionGui InspectionGui /Mod/Inspection)
+set_python_prefix_suffix (InspectionGui)
 
-fc_copy_sources(InspectionGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Inspection" ${InspectionGuiIcon_SVG})
+fc_copy_sources (
+    InspectionGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Inspection"
+    ${InspectionGuiIcon_SVG}
+)
 
-INSTALL(TARGETS InspectionGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-INSTALL(FILES ${InspectionGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Inspection/Resources/icons")
+install (TARGETS InspectionGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (FILES ${InspectionGuiIcon_SVG}
+         DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Inspection/Resources/icons"
+)

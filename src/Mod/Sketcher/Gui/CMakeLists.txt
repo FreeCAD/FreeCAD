@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -11,23 +11,21 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 )
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(SketcherGui_LIBS
-    Sketcher
-    PartGui
-    FreeCADGui
-)
+set (SketcherGui_LIBS Sketcher PartGui FreeCADGui)
 
 set (Sketcher_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Sketcher_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${Sketcher_TR_QRC} ${QM_SRCS})
-qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc ${Sketcher_TR_QRC})
+qt_find_and_add_translation (
+    QM_SRCS "Resources/translations/*_*.ts" ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations
+)
+qt_create_resource_file (${Sketcher_TR_QRC} ${QM_SRCS})
+qt_add_resources (SketcherGui_SRCS Resources/Sketcher.qrc ${Sketcher_TR_QRC})
 
-generate_from_xml(ViewProviderSketchGeometryExtensionPy)
+generate_from_xml (ViewProviderSketchGeometryExtensionPy)
 
-set(SketcherGui_UIC_SRCS
+set (
+    SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
     SketcherToolDefaultWidget.ui
@@ -45,7 +43,8 @@ set(SketcherGui_UIC_SRCS
     SketcherRegularPolygonDialog.ui
 )
 
-SET(SketcherGui_SRCS
+set (
+    SketcherGui_SRCS
     ${SketcherGui_SRCS}
     ${SketcherGui_UIC_HDRS}
     AppSketcherGui.cpp
@@ -172,38 +171,35 @@ SET(SketcherGui_SRCS
     VisualLayer.h
 )
 
-SET(Python_SRCS
-    ViewProviderSketchGeometryExtensionPy.xml
-    ViewProviderSketchGeometryExtensionPyImp.cpp
+set (Python_SRCS ViewProviderSketchGeometryExtensionPy.xml
+                 ViewProviderSketchGeometryExtensionPyImp.cpp
 )
-SOURCE_GROUP("Python" FILES ${Python_SRCS})
+source_group ("Python" FILES ${Python_SRCS})
 
-SET(SketcherGui_SRCS
-    ${SketcherGui_SRCS}
-    ${Python_SRCS}
-)
+set (SketcherGui_SRCS ${SketcherGui_SRCS} ${Python_SRCS})
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SketcherGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(SketcherGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${SketcherGui_SRCS})
+    add_msvc_precompiled_header (SketcherGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
+set (SketcherGuiIcon_SVG Resources/icons/SketcherWorkbench.svg)
 
-SET(SketcherGuiIcon_SVG
-    Resources/icons/SketcherWorkbench.svg
-)
-
-add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
-target_link_libraries(SketcherGui ${SketcherGui_LIBS})
+add_library (SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
+target_link_libraries (SketcherGui ${SketcherGui_LIBS})
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(SketcherGui)
-endif()
+    target_compile_warn_error (SketcherGui)
+endif ()
 
-SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
-SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
+set_bin_dir (SketcherGui SketcherGui /Mod/Sketcher)
+set_python_prefix_suffix (SketcherGui)
 
-fc_copy_sources(SketcherGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher" ${SketcherGuiIcon_SVG})
+fc_copy_sources (
+    SketcherGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher" ${SketcherGuiIcon_SVG}
+)
 
-INSTALL(TARGETS SketcherGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-INSTALL(FILES ${SketcherGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Sketcher/Resources/icons")
+install (TARGETS SketcherGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (FILES ${SketcherGuiIcon_SVG}
+         DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Sketcher/Resources/icons"
+)

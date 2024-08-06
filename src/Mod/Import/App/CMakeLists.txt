@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -9,15 +9,12 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(Import_LIBS
-    Part
-    ${OCC_OCAF_LIBRARIES}
-    ${OCC_OCAF_DEBUG_LIBRARIES}
-)
+set (Import_LIBS Part ${OCC_OCAF_LIBRARIES} ${OCC_OCAF_DEBUG_LIBRARIES})
 
-SET(Import_SRCS
+set (
+    Import_SRCS
     AppImport.cpp
     AppImportPy.cpp
     ExportOCAF.cpp
@@ -28,8 +25,7 @@ SET(Import_SRCS
     ImportOCAF.h
     ImportOCAF2.cpp
     ImportOCAF2.h
-    #ImportOCAFAssembly.cpp
-    #ImportOCAFAssembly.h
+    # ImportOCAFAssembly.cpp ImportOCAFAssembly.h
     ReaderGltf.cpp
     ReaderGltf.h
     ReaderIges.cpp
@@ -58,7 +54,8 @@ SET(Import_SRCS
     dxf/dxf.h
 )
 
-SET(SCL_Resources
+set (
+    SCL_Resources
     SCL/__init__.py
     SCL/AggregationDataTypes.py
     SCL/BaseType.py
@@ -76,31 +73,28 @@ SET(SCL_Resources
     SCL/Aufspannung.stp
     SCL/gasket1.p21
     SCL/Product1.stp
-    SCL_output/automotive_design.py     # AP214e3
-    SCL_output/ifc2x3.py                # IFC
-    SCL_output/ifc4.py                  # IFC 4
+    SCL_output/automotive_design.py # AP214e3
+    SCL_output/ifc2x3.py # IFC
+    SCL_output/ifc4.py # IFC 4
     PlmXmlParser.py
 )
-SOURCE_GROUP("SCL" FILES ${SCL_Resources})
+source_group ("SCL" FILES ${SCL_Resources})
 
-generate_from_xml(StepShapePy)
+generate_from_xml (StepShapePy)
 
-add_library(Import SHARED ${Import_SRCS})
-target_link_libraries(Import ${Import_LIBS})
+add_library (Import SHARED ${Import_SRCS})
+target_link_libraries (Import ${Import_LIBS})
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Import)
-endif()
+    target_compile_warn_error (Import)
+endif ()
 
-ADD_CUSTOM_TARGET(ImportPy ALL
-    SOURCES ${SCL_Resources}
+add_custom_target (ImportPy ALL SOURCES ${SCL_Resources})
+
+fc_target_copy_resource (
+    ImportPy ${CMAKE_SOURCE_DIR}/src/Mod/Import/App ${CMAKE_BINARY_DIR}/Mod/Import ${SCL_Resources}
 )
 
-fc_target_copy_resource(ImportPy
-    ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
-    ${CMAKE_BINARY_DIR}/Mod/Import
-    ${SCL_Resources})
+set_bin_dir (Import Import /Mod/Import)
+set_python_prefix_suffix (Import)
 
-SET_BIN_DIR(Import Import /Mod/Import)
-SET_PYTHON_PREFIX_SUFFIX(Import)
-
-INSTALL(TARGETS Import DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Import DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -42,6 +42,8 @@ exclude: |
         src/App/ExpressionParser.tab.h|
         src/App/ExpressionParser.y|
         src/App/lex.ExpressionParser.c|
+        src/Main/freecad.rc.cmake|
+        src/Main/freecadCmd.rc.cmake|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
@@ -71,3 +73,4 @@ repos:
     rev: v0.6.13
     hooks:
         -   id: cmake-format
+            additional_dependencies: ['PyYAML']

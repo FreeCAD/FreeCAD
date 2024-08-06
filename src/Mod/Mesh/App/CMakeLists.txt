@@ -1,8 +1,8 @@
-if(WIN32)
-    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
-endif(WIN32)
+if (WIN32)
+    add_definitions (-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
+endif (WIN32)
 
-include_directories(
+include_directories (
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
@@ -13,35 +13,22 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
 )
 
-set(Mesh_LIBS
-    ${Boost_LIBRARIES}
-    FreeCADBase
-    FreeCADApp
-)
+set (Mesh_LIBS ${Boost_LIBRARIES} FreeCADBase FreeCADApp)
 
-include_directories(
-    ${QtConcurrent_INCLUDE_DIRS}
-)
-list(APPEND Mesh_LIBS
-    ${QtConcurrent_LIBRARIES}
-)
+include_directories (${QtConcurrent_INCLUDE_DIRS})
+list (APPEND Mesh_LIBS ${QtConcurrent_LIBRARIES})
 
-generate_from_xml(EdgePy)
-generate_from_xml(FacetPy)
-generate_from_xml(MeshFeaturePy)
-generate_from_xml(MeshPointPy)
-generate_from_xml(MeshPy)
+generate_from_xml (EdgePy)
+generate_from_xml (FacetPy)
+generate_from_xml (MeshFeaturePy)
+generate_from_xml (MeshPointPy)
+generate_from_xml (MeshPy)
 
-SET(Mesh_XML_SRCS
-    EdgePy.xml
-    FacetPy.xml
-    MeshFeaturePy.xml
-    MeshPointPy.xml
-    MeshPy.xml
-)
-SOURCE_GROUP("XML" FILES ${Mesh_XML_SRCS})
+set (Mesh_XML_SRCS EdgePy.xml FacetPy.xml MeshFeaturePy.xml MeshPointPy.xml MeshPy.xml)
+source_group ("XML" FILES ${Mesh_XML_SRCS})
 
-SET(Core_SRCS
+set (
+    Core_SRCS
     Core/Algorithm.cpp
     Core/Algorithm.h
     Core/Approximation.cpp
@@ -109,9 +96,10 @@ SET(Core_SRCS
     Core/IO/WriterOBJ.cpp
     Core/IO/WriterOBJ.h
 )
-SOURCE_GROUP("Core" FILES ${Core_SRCS})
+source_group ("Core" FILES ${Core_SRCS})
 
-SET(WildMagic4_SRCS
+set (
+    WildMagic4_SRCS
     WildMagic4/Wm4ApprCylinderFit3.cpp
     WildMagic4/Wm4ApprCylinderFit3.h
     WildMagic4/Wm4ApprGaussPointsFit2.cpp
@@ -331,9 +319,10 @@ SET(WildMagic4_SRCS
     WildMagic4/Wm4Vector4.h
     WildMagic4/Wm4Vector4.inl
 )
-SOURCE_GROUP("WildMagic4" FILES ${WildMagic4_SRCS})
+source_group ("WildMagic4" FILES ${WildMagic4_SRCS})
 
-SET(Mesh_SRCS
+set (
+    Mesh_SRCS
     ${Mesh_XML_SRCS}
     AppMesh.cpp
     AppMeshPy.cpp
@@ -385,39 +374,36 @@ SET(Mesh_SRCS
 
 # Suppress -Wundefined-var-template
 if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
-    unset(_flag_found CACHE)
-    check_cxx_compiler_flag("-Wno-undefined-var-template" _flag_found)
+    unset (_flag_found CACHE)
+    check_cxx_compiler_flag ("-Wno-undefined-var-template" _flag_found)
     if (_flag_found)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
-    endif()
-endif()
+        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-undefined-var-template")
+    endif ()
+endif ()
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
+    add_msvc_precompiled_header (Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions
 if (EIGEN3_NO_DEPRECATED_COPY)
-    set_source_files_properties(
-        Core/Approximation.cpp
-        Core/CylinderFit.cpp
-        Core/SphereFit.cpp
-        Core/KDTree.cpp
-        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+    set_source_files_properties (
+        Core/Approximation.cpp Core/CylinderFit.cpp Core/SphereFit.cpp Core/KDTree.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY}
+    )
 endif ()
 
-add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
-target_link_libraries(Mesh ${Mesh_LIBS})
-set_target_properties(Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
-set_target_properties(Mesh PROPERTIES CXX_STANDARD 17)
+add_library (Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
+target_link_libraries (Mesh ${Mesh_LIBS})
+set_target_properties (Mesh PROPERTIES CXX_STANDARD_REQUIRED ON)
+set_target_properties (Mesh PROPERTIES CXX_STANDARD 17)
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Mesh)
-endif()
+    target_compile_warn_error (Mesh)
+endif ()
 
+set_bin_dir (Mesh Mesh /Mod/Mesh)
+set_python_prefix_suffix (Mesh)
 
-SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
-SET_PYTHON_PREFIX_SUFFIX(Mesh)
-
-INSTALL(TARGETS Mesh DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Mesh DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -1,5 +1,5 @@
-
-SET(Show_SRCS
+set (
+    Show_SRCS
     __init__.py
     Containers.py
     DepGraphTools.py
@@ -10,7 +10,8 @@ SET(Show_SRCS
     ShowUtils.py
 )
 
-SET(Show_SceneDetails_SRCS
+set (
+    Show_SceneDetails_SRCS
     SceneDetails/__init__.py
     SceneDetails/Camera.py
     SceneDetails/ClipPlane.py
@@ -20,26 +21,13 @@ SET(Show_SceneDetails_SRCS
     SceneDetails/Workbench.py
 )
 
-SET(Show_All_SRCS
-    ${Show_SRCS}
-    ${Show_SceneDetails_SRCS}
-)
+set (Show_All_SRCS ${Show_SRCS} ${Show_SceneDetails_SRCS})
 
-SOURCE_GROUP("" FILES ${Show_SRCS})
+source_group ("" FILES ${Show_SRCS})
 
-ADD_CUSTOM_TARGET(Show ALL
-    SOURCES ${Show_All_SRCS}
-)
+add_custom_target (Show ALL SOURCES ${Show_All_SRCS})
 
-fc_copy_sources(Show "${CMAKE_BINARY_DIR}/Mod/Show" ${Show_All_SRCS})
+fc_copy_sources (Show "${CMAKE_BINARY_DIR}/Mod/Show" ${Show_All_SRCS})
 
-INSTALL(
-    FILES
-        ${Show_SRCS}
-    DESTINATION Mod/Show
-)
-INSTALL(
-    FILES
-        ${Show_SceneDetails_SRCS}
-    DESTINATION Mod/Show/SceneDetails
-)
+install (FILES ${Show_SRCS} DESTINATION Mod/Show)
+install (FILES ${Show_SceneDetails_SRCS} DESTINATION Mod/Show/SceneDetails)
