@@ -1,19 +1,10 @@
-SET(PlotMain_SRCS
-    Plot.py
-)
-SOURCE_GROUP("" FILES ${PlotMain_SRCS})
+set(PlotMain_SRCS Plot.py)
+source_group("" FILES ${PlotMain_SRCS})
 
-SET(all_files ${PlotMain_SRCS})
+set(all_files ${PlotMain_SRCS})
 
-ADD_CUSTOM_TARGET(Plot ALL
-    SOURCES ${all_files}
-)
+add_custom_target(Plot ALL SOURCES ${all_files})
 
 fc_copy_sources(Plot "${CMAKE_BINARY_DIR}/Mod/Plot" ${all_files})
 
-INSTALL(
-    FILES
-        ${PlotMain_SRCS}
-    DESTINATION
-        Mod/Plot
-)
+install(FILES ${PlotMain_SRCS} DESTINATION Mod/Plot)

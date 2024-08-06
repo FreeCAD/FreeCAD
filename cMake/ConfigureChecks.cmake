@@ -1,4 +1,3 @@
-
 include(CheckIncludeFile)
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
@@ -21,40 +20,32 @@ check_include_file_cxx(iostream HAVE_IOSTREAM)
 check_include_file_cxx(iomanip HAVE_IOMANIP)
 
 include(TestForANSIStreamHeaders)
-IF(NOT CMAKE_NO_ANSI_STREAM_HEADERS)
-	SET(HAVE_STD_IOSTREAM 1)
-	SET(USE_STD_IOSTREAM 1)
-ENDIF(NOT CMAKE_NO_ANSI_STREAM_HEADERS)
+if(NOT CMAKE_NO_ANSI_STREAM_HEADERS)
+    set(HAVE_STD_IOSTREAM 1)
+    set(USE_STD_IOSTREAM 1)
+endif(NOT CMAKE_NO_ANSI_STREAM_HEADERS)
 
 include(TestForSTDNamespace)
-IF(NOT CMAKE_NO_ANSI_STRING_STREAM)
-	SET(HAVE_NAMESPACES 1)
-ENDIF(NOT CMAKE_NO_ANSI_STRING_STREAM)
+if(NOT CMAKE_NO_ANSI_STRING_STREAM)
+    set(HAVE_NAMESPACES 1)
+endif(NOT CMAKE_NO_ANSI_STRING_STREAM)
 
-SET(HAVE_QGLFORMAT_EQ_OP 1)
-SET(HAVE_QGLFORMAT_SETOVERLAY 1)
-SET(HAVE_QGLWIDGET_SETAUTOBUFFERSWAP 1)
-SET(HAVE_QT_KEYPAD_DEFINE 1)
-SET(HAVE_QWIDGET_SHOWFULLSCREEN 1)
+set(HAVE_QGLFORMAT_EQ_OP 1)
+set(HAVE_QGLFORMAT_SETOVERLAY 1)
+set(HAVE_QGLWIDGET_SETAUTOBUFFERSWAP 1)
+set(HAVE_QT_KEYPAD_DEFINE 1)
+set(HAVE_QWIDGET_SHOWFULLSCREEN 1)
 
+file(
+    WRITE ${CMAKE_BINARY_DIR}/backtrace.cpp
+    "#include <cstddef>\n"
+    "#include <execinfo.h>\n\n"
+    "int main() {\n"
+    "    void *callstack[128];\n"
+    "    size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);\n"
+    "    size_t nFrames = backtrace(callstack, nMaxFrames);\n"
+    "    char **symbols = backtrace_symbols(callstack, nFrames);\n"
+    "    return 0;\n"
+    "}")
 
-file(WRITE ${CMAKE_BINARY_DIR}/backtrace.cpp
-         "#include <cstddef>\n"
-         "#include <execinfo.h>\n\n"
-         "int main() {\n"
-         "    void *callstack[128];\n"
-         "    size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);\n"
-         "    size_t nFrames = backtrace(callstack, nMaxFrames);\n"
-         "    char **symbols = backtrace_symbols(callstack, nFrames);\n"
-         "    return 0;\n"
-         "}"
-)
-
-try_compile(
-  RESULT_VAR
-    ${CMAKE_BINARY_DIR}
-  SOURCES
-    ${CMAKE_BINARY_DIR}/backtrace.cpp
-)
-
-SET(HAVE_BACKTRACE_SYMBOLS ${RESULT_VAR})
+try_compile(HAVE_BACKTRACE_SYMBOLS ${CMAKE_BINARY_DIR} SOURCES ${CMAKE_BINARY_DIR}/backtrace.cpp)

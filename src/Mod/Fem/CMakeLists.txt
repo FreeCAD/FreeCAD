@@ -1,14 +1,11 @@
-
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
 endif(BUILD_FEM_VTK)
-
 
 # suppress warnings from smesh
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-overloaded-virtual")
 endif()
-
 
 # ************************************************************************************************
 # ****** sub directories**************************************************************************
@@ -20,27 +17,15 @@ if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
-
-
 # ************************************************************************************************
 # ****** Python non Gui packages and modules *****************************************************
 # ************************************************************************************************
 
-SET(FemBaseModules_SRCS
-    coding_conventions.md
-    Init.py
-    InitGui.py
-    ObjectsFem.py
-    TestFemApp.py
-)
+set(FemBaseModules_SRCS coding_conventions.md Init.py InitGui.py ObjectsFem.py TestFemApp.py)
 
-SET(FemCommands_SRCS
-    femcommands/__init__.py
-    femcommands/commands.py
-    femcommands/manager.py
-)
+set(FemCommands_SRCS femcommands/__init__.py femcommands/commands.py femcommands/manager.py)
 
-SET(FemExamples_SRCS
+set(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/boxanalysis_base.py
     femexamples/boxanalysis_static.py
@@ -97,11 +82,9 @@ SET(FemExamples_SRCS
     femexamples/square_pipe_end_twisted_nodeforces.py
     femexamples/thermomech_bimetal.py
     femexamples/truss_3d_cs_circle_ele_seg2.py
-    femexamples/truss_3d_cs_circle_ele_seg3.py
-)
+    femexamples/truss_3d_cs_circle_ele_seg3.py)
 
-
-SET(FemExampleMeshes_SRCS
+set(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
     femexamples/meshes/mesh_beamsimple_tetra10.py
     femexamples/meshes/mesh_boxanalysis_tetra10.py
@@ -136,10 +119,9 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
     femexamples/meshes/mesh_transform_torque_tetra10.py
     femexamples/meshes/mesh_truss_crane_seg2.py
-    femexamples/meshes/mesh_truss_crane_seg3.py
-)
+    femexamples/meshes/mesh_truss_crane_seg3.py)
 
-SET(FemInOut_SRCS
+set(FemInOut_SRCS
     feminout/__init__.py
     feminout/convert2TetGen.py
     feminout/exportNastranMesh.py
@@ -156,18 +138,12 @@ SET(FemInOut_SRCS
     feminout/readFenicsXDMF.py
     feminout/readFenicsXML.py
     feminout/writeFenicsXDMF.py
-    feminout/writeFenicsXML.py
-)
+    feminout/writeFenicsXML.py)
 
-SET(FemMesh_SRCS
-    femmesh/__init__.py
-    femmesh/femmesh2mesh.py
-    femmesh/gmshtools.py
-    femmesh/meshsetsgetter.py
-    femmesh/meshtools.py
-)
+set(FemMesh_SRCS femmesh/__init__.py femmesh/femmesh2mesh.py femmesh/gmshtools.py
+                 femmesh/meshsetsgetter.py femmesh/meshtools.py)
 
-SET(FemObjects_SRCS
+set(FemObjects_SRCS
     femobjects/__init__.py
     femobjects/base_femelement.py
     femobjects/base_femmeshelement.py
@@ -197,15 +173,11 @@ SET(FemObjects_SRCS
     femobjects/mesh_region.py
     femobjects/mesh_result.py
     femobjects/result_mechanical.py
-    femobjects/solver_ccxtools.py
-)
+    femobjects/solver_ccxtools.py)
 
-SET(FemResult_SRCS
-    femresult/__init__.py
-    femresult/resulttools.py
-)
+set(FemResult_SRCS femresult/__init__.py femresult/resulttools.py)
 
-SET(FemSolver_SRCS
+set(FemSolver_SRCS
     femsolver/__init__.py
     femsolver/equationbase.py
     femsolver/report.py
@@ -216,10 +188,9 @@ SET(FemSolver_SRCS
     femsolver/solver_taskpanel.py
     femsolver/solverbase.py
     femsolver/task.py
-    femsolver/writerbase.py
-)
+    femsolver/writerbase.py)
 
-SET(FemSolverCalculix_SRCS
+set(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
@@ -248,18 +219,13 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_mesh.py
     femsolver/calculix/write_step_equation.py
     femsolver/calculix/write_step_output.py
-    femsolver/calculix/writer.py
-)
+    femsolver/calculix/writer.py)
 
-SET(FemSolverElmer_SRCS
-    femsolver/elmer/__init__.py
-    femsolver/elmer/sifio.py
-    femsolver/elmer/solver.py
-    femsolver/elmer/tasks.py
-    femsolver/elmer/writer.py
-)
+set(FemSolverElmer_SRCS
+    femsolver/elmer/__init__.py femsolver/elmer/sifio.py femsolver/elmer/solver.py
+    femsolver/elmer/tasks.py femsolver/elmer/writer.py)
 
-SET(FemSolverElmerEquations_SRCS
+set(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/__init__.py
     femsolver/elmer/equations/deformation.py
     femsolver/elmer/equations/deformation_writer.py
@@ -281,15 +247,11 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/magnetodynamic_writer.py
     femsolver/elmer/equations/magnetodynamic2D.py
     femsolver/elmer/equations/magnetodynamic2D_writer.py
-    femsolver/elmer/equations/nonlinear.py
-)
+    femsolver/elmer/equations/nonlinear.py)
 
-SET(FemSolverFenics_SRCS
-    femsolver/fenics/__init__.py
-    femsolver/fenics/fenics_tools.py
-)
+set(FemSolverFenics_SRCS femsolver/fenics/__init__.py femsolver/fenics/fenics_tools.py)
 
-SET(FemSolverMystran_SRCS
+set(FemSolverMystran_SRCS
     femsolver/mystran/__init__.py
     femsolver/mystran/add_con_fixed.py
     femsolver/mystran/add_con_force.py
@@ -299,23 +261,14 @@ SET(FemSolverMystran_SRCS
     femsolver/mystran/add_solver_control.py
     femsolver/mystran/solver.py
     femsolver/mystran/tasks.py
-    femsolver/mystran/writer.py
-)
+    femsolver/mystran/writer.py)
 
-SET(FemSolverZ88_SRCS
-    femsolver/z88/__init__.py
-    femsolver/z88/solver.py
-    femsolver/z88/tasks.py
-    femsolver/z88/writer.py
-)
+set(FemSolverZ88_SRCS femsolver/z88/__init__.py femsolver/z88/solver.py femsolver/z88/tasks.py
+                      femsolver/z88/writer.py)
 
-SET(FemTests_SRCS
-    femtest/__init__.py
-    femtest/test_commands.sh
-    femtest/test_information.md
-)
+set(FemTests_SRCS femtest/__init__.py femtest/test_commands.sh femtest/test_information.md)
 
-SET(FemTestsApp_SRCS
+set(FemTestsApp_SRCS
     femtest/app/__init__.py
     femtest/app/support_utils.py
     femtest/app/test_ccxtools.py
@@ -328,14 +281,11 @@ SET(FemTestsApp_SRCS
     femtest/app/test_result.py
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
-    femtest/app/test_solver_z88.py
-)
+    femtest/app/test_solver_z88.py)
 
-SET(FemTestsFiles_SRCS
-    femtest/data/__init__.py
-)
+set(FemTestsFiles_SRCS femtest/data/__init__.py)
 
-SET(FemTestsCcx_SRCS
+set(FemTestsCcx_SRCS
     femtest/data/calculix/__init__.py
     femtest/data/calculix/box_frequency.inp
     femtest/data/calculix/box_frequency.dat
@@ -380,10 +330,9 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/material_nonlinear.inp
     femtest/data/calculix/square_pipe_end_twisted_edgeforces.inp
     femtest/data/calculix/square_pipe_end_twisted_nodeforces.inp
-    femtest/data/calculix/thermomech_bimetal.inp
-)
+    femtest/data/calculix/thermomech_bimetal.inp)
 
-SET(FemTestsElmer_SRCS
+set(FemTestsElmer_SRCS
     femtest/data/elmer/__init__.py
     femtest/data/elmer/box_static_0_mm.sif
     femtest/data/elmer/ccxcantilever_faceload_0_mm.sif
@@ -391,38 +340,27 @@ SET(FemTestsElmer_SRCS
     femtest/data/elmer/ccxcantilever_nodeload_0_mm.sif
     femtest/data/elmer/ccxcantilever_prescribeddisplacement_0_mm.sif
     femtest/data/elmer/group_mesh.geo
-    femtest/data/elmer/ELMERSOLVER_STARTINFO
-)
+    femtest/data/elmer/ELMERSOLVER_STARTINFO)
 
-SET(FemTestsMesh_SRCS
-    femtest/data/mesh/__init__.py
-    femtest/data/mesh/tetra10_mesh.inp
-    femtest/data/mesh/tetra10_mesh.unv
-    femtest/data/mesh/tetra10_mesh.vtk
-    femtest/data/mesh/tetra10_mesh.yml
-    femtest/data/mesh/tetra10_mesh.z88
-)
+set(FemTestsMesh_SRCS
+    femtest/data/mesh/__init__.py femtest/data/mesh/tetra10_mesh.inp
+    femtest/data/mesh/tetra10_mesh.unv femtest/data/mesh/tetra10_mesh.vtk
+    femtest/data/mesh/tetra10_mesh.yml femtest/data/mesh/tetra10_mesh.z88)
 
-SET(FemTestsMystran_SRCS
+set(FemTestsMystran_SRCS
     femtest/data/mystran/__init__.py
     femtest/data/mystran/ccx_cantilever_ele_quad4.bdf
     femtest/data/mystran/ccx_cantilever_ele_seg2.bdf
     femtest/data/mystran/ccx_cantilever_ele_tria3.bdf
     femtest/data/mystran/ccx_cantilever_faceload.bdf
     femtest/data/mystran/ccx_cantilever_nodeload.bdf
-    femtest/data/mystran/mystran_plate.bdf
-)
+    femtest/data/mystran/mystran_plate.bdf)
 
-SET(FemTestsOpen_SRCS
-    femtest/data/open/__init__.py
-    femtest/data/open/all_objects_de9b3fb438.FCStd
-)
+set(FemTestsOpen_SRCS femtest/data/open/__init__.py femtest/data/open/all_objects_de9b3fb438.FCStd)
 
-SET(FemTestsZ88Main_SRCS
-    femtest/data/z88/__init__.py
-)
+set(FemTestsZ88Main_SRCS femtest/data/z88/__init__.py)
 
-SET(FemTestsZ88CcxcantiEleHex20_SRCS
+set(FemTestsZ88CcxcantiEleHex20_SRCS
     femtest/data/z88/ccx_cantilever_ele_hexa20/51.txt
     femtest/data/z88/ccx_cantilever_ele_hexa20/z88.dyn
     femtest/data/z88/ccx_cantilever_ele_hexa20/z88elp.txt
@@ -431,10 +369,9 @@ SET(FemTestsZ88CcxcantiEleHex20_SRCS
     femtest/data/z88/ccx_cantilever_ele_hexa20/z88i5.txt
     femtest/data/z88/ccx_cantilever_ele_hexa20/z88int.txt
     femtest/data/z88/ccx_cantilever_ele_hexa20/z88man.txt
-    femtest/data/z88/ccx_cantilever_ele_hexa20/z88mat.txt
-)
+    femtest/data/z88/ccx_cantilever_ele_hexa20/z88mat.txt)
 
-SET(FemTestsZ88CcxcantiEleTria6_SRCS
+set(FemTestsZ88CcxcantiEleTria6_SRCS
     femtest/data/z88/ccx_cantilever_ele_tria6/51.txt
     femtest/data/z88/ccx_cantilever_ele_tria6/z88.dyn
     femtest/data/z88/ccx_cantilever_ele_tria6/z88elp.txt
@@ -443,10 +380,9 @@ SET(FemTestsZ88CcxcantiEleTria6_SRCS
     femtest/data/z88/ccx_cantilever_ele_tria6/z88i5.txt
     femtest/data/z88/ccx_cantilever_ele_tria6/z88int.txt
     femtest/data/z88/ccx_cantilever_ele_tria6/z88man.txt
-    femtest/data/z88/ccx_cantilever_ele_tria6/z88mat.txt
-)
+    femtest/data/z88/ccx_cantilever_ele_tria6/z88mat.txt)
 
-SET(FemTestsZ88Ccxcantifl_SRCS
+set(FemTestsZ88Ccxcantifl_SRCS
     femtest/data/z88/ccx_cantilever_faceload/51.txt
     femtest/data/z88/ccx_cantilever_faceload/z88.dyn
     femtest/data/z88/ccx_cantilever_faceload/z88elp.txt
@@ -455,10 +391,9 @@ SET(FemTestsZ88Ccxcantifl_SRCS
     femtest/data/z88/ccx_cantilever_faceload/z88i5.txt
     femtest/data/z88/ccx_cantilever_faceload/z88int.txt
     femtest/data/z88/ccx_cantilever_faceload/z88man.txt
-    femtest/data/z88/ccx_cantilever_faceload/z88mat.txt
-)
+    femtest/data/z88/ccx_cantilever_faceload/z88mat.txt)
 
-SET(FemTestsZ88Ccxcantinl_SRCS
+set(FemTestsZ88Ccxcantinl_SRCS
     femtest/data/z88/ccx_cantilever_nodeload/51.txt
     femtest/data/z88/ccx_cantilever_nodeload/z88.dyn
     femtest/data/z88/ccx_cantilever_nodeload/z88elp.txt
@@ -467,10 +402,9 @@ SET(FemTestsZ88Ccxcantinl_SRCS
     femtest/data/z88/ccx_cantilever_nodeload/z88i5.txt
     femtest/data/z88/ccx_cantilever_nodeload/z88int.txt
     femtest/data/z88/ccx_cantilever_nodeload/z88man.txt
-    femtest/data/z88/ccx_cantilever_nodeload/z88mat.txt
-)
+    femtest/data/z88/ccx_cantilever_nodeload/z88mat.txt)
 
-SET(FemTools_SRCS
+set(FemTools_SRCS
     femtools/__init__.py
     femtools/ccxtools.py
     femtools/checksanalysis.py
@@ -480,10 +414,9 @@ SET(FemTools_SRCS
     femtools/geomtools.py
     femtools/membertools.py
     femtools/migrate_app.py
-    femtools/tokrules.py
-)
+    femtools/tokrules.py)
 
-SET(FemAllScripts
+set(FemAllScripts
     ${FemBaseModules_SRCS}
     ${FemCommands_SRCS}
     ${FemExamples_SRCS}
@@ -512,63 +445,55 @@ SET(FemAllScripts
     ${FemTestsZ88CcxcantiEleHex20_SRCS}
     ${FemTestsZ88CcxcantiEleTria6_SRCS}
     ${FemTestsZ88Ccxcantinl_SRCS}
-    ${FemTools_SRCS}
-)
+    ${FemTools_SRCS})
 
-
-ADD_CUSTOM_TARGET(FemScriptsTarget ALL
-    SOURCES ${FemAllScripts}
-)
+add_custom_target(FemScriptsTarget ALL SOURCES ${FemAllScripts})
 fc_copy_sources(FemScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllScripts})
 
-
 # install directories for Python packages (for make install)
-INSTALL(FILES ${FemBaseModules_SRCS} DESTINATION Mod/Fem)
-INSTALL(FILES ${FemCommands_SRCS} DESTINATION Mod/Fem/femcommands)
-INSTALL(FILES ${FemExamples_SRCS} DESTINATION Mod/Fem/femexamples)
-INSTALL(FILES ${FemExampleMeshes_SRCS} DESTINATION Mod/Fem/femexamples/meshes)
-INSTALL(FILES ${FemInOut_SRCS} DESTINATION Mod/Fem/feminout)
-INSTALL(FILES ${FemMesh_SRCS} DESTINATION Mod/Fem/femmesh)
-INSTALL(FILES ${FemObjects_SRCS} DESTINATION Mod/Fem/femobjects)
-INSTALL(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)
-INSTALL(FILES ${FemSolver_SRCS} DESTINATION Mod/Fem/femsolver)
-INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
-INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
-INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
-INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
-INSTALL(FILES ${FemSolverMystran_SRCS} DESTINATION Mod/Fem/femsolver/mystran)
-INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
-INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
-INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
-INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
-INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
-INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
-INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
-INSTALL(FILES ${FemTestsMystran_SRCS} DESTINATION Mod/Fem/femtest/data/mystran)
-INSTALL(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
-INSTALL(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
-INSTALL(FILES ${FemTestsZ88CcxcantiEleHex20_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)
-INSTALL(FILES ${FemTestsZ88CcxcantiEleTria6_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_tria6)
-INSTALL(FILES ${FemTestsZ88Ccxcantifl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_faceload)
-INSTALL(FILES ${FemTestsZ88Ccxcantinl_SRCS} DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_nodeload)
-INSTALL(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
-
-
+install(FILES ${FemBaseModules_SRCS} DESTINATION Mod/Fem)
+install(FILES ${FemCommands_SRCS} DESTINATION Mod/Fem/femcommands)
+install(FILES ${FemExamples_SRCS} DESTINATION Mod/Fem/femexamples)
+install(FILES ${FemExampleMeshes_SRCS} DESTINATION Mod/Fem/femexamples/meshes)
+install(FILES ${FemInOut_SRCS} DESTINATION Mod/Fem/feminout)
+install(FILES ${FemMesh_SRCS} DESTINATION Mod/Fem/femmesh)
+install(FILES ${FemObjects_SRCS} DESTINATION Mod/Fem/femobjects)
+install(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)
+install(FILES ${FemSolver_SRCS} DESTINATION Mod/Fem/femsolver)
+install(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
+install(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
+install(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
+install(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
+install(FILES ${FemSolverMystran_SRCS} DESTINATION Mod/Fem/femsolver/mystran)
+install(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
+install(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
+install(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
+install(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
+install(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
+install(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
+install(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
+install(FILES ${FemTestsMystran_SRCS} DESTINATION Mod/Fem/femtest/data/mystran)
+install(FILES ${FemTestsOpen_SRCS} DESTINATION Mod/Fem/femtest/data/open)
+install(FILES ${FemTestsZ88Main_SRCS} DESTINATION Mod/Fem/femtest/data/z88)
+install(FILES ${FemTestsZ88CcxcantiEleHex20_SRCS}
+        DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_hexa20)
+install(FILES ${FemTestsZ88CcxcantiEleTria6_SRCS}
+        DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_ele_tria6)
+install(FILES ${FemTestsZ88Ccxcantifl_SRCS}
+        DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_faceload)
+install(FILES ${FemTestsZ88Ccxcantinl_SRCS}
+        DESTINATION Mod/Fem/femtest/data/z88/ccx_cantilever_nodeload)
+install(FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 
 # ************************************************************************************************
 # ****** Python Gui packages and modules *********************************************************
 # ************************************************************************************************
 
-SET(FemGuiBaseModules_SRCS
-    TestFemGui.py
-)
+set(FemGuiBaseModules_SRCS TestFemGui.py)
 
-SET(FemGuiObjects_SRCS
-    femguiobjects/__init__.py
-    femguiobjects/readme.md
-)
+set(FemGuiObjects_SRCS femguiobjects/__init__.py femguiobjects/readme.md)
 
-SET(FemGuiTaskPanels_SRCS
+set(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
     femtaskpanels/base_femtaskpanel.py
     femtaskpanels/task_constraint_bodyheatsource.py
@@ -592,21 +517,14 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_group.py
     femtaskpanels/task_mesh_region.py
     femtaskpanels/task_result_mechanical.py
-    femtaskpanels/task_solver_ccxtools.py
-)
+    femtaskpanels/task_solver_ccxtools.py)
 
-SET(FemGuiTests_SRCS
-    femtest/gui/__init__.py
-    femtest/gui/test_open.py
-)
+set(FemGuiTests_SRCS femtest/gui/__init__.py femtest/gui/test_open.py)
 
-SET(FemGuiUtils_SRCS
-    femguiutils/__init__.py
-    femguiutils/migrate_gui.py
-    femguiutils/selection_widgets.py
-)
+set(FemGuiUtils_SRCS femguiutils/__init__.py femguiutils/migrate_gui.py
+                     femguiutils/selection_widgets.py)
 
-SET(FemGuiViewProvider_SRCS
+set(FemGuiViewProvider_SRCS
     femviewprovider/__init__.py
     femviewprovider/view_base_femconstraint.py
     femviewprovider/view_base_femelement.py
@@ -638,30 +556,20 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_region.py
     femviewprovider/view_mesh_result.py
     femviewprovider/view_result_mechanical.py
-    femviewprovider/view_solver_ccxtools.py
-)
+    femviewprovider/view_solver_ccxtools.py)
 
-SET(FemAllGuiScripts
-    ${FemGuiBaseModules_SRCS}
-    ${FemGuiObjects_SRCS}
-    ${FemGuiTaskPanels_SRCS}
-    ${FemGuiTests_SRCS}
-    ${FemGuiUtils_SRCS}
-    ${FemGuiViewProvider_SRCS}
-)
+set(FemAllGuiScripts ${FemGuiBaseModules_SRCS} ${FemGuiObjects_SRCS} ${FemGuiTaskPanels_SRCS}
+                     ${FemGuiTests_SRCS} ${FemGuiUtils_SRCS} ${FemGuiViewProvider_SRCS})
 
 if(BUILD_GUI)
-    ADD_CUSTOM_TARGET(FemGuiScriptsTarget ALL
-        SOURCES ${FemAllGuiScripts}
-    )
+    add_custom_target(FemGuiScriptsTarget ALL SOURCES ${FemAllGuiScripts})
     fc_copy_sources(FemGuiScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllGuiScripts})
 
-
     # install directories for Python packages (for make install)
-    INSTALL(FILES ${FemGuiBaseModules_SRCS} DESTINATION Mod/Fem/)
-    INSTALL(FILES ${FemGuiObjects_SRCS} DESTINATION Mod/Fem/femguiobjects/)
-    INSTALL(FILES ${FemGuiTaskPanels_SRCS} DESTINATION Mod/Fem/femtaskpanels/)
-    INSTALL(FILES ${FemGuiTests_SRCS} DESTINATION Mod/Fem/femtest/gui/)
-    INSTALL(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
-    INSTALL(FILES ${FemGuiViewProvider_SRCS} DESTINATION Mod/Fem/femviewprovider/)
+    install(FILES ${FemGuiBaseModules_SRCS} DESTINATION Mod/Fem/)
+    install(FILES ${FemGuiObjects_SRCS} DESTINATION Mod/Fem/femguiobjects/)
+    install(FILES ${FemGuiTaskPanels_SRCS} DESTINATION Mod/Fem/femtaskpanels/)
+    install(FILES ${FemGuiTests_SRCS} DESTINATION Mod/Fem/femtest/gui/)
+    install(FILES ${FemGuiUtils_SRCS} DESTINATION Mod/Fem/femguiutils/)
+    install(FILES ${FemGuiViewProvider_SRCS} DESTINATION Mod/Fem/femviewprovider/)
 endif(BUILD_GUI)

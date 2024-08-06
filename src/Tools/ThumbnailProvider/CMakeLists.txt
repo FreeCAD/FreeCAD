@@ -4,41 +4,30 @@ cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
 
 add_definitions(-D_UNICODE -D_CRT_SECURE_NO_WARNINGS)
 
-#=================================================
-#                  zlib
-#=================================================
+# =================================================
+# zlib
+# =================================================
 
 find_package(ZLIB REQUIRED)
 
-#=================================================
-#                  FCStdThumbnail
-#=================================================
+# =================================================
+# FCStdThumbnail
+# =================================================
 
+include_directories(. ../../../ ${ZLIB_INCLUDE_DIR})
 
-include_directories(
-    .
-    ../../../
-    ${ZLIB_INCLUDE_DIR}
-)
-
-set(THUMBS_LIBS
-    Shlwapi.lib
-    ${ZLIB_LIBRARIES}
-)
+set(THUMBS_LIBS Shlwapi.lib ${ZLIB_LIBRARIES})
 
 set(zipios_DIR ../../..)
-SET(zipios_SRCS
+set(zipios_SRCS
     ${zipios_DIR}/zipios++/backbuffer.h
-    #${zipios_DIR}/zipios++/basicentry.cpp
-    #${zipios_DIR}/zipios++/basicentry.h
+    # ${zipios_DIR}/zipios++/basicentry.cpp ${zipios_DIR}/zipios++/basicentry.h
     ${zipios_DIR}/zipios++/collcoll.cpp
     ${zipios_DIR}/zipios++/collcoll.h
     ${zipios_DIR}/zipios++/deflateoutputstreambuf.cpp
     ${zipios_DIR}/zipios++/deflateoutputstreambuf.h
-    #${zipios_DIR}/zipios++/dircoll.cpp
-    #${zipios_DIR}/zipios++/dircoll.h
-    #${zipios_DIR}/zipios++/directory.cpp
-    #${zipios_DIR}/zipios++/directory.h
+    # ${zipios_DIR}/zipios++/dircoll.cpp ${zipios_DIR}/zipios++/dircoll.h
+    # ${zipios_DIR}/zipios++/directory.cpp ${zipios_DIR}/zipios++/directory.h
     ${zipios_DIR}/zipios++/fcoll.cpp
     ${zipios_DIR}/zipios++/fcoll.h
     ${zipios_DIR}/zipios++/fcollexceptions.cpp
@@ -77,11 +66,10 @@ SET(zipios_SRCS
     ${zipios_DIR}/zipios++/zipoutputstreambuf.cpp
     ${zipios_DIR}/zipios++/zipoutputstreambuf.h
     ${zipios_DIR}/zipios++/zipoutputstream.cpp
-    ${zipios_DIR}/zipios++/zipoutputstream.h
-)
-SOURCE_GROUP("zipios++" FILES ${zipios_SRCS})
+    ${zipios_DIR}/zipios++/zipoutputstream.h)
+source_group("zipios++" FILES ${zipios_SRCS})
 
-SET(THUMBS_SRCS
+set(THUMBS_SRCS
     ${zipios_SRCS}
     ClassFactory.cpp
     ClassFactory.h
@@ -90,8 +78,7 @@ SET(THUMBS_SRCS
     Main.cpp
     ThumbnailProvider.cpp
     ThumbnailProvider.def
-    ThumbnailProvider.h
-)
+    ThumbnailProvider.h)
 
 add_library(FCStdThumbnail SHARED ${THUMBS_SRCS})
 target_link_libraries(FCStdThumbnail ${THUMBS_LIBS})

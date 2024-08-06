@@ -1,8 +1,6 @@
-
 target_sources(
     Part_tests_run
-        PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/Attacher.cpp
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Attacher.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/AttachExtension.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/BRepMesh.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/FeatureChamfer.cpp
@@ -29,5 +27,4 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeMakeShapeWithElementMap.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeMapper.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeMakeShape.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/WireJoiner.cpp
-)
+            ${CMAKE_CURRENT_SOURCE_DIR}/WireJoiner.cpp)

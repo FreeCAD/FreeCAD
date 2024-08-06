@@ -1,5 +1,5 @@
 macro(SetupFreetype)
-#--------------------FreeType-----------------------
+    # --------------------FreeType-----------------------
 
     if(FREECAD_USE_FREETYPE)
         find_package(Freetype)

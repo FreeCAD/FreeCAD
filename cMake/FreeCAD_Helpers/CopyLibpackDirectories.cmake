@@ -10,7 +10,8 @@ macro(CopyLibpackDirectories)
         file(COPY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers DESTINATION ${CMAKE_BINARY_DIR}/bin)
         file(COPY ${FREECAD_LIBPACK_DIR}/plugins/styles DESTINATION ${CMAKE_BINARY_DIR}/bin)
         if(NOT FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.0.0")
-            file(COPY ${FREECAD_LIBPACK_DIR}/plugins/printsupport DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            file(COPY ${FREECAD_LIBPACK_DIR}/plugins/printsupport
+                 DESTINATION ${CMAKE_BINARY_DIR}/bin)
         endif()
         if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.0.0")
             file(COPY ${FREECAD_LIBPACK_DIR}/plugins/tls DESTINATION ${CMAKE_BINARY_DIR}/bin)
@@ -37,7 +38,8 @@ macro(CopyLibpackDirectories)
         if(FREECAD_COPY_PLUGINS_BIN_TO_BUILD)
             message(STATUS "=======================================\n"
                            "Copying plugins to build directory.")
-            file(COPY ${FREECAD_LIBPACK_DIR}/plugins/imageformats DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            file(COPY ${FREECAD_LIBPACK_DIR}/plugins/imageformats
+                 DESTINATION ${CMAKE_BINARY_DIR}/bin)
             file(COPY ${FREECAD_LIBPACK_DIR}/plugins/platforms DESTINATION ${CMAKE_BINARY_DIR}/bin)
             file(COPY ${FREECAD_LIBPACK_DIR}/plugins/styles DESTINATION ${CMAKE_BINARY_DIR}/bin)
             file(COPY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR})
@@ -48,26 +50,49 @@ macro(CopyLibpackDirectories)
     if(FREECAD_INSTALL_DEPEND_DIRS)
         # Test install command for installing/copying directories
         message(STATUS "=======================================")
-        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/platforms DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/imageformats DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/iconengines DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/styles DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/platforms
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/imageformats
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/iconengines
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/styles
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
         if(NOT FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.0.0")
-            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/printsupport DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/printsupport
+                    DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
         endif()
         if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.0.0")
-            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/tls DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/tls
+                    DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
         endif()
         install(DIRECTORY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_INSTALL_PREFIX})
         install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_INSTALL_PREFIX})
-        install(DIRECTORY ${FREECAD_LIBPACK_DIR}/lib DESTINATION ${CMAKE_INSTALL_PREFIX} FILES_MATCHING PATTERN "*.dll")
+        install(
+            DIRECTORY ${FREECAD_LIBPACK_DIR}/lib
+            DESTINATION ${CMAKE_INSTALL_PREFIX}
+            FILES_MATCHING
+            PATTERN "*.dll")
         if(FREECAD_LIBPACK_VERSION VERSION_GREATER_EQUAL "3.0.0")
-            # Trailing slashes make sure that cMake extracts the files from the directory, rather than taking the
-            # directory with it
-            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/lib/ DESTINATION ${CMAKE_INSTALL_PREFIX}/bin FILES_MATCHING PATTERN "*.dll")
-            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/shiboken6/ DESTINATION ${CMAKE_INSTALL_PREFIX}/bin FILES_MATCHING PATTERN "shiboken*.dll")
-            install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide6/ DESTINATION ${CMAKE_INSTALL_PREFIX}/bin FILES_MATCHING PATTERN "pyside6*.dll")
+            # Trailing slashes make sure that cMake extracts the files from the directory, rather
+            # than taking the directory with it
+            install(
+                DIRECTORY ${FREECAD_LIBPACK_DIR}/lib/
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+                FILES_MATCHING
+                PATTERN "*.dll")
+            install(
+                DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/shiboken6/
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+                FILES_MATCHING
+                PATTERN "shiboken*.dll")
+            install(
+                DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide6/
+                DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+                FILES_MATCHING
+                PATTERN "pyside6*.dll")
         endif()
         message(STATUS "Created install commands for INSTALL target.\n")
     endif()

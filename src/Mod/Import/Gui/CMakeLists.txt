@@ -6,20 +6,13 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
-)
+    ${PYTHON_INCLUDE_DIRS})
 
 link_directories(${OCC_LIBRARY_DIR})
 
-set(ImportGui_LIBS
-    FreeCADGui
-    PartGui
-    Import
-    ${OCC_OCAF_LIBRARIES}
-    ${OCC_OCAF_DEBUG_LIBRARIES}
-)
+set(ImportGui_LIBS FreeCADGui PartGui Import ${OCC_OCAF_LIBRARIES} ${OCC_OCAF_DEBUG_LIBRARIES})
 
-SET(ImportGui_SRCS
+set(ImportGui_SRCS
     AppImportGui.cpp
     AppImportGuiPy.cpp
     Command.cpp
@@ -34,17 +27,15 @@ SET(ImportGui_SRCS
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
-    Workbench.h
-)
+    Workbench.h)
 
 add_library(ImportGui SHARED ${ImportGui_SRCS})
 target_link_libraries(ImportGui ${ImportGui_LIBS})
-if (FREECAD_WARN_ERROR)
+if(FREECAD_WARN_ERROR)
     target_compile_warn_error(ImportGui)
 endif()
 
+set_bin_dir(ImportGui ImportGui /Mod/Import)
+set_python_prefix_suffix(ImportGui)
 
-SET_BIN_DIR(ImportGui ImportGui /Mod/Import)
-SET_PYTHON_PREFIX_SUFFIX(ImportGui)
-
-INSTALL(TARGETS ImportGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS ImportGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

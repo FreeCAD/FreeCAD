@@ -2,8 +2,7 @@ target_compile_definitions(Tests_run PRIVATE DATADIR="${CMAKE_SOURCE_DIR}/data")
 
 target_sources(
     Tests_run
-        PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/Application.cpp
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Application.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Branding.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Color.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/ComplexGeoData.cpp
@@ -24,5 +23,4 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/PropertyExpressionEngine.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/StringHasher.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/VarSet.cpp
-            ${CMAKE_CURRENT_SOURCE_DIR}/VRMLObject.cpp
-)
+            ${CMAKE_CURRENT_SOURCE_DIR}/VRMLObject.cpp)

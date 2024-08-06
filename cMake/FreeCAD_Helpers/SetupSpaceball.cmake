@@ -1,8 +1,8 @@
 macro(SetupSpaceball)
-# ------------------------------ Spaceball -------------------------------
+    # ------------------------------ Spaceball -------------------------------
 
-    if (WIN32)
-        #future
+    if(WIN32)
+        # future
     else(WIN32)
         find_package(Spnav)
     endif(WIN32)

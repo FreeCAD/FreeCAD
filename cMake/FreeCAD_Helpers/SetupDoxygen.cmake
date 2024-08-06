@@ -1,9 +1,9 @@
 macro(SetupDoxygen)
-# -------------------------------- Doxygen ----------------------------------
+    # -------------------------------- Doxygen ----------------------------------
 
     find_package(Doxygen)
 
-    if (NOT DOXYGEN_FOUND)
+    if(NOT DOXYGEN_FOUND)
         message("=====================================================\n"
                 "Doxygen not found, will not build documentation.     \n"
                 "=====================================================\n")

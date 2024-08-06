@@ -1,4 +1,5 @@
 macro(SetupOndselSolverCpp)
-    # -------------------------------- OndselSolver --------------------------------
+    # -------------------------------- OndselSolver
+    # --------------------------------
     find_package(OndselSolver REQUIRED)
 endmacro(SetupOndselSolverCpp)

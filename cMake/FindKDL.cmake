@@ -1,58 +1,59 @@
 # Locate KDL install directory
 
-# This module defines
-# KDL_INSTALL where to find include, lib, bin, etc.
-# KDL_FOUND, is set to true
+# This module defines KDL_INSTALL where to find include, lib, bin, etc. KDL_FOUND, is set to true
 
-#INCLUDE (${PROJECT_SOURCE_DIR}/config/FindPkgConfig.cmake)
+# INCLUDE (${PROJECT_SOURCE_DIR}/config/FindPkgConfig.cmake)
 
-IF ( CMAKE_PKGCONFIG_EXECUTABLE )
+if(CMAKE_PKGCONFIG_EXECUTABLE)
 
-    MESSAGE( STATUS "Detecting KDL" )
-    
-    SET(ENV{PKG_CONFIG_PATH} "${KDL_INSTALL}/lib/pkgconfig/")
-    MESSAGE( "Looking for KDL in: ${KDL_INSTALL}")
-    PKGCONFIG( "orocos-kdl >= 0.99" KDL_FOUND KDL_INCLUDE_DIRS KDL_DEFINES KDL_LINK_DIRS KDL_LIBS )
+    message(STATUS "Detecting KDL")
 
-    IF( KDL_FOUND )
-        MESSAGE("   Includes in: ${KDL_INCLUDE_DIRS}")
-        MESSAGE("   Libraries in: ${KDL_LINK_DIRS}")
-        MESSAGE("   Libraries: ${KDL_LIBS}")
-        MESSAGE("   Defines: ${KDL_DEFINES}")
+    set(ENV{PKG_CONFIG_PATH} "${KDL_INSTALL}/lib/pkgconfig/")
+    message("Looking for KDL in: ${KDL_INSTALL}")
+    pkgconfig("orocos-kdl >= 0.99" KDL_FOUND KDL_INCLUDE_DIRS KDL_DEFINES KDL_LINK_DIRS KDL_LIBS)
 
-	INCLUDE_DIRECTORIES( ${KDL_INCLUDE_DIRS} )
-	LINK_DIRECTORIES( ${KDL_LINK_DIRS})
-	#OROCOS_PKGCONFIG_INCPATH("${KDLTK_INCLUDE_DIRS}")
-	#OROCOS_PKGCONFIG_LIBS("${KDL_LIBS}")
-	#OROCOS_PKGCONFIG_LIBPATH("${KDL_LINK_DIRS}")
+    if(KDL_FOUND)
+        message("   Includes in: ${KDL_INCLUDE_DIRS}")
+        message("   Libraries in: ${KDL_LINK_DIRS}")
+        message("   Libraries: ${KDL_LIBS}")
+        message("   Defines: ${KDL_DEFINES}")
 
-	SET(ENV{PKG_CONFIG_PATH} "${KDL_INSTALL}/lib/pkgconfig/:${OROCOS_INSTALL}/lib/pkgconfig")
-	MESSAGE( "Looking for KDL Toolkit in: ${PKG_CONFIG_PATH}")
-	PKGCONFIG( "orocos-kdltk-${OROCOS_TARGET} >= 0.99" KDLTK_FOUND KDLTK_INCLUDE_DIRS KDLTK_DEFINES KDLTK_LINK_DIRS KDLTK_LIBS )
-	IF(KDLTK_FOUND)
-	  INCLUDE_DIRECTORIES( ${KDLTK_INCLUDE_DIRS} )
-	  LINK_DIRECTORIES( ${KDLTK_LINK_DIRS})
-	  OROCOS_PKGCONFIG_INCPATH("${KDLTK_INCLUDE_DIRS}")
-	  OROCOS_PKGCONFIG_LIBPATH("${KDLTK_LINK_DIRS}")
-	  OROCOS_PKGCONFIG_LIBS("${KDLTK_LIBS}")
-	  IF(CORBA_ENABLED)
-	    SET(ENV{PKG_CONFIG_PATH} "${KDL_INSTALL}/lib/pkgconfig/:${OROCOS_INSTALL}/lib/pkgconfig")
-	    MESSAGE("Looking for KDL Toolkit CORBA extension in ${PKG_CONFIG_PATH}")
-	    PKGCONFIG( "orocos-kdltk-corba-${OROCOS_TARGET} >= 0.99" KDLTKCORBA_FOUND KDLTKCORBA_INCLUDE_DIRS KDLTKCORBA_DEFINES KDLTKCORBA_LINK_DIRS KDLTKCORBA_LIBS )
-	    IF(KDLTKCORBA_FOUND)
-	      INCLUDE_DIRECTORIES( ${KDLTKCORBA_INCLUDE_DIRS} )
-	      LINK_DIRECTORIES( ${KDLTKCORBA_LINK_DIRS})
-	      OROCOS_PKGCONFIG_INCPATH("${KDLTKCORBA_INCLUDE_DIRS}")
-	      OROCOS_PKGCONFIG_LIBPATH("${KDLTKCORBA_LINK_DIRS}")
-	      OROCOS_PKGCONFIG_LIBS("${KDLTKCORBA_LIBS}")
-	    ENDIF ( KDLTKCORBA_FOUND )
-	  ENDIF(CORBA_ENABLED)
-	ENDIF ( KDLTK_FOUND )
-      ENDIF ( KDL_FOUND )
+        include_directories(${KDL_INCLUDE_DIRS})
+        link_directories(${KDL_LINK_DIRS})
+        # OROCOS_PKGCONFIG_INCPATH("${KDLTK_INCLUDE_DIRS}") OROCOS_PKGCONFIG_LIBS("${KDL_LIBS}")
+        # OROCOS_PKGCONFIG_LIBPATH("${KDL_LINK_DIRS}")
 
-ELSE  ( CMAKE_PKGCONFIG_EXECUTABLE )
+        set(ENV{PKG_CONFIG_PATH} "${KDL_INSTALL}/lib/pkgconfig/:${OROCOS_INSTALL}/lib/pkgconfig")
+        message("Looking for KDL Toolkit in: ${PKG_CONFIG_PATH}")
+        pkgconfig("orocos-kdltk-${OROCOS_TARGET} >= 0.99" KDLTK_FOUND KDLTK_INCLUDE_DIRS
+                  KDLTK_DEFINES KDLTK_LINK_DIRS KDLTK_LIBS)
+        if(KDLTK_FOUND)
+            include_directories(${KDLTK_INCLUDE_DIRS})
+            link_directories(${KDLTK_LINK_DIRS})
+            orocos_pkgconfig_incpath("${KDLTK_INCLUDE_DIRS}")
+            orocos_pkgconfig_libpath("${KDLTK_LINK_DIRS}")
+            orocos_pkgconfig_libs("${KDLTK_LIBS}")
+            if(CORBA_ENABLED)
+                set(ENV{PKG_CONFIG_PATH}
+                    "${KDL_INSTALL}/lib/pkgconfig/:${OROCOS_INSTALL}/lib/pkgconfig")
+                message("Looking for KDL Toolkit CORBA extension in ${PKG_CONFIG_PATH}")
+                pkgconfig("orocos-kdltk-corba-${OROCOS_TARGET} >= 0.99" KDLTKCORBA_FOUND
+                          KDLTKCORBA_INCLUDE_DIRS KDLTKCORBA_DEFINES KDLTKCORBA_LINK_DIRS
+                          KDLTKCORBA_LIBS)
+                if(KDLTKCORBA_FOUND)
+                    include_directories(${KDLTKCORBA_INCLUDE_DIRS})
+                    link_directories(${KDLTKCORBA_LINK_DIRS})
+                    orocos_pkgconfig_incpath("${KDLTKCORBA_INCLUDE_DIRS}")
+                    orocos_pkgconfig_libpath("${KDLTKCORBA_LINK_DIRS}")
+                    orocos_pkgconfig_libs("${KDLTKCORBA_LIBS}")
+                endif(KDLTKCORBA_FOUND)
+            endif(CORBA_ENABLED)
+        endif(KDLTK_FOUND)
+    endif(KDL_FOUND)
+
+else(CMAKE_PKGCONFIG_EXECUTABLE)
 
     # Can't find pkg-config -- have to search manually
-    MESSAGE( FATAL_ERROR "Can't find KDL without pkgconfig !")
+    message(FATAL_ERROR "Can't find KDL without pkgconfig !")
 
-ENDIF ( CMAKE_PKGCONFIG_EXECUTABLE )
+endif(CMAKE_PKGCONFIG_EXECUTABLE)
