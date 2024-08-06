@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <QMessageBox>
+#include <QTimer>
 #include <vector>
 #include <sstream>
 #include <iostream>
@@ -475,9 +476,20 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
                 std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch())
                     .count();
             if (nowMillis - lastClickTime < 500) {
-                // Double-click detected
-                doubleClickedIn3dView();
-                return true;
+                auto* joint = getSelectedJoint();
+                if (joint) {
+                    // Double-click detected
+                    // We start by clearing selection such that the second click selects the joint
+                    // and not the assembly.
+                    Gui::Selection().clearSelection();
+                    // singleShot timer to make sure this happens after the release of the click.
+                    // Else the release will trigger a removeSelection of what
+                    // doubleClickedIn3dView adds to the selection.
+                    QTimer::singleShot(50, [this]() {
+                        doubleClickedIn3dView();
+                    });
+                    return true;
+                }
             }
             // First click detected
             lastClickTime = nowMillis;
@@ -502,31 +514,20 @@ bool ViewProviderAssembly::mouseButtonPressed(int Button,
 void ViewProviderAssembly::doubleClickedIn3dView()
 {
     // Double clicking on a joint should start editing it.
-    auto sel = Gui::Selection().getSelectionEx("", App::DocumentObject::getClassTypeId());
-    if (sel.size() != 1) {
-        return;  // Handle double click only if only one obj selected.
+    auto* joint = getSelectedJoint();
+
+    if (joint) {
+        std::string obj_name = joint->getNameInDocument();
+        std::string doc_name = joint->getDocument()->getName();
+
+        std::string cmd = "import JointObject\n"
+                          "obj = App.getDocument('"
+            + doc_name + "').getObject('" + obj_name
+            + "')\n"
+              "Gui.Control.showDialog(JointObject.TaskAssemblyCreateJoint(0, obj))";
+
+        Gui::Command::runCommand(Gui::Command::App, cmd.c_str());
     }
-
-    App::DocumentObject* obj = sel[0].getObject();
-    if (!obj) {
-        return;
-    }
-
-    auto* prop = dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("EnableLengthMin"));
-    if (!prop) {
-        return;
-    }
-
-    std::string obj_name = obj->getNameInDocument();
-    std::string doc_name = obj->getDocument()->getName();
-
-    std::string cmd = "import JointObject\n"
-                      "obj = App.getDocument('"
-        + doc_name + "').getObject('" + obj_name
-        + "')\n"
-          "Gui.Control.showDialog(JointObject.TaskAssemblyCreateJoint(0, obj))";
-
-    Gui::Command::runCommand(Gui::Command::App, cmd.c_str());
 }
 
 bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
@@ -559,6 +560,23 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
         return false;
     }
     return true;
+}
+
+App::DocumentObject* ViewProviderAssembly::getSelectedJoint()
+{
+    auto sel = Gui::Selection().getSelectionEx("", App::DocumentObject::getClassTypeId());
+
+    if (sel.size() == 1) {  // Handle double click only if only one obj selected.
+        App::DocumentObject* obj = sel[0].getObject();
+        if (obj) {
+            auto* prop =
+                dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("EnableLengthMin"));
+            if (prop) {
+                return obj;
+            }
+        }
+    }
+    return nullptr;
 }
 
 bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection, bool onlySolids)
