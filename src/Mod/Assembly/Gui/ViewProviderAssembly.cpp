@@ -980,21 +980,40 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* obj) const
     bool res = ViewProviderPart::canDelete(obj);
     if (res) {
         // If a component is deleted, then we delete the joints as well.
-        for (auto parent : obj->getInList()) {
+        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+
+        std::vector<App::DocumentObject*> objToDel;
+
+        // List its joints
+        std::vector<App::DocumentObject*> joints = assemblyPart->getJointsOfObj(obj);
+        for (auto* joint : joints) {
+            objToDel.push_back(joint);
+        }
+        joints = assemblyPart->getJointsOfPart(obj);
+        for (auto* joint : joints) {
+            if (std::find(objToDel.begin(), objToDel.end(), joint) == objToDel.end()) {
+                objToDel.push_back(joint);
+            }
+        }
+
+        // List its grounded joints
+        std::vector<App::DocumentObject*> inList = obj->getInList();
+        for (auto* parent : inList) {
             if (!parent) {
                 continue;
             }
 
-            auto* prop =
-                dynamic_cast<App::PropertyBool*>(parent->getPropertyByName("EnableLimits"));
-            auto* prop2 =
-                dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"));
-            if (prop || prop2) {
-                Gui::Command::doCommand(Gui::Command::Doc,
-                                        "App.getDocument(\"%s\").removeObject(\"%s\")",
-                                        parent->getDocument()->getName(),
-                                        parent->getNameInDocument());
+            if (dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"))) {
+                objToDel.push_back(parent);
             }
+        }
+
+        // Deletes them.
+        for (auto* joint : objToDel) {
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.getDocument(\"%s\").removeObject(\"%s\")",
+                                    joint->getDocument()->getName(),
+                                    joint->getNameInDocument());
         }
     }
 
