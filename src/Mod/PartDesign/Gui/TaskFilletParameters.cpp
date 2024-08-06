@@ -95,7 +95,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
         this, &TaskFilletParameters::doubleClicked);
 
-    if (strings.size() == 0)
+    if (strings.empty())
         setSelectionMode(refSel);
     else
         hideOnError();

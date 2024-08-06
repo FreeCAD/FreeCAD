@@ -855,7 +855,7 @@ void DSHBSplineController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (R)"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Create a periodic bspline."));
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Create a periodic B-spline."));
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->periodic);
 
         if (isConstructionMode()) {

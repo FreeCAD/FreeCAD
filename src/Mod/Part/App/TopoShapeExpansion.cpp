@@ -3714,7 +3714,7 @@ struct MapperPrism: MapperMaker
             }
         }
     }
-    virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
     {
         _res.clear();
         switch (s.ShapeType()) {
@@ -4774,6 +4774,23 @@ TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, 
     *this = shape;
     return *this;
 }
+
+    std::vector<Data::IndexedName>
+    TopoShape::getHigherElements(const char *element, bool silent) const
+    {
+        TopoShape shape = getSubTopoShape(element, silent);
+        if(shape.isNull())
+            return {};
+
+        std::vector<Data::IndexedName> res;
+
+        for (int type = shape.shapeType() - 1; type >= 0; type--) {
+            const char* shapetype = shapeName((TopAbs_ShapeEnum)type).c_str();
+            for (int idx : findAncestors(shape.getShape(), (TopAbs_ShapeEnum)type))
+                res.emplace_back(shapetype, idx);
+        }
+        return res;
+    }
 
 TopoShape& TopoShape::makeElementBSplineFace(const TopoShape& shape,
                                              FillingStyle style,

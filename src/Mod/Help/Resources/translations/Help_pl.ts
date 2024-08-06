@@ -11,7 +11,7 @@
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="20"/>
       <source>Source</source>
-      <translation>Źródło</translation>
+      <translation>Źródła</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -85,7 +85,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Uwaga: Jeśli komponenty PySide nie zostaną znalezione w Twoim systemie, strony pomocy zostaną otwarte w domyślnej przeglądarce internetowej niezależnie od poniższych opcji</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -160,7 +160,7 @@ Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</tra
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>W systemie nie ma zainstalowanego renderera Markdown, więc ta strona pomocy jest renderowana tak, jak jest. Zainstaluj moduły Markdown lub Pandoc Python, aby poprawić jakość renderowania tej strony.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

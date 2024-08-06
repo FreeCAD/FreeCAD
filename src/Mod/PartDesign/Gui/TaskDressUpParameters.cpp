@@ -461,6 +461,22 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpV
     , parameter(nullptr)
 {
     assert(DressUpView);
+    auto pcDressUp = dynamic_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    auto base = pcDressUp->Base.getValue();
+    std::vector<std::string> newSubList;
+    bool changed = false;
+    auto& shadowSubs = pcDressUp->Base.getShadowSubs();
+    for ( auto &shadowSub : shadowSubs ) {
+        auto displayName = shadowSub.oldName;
+        // If there is a missing tag on the shadow sub, take a guess at a new name.
+        if ( boost::starts_with(shadowSub.oldName,Data::MISSING_PREFIX)) {
+            Part::Feature::guessNewLink(displayName, base, shadowSub.newName.c_str());
+            newSubList.emplace_back(displayName);
+            changed = true;
+        }
+    }
+    if ( changed )
+        pcDressUp->Base.setValue(base, newSubList);
 }
 
 TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;

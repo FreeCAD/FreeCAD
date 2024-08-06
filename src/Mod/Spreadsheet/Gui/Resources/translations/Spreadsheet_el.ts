@@ -652,7 +652,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Κείμενο για τη μονάδα</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>

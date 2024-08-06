@@ -21,11 +21,9 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Ρυθμίστε το σε μια προσαρμοσμένη διεύθυνση URL ή στον φάκελο όπου βρίσκονται τα αρχεία βοήθειας.
+Μπορείτε εύκολα να πραγματοποιήσετε λήψη των οδηγειών για χρήση εκτός σύνδεσης χρησιμοποιώντας το Addon Manager και εγκαθιστώντας την &quot;Οδηγείες εκτός σύνδεσης&quot; πρόσθετο.
+Εάν αυτό το πεδίο μείνει κενό, το FreeCAD θα αναζητήσει αυτόματα τα αρχεία βοήθειας στην προεπιλεγμένη θέση ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -90,7 +88,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Σημείωση: Εάν τα στοιχεία ιστού της PySide δε βρίσκονται στο σύστημά σας, οι σελίδες βοήθειας θα ανοίξουν στο προεπιλεγμένο πρόγραμμα περιήγησης ιστού ανεξάρτητα από τις παρακάτω επιλογές</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -100,38 +98,37 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in your default web browser.</source>
-      <translation type="unfinished">The documentation will open in your default web browser.</translation>
+      <translation>Η οδηγίες θα ανοίξουν στο προεπιλεγμένο πρόγραμμα περιήγησης ιστού.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>Οι Οδηγίες θα ανοίξουν σε ένα διάλογο προσάρτησης μέσα στο παράθυρο του FreeCAD, που σας επιτρέπει να το διατηρήσετε ανοιχτό ενώ εργάζεστε στην τρισδιάστατη προβολή.
+Αυτό απαιτεί το στοιχείο PySide QtWebengineWidgets</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation type="unfinished">You can here indicate the path to an alternative CSS file to be used
-to style the Markdown pages. This will only work if you have selected the
-Markdown version above.</translation>
+      <translation>Εδώ μπορείτε να υποδείξετε τη διαδρομή προς ένα εναλλακτικό αρχείο CSS που θα χρησιμοποιηθεί για να διαμορφώσετε τις σελίδες Markdown.
+Αυτό θα λειτουργήσει μόνο αν έχετε επιλέξει την έκδοση Markdown παραπάνω.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In your default web browser</source>
-      <translation type="unfinished">In your default web browser</translation>
+      <translation>Στο προεπιλεγμένο πρόγραμμα περιήγησης ιστού</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>Οι οδηγίες θα ανοίξουν σε μια νέα καρτέλα μέσα στη διεπαφή FreeCAD. Αυτό απαιτεί το στοιχείο PySide QtWebengineWidgets</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
       <source>In a separate, embeddable dialog</source>
-      <translation type="unfinished">In a separate, embeddable dialog</translation>
+      <translation>Σε ένα ξεχωριστό, ενσωματώσιμο διάλογο</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="241"/>
@@ -149,22 +146,22 @@ Markdown version above.</translation>
     <message>
       <location filename="../../Help.py" line="72"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</translation>
+      <translation>Δεν ήταν δυνατή η ανάκτηση του περιεχομένου αυτής της σελίδας. Ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία -&gt; Προτιμήσεις -&gt; Γενικά -&gt; Βοήθεια</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="76"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</translation>
+      <translation>Δεν ήταν δυνατός ο προσδιορισμός της τοποθεσίας των αρχείων βοήθειας. Παρακαλώ ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία -&gt; Προτιμήσεις -&gt; General -&gt; Βοήθεια</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="80"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>Η λειτουργική μονάδα PySide QtWebEngineWidgets δεν είναι διαθέσιμη. Η απόδοση της βοήθειας πραγματοποιείται με το πρόγραμμα περιήγησης συστήματος</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Δεν υπάρχει εγκατεστημένο πρόγραμμα απόδοσης Markdown στο σύστημά σας, επομένως αυτή η σελίδα βοήθειας αποδίδεται ως έχει. Εγκαταστήστε τις λειτουργικές μονάδες Markdown ή Pandoc Python για να βελτιώσετε την απόδοση αυτής της σελίδας.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

@@ -1721,48 +1721,41 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
     Q_UNUSED(position);
     // ask workbenches and view provider, ...
-    auto view = new MenuItem;
-    Gui::Application::Instance->setupContextMenu("View", view);
+    MenuItem view;
+    Gui::Application::Instance->setupContextMenu("View", &view);
 
-    QMenu contextMenu(viewer->getGLWidget());
-    QMenu subMenu;
-    QActionGroup subMenuGroup(&subMenu);
-    subMenuGroup.setExclusive(true);
-    subMenu.setTitle(QObject::tr("Navigation styles"));
+    auto contextMenu = new QMenu(viewer->getGLWidget());
+    MenuManager::getInstance()->setupContextMenu(&view, *contextMenu);
+    contextMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    MenuManager::getInstance()->setupContextMenu(view, contextMenu);
-    contextMenu.addMenu(&subMenu);
+    auto navMenu = contextMenu->addMenu(QObject::tr("Navigation styles"));
+    auto navMenuGroup = new QActionGroup(navMenu);
 
     // add submenu at the end to select navigation style
-    std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
-    for (const auto & style : styles) {
-        QByteArray data(style.first.getName());
-        QString name = QApplication::translate(style.first.getName(), style.second.c_str());
-
-        QAction* item = subMenuGroup.addAction(name);
-        item->setData(data);
+    const std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
+    for (const auto &style : styles) {
+        const QString name = QApplication::translate(style.first.getName(), style.second.c_str());
+        QAction *item = navMenuGroup->addAction(name);
+        navMenu->addAction(item);
         item->setCheckable(true);
-        if (style.first == this->getTypeId())
+
+        if (const Base::Type item_style = style.first; item_style != this->getTypeId()) {
+            auto triggeredFun = [this, item_style](){
+                QWidget *widget = viewer->getWidget();
+                while (widget && !widget->inherits("Gui::View3DInventor"))
+                    widget = widget->parentWidget();
+                if (widget) {
+                    // this is the widget where the viewer is embedded
+                    QEvent *ns_event = new NavigationStyleEvent(item_style);
+                    QApplication::postEvent(widget, ns_event);
+                }
+            };
+            item->connect(item, &QAction::triggered, triggeredFun);
+        } else
             item->setChecked(true);
-        subMenu.addAction(item);
     }
 
-    delete view;
-    QAction* used = contextMenu.exec(QCursor::pos());
-    if (used && subMenuGroup.actions().indexOf(used) >= 0 && used->isChecked()) {
-        QByteArray type = used->data().toByteArray();
-        QWidget* widget = viewer->getWidget();
-        while (widget && !widget->inherits("Gui::View3DInventor"))
-            widget = widget->parentWidget();
-        if (widget) {
-            // this is the widget where the viewer is embedded
-            Base::Type style = Base::Type::fromName((const char*)type);
-            if (style != this->getTypeId()) {
-                QEvent* event = new NavigationStyleEvent(style);
-                QApplication::postEvent(widget, event);
-            }
-        }
-    }
+    contextMenu->popup(QCursor::pos());
 }
 
 // ----------------------------------------------------------------------------------

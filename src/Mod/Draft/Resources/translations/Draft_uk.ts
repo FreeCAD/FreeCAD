@@ -1293,7 +1293,7 @@ for linear dimensions.</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>Штрихування</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
@@ -1605,7 +1605,7 @@ pattern definitions to be added to the standard patterns</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>Тексти та розміри</translation>
     </message>
@@ -1627,7 +1627,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
@@ -2002,31 +2002,31 @@ This value is the maximum segment length.</source>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>При імпорті/експорті DXF файлів показує цей діалог налаштувань</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Показувати цей діалог під час імпорту та експорту</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Використовує імпортер Python, в іншому випадку - новіший C++.
 Примітка: імпортер C++ швидший, але ще не настільки функціональний</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Використовує експортер Python, в іншому випадку - новіший C++.
 Примітка: експортер C++ швидший, але ще не настільки функціональний</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -2034,89 +2034,89 @@ from the Addon Manager.</source>
 Ви також можете зробити це вручну, встановивши "dxf_library" в Менеджері Додатків.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Дозволити FreeCAD автоматично завантажувати та оновлювати DXF-бібліотеки</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>Налаштування імпорту</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>Імпортувати</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Якщо не позначено, то тексти/мультитексти не будуть імпортовані</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Якщо вимкнено, точки не імпортуються</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>точок</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Якщо позначено, то обʼєкти простору паперу також будуть імпортовані</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Якщо ви хочете, щоб неіменовані блоки (починаються *) було також імпортовано</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation>* блоки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>Створити</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Будуть створені тільки стандартні обʼєкти деталі: (найшвидші)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Параметричні обʼєкти чернетки будуть створюватися щоразу, коли це можливо</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
       <translation>Об’єкти креслення</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Ескізи будуть створюватися щоразу, коли їх буде можливо</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>Ескізи</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Коефіцієнт масштабування для імпортованих файлів</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2127,137 +2127,137 @@ Example: for files in millimeters: 1, in centimeters: 10,
                              в метрах: 1000, в дюймах: 25.4, у футах: 304.8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation>Об'єкти з тих самих шарів буде об'єднано в чорнові блоки,
 що прискорює розгортання екрана, але ускладнює їх редагування.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation>Проєктувати експортовані об'єкти вздовж поточного напрямку огляду</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD спробує об’єднати об’єкти, що збігаються, у каркаси.
 Зверніть увагу, що це може зайняти деякий час!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation>Кольори будуть встановлені, як зазначено у файлі DXF, коли це можливо.
 В іншому випадку будуть застосовані кольори за замовчуванням.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation>Автоматичне оновлення (тільки для старих імпортерів/експортерів)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
-      <translation type="unfinished">Use legacy Python importer</translation>
+      <translation>Використовувати застарілий імпортер Python</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Use legacy Python exporter</source>
-      <translation type="unfinished">Use legacy Python exporter</translation>
+      <translation>Використовувати застарілий експортер Python</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation>Деякі опції ще не доступні для нового імпортера</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>Layouts</source>
-      <translation type="unfinished">Layouts</translation>
+      <translation>Шари</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
       <source>Simple Part shapes</source>
       <translation>Прості форми</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
       <translation>Використовувати кольори з DXF файлу</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
       <translation>Обʼєднати геометрію</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
       <translation>Групувати шари у блоки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Імпортований текст отримає стандартний розмір тексту креслення
 замість розміру, який вони мають у DXF документі</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>Використовувати стандартний розмір шрифту для текстів</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Якщо позначено цей пункт, DXF шари будуть імпортовані як шари креслення</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Штрихи будуть конвертовані в прості каркаси</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Імпортувати межі люків як дроти</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Якщо полілінії мають визначену ширину, то вони будуть представлені
 як закриті дроти з правильною шириною</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation>Показувати ламані лінії з шириною</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation>Деякі опції поки що недоступні для нового експортера</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Експорт еліпсів погано підтримується. Використовуйте це для їх експорту як поліліній.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Розглядайте еліпси і сплайни як ламані лінії</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation>Максимальний сегмент сплайну:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Максимальна довжина кожної ламаної лінії.
@@ -2265,39 +2265,39 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>Налаштування експорту</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
       <translation>Використати шари</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Всі обʼєкти, що містять грані, будуть експортовані як 3D багатогранники</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Експорт 3D-об'єктів як багатогранних сіток</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Подання TechDraw буде експортовано як блоки.
 Це може не спрацювати для шаблонів після DXF R12.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Експорт подань TechDraw як блоків</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Експортовані обʼєкти будуть проєктовані для відображення поточного напрямку перегляду</translation>
     </message>
@@ -2656,7 +2656,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="202"/>
       <source>Select edge</source>
-      <translation type="unfinished">Select edge</translation>
+      <translation>Обрати ребро</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="234"/>
@@ -2885,17 +2885,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="66"/>
       <source>Snap On/Off</source>
-      <translation type="unfinished">Snap On/Off</translation>
+      <translation>Привʼязка вкл/викл</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="67"/>
       <source>Increase snap radius</source>
-      <translation type="unfinished">Increase snap radius</translation>
+      <translation>Збільшити радіус привʼязки</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="68"/>
       <source>Decrease snap radius</source>
-      <translation type="unfinished">Decrease snap radius</translation>
+      <translation>Зменшити радіус привʼязки</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="69"/>
@@ -2916,17 +2916,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <location filename="../../DraftGui.py" line="72"/>
       <location filename="../../DraftGui.py" line="577"/>
       <source>Select edge</source>
-      <translation type="unfinished">Select edge</translation>
+      <translation>Обрати ребро</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="73"/>
       <source>Add custom snap point</source>
-      <translation type="unfinished">Add custom snap point</translation>
+      <translation>Додати користувацьку точку привʼязки</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="74"/>
       <source>Length mode</source>
-      <translation type="unfinished">Length mode</translation>
+      <translation>Режим довжини</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="75"/>
@@ -2942,12 +2942,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="77"/>
       <source>Cycle snap object</source>
-      <translation type="unfinished">Cycle snap object</translation>
+      <translation>Циклічний об’єкт привʼязки</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="79"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>Скасувати останній сегмент</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="946"/>
@@ -2982,7 +2982,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <location filename="../../WorkingPlane.py" line="1199"/>
       <location filename="../../WorkingPlane.py" line="1657"/>
       <source>Current working plane:</source>
-      <translation type="unfinished">Current working plane:</translation>
+      <translation>Поточна робоча площина:</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1265"/>
@@ -2993,17 +2993,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../WorkingPlane.py" line="1616"/>
       <source>No previous working plane</source>
-      <translation type="unfinished">No previous working plane</translation>
+      <translation>Немає попередньої робочої площини</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1626"/>
       <source>No next working plane</source>
-      <translation type="unfinished">No next working plane</translation>
+      <translation>Немає наступної робочої площини</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1661"/>
       <source>Axes:</source>
-      <translation type="unfinished">Axes:</translation>
+      <translation>Вісі:</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1668"/>
@@ -3023,17 +3023,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="518"/>
       <source>active command:</source>
-      <translation type="unfinished">active command:</translation>
+      <translation>активна команда:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="520"/>
       <source>Active Draft command</source>
-      <translation type="unfinished">Active Draft command</translation>
+      <translation>Активна команда креслення</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="521"/>
       <source>X coordinate of next point</source>
-      <translation type="unfinished">X coordinate of next point</translation>
+      <translation>X координати наступної точки</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="522"/>
@@ -3053,17 +3053,17 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="525"/>
       <source>Y coordinate of next point</source>
-      <translation type="unfinished">Y coordinate of next point</translation>
+      <translation>Y координати наступної точки</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="526"/>
       <source>Z coordinate of next point</source>
-      <translation type="unfinished">Z coordinate of next point</translation>
+      <translation>Z координати наступної точки</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="527"/>
       <source>Enter point</source>
-      <translation type="unfinished">Enter point</translation>
+      <translation>Введіть точку</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="529"/>
@@ -3125,7 +3125,7 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="550"/>
       <source>Filled</source>
-      <translation type="unfinished">Filled</translation>
+      <translation>Заповнено</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="554"/>
@@ -3202,17 +3202,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="579"/>
       <source>Sides</source>
-      <translation type="unfinished">Sides</translation>
+      <translation>Сторони</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="580"/>
       <source>Number of sides</source>
-      <translation type="unfinished">Number of sides</translation>
+      <translation>Кількість сторін</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="584"/>
       <source>Modify subelements</source>
-      <translation type="unfinished">Modify subelements</translation>
+      <translation>Змінити піделементи</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="585"/>
@@ -3222,7 +3222,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="586"/>
       <source>Create text</source>
-      <translation type="unfinished">Create text</translation>
+      <translation>Створити текст</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="587"/>
@@ -3237,14 +3237,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="610"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Змінити режим конструювання</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="611"/>
       <location filename="../../DraftGui.py" line="1466"/>
       <location filename="../../DraftGui.py" line="1481"/>
       <source>Autogroup off</source>
-      <translation type="unfinished">Autogroup off</translation>
+      <translation>Автогрупування вимкнено</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="688"/>
@@ -3308,7 +3308,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../DraftGui.py" line="798"/>
       <location filename="../../draftguitools/gui_trimex.py" line="214"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>Відстань зміщення</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="794"/>
@@ -3323,7 +3323,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
       <source>Local {}</source>
-      <translation type="unfinished">Local {}</translation>
+      <translation>Локально {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="880"/>
@@ -3333,12 +3333,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../DraftGui.py" line="885"/>
       <location filename="../../DraftGui.py" line="886"/>
       <source>Global {}</source>
-      <translation type="unfinished">Global {}</translation>
+      <translation>Глобально {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1474"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Автогрупування:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1613"/>
@@ -3363,7 +3363,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="1765"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Елементи сполучених поверхонь</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
@@ -3378,32 +3378,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../importDWG.py" line="385"/>
       <location filename="../../importDWG.py" line="396"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>Перетворення:</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="292"/>
       <location filename="../../importDWG.py" line="311"/>
       <location filename="../../importDWG.py" line="329"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Перетворення виконано успішно</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="297"/>
       <location filename="../../importDWG.py" line="376"/>
       <source>LibreDWG converter not found</source>
-      <translation type="unfinished">LibreDWG converter not found</translation>
+      <translation>Перетворювач LibreDWG не знайдено</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="316"/>
       <location filename="../../importDWG.py" line="390"/>
       <source>ODA converter not found</source>
-      <translation type="unfinished">ODA converter not found</translation>
+      <translation>ODA-перетворювач не знайдено</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="334"/>
       <location filename="../../importDWG.py" line="401"/>
       <source>QCAD converter not found</source>
-      <translation type="unfinished">QCAD converter not found</translation>
+      <translation>QCAD-перетворювач не знайдено</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="339"/>
@@ -3431,12 +3431,12 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_sketch.py" line="126"/>
       <location filename="../../draftmake/make_sketch.py" line="138"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>Усі Фігури мають бути компланарними</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="861"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>Обрані фігури повинні визначити площину</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1296"/>
@@ -3458,7 +3458,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="153"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Встановити довільний масштаб</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="155"/>
@@ -3489,13 +3489,13 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_layer.py" line="143"/>
       <location filename="../../draftfunctions/cut.py" line="57"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>Немає активного документа. Відмінити.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
       <location filename="../../draftutils/gui_utils.py" line="839"/>
       <source>Wrong input: object {} not in document.</source>
-      <translation type="unfinished">Wrong input: object {} not in document.</translation>
+      <translation>Неправильне введення: об'єкт {} не в документі.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="164"/>
@@ -3510,7 +3510,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="715"/>
       <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
+      <translation>зображення пусте</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="721"/>
@@ -3520,17 +3520,17 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="780"/>
       <source>unable to load texture</source>
-      <translation type="unfinished">unable to load texture</translation>
+      <translation>неможливо завантажити текстуру</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="845"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
+      <translation>Не має 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="663"/>
       <source>Solids:</source>
-      <translation type="unfinished">Solids:</translation>
+      <translation>Твердотілі:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="664"/>
@@ -3540,7 +3540,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="665"/>
       <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
+      <translation>Каркас:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="666"/>
@@ -5777,7 +5777,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="159"/>
       <source>Modify subelements</source>
-      <translation type="unfinished">Modify subelements</translation>
+      <translation>Змінити піделементи</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="160"/>
@@ -6884,7 +6884,7 @@ A 'Point link array' is more efficient when handling many copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="99"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Змінити режим конструювання</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>

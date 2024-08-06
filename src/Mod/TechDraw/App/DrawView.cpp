@@ -199,7 +199,7 @@ void DrawView::onChanged(const App::Property* prop)
             Scale.setStatus(App::Property::ReadOnly, true);
             if (!checkFit(page)) {
                 double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
-                if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                if(std::abs(newScale - getScale()) > FLT_EPSILON) {
                     Scale.setValue(newScale);
                 }
             }
@@ -469,7 +469,6 @@ double DrawView::autoScale() const
 double DrawView::autoScale(double pw, double ph) const
 {
 //    Base::Console().Message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
-    double fudgeFactor = 1.0;  //make it a bit smaller just in case.
     QRectF viewBox = getRect();           //getRect is scaled (ie current actual size)
     if (!viewBox.isValid()) {
         return 1.0;
@@ -479,7 +478,7 @@ double DrawView::autoScale(double pw, double ph) const
     double vbh = viewBox.height()/getScale();
     double xScale = pw/vbw;           // > 1 page bigger than figure
     double yScale = ph/vbh;           // < 1 page is smaller than figure
-    double newScale = std::min(xScale, yScale) * fudgeFactor;
+    double newScale = std::min(xScale, yScale);
     double sensibleScale = DrawUtil::sensibleScale(newScale);
     return sensibleScale;
 }
@@ -496,7 +495,6 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
 //    Base::Console().Message("DV::checkFit(page) - %s\n", getNameInDocument());
     bool result = true;
-    double fudge = 1.1;
 
     double width = 0.0;
     double height = 0.0;
@@ -506,8 +504,6 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
     } else {
         width = viewBox.width();        //scaled rect w x h
         height = viewBox.height();
-        width *= fudge;
-        height *= fudge;
         if ( (width > p->getPageWidth()) ||
              (height > p->getPageHeight()) ) {
             result = false;

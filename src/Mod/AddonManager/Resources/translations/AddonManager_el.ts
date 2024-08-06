@@ -285,37 +285,37 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <translation>Τα πρόσθετα που μπορούν να εγκατασταθούν εδώ δεν αποτελούν επίσημα μέρος του FreeCAD και δεν ελέγχονται από την ομάδα του FreeCAD. Βεβαιωθείτε ότι γνωρίζετε τι εγκαθιστάτε!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
+      <location filename="../../first_run.ui" line="39"/>
       <source>Download Settings</source>
       <translation>Ρυθμίσεις Λήψης</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="53"/>
+      <location filename="../../first_run.ui" line="46"/>
       <source>Automatically check installed Addons for updates</source>
       <translation>Αυτόματος έλεγχος των εγκατεστημένων προσθέτων για ενημερώσεις</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="60"/>
+      <location filename="../../first_run.ui" line="53"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Λήψη μεταδεδομένων μακροεντολών (περίπου 10MB)</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="70"/>
+      <location filename="../../first_run.ui" line="63"/>
       <source>No proxy</source>
       <translation>Χωρίς διακομιστή</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="75"/>
+      <location filename="../../first_run.ui" line="68"/>
       <source>System proxy</source>
       <translation>Σύστημα Διακομιστή</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="80"/>
+      <location filename="../../first_run.ui" line="73"/>
       <source>User-defined proxy:</source>
       <translation>Διακομιστή ορισμένου Χρήστη:</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="93"/>
+      <location filename="../../first_run.ui" line="86"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
       <translation>Αυτές και άλλες ρυθμίσεις είναι διαθέσιμες στο παράθυρο Προτιμήσεις FreeCAD.</translation>
     </message>
@@ -510,138 +510,138 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <translation>Επιλογές διαχείρισης πρόσθετων</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="20"/>
+      <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
       <translation>Εάν είναι ενεργοποιημένη αυτή η επιλογή, κατά την εκκίνηση του Διαχειριστή Προσθέτων. Τα εγκατεστημένα Πρόσθετα θα ελεγχθούν για διαθέσιμες ενημερώσεις</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="24"/>
+      <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Αυτόματος έλεγχος για ενημερώσεις κατά την έναρξη (απαιτεί Git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="40"/>
+      <location filename="../../AddonManagerOptions.ui" line="43"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Λήψη μεταδεδομένων μακροεντολών (περίπου 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="55"/>
+      <location filename="../../AddonManagerOptions.ui" line="58"/>
       <source>Cache update frequency</source>
       <translation>Συχνότητα ενημέρωσης προσωρινής μνήμης</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="75"/>
+      <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>Manual (no automatic updates)</source>
       <translation>Χειροκίνητη (δεν υπάρχουν αυτόματες ενημερώσεις)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="80"/>
+      <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
       <translation>Καθημερινά</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="85"/>
+      <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
       <translation>Εβδομαδιαία</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="95"/>
+      <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
       <translation>Απόκρυψη Πρόσθετων χωρίς άδεια</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="111"/>
+      <location filename="../../AddonManagerOptions.ui" line="114"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation>Απόκρυψη προσθέτων με άδεια μη-FSF δωρεάν/Libre</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="127"/>
+      <location filename="../../AddonManagerOptions.ui" line="130"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation>Απόκρυψη προσθέτων με άδεια μη εγκεκριμένη από OSI</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="143"/>
+      <location filename="../../AddonManagerOptions.ui" line="146"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Απόκρυψη προσθέτων που επισημαίνονται μόνο Python 2</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="159"/>
+      <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Απόκρυψη προσθέτων που είναι παρωχημένα</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="175"/>
+      <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Απόκρυψη Πρόσθετων που απαιτούν μια νεότερη έκδοση του FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="197"/>
+      <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
       <translation>Προσαρμοσμένα αποθετήρια</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="251"/>
+      <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
       <translation>Διακομιστής</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="257"/>
+      <location filename="../../AddonManagerOptions.ui" line="260"/>
       <source>No proxy</source>
       <translation>Χωρίς διακομιστή</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="273"/>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
       <translation>Διακομιστής συστήματος χρήστη</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="286"/>
+      <location filename="../../AddonManagerOptions.ui" line="289"/>
       <source>User-defined proxy:</source>
       <translation>Διακομιστή ορισμένου Χρήστη:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="323"/>
+      <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
       <translation>URL πηγής βαθμολογίας</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="342"/>
+      <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation>Η διεύθυνση URL για τα δεδομένα του Addon Score (δείτε τη σελίδα wiki του Addon Manager για τη μορφοποίηση και τις λεπτομέρειες φιλοξενίας).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="353"/>
+      <location filename="../../AddonManagerOptions.ui" line="350"/>
       <source>Path to Git executable (optional):</source>
-      <translation type="unfinished">Path to Git executable (optional):</translation>
+      <translation>Διαδρομή προς το εκτελέσιμο Git (προαιρετικό):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="372"/>
+      <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>Η διαδρομή προς το εκτελέσιμο git, ανιχνεύεται αυτόματα εάν χρειάζεται και δεν καθορίζεται.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="393"/>
+      <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
       <translation>Προχωρημένες Ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="399"/>
+      <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Εμφάνιση επιλογής αλλαγής κλάδων (απαιτεί git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="412"/>
+      <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Απενεργοποίηση git (επιστροφή στις λήψεις ZIP)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="425"/>
+      <location filename="../../AddonManagerOptions.ui" line="422"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Ενεργοποιήστε τις επιλογές Διαχειριστή Προσθέτων που προορίζονται για προγραμματιστές νέων Πρόσθετων.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="428"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
       <translation>Λειτουργία Πρόσθετου προγραμματιστή</translation>
     </message>
@@ -778,7 +778,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation type="unfinished">If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</translation>
+      <translation>Εάν αυτό είναι το μόνο πράγμα στο πρόσθετο, όλα τα άλλα μεταδιδόμενα μπορούν να κληρονομηθούν από το ανώτερο επίπεδο και δε χρειάζεται να καθοριστούν εδώ.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
@@ -793,7 +793,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
       <source>The file with the macro&apos;s metadata in it</source>
-      <translation type="unfinished">The file with the macro&apos;s metadata in it</translation>
+      <translation>Το αρχείο με την μακροεντολή&apos;s μεταδεδομένα σε αυτό</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="100"/>
@@ -815,7 +815,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+      <translation>Κλάση που ορίζει το μέλος δεδομένων &quot;Icon&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
@@ -835,7 +835,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="186"/>
       <source>Optional, defaults to inheriting from top-level Addon</source>
-      <translation type="unfinished">Optional, defaults to inheriting from top-level Addon</translation>
+      <translation>Προαιρετικό, προεπιλογή για εισαγωγή από πρόσθετο ανώτατου επιπέδου</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
@@ -904,7 +904,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Προσθήκη κουμπιού γραμμής εργαλείων για αυτή την μακροεντολή;</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
@@ -1127,7 +1127,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
+      <translation>Η διαδικασία εργασίας {} αργεί πολύ να σταματήσει...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="95"/>
@@ -1183,7 +1183,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../AddonManager.py" line="936"/>
       <source>Temporary installation of macro failed.</source>
-      <translation type="unfinished">Temporary installation of macro failed.</translation>
+      <translation>Η προσωρινή εγκατάσταση της μακροεντολής απέτυχε.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="95"/>
@@ -1219,7 +1219,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Δεν υπάρχουν διαθέσιμες ενημερώσεις</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="826"/>
@@ -1283,12 +1283,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../NetworkManager.py" line="257"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
+      <translation>Σφάλμα παραμέτρου: Ορίστηκαν αμοιβαία αποκλειστικές επιλογές διακομιστή μεσολάβησης. Επαναφορά στην προεπιλογή.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="272"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
+      <translation>Σφάλμα παραμέτρων: υποδεικνύεται ο διαμεσολαβητής χρήστη, αλλά δεν παρέχεται διαμεσολαβητής. Επαναφορά στην προεπιλογή.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="421"/>
@@ -1536,7 +1536,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer.py" line="355"/>
       <source>Received {} response code from server</source>
-      <translation type="unfinished">Received {} response code from server</translation>
+      <translation>Λήφθηκε κωδικός απόκρισης {} από το διακομιστή</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="517"/>
@@ -1662,12 +1662,12 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
+      <translation>Αυτό το πρόσθετο απαιτεί Python πακέτα που δεν είναι εγκατεστημένα και δεν μπορούν να εγκατασταθούν αυτόματα. Για να χρησιμοποιήσετε αυτό το πρόσθετο πρέπει να εγκαταστήσετε τα ακόλουθα πακέτα Python χειροκίνητα:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="246"/>
       <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>Αυτό το Πρόσθετο (ή τα εξαρτήματά του) απαιτεί Python {}.{}, και το σύστημά σας εκτελείται {}.{}. Η εγκατάσταση ακυρώθηκε.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="267"/>
@@ -2101,32 +2101,32 @@ installed addons will be checked for available updates</source>
       <translation>Η εγκατάσταση του Πρόσθετου {} απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="165"/>
+      <location filename="../../addonmanager_workers_installation.py" line="195"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Κατεβασμένο πακέτο.xml για {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="196"/>
+      <location filename="../../addonmanager_workers_installation.py" line="233"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Αποτυχία αποκωδικοποίησης του αρχείου {} για το Πρόσθετο &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="205"/>
+      <location filename="../../addonmanager_workers_installation.py" line="242"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Οποιαδήποτε πληροφορία εξάρτησης σε αυτό το αρχείο θα αγνοηθεί</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="212"/>
+      <location filename="../../addonmanager_workers_installation.py" line="249"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Λήψη metadata.txt για {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="255"/>
+      <location filename="../../addonmanager_workers_installation.py" line="292"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Έγινε λήψη των απαιτήσεων.txt για {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="273"/>
+      <location filename="../../addonmanager_workers_installation.py" line="310"/>
       <source>Downloaded icon for {}</source>
       <translation>Λήψη εικονιδίου για {}</translation>
     </message>
@@ -2168,18 +2168,18 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../Addon.py" line="475"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
-      <translation type="unfinished">Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</translation>
+      <translation>Προειδοποίηση Πρόσθετου Προγραμματιστή: Το URL του Αποθετηρίου έχει οριστεί στο αρχείο package.xml για πρόσθετο {} ({}) δεν ταιριάζει με το URL που ανακτήθηκε από ({})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="483"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
-      <translation type="unfinished">Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</translation>
+      <translation>Προειδοποίηση Πρόσθετου Προγραμματιστή: Ο κλάδος αποθετηρίου που ορίστηκε στο αρχείο package.xml για πρόσθετο {} ({}) δεν ταιριάζει με τον κλάδο που ανακτήθηκε από ({})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="859"/>
       <location filename="../../Addon.py" line="875"/>
       <source>Got an error when trying to import {}</source>
-      <translation type="unfinished">Got an error when trying to import {}</translation>
+      <translation>Παρουσιάστηκε σφάλμα κατά την προσπάθεια εισαγωγής του {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>
@@ -2212,126 +2212,126 @@ installed addons will be checked for available updates</source>
       <translation>Σφάλμα κατά την αφαίρεση του αρχείου μακροεντολής {}:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="122"/>
+      <location filename="../../addonmanager_workers_startup.py" line="121"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Αποτυχία σύνδεσης στο GitHub. Ελέγξτε τη σύνδεσή σας και τις ρυθμίσεις διαμεσολαβητή.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="180"/>
+      <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Το διπλό πρόσθετο {} αγνοήθηκε</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
+      <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
       <translation>Ενημερώθηκε η λίστα πάγκων εργασίας.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Το Git είναι απενεργοποιημένο, παράλειψη μακροεντολών git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
+      <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation type="unfinished">Attempting to change non-git Macro setup to use git
+      <translation>Προσπάθεια αλλαγής μη git μακροεντολής για χρήση του git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Παρουσιάστηκε σφάλμα στην ενημέρωση των μακροεντολών από το GitHub, κατά την προσπάθεια Αποχώρησης…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="338"/>
+      <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Προσπάθεια καθαρισμού Αποχώρηση...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="350"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
       <translation>Η κάθαρση ολοκληρώθηκε με επιτυχής έξοδος</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="360"/>
+      <location filename="../../addonmanager_workers_startup.py" line="359"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Αποτυχία ενημέρωσης μακροεντολών από το GitHub -- δοκιμάστε να καθαρίσετε την κρυφή μνήμη του Διαχειριστή Προσθέτων&apos;s.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="383"/>
+      <location filename="../../addonmanager_workers_startup.py" line="382"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Σφάλμα κατά τη σύνδεση με το Wiki, το FreeCAD δεν μπορεί να ανακτήσει τη λίστα μακροεντολών του Wiki αυτή τη στιγμή</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="592"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Δεν είναι δυνατή η ανάκτηση ενημερώσεων για τον πάγκο εργασίας {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="605"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
       <translation>η κατάσταση git απέτυχε για {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="671"/>
+      <location filename="../../addonmanager_workers_startup.py" line="670"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Αποτυχία ανάγνωσης μεταδεδομένων από {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="694"/>
+      <location filename="../../addonmanager_workers_startup.py" line="693"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Αποτυχία λήψης κώδικα για μακροεντολή &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="747"/>
+      <location filename="../../addonmanager_workers_startup.py" line="746"/>
       <source>Caching macro code...</source>
       <translation>Προσωρινός κωδικός μακροεντολής…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="770"/>
+      <location filename="../../addonmanager_workers_startup.py" line="769"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Διαχειριστής Πρόσθετων: μια διαδικασία εργασίας απέτυχε να ολοκληρωθεί κατά τη λήψη του {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="785"/>
+      <location filename="../../addonmanager_workers_startup.py" line="784"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Από {num_macros} μακροεντολές, {num_failed} έληξε το χρονικό όριο κατά την επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="808"/>
+      <location filename="../../addonmanager_workers_startup.py" line="807"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Διαχειριστής Πρόσθετων: μια διαδικασία εργασίας απέτυχε να σταματήσει ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="847"/>
+      <location filename="../../addonmanager_workers_startup.py" line="846"/>
       <source>Getting metadata from macro {}</source>
       <translation>Λήψη μεταδεδομένων από την μακροεντολή {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="861"/>
+      <location filename="../../addonmanager_workers_startup.py" line="860"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Λήξη χρονικού ορίου κατά την ανάκτηση μεταδεδομένων για μακροεντολή {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="871"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Αποτυχία τερματισμού της διαδικασίας για τη μακροεντολή {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
+      <location filename="../../addonmanager_workers_startup.py" line="892"/>
       <source>Retrieving macro description...</source>
       <translation>Ανάκτηση περιγραφής μακροεντολής...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="894"/>
       <source>Retrieving info from git</source>
       <translation>Ανάκτηση πληροφοριών από το git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
+      <location filename="../../addonmanager_workers_startup.py" line="897"/>
       <source>Retrieving info from wiki</source>
       <translation>Ανάκτηση πληροφοριών από wiki</translation>
     </message>
@@ -2422,17 +2422,17 @@ installed addons will be checked for available updates</source>
       <translation>Αποτυχία λήψης δεδομένων από {} -- κωδικός απάντησης {}.</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="158"/>
       <source>Composite view</source>
       <translation>Σύνθετη προβολή</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Expanded view</source>
       <translation>Εκτεταμένη προβολή</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Compact view</source>
       <translation>Συνεπτυγμένη προβολή</translation>
     </message>

@@ -77,12 +77,12 @@ Section -Configure
    WriteRegStr SHCTX "${APP_DIR_REGKEY}" "" "$INSTDIR\${APP_RUN}"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}" "" "${APP_NAME} Document"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}\DefaultIcon" "" "$INSTDIR\${APP_RUN},0"
-   WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}\Shell\open\command" "" '"$INSTDIR\${APP_RUN}" "%1"'
+   WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}\Shell\open\command" "" '"$INSTDIR\${APP_RUN}" --single-instance "%1"'
    # we need to update also the automatically created entry about the FreeCAD.exe
    # otherwise .FCStd-files will could be opened with an older FreeCAD version
    ReadRegStr $0 SHCTX "Software\Classes\Applications\${BIN_FREECAD}\shell\open\command" ""
    ${if} $0 != "" # if something was found
-    WriteRegStr SHCTX "Software\Classes\Applications\${BIN_FREECAD}\shell\open\command" "" '"$INSTDIR\${APP_RUN}" "%1"'
+    WriteRegStr SHCTX "Software\Classes\Applications\${BIN_FREECAD}\shell\open\command" "" '"$INSTDIR\${APP_RUN}" --single-instance "%1"'
    ${endif}
    # .FCStd
    WriteRegStr SHCTX "Software\Classes\${APP_EXT}" "" "${APP_REGNAME_DOC}"

@@ -421,30 +421,30 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Adreça de la cel·la inicial</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Adreça de la cel·la final</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Adreça de la cel·la inicial a assignar.
+Escrigui '=' si vol utilitzar una expressió.
+L'expressió s'ha d'avaluar com a cadena d'una adreça de cel·la.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Adreça de la cel·la final a assignar.
+Escrigui '=' si vol utilitzar una expressió.
+L'expressió s'ha d'avaluar com a cadena d'una adreça de cel·la.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -503,14 +503,11 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Adreça de la cel·la inicial.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+S'assumeix que la primera columna de l'interval conté una llista de noms de configuració, que s'utilitzarà per generar una llista de cadenes i assignar-se a la propietat donada perquè l'usuari canviï dinàmicament la configuració.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La primera fila de l'interval estarà lligada a qualsevol fila (indirectament) seleccionada per aquesta propietat.
 </translation>
     </message>
     <message>
@@ -524,14 +521,11 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Adreça de la cel·la final.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+S'assumeix que la primera columna de l'interval conté una llista de noms de configuració, que s'utilitzarà per generar una llista de cadenes i assignar-se a la propietat donada perquè l'usuari canviï dinàmicament la configuració.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+La primera fila de l'interval estarà lligada a qualsevol fila (indirectament) seleccionada per aquesta propietat.
 </translation>
     </message>
     <message>
@@ -543,8 +537,7 @@ by that property.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Escrigui una expressió per a especificar el nom de l'objecte i de la propietat per a canviar dinàmicament la configuració del disseny. La propietat serà creada si no existeix.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
@@ -559,7 +552,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Restablir</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -663,7 +656,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Text per a la unitat</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -682,7 +675,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../ViewProviderSpreadsheet.cpp" line="140"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Tot(*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="197"/>
@@ -899,7 +892,7 @@ Vols continuar?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Error:
 </translation>
     </message>
     <message>
@@ -923,12 +916,12 @@ Vols continuar?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Si està marcat, utilitzi la presentació personalitzada per a mostrar la cadena de la cel·la.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Mostrar l'àlies de la cadena de la cel·la amb format</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -937,11 +930,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>El format de la presentació de la cadena de la cel·la personalitzada.
+Per defecte: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - nom de l'àlies
+%V - valor de la cel·la</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
@@ -951,37 +944,37 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character:</source>
-      <translation type="unfinished">Delimiter Character:</translation>
+      <translation>Caràcter Delimitant:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
+      <translation>Caràcter de Cometes:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <translation>Caràcter d'Escapament:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caràcter a utilitzar com a delimitador del camp. Per defecte és tab,  però també s'utilitzen comunment les comes (,), i els punts i comes (;). Seleccioni'n un de la llista o introdueixi el seu propi al camp. Ha de ser un sòl caràcter o les paraules &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>tabulador</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caràcter utilitzat per a delimitar les cadenes, típicament és una cometa (') o una cometa doble (&amp;quot;). Ha de ser un sol caràcter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caràcter d'Escapament, típicament és la contrabarra (\), utilitzada per a indicar un caràcter especial no imprimible, p.e. \t = tab. Ha de ser un sol caràcter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -994,7 +987,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="341"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Restableix la taula de configuració</translation>
     </message>
   </context>
   <context>

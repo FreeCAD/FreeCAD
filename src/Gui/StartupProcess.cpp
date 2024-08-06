@@ -163,23 +163,13 @@ void StartupProcess::registerEventType()
 
 void StartupProcess::setThemePaths()
 {
-    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
                             << QString::fromLatin1(":/icons/FreeCAD-default"));
-    QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-#else
-    // Option to opt-in into using a Linux desktop icon theme.
-    // https://forum.freecad.org/viewtopic.php?f=4&t=35624
-    bool themePaths = hTheme->GetBool("ThemeSearchPaths", false);
-    if (!themePaths) {
-        QStringList searchPaths;
-        searchPaths.prepend(QString::fromUtf8(":/icons"));
-        QIcon::setThemeSearchPaths(searchPaths);
-        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-    }
 #endif
+
+    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
@@ -188,8 +178,13 @@ void StartupProcess::setThemePaths()
         QIcon::setThemeSearchPaths(searchPaths);
     }
 
+    // KDE file dialog needs icons from the desktop theme
+    QIcon::setFallbackThemeName(QIcon::themeName());
+
     std::string name = hTheme->GetASCII("Name");
-    if (!name.empty()) {
+    if (name.empty()) {
+        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+    } else {
         QIcon::setThemeName(QString::fromLatin1(name.c_str()));
     }
 }
@@ -247,8 +242,8 @@ void StartupPostProcess::setWindowTitle()
 void StartupPostProcess::setProcessMessages()
 {
     if (!loadFromPythonModule) {
-        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
-                         mainWindow, SLOT(processMessages(const QList<QByteArray> &)));
+        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QString> &)),
+                         mainWindow, SLOT(processMessages(const QList<QString> &)));
     }
 }
 

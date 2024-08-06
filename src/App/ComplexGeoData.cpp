@@ -296,6 +296,16 @@ ComplexGeoData::getElementMappedNames(const IndexedName& element, bool needUnmap
     return {std::make_pair(MappedName(element), ElementIDRefs())};
 }
 
+ElementMapPtr ComplexGeoData::resetElementMap(ElementMapPtr elementMap)
+{
+    _elementMap.swap(elementMap);
+    // We expect that if the ComplexGeoData ( TopoShape ) has a hasher, then its elementMap will
+    // have the same one.  Make sure that happens.
+    if ( _elementMap && ! _elementMap->hasher )
+        _elementMap->hasher = Hasher;
+    return elementMap;
+}
+
 std::vector<MappedElement> ComplexGeoData::getElementMap() const
 {
     flushElementMap();

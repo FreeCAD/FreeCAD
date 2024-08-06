@@ -749,7 +749,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>フィーチャー</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="38"/>
@@ -959,7 +959,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>ツールコントローラー</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
@@ -1196,7 +1196,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="115"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>ドリルのヒント</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="120"/>
@@ -1297,7 +1297,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>Set the extent of the dimension -the default value is half the tool diameter</source>
-      <translation type="unfinished">Set the extent of the dimension -the default value is half the tool diameter</translation>
+      <translation>寸法の範囲を設定します。既定の値はツールの直径の半分です。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
@@ -1397,7 +1397,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="126"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="136"/>
@@ -1407,7 +1407,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="141"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>ジグザグのオフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="146"/>
@@ -1717,7 +1717,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
       <source>Layer Mode</source>
-      <translation type="unfinished">Layer Mode</translation>
+      <translation>レイヤーモード</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
@@ -1870,7 +1870,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
       <source>Drop Cutter Direction</source>
-      <translation type="unfinished">Drop Cutter Direction</translation>
+      <translation>ドロップカッターの方向</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
@@ -1891,7 +1891,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
       <source>Step over</source>
-      <translation>ステップ オーバー</translation>
+      <translation>ステップオーバー</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
@@ -2082,12 +2082,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>ピッチ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
       <source>TPI</source>
-      <translation type="unfinished">TPI</translation>
+      <translation>1インチあたりの山数</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="24"/>
@@ -2118,7 +2118,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>ボロノイ図から積極的にコリニアセグメントをフィルタリングする方法を設定します。有効な値は 0 - 90 °（大きい数値でフィルタリングします）です。既定の値 = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
@@ -2158,7 +2158,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="59"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>アルゴリズム</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="66"/>
@@ -2264,12 +2264,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="20"/>
       <source>Tag Parameters</source>
-      <translation type="unfinished">Tag Parameters</translation>
+      <translation>タグのパラメーター</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default Width</source>
-      <translation type="unfinished">Default Width</translation>
+      <translation>既定の幅</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -2316,17 +2316,17 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="42"/>
       <source>Default Height</source>
-      <translation type="unfinished">Default Height</translation>
+      <translation>既定の高さ</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="58"/>
       <source>Default Angle</source>
-      <translation type="unfinished">Default Angle</translation>
+      <translation>既定の角度</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="84"/>
       <source>Default Radius</source>
-      <translation type="unfinished">Default Radius</translation>
+      <translation>既定の半径</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="103"/>
@@ -2369,12 +2369,12 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="95"/>
       <source>Geometry</source>
-      <translation>ジオメトリー</translation>
+      <translation>ジオメトリ</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="103"/>
       <source>Default Geometry Tolerance</source>
-      <translation type="unfinished">Default Geometry Tolerance</translation>
+      <translation>既定の幾何公差</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="110"/>
@@ -2395,7 +2395,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="166"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>出力ファイル</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="177"/>
@@ -2442,9 +2442,9 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <source>Path to look for templates, post processors, tool tables and other external files.
 
 If left empty the macro directory is used.</source>
-      <translation type="unfinished">Path to look for templates, post processors, tool tables and other external files.
+      <translation>テンプレート、ポストプロセッサ、ツールテーブル、その他の外部ファイルを探すパスです。
 
-If left empty the macro directory is used.</translation>
+空の場合はマクロのディレクトリを使用します。</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="74"/>
@@ -2692,12 +2692,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="261"/>
       <source>Default pathline width</source>
-      <translation>デフォルトのパスライン幅</translation>
+      <translation>既定のパスライン幅</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="42"/>
       <source>The default line thickness for new shapes</source>
-      <translation>新規図形での既定の線の太さ</translation>
+      <translation>新規シェイプでの既定の線幅</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="45"/>
@@ -2717,7 +2717,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../../DlgSettingsPathColor.ui" line="268"/>
       <location filename="../../DlgSettingsPathColor.ui" line="288"/>
       <source>The default line color for new shapes</source>
-      <translation>新規図形での既定の線色</translation>
+      <translation>新規シェイプでの既定の線の色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="182"/>
@@ -3064,7 +3064,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
       <source>Offset Distance</source>
-      <translation type="unfinished">Offset Distance</translation>
+      <translation>オフセットの距離</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="63"/>
@@ -3124,7 +3124,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>編集...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
@@ -3134,7 +3134,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>自動生成</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
@@ -3155,7 +3155,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="45"/>
       <source>Base Geometry</source>
-      <translation>ベースジオメトリー</translation>
+      <translation>ベースジオメトリ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
@@ -3260,7 +3260,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="299"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>アルゴリズム</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="307"/>
@@ -3305,7 +3305,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
       <source>Stop running simulation</source>
-      <translation type="unfinished">Stop running simulation</translation>
+      <translation>シミュレーションの実行を停止</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
@@ -3565,7 +3565,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>出力ファイル</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="141"/>
@@ -3803,7 +3803,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="729"/>
       <source>Z-Axis</source>
-      <translation type="unfinished">Z-Axis</translation>
+      <translation>Z軸</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="736"/>
@@ -4089,7 +4089,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../InitGui.py" line="188"/>
       <source>Tool Commands</source>
-      <translation type="unfinished">Tool Commands</translation>
+      <translation>ツールコマンド</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="190"/>
@@ -4681,37 +4681,32 @@ Default: 3 mm</translation>
       <translation type="unfinished">Extra allowance from part bound box in positive Z direction</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation type="unfinished">Length of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation type="unfinished">Width of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation type="unfinished">Height of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation type="unfinished">Radius of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation type="unfinished">Height of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation type="unfinished">Internal representation of stock type</translation>
     </message>
@@ -5141,7 +5136,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="162"/>
       <source>Angle of the zigzag pattern</source>
-      <translation type="unfinished">Angle of the zigzag pattern</translation>
+      <translation>ジグザグパターンの角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="168"/>
@@ -5515,7 +5510,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="372"/>
       <source>Set thread&apos;s TPI (turns per inch) - used for imperial threads</source>
-      <translation type="unfinished">Set thread&apos;s TPI (turns per inch) - used for imperial threads</translation>
+      <translation>ねじのTPI（1インチあたりの山数）の設定。インチねじで使われます。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="381"/>
@@ -5540,7 +5535,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="412"/>
       <source>Operation to clear the inside of the thread</source>
-      <translation type="unfinished">Operation to clear the inside of the thread</translation>
+      <translation>ねじ山の内側をきれいにする操作</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="293"/>
@@ -5669,7 +5664,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Comment.py" line="41"/>
       <source>Comment or note for CNC program</source>
-      <translation type="unfinished">Comment or note for CNC program</translation>
+      <translation>CNCプログラムのコメントまたはメモ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="42"/>
@@ -5740,7 +5735,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="304"/>
       <source>The tool used by this controller</source>
-      <translation type="unfinished">The tool used by this controller</translation>
+      <translation>このコントローラーが使用するツール</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="41"/>
@@ -5774,12 +5769,12 @@ Default: 3 mm</translation>
       <translation type="unfinished">Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation type="unfinished">Unsupported stock type named {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation type="unfinished">Unsupported PathStock template version {}</translation>
     </message>
@@ -6018,7 +6013,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2654"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation type="unfinished">Diameter dimension missing from ToolBit shape.</translation>
+      <translation>ツールビットシェイプにない直径寸法</translation>
     </message>
   </context>
   <context>
@@ -6091,13 +6086,13 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="114"/>
       <location filename="../../../Path/Op/Waterline.py" line="127"/>
       <source>CircularZigZag</source>
-      <translation type="unfinished">CircularZigZag</translation>
+      <translation>円形ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="115"/>
       <location filename="../../../Path/Op/Waterline.py" line="128"/>
       <source>Line</source>
-      <translation>直線</translation>
+      <translation>線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="116"/>
@@ -6115,7 +6110,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="118"/>
       <location filename="../../../Path/Op/Waterline.py" line="131"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="121"/>
@@ -6233,7 +6228,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="502"/>
       <source>Base Geometry</source>
-      <translation>ベースジオメトリー</translation>
+      <translation>ベースジオメトリ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="630"/>
@@ -6446,7 +6441,7 @@ Aborting op creation</translation>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="81"/>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="155"/>
       <source>Extend</source>
-      <translation type="unfinished">Extend</translation>
+      <translation>延長</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="88"/>
@@ -6611,7 +6606,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="562"/>
       <source>Tag</source>
-      <translation type="unfinished">Tag</translation>
+      <translation>タグ</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="565"/>
@@ -6804,7 +6799,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Op/Gui/Probe.py" line="106"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="294"/>
       <source>All Files (*.*)</source>
-      <translation>すべてのファイル (*.*)</translation>
+      <translation>全てのファイル（*.*）</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="104"/>
@@ -6891,7 +6886,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1069"/>
       <source>All Files (*.*)</source>
-      <translation>すべてのファイル (*.*)</translation>
+      <translation>全てのファイル（*.*）</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1450"/>
@@ -6912,7 +6907,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
       <location filename="../../../Path/Main/Gui/Job.py" line="1746"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>警告</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1747"/>
@@ -6963,17 +6958,15 @@ For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema: 
-     &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
-Select a minute-based schema in preferences.
-For example:
-    &apos;Metric, Small Parts &amp; CNC&apos;
-    &apos;US Customary&apos;
-    &apos;Imperial Decimal&apos;</translation>
+      <translation>現在使用している単位系「{}」では
+1分間当たりの速さを設定できません。
+
+CNC工作機械に指令を送るGコードでは、送り速度を1分間当たりの速さで設定する必要があります。
+「設定」で1分間当たりの速さを設定できる単位系を選択してください。
+1分間当たりの速さを設定できる単位系の例：
+・パーツ、CNC工作機械（mm、mm/分）
+・米国慣用単位（in, lb）
+・帝国単位（in, lb）</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
@@ -7097,7 +7090,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
       <source>Part Information</source>
-      <translation type="unfinished">Part Information</translation>
+      <translation>パーツ情報</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
@@ -7262,7 +7255,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
       <source>CAD File</source>
-      <translation type="unfinished">CAD File</translation>
+      <translation>CADファイル</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
@@ -7639,7 +7632,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="74"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>ドリルのヒント</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="75"/>
@@ -7735,7 +7728,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="69"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="70"/>
@@ -7745,7 +7738,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>ジグザグのオフセット</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
@@ -7798,7 +7791,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="255"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="258"/>
@@ -8019,7 +8012,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="464"/>
       <source>CircularZigZag</source>
-      <translation type="unfinished">CircularZigZag</translation>
+      <translation>円形ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="465"/>
@@ -8039,7 +8032,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="468"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="471"/>
@@ -8149,7 +8142,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="269"/>
       <source>Metric External (4G6G)</source>
-      <translation type="unfinished">Metric External (4G6G)</translation>
+      <translation>外部メトリック（4G6G）</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="273"/>
@@ -8374,7 +8367,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="177"/>
       <source>Waterline</source>
-      <translation>ウォーターライン</translation>
+      <translation>水準面線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="178"/>

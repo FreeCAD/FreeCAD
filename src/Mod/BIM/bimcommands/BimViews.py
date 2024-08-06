@@ -23,10 +23,8 @@
 """The BIM Views command"""
 
 import sys
-
-import FreeCADGui
-
 import FreeCAD
+import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -54,20 +52,19 @@ class BIM_Views:
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
         statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
-        if statuswidget:
-            if hasattr(statuswidget, "bimviewsbutton"):
-                bimviewsbutton = statuswidget.bimviewsbutton
+        if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
+            bimviewsbutton = statuswidget.bimviewsbutton
         if vm:
             if vm.isVisible():
                 vm.hide()
                 if bimviewsbutton:
                     bimviewsbutton.setChecked(False)
-                    PARAMS.SetBool("RestoreBimViews", False)
+                PARAMS.SetBool("RestoreBimViews", False)
             else:
                 vm.show()
                 if bimviewsbutton:
                     bimviewsbutton.setChecked(True)
-                    PARAMS.SetBool("RestoreBimViews", True)
+                PARAMS.SetBool("RestoreBimViews", True)
                 self.update()
         else:
             vm = QtGui.QDockWidget()
@@ -76,6 +73,7 @@ class BIM_Views:
             self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogViews.ui")
             vm.setWidget(self.dialog)
             vm.tree = self.dialog.tree
+            vm.closeEvent = self.onClose
 
             # set context menu
             self.dialog.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -158,6 +156,15 @@ class BIM_Views:
             PARAMS.SetBool("RestoreBimViews", True)
 
             self.update()
+
+    def onClose(self, event):
+        from PySide import QtGui
+
+        st = FreeCADGui.getMainWindow().statusBar()
+        statuswidget = st.findChild(QtGui.QToolBar, "BIMStatusWidget")
+        if statuswidget and hasattr(statuswidget, "bimviewsbutton"):
+            statuswidget.bimviewsbutton.setChecked(False)
+        PARAMS.SetBool("RestoreBimViews", False)
 
     def connectDock(self):
         "watch for dock location"
@@ -490,11 +497,16 @@ def show(item, column=None):
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.Selection.addSelection(obj)
         if obj.isDerivedFrom("TechDraw::DrawPage"):
+
+            # case 1: the object is a TD page. We switch to it simply
             obj.ViewObject.Visibility=True
         elif isView(obj):
+
+            # case 2: the object is a 2D view
             ssel = [obj]+obj.OutListRecursive
             FreeCADGui.Selection.clearSelection()
             for o in ssel:
+                o.ViewObject.Visibility = True
                 FreeCADGui.Selection.addSelection(o)
             if not hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
                 # Find first 3d view and switch to it
@@ -502,12 +514,15 @@ def show(item, column=None):
                     if hasattr(w, "getSceneGraph"):
                         FreeCADGui.getMainWindow().setActiveWindow(w)
                         break
+            FreeCADGui.runCommand('Std_OrthographicCamera')
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.SendMsgToActiveView("ViewSelection")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(obj)
         else:
+
+            # case 3: This is maybe a BuildingPart. Place the WP on it
             FreeCADGui.runCommand("Draft_SelectPlane")
     if vm:
         # store the last double-clicked item for the BIM WPView command
@@ -527,6 +542,8 @@ def isView(obj):
             if hasattr(p, "Source"):
                 if p.Source == obj:
                     return True
+    if getattr(obj,"DrawingView",False):
+        return True
     return False
 
 

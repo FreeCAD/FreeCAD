@@ -98,7 +98,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>テキストと寸法に用いられるフォント</translation>
+      <translation>文字と寸法に用いられるフォント</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -109,12 +109,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
       <source>The font size in system units</source>
-      <translation>システム単位のフォントサイズ</translation>
+      <translation>システム単位の文字の大きさ</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
       <source>Lines and arrows</source>
-      <translation type="unfinished">Lines and arrows</translation>
+      <translation>線と矢印</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="385"/>
       <source>Line and arrow color</source>
-      <translation type="unfinished">Line and arrow color</translation>
+      <translation>線と矢印の色</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
@@ -170,13 +170,13 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
       <source>Font size</source>
-      <translation>フォントサイズ</translation>
+      <translation>文字の大きさ</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation type="unfinished">The line spacing for multi-line texts and labels (relative to the font size)</translation>
+      <translation>複数行の文字とラベルの行間（文字の大きさに対する相対値）</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
@@ -214,7 +214,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="435"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>これにチェックが入っている場合、寸法の値に続いて単位が表示されます。</translation>
+      <translation>チェックすると、寸法に単位を表示します</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="428"/>
@@ -258,12 +258,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="262"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="272"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation>ここにチェックが入っている場合に、寸法線が表示されます</translation>
+      <translation>チェックすると、寸法線を表示します</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
       <source>Line width</source>
-      <translation>ライン幅</translation>
+      <translation>線幅</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>寸法の詳細</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
@@ -423,8 +423,8 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="243"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>チェックされている場合、互いに接触している整列の結果オブジェクトは結合されます。
-この機能は「リンク整列」がオフの場合にのみ動作します。</translation>
+      <translation>チェックすると、互いに接触している整列の結果オブジェクトは結合されます。
+この機能は「リンク配列複写」がオフの場合にのみ動作します。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="247"/>
@@ -435,13 +435,13 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="254"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>チェックされている場合、結果オブジェクトは通常整列ではなく「リンク整列」になります。
+      <translation>チェックすると、結果オブジェクトは通常整列ではなく「リンク配列複写」になります。
 複数のコピーを作成する場合、リンク整列の方が効率的ですが結合することはできなくなります。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="258"/>
       <source>Link array</source>
-      <translation>リンク整列</translation>
+      <translation>リンク配列複写</translation>
     </message>
   </context>
   <context>
@@ -449,7 +449,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation>矩形整列</translation>
+      <translation>直交列状配列複写</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
@@ -555,8 +555,8 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="403"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>チェックされている場合、互いに接触している整列の結果オブジェクトは結合されます。
-この機能は「リンク整列」がオフの場合にのみ動作します。</translation>
+      <translation>チェックすると、互いに接触している整列の結果オブジェクトは結合されます。
+この機能は「リンク配列複写」がオフの場合にのみ動作します。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="407"/>
@@ -567,13 +567,13 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="414"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>チェックされている場合、結果オブジェクトは通常整列ではなく「リンク整列」になります。
+      <translation>チェックすると、結果オブジェクトは通常整列ではなく「リンク配列複写」になります。
 複数のコピーを作成する場合、リンク整列の方が効率的ですが結合することはできなくなります。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="418"/>
       <source>Link array</source>
-      <translation>リンク整列</translation>
+      <translation>リンク配列複写</translation>
     </message>
   </context>
   <context>
@@ -652,8 +652,8 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="205"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>チェックされている場合、互いに接触している整列の結果オブジェクトは結合されます。
-この機能は「リンク整列」がオフの場合にのみ動作します。</translation>
+      <translation>チェックすると、互いに接触している整列の結果オブジェクトは結合されます。
+この機能は「リンク配列複写」がオフの場合にのみ動作します。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="209"/>
@@ -664,13 +664,13 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="216"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>チェックされている場合、結果オブジェクトは通常整列ではなく「リンク整列」になります。
+      <translation>チェックすると、結果オブジェクトは通常整列ではなく「リンク配列複写」になります。
 複数のコピーを作成する場合、リンク整列の方が効率的ですが結合することはできなくなります。</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="220"/>
       <source>Link array</source>
-      <translation>リンク整列</translation>
+      <translation>リンク配列複写</translation>
     </message>
   </context>
   <context>
@@ -735,12 +735,12 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="176"/>
       <source>Font file</source>
-      <translation>フォント ファイル</translation>
+      <translation>フォントファイル</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="183"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
-      <translation type="unfinished">Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
+      <translation>フォントファイル（*.ttf *.otf *.pfb *.TTF *.OTF *.PFB）</translation>
     </message>
   </context>
   <context>
@@ -760,7 +760,7 @@ Or choose one of the options below.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
       <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation>作業平面を XY 平面（グラウンド）に設定</translation>
+      <translation>作業平面を XY平面（基面）に設定</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
@@ -780,12 +780,12 @@ Or choose one of the options below.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation>作業平面を YZ 平面（サイド）に設定</translation>
+      <translation>作業平面をYZ平面（側面）に設定</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
       <source>Side (YZ)</source>
-      <translation>側面 (YZ)</translation>
+      <translation>側面（YZ）</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
@@ -801,8 +801,7 @@ Or choose one of the options below.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation>コマンドを開始される度に、作業平面は
-現在のビューで整列します</translation>
+      <translation>作業平面はコマンドの開始時に現在のビューに整列します。</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="78"/>
@@ -860,19 +859,19 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="162"/>
       <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
+      <translation>グリッドの色</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="176"/>
       <location filename="../ui/TaskSelectPlane.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>グリッドの間隔</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="196"/>
       <location filename="../ui/TaskSelectPlane.ui" line="206"/>
       <source>The number of squares between major grid lines</source>
-      <translation type="unfinished">The number of squares between major grid lines</translation>
+      <translation>主グリッド線を表示する間隔</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
@@ -889,12 +888,12 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
       <location filename="../ui/TaskSelectPlane.ui" line="226"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>グリッド線の数</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="219"/>
       <source>Grid size</source>
-      <translation>グリッドサイズ</translation>
+      <translation>グリッドの大きさ</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="242"/>
@@ -920,7 +919,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="179"/>
       <source>Grid spacing</source>
-      <translation>グリッド間隔</translation>
+      <translation>グリッド線の間隔</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="245"/>
@@ -1006,7 +1005,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Line width</source>
-      <translation>ライン幅</translation>
+      <translation>線幅</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
@@ -1074,12 +1073,12 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation type="unfinished">Point color</translation>
+      <translation>点の色</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Point size</source>
-      <translation type="unfinished">Point size</translation>
+      <translation>点の大きさ</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
@@ -1124,12 +1123,12 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <source>Texts</source>
-      <translation type="unfinished">Texts</translation>
+      <translation>テキスト</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="328"/>
       <source>Line spacing factor</source>
-      <translation type="unfinished">Line spacing factor</translation>
+      <translation>行間係数</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="349"/>
@@ -1141,7 +1140,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
       <source>Lines and arrows</source>
-      <translation type="unfinished">Lines and arrows</translation>
+      <translation>線と矢印</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
@@ -1191,7 +1190,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The font for texts, dimensions and labels</source>
-      <translation type="unfinished">The font for texts, dimensions and labels</translation>
+      <translation>文字、寸法、ラベルのフォント</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="311"/>
@@ -1206,7 +1205,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="335"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation type="unfinished">The line spacing for multi-line texts and labels (relative to the font size)</translation>
+      <translation>複数行の文字とラベルの行間（文字の大きさに対する相対値）</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="342"/>
@@ -1216,7 +1215,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
       <source>Line and arrow color</source>
-      <translation type="unfinished">Line and arrow color</translation>
+      <translation>線と矢印の色</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
@@ -1302,7 +1301,7 @@ for linear dimensions.</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="27"/>
       <source>Pattern files (*.pat *.PAT)</source>
-      <translation type="unfinished">Pattern files (*.pat *.PAT)</translation>
+      <translation>パターンファイル (*.pat *.PAT)</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="34"/>
@@ -1312,7 +1311,7 @@ for linear dimensions.</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation>尺度:</translation>
+      <translation>尺度：</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
@@ -1364,7 +1363,7 @@ faces are picked during commands.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="104"/>
       <source>YZ (Side)</source>
-      <translation>YZ (側面図)</translation>
+      <translation>YZ（側面）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="112"/>
@@ -1393,7 +1392,7 @@ Objects can then automatically be added to groups as well.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
       <source>Command options</source>
-      <translation type="unfinished">Command options</translation>
+      <translation>コマンドオプション</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
@@ -1531,12 +1530,12 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="415"/>
       <source>Construction geometry color</source>
-      <translation>構築ジオメトリーの色</translation>
+      <translation>構築ジオメトリの色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="319"/>
       <source>Draft classic style</source>
-      <translation>Draftクラシックスタイル</translation>
+      <translation>クラシックな基本設計のスタイル</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="324"/>
@@ -1546,34 +1545,33 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
       <source>Visual</source>
-      <translation type="unfinished">Visual</translation>
+      <translation>表示</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="20"/>
       <source>SVG patterns</source>
-      <translation type="unfinished">SVG patterns</translation>
+      <translation>SVGパターン</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>SVG pattern size</source>
-      <translation type="unfinished">SVG pattern size</translation>
+      <translation>SVGパターンの大きさ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="39"/>
       <source>The default size for SVG patterns. A higher value results in a denser pattern.</source>
-      <translation type="unfinished">The default size for SVG patterns. A higher value results in a denser pattern.</translation>
+      <translation>SVGパターンの既定の大きさ。値が大きいほどパターンの密度が高くなります。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="65"/>
       <source>Additional SVG pattern location</source>
-      <translation type="unfinished">Additional SVG pattern location</translation>
+      <translation>追加のSVGパターンの場所</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="75"/>
       <source>An optional directory with custom SVG files containing
 pattern definitions to be added to the standard patterns</source>
-      <translation type="unfinished">An optional directory with custom SVG files containing
-pattern definitions to be added to the standard patterns</translation>
+      <translation>標準パターンに追加されるパターン定義を含むカスタムSVGファイルのオプションのディレクトリ </translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="92"/>
@@ -1604,7 +1602,7 @@ pattern definitions to be added to the standard patterns</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>テキストと寸法線</translation>
     </message>
@@ -1616,7 +1614,7 @@ pattern definitions to be added to the standard patterns</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="54"/>
       <source>Font size</source>
-      <translation>フォントサイズ</translation>
+      <translation>文字の大きさ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="209"/>
@@ -1626,7 +1624,7 @@ pattern definitions to be added to the standard patterns</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1648,21 +1646,20 @@ pattern definitions to be added to the standard patterns</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="20"/>
       <source>Texts</source>
-      <translation type="unfinished">Texts</translation>
+      <translation>テキスト</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Font name or family</source>
-      <translation type="unfinished">Font name or family</translation>
+      <translation>フォント名またはフォントファミリー</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="33"/>
       <source>The default font for texts, dimensions and labels. It can be a font name such
 as "Arial", a style such as "sans", "serif" or "mono", or a family such as
 "Arial,Helvetica,sans", or a name with a style such as "Arial:Bold".</source>
-      <translation type="unfinished">The default font for texts, dimensions and labels. It can be a font name such
-as "Arial", a style such as "sans", "serif" or "mono", or a family such as
-"Arial,Helvetica,sans", or a name with a style such as "Arial:Bold".</translation>
+      <translation>基本設計ワークベンチで使用する文字と寸法に用いる既定のフォントです。
+「Arial, Helvetica, sans」「Arial:Bold」のように、フォント名やスタイル名を組み合わせた形で指定することができます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="67"/>
@@ -1672,12 +1669,12 @@ as "Arial", a style such as "sans", "serif" or "mono", or a family such as
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="99"/>
       <source>Line spacing factor</source>
-      <translation type="unfinished">Line spacing factor</translation>
+      <translation>行間係数</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="106"/>
       <source>The default line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation type="unfinished">The default line spacing for multi-line texts and labels (relative to the font size)</translation>
+      <translation>既定の複数行の文字とラベルの行間（文字の大きさに対する相対値）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="125"/>
@@ -1704,7 +1701,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="185"/>
       <source>Lines and arrows</source>
-      <translation type="unfinished">Lines and arrows</translation>
+      <translation>線と矢印</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="191"/>
@@ -1714,7 +1711,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="194"/>
       <source>Show dimension line</source>
-      <translation type="unfinished">Show dimension line</translation>
+      <translation>寸法線を表示</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="210"/>
@@ -1724,7 +1721,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="217"/>
       <source>The default line width</source>
-      <translation type="unfinished">The default line width</translation>
+      <translation>既定の線幅</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="220"/>
@@ -1780,12 +1777,12 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="329"/>
       <source>Line and arrow color</source>
-      <translation type="unfinished">Line and arrow color</translation>
+      <translation>線と矢印の色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="336"/>
       <source>The default color for lines and arrows</source>
-      <translation type="unfinished">The default color for lines and arrows</translation>
+      <translation>既定の線と矢印の色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="359"/>
@@ -1827,7 +1824,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="476"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>寸法の詳細</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
@@ -1868,7 +1865,7 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="633"/>
       <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
-      <translation type="unfinished">Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</translation>
+      <translation>フォントファイル（*.ttf *.otf *.pfb *.TTF *.OTF *.PFB）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="585"/>
@@ -1913,19 +1910,19 @@ used for linear dimensions.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="65"/>
       <source>Use default color and linewidth</source>
-      <translation>デフォルトの色と線幅を使用する</translation>
+      <translation>既定の色と線幅を使用する</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="70"/>
       <source>Original color and linewidth</source>
-      <translation>標準の色と線幅</translation>
+      <translation>元の色と線幅</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter.</source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter.</translation>
+      <translation>チェックした場合、単位変換を行いません。
+SVGファイル内の 1単位は1ミリメートルに変換されます。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="86"/>
@@ -1997,122 +1994,121 @@ This value is the maximum segment length.</translation>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>この設定ダイアログは、DXFファイルのインポート／エクスポート時に表示されます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>インポート、エクスポートするときにこのダイアログボックスを表示</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Pythonのimporterが使用されます。そうでなければ、新しいC++が使用されます。
 注意: C++のimporterは速いですが、機能的ではありません。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Python のエクスポーターが使用されます。これを使用しない場合は新しい C++ のものが使用されます。
 注意: C++ のエクスポーターは高速ですが、まだ十分な機能がありません。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
       <translation>DXFのインポートとエクスポートを行うPythonコンバータのダウンロードをFreeCADに許可します。
-アドオンマネージャーから「dxf_library」ワークベンチ
-をインストールして手動で行うこともできます。</translation>
+拡張機能の管理から「dxf_library」ワークベンチをインストールして手動で行うこともできます。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>DXF ライブラリの自動的なダウンロードと更新を FreeCAD に許可</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>インポート・オプション</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>インポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>ここにチェックが入っていない場合、テキストとmtextはインポートされません</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>ここにチェックが入っていない場合、ポイントはインポートされません</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>ポイント</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>チェックが入っている場合、ペーパースペースオブジェクトもインポートされます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation>（*で始まる）名称のないブロックも一緒にインポートしたい場合は、ここにチェックを入れて下さい</translation>
+      <translation>（*で始まる）名称のないブロックも一緒にインポートしたい場合は、ここにチェックを入れてください</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation>*blocks</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>作成</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation>標準のPartオブジェクトだけが作成されます(最も高速)</translation>
+      <translation>標準のパーツオブジェクトだけが作成されます（最も高速）</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation>できる限りパラメトリックなドラフト・オブジェクトが作成されます</translation>
+      <translation>できる限りパラメトリックな基本設計オブジェクトが作成されます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
-      <translation>ドラフトオブジェクト</translation>
+      <translation>基本設計オブジェクト</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>できる限りスケッチが作成します</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>スケッチ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>インポートされたファイルに適用する尺度の係数</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2123,134 +2119,134 @@ Example: for files in millimeters: 1, in centimeters: 10,
 メートルならば 1000 、インチならば 2.54、フィートならば 304.8 となります。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCADは一致するオブジェクトをワイヤーに結合しようとします。これには時間がかかる場合があります。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation type="unfinished">Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
       <translation type="unfinished">Use legacy Python importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Use legacy Python exporter</source>
       <translation type="unfinished">Use legacy Python exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation type="unfinished">Some options are not yet available for the new importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>Layouts</source>
-      <translation type="unfinished">Layouts</translation>
+      <translation>レイアウト</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
       <source>Simple Part shapes</source>
       <translation>単純な部品形状</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
-      <translation type="unfinished">Use colors from the DXF file</translation>
+      <translation>DXFファイルの色を使用する</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
-      <translation>ジオメトリーを結合</translation>
+      <translation>ジオメトリを結合</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
       <translation>グループレイヤーをブロックへ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>インポートされたテキストは、DXF 文書内にあるサイズからドラフトで定義された標準のテキストサイズへ変換されます。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>標準フォントサイズを使用</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>ここがチェックされている場合、DXFレイヤーはドラフトレイヤーとしてインポートされます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>ハッチングは単純なワイヤーに変換されます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
       <translation type="unfinished">Import hatch boundaries as wires</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>ポリラインに幅が定義されている場合、正適切な幅の閉じたワイヤーとしてレンダリングされます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation type="unfinished">Render polylines with width</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation type="unfinished">Some options are not yet available for the new exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>楕円のエクスポートは十分にサポートされていません。代わりにこれを使用してポリラインとしてエクスポートしてください。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation>楕円およびスプラインをポリラインとして扱う</translation>
+      <translation>楕円とスプラインをポリラインとして扱う</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation>スプラインの最大セグメント数:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>各ポリラインセグメントの最大長さ。
@@ -2258,39 +2254,39 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>エクスポート・オプション</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
-      <translation type="unfinished">Use layers</translation>
+      <translation>レイヤーを使用</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>面を含むすべてのオブジェクトは 3D ポリフェースとしてエクスポートされます</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation type="unfinished">Export 3D objects as polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
-      <translation type="unfinished">TechDraw Views will be exported as blocks.
-This might fail for post DXF R12 templates.</translation>
+      <translation>技術図面ビューはブロックとしてエクスポートされます。
+R12形式より後のDXFテンプレートではエクスポートできない場合があります。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
-      <translation type="unfinished">Export TechDraw Views as blocks</translation>
+      <translation>技術図面ビューをブロックとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>エクスポートされたオブジェクトは現在のビュー方向を反映するように投影されます</translation>
     </message>
@@ -2309,7 +2305,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="375"/>
       <source>Always snap</source>
-      <translation type="unfinished">Always snap</translation>
+      <translation>常にスナップ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="133"/>
@@ -2320,8 +2316,8 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
-      <translation type="unfinished">The number of squares between major grid lines.
-Major grid lines are thicker than minor grid lines.</translation>
+      <translation>主グリッド線の間隔。
+主グリッド線はグリッド線よりも太いです。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="150"/>
@@ -2332,7 +2328,7 @@ Major grid lines are thicker than minor grid lines.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="218"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>グリッド線の数</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="394"/>
@@ -2382,13 +2378,13 @@ Major grid lines are thicker than minor grid lines.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
       <source>If checked, the grid will always be visible in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation type="unfinished">If checked, the grid will always be visible in new views.
-Use Draft ToggleGrid to change this for the active view.</translation>
+      <translation>チェックされている場合、グリッドは常に新しいビューで表示されます。
+アクティブなビューでこれを変更するにはドラフトの「グリッドの表示を切り替え」を使用します。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>グリッド線の間隔</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
@@ -2414,34 +2410,32 @@ Use Draft ToggleGrid to change this for the active view.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="49"/>
       <source>If checked, the grid will be visible during commands in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation type="unfinished">If checked, the grid will be visible during commands in new views.
-Use Draft ToggleGrid to change this for the active view.</translation>
+      <translation>チェックされている場合、新しいビューのコマンド中にグリッドが表示されます。
+アクティブなビューにこれを変更するには、ドラフトの「グリッドの表示を切り替え」を使用します。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="53"/>
       <source>Show the grid during commands</source>
-      <translation type="unfinished">Show the grid during commands</translation>
+      <translation>コマンドの中にグリッドを表示</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="69"/>
       <source>If checked, an additional border is displayed around the grid,
 showing the main square size in the bottom left corner</source>
-      <translation type="unfinished">If checked, an additional border is displayed around the grid,
-showing the main square size in the bottom left corner</translation>
+      <translation>チェックした場合、グリッドの枠を表示します。
+枠の左下に主グリッド線の間隔を表示します。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="73"/>
       <source>Show grid border</source>
-      <translation>グリッド線を表示</translation>
+      <translation>グリッドの枠を表示</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="92"/>
       <source>If checked, the outline of a human figure is displayed at the bottom left
 corner of the grid. Only effective if the BIM workbench is installed and
 "Show grid border" is enabled.</source>
-      <translation type="unfinished">If checked, the outline of a human figure is displayed at the bottom left
-corner of the grid. Only effective if the BIM workbench is installed and
-"Show grid border" is enabled.</translation>
+      <translation>チェックした場合、グリッドの左下に人物の輪郭が表示されます。BIMワークベンチがインストールされ、「グリッドの枠を表示」が有効になっている場合のみ有効です。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="97"/>
@@ -2452,8 +2446,7 @@ corner of the grid. Only effective if the BIM workbench is installed and
       <location filename="../ui/preferences-draftsnap.ui" line="113"/>
       <source>If checked, the two main axes of the grid are colored red, green or blue
 if they match the X, Y or Z axis of the global coordinate system</source>
-      <translation type="unfinished">If checked, the two main axes of the grid are colored red, green or blue
-if they match the X, Y or Z axis of the global coordinate system</translation>
+      <translation>チェックした場合、グリッドの主軸の2本がグローバル座標系のX軸、Y軸、Z軸に一致したときに、グリッドの主軸を赤、緑、青で表示します。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="117"/>
@@ -2463,27 +2456,27 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="179"/>
       <source>Grid spacing</source>
-      <translation>グリッド間隔</translation>
+      <translation>グリッド線の間隔</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="211"/>
       <source>Grid size</source>
-      <translation>グリッドサイズ</translation>
+      <translation>グリッドの大きさ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="240"/>
       <source>Grid transparency</source>
-      <translation type="unfinished">Grid transparency</translation>
+      <translation>グリッドの透明度</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="250"/>
       <source> %</source>
-      <translation type="unfinished"> %</translation>
+      <translation> %</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="266"/>
       <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
+      <translation>グリッドの色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="296"/>
@@ -2498,7 +2491,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="256"/>
       <source>Mouse delay</source>
-      <translation type="unfinished">Mouse delay</translation>
+      <translation>マウスの遅延</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="270"/>
@@ -2533,7 +2526,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="247"/>
       <source>The overall transparency of the grid</source>
-      <translation>グリッドの全体的な透明度</translation>
+      <translation>グリッドの透明度</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
@@ -2634,7 +2627,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>Interface</source>
-      <translation type="unfinished">Interface</translation>
+      <translation>インターフェース</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="20"/>
@@ -2644,7 +2637,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="183"/>
       <source>F</source>
-      <translation type="unfinished">F</translation>
+      <translation>F</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="202"/>
@@ -2659,7 +2652,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="247"/>
       <source>B</source>
-      <translation type="unfinished">B</translation>
+      <translation>B</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="279"/>
@@ -2679,12 +2672,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="586"/>
       <source>Increase radius</source>
-      <translation type="unfinished">Increase radius</translation>
+      <translation>半径を大きくする</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="618"/>
       <source>Decrease radius</source>
-      <translation type="unfinished">Decrease radius</translation>
+      <translation>半径を小さくする</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="749"/>
@@ -2996,7 +2989,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../WorkingPlane.py" line="1661"/>
       <source>Axes:</source>
-      <translation type="unfinished">Axes:</translation>
+      <translation>軸：</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1668"/>
@@ -3021,7 +3014,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="520"/>
       <source>Active Draft command</source>
-      <translation type="unfinished">Active Draft command</translation>
+      <translation>アクティブな基本設計コマンド</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="521"/>
@@ -3301,7 +3294,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="798"/>
       <location filename="../../draftguitools/gui_trimex.py" line="214"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>オフセットの距離</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="794"/>
@@ -3316,7 +3309,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="877"/>
       <location filename="../../DraftGui.py" line="878"/>
       <source>Local {}</source>
-      <translation type="unfinished">Local {}</translation>
+      <translation>ローカル {}</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="880"/>
@@ -3626,7 +3619,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_labels.py" line="186"/>
       <location filename="../../draftguitools/gui_labels.py" line="213"/>
       <source>Pick endpoint of leader line</source>
-      <translation type="unfinished">Pick endpoint of leader line</translation>
+      <translation>引出線の終点を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="196"/>
@@ -3640,7 +3633,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_dimensions.py" line="117"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="66"/>
       <source>Pick first point</source>
-      <translation type="unfinished">Pick first point</translation>
+      <translation>一方のコーナーを指定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="170"/>
@@ -3655,7 +3648,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="363"/>
       <source>Polyline</source>
-      <translation type="unfinished">Polyline</translation>
+      <translation>ポリライン</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="225"/>
@@ -3723,7 +3716,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="115"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Convert to Draft</translation>
+      <translation>基本設計に変換する</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="144"/>
@@ -3779,7 +3772,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="441"/>
       <location filename="../../draftguitools/gui_arcs.py" line="442"/>
       <source>Start angle</source>
-      <translation type="unfinished">Start angle</translation>
+      <translation>開始角度</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="280"/>
@@ -3803,22 +3796,22 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="316"/>
       <source>Create Circle (Part)</source>
-      <translation type="unfinished">Create Circle (Part)</translation>
+      <translation>円を作成 (パート)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="334"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Create Circle</translation>
+      <translation>円を作成</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="365"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>中心点円弧を作成 (パート)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="385"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>中心点円弧を作成</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="459"/>
@@ -3829,17 +3822,17 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="502"/>
       <location filename="../../draftguitools/gui_arcs.py" line="544"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>3点指定円弧</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="563"/>
       <source>Create Arc by 3 points</source>
-      <translation type="unfinished">Create Arc by 3 points</translation>
+      <translation>3点指定円弧を作成</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>グリッドの表示を切り替え</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="109"/>
@@ -3849,7 +3842,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="290"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>編集する基本設計オブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="476"/>
@@ -3931,22 +3924,22 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="293"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>スタイルファイルを開く</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="295"/>
       <source>JSON files (*.json *.JSON)</source>
-      <translation type="unfinished">JSON files (*.json *.JSON)</translation>
+      <translation>JSONファイル (*.json *.JSON)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="315"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>JSONファイル (*.json)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="313"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>スタイルファイルを保存</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="69"/>
@@ -4020,7 +4013,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="71"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>新規グループを作成</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="160"/>
@@ -4040,7 +4033,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="250"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>新規レイヤーを作成</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="304"/>
@@ -4085,7 +4078,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="108"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>半径を入力してください。</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="146"/>
@@ -4125,13 +4118,13 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>トリムまたは延長するオブジェクトを選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
-      <translation type="unfinished">Pick distance</translation>
+      <translation>距離を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="219"/>
@@ -4161,12 +4154,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation>B-スプライン曲線</translation>
+      <translation>B-スプライン</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="122"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>スプラインは閉じられています。</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="133"/>
@@ -4227,27 +4220,27 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="200"/>
       <source>Open spline</source>
-      <translation type="unfinished">Open spline</translation>
+      <translation>スプラインを開く</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="203"/>
       <source>Close spline</source>
-      <translation type="unfinished">Close spline</translation>
+      <translation>スプラインを閉じる</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="206"/>
       <source>Reverse spline</source>
-      <translation type="unfinished">Reverse spline</translation>
+      <translation>スプラインを反転</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="371"/>
       <source>Move arc</source>
-      <translation type="unfinished">Move arc</translation>
+      <translation>円弧を移動</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="375"/>
       <source>Set first angle</source>
-      <translation type="unfinished">Set first angle</translation>
+      <translation>開始角度を設定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="379"/>
@@ -4257,12 +4250,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="383"/>
       <source>Set radius</source>
-      <translation type="unfinished">Set radius</translation>
+      <translation>半径の設定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="408"/>
       <source>Invert arc</source>
-      <translation type="unfinished">Invert arc</translation>
+      <translation>円弧を反転</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="619"/>
@@ -4277,7 +4270,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="621"/>
       <source>Make symmetric</source>
-      <translation type="unfinished">Make symmetric</translation>
+      <translation>対称にする</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="628"/>
@@ -4341,13 +4334,13 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_ellipses.py" line="129"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="146"/>
       <source>Create Ellipse</source>
-      <translation type="unfinished">Create Ellipse</translation>
+      <translation>楕円を作成</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="201"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="197"/>
       <source>Pick opposite point</source>
-      <translation type="unfinished">Pick opposite point</translation>
+      <translation>もう一方のコーナーを指定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="70"/>
@@ -4367,7 +4360,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="136"/>
       <source>Pick reference distance from base point</source>
-      <translation type="unfinished">Pick reference distance from base point</translation>
+      <translation>基準点からの参照距離を選択</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="206"/>
@@ -4405,7 +4398,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftguitools/gui_layers.py" line="63"/>
       <location filename="../../draftmake/make_layer.py" line="155"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>レイヤー</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="95"/>
@@ -4420,7 +4413,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation type="unfinished">No active Draft Toolbar.</translation>
+      <translation>アクティブな基本設計ツールバーがありません。</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
@@ -4467,7 +4460,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="127"/>
       <source>Pick first point of selection rectangle</source>
-      <translation type="unfinished">Pick first point of selection rectangle</translation>
+      <translation>選択した長方形の一方のコーナーを指定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="162"/>
@@ -4522,7 +4515,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="119"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>鏡像</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="164"/>
@@ -4553,7 +4546,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="60"/>
       <source>Change slope</source>
-      <translation type="unfinished">Change slope</translation>
+      <translation>勾配を変更</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_upgrade.py" line="68"/>
@@ -4675,7 +4668,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="343"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="348"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>リンク配列複写を作成</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="321"/>
@@ -4698,7 +4691,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="94"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="267"/>
       <source>Orthogonal array</source>
-      <translation>矩形整列</translation>
+      <translation>直交列状配列複写</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="203"/>
@@ -5206,7 +5199,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_layer.py" line="65"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>レイヤー</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="150"/>
@@ -5225,7 +5218,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_layer.py" line="189"/>
       <location filename="../../draftmake/make_layer.py" line="193"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation type="unfinished">Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</translation>
+      <translation>誤った入力：「実線」「破線」「点線」または「鎖線」でなければなりません。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="201"/>
@@ -5235,24 +5228,24 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="495"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>このレイヤーをアクティブにする</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="501"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>レイヤーの内容を選択</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="539"/>
       <location filename="../../draftviewproviders/view_layer.py" line="553"/>
       <source>Merge layer duplicates</source>
-      <translation type="unfinished">Merge layer duplicates</translation>
+      <translation>レイヤーの重複をマージ</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="545"/>
       <location filename="../../draftviewproviders/view_layer.py" line="598"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>新規レイヤーを作成</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="437"/>
@@ -5326,7 +5319,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="87"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
+      <translation>2点が一致しています</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/mirror.py" line="100"/>
@@ -5514,7 +5507,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="111"/>
       <source>File not found:</source>
-      <translation type="unfinished">File not found:</translation>
+      <translation>ファイルが見つかりません:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="117"/>
@@ -5530,8 +5523,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftutils/params.py" line="182"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
-      <translation type="unfinished">Do you want to update the SVG pattern options
-of existing objects in all opened documents?</translation>
+      <translation>全てのドキュメントの既存のオブジェクトのSVGパターンオプションを更新しますか？</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="139"/>
@@ -5583,32 +5575,32 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>基本設計作成ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>基本設計注釈ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>基本設計修正ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>基本設計ユーティリティツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft snap</source>
-      <translation type="unfinished">Draft snap</translation>
+      <translation>基本設計スナップ</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation type="unfinished">&amp;Drafting</translation>
+      <translation>&amp;基本設計</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
@@ -5628,7 +5620,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>円弧</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="58"/>
@@ -5648,9 +5640,9 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>dxfライブラリをダウンロードできませんでした。
+メニューバーの「ツール」→「拡張機能の管理」から
+dxfライブラリ拡張機能をインストールしてください。</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="51"/>
@@ -5665,7 +5657,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>元のオブジェクトを削除</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="96"/>
@@ -5685,7 +5677,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="429"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>警告</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="430"/>
@@ -5711,7 +5703,7 @@ from menu Tools -&gt; Addon Manager</translation>
       <location filename="../../draftguitools/gui_lineslope.py" line="84"/>
       <location filename="../../draftguitools/gui_lineslope.py" line="87"/>
       <source>Slope</source>
-      <translation>傾斜</translation>
+      <translation>勾配</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="328"/>
@@ -5841,12 +5833,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="290"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>印刷時の線の色</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="311"/>
       <source>New Layer</source>
-      <translation type="unfinished">New Layer</translation>
+      <translation>新規レイヤー</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="325"/>
@@ -5881,7 +5873,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftobjects/label.py" line="332"/>
       <source>Tag</source>
-      <translation type="unfinished">Tag</translation>
+      <translation>タグ</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="333"/>
@@ -5932,7 +5924,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importAirfoilDAT.py" line="164"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>十分な座標が見つかりませんでした</translation>
     </message>
   </context>
   <context>
@@ -5983,7 +5975,7 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="167"/>
       <source>Path link array</source>
-      <translation type="unfinished">Path link array</translation>
+      <translation>パスリンク配列複写</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="170"/>
@@ -6040,7 +6032,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="306"/>
       <source>Polyline</source>
-      <translation type="unfinished">Polyline</translation>
+      <translation>ポリライン</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="309"/>
@@ -6094,7 +6086,7 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to sketch</source>
-      <translation type="unfinished">Draft to sketch</translation>
+      <translation>基本設計をスケッチにする</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
@@ -6150,12 +6142,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="110"/>
       <source>Snap grid</source>
-      <translation type="unfinished">Snap grid</translation>
+      <translation>グリッドにスナップ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="111"/>
       <source>Snaps to the intersections of grid lines.</source>
-      <translation type="unfinished">Snaps to the intersections of grid lines.</translation>
+      <translation>グリッド線の交点にスナップします。</translation>
     </message>
   </context>
   <context>
@@ -6176,7 +6168,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="138"/>
       <source>Snap parallel</source>
-      <translation type="unfinished">Snap parallel</translation>
+      <translation>平行スナップ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="139"/>
@@ -6342,8 +6334,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>中心点と半径を指定して円弧を作成します
+CTRLでスナップ、SHIFTで拘束</translation>
     </message>
   </context>
   <context>
@@ -6351,14 +6343,14 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="477"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>3点指定円弧</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="480"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>始点、円弧上の2点目、終点を指定して円弧を作成します
+CTRLでスナップ、SHIFTで拘束</translation>
     </message>
   </context>
   <context>
@@ -6366,12 +6358,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="611"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>円弧</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="614"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>様々な方法で円弧を作成します</translation>
     </message>
   </context>
   <context>
@@ -6379,12 +6371,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="60"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>グリッドの表示を切り替え</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>グリッドの表示を切り替え</translation>
     </message>
   </context>
   <context>
@@ -6412,9 +6404,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <source>Edits the active object.
 Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT + Left Click to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>アクティブなオブジェクトを編集します。
+EキーかAltキーを押しながら左クリックすると、サポートされている節点、オブジェクト上でコンテキストメニューを表示します。</translation>
     </message>
   </context>
   <context>
@@ -6691,7 +6682,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="51"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>ツールバーで定義されている現在のスタイル（線の幅と色）を、選択したオブジェクトとグループに適用します。</translation>
     </message>
   </context>
   <context>
@@ -6750,8 +6741,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="../../draftguitools/gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
-      <translation type="unfinished">Creates a circle (full circular arc).
-CTRL to snap, ALT to select tangent objects.</translation>
+      <translation>円を作成します
+CTRLでスナップ、ALTで接線を選択</translation>
     </message>
   </context>
   <context>
@@ -6764,7 +6755,7 @@ CTRL to snap, ALT to select tangent objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap.</translation>
+      <translation>楕円を作成します。CTRLでスナップ</translation>
     </message>
   </context>
   <context>
@@ -6819,14 +6810,14 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="68"/>
       <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
+      <translation>レイヤー</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="71"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties.</translation>
+      <translation>レイヤーを追加します。
+レイヤーに追加されたオブジェクトは、同じ表示プロパティを共有できます。</translation>
     </message>
   </context>
   <context>
@@ -6974,7 +6965,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="64"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>鏡像</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="67"/>
@@ -7053,7 +7044,7 @@ The array can be turned into an orthogonal or a circular array by changing its t
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="66"/>
       <source>Set slope</source>
-      <translation type="unfinished">Set slope</translation>
+      <translation>勾配を設定</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="69"/>
@@ -7118,10 +7109,10 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY plane.
-The initial projection direction is the negative of the current active view direction.
-You can select individual faces to project, or the entire solid, and also include hidden lines.
-These projections can be used to create technical drawings with the TechDraw Workbench.</translation>
+      <translation>選択したオブジェクトのXY平面上への2D投影を作成。
+初期の投影方向は現在のアクティブビュー方向の逆方向です。
+個々の面を投影するか、ソリッド全体を投影するか、かくれ線を含めるかどうかを選択できます。
+こうした投影は技術図面ワークベンチでの製図を作成するために使用できます。</translation>
     </message>
   </context>
   <context>
@@ -7195,12 +7186,12 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="60"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>フォントファイル名</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
-      <translation type="unfinished">Height of text</translation>
+      <translation>文字列の高さ</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="68"/>
@@ -7292,14 +7283,13 @@ set True for fusion or False for compound</translation>
     <message>
       <location filename="../../draftobjects/circle.py" line="44"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>円弧の開始角度</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="49"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>円弧の終了角度（完全な円の場合、開始角度と同じ値になります）</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="53"/>
@@ -7322,12 +7312,12 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/wire.py" line="92"/>
       <location filename="../../draftobjects/bspline.py" line="56"/>
       <source>The area of this object</source>
-      <translation type="unfinished">The area of this object</translation>
+      <translation>このオブジェクトの面積</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>このレイヤーの一部であるオブジェクト</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="47"/>
@@ -7741,7 +7731,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="80"/>
       <source>Show hidden lines</source>
-      <translation>隠線を表示</translation>
+      <translation>かくれ線を表示</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="86"/>
@@ -7751,7 +7741,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>楕円とB-スプラインを線分セグメントにテッセレーションする</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="97"/>
@@ -7761,7 +7751,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>線分セグメントにテッセレーションする楕円やB-スプラインの線分セグメントの長さ</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="109"/>
@@ -7846,31 +7836,29 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/ellipse.py" line="44"/>
       <source>Start angle of the elliptical arc</source>
-      <translation type="unfinished">Start angle of the elliptical arc</translation>
+      <translation>楕円弧の開始角度</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="48"/>
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>楕円弧の終了角度（完全な楕円の場合、開始角度と同じ値を設定）</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="51"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>楕円の短半径</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="54"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>楕円の長半径</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="60"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>このオブジェクトの面積</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="45"/>
@@ -7944,10 +7932,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>寸法線の始点。
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+半径寸法の場合は円弧の中心です。
+直径寸法の場合は円弧上の点です。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="262"/>
@@ -7955,10 +7943,9 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>寸法線の終点。
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+半径または直径寸法の場合は、円弧上の点です。</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="274"/>
@@ -8192,7 +8179,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="128"/>
       <source>Display a leader line or not</source>
-      <translation type="unfinished">Display a leader line or not</translation>
+      <translation>引出線の表示・非表示</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="148"/>
@@ -8207,17 +8194,17 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="109"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>SVGパターンを定義します</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="119"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>SVGパターンの大きさを定義します</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="67"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Trueの場合、このレイヤーに含まれるオブジェクトにはレイヤーの線の色が適用されます。</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
@@ -8227,12 +8214,12 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>True の場合、このレイヤー内のオブジェクトが技術図面ページに配置された場合に印刷色が使用されます。</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="100"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>このレイヤーに含まれるオブジェクトの線の色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="110"/>
@@ -8262,7 +8249,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>技術図面ワークベンチで使用する場合の、このレイヤーに含まれるオブジェクトの線の色</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="117"/>
@@ -8356,7 +8343,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="258"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>寸法線と矢印を表示</translation>
     </message>
   </context>
   <context>
@@ -8373,7 +8360,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="92"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>レイヤーの管理</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="95"/>

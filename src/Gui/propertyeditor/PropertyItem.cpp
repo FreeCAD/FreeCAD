@@ -4261,48 +4261,48 @@ void PropertyMaterialListItem::setValue(const QVariant& value)
         return;
     }
 
+    // Setting an appearance using the property editor resets the
+    // per-face appearance
+    list = list.mid(0, 1);
+
     QString data;
     QTextStream str(&data);
     str << "(";
 
-    for (const auto & it : list) {
-        auto mat = it.value<Material>();
-        App::Color dc; dc.setValue<QColor>(mat.diffuseColor);
-        App::Color ac; ac.setValue<QColor>(mat.ambientColor);
-        App::Color sc; sc.setValue<QColor>(mat.specularColor);
-        App::Color ec; ec.setValue<QColor>(mat.emissiveColor);
-        float s = mat.shininess;
-        float t = mat.transparency;
+    auto mat = list[0].value<Material>();
+    App::Color dc; dc.setValue<QColor>(mat.diffuseColor);
+    App::Color ac; ac.setValue<QColor>(mat.ambientColor);
+    App::Color sc; sc.setValue<QColor>(mat.specularColor);
+    App::Color ec; ec.setValue<QColor>(mat.emissiveColor);
+    float s = mat.shininess;
+    float t = mat.transparency;
 
-        QString item = QString::fromLatin1(
-            "App.Material("
-            "DiffuseColor=(%1,%2,%3),"
-            "AmbientColor=(%4,%5,%6),"
-            "SpecularColor=(%7,%8,%9),"
-            "EmissiveColor=(%10,%11,%12),"
-            "Shininess=(%13),"
-            "Transparency=(%14),"
-            ")"
-            )
-            .arg(dc.r, 0, 'f', decimals())
-            .arg(dc.g, 0, 'f', decimals())
-            .arg(dc.b, 0, 'f', decimals())
-            .arg(ac.r, 0, 'f', decimals())
-            .arg(ac.g, 0, 'f', decimals())
-            .arg(ac.b, 0, 'f', decimals())
-            .arg(sc.r, 0, 'f', decimals())
-            .arg(sc.g, 0, 'f', decimals())
-            .arg(sc.b, 0, 'f', decimals())
-            .arg(ec.r, 0, 'f', decimals())
-            .arg(ec.g, 0, 'f', decimals())
-            .arg(ec.b, 0, 'f', decimals())
-            .arg(s, 0, 'f', decimals())
-            .arg(t, 0, 'f', decimals())
-            ;
-        str << item << ", ";
-    }
-
-    str << ")";
+    QString item = QString::fromLatin1(
+        "App.Material("
+        "DiffuseColor=(%1,%2,%3),"
+        "AmbientColor=(%4,%5,%6),"
+        "SpecularColor=(%7,%8,%9),"
+        "EmissiveColor=(%10,%11,%12),"
+        "Shininess=(%13),"
+        "Transparency=(%14),"
+        ")"
+        )
+        .arg(dc.r, 0, 'f', decimals())
+        .arg(dc.g, 0, 'f', decimals())
+        .arg(dc.b, 0, 'f', decimals())
+        .arg(ac.r, 0, 'f', decimals())
+        .arg(ac.g, 0, 'f', decimals())
+        .arg(ac.b, 0, 'f', decimals())
+        .arg(sc.r, 0, 'f', decimals())
+        .arg(sc.g, 0, 'f', decimals())
+        .arg(sc.b, 0, 'f', decimals())
+        .arg(ec.r, 0, 'f', decimals())
+        .arg(ec.g, 0, 'f', decimals())
+        .arg(ec.b, 0, 'f', decimals())
+        .arg(s, 0, 'f', decimals())
+        .arg(t, 0, 'f', decimals())
+        ;
+    str << item << ")";
 
     setPropertyValue(data);
 }

@@ -49,7 +49,7 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>&amp;Draft View</source>
-      <translation>ドラフト・ビュー(&amp;D)</translation>
+      <translation>&amp;基本設計ビュー</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="778"/>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../../Command.cpp" line="417"/>
       <source>Insert orthographic views</source>
-      <translation>正投影表示を挿入</translation>
+      <translation>正投影ビューを挿入</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="418"/>
@@ -454,7 +454,7 @@ Do you want to continue?</source>
       <location filename="../../TaskOrthoViews.ui" line="457"/>
       <location filename="../../TaskOrthoViews.ui" line="482"/>
       <source>Right click for axonometric settings</source>
-      <translation>右クリックでアクソノ メトリック設定</translation>
+      <translation>右クリックで軸測投影の設定</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="329"/>
@@ -489,7 +489,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="681"/>
       <source>Show hidden lines</source>
-      <translation>隠線を表示</translation>
+      <translation>かくれ線を表示</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="688"/>
@@ -499,7 +499,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="699"/>
       <source>Axonometric</source>
-      <translation>不等角投影</translation>
+      <translation>軸測投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="707"/>
@@ -509,17 +509,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="718"/>
       <source>Isometric</source>
-      <translation>アイソメトリック</translation>
+      <translation>等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="723"/>
       <source>Dimetric</source>
-      <translation>ダイメトリック</translation>
+      <translation>二等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="728"/>
       <source>Trimetric</source>
-      <translation>不等角投影図法</translation>
+      <translation>不等角投影</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="736"/>
@@ -550,7 +550,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="848"/>
       <source> Trimetric</source>
-      <translation>不等角投影図法</translation>
+      <translation>不等角投影</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Page</source>
-      <translation>ページ</translation>
+      <translation>用紙</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -722,7 +722,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
-      <translation>部品オブジェクトを1 つだけ選択して下さい。</translation>
+      <translation>部品オブジェクトを一つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
@@ -743,19 +743,19 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="823"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>スプレッドシートオブジェクトを1 つだけ選択して下さい。</translation>
+      <translation>スプレッドシートオブジェクトを一つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="47"/>
       <location filename="../../TaskOrthoViews.cpp" line="1041"/>
       <source>Make axonometric...</source>
-      <translation>不等角投影図を作成...</translation>
+      <translation>軸測投影図を作成...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="48"/>
       <location filename="../../TaskOrthoViews.cpp" line="1042"/>
       <source>Edit axonometric settings...</source>
-      <translation>不等角投影図の設定を編集...</translation>
+      <translation>軸測投影の設定を編集...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="49"/>

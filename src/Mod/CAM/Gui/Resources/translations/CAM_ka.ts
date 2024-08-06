@@ -523,7 +523,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>აირჩიეთ CAM დავალება</translation>
     </message>
   </context>
   <context>
@@ -2336,7 +2336,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G-Code</source>
-      <translation type="unfinished">G-Code</translation>
+      <translation>G-code</translation>
     </message>
   </context>
   <context>
@@ -2486,31 +2486,30 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>შეიყვანეთ პოსტპროცესორის გატანის ნაგულისხმები ბილიკი დ არასავალდებულო ფაილის სახელი (იხ. ქვემოთ).
+პოსტპროცესინგისას შეგიძლიათ გამოიყენოთ შემდეგი ცვლადები:
+ჩანაცვლდება სიიდან:
+%D ... აქტიური დოკუმენტის საქაღალდე
+%d ... აქტიური დოკუმენტის სახელი (გაფართოების ჩათვლით)
+%M ... მომხმარებლის მაკროების საქაღალდე
+%j ... აქტიური დავალების ობიექტის სახელი
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+თუ გამოტანას ყოფთ, შეგიძლიათ, გამოიყენოთ შემდეგი ცვლადები (თუ გამოყოფა არ იყოფა, ეს პარამეტრები იგნორირებული იქნება).
+%T ... ხელსაწყოს ნომერი
+%t ... ხელსაწყოს კონტროლერის ჭდე
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... სამუშაოს კოორდინატების სისტემა
+%O ... ოპერაციის ჭდე
 
-When splitting output, a sequence number will always be added.
+გამოტანის დაყოფისას მიმდევრობის ნომერი ყოველთვის ემატება.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+თუ შეიცავს %S -ს, ასევე შეგიძლიათ, მიუთითოთ, სად ემატება რიცხვები. მის გარეშე რიცხვები სტრიქონის ბოლოს მიეწერება.
 
-%S ... Sequence Number
+%S ... მიმდევრობის ნომერი
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+შემდეგი მაგალითი ყველა ფაილს დოკუმენტების საქაღალდეში /home/freecad-ში ინახავს (მოაცილეთ ბრჭყალები):
+&amp;quot;home/cnc/%d.g-code&amp;quot;
+სახელების კონფლიქტებთან გასამკლავებლად იხილეთ ქვემოთ არსებული შენახვის პოლიტიკა.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -3389,12 +3388,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation type="unfinished">Launch CAMotics</translation>
+      <translation>CAMotics-ის გაშვება</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make CAMotics File</source>
-      <translation type="unfinished">Make CAMotics File</translation>
+      <translation>CAMotics-ის ფაილის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -3594,31 +3593,30 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
+      <translation>შეიყვანეთ პოსტპროცესორის გატანის ნაგულისხმები ბილიკი დ არასავალდებულო ფაილის სახელი (იხ. ქვემოთ).
+პოსტპროცესინგისას შეგიძლიათ გამოიყენოთ შემდეგი ცვლადები:
+ჩანაცვლდება სიიდან:
+%D ... აქტიური დოკუმენტის საქაღალდე
+%d ... აქტიური დოკუმენტის სახელი (გაფართოების ჩათვლით)
+%M ... მომხმარებლის მაკროების საქაღალდე
+%j ... აქტიური დავალების ობიექტის სახელი
 
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
+თუ გამოტანას ყოფთ, შეგიძლიათ, გამოიყენოთ შემდეგი ცვლადები (თუ გამოყოფა არ იყოფა, ეს პარამეტრები იგნორირებული იქნება).
+%T ... ხელსაწყოს ნომერი
+%t ... ხელსაწყოს კონტროლერის ჭდე
 
-%W ... Work Coordinate System
-%O ... Operation Label
+%W ... სამუშაოს კოორდინატების სისტემა
+%O ... ოპერაციის ჭდე
 
-When splitting output, a sequence number will always be added.
+გამოტანის დაყოფისას მიმდევრობის ნომერი ყოველთვის ემატება.
 
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+თუ შეიცავს %S -ს, ასევე შეგიძლიათ, მიუთითოთ, სად ემატება რიცხვები. მის გარეშე რიცხვები სტრიქონის ბოლოს მიეწერება.
 
-%S ... Sequence Number
+%S ... მიმდევრობის ნომერი
 
-The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
+შემდეგი მაგალითი ყველა ფაილს დოკუმენტების საქაღალდეში /home/freecad-ში ინახავს (მოაცილეთ ბრჭყალები):
+&quot;home/cnc/%d.g-code&quot;
+სახელების კონფლიქტებთან გასამკლავებლად იხილეთ ქვემოთ არსებული შენახვის პოლიტიკა.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
@@ -4161,7 +4159,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
       <source>CAMotics Project (*.camotics)</source>
-      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
+      <translation>CAMotics-ის პროექტი (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4228,7 +4226,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
-      <translation type="unfinished">Choose a CAM Job</translation>
+      <translation>აირჩიეთ CAM დავალება</translation>
     </message>
   </context>
   <context>
@@ -4681,37 +4679,32 @@ Default: 3 mm</source>
       <translation>დამატებითი დაშვება ნაწილის შემომსაზღვრელი ჩარჩოდან დადებითი Z მიმართულებით</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation>ობიექტის მასალა</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation>ნედლეულის შემ. ჩარჩოს სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation>ნედლეულის შემ. ჩარჩოს სიგანე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation>ნედლეულის შემ. ჩარჩოს სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation>ამ ნედლეულის ცილინდრის რადიუსი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation>ნედლეულის ცილინდრის სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation>ნედლეულის ტიპის შიდა გამოხატულება</translation>
     </message>
@@ -5209,7 +5202,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
+      <translation>მაქსიმალური დაშორება ირიბპირა შეერთებამდე</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5299,7 +5292,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
+      <translation>რკალებისთვის/წრიული წიბოებისთვის რადიუსის წანაცვლება ხელსაწყოს მოძრაობის ტრაექტორიისთვის.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5774,12 +5767,12 @@ Default: 3 mm</source>
       <translation type="unfinished">Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation>ნედლეულის მხარდაუჭერელი ტიპი სახელით {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>PathStock-ის შაბლონის მხარდაუჭერელი ვერსია {}</translation>
     </message>
@@ -5915,7 +5908,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
       <source>No job</source>
-      <translation type="unfinished">No job</translation>
+      <translation>დავალებების გარეშე</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -6342,7 +6335,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
       <source>Invalid G-code line: %s</source>
-      <translation type="unfinished">Invalid G-code line: %s</translation>
+      <translation>არასწორი G-code-ის ხაზი: %s</translation>
     </message>
   </context>
   <context>
@@ -7160,7 +7153,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>Output (G-code)</source>
-      <translation type="unfinished">Output (G-code)</translation>
+      <translation>გამოტანა (G-code)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
@@ -7170,7 +7163,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Surface Speed HSS</source>
-      <translation type="unfinished">Surface Speed HSS</translation>
+      <translation>HSS ზედაპირის სიჩქარე</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -8537,7 +8530,7 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
       <source>CAMotics tooltable (*.json)</source>
-      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
+      <translation>CAMotics-ის ხელსაწყოების ცხრილი (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8617,12 +8610,12 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
       <source>CAMotics</source>
-      <translation type="unfinished">CAMotics</translation>
+      <translation>CAMotics</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>Simulate using CAMotics</source>
-      <translation type="unfinished">Simulate using CAMotics</translation>
+      <translation>სიმულაცია CAMotics-ით</translation>
     </message>
   </context>
 </TS>

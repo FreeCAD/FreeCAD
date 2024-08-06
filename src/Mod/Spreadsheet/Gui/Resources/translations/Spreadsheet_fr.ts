@@ -663,7 +663,7 @@ créée si elle n'existe pas.</translation>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Texte pour l'unité de mesure</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>

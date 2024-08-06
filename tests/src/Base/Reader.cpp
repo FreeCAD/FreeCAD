@@ -307,7 +307,7 @@ TEST_F(ReaderTest, validDefaults)
     const char* value2 = Reader()->getAttribute("missing", "expected value");
     int value4 = Reader()->getAttributeAsInteger("missing", "-123");
     unsigned value6 = Reader()->getAttributeAsUnsigned("missing", "123");
-    float value8 = Reader()->getAttributeAsFloat("missing", "1.234");
+    double value8 = Reader()->getAttributeAsFloat("missing", "1.234");
 
     // Assert
     EXPECT_THROW({ Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);

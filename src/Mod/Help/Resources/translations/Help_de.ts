@@ -26,7 +26,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
       <source>Custom location</source>
-      <translation>Benutzerdefinierter Standort</translation>
+      <translation>Benutzerdefinierter Ablageort</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
@@ -88,7 +88,7 @@ oder &apos;Pandoc&apos; installiert sein.</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Hinweis: Wenn PySide-Web-Komponenten nicht auf dem System gefunden werden, werden Hilfe-Seiten im Standard-Webbrowser geöffnet, unabhängig von den folgenden Optionen</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -162,7 +162,7 @@ Markdown Version ausgewählt ist.</translation>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Es ist kein Markdown-Renderer auf dem System installiert, daher wird diese Hilfeseite so dargestellt, wie sie ist. Bitte die Markdown- oder Pandoc-Python-Module installieren, um die Darstellung dieser Seite zu verbessern.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

@@ -2,7 +2,9 @@
 # source:
 # - any: ['src/**/*', '!src/docs/*']
 
-Core:
+# 'Mod' related labels
+
+"Mod: Core":
 - changed-files:
   - any-glob-to-any-file: ['src/App/**/*', 'src/Base/**/*', 'src/Gui/**/*']
 
@@ -10,78 +12,90 @@ Core:
 - changed-files:
   - any-glob-to-any-file:  ['.github/**/*']
 
-Addon Manager:
+"Mod: Addon Manager":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/AddonManager/**/*']
 
-Materials:
+"Mod: Materials":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Material/**/*']
 
-WB BIM:
+"Mod: BIM":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/BIM/**/*']
 
-WB Assembly:
+"Mod: Assembly":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Assembly/**/*']
 
-WB Draft:
+"Mod: Draft":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Draft/**/*']
 
-WB FEM:
+"Mod: FEM":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Fem/**/*']
 
-WB Mesh:
+"Mod: Mesh":
 - changed-files:
   - any-glob-to-any-file: ['src/Mod/Mesh/**/*']
 
-WB MeshPart:
+"Mod: MeshPart":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/MeshPart/**/*']
 
-WB OpenSCAD:
+"Mod: OpenSCAD":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/OpenSCAD/**/*']
 
-WB Part:
+"Mod: Part":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Part/**/*']
 
-WB Part Design:
+"Mod: Part Design":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/PartDesign/**/*']
 
-WB CAM:
+"Mod: CAM":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/CAM/**/*']
 
-WB Points:
+"Mod: Points":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Points/**/*']
 
-WB ReverseEngineering:
+"Mod: Reverse Engineering":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/ReverseEngineering/**/*']
 
-WB Sketcher:
+"Mod: Sketcher":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Sketcher/**/*']
 
-WB Spreadsheet:
+"Mod: Spreadsheet":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Spreadsheet/**/*']
 
-WB Surface:
+"Mod: Surface":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Surface/**/*/']
 
-WB TechDraw:
+"Mod: TechDraw":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/TechDraw/**/*']
 
-WB Test:
+"Mod: Test":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Test/**/*']
+
+# 'Packaging' related labels
+
+"Packaging/building":
+- changed-files:
+  - any-glob-to-any-file:  ['cMake/**/*']
+
+# 'Topic' related labels
+
+"Topic: Stylesheets":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Gui/Stylesheets/**/*']

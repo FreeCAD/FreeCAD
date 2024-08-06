@@ -374,7 +374,9 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
         }
 
 #ifdef FC_USE_TNP_FIX
-        revol = TopoShape(from).makeElementRevolve(revolAx,angleTotal);
+        revol = TopoShape(from);
+        // revol.Tag = getID();
+        revol = revol.makeElementRevolve(revolAx,angleTotal);
         revol.Tag = -getID();
 #else
         // revolve the face to a solid
