@@ -1,0 +1,245 @@
+_help_parse: Options affecting listfile parsing
+parse:
+  _help_additional_commands:
+  - Specify structure for custom cmake functions
+  additional_commands:
+    foo:
+      flags:
+      - BAR
+      - BAZ
+      kwargs:
+        HEADERS: '*'
+        SOURCES: '*'
+        DEPENDS: '*'
+  _help_override_spec:
+  - Override configurations per-command where available
+  override_spec: {}
+  _help_vartags:
+  - Specify variable tags.
+  vartags: []
+  _help_proptags:
+  - Specify property tags.
+  proptags: []
+_help_format: Options affecting formatting.
+format:
+  _help_disable:
+  - Disable formatting entirely, making cmake-format a no-op
+  disable: false
+  _help_line_width:
+  - How wide to allow formatted cmake files
+  line_width: 100
+  _help_tab_size:
+  - How many spaces to tab for indent
+  tab_size: 4
+  _help_use_tabchars:
+  - If true, lines are indented using tab characters (utf-8
+  - 0x09) instead of <tab_size> space characters (utf-8 0x20).
+  - In cases where the layout would require a fractional tab
+  - character, the behavior of the  fractional indentation is
+  - governed by <fractional_tab_policy>
+  use_tabchars: false
+  _help_fractional_tab_policy:
+  - If <use_tabchars> is True, then the value of this variable
+  - indicates how fractional indentions are handled during
+  - whitespace replacement. If set to 'use-space', fractional
+  - indentation is left as spaces (utf-8 0x20). If set to
+  - '`round-up` fractional indentation is replaced with a single'
+  - tab character (utf-8 0x09) effectively shifting the column
+  - to the next tabstop
+  fractional_tab_policy: use-space
+  _help_max_subgroups_hwrap:
+  - If an argument group contains more than this many sub-groups
+  - (parg or kwarg groups) then force it to a vertical layout.
+  max_subgroups_hwrap: 2
+  _help_max_pargs_hwrap:
+  - If a positional argument group contains more than this many
+  - arguments, then force it to a vertical layout.
+  max_pargs_hwrap: 6
+  _help_max_rows_cmdline:
+  - If a cmdline positional group consumes more than this many
+  - lines without nesting, then invalidate the layout (and nest)
+  max_rows_cmdline: 2
+  _help_separate_ctrl_name_with_space:
+  - If true, separate flow control names from their parentheses
+  - with a space
+  separate_ctrl_name_with_space: false
+  _help_separate_fn_name_with_space:
+  - If true, separate function names from parentheses with a
+  - space
+  separate_fn_name_with_space: false
+  _help_dangle_parens:
+  - If a statement is wrapped to more than one line, than dangle
+  - the closing parenthesis on its own line.
+  dangle_parens: false
+  _help_dangle_align:
+  - If the trailing parenthesis must be 'dangled' on its on
+  - 'line, then align it to this reference: `prefix`: the start'
+  - 'of the statement,  `prefix-indent`: the start of the'
+  - 'statement, plus one indentation  level, `child`: align to'
+  - the column of the arguments
+  dangle_align: prefix
+  _help_min_prefix_chars:
+  - If the statement spelling length (including space and
+  - parenthesis) is smaller than this amount, then force reject
+  - nested layouts.
+  min_prefix_chars: 4
+  _help_max_prefix_chars:
+  - If the statement spelling length (including space and
+  - parenthesis) is larger than the tab width by more than this
+  - amount, then force reject un-nested layouts.
+  max_prefix_chars: 10
+  _help_max_lines_hwrap:
+  - If a candidate layout is wrapped horizontally but it exceeds
+  - this many lines, then reject the layout.
+  max_lines_hwrap: 2
+  _help_line_ending:
+  - What style line endings to use in the output.
+  line_ending: unix
+  _help_command_case:
+  - Format command names consistently as 'lower' or 'upper' case
+  command_case: canonical
+  _help_keyword_case:
+  - Format keywords consistently as 'lower' or 'upper' case
+  keyword_case: unchanged
+  _help_always_wrap:
+  - A list of command names which should always be wrapped
+  always_wrap: []
+  _help_enable_sort:
+  - If true, the argument lists which are known to be sortable
+  - will be sorted lexicographicall
+  enable_sort: true
+  _help_autosort:
+  - If true, the parsers may infer whether or not an argument
+  - list is sortable (without annotation).
+  autosort: false
+  _help_require_valid_layout:
+  - By default, if cmake-format cannot successfully fit
+  - everything into the desired linewidth it will apply the
+  - last, most agressive attempt that it made. If this flag is
+  - True, however, cmake-format will print error, exit with non-
+  - zero status code, and write-out nothing
+  require_valid_layout: false
+  _help_layout_passes:
+  - A dictionary mapping layout nodes to a list of wrap
+  - decisions. See the documentation for more information.
+  layout_passes: {}
+_help_markup: Options affecting comment reflow and formatting.
+markup:
+  _help_bullet_char:
+  - What character to use for bulleted lists
+  bullet_char: '*'
+  _help_enum_char:
+  - What character to use as punctuation after numerals in an
+  - enumerated list
+  enum_char: .
+  _help_first_comment_is_literal:
+  - If comment markup is enabled, don't reflow the first comment
+  - block in each listfile. Use this to preserve formatting of
+  - your copyright/license statements.
+  first_comment_is_literal: false
+  _help_literal_comment_pattern:
+  - If comment markup is enabled, don't reflow any comment block
+  - which matches this (regex) pattern. Default is `None`
+  - (disabled).
+  literal_comment_pattern: null
+  _help_fence_pattern:
+  - Regular expression to match preformat fences in comments
+  - default= ``r'^\s*([`~]{3}[`~]*)(.*)$'``
+  fence_pattern: ^\s*([`~]{3}[`~]*)(.*)$
+  _help_ruler_pattern:
+  - Regular expression to match rulers in comments default=
+  - '``r''^\s*[^\w\s]{3}.*[^\w\s]{3}$''``'
+  ruler_pattern: ^\s*[^\w\s]{3}.*[^\w\s]{3}$
+  _help_explicit_trailing_pattern:
+  - If a comment line matches starts with this pattern then it
+  - is explicitly a trailing comment for the preceeding
+  - argument. Default is '#<'
+  explicit_trailing_pattern: '#<'
+  _help_hashruler_min_length:
+  - If a comment line starts with at least this many consecutive
+  - hash characters, then don't lstrip() them off. This allows
+  - for lazy hash rulers where the first hash char is not
+  - separated by space
+  hashruler_min_length: 10
+  _help_canonicalize_hashrulers:
+  - If true, then insert a space between the first hash char and
+  - remaining hash chars in a hash ruler, and normalize its
+  - length to fill the column
+  canonicalize_hashrulers: true
+  _help_enable_markup:
+  - enable comment markup parsing and reflow
+  enable_markup: true
+_help_lint: Options affecting the linter
+lint:
+  _help_disabled_codes:
+  - a list of lint codes to disable
+  disabled_codes: []
+  _help_function_pattern:
+  - regular expression pattern describing valid function names
+  function_pattern: '[0-9a-z_]+'
+  _help_macro_pattern:
+  - regular expression pattern describing valid macro names
+  macro_pattern: '[0-9A-Z_]+'
+  _help_global_var_pattern:
+  - regular expression pattern describing valid names for
+  - variables with global (cache) scope
+  global_var_pattern: '[A-Z][0-9A-Z_]+'
+  _help_internal_var_pattern:
+  - regular expression pattern describing valid names for
+  - variables with global scope (but internal semantic)
+  internal_var_pattern: _[A-Z][0-9A-Z_]+
+  _help_local_var_pattern:
+  - regular expression pattern describing valid names for
+  - variables with local scope
+  local_var_pattern: '[a-z][a-z0-9_]+'
+  _help_private_var_pattern:
+  - regular expression pattern describing valid names for
+  - privatedirectory variables
+  private_var_pattern: _[0-9a-z_]+
+  _help_public_var_pattern:
+  - regular expression pattern describing valid names for public
+  - directory variables
+  public_var_pattern: '[A-Z][0-9A-Z_]+'
+  _help_argument_var_pattern:
+  - regular expression pattern describing valid names for
+  - function/macro arguments and loop variables.
+  argument_var_pattern: '[a-z][a-z0-9_]+'
+  _help_keyword_pattern:
+  - regular expression pattern describing valid names for
+  - keywords used in functions or macros
+  keyword_pattern: '[A-Z][0-9A-Z_]+'
+  _help_max_conditionals_custom_parser:
+  - In the heuristic for C0201, how many conditionals to match
+  - within a loop in before considering the loop a parser.
+  max_conditionals_custom_parser: 2
+  _help_min_statement_spacing:
+  - Require at least this many newlines between statements
+  min_statement_spacing: 1
+  _help_max_statement_spacing:
+  - Require no more than this many newlines between statements
+  max_statement_spacing: 2
+  max_returns: 6
+  max_branches: 12
+  max_arguments: 5
+  max_localvars: 15
+  max_statements: 50
+_help_encode: Options affecting file encoding
+encode:
+  _help_emit_byteorder_mark:
+  - If true, emit the unicode byte-order mark (BOM) at the start
+  - of the file
+  emit_byteorder_mark: false
+  _help_input_encoding:
+  - Specify the encoding of the input file. Defaults to utf-8
+  input_encoding: utf-8
+  _help_output_encoding:
+  - Specify the encoding of the output file. Defaults to utf-8.
+  - Note that cmake only claims to support utf-8 so be careful
+  - when using anything else
+  output_encoding: utf-8
+_help_misc: Miscellaneous configurations options.
+misc:
+  _help_per_command:
+  - A dictionary containing any per-command configuration
+  - overrides. Currently only `command_case` is supported.
+  per_command: {}
