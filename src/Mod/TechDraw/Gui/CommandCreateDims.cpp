@@ -1407,7 +1407,6 @@ CmdTechDrawDimension::CmdTechDrawDimension()
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
     sAccel = "D";
-    eType = ForEdit;
 }
 
 void CmdTechDrawDimension::activated(int iMsg)
@@ -1445,7 +1444,6 @@ public:
         sToolTipText = QT_TR_NOOP("Dimension tools.");
         sWhatsThis = "TechDraw_CompDimensionTools";
         sStatusTip = sToolTipText;
-        eType = ForEdit;
 
         setCheckable(false);
         setRememberLast(false);
@@ -1478,6 +1476,13 @@ public:
     }
 
     const char* className() const override { return "CmdTechDrawCompDimensionTools"; }
+
+    bool isActive() override
+    {
+        bool havePage = DrawGuiUtil::needPage(this);
+        bool haveView = DrawGuiUtil::needView(this);
+        return (havePage && haveView);
+    }
 };
 
 //===========================================================================
