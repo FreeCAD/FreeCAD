@@ -87,6 +87,13 @@ using DimensionType = TechDraw::DrawViewDimension::DimensionType;
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
 bool _checkDrawViewPart(Gui::Command* cmd);
 
+bool isDimCmdActive(Gui::Command* cmd)
+{
+    bool havePage = DrawGuiUtil::needPage(cmd);
+    bool haveView = DrawGuiUtil::needView(cmd);
+    return (havePage && haveView);
+}
+
 
 void execDistance(Gui::Command* cmd);
 void execDistanceX(Gui::Command* cmd);
@@ -1424,9 +1431,7 @@ void CmdTechDrawDimension::activated(int iMsg)
 
 bool CmdTechDrawDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 
@@ -1479,9 +1484,7 @@ public:
 
     bool isActive() override
     {
-        bool havePage = DrawGuiUtil::needPage(this);
-        bool haveView = DrawGuiUtil::needView(this);
-        return (havePage && haveView);
+        return isDimCmdActive(this);
     }
 };
 
@@ -1519,9 +1522,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
 
 bool CmdTechDrawRadiusDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execRadius(Gui::Command* cmd)
@@ -1569,9 +1570,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
 
 bool CmdTechDrawDiameterDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDiameter(Gui::Command* cmd)
@@ -1619,9 +1618,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
 
 bool CmdTechDrawLengthDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistance(Gui::Command* cmd)
@@ -1669,9 +1666,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
 
 bool CmdTechDrawHorizontalDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistanceX(Gui::Command* cmd)
@@ -1719,9 +1714,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
 
 bool CmdTechDrawVerticalDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execDistanceY(Gui::Command* cmd)
@@ -1768,9 +1761,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
 
 bool CmdTechDrawAngleDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execAngle(Gui::Command* cmd)
@@ -1817,9 +1808,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
 
 bool CmdTechDraw3PtAngleDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execAngle3Pt(Gui::Command* cmd)
@@ -1866,9 +1855,7 @@ void CmdTechDrawAreaDimension::activated(int iMsg)
 
 bool CmdTechDrawAreaDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execArea(Gui::Command* cmd)
@@ -2057,9 +2044,7 @@ void CmdTechDrawExtentGroup::languageChange()
 
 bool CmdTechDrawExtentGroup::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //===========================================================================
@@ -2097,9 +2082,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
 
 bool CmdTechDrawHorizontalExtentDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
@@ -2211,9 +2194,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
 
 bool CmdTechDrawVerticalExtentDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //===========================================================================
@@ -2367,9 +2348,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
 
 bool CmdTechDrawLandmarkDimension::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return isDimCmdActive(this);
 }
 
 //------------------------------------------------------------------------------
