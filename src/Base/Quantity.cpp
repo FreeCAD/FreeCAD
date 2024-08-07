@@ -22,18 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#ifdef FC_OS_WIN32
 #define _USE_MATH_DEFINES
-#endif  // FC_OS_WIN32
+#include <cmath>
 #include <array>
 #endif
 
 #include <fmt/format.h>
 #include <Base/Tools.h>
-#include "Quantity.h"
+
 #include "Exception.h"
+#include "Quantity.h"
 #include "UnitsApi.h"
-#include <boost/math/special_functions/fpclassify.hpp>
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -282,7 +281,7 @@ bool Quantity::isQuantity() const
 // true if it has a number with or without a unit
 bool Quantity::isValid() const
 {
-    return !boost::math::isnan(myValue);
+    return !std::isnan(myValue);
 }
 
 void Quantity::setInvalid()
