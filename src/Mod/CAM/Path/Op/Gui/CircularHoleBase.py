@@ -84,10 +84,8 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 self.form.baseList.setItem(self.form.baseList.rowCount() - 1, 0, item)
 
                 dia = obj.Proxy.holeDiameter(obj, base, sub)
-                item = QtGui.QTableWidgetItem("{:.3f}".format(dia))
-                item.setData(self.DataFeatureName, name)
-                item.setData(self.DataObject, base)
-                item.setData(self.DataObjectSub, sub)
+                item = QtGui.QTableWidgetItem()
+                item.setData(QtCore.Qt.DisplayRole, float(dia))
                 item.setTextAlignment(QtCore.Qt.AlignHCenter)
                 self.form.baseList.setItem(self.form.baseList.rowCount() - 1, 1, item)
 
