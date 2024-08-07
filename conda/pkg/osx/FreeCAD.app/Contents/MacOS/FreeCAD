@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+HERE=$(dirname "$(dirname "$0")")
+cat ${HERE}/packages.txt
+export PREFIX=${HERE}/Resources
+export LD_LIBRARY_PATH=${PREFIX}/lib
+export PYTHONHOME=${PREFIX}
+# export QT_QPA_PLATFORM_PLUGIN_PATH=${PREFIX}/plugins
+# export QT_XKB_CONFIG_ROOT=${PREFIX}/lib
+export FONTCONFIG_FILE=/etc/fonts/fonts.conf
+export FONTCONFIG_PATH=/etc/fonts
+export LANG="UTF-8"  # https://forum.freecad.org/viewtopic.php?f=22&t=42644
+export SSL_CERT_FILE=${PREFIX}/ssl/cacert.pem # https://forum.freecad.org/viewtopic.php?f=3&t=42825
+export GIT_SSL_CAINFO=${PREFIX}/ssl/cacert.pem
+
+if [[ `sw_vers -productVersion` > 10.99 ]] ; then
+  export QT_MAC_WANTS_LAYER=1
+fi
+
+"${PREFIX}/bin/freecad" $@
