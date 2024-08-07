@@ -1012,15 +1012,13 @@ void ParameterGrp::SetASCII(const char* Name, const char* sValue)
 {
     if (!_pGroupNode) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Setting attribute "
-                    << "FCText:" << Name << " in an orphan group " << _cName);
+            FC_WARN("Setting attribute " << "FCText:" << Name << " in an orphan group " << _cName);
         }
         return;
     }
     if (_Clearing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Adding attribute "
-                    << "FCText:" << Name << " while clearing " << GetPath());
+            FC_WARN("Adding attribute " << "FCText:" << Name << " while clearing " << GetPath());
         }
         return;
     }
