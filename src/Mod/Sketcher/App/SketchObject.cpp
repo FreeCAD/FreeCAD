@@ -11384,7 +11384,6 @@ App::ElementNamePair SketchObject::getElementName(
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        (void)realName;
         if (mapped)
             mappedElement = InternalShape.getShape().getElementName(name);
         else if (type == ElementNameType::Export)
