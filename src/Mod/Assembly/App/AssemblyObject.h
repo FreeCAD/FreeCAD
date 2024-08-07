@@ -250,8 +250,8 @@ public:
 
     static bool isEdgeType(App::DocumentObject* obj, std::string& elName, GeomAbs_CurveType type);
     static bool isFaceType(App::DocumentObject* obj, std::string& elName, GeomAbs_SurfaceType type);
-    static double getFaceRadius(App::DocumentObject* obj, const char* elName);
-    static double getEdgeRadius(App::DocumentObject* obj, const char* elName);
+    static double getFaceRadius(App::DocumentObject* obj, std::string& elName);
+    static double getEdgeRadius(App::DocumentObject* obj, std::string& elName);
 
     static DistanceType getDistanceType(App::DocumentObject* joint);
 
@@ -261,7 +261,7 @@ public:
     static double getJointDistance(App::DocumentObject* joint);
     static double getJointDistance2(App::DocumentObject* joint);
     static JointType getJointType(App::DocumentObject* joint);
-    static const char* getElementFromProp(App::DocumentObject* obj, const char* propName);
+    static std::string getElementFromProp(App::DocumentObject* obj, const char* propName);
     static std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
     static App::DocumentObject* getObjFromProp(App::DocumentObject* joint, const char* propName);
     static App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop);
