@@ -26,6 +26,7 @@
 # include <cstdlib>
 # include <QApplication>
 # include <QClipboard>
+# include <QElapsedTimer>
 # include <QFile>
 # include <QFileInfo>
 # include <QLocale>
@@ -38,6 +39,7 @@
 # include <QSysInfo>
 # include <QTextBrowser>
 # include <QTextStream>
+# include <QThread>
 # include <QWaitCondition>
 # include <Inventor/C/basic.h>
 #endif
@@ -112,9 +114,87 @@ QString prettyProductInfoWrapper()
     return productName;
 }
 
+class DelayMessage : public QThread
+{
+using Callback = std::function<void(const QString&)>;
+public:
+    DelayMessage(Callback func) : callback(func), wait_ms(0)
+    {
+        start();
+    }
+
+    ~DelayMessage()
+    {
+        mutex.lock();
+        wait_ms = -1;
+        cond.wakeAll();
+        mutex.unlock();
+        wait();
+    }
+
+    void run() override
+    {
+        for (;;) {
+            mutex.lock();
+            for (;;) {
+                switch (wait_ms) {
+                    case -1:
+                        mutex.unlock();
+                        return;
+                    case 0:
+                        cond.wait(&mutex);
+                        continue;
+                    default:
+                        if (cond.wait(&mutex, wait_ms)) {
+                            continue;
+                        }
+                        break;
+                }
+
+                if (wait_ms) {
+                    QString str = msg;
+                    wait_ms = 0;
+                    mutex.unlock();
+                    callback(str);
+                    break;
+                }
+                else {
+                    continue;
+                }
+            }
+        }
+    }
+
+    void put(const QString& str, int delay)
+    {
+        mutex.lock();
+        msg = str;
+        wait_ms = delay;
+        cond.wakeAll();
+        mutex.unlock();
+    }
+
+    void cancel()
+    {
+        mutex.lock();
+        wait_ms = 0;
+        cond.wakeAll();
+        mutex.unlock();
+    }
+
+private:
+    Callback callback;
+    int wait_ms;
+    QWaitCondition cond;
+    QMutex mutex;
+    QString msg;
+};
+
 /** Displays all messages at startup inside the splash screen.
  * \author Werner Mayer
  */
+constexpr const int SplashRefreshRateMs = 10;
+
 class SplashObserver : public Base::ILogger
 {
 public:
@@ -167,9 +247,13 @@ public:
                 textColor = col;
             }
         }
+
+        delay = new DelayMessage(std::bind(&SplashObserver::show, this, std::placeholders::_1));
+        first = true;
     }
     ~SplashObserver() override
     {
+        delete delay;
         Base::Console().DetachObserver(this);
     }
     const char* Name() override
@@ -210,16 +294,48 @@ public:
                 return;
         }
 
-        splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
-        QMutex mutex;
-        QMutexLocker ml(&mutex);
-        QWaitCondition().wait(&mutex, 50);
+        put(msg.replace(QLatin1String("\n"), QString()));
     }
 
 private:
+    void show(const QString& str)
+    {
+        printf("> [%4lld] %s\n", debug_ticks.elapsed(), str.toStdString().c_str());
+        debug_ticks.start();
+//        QMetaObject::invokeMethod(splash, [=]() { splash->showMessage(str, alignment, textColor); });
+        splash->showMessage(str, alignment, textColor);
+        ticks.start();
+    }
+
+    void put(const QString& str)
+    {
+        mutex.lock();
+        if (first) {
+            debug_ticks.start();
+            first = false;
+            show(str);
+        }
+        else {
+            auto elapsed = ticks.elapsed();
+            if (elapsed >= SplashRefreshRateMs) {
+                delay->cancel();
+                show(str);
+            }
+            else {
+                delay->put(str, SplashRefreshRateMs - elapsed + 1);
+            }
+        }
+        mutex.unlock();
+    }
+
     QSplashScreen* splash;
     int alignment;
     QColor textColor;
+    QMutex mutex;
+    QElapsedTimer ticks;
+    QElapsedTimer debug_ticks;
+    DelayMessage *delay;
+    bool first;
 };
 } // namespace Gui
 
