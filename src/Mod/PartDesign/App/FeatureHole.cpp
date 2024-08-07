@@ -1180,16 +1180,16 @@ std::optional<double> Hole::determineDiameter() const
         if (
             threadTypeStr == "BSP"
         ) {
-            double thread = 2 * (0.640627 * pitch);
-            double radius = 0.137329 * pitch;
-            double truncation = radius * (1 - std::cos(M_PI / 4));
+            double thread = 2 * (0.640327 * pitch);
+            double radius  = 0.137329 * pitch;
+            double truncation = 9 * radius / 8;
             // truncation is allowed by ISO-228
             diameter = diameter - thread + truncation + clearance;
         }
         else {
             // sharpV: H = sqrt(3)/2
             // depth: h = (5/8)*H
-            diameter = diameter - 0.999 * ((5 * sqrt(3) / 8) * pitch) + clearance;
+            diameter = diameter - (5 * sqrt(3) / 8) * pitch + clearance;
         }
     }
     else { // we have a clearance hole
@@ -2216,27 +2216,25 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     std::string threadTypeStr = ThreadType.getValueAsString();
     if (threadTypeStr == "BSP") {
         H = 0.960491 * Pitch; // Height of Sharp V
-        double radius = 0.137329 * Pitch; // radius of the crest
-        double h = 0.640627 * Pitch; // height of the thread
+        double radius  = 0.137329 * Pitch; // radius of the crest
         // construct the cross section going counter-clockwise
-        // pitch
         // --------------
-        // p4
-        //      p3
-        //          crest
-        //      p2
-        // p1
+        // P    | p4
+        // 5/8P |                p3
+        //      |                         crest
+        // 3/8P |                p2
+        // 0    | p1
         // --------------
-        // 0        dmaj
+        //      | base-sharpV    9/16r    dmaj     H
 
-        gp_Pnt p1 = toPnt((Dmaj - h + clearance) * xDir + Pitch / 8 * zDir);
-        gp_Pnt p4 = toPnt((Dmaj - h + clearance) * xDir + 7 * Pitch / 8 * zDir);
+        gp_Pnt p1 = toPnt((Dmaj - 5 * H / 6 + clearance) * xDir + .001 * Pitch * zDir);
+        gp_Pnt p4 = toPnt((Dmaj - 5 * H / 6 + clearance) * xDir + .999 * Pitch * zDir);
 
         // Calculate positions for p2 and p3 based on the arc radius
-        double p23x = Dmaj + clearance - radius * (1 - std::cos(M_PI / 4));
+        double p23x = Dmaj - 9 * radius / 16 + clearance;
 
-        gp_Pnt p2 = toPnt(p23x * xDir + 7 * Pitch / 16 * zDir);
-        gp_Pnt p3 = toPnt(p23x * xDir + 9 * Pitch / 16 * zDir);
+        gp_Pnt p2 = toPnt(p23x * xDir + 3 * Pitch / 8 * zDir);
+        gp_Pnt p3 = toPnt(p23x * xDir + 5 * Pitch / 8 * zDir);
         gp_Pnt crest = toPnt((Dmaj + clearance) * xDir + Pitch / 2 * zDir);
 
         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
@@ -2246,21 +2244,20 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
     } else {
         H = sqrt(3) / 2 * Pitch; // height of fundamental triangle
-        double h = 5 * H / 8; // height of the thread
+        double h = 7 * H / 8; // distance from Dmaj to the base
         // construct the cross section going counter-clockwise
-        // pitch
         // --------------
-        // p4
-        //      p3
-        //      p2
-        // p1
+        // P     | p4
+        // 9/16P |                p3
+        // 7/16P |                p2
+        // 0     | p1
         // --------------
-        // 0    dmaj
+        //       | base-sharpV    dmaj
 
-        gp_Pnt p1 = toPnt((Dmaj - h + clearance) * xDir + Pitch / 8 * zDir);
+        gp_Pnt p1 = toPnt((Dmaj - h + clearance) * xDir + .001 * zDir);
         gp_Pnt p2 = toPnt((Dmaj + clearance) * xDir + 7 * Pitch / 16 * zDir);
         gp_Pnt p3 = toPnt((Dmaj + clearance) * xDir + 9 * Pitch / 16 * zDir);
-        gp_Pnt p4 = toPnt((Dmaj - h + clearance) * xDir + 7 * Pitch / 8 * zDir);
+        gp_Pnt p4 = toPnt((Dmaj - h + clearance) * xDir + .999 * Pitch * zDir);
 
         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
