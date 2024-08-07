@@ -79,17 +79,21 @@ private:
     void initializeWidgets(ViewProviderVarSet* viewProvider);
 
     void setOkEnabled(bool enabled);
-    void clearEditors();
+    void clearEditors(bool clearName = true);
+    void clearCurrentProperty();
 
     void removeEditor();
     void addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& type);
 
     bool isTypeWithEditor(const std::string& type);
-    void createProperty(std::string& name, std::string& group);
+    void createProperty();
+    void changePropertyToAdd();
 
-    void onNamePropertyDetermined(const QString& text);
-    void onGroupDetermined();
-    void onTypePropertyDetermined();
+    void checkName();
+    void checkGroup();
+    void checkType();
+    void onEditFinished();
+    void onNamePropertyChanged(const QString& text);
 
     void getSupportedTypes(std::vector<Base::Type>& types);
 
