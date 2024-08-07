@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -33,6 +33,7 @@
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -68,6 +69,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
@@ -207,88 +209,163 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     return QGraphicsItemGroup::itemChange(change, value);
 }
 
-void QGIView::snapPosition(QPointF& mPos)
+//! align this view with others.  newPosition is in this view's parent's coord
+//! system.  if this view is not in a ProjectionGroup, then this is the scene
+//! position, otherwise it is the position within the ProjectionGroup.
+void QGIView::snapPosition(QPointF& newPosition)
 {
-    // For general views we check if the view is close to aligned vertically or horizontally to another view.
+    if (!Preferences::SnapViews()) {
+        return;
+    }
 
-    // First get a list of the views of the page.
-    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
-    if (!mdi) {
+    auto feature = getViewObject();
+    if (!feature) {
         return;
     }
-    ViewProviderPage* vp = mdi->getViewProviderPage();
-    if (!vp) {
+
+    auto dvp = dynamic_cast<DrawViewPart*>(feature);
+    if (dvp  &&
+        !dvp->hasGeometry()) {
+        // too early. wait for updates to finish.
         return;
     }
-    QGSPage* scenePage = vp->getQGSPage();
+
+    auto vpPage = getViewProviderPage(feature);
+
+    QGSPage* scenePage = vpPage->getQGSPage();
     if (!scenePage) {
         return;
     }
 
-    std::vector<QGIView*> views = scenePage->getViews();
-    qreal snapPercent = 0.05;
-
-    auto* sectionView = dynamic_cast<TechDraw::DrawViewSection*>(getViewObject());
+    auto* sectionView = dynamic_cast<TechDraw::DrawViewSection*>(feature);
     if (sectionView) {
-        auto* baseView = sectionView->getBaseDVP();
-        if (!baseView) { return; }
-
-        Base::Vector3d dir3d = sectionView->getSectionDirectionOnBaseView();
-        double bSize = Rez::guiX(baseView->getSizeAlongVector(dir3d));
-        double sSize = Rez::guiX(sectionView->getSizeAlongVector(dir3d));
-
-        auto* vpdv = dynamic_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
-        if (!vpdv) { return; }
-        auto* qgiv(dynamic_cast<QGIView*>(vpdv->getQView()));
-        if (!qgiv) { return; }
-        QPointF bvPos = qgiv->pos();
-        Base::Vector2d bvPt(bvPos.x(), bvPos.y());
-        Base::Vector2d mPt(mPos.x(), mPos.y());
-        Base::Vector2d dir(dir3d.x, dir3d.y);
-        if (dir.Length() < Precision::Confusion()) { return; }
-        dir.Normalize();
-
-        double snapDist = bSize * snapPercent;
-
-        Base::Vector2d projPt;
-        projPt.ProjectToLine(mPt - bvPt, dir);
-        projPt = projPt + bvPt;
-
-        Base::Vector2d v = (projPt - bvPt) + 0.5 * (sSize - bSize) * dir;
-        int sign = v * dir > 0 ? - 1 : 1;
-        double dist = v.Length();
-        if (dist < snapDist) {
-            v = dist * dir;
-            mPos = mPos + sign * QPointF(v.x, v.y);
-            return;
-        }
-
-       v = (projPt - bvPt) + 0.5 * (bSize - sSize) * dir;
-        sign = v * dir > 0 ? - 1 : 1;
-        dist = v.Length();
-        if (dist < snapDist) {
-            v = dist * dir;
-            mPos = mPos + sign * QPointF(v.x, v.y);
-            return;
-        }
+        snapSectionView(sectionView, newPosition);
+        return;
     }
 
-    for (auto* view : views) {
-        if (view == this) { continue; }
+    // For general views we check if the view is close to aligned vertically or horizontally to another view.
 
-        QPointF vPos = view->pos();
-        qreal dx = view->boundingRect().width() * snapPercent;
-        qreal dy = view->boundingRect().height() * snapPercent;
-        if (fabs(mPos.x() - vPos.x()) < dx) {
-            mPos.setX(vPos.x());
-            break;
+    // if we are not a section view, then we could be in a projection group and
+    // need to get the correct scene position.
+    auto newScenePos = newPosition;
+    if (parentItem()) {
+        newScenePos = parentItem()->mapToScene(newPosition);
+    }
+
+    // First get a list of the views of the page.
+    qreal snapPercent = Preferences::SnapLimitFactor();
+    std::vector<QGIView*> views = scenePage->getViews();
+    for (auto* view : views) {
+        if (view == this) {
+            continue;
         }
-        else if (fabs(mPos.y() - vPos.y()) < dy) {
-            mPos.setY(vPos.y());
-            break;
+
+        auto viewScenePos = view->scenePos();
+
+        auto xwindow = view->boundingRect().width() * snapPercent;
+        auto ywindow = view->boundingRect().height() * snapPercent;
+
+        auto xerror = fabs(newScenePos.x() - viewScenePos.x());
+        auto yerror = fabs(newScenePos.y() - viewScenePos.y());
+
+        // if the smaller of vertical and horizontal errors is within the acceptable
+        // window, snap to position.
+        if (xerror <= yerror  &&
+            xerror <= xwindow) {
+            newScenePos.setX(viewScenePos.x());
+            if (parentItem()) {
+                newScenePos = parentItem()->mapFromScene(newScenePos);
+            }
+            newPosition = newScenePos;
+            return;
+        }
+
+        if (yerror < xerror &&
+            yerror <= ywindow) {
+            newScenePos.setY(viewScenePos.y());
+            if (parentItem()) {
+                newScenePos = parentItem()->mapFromScene(newScenePos);
+            }
+            newPosition = newScenePos;
+            return;
         }
     }
 }
+
+
+//! snap this section view to its base view.  The section should be positioned on
+//! line from the base view along the section normal direction, ie the same direction
+//! as the arrows on the section line.
+// Note: positions are in Qt inverted Y coordinates. They need to be converted before
+// doing math on them, then converted back on return.
+// Note: section views are never inside a ProjectionGroup, so their position is
+// always in scene coordinates.
+void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
+                              QPointF& newPosition)
+{
+    auto* baseView = sectionView->getBaseDVP();
+    if (!baseView) {
+        return;
+    }
+    auto* vpdv = dynamic_cast<ViewProviderDrawingView*>(getViewProvider(baseView));
+    if (!vpdv) {
+        return;
+    }
+    auto* qgiv(dynamic_cast<QGIView*>(vpdv->getQView()));
+    if (!qgiv) {
+        return;
+    }
+
+    Base::Vector3d arrowDirection = sectionView->SectionNormal.getValue() * -1;
+    auto arrowDirectionOnBase = baseView->projectPoint(arrowDirection, false);
+    if (arrowDirectionOnBase.Length() < Precision::Confusion()) {
+        return;
+    }
+    arrowDirectionOnBase.Normalize();
+
+    double baseSize = Rez::guiX(baseView->getSizeAlongVector(arrowDirectionOnBase));
+    // it is difficult to snap to an angle, so we increase the limit
+    double snapDist = baseSize * getScale() * Preferences::SnapLimitFactor() * 2.0;
+
+    Base::Vector3d originBaseScenePos = DU::invertY(pointScenePos(sectionView->SectionOrigin.getValue(), qgiv));
+    Base::Vector3d originSectionScenePos = DU::invertY(pointScenePos(sectionView->SectionOrigin.getValue(), this));
+
+    Base::Vector3d actualAlignmentVector = originSectionScenePos - originBaseScenePos;
+    actualAlignmentVector.Normalize();
+
+    // if we are not on the correct side of the section line, we should not try to snap
+    auto dot = arrowDirectionOnBase.Dot(actualAlignmentVector);
+    if (dot <= 0) {
+        return;
+    }
+
+    auto currentPositionForMath = DU::invertY(DU::toVector3d(newPosition));
+    auto pointOnArrowLine = currentPositionForMath.Perpendicular(originBaseScenePos, arrowDirectionOnBase);
+    auto errorVector = currentPositionForMath - pointOnArrowLine;
+    if (errorVector.Length() < snapDist) {
+        newPosition = DU::toQPointF(DU::invertY(pointOnArrowLine));
+    }
+
+    return;
+}
+
+//! returns the position in the scene of a 3d point as it would appear in a QGIView.
+//! The result is in Qt scene coordinates (position on page with inverted Y).
+Base::Vector3d QGIView::pointScenePos(Base::Vector3d point3d, QGIView* qgiv)
+{
+    auto viewFeature = qgiv->getViewObject();
+    auto viewDvp = dynamic_cast<DrawViewPart*>(viewFeature);
+    if (!viewFeature ||
+        !viewDvp) {
+        return Base::Vector3d();
+    }
+    auto centerOfView = viewDvp->getCurrentCentroid();
+    auto centeredPoint = point3d - centerOfView;
+    auto pointInView = viewDvp->projectPoint(centeredPoint);
+    auto scenePos = qgiv->mapToScene(DU::toQPointF(pointInView));
+    return DU::toVector3d(scenePos);
+}
+
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
