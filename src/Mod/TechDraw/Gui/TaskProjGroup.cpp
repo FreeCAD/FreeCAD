@@ -313,8 +313,8 @@ void TaskProjGroup::turnViewToProjGroup()
     viewPart->X.setValue(0.0);
     viewPart->Y.setValue(0.0);
     viewPart->ScaleType.setValue("Custom");
-    viewPart->Scale.setStatus(App::Property::Hidden, true);
     viewPart->ScaleType.setStatus(App::Property::Hidden, true);
+    viewPart->Scale.setStatus(App::Property::Hidden, true);
     viewPart->Label.setValue("Front");
 
     multiView->addView(viewPart);
@@ -325,7 +325,7 @@ void TaskProjGroup::turnViewToProjGroup()
     viewPart->LockPosition.setStatus(App::Property::ReadOnly, true); //Front should stay locked.
     viewPart->LockPosition.purgeTouched();
 
-    multiView->requestPaint();//make sure the group object is on the Gui page
+    m_page->requestPaint();
     view = multiView;
 
     updateUi();
@@ -336,14 +336,11 @@ void TaskProjGroup::turnProjGroupToView()
     TechDraw::DrawViewPart* viewPart = multiView->getAnchor();
     viewPart->Scale.setValue(multiView->Scale.getValue());
     viewPart->ScaleType.setValue(multiView->ScaleType.getValue());
-    viewPart->Scale.setStatus(App::Property::Hidden, true);
-    viewPart->ScaleType.setStatus(App::Property::Hidden, true);
-    viewPart->Scale.purgeTouched();
-    viewPart->ScaleType.purgeTouched();
+    viewPart->Scale.setStatus(App::Property::Hidden, false);
+    viewPart->ScaleType.setStatus(App::Property::Hidden, false);
     viewPart->Label.setValue("View");
     viewPart->LockPosition.setValue(false);
     viewPart->LockPosition.setStatus(App::Property::ReadOnly, false);
-    viewPart->LockPosition.purgeTouched();
     viewPart->X.setValue(multiView->X.getValue());
     viewPart->Y.setValue(multiView->Y.getValue());
     m_page->addView(viewPart);
