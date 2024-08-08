@@ -95,6 +95,16 @@ def assembly_has_at_least_n_parts(n):
     return False
 
 
+def isLink(obj):
+    # If element count is not 0, then its a link group in which case the Link
+    # is a container and it's the LinkElement that is linking to external doc.
+    return (obj.TypeId == "App::Link" and obj.ElementCount == 0) or obj.TypeId == "App::LinkElement"
+
+
+def isLinkGroup(obj):
+    return obj.TypeId == "App::Link" and obj.ElementCount > 0
+
+
 def getObject(ref):
     if len(ref) != 2:
         return None
@@ -113,7 +123,6 @@ def getObject(ref):
         return None
 
     doc = ref[0].Document
-
     for i, obj_name in enumerate(names):
         obj = doc.getObject(obj_name)
 
@@ -124,7 +133,7 @@ def getObject(ref):
         if i == len(names) - 2:
             return obj
 
-        if obj.TypeId in {"App::Part", "Assembly::AssemblyObject"}:
+        if obj.TypeId in {"App::Part", "Assembly::AssemblyObject"} or isLinkGroup(obj):
             continue
 
         elif obj.TypeId == "PartDesign::Body":
@@ -142,7 +151,7 @@ def getObject(ref):
             # primitive, fastener, gear ...
             return obj
 
-        elif obj.TypeId == "App::Link":
+        elif isLink(obj):
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "PartDesign::Body":
                 if i + 1 < len(names):
@@ -173,72 +182,7 @@ def isBodySubObject(typeId):
     )
 
 
-# To be deprecated. CommandCreateView needs to stop using it.
-def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
-    # full_name is "Assembly.Assembly1.LinkOrPart1.LinkOrBox.Edge16" -> LinkOrPart1
-    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.pad.Edge16" -> LinkOrPart1
-    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.Sketch.Edge1" -> LinkOrPart1
-
-    if selected_object is None:
-        App.Console.PrintError("getContainingPart() in UtilsAssembly.py selected_object is None")
-        return None
-
-    names = full_name.split(".")
-    doc = App.ActiveDocument
-    if len(names) < 3:
-        App.Console.PrintError(
-            "getContainingPart() in UtilsAssembly.py the object name is too short, at minimum it should be something like 'Assembly.Box.edge16'. It shouldn't be shorter"
-        )
-        return None
-
-    for objName in names:
-        obj = doc.getObject(objName)
-
-        if not obj:
-            continue
-
-        if obj == selected_object:
-            return selected_object
-
-        if obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
-            if selected_object in obj.OutListRecursive:
-                return obj
-
-        # Note here we may want to specify a specific behavior for Assembly::AssemblyObject.
-        if obj.TypeId == "App::Part":
-            if selected_object in obj.OutListRecursive:
-                if not activeAssemblyOrPart:
-                    return obj
-                elif activeAssemblyOrPart in obj.OutListRecursive or obj == activeAssemblyOrPart:
-                    # If the user put the assembly inside a Part, then we ignore it.
-                    continue
-                else:
-                    return obj
-
-        elif obj.TypeId == "App::Link":
-            linked_obj = obj.getLinkedObject()
-            if linked_obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
-                if selected_object in linked_obj.OutListRecursive:
-                    return obj
-            if linked_obj.TypeId in ["App::Part", "Assembly::AssemblyObject"]:
-                # linked_obj_doc = linked_obj.Document
-                # selected_obj_in_doc = doc.getObject(selected_object.Name)
-                if selected_object in linked_obj.OutListRecursive:
-                    if not activeAssemblyOrPart:
-                        return obj
-                    elif (linked_obj.Document == activeAssemblyOrPart.Document) and (
-                        activeAssemblyOrPart in linked_obj.OutListRecursive
-                        or linked_obj == activeAssemblyOrPart
-                    ):
-                        continue
-                    else:
-                        return obj
-
-    # no container found so we return the object itself.
-    return selected_object
-
-
-# To be deprecated. Kept for migrationScript.
+# Deprecated. Kept for migrationScript.
 def getObjectInPart(objName, part):
     if part is None:
         return None
@@ -336,7 +280,7 @@ def getGlobalPlacement(ref, targetObj=None):
         if obj == targetObj:
             return plc
 
-        if obj.TypeId == "App::Link":
+        if isLink(obj):
             linked_obj = obj.getLinkedObject()
             doc = linked_obj.Document  # in case its an external link.
 
@@ -437,17 +381,15 @@ def findElementClosestVertex(assembly, ref, mousePos):
     if element_name == "":
         return ""
 
-    moving_part = getMovingPart(assembly, ref)
     obj = getObject(ref)
 
-    # We need mousePos to be relative to the part containing obj global placement
-    if obj != moving_part:
-        plc = App.Placement()
-        plc.Base = mousePos
-        global_plc = getGlobalPlacement(ref)
-        plc = global_plc.inverse() * plc  # We make it relative to obj Origin
-        plc = obj.Placement * plc  # Make plc in the same lcs as obj
-        mousePos = plc.Base
+    # We need mousePos to be in the same lcs as obj
+    plc = App.Placement()
+    plc.Base = mousePos
+    global_plc = getGlobalPlacement(ref)
+    plc = global_plc.inverse() * plc  # We make it relative to obj Origin
+    plc = obj.Placement * plc  # Make plc in the same lcs as obj
+    mousePos = plc.Base
 
     elt_type, elt_index = extract_type_and_number(element_name)
 
@@ -693,10 +635,10 @@ def getSubMovingParts(obj, partsAsSolid):
         objs.append(obj)
         return objs
 
-    elif obj.TypeId == "App::DocumentObjectGroup":
+    elif isLinkGroup(obj) or obj.TypeId == "App::DocumentObjectGroup":
         return getMovablePartsWithin(obj)
 
-    if obj.TypeId == "App::Link":
+    if isLink(obj):
         linked_obj = obj.getLinkedObject()
         if linked_obj.TypeId == "App::Part" or linked_obj.isDerivedFrom("Part::Feature"):
             return [obj]
@@ -727,7 +669,7 @@ def getCenterOfMass(parts):
 def getObjMassAndCom(obj, containingPart=None):
     link_global_plc = None
 
-    if obj.TypeId == "App::Link":
+    if isLink(obj):
         link_global_plc = getGlobalPlacement(obj, containingPart)
         obj = obj.getLinkedObject()
 
@@ -754,14 +696,23 @@ def getObjMassAndCom(obj, containingPart=None):
         com = comPlc.Base * mass
         return mass, com
 
-    elif obj.isDerivedFrom("App::Part") or obj.isDerivedFrom("App::DocumentObjectGroup"):
+    elif (
+        isLinkGroup(obj)
+        or obj.isDerivedFrom("App::Part")
+        or obj.isDerivedFrom("App::DocumentObjectGroup")
+    ):
         if containingPart is None and obj.isDerivedFrom("App::Part"):
             containingPart = obj
 
         total_mass = 0
         total_com = App.Vector(0, 0, 0)
 
-        for subObj in obj.OutList:
+        if isLinkGroup(obj):
+            children = obj.ElementList
+        else:
+            children = obj.Group
+
+        for subObj in children:
             mass, com = getObjMassAndCom(subObj, containingPart)
             total_mass += mass
             total_com += com
@@ -1134,6 +1085,10 @@ def getMovingPart(assembly, ref):
         if obj.TypeId == "App::DocumentObjectGroup":
             continue  # we ignore groups.
 
+        # If it is a LinkGroup then we skip it
+        if isLinkGroup(obj):
+            continue
+
         return obj
 
     return None
@@ -1195,3 +1150,23 @@ def addVertexToReference(ref, vertex_name):
             ref = [ref[0], subs]
 
     return ref
+
+
+def getLinkGroup(linkElement):
+    if linkElement.TypeId == "App::LinkElement":
+        for obj in linkElement.InList:
+            if obj.TypeId == "App::Link":
+                if linkElement in obj.ElementList:
+                    return obj
+        print("Link Group not found.")
+
+    return None
+
+
+def getParentPlacementIfNeeded(part):
+    if part.TypeId == "App::LinkElement":
+        linkGroup = getLinkGroup(part)
+        if linkGroup:
+            return linkGroup.Placement
+
+    return Base.Placement()

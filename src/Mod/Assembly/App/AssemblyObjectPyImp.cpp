@@ -68,6 +68,15 @@ PyObject* AssemblyObjectPy::solve(PyObject* args)
     return Py_BuildValue("i", ret);
 }
 
+PyObject* AssemblyObjectPy::ensureIdentityPlacements(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    this->getAssemblyObjectPtr()->ensureIdentityPlacements();
+    Py_Return;
+}
+
 PyObject* AssemblyObjectPy::undoSolve(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
