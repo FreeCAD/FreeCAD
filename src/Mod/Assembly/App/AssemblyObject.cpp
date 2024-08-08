@@ -2291,6 +2291,10 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;
         }
 
+        if (obj->isDerivedFrom<App::DocumentObjectGroup>()) {
+            continue;  // we ignore groups.
+        }
+
         return obj;
     }
 
