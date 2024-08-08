@@ -118,8 +118,9 @@ protected:
     friend class GeometryFacadePy;
 
 public:  // Factory methods
-    static std::unique_ptr<GeometryFacade> getFacade(Part::Geometry* geometry, bool owner = false);
-    static std::unique_ptr<const GeometryFacade> getFacade(const Part::Geometry* geometry);
+    static std::unique_ptr<GeometryFacade> getFacade(const Part::Geometry* geometry,
+                                                     bool owner = false);
+    // static std::unique_ptr<const GeometryFacade> getFacade(const Part::Geometry* geometry);
 
 public:  // Utility methods
     static void ensureSketchGeometryExtension(Part::Geometry* geometry);
@@ -132,7 +133,7 @@ public:  // Utility methods
     static void setInternalType(Part::Geometry* geometry, InternalType::InternalType type);
     static bool getBlocked(const Part::Geometry* geometry);
     static int getId(const Part::Geometry* geometry);
-    static void setId(Part::Geometry* geometry, int id);
+    static void setId(const Part::Geometry* geometry, int id);
 
 public:
     // Explicit deletion to show intent (not that it is needed)
