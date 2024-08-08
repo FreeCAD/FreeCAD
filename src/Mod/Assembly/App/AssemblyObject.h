@@ -171,6 +171,8 @@ public:
     static void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
 
+    // This makes sure that LinkGroups or sub-assemblies have identity placements.
+    void ensureIdentityPlacements();
 
     // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
@@ -191,8 +193,8 @@ public:
     int slidingPartIndex(App::DocumentObject* joint);
 
     void jointParts(std::vector<App::DocumentObject*> joints);
-    JointGroup* getJointGroup();
-    ViewGroup* getExplodedViewGroup();
+    JointGroup* getJointGroup() const;
+    ViewGroup* getExplodedViewGroup() const;
     std::vector<App::DocumentObject*>
     getJoints(bool updateJCS = true, bool delBadJoints = false, bool subJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
@@ -257,7 +259,7 @@ public:
 
     static DistanceType getDistanceType(App::DocumentObject* joint);
 
-    static JointGroup* getJointGroup(App::Part* part);
+    static JointGroup* getJointGroup(const App::Part* part);
 
     // getters to get from properties
     static void setJointActivated(App::DocumentObject* joint, bool val);

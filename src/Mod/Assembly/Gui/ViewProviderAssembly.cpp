@@ -544,6 +544,17 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
 
     // Check if the selected object is a child of the assembly
     if (!assemblyPart->hasObject(obj, true)) {
+        // hasObject does not detect LinkElements (see
+        // https://github.com/FreeCAD/FreeCAD/issues/16113) the following block can be removed if
+        // the issue is fixed :
+        auto* linkEl = dynamic_cast<App::LinkElement*>(obj);
+        if (linkEl) {
+            auto* linkGroup = linkEl->getLinkGroup();
+            if (assemblyPart->hasObject(linkGroup, true)) {
+                return true;
+            }
+        }
+
         return false;
     }
 

@@ -92,7 +92,7 @@ namespace PartApp = Part;
 using namespace Assembly;
 using namespace MbD;
 
-void printPlacement(Base::Placement plc, const char* name)
+static void printPlacement(Base::Placement plc, const char* name)
 {
     Base::Vector3d pos = plc.getPosition();
     Base::Vector3d axis;
@@ -109,6 +109,39 @@ void printPlacement(Base::Placement plc, const char* name)
         axis.y,
         axis.z,
         angle);
+}
+
+static bool isLink(App::DocumentObject* obj)
+{
+    if (!obj) {
+        return false;
+    }
+
+    auto* link = dynamic_cast<App::Link*>(obj);
+    if (link) {
+        return link->ElementCount.getValue() == 0;
+    }
+
+    auto* linkEl = dynamic_cast<App::LinkElement*>(obj);
+    if (linkEl) {
+        return true;
+    }
+
+    return false;
+}
+
+static bool isLinkGroup(App::DocumentObject* obj)
+{
+    if (!obj) {
+        return false;
+    }
+
+    auto* link = dynamic_cast<App::Link*>(obj);
+    if (link) {
+        return link->ElementCount.getValue() > 0;
+    }
+
+    return false;
 }
 
 // ================================ Assembly Object ============================
@@ -144,6 +177,8 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
 
 int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 {
+    ensureIdentityPlacements();
+
     mbdAssembly = makeMbdAssembly();
     objectPartMap.clear();
 
@@ -454,7 +489,7 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::Docum
     return nullptr;
 }
 
-JointGroup* AssemblyObject::getJointGroup(App::Part* part)
+JointGroup* AssemblyObject::getJointGroup(const App::Part* part)
 {
     App::Document* doc = part->getDocument();
 
@@ -471,12 +506,12 @@ JointGroup* AssemblyObject::getJointGroup(App::Part* part)
     return nullptr;
 }
 
-JointGroup* AssemblyObject::getJointGroup()
+JointGroup* AssemblyObject::getJointGroup() const
 {
     return getJointGroup(this);
 }
 
-ViewGroup* AssemblyObject::getExplodedViewGroup()
+ViewGroup* AssemblyObject::getExplodedViewGroup() const
 {
     App::Document* doc = getDocument();
 
@@ -1693,6 +1728,37 @@ void AssemblyObject::updateGroundedJointsPlacements()
     }
 }
 
+void AssemblyObject::ensureIdentityPlacements()
+{
+    std::vector<App::DocumentObject*> group = Group.getValues();
+    for (auto* obj : group) {
+        // When used in assembly, link groups must have identity placements.
+        if (isLinkGroup(obj)) {
+            auto* link = dynamic_cast<App::Link*>(obj);
+            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            if (!pPlc || !link) {
+                continue;
+            }
+
+            Base::Placement plc = pPlc->getValue();
+            if (plc.isIdentity()) {
+                continue;
+            }
+
+            pPlc->setValue(Base::Placement());
+            obj->purgeTouched();
+
+            // To keep the LinkElement positions, we apply plc to their placements
+            std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
+            for (auto* elt : elts) {
+                pPlc = dynamic_cast<App::PropertyPlacement*>(elt->getPropertyByName("Placement"));
+                pPlc->setValue(plc * pPlc->getValue());
+                elt->purgeTouched();
+            }
+        }
+    }
+}
+
 // ======================================= Utils ======================================
 
 void AssemblyObject::swapJCS(App::DocumentObject* joint)
@@ -2055,7 +2121,7 @@ Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetOb
         if (obj == targetObj) {
             return plc;
         }
-        if (obj->isDerivedFrom<App::Link>()) {
+        if (isLink(obj)) {
             // Update doc in case its an external link.
             doc = obj->getLinkedObject()->getDocument();
         }
@@ -2240,7 +2306,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             return obj;
         }
 
-        if (obj->isDerivedFrom<App::Part>()) {
+        if (obj->isDerivedFrom<App::Part>() || isLinkGroup(obj)) {
             continue;
         }
         else if (obj->isDerivedFrom<PartDesign::Body>()) {
@@ -2250,7 +2316,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             // Primitive, fastener, gear, etc.
             return obj;
         }
-        else if (obj->isDerivedFrom<App::Link>()) {
+        else if (isLink(obj)) {
             App::DocumentObject* linked_obj = obj->getLinkedObject();
             if (linked_obj->isDerivedFrom<PartDesign::Body>()) {
                 auto* retObj = handlePartDesignBody(linked_obj, it);
@@ -2315,7 +2381,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;
         }
 
-        if (obj->isDerivedFrom<App::Link>()) {  // update the document if necessary for next object
+        if (isLink(obj)) {  // update the document if necessary for next object
             doc = obj->getLinkedObject()->getDocument();
         }
 
@@ -2330,6 +2396,10 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
 
         if (obj->isDerivedFrom<App::DocumentObjectGroup>()) {
             continue;  // we ignore groups.
+        }
+
+        if (isLinkGroup(obj)) {
+            continue;
         }
 
         return obj;
