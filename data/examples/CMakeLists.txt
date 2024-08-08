@@ -10,6 +10,7 @@ SET(Examples_Files
     FemCalculixCantilever2D.FCStd
     FemCalculixCantilever3D.FCStd
     AssemblyExample.FCStd
+    ArchDetail.FCStd
 )
 
 ADD_CUSTOM_TARGET(Example_data ALL
