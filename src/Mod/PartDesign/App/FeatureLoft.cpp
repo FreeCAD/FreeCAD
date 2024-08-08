@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "FeatureLoft.h"
 
-#include "PreCompiled.h"
+// NOLINTNEXTLINE(CppUnusedIncludeDirective)
+#include "PreCompiled.h"    // NOLINT(misc-include-cleaner)
 #ifndef _PreComp_
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
 # include <TopoDS.hxx>
 # include <Precision.hxx>
 #endif
@@ -42,7 +38,6 @@
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
-#include "FeatureLoft.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
 
@@ -360,7 +355,7 @@ Loft::getSectionShape(const char *name,
     auto compound = TopoShape(0).makeElementCompound(shapes, "", TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
     auto wires = compound.getSubTopoShapes(TopAbs_WIRE);
     auto edges = compound.getSubTopoShapes(TopAbs_EDGE, TopAbs_WIRE); // get free edges and make wires from it
-    if (edges.size()) {
+    if ( ! edges.empty()) {
         auto extra = TopoShape(0).makeElementWires(edges).getSubTopoShapes(TopAbs_WIRE);
         wires.insert(wires.end(), extra.begin(), extra.end());
     }
@@ -378,7 +373,7 @@ Loft::getSectionShape(const char *name,
     return vertices;
 }
 
-App::DocumentObjectExecReturn *Loft::execute(void)
+App::DocumentObjectExecReturn *Loft::execute()
 {
     std::vector<TopoShape> wires;
     try {
@@ -397,13 +392,13 @@ App::DocumentObjectExecReturn *Loft::execute(void)
     auto hasher = getDocument()->getStringHasher();
 
     try {
-        //setup the location
+        // setup the location
         this->positionByPrevious();
         auto invObjLoc = this->getLocation().Inverted();
         if(!base.isNull())
             base.move(invObjLoc);
 
-        //build up multisections
+        // build up multisections
         auto multisections = Sections.getSubListValues();
         if(multisections.empty())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: At least one section is needed"));
@@ -422,68 +417,59 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         TopoShape result(0,hasher);
         std::vector<TopoShape> shapes;
 
-//        if (SplitProfile.getValue()) {
-//            for (auto &wires : wiresections) {
-//                for(auto& wire : wires)
-//                    wire.move(invObjLoc);
-//                shapes.push_back(TopoShape(0).makeElementLoft(
-//                    wires, Part::IsSolid::solid, Ruled.getValue(), Closed.getValue()));
-//            }
-//        } else {
-            //build all shells
-            std::vector<TopoShape> shells;
-            for (auto &wires : wiresections) {
-                for(auto& wire : wires)
-                    wire.move(invObjLoc);
-                shells.push_back(TopoShape(0, hasher).makeElementLoft(
-                    wires, Part::IsSolid::notSolid, Ruled.getValue()? Part::IsRuled::ruled : Part::IsRuled::notRuled, Closed.getValue() ? Part::IsClosed::closed : Part::IsClosed::notClosed));
-//            }
-
-            //build the top and bottom face, sew the shell and build the final solid
-            TopoShape front;
-            if (wiresections[0].front().shapeType() != TopAbs_VERTEX) {
-                front = getTopoShapeVerifiedFace();
-                if (front.isNull())
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Loft: Creating a face from sketch failed"));
-                front.move(invObjLoc);
-            }
-
-            TopoShape back;
-            if (wiresections[0].back().shapeType() != TopAbs_VERTEX) {
-                std::vector<TopoShape> backwires;
-                for(auto& wires : wiresections)
-                    backwires.push_back(wires.back());
-                back = TopoShape(0).makeElementFace(backwires);
-            }
-
-            if (!front.isNull() || !back.isNull()) {
-                BRepBuilderAPI_Sewing sewer;
-                sewer.SetTolerance(Precision::Confusion());
-                if (!front.isNull())
-                    sewer.Add(front.getShape());
-                if (!back.isNull())
-                    sewer.Add(back.getShape());
-                for(auto& s : shells)
-                    sewer.Add(s.getShape());
-
-                sewer.Perform();
-
-                if (!front.isNull())
-                    shells.push_back(front);
-                if (!back.isNull())
-                    shells.push_back(back);
-//                result = result.makeElementShape(sewer,shells);
-                result = result.makeShapeWithElementMap(sewer.SewedShape(), Part::MapperSewing(sewer), shells, Part::OpCodes::Sewing);
-            }
-
-            if(!result.countSubShapes(TopAbs_SHELL))
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Failed to create shell"));
-            shapes = result.getSubTopoShapes(TopAbs_SHELL);
+        // build all shells
+        std::vector<TopoShape> shells;
+        for (auto &sectionWires : wiresections) {
+            for(auto& wire : sectionWires)
+                wire.move(invObjLoc);
+            shells.push_back(TopoShape(0, hasher).makeElementLoft(
+                sectionWires, Part::IsSolid::notSolid, Ruled.getValue()? Part::IsRuled::ruled : Part::IsRuled::notRuled, Closed.getValue() ? Part::IsClosed::closed : Part::IsClosed::notClosed));
         }
 
+        // build the top and bottom face, sew the shell and build the final solid
+        TopoShape front;
+        if (wiresections[0].front().shapeType() != TopAbs_VERTEX) {
+            front = getTopoShapeVerifiedFace();
+            if (front.isNull())
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Loft: Creating a face from sketch failed"));
+            front.move(invObjLoc);
+        }
+
+        TopoShape back;
+        if (wiresections[0].back().shapeType() != TopAbs_VERTEX) {
+            std::vector<TopoShape> backwires;
+            for(auto& sectionWires : wiresections)
+                backwires.push_back(sectionWires.back());
+            back = TopoShape(0).makeElementFace(backwires);
+        }
+
+        if (!front.isNull() || !back.isNull()) {
+            BRepBuilderAPI_Sewing sewer;
+            sewer.SetTolerance(Precision::Confusion());
+            if (!front.isNull())
+                sewer.Add(front.getShape());
+            if (!back.isNull())
+                sewer.Add(back.getShape());
+            for(auto& s : shells)
+                sewer.Add(s.getShape());
+
+            sewer.Perform();
+
+            if (!front.isNull())
+                shells.push_back(front);
+            if (!back.isNull())
+                shells.push_back(back);
+            // equivalent of the removed: result = result.makeElementShape(sewer,shells);
+            result = result.makeShapeWithElementMap(sewer.SewedShape(), Part::MapperSewing(sewer), shells, Part::OpCodes::Sewing);
+        }
+
+        if(!result.countSubShapes(TopAbs_SHELL))
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Failed to create shell"));
+        shapes = result.getSubTopoShapes(TopAbs_SHELL);
+
         for (auto &s : shapes) {
-            //build the solid
+            // build the solid
             s = s.makeElementSolid();
             BRepClass3d_SolidClassifier SC(s.getShape());
             SC.PerformInfinitePoint(Precision::Confusion());
@@ -514,9 +500,6 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             case Subtractive:
                 maker = Part::OpCodes::Cut;
                 break;
-//            case Intersecting:
-//                maker = Part::OpCodes::Common;
-//                break;
             default:
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
         }

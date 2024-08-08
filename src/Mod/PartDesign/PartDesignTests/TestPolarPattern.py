@@ -44,6 +44,7 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
 
     def testYAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -61,6 +62,7 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
 
     def testZAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -78,6 +80,7 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
 
     def testNormalSketchAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -98,6 +101,7 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
 
     def testVerticalSketchAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -118,6 +122,7 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
 
     def testHorizontalSketchAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -138,6 +143,7 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
 
     def tearDown(self):
         #closing doc

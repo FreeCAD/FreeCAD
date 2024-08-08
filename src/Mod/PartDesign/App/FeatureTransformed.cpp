@@ -282,38 +282,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
     supportShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape support = supportShape.getShape();
 
     auto getTransformedCompShape = [&](const auto& origShape) {
-        TopTools_ListOfShape shapeTools;
-        std::vector<TopoDS_Shape> shapes;
-
+        std::vector<TopoShape> shapes;
+        TopoShape shape = origShape;
         auto transformIter = transformations.cbegin();
-
-        // First transformation is skipped since it should not be part of the toolShape.
-        ++transformIter;
-
         for (; transformIter != transformations.end(); ++transformIter) {
-            // Make an explicit copy of the shape because the "true" parameter to
-            // BRepBuilderAPI_Transform seems to be pretty broken
-            BRepBuilderAPI_Copy copy(origShape);
-
-            TopoDS_Shape shape = copy.Shape();
-
-            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false);  // No need to copy, now
-            if (!mkTrf.IsDone()) {
-                throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Transformation failed"));
-            }
-            shape = mkTrf.Shape();
-
-            shapes.emplace_back(shape);
+            shapes.emplace_back(shape.makeElementTransform(*transformIter));
         }
-
-        for (const auto& shape : shapes) {
-            shapeTools.Append(shape);
-        }
-
-        return shapeTools;
+        return shapes;
     };
 
     switch (mode) {
@@ -360,74 +337,41 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
 #endif
 
-                TopoDS_Shape current = support;
                 if (!fuseShape.isNull()) {
-                    TopTools_ListOfShape shapeArguments;
-                    shapeArguments.Append(current);
-                    TopTools_ListOfShape shapeTools = getTransformedCompShape(fuseShape.getShape());
-                    if (!shapeTools.IsEmpty()) {
-                        BRepAlgoAPI_Fuse mkBool;
-                        mkBool.SetArguments(shapeArguments);
-                        mkBool.SetTools(shapeTools);
-                        mkBool.Build();
-                        if (!mkBool.IsDone()) {
-                            return new App::DocumentObjectExecReturn(
-                                QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                        }
-                        current = mkBool.Shape();
-                    }
+                    supportShape = supportShape.makeElementFuse(getTransformedCompShape(fuseShape.getShape()));
                 }
                 if (!cutShape.isNull()) {
-                    TopTools_ListOfShape shapeArguments;
-                    shapeArguments.Append(current);
-                    TopTools_ListOfShape shapeTools = getTransformedCompShape(cutShape.getShape());
-                    if (!shapeTools.IsEmpty()) {
-                        BRepAlgoAPI_Cut mkBool;
-                        mkBool.SetArguments(shapeArguments);
-                        mkBool.SetTools(shapeTools);
-                        mkBool.Build();
-                        if (!mkBool.IsDone()) {
-                            return new App::DocumentObjectExecReturn(
-                                QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                        }
-                        current = mkBool.Shape();
-                    }
+                    supportShape = supportShape.makeElementCut(getTransformedCompShape(cutShape.getShape()));
                 }
-
-                support = current;  // Use result of this operation for fuse/cut of next original
             }
             break;
         case Mode::TransformBody: {
-            TopTools_ListOfShape shapeArguments;
-            shapeArguments.Append(support);
-            TopTools_ListOfShape shapeTools = getTransformedCompShape(support);
-            if (!shapeTools.IsEmpty()) {
-                BRepAlgoAPI_Fuse mkBool;
-                mkBool.SetArguments(shapeArguments);
-                mkBool.SetTools(shapeTools);
-                mkBool.Build();
-                if (!mkBool.IsDone()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                }
-                support = mkBool.Shape();
-            }
+            supportShape = supportShape.makeElementFuse(getTransformedCompShape(supportShape));
             break;
         }
     }
 
-    support = refineShapeIfActive(support);
-
-    if (!isSingleSolidRuleSatisfied(support)) {
+    supportShape = refineShapeIfActive((supportShape));
+    if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
         Base::Console().Warning("Transformed: Result has multiple solids. Only keeping the first.\n");
     }
 
-    this->Shape.setValue(getSolid(support));  // picking the first solid
-    rejected = getRemainingSolids(support);
+    this->Shape.setValue(getSolid(supportShape));  // picking the first solid
+    rejected = getRemainingSolids(supportShape.getShape());
 
     return App::DocumentObject::StdReturn;
 }
 
+
+TopoShape Transformed::refineShapeIfActive(const TopoShape& oldShape) const
+{
+    if (this->Refine.getValue()) {
+        return oldShape.makeElementRefine();
+    }
+    return oldShape;
+}
+
+// Deprecated, prefer the TopoShape method
 TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
 {
     if (this->Refine.getValue()) {
