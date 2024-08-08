@@ -155,7 +155,7 @@ QVariant FilletRadiusModel::data(const QModelIndex& index, int role) const
     QVariant value = QStandardItemModel::data(index, role);
     if (role == Qt::DisplayRole && index.column() >= 1) {
         Base::Quantity q = value.value<Base::Quantity>();
-        QString str = q.getUserString();
+        QString str = QString::fromStdString(q.getUserString());
         return str;
     }
     return value;

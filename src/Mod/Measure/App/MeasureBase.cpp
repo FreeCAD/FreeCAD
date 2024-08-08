@@ -146,7 +146,7 @@ std::vector<std::string> MeasureBase::getInputProps() {
 QString MeasureBase::getResultString() {
     Py::Object proxy = getProxyObject();
     Base::PyGILStateLocker lock;
- 
+
     if (!proxy.isNone()) {
 
         // Pass the feature object to the proxy
@@ -170,7 +170,7 @@ QString MeasureBase::getResultString() {
         }
 
     if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
-        return static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString();
+        return QString::fromStdString(static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString());
     }
 
 

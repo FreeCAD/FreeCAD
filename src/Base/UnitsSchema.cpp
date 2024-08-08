@@ -31,11 +31,11 @@
 
 #include "UnitsSchema.h"
 
-
 using namespace Base;
 
-QString
-UnitsSchema::toLocale(const Base::Quantity& quant, double factor, const QString& unitString) const
+std::string UnitsSchema::toLocale(const Base::Quantity& quant,
+                                  double factor,
+                                  const std::string& unitString) const
 {
     QLocale Lc;
     const QuantityFormat& format = quant.getFormat();
@@ -45,5 +45,5 @@ UnitsSchema::toLocale(const Base::Quantity& quant, double factor, const QString&
     }
 
     QString Ln = Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision);
-    return QString::fromUtf8("%1 %2").arg(Ln, unitString);
+    return Ln.toStdString() + " " + unitString;
 }

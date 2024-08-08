@@ -40,19 +40,6 @@
 #include "UnitsSchemaFemMilliMeterNewton.h"
 #include "UnitsSchemaMeterDecimal.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-#ifndef M_E
-#define M_E 2.71828182845904523536
-#endif
-#ifndef DOUBLE_MAX
-#define DOUBLE_MAX 1.7976931348623157E+308 /* max decimal value of a "double"*/
-#endif
-#ifndef DOUBLE_MIN
-#define DOUBLE_MIN 2.2250738585072014E-308 /* min decimal value of a "double"*/
-#endif
-
 using namespace Base;
 
 // === static attributes  ================================================
@@ -143,7 +130,7 @@ QString UnitsApi::toString(const Base::Quantity& quantity, const QuantityFormat&
 {
     QString value = QString::fromLatin1("'%1 %2'")
                         .arg(quantity.getValue(), 0, format.toFormat(), format.precision)
-                        .arg(quantity.getUnit().getString());
+                        .arg(QString::fromStdString(quantity.getUnit().getString()));
     return value;
 }
 
@@ -177,7 +164,8 @@ std::string UnitsApi::getBasicLengthUnit()
 
 // === static translation methods ==========================================
 
-QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString)
+std::string
+UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, std::string& unitString)
 {
     return UserPrefSystem->schemaTranslate(quant, factor, unitString);
 }
@@ -185,7 +173,7 @@ QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, Q
 double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
 {
     if (PyUnicode_Check(args)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
+        std::string str(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u) {
@@ -208,7 +196,7 @@ Quantity UnitsApi::toQuantity(PyObject* args, const Base::Unit& u)
 {
     double d {};
     if (PyUnicode_Check(args)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
+        std::string str(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         d = q.getValue();

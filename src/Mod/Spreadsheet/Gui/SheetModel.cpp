@@ -378,7 +378,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                     // When displaying a quantity then use the globally set scheme
                     // See: https://forum.freecad.org/viewtopic.php?f=3&t=50078
                     Base::Quantity value = floatProp->getQuantityValue();
-                    v = value.getUserString();
+                    v = QString::fromStdString(value.getUserString());
                 }
                 return formatCellDisplay(v, cell);
             }

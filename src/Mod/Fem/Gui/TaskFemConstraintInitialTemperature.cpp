@@ -70,7 +70,7 @@ TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature() = de
 
 std::string TaskFemConstraintInitialTemperature::get_temperature() const
 {
-    return ui->if_temperature->value().getSafeUserString().toStdString();
+    return ui->if_temperature->value().getSafeUserString();
 }
 
 void TaskFemConstraintInitialTemperature::changeEvent(QEvent*)

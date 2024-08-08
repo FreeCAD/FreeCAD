@@ -103,15 +103,13 @@ void BaseDelegate::paintQuantity(QPainter* painter,
         painter->drawText(option.rect, 0, QString());
     }
     else {
+        QString text;
         QVariant item = getValue(index);
         auto quantity = item.value<Base::Quantity>();
         if (quantity.isValid()) {
-            QString text = quantity.getUserString();
-            painter->drawText(option.rect, 0, text);
+            text = QString::fromStdString(quantity.getUserString());
         }
-        else {
-            painter->drawText(option.rect, 0, QString());
-        }
+        painter->drawText(option.rect, 0, text);
     }
 
     painter->restore();
