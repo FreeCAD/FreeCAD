@@ -980,7 +980,7 @@ import MaterialEditor
 MaterialEditor.openEditor()
 
 doc = FreeCAD.open(
-    FreeCAD.ConfigGet("AppHomePath") + "data/examples/FemCalculixCantilever3D.FCStd"
+    FreeCAD.ConfigGet("AppHomePath") + "data/examples/FEMExample.FCStd"
 )
 import MaterialEditor
 MaterialEditor.openEditor("SolidMaterial", "Material")
