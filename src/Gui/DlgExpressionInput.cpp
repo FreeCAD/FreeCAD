@@ -94,7 +94,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MACOS)
         setWindowFlags(Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);
 #else
         setWindowFlags(Qt::SubWindow | Qt::Widget | Qt::Popup | Qt::FramelessWindowHint);

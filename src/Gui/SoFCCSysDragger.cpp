@@ -96,7 +96,7 @@ TDragger::TDragger()
 {
     SO_KIT_CONSTRUCTOR(TDragger);
 
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_APPLE)
     this->ref();
 #endif
 
@@ -400,7 +400,7 @@ void TPlanarDragger::initClass()
 TPlanarDragger::TPlanarDragger()
 {
     SO_KIT_CONSTRUCTOR(TPlanarDragger);
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_APPLE)
     this->ref();
 #endif
 
@@ -698,7 +698,7 @@ void RDragger::initClass()
 RDragger::RDragger()
 {
     SO_KIT_CONSTRUCTOR(RDragger);
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_APPLE)
     this->ref();
 #endif
 
