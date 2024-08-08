@@ -556,6 +556,16 @@ ViewProvider * Document::getAnnotationViewProvider(const char* name) const
     return ( (it != d->_ViewProviderMapAnnotation.end()) ? it->second : 0 );
 }
 
+bool Document::isAnnotationViewProvider(const ViewProvider* vp) const
+{
+    std::map<std::string,ViewProvider*>::const_iterator it;
+    for (it = d->_ViewProviderMapAnnotation.begin(); it != d->_ViewProviderMapAnnotation.end(); ++it) {
+        if (it->second == vp)
+            return true;
+    }
+    return false;
+}
+
 void Document::removeAnnotationViewProvider(const char* name)
 {
     std::map<std::string,ViewProvider*>::iterator it = d->_ViewProviderMapAnnotation.find(name);

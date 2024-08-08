@@ -227,6 +227,8 @@ public:
     void setAnnotationViewProvider(const char* name, ViewProvider *pcProvider);
     /// get an annotation view provider
     ViewProvider * getAnnotationViewProvider(const char* name) const;
+    /// return true if the view provider is added as an annotation view provider
+    bool isAnnotationViewProvider(const ViewProvider* vp) const;
     /// remove an annotation view provider
     void removeAnnotationViewProvider(const char* name);
     /// test if the feature is in show
