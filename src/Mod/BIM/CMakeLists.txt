@@ -117,6 +117,7 @@ SET(bimcommands_SRCS
     bimcommands/BimIfcElements.py
     bimcommands/BimIfcExplorer.py
     bimcommands/BimIfcProperties.py
+    bimcommands/BimIfcProfiles.py
     bimcommands/BimIfcQuantities.py
     bimcommands/BimImagePlane.py
     bimcommands/BimLayers.py
