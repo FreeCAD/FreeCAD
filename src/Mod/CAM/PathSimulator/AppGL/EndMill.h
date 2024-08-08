@@ -35,7 +35,7 @@ namespace MillSim
 class EndMill
 {
 public:
-    float* profilePoints = nullptr;
+    std::vector<float>profilePoints;
     float radius;
     int nPoints = 0;
     int toolId = -1;
@@ -53,9 +53,6 @@ public:
 
 protected:
     void MirrorPointBuffer();
-
-private:
-    bool mHandleAllocation = false;
 };
 }  // namespace MillSim
 
