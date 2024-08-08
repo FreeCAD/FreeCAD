@@ -90,11 +90,10 @@ public:
         const char * designation;
         double diameter;
         double pitch;
-        double CoreHole;
     };
     static const ThreadDescription threadDescription[][171];
 
-    static const double metricHoleDiameters[36][4];
+    static const double metricHoleDiameters[51][4];
 
     using UTSClearanceDefinition = struct {
         std::string designation;
@@ -151,6 +150,14 @@ private:
     static const char* HoleCutType_UNEF_Enums[];
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
+
+    /* NPT profile */
+    static const char* HoleCutType_NPT_Enums[];
+    static const char* ThreadSize_NPT_Enums[];
+
+    /* BSP profile */
+    static const char* HoleCutType_BSP_Enums[];
+    static const char* ThreadSize_BSP_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size][2];
 
