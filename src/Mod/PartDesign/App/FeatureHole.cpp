@@ -67,7 +67,7 @@ namespace PartDesign {
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
-const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", nullptr};
+const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", nullptr};
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
@@ -452,6 +452,41 @@ const Hole::ThreadDescription Hole::threadDescription[][171] =
         { "5",      138.430,    2.309 },
         { "5 1/2",  151.130,    2.309 },
         { "6",      163.830,    2.309 },
+    },
+    /* BSW */
+    // BS 84 Basic sizes
+    // {name, major-diameter, thread-pitch}
+    {
+        { "1/8",    3.175,    0.635 },
+        { "3/16",   4.762,    1.058 },
+        { "1/4",    6.350,    1.270 },
+        { "5/16",   7.938,    1.411 },
+        { "3/8",    9.525,    1.588 },
+        { "7/16",   11.113,   1.814 },
+        { "1/2",    12.700,   2.117 },
+        { "9/16",   14.290,   2.117 },
+        { "5/8",    15.876,   2.309 },
+        { "11/16",  17.463,   2.309 },
+        { "3/4",    19.051,   2.540 },
+        { "7/8",    22.226,   2.822 },
+        { "1",      25.400,   3.175 },
+        { "1 1/8",  28.576,   3.629 },
+        { "1 1/4",  31.751,   3.629 },
+        { "1 1/2",  38.100,   4.233 },
+        { "1 3/4",  44.452,   5.080 },
+        { "2",      50.802,   5.644 },
+        { "2 1/4",  57.152,   6.350 },
+        { "2 1/2",  63.502,   6.350 },
+        { "2 3/4",  69.853,   7.257 },
+        { "3",      76.203,   7.257 },
+        { "3 1/4",  82.553,   7.815 },
+        { "3 1/2",  88.903,   7.815 },
+        { "3 3/4",  95.254,   8.467 },
+        { "4",      101.604,  8.467 },
+        { "4 1/2",  114.304,  8.835 },
+        { "5",      127.005,  9.236 },
+        { "5 1/2",  139.705,  9.676 },
+        { "6",      152.406,  10.16 },
     }
 };
 
@@ -721,6 +756,16 @@ const char* Hole::ThreadSize_BSP_Enums[]  = {  "1/16", "1/8", "1/4", "3/8", "1/2
                                                "2", "2 1/4", "2 1/2", "2 3/4",
                                                "3", "3 1/4", "3 1/2", "3 3/4",
                                                "4", "4 1/2", "5", "5 1/2", "6", nullptr };
+
+/* BSW */
+const char* Hole::HoleCutType_BSW_Enums[] = { "None", "Counterbore", "Countersink", "Counterdrill", nullptr};
+const char* Hole::ThreadSize_BSW_Enums[]  = {  "1/8", "3/16", "1/4", "5/16", "3/8", "7/16",
+                                               "1/2", "9/16", "5/8", "11/16", "3/4", "7/8",
+                                               "1", "1 1/8", "1 1/4", "1 1/2", "1 3/4",
+                                               "2", "2 1/4", "2 1/2", "2 3/4",
+                                               "3", "3 1/4", "3 1/2", "3 3/4",
+                                               "4", "4 1/2", "5", "5 1/2", "6", nullptr };
+const char* Hole::ThreadClass_BSW_Enums[] = { "Medium", "Normal", nullptr };
 
 const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", nullptr};
 
@@ -1179,11 +1224,12 @@ std::optional<double> Hole::determineDiameter() const
         std::string threadTypeStr = ThreadType.getValueAsString();
         if (
             threadTypeStr == "BSP"
+            || threadTypeStr == "BSW"
         ) {
             double thread = 2 * (0.640327 * pitch);
             double radius  = 0.137329 * pitch;
             double truncation = 9 * radius / 8;
-            // truncation is allowed by ISO-228
+            // truncation is allowed by ISO-228 and BS 84
             diameter = diameter - thread + truncation + clearance;
         }
         else {
@@ -1471,6 +1517,20 @@ void Hole::onChanged(const App::Property* prop)
             ThreadSize.setEnums(ThreadSize_NPT_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_NPT_Enums);
+            Threaded.setReadOnly(false);
+            ThreadSize.setReadOnly(false);
+            ThreadFit.setReadOnly(Threaded.getValue());
+            Diameter.setReadOnly(true);
+            ModelThread.setReadOnly(!Threaded.getValue());
+            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
+            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
+            ThreadDepthType.setReadOnly(!Threaded.getValue());
+            ThreadDepth.setReadOnly(!Threaded.getValue());
+        }
+        else if (type == "BSW") {
+            ThreadSize.setEnums(ThreadSize_BSW_Enums);
+            ThreadClass.setEnums(ThreadClass_BSW_Enums);
+            HoleCutType.setEnums(HoleCutType_BSW_Enums);
             Threaded.setReadOnly(false);
             ThreadSize.setReadOnly(false);
             ThreadFit.setReadOnly(Threaded.getValue());
@@ -2229,7 +2289,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     BRepBuilderAPI_MakeWire mkThreadWire;
     double H;
     std::string threadTypeStr = ThreadType.getValueAsString();
-    if (threadTypeStr == "BSP") {
+    if (threadTypeStr == "BSP" || threadTypeStr == "BSW") {
         H = 0.960491 * Pitch; // Height of Sharp V
         double radius  = 0.137329 * Pitch; // radius of the crest
         // construct the cross section going counter-clockwise
