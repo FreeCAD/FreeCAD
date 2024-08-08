@@ -236,9 +236,11 @@ private:
     void updateThreadDepthParam();
     void readCutDefinitions();
 
+    double getCountersinkAngle() const;
     double getThreadClassClearance() const;
     double getThreadRunout(int mode = 1) const;
     double getThreadPitch() const;
+    double getThreadProfileAngle();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
