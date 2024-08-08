@@ -160,6 +160,12 @@ private:
     static const char* HoleCutType_BSP_Enums[];
     static const char* ThreadSize_BSP_Enums[];
 
+    /* BSW profile */
+    static const char* HoleCutType_BSW_Enums[];
+    static const char* ThreadSize_BSW_Enums[];
+    static const char* ThreadClass_BSW_Enums[];
+
+
     static const double ThreadRunout[ThreadRunout_size][2];
 
     /* Counter-xxx */
