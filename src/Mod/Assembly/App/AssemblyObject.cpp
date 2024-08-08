@@ -575,7 +575,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
         App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
         App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
         if (obj == obj1 || obj == obj2) {
-            jointsOf.push_back(obj);
+            jointsOf.push_back(joint);
         }
     }
 
