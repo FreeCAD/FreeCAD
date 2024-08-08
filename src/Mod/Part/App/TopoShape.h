@@ -1438,6 +1438,10 @@ public:
                                                          const char* marker = nullptr,
                                                          std::string* postfix = nullptr) const;
 
+    void reTagElementMap(long tag,  // NOLINT google-default-arguments
+                         App::StringHasherRef hasher,
+                         const char* postfix = nullptr) override;
+
     long isElementGenerated(const Data::MappedName &name, int depth=1) const;
 
     /** @name sub shape cached functions
