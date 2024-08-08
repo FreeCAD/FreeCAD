@@ -1330,6 +1330,12 @@ void Hole::updateDiameterParam()
         Diameter.setValue(opt.value());
 }
 
+double Hole::getThreadProfileAngle()
+{
+    // Both ISO 7-1 and ASME B1.20.1 define the same angle
+    return 90 - 1.79;
+}
+
 void Hole::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
@@ -1534,6 +1540,8 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(!UseCustomThreadClearance.getValue());
             ThreadDepthType.setReadOnly(false);
             ThreadDepth.setReadOnly(std::string(ThreadDepthType.getValueAsString()) != "Dimension");
+            TaperedAngle.setReadOnly(true);
+            TaperedAngle.setValue(getThreadProfileAngle());
         }
         else {
             ThreadClass.setReadOnly(true);
@@ -1547,6 +1555,7 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(true);
             ThreadDepthType.setReadOnly(true);
             ThreadDepth.setReadOnly(true);
+            TaperedAngle.setReadOnly(!Tapered.getValue());
         }
 
         // Diameter parameter depends on this
@@ -1568,11 +1577,17 @@ void Hole::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Tapered) {
-        if (Tapered.getValue())
-            TaperedAngle.setReadOnly(false);
-        else
+        if (Threaded.getValue()) {
+            TaperedAngle.setValue(getThreadProfileAngle());
             TaperedAngle.setReadOnly(true);
-
+        }
+        else if (Tapered.getValue()) {
+            TaperedAngle.setReadOnly(false);
+        }
+        else {
+            TaperedAngle.setValue(90);
+            TaperedAngle.setReadOnly(true);
+        }
     }
     else if (prop == &ThreadSize) {
         updateDiameterParam();
