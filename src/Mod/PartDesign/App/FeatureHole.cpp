@@ -1084,8 +1084,7 @@ void Hole::updateHoleCutParams()
         }
 
     }
-    else { // we have an UTS profile or none
-
+    else {
         // we don't update for these settings but we need to set a value for new holes
         // furthermore we must assure the hole cut diameter is not <= the hole diameter
         // if we have a cut but the values are zero, we assume it is a new hole
@@ -1103,17 +1102,10 @@ void Hole::updateHoleCutParams()
         else if (holeCutTypeStr == "Countersink" || holeCutTypeStr == "Counterdrill") {
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 HoleCutDiameter.setValue(diameterVal * 1.7);
-                // 82 degrees for UTS, 90 otherwise
-                if (threadTypeStr != "None")
-                    HoleCutCountersinkAngle.setValue(82.0);
-                else
-                    HoleCutCountersinkAngle.setValue(90.0);
+                HoleCutCountersinkAngle.setValue(getCountersinkAngle());
             }
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
-                if (threadTypeStr != "None")
-                    HoleCutCountersinkAngle.setValue(82.0);
-                else
-                    HoleCutCountersinkAngle.setValue(90.0);
+                HoleCutCountersinkAngle.setValue(getCountersinkAngle());
             }
             if (HoleCutDepth.getValue() == 0.0 && holeCutTypeStr == "Counterdrill") {
                 HoleCutDepth.setValue(1.0);
@@ -1123,6 +1115,23 @@ void Hole::updateHoleCutParams()
             HoleCutCountersinkAngle.setReadOnly(false);
         }
     }
+}
+
+double Hole::getCountersinkAngle() const
+{
+    std::string threadTypeStr = ThreadType.getValueAsString();
+    if (
+        threadTypeStr == "BSW"
+        || threadTypeStr == "BSF"
+    )
+        return 100.0;
+    if (
+        threadTypeStr == "UNC"
+        || threadTypeStr == "UNF"
+        || threadTypeStr == "UNEF"
+    )
+        return 82.0;
+    return 90.0;
 }
 
 double Hole::getThreadClassClearance() const
@@ -1425,6 +1434,12 @@ void Hole::updateDiameterParam()
         Diameter.setValue(opt.value());
 }
 
+double Hole::getThreadProfileAngle()
+{
+    // Both ISO 7-1 and ASME B1.20.1 define the same angle
+    return 90 - 1.79;
+}
+
 void Hole::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
@@ -1657,6 +1672,8 @@ void Hole::onChanged(const App::Property* prop)
             CustomThreadClearance.setReadOnly(!UseCustomThreadClearance.getValue());
             ThreadDepthType.setReadOnly(false);
             ThreadDepth.setReadOnly(std::string(ThreadDepthType.getValueAsString()) != "Dimension");
+            if (Tapered.getValue() && TaperedAngle.getValue() == 90)
+                TaperedAngle.setValue(getThreadProfileAngle());
         }
         else {
             ThreadClass.setReadOnly(true);
@@ -1691,11 +1708,15 @@ void Hole::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Tapered) {
-        if (Tapered.getValue())
+        if (Tapered.getValue()) {
             TaperedAngle.setReadOnly(false);
-        else
+            if (Threaded.getValue() && TaperedAngle.getValue() == 90)
+                TaperedAngle.setValue(getThreadProfileAngle());
+        }
+        else {
+            TaperedAngle.setValue(90);
             TaperedAngle.setReadOnly(true);
-
+        }
     }
     else if (prop == &ThreadSize) {
         updateDiameterParam();
