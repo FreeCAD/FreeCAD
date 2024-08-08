@@ -1107,6 +1107,9 @@ def getMovingPart(assembly, ref):
         if not obj:
             continue
 
+        if obj.TypeId == "App::DocumentObjectGroup":
+            continue  # we ignore groups.
+
         return obj
 
     return None
