@@ -1,5 +1,23 @@
 <RCC>
     <qresource>
+        <file>icons/IFC/IfcBeam.svg</file>
+        <file>icons/IFC/IfcBuilding.svg</file>
+        <file>icons/IFC/IfcBuildingStorey.svg</file>
+        <file>icons/IFC/IfcColumn.svg</file>
+        <file>icons/IFC/IfcCovering.svg</file>
+        <file>icons/IFC/IfcDoor.svg</file>
+        <file>icons/IFC/IfcFooting.svg</file>
+        <file>icons/IFC/IfcMember.svg</file>
+        <file>icons/IFC/IfcPile.svg</file>
+        <file>icons/IFC/IfcPlate.svg</file>
+        <file>icons/IFC/IfcRailing.svg</file>
+        <file>icons/IFC/IfcRamp.svg</file>
+        <file>icons/IFC/IfcRoof.svg</file>
+        <file>icons/IFC/IfcSite.svg</file>
+        <file>icons/IFC/IfcSlab.svg</file>
+        <file>icons/IFC/IfcStair.svg</file>
+        <file>icons/IFC/IfcWall.svg</file>
+        <file>icons/IFC/IfcWindow.svg</file>
         <file>icons/Arch_3Views.svg</file>
         <file>icons/Arch_Add.svg</file>
         <file>icons/Arch_Axis.svg</file>
