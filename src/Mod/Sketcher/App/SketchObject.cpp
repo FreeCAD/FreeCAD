@@ -737,7 +737,8 @@ void SketchObject::updateGeoHistory() {
     FC_TIME_LOG(t,"update geometry history (" << geoHistory->size() << ", " << geoMap.size()<<')');
 }
 
-void SketchObject::generateId(Part::Geometry *geo) {
+void SketchObject::generateId(const Part::Geometry *geo)
+{
     if(!geoHistoryLevel) {
         GeometryFacade::setId(geo, ++geoLastId);
         geoMap[GeometryFacade::getId(geo)] = (long)Geometry.getSize();
@@ -3552,7 +3553,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         && arePointsWithinPrecision(point1, point2)) {
         // If both points are detected and are coincident, deletion is the only option.
         delGeometry(GeoId);
-
         return 0;
     }
 
@@ -3568,6 +3568,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     bool endPointRemains = false;
     std::vector<std::pair<double, double> > paramsOfNewGeos;
     std::vector<int> newIds;
+    std::vector<Part::Geometry*> newGeos;
+    std::vector<const Part::Geometry*> newGeosAsConsts;
+    bool oldGeoIsConstruction = GeometryFacade::getConstruction(static_cast<const Part::GeomCurve*>(geo));
 
     auto setUpNewGeoLimitsFromNonPeriodic =
         [&]() {
@@ -3595,14 +3598,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             auto newArc = std::unique_ptr<Part::GeomTrimmedCurve>(
                 static_cast<Part::GeomTrimmedCurve*>(curve->copy()));
             newArc->setRange(u1, u2);
-            int newId(GeoEnum::GeoUndef);
-            newId = addGeometry(std::move(newArc));
-            if (newId < 0) {
-                return false;
-            }
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(curve));
-            exposeInternalGeometry(newId);
+            newGeos.push_back(newArc.release());
         }
 
         return true;
@@ -3613,14 +3609,15 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             auto newArc = std::make_unique<Part::GeomArcOfCircle>(
                 Handle(Geom_Circle)::DownCast(curve->handle()->Copy()));
             newArc->setRange(u1, u2, false);
-            int newId(GeoEnum::GeoUndef);
-            newId = addGeometry(std::move(newArc));
-            if (newId < 0) {
-                return false;
-            }
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(curve));
-            exposeInternalGeometry(newId);
+            newGeos.push_back(newArc.release());
+            // int newId(GeoEnum::GeoUndef);
+            // newId = addGeometry(std::move(newArc));
+            // if (newId < 0) {
+            //     return false;
+            // }
+            // newIds.push_back(newId);
+            // setConstruction(newId, GeometryFacade::getConstruction(curve));
+            // exposeInternalGeometry(newId);
         }
 
         return true;
@@ -3631,14 +3628,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             auto newArc = std::make_unique<Part::GeomArcOfEllipse>(
                 Handle(Geom_Ellipse)::DownCast(curve->handle()->Copy()));
             newArc->setRange(u1, u2, false);
-            int newId(GeoEnum::GeoUndef);
-            newId = addGeometry(std::move(newArc));
-            if (newId < 0) {
-                return false;
-            }
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(curve));
-            exposeInternalGeometry(newId);
+            newGeos.push_back(newArc.release());
         }
 
         return true;
@@ -3649,14 +3639,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             auto newBsp = std::unique_ptr<Part::GeomBSplineCurve>(
                 static_cast<Part::GeomBSplineCurve*>(curve->copy()));
             newBsp->Trim(u1, u2);
-            int newId(GeoEnum::GeoUndef);
-            newId = addGeometry(std::move(newBsp));
-            if (newId < 0) {
-                return false;
-            }
-            newIds.push_back(newId);
-            setConstruction(newId, GeometryFacade::getConstruction(curve));
-            exposeInternalGeometry(newId);
+            newGeos.push_back(newBsp.release());
         }
 
         return true;
@@ -3702,19 +3685,44 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
 
     if (!ok) {
-        // for (auto& cons : newConstraints) {
-        //     delete cons;
-        // }
-
         delGeometries(newIds);
-
         return -1;
+    }
+
+    switch (newGeos.size()) {
+    case 0: {
+        delGeometry(GeoId);
+        return 0;
+    }
+    case 1: {
+        newIds.push_back(GeoId);
+        break;
+    }
+    case 2: {
+        newIds.push_back(GeoId);
+        newIds.push_back(getHighestCurveIndex() + 1);
+        break;
+    }
+    default: {
+        for (auto& newGeo : newGeos) {
+            delete newGeo;
+        }
+        return -1;
+    }
+    }
+
+    for (auto& newGeo : newGeos) {
+        newGeosAsConsts.push_back(newGeo);
     }
 
     // Now that we have the new curves, change constraints as needed
     // Some are covered with `deriveConstraintsForPieces`, others are specific to trim
     // FIXME: We are using non-smart pointers since that's what's needed in `addConstraints`.
     std::vector<Constraint*> newConstraints;
+
+    // A geoId we expect to never exist during this operation. We use it because newIds.front() is supposed to be `GeoId`, but we will delete constraints on it down the line, even if we will need it later. As a result, note that this will cause some malformed constraints until they are transferred back.
+    int nonexistentGeoId = getHighestCurveIndex() + newIds.size();
+    newIds.front() = nonexistentGeoId;
 
     // Constraints related to start/mid/end points of original
     if (startPointRemains) {
@@ -3743,6 +3751,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         }
     }
 
+    newIds.front() = GeoId;
+
     std::vector<int> idsOfOldConstraints;
     getConstraintIndices(GeoId, idsOfOldConstraints);
 
@@ -3751,19 +3761,29 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     bool isGeoId1CoincidentOnPoint1 = false;
     bool isGeoId2CoincidentOnPoint2 = false;
 
-    // keep constraints on internal geometries so they are deleted
-    // when the old curve is deleted
-    idsOfOldConstraints.
-        erase(std::remove_if(idsOfOldConstraints.begin(),
-                             idsOfOldConstraints.end(),
-                             [&allConstraints](const auto& i) {
-                                 return allConstraints[i]->Type == InternalAlignment;
-                             }),
-              idsOfOldConstraints.end());
+    // Workaround to avoid https://github.com/FreeCAD/FreeCAD/issues/15484.
+    // We will delete its internal geometry first and then replace GeoId with one of the curves.
+    // Of course, this will change `newIds`, and that's why we offset them.
+    std::vector<int> geoIdsToBeDeleted;
+    // geoIdsToBeDeleted.push_back(GeoId);
+    if (hasInternalGeometry(geo)) {
+        for (const auto& oldConstrId: idsOfOldConstraints) {
+            if (allConstraints[oldConstrId]->Type == InternalAlignment) {
+                geoIdsToBeDeleted.push_back(allConstraints[oldConstrId]->First);
+            }
+        }
+
+        // NOTE: Assuming no duplication here.
+        // If there are redundants for some pathological reason, use std::unique.
+        std::sort(geoIdsToBeDeleted.begin(), geoIdsToBeDeleted.end(), std::greater<>());
+
+        // keep constraints on internal geometries so they are deleted
+        // when the old curve is deleted
+    }
 
     for (const auto& oldConstrId: idsOfOldConstraints) {
         const Constraint* con = allConstraints[oldConstrId];
-        bool newConstraintCreated = deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        bool newConstraintCreated = deriveConstraintsForPieces(GeoId, newIds, newGeosAsConsts, con, newConstraints);
         // trim-specific changes once general changes are done
         switch (con->Type) {
         case PointOnObject: {
@@ -3852,29 +3872,114 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         newConstraints.push_back(newConstr);
     }
 
+    // Workaround to avoid https://github.com/FreeCAD/FreeCAD/issues/15484.
+    // Delete the geometry first to avoid it happening.
+    // Of course, this will change `newIds`, and that's why we offset them.
+    delConstraints(idsOfOldConstraints);
+
+    // Retransfer constraints we put away to `nonexistentGeoId`
+    transferConstraints(nonexistentGeoId, PointPos::start, GeoId, PointPos::start, true);
+    transferConstraints(nonexistentGeoId, PointPos::end, GeoId, PointPos::end, true);
+    transferConstraints(nonexistentGeoId, PointPos::mid, GeoId, PointPos::mid, true);
+
+    auto vals = getInternalGeometry();
+    auto newVals(vals);
+    newVals[GeoId] = newGeos.front();
+    if (newGeos.size() > 1) {
+        newVals.push_back(newGeos.back());
+        generateId(newGeos.back());
+        newIds.back() = newVals.size() - 1;
+    }
+    Geometry.setValues(std::move(newVals));
+
+    // FIXME: Somewhere here we need to delete the internal geometry (even if in use)
+    // FIXME: Set the second geoid as construction or not depending on what the original was
+
+    if (noRecomputes) {
+        solve();
+    }
+
+    for (auto& deletedGeoId : geoIdsToBeDeleted) {
+        for (auto& cons : newConstraints) {
+            changeConstraintAfterDeletingGeo(cons, deletedGeoId);
+        }
+    }
+    addConstraints(newConstraints);
+
     if (noRecomputes)
         solve();
-
-    delConstraints(idsOfOldConstraints);
-    addConstraints(newConstraints);
 
     // Since we used regular "non-smart" pointers, we have to handle cleanup
     for (auto& cons : newConstraints) {
         delete cons;
     }
 
-    delGeometry(GeoId);
     return 0;
 }
 
+std::unique_ptr<Constraint>
+SketchObject::getConstraintAfterDeletingGeo(const Constraint* constr,
+                                            const int deletedGeoId) const
+{
+    if (constr->First == deletedGeoId ||
+        constr->Second == deletedGeoId ||
+        constr->Third == deletedGeoId) {
+        return nullptr;
+    }
 
-bool SketchObject::deriveConstraintsForPieces(const int oldId, const std::vector<int> newIds, const Constraint* con, std::vector<Constraint*>& newConstraints)
+    // TODO: While this is not incorrect, it recreates all constraints regardless of whether or not we need to.
+    auto newConstr = std::unique_ptr<Constraint>(constr->clone());
+
+    changeConstraintAfterDeletingGeo(newConstr.get(), deletedGeoId);
+
+    return newConstr;
+}
+
+void SketchObject::changeConstraintAfterDeletingGeo(Constraint* constr,
+                                                    const int deletedGeoId) const
+{
+    int step = 1;
+    std::function<bool (const int&)> needsUpdate = [&deletedGeoId](const int& givenId) -> bool {
+        return givenId > deletedGeoId;
+    };
+    if (deletedGeoId < 0) {
+        step = -1;
+        needsUpdate = [&deletedGeoId](const int& givenId) -> bool {
+            return givenId < deletedGeoId && givenId != GeoEnum::GeoUndef;
+        };
+    }
+
+    if (needsUpdate(constr->First)) {
+        constr->First -= step;
+    }
+    if (needsUpdate(constr->Second)) {
+        constr->Second -= step;
+    }
+    if (needsUpdate(constr->Third)) {
+        constr->Third -= step;
+    }
+}
+
+bool SketchObject::deriveConstraintsForPieces(const int oldId,
+                                              const std::vector<int>& newIds,
+                                              const Constraint* con,
+                                              std::vector<Constraint*>& newConstraints)
+{
+    std::vector<const Part::Geometry*> newGeos;
+    for (auto& newId: newIds) {
+        newGeos.push_back(getGeometry(newId));
+    }
+
+    return deriveConstraintsForPieces(oldId, newIds, newGeos, con, newConstraints);
+}
+
+bool SketchObject::deriveConstraintsForPieces(const int oldId,
+                                              const std::vector<int>& newIds,
+                                              const std::vector<const Part::Geometry*>& newGeos,
+                                              const Constraint* con,
+                                              std::vector<Constraint*>& newConstraints)
 {
     const Part::Geometry* geo = getGeometry(oldId);
-    std::vector<const Part::Geometry*> newGeos;
-    for (auto& newId: newIds)
-        newGeos.push_back(getGeometry(newId));
-
     int conId = con->First;
     PointPos conPos = con->FirstPos;
     if (conId == oldId) {

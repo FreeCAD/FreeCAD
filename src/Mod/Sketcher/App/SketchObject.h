@@ -412,9 +412,16 @@ public:
     /// destroyed
     /// Returns whether or not new constraint(s) was/were added.
     bool deriveConstraintsForPieces(const int oldId,
-                                    const std::vector<int> newIds,
+                                    const std::vector<int>& newIds,
                                     const Constraint* con,
                                     std::vector<Constraint*>& newConstraints);
+    // Explicitly giving `newGeos` for cases where they are not yet added
+    bool deriveConstraintsForPieces(const int oldId,
+                                    const std::vector<int>& newIds,
+                                    const std::vector<const Part::Geometry*>& newGeo,
+                                    const Constraint* con,
+                                    std::vector<Constraint*>& newConstraints);
+
     /// split a curve
     int split(int geoId, const Base::Vector3d& point);
     /*!
@@ -892,7 +899,7 @@ protected:
     supportedGeometry(const std::vector<Part::Geometry*>& geoList) const;
 
     void updateGeoHistory();
-    void generateId(Part::Geometry* geo);
+    void generateId(const Part::Geometry* geo);
 
     /*!
      \brief Transfer constraints on lines being filleted.
@@ -963,6 +970,11 @@ protected:
                      Sketcher::PointPos secondPos = Sketcher::PointPos::none,
                      int thirdGeoId = GeoEnum::GeoUndef,
                      Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
+
+    std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(const Constraint* constr,
+                                                              const int deletedGeoId) const;
+
+    void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
