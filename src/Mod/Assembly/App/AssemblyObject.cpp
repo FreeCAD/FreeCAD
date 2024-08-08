@@ -111,6 +111,39 @@ void printPlacement(Base::Placement plc, const char* name)
         angle);
 }
 
+bool isLink(App::DocumentObject* obj)
+{
+    if (!obj) {
+        return false;
+    }
+
+    auto* link = dynamic_cast<App::Link*>(obj);
+    if (link) {
+        return link->ElementCount.getValue() == 0;
+    }
+
+    auto* linkEl = dynamic_cast<App::LinkElement*>(obj);
+    if (linkEl) {
+        return true;
+    }
+
+    return false;
+}
+
+bool isLinkGroup(App::DocumentObject* obj)
+{
+    if (!obj) {
+        return false;
+    }
+
+    auto* link = dynamic_cast<App::Link*>(obj);
+    if (link) {
+        return link->ElementCount.getValue() > 0;
+    }
+
+    return false;
+}
+
 // ================================ Assembly Object ============================
 
 PROPERTY_SOURCE(Assembly::AssemblyObject, App::Part)
@@ -2055,7 +2088,7 @@ Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetOb
         if (obj == targetObj) {
             return plc;
         }
-        if (obj->isDerivedFrom<App::Link>()) {
+        if (isLink(obj)) {
             // Update doc in case its an external link.
             doc = obj->getLinkedObject()->getDocument();
         }
@@ -2240,7 +2273,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             return obj;
         }
 
-        if (obj->isDerivedFrom<App::Part>()) {
+        if (obj->isDerivedFrom<App::Part>() || isLinkGroup(obj)) {
             continue;
         }
         else if (obj->isDerivedFrom<PartDesign::Body>()) {
@@ -2250,7 +2283,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             // Primitive, fastener, gear, etc.
             return obj;
         }
-        else if (obj->isDerivedFrom<App::Link>()) {
+        else if (isLink(obj)) {
             App::DocumentObject* linked_obj = obj->getLinkedObject();
             if (linked_obj->isDerivedFrom<PartDesign::Body>()) {
                 auto* retObj = handlePartDesignBody(linked_obj, it);
@@ -2315,7 +2348,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;
         }
 
-        if (obj->isDerivedFrom<App::Link>()) {  // update the document if necessary for next object
+        if (isLink(obj)) {  // update the document if necessary for next object
             doc = obj->getLinkedObject()->getDocument();
         }
 
@@ -2325,6 +2358,10 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;
         }
         if (!assemblyPassed) {
+            continue;
+        }
+
+        if (isLinkGroup(obj)) {
             continue;
         }
 
