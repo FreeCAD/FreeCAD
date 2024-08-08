@@ -157,14 +157,6 @@ public:
 
     std::vector<std::pair<MappedName, ElementIDRefs>> findAll(const IndexedName& idx) const;
 
-    // prefix searching is disabled, as TopoShape::getRelatedElement() is
-    // deprecated in favor of GeoFeature::getRelatedElement(). Besides, there
-    // is efficient way to support child element map if we were to implement
-    // prefix search.
-#if 0
-    std::vector<MappedElement> findAllStartsWith(const char *prefix) const;
-#endif
-
     bool hasChildElementMap() const;
 
     /* Ensures that for each IndexedName mapped to IndexedElements, that
@@ -262,11 +254,11 @@ private:
 
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName& name) const;
-
+    
     //FIXME duplicate code? as in copy/paste
     const MappedNameRef* findMappedRef(const IndexedName& idx) const;
     MappedNameRef* findMappedRef(const IndexedName& idx);
-
+    
     MappedNameRef& mappedRef(const IndexedName& idx);
 
     void collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
