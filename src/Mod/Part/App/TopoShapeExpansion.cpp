@@ -466,7 +466,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
             }
 
             if (vertices.empty() || checkGeometry) {
-                geom = Geometry::fromShape(subshape.getShape());
+                geom = Geometry::fromShape(subshape.getShape(), true);
                 if (!geom) {
                     return res;
                 }
@@ -480,7 +480,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
             }
 
             auto compareGeometry = [&](const TopoShape& s, bool strict) {
-                std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape()));
+                std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape(), true));
                 if (!g2) {
                     return false;
                 }
