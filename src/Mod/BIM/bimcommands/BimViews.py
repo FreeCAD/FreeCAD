@@ -293,13 +293,25 @@ class BIM_Views:
                     vm.viewtree.addTopLevelItem(top)
 
                 # set TreeVinew Item selected if obj is selected
+                bold = QtGui.QFont()
+                bold.setBold(True)
                 objSelected = FreeCADGui.Selection.getSelection()
                 objNameSelected = [obj.Label for obj in objSelected]
-
-                allItemsInTree = getAllItemsInTree(vm.tree)
+                objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+                tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
+                activeColor = tparam.GetUnsigned("TreeActiveColor",0)
+                allItemsInTree = getAllItemsInTree(vm.tree) + getAllItemsInTree(vm.viewtree)
                 for item in allItemsInTree:
                     if item.text(0) in objNameSelected:
                         item.setSelected(True)
+                    if objActive and item.toolTip(0) == objActive.Name:
+                        if activeColor:
+                            r = ((activeColor >> 24) & 0xFF) / 255.0
+                            g = ((activeColor >> 16) & 0xFF) / 255.0
+                            b = ((activeColor >> 8) & 0xFF) / 255.0
+                            activeColor = QtGui.QColor.fromRgbF(r, g, b)
+                            item.setBackground(0, QtGui.QBrush(activeColor, QtCore.Qt.SolidPattern))
+                            item.setFont(0, bold)
 
         if retrigger:
             QtCore.QTimer.singleShot(UPDATEINTERVAL, self.update)
@@ -560,7 +572,10 @@ def show(item, column=None):
                     storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
                     for storey in storeys:
                         storey.ViewObject.Visibility = True
-                            
+        if getattr(obj.ViewObject, "SetWorkingPlane", False):
+            obj.ViewObject.Proxy.setWorkingPlane()
+        if getattr(obj.ViewObject, "DoubleClickActivates", True):
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
     if vm:
         # store the last double-clicked item for the BIM WPView command
         if isinstance(item, str) or (
