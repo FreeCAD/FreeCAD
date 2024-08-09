@@ -32,6 +32,7 @@ import Arch
 import Draft
 import Part
 import Sketcher
+import TechDraw
 
 from draftutils.messages import _msg
 
@@ -757,6 +758,53 @@ class ArchTest(unittest.TestCase):
         FreeCADGui.runCommand('Std_ToggleVisibility',0)
         App.ActiveDocument.recompute()
         assert wall.Visibility
+
+    def testViewGeneration(self):
+        """Tests the whole TD view generation workflow"""
+
+        operation = "View generation"
+        _msg("  Test '{}'".format(operation))
+
+        # Create a few objects
+        points = [App.Vector(0.0, 0.0, 0.0), App.Vector(2000.0, 0.0, 0.0)]
+        line = Draft.make_wire(points)
+        wall = Arch.makeWall(line, height=2000)
+        wpl = App.Placement(App.Vector(500,0,1500), App.Vector(1,0,0),-90)
+        win = Arch.makeWindowPreset('Fixed', width=1000.0, height=1000.0, h1=50.0, h2=50.0, h3=50.0, w1=100.0, w2=50.0, o1=0.0, o2=50.0, placement=wpl)
+        win.Hosts = [wall]
+        profile = Arch.makeProfile([169, 'HEA', 'HEA100', 'H', 100.0, 96.0, 5.0, 8.0])
+        column = Arch.makeStructure(profile, height=2000.0)
+        column.Profile = "HEA100"
+        column.Placement.Base = App.Vector(500.0, 600.0, 0.0)
+        level = Arch.makeFloor()
+        level.addObjects([wall, column])
+        App.ActiveDocument.recompute()
+        
+        # Create a drawing view
+        section = Arch.makeSectionPlane(level)
+        drawing = Arch.make2DDrawing()
+        view = Draft.make_shape2dview(section)
+        cut = Draft.make_shape2dview(section)
+        cut.InPlace = False
+        cut.ProjectionMode = "Cutfaces"
+        drawing.addObjects([view, cut])
+        App.ActiveDocument.recompute()
+        
+        # Create a TD page
+        tpath = os.path.join(App.getResourceDir(),"Mod","TechDraw","Templates","A3_Landscape_blank.svg")
+        page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
+        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template.Template = tpath
+        page.Template = template
+        view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft", "DraftView")
+        view.Source = drawing
+        page.addView(view)
+        view.Scale = 1.0
+        view.X = "20cm"
+        view.Y = "15cm"
+        App.ActiveDocument.recompute()
+        assert True
+        
 
     def tearDown(self):
         App.closeDocument("ArchTest")

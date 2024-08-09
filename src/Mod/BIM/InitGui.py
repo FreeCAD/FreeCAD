@@ -95,14 +95,16 @@ class BIMWorkbench(Workbench):
             "BIM_DimensionVertical",
             "BIM_Leader",
             "Draft_Label",
+            "Draft_Hatch",
             "Arch_Axis",
             "Arch_AxisSystem",
             "Arch_Grid",
             "Arch_SectionPlane",
-            "Draft_Hatch",
+            "BIM_DrawingView",
+            "BIM_Shape2DView",
+            "BIM_Shape2DCut",
             "BIM_TDPage",
             "BIM_TDView",
-            "BIM_Shape2DView",
         ]
 
         self.bimtools = [
