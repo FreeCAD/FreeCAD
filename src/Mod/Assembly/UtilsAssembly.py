@@ -1107,6 +1107,10 @@ def getMovingPart(assembly, ref):
         if not obj:
             continue
 
+        # The only case where the object is not the first name is the case of dynamic sub-assemblies.
+        if obj.isDerivedFrom("Assembly::AssemblyLink") and obj.Rigid == False:
+            continue
+
         return obj
 
     return None

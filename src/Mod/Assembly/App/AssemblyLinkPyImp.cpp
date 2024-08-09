@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,51 +21,27 @@
  *                                                                          *
  ***************************************************************************/
 
+
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
+// inclusion of the generated files (generated out of AssemblyLink.xml)
+#include "AssemblyLinkPy.h"
+#include "AssemblyLinkPy.cpp"
 
-#include "ViewProviderAssembly.h"
-#include "ViewProviderAssemblyLink.h"
-#include "ViewProviderBom.h"
-#include "ViewProviderBomGroup.h"
-#include "ViewProviderJointGroup.h"
-#include "ViewProviderViewGroup.h"
+using namespace Assembly;
 
-
-namespace AssemblyGui
+// returns a string which represents the object e.g. when printed in python
+std::string AssemblyLinkPy::representation() const
 {
-extern PyObject* initModule();
+    return {"<Assembly link>"};
 }
 
-/* Python entry */
-PyMOD_INIT_FUNC(AssemblyGui)
+PyObject* AssemblyLinkPy::getCustomAttributes(const char* /*attr*/) const
 {
-    // load dependent module
-    try {
-        Base::Interpreter().runString("import SpreadsheetGui");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
+    return nullptr;
+}
 
-    PyObject* mod = AssemblyGui::initModule();
-    Base::Console().Log("Loading AssemblyGui module... done\n");
-
-
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
-
-    AssemblyGui::ViewProviderAssembly::init();
-    AssemblyGui::ViewProviderAssemblyLink::init();
-    AssemblyGui::ViewProviderBom::init();
-    AssemblyGui::ViewProviderBomGroup::init();
-    AssemblyGui::ViewProviderJointGroup::init();
-    AssemblyGui::ViewProviderViewGroup::init();
-
-    PyMOD_Return(mod);
+int AssemblyLinkPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
 }

@@ -19,6 +19,7 @@ set(Assembly_LIBS
 )
 
 generate_from_xml(AssemblyObjectPy)
+generate_from_xml(AssemblyLinkPy)
 generate_from_xml(BomObjectPy)
 generate_from_xml(BomGroupPy)
 generate_from_xml(JointGroupPy)
@@ -27,6 +28,8 @@ generate_from_xml(ViewGroupPy)
 SET(Python_SRCS
     AssemblyObjectPy.xml
     AssemblyObjectPyImp.cpp
+    AssemblyLinkPy.xml
+    AssemblyLinkPyImp.cpp
     BomObjectPy.xml
     BomObjectPyImp.cpp
     BomGroupPy.xml
@@ -49,6 +52,8 @@ SOURCE_GROUP("Module" FILES ${Module_SRCS})
 SET(Assembly_SRCS
     AssemblyObject.cpp
     AssemblyObject.h
+    AssemblyLink.cpp
+    AssemblyLink.h
     BomObject.cpp
     BomObject.h
     BomGroup.cpp
