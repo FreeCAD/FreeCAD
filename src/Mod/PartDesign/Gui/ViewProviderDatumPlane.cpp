@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 #endif
@@ -45,11 +46,31 @@ ViewProviderDatumPlane::ViewProviderDatumPlane()
 
     pCoords = new SoCoordinate3();
     pCoords->ref ();
+
+    // setup semi transparent face material
+    const App::Color &c = ShapeColor.getValue();
+    pPlaneFaceMaterial = new SoMaterial();
+    pPlaneFaceMaterial->transparency.setValue(0.95f);
+    pPlaneFaceMaterial->ambientColor.setValue(c.r, c.g, c.b);
+    pPlaneFaceMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    pPlaneFaceMaterial->ref();
 }
 
 ViewProviderDatumPlane::~ViewProviderDatumPlane()
 {
     pCoords->unref ();
+    pPlaneFaceMaterial->unref();
+}
+
+void ViewProviderDatumPlane::onChanged(const App::Property* prop)
+{
+    if (prop == &ShapeColor) {
+        // update semi trasnparent face color
+        const App::Color &c = ShapeColor.getValue();
+        pPlaneFaceMaterial->ambientColor.setValue(c.r, c.g, c.b);
+        pPlaneFaceMaterial->diffuseColor.setValue(c.r, c.g, c.b);
+    }
+    ViewProviderDatum::onChanged(prop);
 }
 
 void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
@@ -69,22 +90,27 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     lineSet->coordIndex.set1Value(5, SO_END_LINE_INDEX);
     getShapeRoot ()->addChild(lineSet);
 
-    PartGui::SoBrepFaceSet *faceSet = new PartGui::SoBrepFaceSet();
-    // SoBrepFaceSet supports only triangles (otherwise we receive incorrect highlighting)
-    faceSet->partIndex.set1Value(0, 2); // One face, two triangles
-    faceSet->coordIndex.setNum(8);
-    // first triangle
-    faceSet->coordIndex.set1Value(0, 0);
-    faceSet->coordIndex.set1Value(1, 1);
-    faceSet->coordIndex.set1Value(2, 2);
-    faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX);
-    // second triangle
-    faceSet->coordIndex.set1Value(4, 2);
-    faceSet->coordIndex.set1Value(5, 3);
-    faceSet->coordIndex.set1Value(6, 0);
-    faceSet->coordIndex.set1Value(7, SO_END_FACE_INDEX);
+    // add semi transparent face
+    auto faceSeparator = new SoSeparator();
+    faceSeparator->addChild(pPlaneFaceMaterial);
 
-    getShapeRoot ()->addChild(faceSet);
+    PartGui::SoBrepFaceSet *faceSet = new PartGui::SoBrepFaceSet(); 
+    // SoBrepFaceSet supports only triangles (otherwise we receive incorrect highlighting) 
+    faceSet->partIndex.set1Value(0, 2); // One face, two triangles 
+    faceSet->coordIndex.setNum(8); 
+    // first triangle 
+    faceSet->coordIndex.set1Value(0, 0); 
+    faceSet->coordIndex.set1Value(1, 1); 
+    faceSet->coordIndex.set1Value(2, 2); 
+    faceSet->coordIndex.set1Value(3, SO_END_FACE_INDEX); 
+    // second triangle 
+    faceSet->coordIndex.set1Value(4, 2); 
+    faceSet->coordIndex.set1Value(5, 3); 
+    faceSet->coordIndex.set1Value(6, 0); 
+    faceSet->coordIndex.set1Value(7, SO_END_FACE_INDEX);
+    faceSeparator->addChild(faceSet);
+
+    getShapeRoot()->addChild(faceSeparator);
 }
 
 void ViewProviderDatumPlane::updateData(const App::Property* prop)
