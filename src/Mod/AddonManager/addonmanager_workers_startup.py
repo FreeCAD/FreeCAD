@@ -611,6 +611,8 @@ class UpdateChecker:
         installed_metadata_file = os.path.join(clone_dir, "package.xml")
         if not os.path.isfile(installed_metadata_file):
             return False
+        if not hasattr(package, "metadata") or package.metadata is None:
+            return False
         try:
             installed_metadata = MetadataReader.from_file(installed_metadata_file)
             installed_default_branch = get_branch_from_metadata(installed_metadata)
