@@ -73,6 +73,7 @@ class BIM_Views:
             self.dialog = FreeCADGui.PySideUic.loadUi(":/ui/dialogViews.ui")
             vm.setWidget(self.dialog)
             vm.tree = self.dialog.tree
+            vm.viewtree = self.dialog.viewtree
             vm.closeEvent = self.onClose
 
             # set context menu
@@ -121,6 +122,7 @@ class BIM_Views:
             self.dialog.buttonRename.triggered.connect(self.rename)
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
+            self.dialog.viewtree.itemDoubleClicked.connect(show)
             self.dialog.tree.itemChanged.connect(self.editObject)
             self.dialog.tree.customContextMenuRequested.connect(self.onContextMenu)
             # delay connecting after FreeCAD finishes setting up
@@ -177,13 +179,12 @@ class BIM_Views:
         "updates the view manager"
 
         from PySide import QtCore, QtGui
+        import Draft
 
         vm = findWidget()
         if vm and FreeCAD.ActiveDocument:
             if vm.isVisible() and (vm.tree.state() != vm.tree.State.EditingState):
                 vm.tree.clear()
-                import Draft
-
                 treeViewItems = []  # QTreeWidgetItem to Display in tree
                 lvHold = []
                 soloProxyHold = []
@@ -260,6 +261,9 @@ class BIM_Views:
                 treeViewItems = treeViewItems + sortLvItems + soloProxyHold
                 vm.tree.addTopLevelItems(treeViewItems)
 
+            if vm.isVisible() and (vm.viewtree.state() != vm.viewtree.State.EditingState):
+                vm.viewtree.clear()
+
                 # add views
                 ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
                 views = self.getViews()
@@ -273,7 +277,7 @@ class BIM_Views:
                                 i.setIcon(0, v.ViewObject.Icon)
                             i.setToolTip(0, v.Name)
                             top.addChild(i)
-                    vm.tree.addTopLevelItem(top)
+                    vm.viewtree.addTopLevelItem(top)
 
                 # add pages
                 pages = self.getPages()
@@ -286,7 +290,7 @@ class BIM_Views:
                                 i.setIcon(0, p.ViewObject.Icon)
                         i.setToolTip(0, p.Name)
                         top.addChild(i)
-                    vm.tree.addTopLevelItem(top)
+                    vm.viewtree.addTopLevelItem(top)
 
                 # set TreeVinew Item selected if obj is selected
                 objSelected = FreeCADGui.Selection.getSelection()
@@ -306,6 +310,7 @@ class BIM_Views:
 
         # expand
         vm.tree.expandAll()
+        vm.viewtree.expandAll()
 
     def select(self, item, column=None):
         "selects a doc object corresponding to an item"
@@ -445,11 +450,16 @@ class BIM_Views:
 
     def getViews(self):
         """Returns a list of 2D views"""
+        import Draft
         views = []
         for p in self.getPages():
             for v in p.Views:
                 if getattr(v, "Source", None):
                     views.append(v.Source)
+        bps = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "BuildingPart"]
+        for v in [o for o in bps if isView(o)]:
+            if v not in views:
+                views.append(v)
         return views
 
     def getPages(self):
@@ -475,6 +485,8 @@ def findWidget():
 def show(item, column=None):
     "item has been double-clicked"
 
+    import Draft
+
     obj = None
     vm = findWidget()
     if isinstance(item, str) or (
@@ -495,6 +507,7 @@ def show(item, column=None):
     if obj:
         FreeCADGui.Selection.clearSelection()
         FreeCADGui.Selection.addSelection(obj)
+        vparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
         if obj.isDerivedFrom("TechDraw::DrawPage"):
 
             # case 1: the object is a TD page. We switch to it simply
@@ -519,10 +532,35 @@ def show(item, column=None):
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(obj)
+            if PARAMS.GetBool("BimViewsSwitchBackground", False):
+                vparam.SetBool("Simple", True)
+                vparam.SetBool("Gradient", False)
+                vparam.SetBool("RadialGradient", False)
         else:
 
             # case 3: This is maybe a BuildingPart. Place the WP on it
             FreeCADGui.runCommand("Draft_SelectPlane")
+            if PARAMS.GetBool("BimViewsSwitchBackground", False):
+                vparam.SetBool("Simple", False)
+                vparam.SetBool("Gradient", False)
+                vparam.SetBool("RadialGradient", True)
+            if Draft.getType(obj) == "BuildingPart":
+                if obj.IfcType == "Building Storey":
+                    # hide all other storeys
+                    obj.ViewObject.Visibility = True
+                    bldgs = [o for o in obj.InList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building"]
+                    if len(bldgs) == 1:
+                        bldg = bldgs[0]
+                        storeys = [o for o in bldg.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
+                        for storey in storeys:
+                            if storey != obj:
+                                storey.ViewObject.Visibility = False
+                elif obj.IfcType == "Building":
+                    # show all storeys
+                    storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
+                    for storey in storeys:
+                        storey.ViewObject.Visibility = True
+                            
     if vm:
         # store the last double-clicked item for the BIM WPView command
         if isinstance(item, str) or (
@@ -543,6 +581,12 @@ def isView(obj):
                     return True
     if getattr(obj,"DrawingView",False):
         return True
+    if getattr(obj, "IfcType", None) == "Annotation":
+        if getattr(obj, "ObjectType", "").upper() == "DRAWING":
+            return True
+    if getattr(obj, "Class", None) == "IfcAnnotation":
+        if getattr(obj, "ObjectType", "").upper() == "DRAWING":
+            return True
     return False
 
 
