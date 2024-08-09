@@ -499,49 +499,6 @@ class Joint:
 
             joint.Reference2 = [obj, [elt, vtx]]
 
-        def getSubnameForSelection(self, obj, part, elName):
-            # We need the subname starting from the part.
-            # Example for : Assembly.Part1.LinkToPart2.Part3.Body.Tip.Face1
-            # part is Part1 and obj is Body
-            # we should get : LinkToPart2.Part3.Body.Tip.Face1
-
-            if obj is None or part is None:
-                return elName
-
-            if obj.TypeId == "PartDesign::Body":
-                elName = obj.Tip.Name + "." + elName
-            elif obj.TypeId == "App::Link":
-                linked_obj = obj.getLinkedObject()
-                if linked_obj.TypeId == "PartDesign::Body":
-                    elName = linked_obj.Tip.Name + "." + elName
-
-            if obj != part and obj in part.OutListRecursive:
-                bSub = ""
-                currentObj = part
-
-                limit = 0
-                while limit < 1000:
-                    limit = limit + 1
-
-                    if currentObj != part:
-                        if bSub != "":
-                            bSub = bSub + "."
-                        bSub = bSub + currentObj.Name
-
-                    if currentObj == obj:
-                        break
-
-                    if currentObj.TypeId == "App::Link":
-                        currentObj = currentObj.getLinkedObject()
-
-                    for obji in currentObj.OutList:
-                        if obji == obj or obj in obji.OutListRecursive:
-                            currentObj = obji
-                            break
-
-                elName = bSub + "." + elName
-            return elName
-
     def dumps(self):
         return None
 
@@ -1282,13 +1239,15 @@ class MakeJointSelGate:
             return False
 
         ref = [obj, [sub]]
+        print(ref)
         selected_object = UtilsAssembly.getObject(ref)
+        print(selected_object)
 
         if not (
             selected_object.isDerivedFrom("Part::Feature")
             or selected_object.isDerivedFrom("App::Part")
         ):
-            if selected_object.isDerivedFrom("App::Link"):
+            if UtilsAssembly.isLink(selected_object):
                 linked = selected_object.getLinkedObject()
 
                 if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
