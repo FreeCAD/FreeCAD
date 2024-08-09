@@ -323,6 +323,15 @@ ElementMapPtr ComplexGeoData::elementMap(bool flush) const
     return _elementMap;
 }
 
+ElementMapPtr ComplexGeoData::ensureElementMap(bool flush)
+{
+    if (!_elementMap) {
+        resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+    return elementMap(flush);
+
+}
+
 void ComplexGeoData::flushElementMap() const
 {}
 
