@@ -20,28 +20,29 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""BIM Schedule command"""
+"""The BIM DrawingView command"""
 
 
 import os
 import FreeCAD
 import FreeCADGui
+from bimcommands import BimBuildingPart
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
-class Arch_SectionPlane:
+class BIM_DrawingView:
 
-    "the Arch SectionPlane command definition"
+    """The command definition for the Drawing View command"""
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_SectionPlane_Tree',
-                'Accel': "S, E",
-                'MenuText': QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
+        return {'Pixmap'  : 'BIM_ArchView',
+                'MenuText': QT_TRANSLATE_NOOP("BIM_DrawingView","2D Drawing"),
+                'Accel': "V, D",
+                'ToolTip': QT_TRANSLATE_NOOP("BIM_DrawingView","Creates a drawing container to contain elements of a 2D view")}
 
     def IsActive(self):
 
@@ -50,19 +51,33 @@ class Arch_SectionPlane:
 
     def Activated(self):
 
-        sel = FreeCADGui.Selection.getSelection()
-        ss = "["
-        for o in sel:
-            if len(ss) > 1:
-                ss += ","
-            ss += "FreeCAD.ActiveDocument."+o.Name
-        ss += "]"
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
+        import Draft
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create 2D View"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.addModule("WorkingPlane")
+        FreeCADGui.doCommand("obj = Arch.make2DDrawing()")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
+        s = FreeCADGui.Selection.getSelection()
+        if len(s) == 1:
+            s = s[0]
+            if Draft.getType(s) == "SectionPlane":
+                FreeCADGui.doCommand("vobj = Draft.make_shape2dview(FreeCAD.ActiveDocument."+s.Name+")")
+                FreeCADGui.doCommand("vobj.Label = \""+translate("BIM","Viewed lines")+"\"")
+                FreeCADGui.doCommand("vobj.InPlace = False")
+                FreeCADGui.doCommand("obj.addObject(vobj)")
+                bb = FreeCAD.BoundBox()
+                for so in s.Objects:
+                    if hasattr(so, "Shape"):
+                        bb.add(so.Shape.BoundBox)
+                if bb.isInside(s.Shape.CenterOfMass):
+                    FreeCADGui.doCommand("cobj = Draft.make_shape2dview(FreeCAD.ActiveDocument."+s.Name+")")
+                    FreeCADGui.doCommand("cobj.Label = \""+translate("BIM","Cut lines")+"\"")
+                    FreeCADGui.doCommand("cobj.InPlace = False")
+                    FreeCADGui.doCommand("cobj.ProjectionMode = \"Cutfaces\"")
+                    FreeCADGui.doCommand("obj.addObject(cobj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 
-
-FreeCADGui.addCommand('Arch_SectionPlane', Arch_SectionPlane())
+FreeCADGui.addCommand('BIM_DrawingView', BIM_DrawingView())
