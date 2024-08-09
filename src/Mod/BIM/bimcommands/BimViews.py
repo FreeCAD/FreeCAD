@@ -297,7 +297,9 @@ class BIM_Views:
                 bold.setBold(True)
                 objSelected = FreeCADGui.Selection.getSelection()
                 objNameSelected = [obj.Label for obj in objSelected]
-                objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+                objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+                if not objActive:
+                    objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
                 tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
                 activeColor = tparam.GetUnsigned("TreeActiveColor",0)
                 allItemsInTree = getAllItemsInTree(vm.tree) + getAllItemsInTree(vm.viewtree)
@@ -341,7 +343,8 @@ class BIM_Views:
         import Arch
 
         FreeCAD.ActiveDocument.openTransaction("Create BuildingPart")
-        Arch.makeFloor()
+        obj = Arch.makeFloor()
+        self.addToSelection(obj)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         self.update(False)
@@ -352,10 +355,33 @@ class BIM_Views:
         import Draft
 
         FreeCAD.ActiveDocument.openTransaction("Create WP Proxy")
-        Draft.makeWorkingPlaneProxy(FreeCAD.DraftWorkingPlane.getPlacement())
+        obj = Draft.makeWorkingPlaneProxy(FreeCAD.DraftWorkingPlane.getPlacement())
+        self.addToSelection(obj)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         self.update(False)
+
+    def addToSelection(self, obj):
+        "Adds the given object to the current selected item"
+
+        import Draft
+        from nativeifc import ifc_tools
+
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1:
+            sel = sel[0]
+            if hasattr(sel, "addObject"):
+                sel.addObject(obj)
+                return
+            elif Draft.getType(sel).startswith("Ifc"):
+                ifc_tools.aggregate(obj, sel)
+            elif "Group" in sel.PropertiesList:
+                g = sel.Group
+                if obj not in g:
+                    g.append(obj)
+                sel.Group = g
+                return
+
 
     def delete(self):
         "deletes the selected object"
@@ -458,6 +484,14 @@ class BIM_Views:
 
     def onContextMenu(self, pos):
         """Fires the context menu"""
+        import Draft
+        self.dialog.buttonAddProxy.setEnabled(True)
+        selobj = self.dialog.tree.currentItem()
+        if selobj:
+            selobj = FreeCAD.ActiveDocument.getObject(selobj.toolTip(0))
+            if selobj:
+                if Draft.getType(selobj).startswith("Ifc"):
+                    self.dialog.buttonAddProxy.setEnabled(False)
         self.dialog.menu.exec_(self.dialog.tree.mapToGlobal(pos))
 
     def getViews(self):
@@ -572,10 +606,32 @@ def show(item, column=None):
                     storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
                     for storey in storeys:
                         storey.ViewObject.Visibility = True
+            elif Draft.getType(obj) == "IfcBuildingStorey":
+                obj.ViewObject.Visibility = True
+                bldgs = [o for o in obj.InList if Draft.getType(o) == "IfcBuilding"]
+                if len(bldgs) == 1:
+                    bldg = bldgs[0]
+                    storeys = [o for o in bldg.OutList if Draft.getType(o) == "IfcBuildingStorey"]
+                    for storey in storeys:
+                        if storey != obj:
+                            storey.ViewObject.Visibility = False
+            elif obj.IfcType == "IfcBuilding":
+                # show all storeys
+                storeys = [o for o in obj.OutList if Draft.getType(o) == "IfcBuildingStorey"]
+                for storey in storeys:
+                    storey.ViewObject.Visibility = True
+
+        # perform stored interactions
         if getattr(obj.ViewObject, "SetWorkingPlane", False):
             obj.ViewObject.Proxy.setWorkingPlane()
         if getattr(obj.ViewObject, "DoubleClickActivates", True):
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
+            if Draft.getType(obj) == "BuildingPart":
+                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
+            elif Draft.getType(obj) == "IfcBuildingStorey":
+                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", obj)
+            else:
+                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
     if vm:
         # store the last double-clicked item for the BIM WPView command
         if isinstance(item, str) or (
