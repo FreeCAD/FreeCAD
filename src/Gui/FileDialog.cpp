@@ -153,6 +153,17 @@ void FileDialog::accept()
     QFileDialog::accept();
 }
 
+void FileDialog::getPossibleSuffixes(QStringList& possibleSuffixes, const QRegularExpression& rx,
+                                     const QString* suffixDescriptions)
+{
+    QRegularExpressionMatchIterator i = rx.globalMatch(*suffixDescriptions);
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        QString suffix = match.captured(1);
+        possibleSuffixes << suffix;
+    }
+}
+
 /**
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
  */
@@ -177,7 +188,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         // get the suffix for the filter: use the selected filter if there is one,
         // otherwise find the first valid suffix in the complete list of filters
         const QString *filterToSearch;
-        if (selectedFilter) {
+        if (selectedFilter && !selectedFilter->isEmpty()) {
             filterToSearch = selectedFilter;
         }
         else {
@@ -186,6 +197,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
 
         QRegularExpression rx;
         rx.setPattern(QLatin1String(R"(\s(\(\*\.\w{1,})\W)"));
+        QStringList possibleSuffixes;
+        getPossibleSuffixes(possibleSuffixes, rx, filterToSearch);
         auto match = rx.match(*filterToSearch);
         if (match.hasMatch()) {
             int index = match.capturedStart();
@@ -194,8 +207,9 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             int offsetStart = 3;
             int offsetEnd = 4;
             QString suffix = filterToSearch->mid(index + offsetStart, length - offsetEnd);
-            if (fi.suffix().isEmpty())
+            if (fi.suffix().isEmpty() || !possibleSuffixes.contains(fi.suffix())) {
                 dirName += suffix;
+            }
         }
     }
 
