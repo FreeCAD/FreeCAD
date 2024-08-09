@@ -470,6 +470,10 @@ void StdCmdExport::activated(int iMsg)
                 if (!lastExportFile.suffix().isEmpty())
                     defaultFilename += QLatin1String(".") + lastExportFile.suffix();
             }
+            //Append sample extension if there is no last extension to avoid FileDialog::getSaveFileName() cutting the actual filename
+            else {
+                defaultFilename += QLatin1String(".xxx");
+            }
             filenameWasGenerated = true;
         }
     }
