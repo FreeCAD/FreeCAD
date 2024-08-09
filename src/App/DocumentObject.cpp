@@ -232,7 +232,7 @@ void DocumentObject::freeze()
  */
 void DocumentObject::unfreeze(bool noRecompute)
 {
-    StatusBits.set(ObjectStatus::Freeze, false);
+    StatusBits.reset(ObjectStatus::Freeze);
     touch(noRecompute);
 }
 
@@ -293,6 +293,8 @@ const char* DocumentObject::getStatusString() const
         const char* text = getDocument()->getErrorDescription(this);
         return text ? text : "Error";
     }
+    else if (isFreezed())
+        return "Freezed";
     else if (isTouched())
         return "Touched";
     else
@@ -738,6 +740,10 @@ App::Property* DocumentObject::addDynamicProperty(
 
 void DocumentObject::onBeforeChange(const Property* prop)
 {
+    if (isFreezed() && prop != &Visibility) {
+        return;
+    }
+
     // Store current name in oldLabel, to be able to easily retrieve old name of document object later
     // when renaming expressions.
     if (prop == &Label)
@@ -751,6 +757,10 @@ void DocumentObject::onBeforeChange(const Property* prop)
 
 void DocumentObject::onEarlyChange(const Property *prop)
 {
+    if (isFreezed() && prop != &Visibility) {
+        return;
+    }
+
     if(GetApplication().isClosingAll())
         return;
 
@@ -773,8 +783,9 @@ void DocumentObject::onEarlyChange(const Property *prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
-    if (isFreezed())
+    if (isFreezed() && prop != &Visibility) {
         return;
+    }
 
     if(GetApplication().isClosingAll())
         return;
@@ -1059,6 +1070,10 @@ DocumentObject *DocumentObject::getLinkedObject(
 
 void DocumentObject::Save (Base::Writer &writer) const
 {
+    if (this->isFreezed()) {
+        throw Base::AbortException("At least one object is frozen, unable to save.");
+    }
+
     if (this->isAttachedToDocument())
         writer.ObjectName = this->getNameInDocument();
     App::ExtensionContainer::Save(writer);
