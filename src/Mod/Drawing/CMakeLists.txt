@@ -1,22 +1,16 @@
+add_subdirectory (App)
+if (BUILD_GUI)
+    add_subdirectory (Gui)
+endif (BUILD_GUI)
 
-add_subdirectory(App)
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-endif(BUILD_GUI)
+set (Drawing_Scripts README.md Init.py DrawingExample.py DrawingTests.py DrawingPatterns.py)
 
-set(Drawing_Scripts
-    README.md
-    Init.py
-    DrawingExample.py
-    DrawingTests.py
-    DrawingPatterns.py
-)
-
-if(BUILD_GUI)
+if (BUILD_GUI)
     list (APPEND Drawing_Scripts InitGui.py)
-endif(BUILD_GUI)
+endif (BUILD_GUI)
 
-SET(Drawing_Templates
+set (
+    Drawing_Templates
     Templates/A0_Landscape_ISO7200.svg
     Templates/A0_Landscape_plain.svg
     Templates/A0_Portrait_plain.svg
@@ -37,33 +31,23 @@ SET(Drawing_Templates
     Templates/A4_Portrait_plain.svg
 )
 
-add_custom_target(DrawingScripts ALL
-    SOURCES ${Drawing_Scripts} ${Drawing_Templates}
+add_custom_target (DrawingScripts ALL SOURCES ${Drawing_Scripts} ${Drawing_Templates})
+
+fc_target_copy_resource (
+    DrawingScripts ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Drawing ${Drawing_Scripts}
 )
 
-fc_target_copy_resource(DrawingScripts
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Drawing
-    ${Drawing_Scripts})
-
-fc_target_copy_resource(DrawingScripts
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing
-    ${Drawing_Templates})
-
-INSTALL(
-    FILES
-        ${Drawing_Scripts}
-    DESTINATION
-        Mod/Drawing
+fc_target_copy_resource (
+    DrawingScripts ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing ${Drawing_Templates}
 )
 
-INSTALL(
-    DIRECTORY
-        Templates
-    DESTINATION
-        ${CMAKE_INSTALL_DATADIR}/Mod/Drawing
+install (FILES ${Drawing_Scripts} DESTINATION Mod/Drawing)
+
+install (
+    DIRECTORY Templates
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Drawing
     FILES_MATCHING
-        PATTERN "*.svg*"
-        PATTERN "*.dxf*"
+    PATTERN "*.svg*"
+    PATTERN "*.dxf*"
 )

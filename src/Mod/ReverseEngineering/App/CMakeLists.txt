@@ -1,24 +1,24 @@
 if (PCL_SURFACE_FOUND AND PCL_FEATURES_FOUND)
-    add_definitions(-DHAVE_PCL_SURFACE)
+    add_definitions (-DHAVE_PCL_SURFACE)
 
-    if(EXISTS "${PCL_INCLUDE_DIRS}/pcl/surface/on_nurbs/fitting_surface_tdm.h")
-        add_definitions(-DHAVE_PCL_OPENNURBS)
-    endif()
+    if (EXISTS "${PCL_INCLUDE_DIRS}/pcl/surface/on_nurbs/fitting_surface_tdm.h")
+        add_definitions (-DHAVE_PCL_OPENNURBS)
+    endif ()
 endif ()
 
 if (PCL_FILTERS_FOUND AND PCL_FEATURES_FOUND)
-    add_definitions(-DHAVE_PCL_FILTERS)
+    add_definitions (-DHAVE_PCL_FILTERS)
 endif ()
 
 if (PCL_SEGMENTATION_FOUND AND PCL_FEATURES_FOUND)
-    add_definitions(-DHAVE_PCL_SEGMENTATION)
+    add_definitions (-DHAVE_PCL_SEGMENTATION)
 endif ()
 
 if (PCL_SAMPLE_CONSENSUS_FOUND)
-    add_definitions(-DHAVE_PCL_SAMPLE_CONSENSUS)
+    add_definitions (-DHAVE_PCL_SAMPLE_CONSENSUS)
 endif ()
 
-include_directories(
+include_directories (
     ${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
@@ -30,9 +30,10 @@ include_directories(
     ${FLANN_INCLUDE_DIRS}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(Reen_LIBS
+set (
+    Reen_LIBS
     Part
     Mesh
     Points
@@ -48,7 +49,8 @@ set(Reen_LIBS
     ${QT_QTCORE_LIBRARY}
 )
 
-SET(Reen_SRCS
+set (
+    Reen_SRCS
     AppReverseEngineering.cpp
     ApproxSurface.cpp
     ApproxSurface.h
@@ -66,19 +68,19 @@ SET(Reen_SRCS
     PreCompiled.h
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Reen_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(ReverseEngineering PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${Reen_SRCS})
+    add_msvc_precompiled_header (ReverseEngineering PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-add_library(ReverseEngineering SHARED ${Reen_SRCS})
-target_link_libraries(ReverseEngineering ${Reen_LIBS})
+add_library (ReverseEngineering SHARED ${Reen_SRCS})
+target_link_libraries (ReverseEngineering ${Reen_LIBS})
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(ReverseEngineering)
-endif()
+    target_compile_warn_error (ReverseEngineering)
+endif ()
 
-SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
-SET_PYTHON_PREFIX_SUFFIX(ReverseEngineering)
+set_bin_dir (ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
+set_python_prefix_suffix (ReverseEngineering)
 
-INSTALL(TARGETS ReverseEngineering DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS ReverseEngineering DESTINATION ${CMAKE_INSTALL_LIBDIR})

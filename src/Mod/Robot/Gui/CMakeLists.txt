@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -10,21 +10,20 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(RobotGui_LIBS
-    Robot
-    FreeCADGui
-)
+set (RobotGui_LIBS Robot FreeCADGui)
 
 set (Robot_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Robot_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${Robot_TR_QRC} ${QM_SRCS})
-qt_add_resources(RobotResource_SRCS Resources/Robot.qrc ${Robot_TR_QRC})
-SOURCE_GROUP("Resources" FILES ${RobotResource_SRCS})
+qt_find_and_add_translation (
+    QM_SRCS "Resources/translations/*_*.ts" ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations
+)
+qt_create_resource_file (${Robot_TR_QRC} ${QM_SRCS})
+qt_add_resources (RobotResource_SRCS Resources/Robot.qrc ${Robot_TR_QRC})
+source_group ("Resources" FILES ${RobotResource_SRCS})
 
-set(RobotGui_UIC_SRCS
+set (
+    RobotGui_UIC_SRCS
     TaskTrajectory.ui
     TaskRobot6Axis.ui
     TrajectorySimulate.ui
@@ -34,25 +33,18 @@ set(RobotGui_UIC_SRCS
     TaskTrajectoryDressUpParameter.ui
 )
 
-SET(RobotGui_SRCS_Module
-    AppRobotGui.cpp
-    Resources/Robot.qrc
-    PreCompiled.cpp
-    PreCompiled.h
-    Workbench.cpp
-    Workbench.h
+set (RobotGui_SRCS_Module AppRobotGui.cpp Resources/Robot.qrc PreCompiled.cpp PreCompiled.h
+                          Workbench.cpp Workbench.h
 )
-SOURCE_GROUP("Module" FILES ${RobotGui_SRCS_Module})
+source_group ("Module" FILES ${RobotGui_SRCS_Module})
 
-SET(RobotGui_SRCS_Commands
-    Command.cpp
-    CommandTrajectory.cpp
-    CommandInsertRobot.cpp
-    CommandExport.cpp
+set (RobotGui_SRCS_Commands Command.cpp CommandTrajectory.cpp CommandInsertRobot.cpp
+                            CommandExport.cpp
 )
-SOURCE_GROUP("Commands" FILES ${RobotGui_SRCS_Commands})
+source_group ("Commands" FILES ${RobotGui_SRCS_Commands})
 
-SET(RobotGui_SRCS_ViewProvider
+set (
+    RobotGui_SRCS_ViewProvider
     ViewProviderRobotObject.cpp
     ViewProviderRobotObject.h
     ViewProviderTrajectory.cpp
@@ -64,9 +56,10 @@ SET(RobotGui_SRCS_ViewProvider
     ViewProviderTrajectoryDressUp.cpp
     ViewProviderTrajectoryDressUp.h
 )
-SOURCE_GROUP("ViewProvider" FILES ${RobotGui_SRCS_ViewProvider})
+source_group ("ViewProvider" FILES ${RobotGui_SRCS_ViewProvider})
 
-SET(RobotGui_SRCS_TaskBoxes
+set (
+    RobotGui_SRCS_TaskBoxes
     TaskRobot6Axis.ui
     TaskRobot6Axis.cpp
     TaskRobot6Axis.h
@@ -91,9 +84,10 @@ SET(RobotGui_SRCS_TaskBoxes
     TaskWatcher.h
     TaskWatcher.cpp
 )
-SOURCE_GROUP("Task_Boxes" FILES ${RobotGui_SRCS_TaskBoxes})
+source_group ("Task_Boxes" FILES ${RobotGui_SRCS_TaskBoxes})
 
-SET(RobotGui_SRCS_TaskDlg
+set (
+    RobotGui_SRCS_TaskDlg
     TaskDlgSimulate.h
     TaskDlgSimulate.cpp
     TaskDlgEdge2Trac.h
@@ -103,9 +97,10 @@ SET(RobotGui_SRCS_TaskDlg
     TaskDlgTrajectoryDressUp.h
     TaskDlgTrajectoryDressUp.cpp
 )
-SOURCE_GROUP("Task_Dialogs" FILES ${RobotGui_SRCS_TaskDlg})
+source_group ("Task_Dialogs" FILES ${RobotGui_SRCS_TaskDlg})
 
-SET(RobotGui_SRCS
+set (
+    RobotGui_SRCS
     ${RobotGui_UIC_HDRS}
     ${RobotResource_SRCS}
     ${RobotGui_SRCS_Module}
@@ -115,33 +110,32 @@ SET(RobotGui_SRCS
     ${RobotGui_SRCS_TaskDlg}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${RobotGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(RobotGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${RobotGui_SRCS})
+    add_msvc_precompiled_header (RobotGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-SET(RobotGuiIcon_SVG
-    Resources/icons/RobotWorkbench.svg
-)
+set (RobotGuiIcon_SVG Resources/icons/RobotWorkbench.svg)
 
-add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
-target_link_libraries(RobotGui ${RobotGui_LIBS})
+add_library (RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
+target_link_libraries (RobotGui ${RobotGui_LIBS})
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(RobotGui)
-endif()
-
-unset(_flag_found CACHE)
-check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
-if (_flag_found)
-    target_compile_options(RobotGui PRIVATE -Wno-deprecated-copy)
+    target_compile_warn_error (RobotGui)
 endif ()
 
+unset (_flag_found CACHE)
+check_cxx_compiler_flag ("-Wno-deprecated-copy" _flag_found)
+if (_flag_found)
+    target_compile_options (RobotGui PRIVATE -Wno-deprecated-copy)
+endif ()
 
-SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
-SET_PYTHON_PREFIX_SUFFIX(RobotGui)
+set_bin_dir (RobotGui RobotGui /Mod/Robot)
+set_python_prefix_suffix (RobotGui)
 
-fc_copy_sources(RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG})
+fc_copy_sources (
+    RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG}
+)
 
-INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-INSTALL(FILES ${RobotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Robot/Resources/icons")
+install (TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (FILES ${RobotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Robot/Resources/icons")
