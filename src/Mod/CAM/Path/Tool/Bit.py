@@ -486,6 +486,9 @@ class ToolBitFactory(object):
         params = attrs["parameter"]
         for prop in params:
             PathUtil.setProperty(obj, prop, params[prop])
+        attributes = attrs["attribute"]
+        for att in attributes:
+            PathUtil.setProperty(obj, att, attributes[att])
         obj.Proxy._updateBitShape(obj)
         obj.Proxy.unloadBitBody(obj)
         return obj
