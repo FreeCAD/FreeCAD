@@ -128,6 +128,7 @@ jobs:
                             python3-packaging                           \
                             python3-pivy                                \
                             python3-ply                                 \
+                            python3-pybind11                            \
                             python3-pyside2.qtcore                      \
                             python3-pyside2.qtgui                       \
                             python3-pyside2.qtnetwork                   \
