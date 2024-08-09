@@ -76,10 +76,6 @@ on:
         default: true
         type: boolean
         required: false
-      cpplintFilters:
-        default: -whitespace-*
-        type: string
-        required: false
       cpplintLineLength:
         default: 120
         type: string
@@ -153,7 +149,7 @@ on:
         type: boolean
         required: false
       clazyChecks:
-        default: level2,no-non-pod-global-static,no-copyable-polymorphic
+        default: level2,no-non-pod-global-static,no-copyable-polymorphic,
         type: string
         required: false
       clazyFailSilent:
@@ -520,7 +516,7 @@ jobs:
           # Run cpplint
           for file in ${{ inputs.changedCppFiles }}
           do
-            cpplint --filter=${{ inputs.cpplintFilters }} --linelength=${{ inputs.cpplintLineLength }} $file &>> ${{ env.logdir }}cpplint.log || true
+            cpplint --linelength=${{ inputs.cpplintLineLength }} $file &>> ${{ env.logdir }}cpplint.log || true
           done
           # If cpplint has run successfully, write the Log to the console with the Problem Matchers
           if [ ${{ env.logdir }}cpplint.log ]
