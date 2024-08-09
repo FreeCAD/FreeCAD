@@ -2,6 +2,7 @@ name: freecad
 channels:
 - conda-forge
 dependencies:
+- appimage-updater-bridge              # [linux]
 - libspnav                             # [linux]
 - kernel-headers_linux-64              # [linux and x86_64]
 - libdrm-cos6-x86_64                   # [linux and x86_64]
@@ -56,6 +57,10 @@ dependencies:
 - xorg-x11-server-common-cos7-aarch64  # [linux and aarch64]
 - xorg-x11-server-xvfb-cos7-aarch64    # [linux and aarch64]
 - sed                                  # [unix]
+- blas=*=accelerate                    # [osx]
+- blas=*=openblas                      # [not osx]
+- blinker
+- calculix
 - ccache
 - cmake
 - coin3d
@@ -63,6 +68,7 @@ dependencies:
 - conda
 - conda-devenv
 - debugpy
+- docutils
 - doxygen
 - eigen
 - fmt
@@ -71,14 +77,21 @@ dependencies:
 - gmsh
 - graphviz
 - hdf5
+- ifcopenshell
 - libboost-devel
 - libcxx
+- lxml
 - mamba
 - matplotlib
+- nine
 - ninja
 - numpy
 - occt
+- olefile
+- opencamlib
+- opencv
 - openssl
+- pandas
 - pcl
 - pip
 - pivy
@@ -86,15 +99,21 @@ dependencies:
 - ply
 - pre-commit
 - pybind11
+- pycollada
 - pyside2
 - python==3.11.*
 - pyyaml
 - qt-main
+- qt.py
+- requests
+- scipy
 - six
 - smesh
 - swig
+- sympy
 - vtk==9.2.6
 - xerces-c
+- xlutils
 - yaml-cpp
 - zlib
 - zstd==1.5.6
