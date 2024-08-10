@@ -469,6 +469,7 @@ protected:
 
 protected:
     ElementMapPtr elementMap(bool flush=true) const;
+    ElementMapPtr ensureElementMap(bool flush=true);
 
 private:
     ElementMapPtr _elementMap;
