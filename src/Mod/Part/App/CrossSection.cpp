@@ -265,10 +265,7 @@ void TopoCrossSection::sliceNonSolid(int idx,
     BRepAlgoAPI_Section cs(shape.getShape(), gp_Pln(a, b, c, -d));
     if (cs.IsDone()) {
         std::string prefix(op);
-        if (idx > 1) {
-            prefix += '_';
-            prefix += std::to_string(idx);
-        }
+        prefix += Data::indexSuffix(idx,Data::ELEMENT_MAP_INDEX2);
         auto res = TopoShape()
                        .makeElementShape(cs, shape, prefix.c_str())
                        .makeElementWires()
@@ -297,10 +294,7 @@ void TopoCrossSection::sliceSolid(int idx,
     BRepPrimAPI_MakeHalfSpace mkSolid(TopoDS::Face(face.getShape()), refPoint);
     TopoShape solid(idx);
     std::string prefix(op);
-    if (idx > 1) {
-        prefix += '_';
-        prefix += std::to_string(idx);
-    }
+    prefix += Data::indexSuffix(idx,Data::ELEMENT_MAP_INDEX2);
     solid.makeElementShape(mkSolid, face, prefix.c_str());
     BRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
 

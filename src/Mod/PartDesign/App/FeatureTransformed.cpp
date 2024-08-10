@@ -50,6 +50,7 @@
 #include "FeatureLinearPattern.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 
 using namespace PartDesign;
@@ -285,10 +286,12 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     auto getTransformedCompShape = [&](const auto& origShape) {
         std::vector<TopoShape> shapes;
-        TopoShape shape = origShape;
-        auto transformIter = transformations.cbegin();
-        for (; transformIter != transformations.end(); ++transformIter) {
-            shapes.emplace_back(shape.makeElementTransform(*transformIter));
+        TopoShape shape (origShape);
+        int idx=1;
+        for ( const auto& transformIter : transformations ) {
+            auto opName = Data::indexSuffix(idx++);
+            auto transformed = shape.makeElementTransform(transformIter, opName.c_str());
+            shapes.emplace_back(transformed);
         }
         return shapes;
     };
@@ -338,15 +341,15 @@ App::DocumentObjectExecReturn* Transformed::execute()
 #endif
 
                 if (!fuseShape.isNull()) {
-                    supportShape = supportShape.makeElementFuse(getTransformedCompShape(fuseShape.getShape()));
+                    supportShape.makeElementFuse(getTransformedCompShape(fuseShape.getShape()));
                 }
                 if (!cutShape.isNull()) {
-                    supportShape = supportShape.makeElementCut(getTransformedCompShape(cutShape.getShape()));
+                    supportShape.makeElementFuse(getTransformedCompShape(cutShape.getShape()));
                 }
             }
             break;
         case Mode::TransformBody: {
-            supportShape = supportShape.makeElementFuse(getTransformedCompShape(supportShape));
+            supportShape.makeElementFuse(getTransformedCompShape(supportShape));
             break;
         }
     }
