@@ -77,7 +77,73 @@ on:
         type: boolean
         required: false
       cpplintFilters:
-        default: -whitespace-*
+        default: >-
+          '
+          +build/deprecated,
+          -build/endif_comment,
+          +build/explicit_make_pair,
+          -build/forward_decl,
+          +build/header_guard,
+          +build/include,
+          -build/include_subdir,
+          -build/include_alpha,
+          -build/include_order,
+          +build/include_what_you_use,
+          +build/namespaces_headers,
+          +build/namespaces_literals,
+          +build/namespaces,
+          +build/printf_format,
+          +build/storage_class,
+          +readability/alt_tokens,
+          -readability/braces,
+          +readability/casting,
+          +readability/check,
+          +readability/constructors,
+          +readability/fn_size,
+          +readability/inheritance,
+          +readability/multiline_comment,
+          +readability/multiline_string,
+          +readability/namespace,
+          -readability/nolint,
+          +readability/nul,
+          +readability/strings,
+          +readability/todo,
+          +readability/utf8,
+          +runtime/arrays,
+          +runtime/casting,
+          +runtime/explicit,
+          +runtime/int,
+          +runtime/init,
+          +runtime/invalid_increment,
+          +runtime/member_string_references,
+          +runtime/memset,
+          +runtime/operator,
+          +runtime/printf,
+          +runtime/printf_format,
+          +runtime/references,
+          +runtime/string,
+          +runtime/threadsafe_fn,
+          +runtime/vlog,
+          -whitespace/blank_line,
+          -whitespace/braces,
+          -whitespace/comma,
+          -whitespace/comments,
+          -whitespace/empty_conditional_body,
+          -whitespace/empty_if_body,
+          -whitespace/empty_loop_body,
+          -whitespace/end_of_line,
+          -whitespace/ending_newline,
+          -whitespace/forcolon,
+          -whitespace/indent,
+          -whitespace/indent_namespace,
+          -whitespace/line_length,
+          -whitespace/newline,
+          -whitespace/operators,
+          -whitespace/parens,
+          -whitespace/semicolon,
+          -whitespace/tab,
+          -whitespace/todo
+          '
         type: string
         required: false
       cpplintLineLength:
@@ -139,10 +205,6 @@ on:
       checkClangTidy:
         default: true
         type: boolean
-        required: false
-      clangTidyChecks:
-        default: # empty to use the .clang-tidy file
-        type: string
         required: false
       clangTidyFailSilent:
         default: true # warnings or notes will never fail the CI, only errors
@@ -620,10 +682,10 @@ jobs:
           clangTidyNotes=0
           sudo apt-get install -y --no-install-recommends clang-tidy
           #TODO: check where this "clang-tidy.yaml" goes ; shall this be put in the fixes ?
-          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
+          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -p build/ --explain-config &>> ${{ env.logdir }}clang-tidy-enabled-checks.log
           # Run clang-tidy on all cpp files
           set +e
-          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -checks=${{ inputs.clangTidyChecks }} -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-tidy.log
+          clang-tidy --quiet --format-style=${{ inputs.clangStyle }} --export-fixes=clang-tidy.yaml -p build/ ${{ inputs.changedCppFiles }} &>> ${{ env.logdir }}clang-tidy.log
           exitCode=$?
           set -e
           # If clang-tidy has run successfully, write the Log to the console with the Problem Matchers
