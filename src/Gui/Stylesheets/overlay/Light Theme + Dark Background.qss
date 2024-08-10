@@ -85,10 +85,10 @@ Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:selecte
   background-color: #c7def5;
 } */
 
-
+/* 
 Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:disabled {
   color: #9a9a9a;
-}
+} */
 
 Gui--OverlayTabWidget {
   qproperty-effectColor: rgba(25, 25, 25, 220);
