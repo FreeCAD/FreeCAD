@@ -1516,10 +1516,12 @@ int SketchObject::getAxisCount() const
     const std::vector<Part::Geometry*>& vals = getInternalGeometry();
 
     int count = 0;
-    for (std::vector<Part::Geometry*>::const_iterator geo = vals.begin(); geo != vals.end(); geo++)
-        if ((*geo) && GeometryFacade::getConstruction(*geo)
-            && (*geo)->is<Part::GeomLineSegment>())
+    for (const auto& geo : vals) {
+        if (geo && GeometryFacade::getConstruction(geo)
+            && geo->is<Part::GeomLineSegment>()) {
             count++;
+        }
+    }
 
     return count;
 }
@@ -1531,17 +1533,18 @@ Base::Axis SketchObject::getAxis(int axId) const
 
     const std::vector<Part::Geometry*>& vals = getInternalGeometry();
     int count = 0;
-    for (std::vector<Part::Geometry*>::const_iterator geo = vals.begin(); geo != vals.end(); geo++)
-        if ((*geo) && GeometryFacade::getConstruction(*geo)
-            && (*geo)->is<Part::GeomLineSegment>()) {
+    for (const auto& geo : vals) {
+        if (geo && GeometryFacade::getConstruction(geo)
+            && geo->is<Part::GeomLineSegment>()) {
             if (count == axId) {
-                Part::GeomLineSegment* lineSeg = static_cast<Part::GeomLineSegment*>(*geo);
+                Part::GeomLineSegment* lineSeg = static_cast<Part::GeomLineSegment*>(geo);
                 Base::Vector3d start = lineSeg->getStartPoint();
                 Base::Vector3d end = lineSeg->getEndPoint();
                 return Base::Axis(start, end - start);
             }
             count++;
         }
+    }
 
     return Base::Axis();
 }
@@ -1583,10 +1586,9 @@ SketchObject::supportedGeometry(const std::vector<Part::Geometry*>& geoList) con
     std::vector<Part::Geometry*> supportedGeoList;
     supportedGeoList.reserve(geoList.size());
     // read-in geometry that the sketcher cannot handle
-    for (std::vector<Part::Geometry*>::const_iterator it = geoList.begin(); it != geoList.end();
-         ++it) {
-        if (isSupportedGeometry(*it)) {
-            supportedGeoList.push_back(*it);
+    for (const auto& geo : geoList) {
+        if (isSupportedGeometry(geo)) {
+            supportedGeoList.push_back(geo);
         }
     }
 
@@ -1698,7 +1700,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     // Find coincident points to replace the points of the deleted geometry
     std::vector<int> GeoIdList;
     std::vector<PointPos> PosIdList;
-    for (PointPos PosId: {PointPos::start, PointPos::end, PointPos::mid}) {
+    for (PointPos PosId : {PointPos::start, PointPos::end, PointPos::mid}) {
         getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
         if (GeoIdList.size() > 1) {
             delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
@@ -1780,7 +1782,6 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
     if (sGeoIds.front() < 0 || sGeoIds.back() >= int(vals.size()))
         return -1;
 
-
     std::vector<Part::Geometry*> newVals(vals);
     for (auto it = sGeoIds.rbegin(); it != sGeoIds.rend(); ++it) {
         int GeoId = *it;
@@ -1789,14 +1790,12 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
         // Find coincident points to replace the points of the deleted geometry
         std::vector<int> GeoIdList;
         std::vector<PointPos> PosIdList;
-        for (PointPos PosId = PointPos::start; PosId != PointPos::mid;) {
+        for (PointPos PosId : {PointPos::start, PointPos::end, PointPos::mid}) {
             getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
             if (GeoIdList.size() > 1) {
                 delConstraintOnPoint(GeoId, PosId, true /* only coincidence */);
                 transferConstraints(GeoIdList[0], PosIdList[0], GeoIdList[1], PosIdList[1]);
             }
-            // loop through [start, end, mid]
-            PosId = (PosId == PointPos::start) ? PointPos::end : PointPos::mid;
         }
     }
 
@@ -1807,23 +1806,22 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
     std::vector<Constraint*> filteredConstraints(0);
     for (auto itGeo = sGeoIds.rbegin(); itGeo != sGeoIds.rend(); ++itGeo) {
         int GeoId = *itGeo;
-        for (std::vector<Constraint*>::const_iterator it = constraints.begin();
-             it != constraints.end();
-             ++it) {
-
-            Constraint* copiedConstr(*it);
-            if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
-                if (copiedConstr->First > GeoId)
-                    copiedConstr->First -= 1;
-                if (copiedConstr->Second > GeoId)
-                    copiedConstr->Second -= 1;
-                if (copiedConstr->Third > GeoId)
-                    copiedConstr->Third -= 1;
-                filteredConstraints.push_back(copiedConstr);
-            }
-            else {
+        for (const auto& constr : constraints) {
+            Constraint* copiedConstr(constr);
+            if (constr->First == GeoId ||
+                constr->Second == GeoId ||
+                constr->Third == GeoId) {
                 delete copiedConstr;
+                continue;
             }
+
+            if (copiedConstr->First > GeoId)
+                copiedConstr->First -= 1;
+            if (copiedConstr->Second > GeoId)
+                copiedConstr->Second -= 1;
+            if (copiedConstr->Third > GeoId)
+                copiedConstr->Third -= 1;
+            filteredConstraints.push_back(copiedConstr);
         }
 
         constraints = filteredConstraints;
@@ -9301,56 +9299,57 @@ const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenc
 
     std::vector<std::map<int, Sketcher::PointPos>> coincidenttree;
     // push the constraints
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-         ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
-            int firstpresentin = -1;
-            int secondpresentin = -1;
+    for (const auto& constr : vals) {
+        if (constr->Type != Sketcher::Coincident) {
+            continue;
+        }
 
-            int i = 0;
+        int firstpresentin = -1;
+        int secondpresentin = -1;
 
-            for (std::vector<std::map<int, Sketcher::PointPos>>::const_iterator iti =
-                     coincidenttree.begin();
-                 iti != coincidenttree.end();
-                 ++iti, i++) {
-                // First
-                std::map<int, Sketcher::PointPos>::const_iterator filiterator;
-                filiterator = (*iti).find((*it)->First);
-                if (filiterator != (*iti).end()) {
-                    if ((*it)->FirstPos == (*filiterator).second)
-                        firstpresentin = i;
-                }
-                // Second
-                filiterator = (*iti).find((*it)->Second);
-                if (filiterator != (*iti).end()) {
-                    if ((*it)->SecondPos == (*filiterator).second)
-                        secondpresentin = i;
-                }
-            }
+        int i = 0;
 
-            if (firstpresentin != -1 && secondpresentin != -1) {
-                // we have to merge those sets into one
-                coincidenttree[firstpresentin].insert(coincidenttree[secondpresentin].begin(),
-                                                      coincidenttree[secondpresentin].end());
-                coincidenttree.erase(coincidenttree.begin() + secondpresentin);
+        for (std::vector<std::map<int, Sketcher::PointPos>>::const_iterator iti =
+                 coincidenttree.begin();
+             iti != coincidenttree.end();
+             ++iti, ++i) {
+            // First
+            std::map<int, Sketcher::PointPos>::const_iterator filiterator;
+            filiterator = (*iti).find(constr->First);
+            if (filiterator != (*iti).end()) {
+                if (constr->FirstPos == (*filiterator).second)
+                    firstpresentin = i;
             }
-            else if (firstpresentin == -1 && secondpresentin == -1) {
-                // we do not have any of the values, so create a setCursor
-                std::map<int, Sketcher::PointPos> tmp;
-                tmp.insert(std::pair<int, Sketcher::PointPos>((*it)->First, (*it)->FirstPos));
-                tmp.insert(std::pair<int, Sketcher::PointPos>((*it)->Second, (*it)->SecondPos));
-                coincidenttree.push_back(tmp);
+            // Second
+            filiterator = (*iti).find(constr->Second);
+            if (filiterator != (*iti).end()) {
+                if (constr->SecondPos == (*filiterator).second)
+                    secondpresentin = i;
             }
-            else if (firstpresentin != -1) {
-                // add to existing group
-                coincidenttree[firstpresentin].insert(
-                    std::pair<int, Sketcher::PointPos>((*it)->Second, (*it)->SecondPos));
-            }
-            else {// secondpresentin != -1
-                // add to existing group
-                coincidenttree[secondpresentin].insert(
-                    std::pair<int, Sketcher::PointPos>((*it)->First, (*it)->FirstPos));
-            }
+        }
+
+        if (firstpresentin != -1 && secondpresentin != -1) {
+            // we have to merge those sets into one
+            coincidenttree[firstpresentin].insert(coincidenttree[secondpresentin].begin(),
+                                                  coincidenttree[secondpresentin].end());
+            coincidenttree.erase(coincidenttree.begin() + secondpresentin);
+        }
+        else if (firstpresentin == -1 && secondpresentin == -1) {
+            // we do not have any of the values, so create a setCursor
+            std::map<int, Sketcher::PointPos> tmp;
+            tmp.insert(std::pair<int, Sketcher::PointPos>(constr->First, constr->FirstPos));
+            tmp.insert(std::pair<int, Sketcher::PointPos>(constr->Second, constr->SecondPos));
+            coincidenttree.push_back(tmp);
+        }
+        else if (firstpresentin != -1) {
+            // add to existing group
+            coincidenttree[firstpresentin].insert(
+                std::pair<int, Sketcher::PointPos>(constr->Second, constr->SecondPos));
+        }
+        else {// secondpresentin != -1
+            // add to existing group
+            coincidenttree[secondpresentin].insert(
+                std::pair<int, Sketcher::PointPos>(constr->First, constr->FirstPos));
         }
     }
 
@@ -9367,47 +9366,41 @@ void SketchObject::isCoincidentWithExternalGeometry(int GeoId, bool& start_exter
 
     const std::vector<std::map<int, Sketcher::PointPos>> coincidenttree = getCoincidenceGroups();
 
-    for (std::vector<std::map<int, Sketcher::PointPos>>::const_iterator it = coincidenttree.begin();
-         it != coincidenttree.end();
-         ++it) {
-
-        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
-
-        geoId1iterator = (*it).find(GeoId);
-
-        if (geoId1iterator != (*it).end()) {
-            // If First is in this set and the first key in this ordered element key is external
-            if ((*it).begin()->first < 0) {
-                if ((*geoId1iterator).second == Sketcher::PointPos::start)
-                    start_external = true;
-                else if ((*geoId1iterator).second == Sketcher::PointPos::mid)
-                    mid_external = true;
-                else if ((*geoId1iterator).second == Sketcher::PointPos::end)
-                    end_external = true;
-            }
+    for (const auto& cGroup : coincidenttree) {
+        const auto& geoId1iterator = cGroup.find(GeoId);
+        if (geoId1iterator == cGroup.end()) {
+            continue;
         }
+
+        if (cGroup.begin()->first >= 0) {
+            continue;
+        }
+
+        // `GeoId` is in this set and the first key in this ordered element key is external
+        if (geoId1iterator->second == Sketcher::PointPos::start)
+            start_external = true;
+        else if (geoId1iterator->second == Sketcher::PointPos::mid)
+            mid_external = true;
+        else if (geoId1iterator->second == Sketcher::PointPos::end)
+            end_external = true;
     }
 }
 
 const std::map<int, Sketcher::PointPos> SketchObject::getAllCoincidentPoints(int GeoId,
                                                                              PointPos PosId)
 {
-
     const std::vector<std::map<int, Sketcher::PointPos>> coincidenttree = getCoincidenceGroups();
 
-    for (std::vector<std::map<int, Sketcher::PointPos>>::const_iterator it = coincidenttree.begin();
-         it != coincidenttree.end();
-         ++it) {
-
+    for (const auto& cGroup : coincidenttree) {
         std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
-        geoId1iterator = (*it).find(GeoId);
+        geoId1iterator = cGroup.find(GeoId);
 
-        if (geoId1iterator != (*it).end()) {
+        if (geoId1iterator != cGroup.end()) {
             // If GeoId is in this set
 
-            if ((*geoId1iterator).second == PosId)// and posId matches
-                return (*it);
+            if (geoId1iterator->second == PosId)// and posId matches
+                return cGroup;
         }
     }
 
@@ -9476,23 +9469,16 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
 
     const std::vector<std::map<int, Sketcher::PointPos>> coincidenttree = getCoincidenceGroups();
 
-    for (std::vector<std::map<int, Sketcher::PointPos>>::const_iterator it = coincidenttree.begin();
-         it != coincidenttree.end();
-         ++it) {
+    for (const auto& cGroup : coincidenttree) {
+        const auto& geoId1iterator = cGroup.find(GeoId1);
 
-        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
-
-        geoId1iterator = (*it).find(GeoId1);
-
-        if (geoId1iterator != (*it).end()) {
+        if (geoId1iterator != cGroup.end()) {
             // If First is in this set
-            std::map<int, Sketcher::PointPos>::const_iterator geoId2iterator;
+            const auto& geoId2iterator = cGroup.find(GeoId2);
 
-            geoId2iterator = (*it).find(GeoId2);
-
-            if (geoId2iterator != (*it).end()) {
+            if (geoId2iterator != cGroup.end()) {
                 // If Second is in this set
-                if ((*geoId1iterator).second == PosId1 && (*geoId2iterator).second == PosId2)
+                if (geoId1iterator->second == PosId1 && geoId2iterator->second == PosId2)
                     return true;
             }
         }
@@ -9506,9 +9492,8 @@ void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintL
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
     int i = 0;
 
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
+    for (const auto& constr : constraints) {
+        if (constr->First == GeoId || constr->Second == GeoId || constr->Third == GeoId) {
             constraintList.push_back(i);
         }
         ++i;
@@ -9566,50 +9551,55 @@ void SketchObject::getGeometryWithDependentParameters(
 {
     auto geos = getInternalGeometry();
 
-    int geoid = 0;
+    int geoid = -1;
 
     for (auto geo : geos) {
-        if (geo) {
-            if (geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+        ++geoid;
 
-                auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
-                    geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
-
-                if (solvext->getGeometry()
-                    == Sketcher::SolverGeometryExtension::NotFullyConstraint) {
-                    // The solver differentiates whether the parameters that are dependent are not
-                    // those of start, end, mid, and assigns them to the edge (edge params = curve
-                    // params - parms of start, end, mid). The user looking at the UI expects that
-                    // the edge of a NotFullyConstraint geometry will always move, even if the edge
-                    // parameters are independent, for example if mid is the only dependent
-                    // parameter. In other words, the user could reasonably restrict the edge to
-                    // reach a fully constrained element. Under this understanding, the edge
-                    // parameter would always be dependent, unless the element is fully constrained.
-                    //
-                    // While this is ok from a user visual expectation point of view, it leads to a
-                    // loss of information of whether restricting the point start, end, mid that is
-                    // dependent may suffice, or even if such points are restricted, the edge would
-                    // still need to be restricted.
-                    //
-                    // Because Python gets the information in this function, it would lead to Python
-                    // users having access to a lower amount of detail.
-                    //
-                    // For this reason, this function returns edge as dependent parameter if and
-                    // only if constraining the parameters of the points would not suffice to
-                    // constraint the element.
-                    if (solvext->getEdge() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid, Sketcher::PointPos::none);
-                    if (solvext->getStart() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid, Sketcher::PointPos::start);
-                    if (solvext->getEnd() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid, Sketcher::PointPos::start);
-                    if (solvext->getMid() == SolverGeometryExtension::Dependent)
-                        geometrymap.emplace_back(geoid, Sketcher::PointPos::start);
-                }
-            }
+        if (!geo) {
+            continue;
         }
 
-        geoid++;
+        if (!geo->hasExtension(Sketcher::SolverGeometryExtension::getClassTypeId())) {
+            continue;
+        }
+
+        auto solvext = std::static_pointer_cast<const Sketcher::SolverGeometryExtension>(
+            geo->getExtension(Sketcher::SolverGeometryExtension::getClassTypeId()).lock());
+
+        if (solvext->getGeometry()
+            != Sketcher::SolverGeometryExtension::NotFullyConstraint) {
+            continue;
+        }
+
+        // The solver differentiates whether the parameters that are dependent are not
+        // those of start, end, mid, and assigns them to the edge (edge params = curve
+        // params - parms of start, end, mid). The user looking at the UI expects that
+        // the edge of a NotFullyConstraint geometry will always move, even if the edge
+        // parameters are independent, for example if mid is the only dependent
+        // parameter. In other words, the user could reasonably restrict the edge to
+        // reach a fully constrained element. Under this understanding, the edge
+        // parameter would always be dependent, unless the element is fully constrained.
+        //
+        // While this is ok from a user visual expectation point of view, it leads to a
+        // loss of information of whether restricting the point start, end, mid that is
+        // dependent may suffice, or even if such points are restricted, the edge would
+        // still need to be restricted.
+        //
+        // Because Python gets the information in this function, it would lead to Python
+        // users having access to a lower amount of detail.
+        //
+        // For this reason, this function returns edge as dependent parameter if and
+        // only if constraining the parameters of the points would not suffice to
+        // constraint the element.
+        if (solvext->getEdge() == SolverGeometryExtension::Dependent)
+            geometrymap.emplace_back(geoid, Sketcher::PointPos::none);
+        if (solvext->getStart() == SolverGeometryExtension::Dependent)
+            geometrymap.emplace_back(geoid, Sketcher::PointPos::start);
+        if (solvext->getEnd() == SolverGeometryExtension::Dependent)
+            geometrymap.emplace_back(geoid, Sketcher::PointPos::start);
+        if (solvext->getMid() == SolverGeometryExtension::Dependent)
+            geometrymap.emplace_back(geoid, Sketcher::PointPos::start);
     }
 }
 
