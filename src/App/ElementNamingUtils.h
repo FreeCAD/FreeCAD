@@ -69,8 +69,7 @@ constexpr const char* POSTFIX_GEN                       = ";:G";
 constexpr const char* POSTFIX_MODGEN                    = ";:MG";
 constexpr const char* POSTFIX_DUPLICATE                 = ";D";
 
-constexpr const char* ELEMENT_MAP_INDEX                 = "I";
-constexpr const char* ELEMENT_MAP_INDEX2                 = "_";
+constexpr const char* ELEMENT_MAP_INDEX                 = "_";
 
 /// Check if a subname contains missing element
 AppExport bool hasMissingElement(const char *subname);

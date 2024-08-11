@@ -93,8 +93,6 @@ const char *Data::hasMappedElementName(const char *subname) {
     return isMappedElement(findElementName(subname));
 }
 
-// Currently used by CrossSection.cpp and FeatureTransformed.cpp with different label types
-// with a default of "I"  and "_" used by CrossSection.
 const std::string Data::indexSuffix(int index, const char *label)
 {
     if ( index < 2 ) {  // Don't add a suffix for item #1, begin appending at 2
