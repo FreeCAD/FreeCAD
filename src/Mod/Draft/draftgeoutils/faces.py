@@ -187,7 +187,7 @@ def bind(w1, w2, per_segment=False):
                 if len(faces) > 1 :
                     faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
                     faces_fused_list.append(faces_fused)
-                # faces might be emply list [], see above; skip if empty
+                # faces might be empty list [], see above; skip if empty
                 elif faces:
                     faces_fused_list.append(faces[0])  # Only 1 face
             return Part.Compound(faces_fused_list)
