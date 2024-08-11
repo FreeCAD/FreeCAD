@@ -29,8 +29,8 @@ import os
 import FreeCAD
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-from   PathScripts import PathUtils
 import Path.Main.Job as PathJob
+from   PathScripts import PathUtils
 import CAMSimulator
 
 from FreeCAD import Vector
@@ -76,7 +76,7 @@ class CAMSimTaskUi:
         return QDialogButtonBox.Close
 
     def reject(self):
-        """ User Pressed the Close button 
+        """ User Pressed the Close button
         """
         self.parent.cancel()
         FreeCADGui.Control.closeDialog()
@@ -89,7 +89,7 @@ def TSError(msg):
 
 
 class CAMSimulation:
-    """ Handles and prepares CAM jobs for simulation 
+    """ Handles and prepares CAM jobs for simulation
     """
     def __init__(self):
         self.debug = False
@@ -140,7 +140,7 @@ class CAMSimulation:
         return None, 0.0, 0.0
 
     def FindTopMostEdge(self, edges):
-        """ Examin tool solid edges and find the top most one
+        """ Examine tool solid edges and find the top most one
         """
         maxz = -99999999.0
         topedge = None
@@ -164,7 +164,7 @@ class CAMSimulation:
         return topedge, top_p1, top_p2
 
     def GetToolProfile(self, tool, resolution):
-        """ Get the edge profile of a tool solid. Basically locating the 
+        """ Get the edge profile of a tool solid. Basically locating the
             side edge that OCC creates on any revolved object
         """
         shape = tool.Shape
@@ -202,7 +202,7 @@ class CAMSimulation:
                 endz = edge.valueAt(p2).z
                 profile.append(endrad)
                 profile.append(endz)
-            edge, p1, p2 =  self.FindClosestEdge(sideEdgeList, endrad, endz)
+            edge, p1, p2 = self.FindClosestEdge(sideEdgeList, endrad, endz)
             if edge is None:
                 break
             startrad = RadiusAt(edge, p1)

@@ -20,13 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include "PreCompiled.h"  // NOLINT
+#ifndef _PreComp_
+#include <string>
+#include <vector>
+#endif
+
 #include "CAMSim.h"
 #include "DlgCAMSimulator.h"
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRepTools.hxx>
 #include <Mod/Part/App/BRepMesh.h>
-#include <vector>
 
 
 
@@ -34,8 +36,6 @@ using namespace Base;
 using namespace CAMSimulator;
 
 TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
-
-constexpr int MAX_GCODE_LINE_LEN = 120;
 
 void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 {
@@ -47,7 +47,7 @@ void CAMSimulator::CAMSim::resetSimulation()
     DlgCAMSimulator::GetInstance()->resetSimulation();
 }
 
-void CAMSim::addTool(const std::vector<float> toolProfilePoints,
+void CAMSim::addTool(const std::vector<float> &toolProfilePoints,
                      int toolNumber,
                      float diameter,
                      float resolution)
@@ -55,13 +55,13 @@ void CAMSim::addTool(const std::vector<float> toolProfilePoints,
     DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }
 
-void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& bshape, float resolution)
+void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float resolution)
 {
-    if (bshape.isNull()) {
+    if (baseShape.isNull()) {
         return;
     }
 
-    DlgCAMSimulator::GetInstance()->SetBaseShape(bshape, resolution);
+    DlgCAMSimulator::GetInstance()->SetBaseShape(baseShape, resolution);
 }
 
 void CAMSim::AddCommand(Command* cmd)
