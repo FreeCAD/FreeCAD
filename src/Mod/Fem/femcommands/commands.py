@@ -654,8 +654,8 @@ class _FEMMesh2Mesh(CommandManager):
         self.is_active = "with_femmesh_andor_res"
 
     def Activated(self):
-        gsecondorder = (hasattr(self.selobj, "ElementOrder") and self.selobj.ElementOrder == "2nd")
-        femmeshargs = [ "FreeCAD.ActiveDocument.{}.FemMesh".format(self.selobj.Name) ]
+        gsecondorder = hasattr(self.selobj, "ElementOrder") and self.selobj.ElementOrder == "2nd"
+        femmeshargs = ["FreeCAD.ActiveDocument.{}.FemMesh".format(self.selobj.Name)]
         if gsecondorder or (self.selobj2 != None):
             s = os.path.join(os.path.split(__file__)[0], "../femmesh/femmesh2mesh.ui")
             dialog = FreeCADGui.PySideUic.loadUi(s)
@@ -667,7 +667,11 @@ class _FEMMesh2Mesh(CommandManager):
                 dialog.groupBoxSubdivision.hide()
             if dialog.exec_() != 1:
                 return
-            myDispScale = dialog.doubleSpinBoxDeformed.value() if (self.selobj2 != None) and dialog.groupBoxDeformed.isChecked() else 0
+            myDispScale = (
+                dialog.doubleSpinBoxDeformed.value()
+                if (self.selobj2 != None) and dialog.groupBoxDeformed.isChecked()
+                else 0
+            )
             if myDispScale != 0:
                 femmeshargs.append("FreeCAD.ActiveDocument.{}".format(self.selobj2.Name))
                 femmeshargs.append("%f" % myDispScale)
@@ -675,7 +679,7 @@ class _FEMMesh2Mesh(CommandManager):
                 femmeshargs.append("None")
                 femmeshargs.append("0")
             femmeshargs.append("%d" % dialog.spinBoxSubd.value())
-        
+
         FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
         FreeCADGui.addModule("femmesh.femmesh2mesh")
         FreeCADGui.doCommand(
@@ -683,9 +687,7 @@ class _FEMMesh2Mesh(CommandManager):
         )
         FreeCADGui.addModule("Mesh")
         FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
-        FreeCADGui.doCommand(
-            "FreeCAD.ActiveDocument." + self.selobj.Name + ".ViewObject.hide()"
-        )
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument." + self.selobj.Name + ".ViewObject.hide()")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
