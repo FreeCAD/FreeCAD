@@ -562,6 +562,75 @@ TEST_F(SketchObjectTest, testGetPointFromGeomBSplineCurvePeriodic)
     EXPECT_DOUBLE_EQ(ptStart[1], ptEnd[1]);
 }
 
+TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
+{
+    // Arrange
+    int geoId1 = 42, geoId2 = 10, geoId3 = 0, geoId4 = -8;
+
+    Sketcher::Constraint* nullConstr = nullptr;
+
+    Sketcher::Constraint constr1;
+    constr1.Type = Sketcher::ConstraintType::Coincident;
+    constr1.First = geoId1;
+    constr1.FirstPos = Sketcher::PointPos::start;
+    constr1.Second = geoId2;
+    constr1.SecondPos = Sketcher::PointPos::end;
+
+    Sketcher::Constraint constr2;
+    constr2.Type = Sketcher::ConstraintType::Tangent;
+    constr2.First = geoId4;
+    constr2.FirstPos = Sketcher::PointPos::none;
+    constr2.Second = geoId3;
+    constr2.SecondPos = Sketcher::PointPos::none;
+    constr2.Third = geoId1;
+    constr2.ThirdPos = Sketcher::PointPos::start;
+
+    // Act
+    auto nullConstrAfter = getObject()->getConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstrAfter, nullptr);
+
+    // Act
+    getObject()->changeConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstr, nullptr);
+
+    // Act
+    // delete typical in-sketch geo
+    auto constr1PtrAfter1 = getObject()->getConstraintAfterDeletingGeo(&constr1, 5);
+    // delete external geo (negative id)
+    auto constr1PtrAfter2 = getObject()->getConstraintAfterDeletingGeo(&constr1, -5);
+    // Delete a geo involved in the constraint
+    auto constr1PtrAfter3 = getObject()->getConstraintAfterDeletingGeo(&constr1, 10);
+
+    // Assert
+    EXPECT_EQ(constr1.Type, Sketcher::ConstraintType::Coincident);
+    EXPECT_EQ(constr1.First, geoId1);
+    EXPECT_EQ(constr1.Second, geoId2);
+    EXPECT_EQ(constr1PtrAfter1->First, geoId1 - 1);
+    EXPECT_EQ(constr1PtrAfter1->Second, geoId2 - 1);
+    EXPECT_EQ(constr1PtrAfter2->Third, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constr1PtrAfter3.get(), nullptr);
+
+    // Act
+    getObject()->changeConstraintAfterDeletingGeo(&constr2, -3);
+
+    // Assert
+    EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::Tangent);
+    EXPECT_EQ(constr2.First, geoId4 + 1);
+    EXPECT_EQ(constr2.Second, geoId3);
+    EXPECT_EQ(constr2.Third, geoId1);
+
+    // Act
+    // Delete a geo involved in the constraint
+    getObject()->changeConstraintAfterDeletingGeo(&constr2, 0);
+
+    // Assert
+    EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::None);
+}
+
 TEST_F(SketchObjectTest, testSplitLineSegment)
 {
     // Arrange
