@@ -21,31 +21,6 @@ Gui--OverlaySplitterHandle {
   background-color: #f0f0f0;
  }
 
-Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
-  color: #000000;
-  selection-background-color: #ff8800;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
-  color: #000000;
-  selection-background-color: #850000;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
-  color: #000000;
-  background-color: #c7def5;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
-  color: #000000;
-  background-color: #c7def5;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
-  color: #000000;
-  background-color: #c7def5;
-}
-
 /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
 To customize for each overlay docking site, use the following selector
 

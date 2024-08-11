@@ -40,13 +40,6 @@ Gui--PropertyEditor--PropertyEditor {
   qproperty-itemBackground: #ffffff;
 }
 
-Gui--OverlayTabWidget[transparent="false"] * {
-  color: #000000;
-}
-Gui--OverlayTabWidget[transparent="true"] * {
-  color: #000000;
-}
-
 Gui--OverlayTabWidget[transparent="false"]  Gui--TreePanel QTreeView::item {
   color: #ffffff;
 }
@@ -54,41 +47,11 @@ Gui--OverlayTabWidget[transparent="false"]  Gui--TreePanel QTreeView::item {
 Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item {
   color: #ffffff;
 }
-/*
- Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:selected {
-  color: #000000;
-  background-color: transparent;
-}
-
-Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:focus {
-  color: #000000;
-  background-color: #c7def5;
-} */
-
- /* Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:selected:focus {
-  color: #000000;
-  background-color: #c7def5;
-}
 
 
-Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:hover {
-  color: #000000;
-  background-color: #c7def5;
-}
-
- Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:active {
-  color: #ffffff;
-}
-
-Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:selected:active {
-  color: #000000;
-  background-color: #c7def5;
-} */
-
-/* 
 Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item:disabled {
   color: #9a9a9a;
-} */
+}
 
 Gui--OverlayTabWidget {
   qproperty-effectColor: rgba(25, 25, 25, 220);
@@ -146,11 +109,6 @@ Gui--OverlayToolButton:hover {
   background-color: #ffffff;
   border-radius: 2px;
 }
-
-/* Gui--OverlayToolButton:focus {
-  border: 0.5px solid #0099ff;
-  border-radius: 2px;
-} */
 
 Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton:checked {
