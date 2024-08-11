@@ -32,13 +32,13 @@ __url__ = "https://www.freecad.org"
 ## @package FwmMesh2Mesh
 #  \ingroup FEM
 
-import time
+import time, os
 
 import FreeCAD
+import FreeCADGui
 import Fem
 
 # import Mesh
-
 
 """
 from os.path import join
@@ -89,7 +89,72 @@ face_dicts = {
 }
 
 
-def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
+
+def femmeshtofacets(fm):
+    nodes = fm.Nodes
+    facets = [ ]
+    for i in fm.FacesOnly:
+        t = fm.getElementNodes(i)
+        facet = [ fm.getNodeById(t[0]), fm.getNodeById(t[1]), fm.getNodeById(t[2]) ]
+        facets.append(facet)
+    return facets
+
+
+def femmeshtofacetsControlPoints(fm):
+    facets = [ ]
+    for i in fm.FacesOnly:
+        t = fm.getElementNodes(i)
+        cfacets = [ [ fm.getNodeById(t[0]), fm.getNodeById(t[3]), fm.getNodeById(t[5]) ],
+                    [ fm.getNodeById(t[5]), fm.getNodeById(t[3]), fm.getNodeById(t[4]) ],
+                    [ fm.getNodeById(t[3]), fm.getNodeById(t[1]), fm.getNodeById(t[4]) ],
+                    [ fm.getNodeById(t[5]), fm.getNodeById(t[4]), fm.getNodeById(t[2]) ] ]
+        facets.extend(cfacets)
+    return facets
+
+def convertmidpointstocontrolpoints(tria6):
+    c3 = tria6[3]*2 - tria6[0]*0.5 - tria6[1]*0.5 
+    c4 = tria6[4]*2 - tria6[1]*0.5 - tria6[2]*0.5 
+    c5 = tria6[5]*2 - tria6[2]*0.5 - tria6[0]*0.5 
+    return (tria6[0], tria6[1], tria6[2], c3, c4, c5)
+
+def femmeshtofacetsSubdiv(fm, nsubdivs):
+    nrows = nsubdivs + 1
+    facets = [ ]
+    for i in fm.FacesOnly:
+        tria6 = [ fm.getNodeById(j)  for j in fm.getElementNodes(i) ]
+        if not bflateval:
+            tria6 = convertmidpointstocontrolpoints(tria6)
+        prevrow = [ ]
+        tfacets = [ ]
+        for r in range(nrows + 1):
+            s = 1 - r/nrows
+            row = [ ]
+            for m in range(r + 1):
+                t = (m/r if r != 0 else 0)*(1-s)
+                u = 1 - s - t
+                row.append(evaltria6(tria6, s, t, u))
+            for a in range(len(prevrow)):
+                tfacets.append([row[a], prevrow[a], row[a+1]])
+                if a + 1 < len(prevrow):
+                    tfacets.append([prevrow[a], prevrow[a+1], row[a+1]])
+            prevrow = row
+        facets.extend(tfacets)
+    return facets
+
+bflateval = False
+def evaltria6(tria6, s, t, u):
+    if bflateval:
+        return tria6[0]*s + tria6[1]*t + tria6[2]*u
+        
+    return tria6[0]*(s*s) + tria6[1]*(t*t) + tria6[2]*(u*u) + \
+           tria6[4]*(2*t*u) + tria6[5]*(2*u*s) + tria6[3]*(2*s*t)
+
+
+
+def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1, subdivisions=0):
+    if subdivisions != 0:
+        return femmeshtofacetsSubdiv(myFemMesh, subdivisions)
+    
     shiftBits = 20  # allows a million nodes, needs to be higher for more nodes in a FemMesh
 
     # This code generates a dict and a faceCode for each face of all elements

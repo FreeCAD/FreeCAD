@@ -29,6 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM command definitions
 
+import os
+
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Qt
@@ -652,31 +654,38 @@ class _FEMMesh2Mesh(CommandManager):
         self.is_active = "with_femmesh_andor_res"
 
     def Activated(self):
+        gsecondorder = (hasattr(self.selobj, "ElementOrder") and self.selobj.ElementOrder == "2nd")
+        femmeshargs = [ "FreeCAD.ActiveDocument.{}.FemMesh".format(self.selobj.Name) ]
+        if gsecondorder or (self.selobj2 != None):
+            s = os.path.join(os.path.split(__file__)[0], "../femmesh/femmesh2mesh.ui")
+            dialog = FreeCADGui.PySideUic.loadUi(s)
+            dialog.groupBoxDeformed.setEnabled(self.selobj2 != None)
+            if self.selobj2 == None:
+                dialog.groupBoxDeformed.hide()
+            dialog.groupBoxSubdivision.setEnabled(gsecondorder)
+            if not gsecondorder:
+                dialog.groupBoxSubdivision.hide()
+            if dialog.exec_() != 1:
+                return
+            myDispScale = dialog.doubleSpinBoxDeformed.value() if (self.selobj2 != None) and dialog.groupBoxDeformed.isChecked() else 0
+            if myDispScale != 0:
+                femmeshargs.append("FreeCAD.ActiveDocument.{}".format(self.selobj2.Name))
+                femmeshargs.append("%f" % myDispScale)
+            else:
+                femmeshargs.append("None")
+                femmeshargs.append("0")
+            femmeshargs.append("%d" % dialog.spinBoxSubd.value())
+        
         FreeCAD.ActiveDocument.openTransaction("Create Mesh from FEMMesh")
-        if self.selobj and not self.selobj2:  # no result object selected
-            FreeCADGui.addModule("femmesh.femmesh2mesh")
-            FreeCADGui.doCommand(
-                "out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh("
-                "FreeCAD.ActiveDocument.{}.FemMesh)".format(self.selobj.Name)
-            )
-            FreeCADGui.addModule("Mesh")
-            FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
-            FreeCADGui.doCommand(
-                "FreeCAD.ActiveDocument." + self.selobj.Name + ".ViewObject.hide()"
-            )
-        if self.selobj and self.selobj2:
-            femmesh = self.selobj
-            res = self.selobj2
-            FreeCADGui.addModule("femmesh.femmesh2mesh")
-            FreeCADGui.doCommand(
-                "out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh("
-                "FreeCAD.ActiveDocument.{}.FemMesh, FreeCAD.ActiveDocument.{})".format(
-                    femmesh.Name, res.Name
-                )
-            )
-            FreeCADGui.addModule("Mesh")
-            FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
-            FreeCADGui.doCommand("FreeCAD.ActiveDocument." + femmesh.Name + ".ViewObject.hide()")
+        FreeCADGui.addModule("femmesh.femmesh2mesh")
+        FreeCADGui.doCommand(
+            "out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(%s)" % ", ".join(femmeshargs)
+        )
+        FreeCADGui.addModule("Mesh")
+        FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
+        FreeCADGui.doCommand(
+            "FreeCAD.ActiveDocument." + self.selobj.Name + ".ViewObject.hide()"
+        )
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
