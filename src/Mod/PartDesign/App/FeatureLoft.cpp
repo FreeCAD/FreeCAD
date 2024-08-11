@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "FeatureLoft.h"
+
 
 // NOLINTNEXTLINE(CppUnusedIncludeDirective)
 #include "PreCompiled.h"    // NOLINT(misc-include-cleaner)
@@ -40,7 +40,7 @@
 
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
-
+#include "FeatureLoft.h"
 using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
