@@ -7250,49 +7250,53 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     Base::StateLocker lock(managedoperation, true);
 
     if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
-        THROWMT(
-            Base::ValueError,
-            QT_TRANSLATE_NOOP("Exceptions", "B-spline Geometry Index (GeoID) is out of bounds."))
+        THROWMT(Base::ValueError,
+                QT_TRANSLATE_NOOP("Exceptions", "B-spline Geometry Index (GeoID) is out of bounds."));
     }
 
-    if (multiplicityincr == 0)// no change in multiplicity
-        THROWMT(
-            Base::ValueError,
-            QT_TRANSLATE_NOOP("Exceptions", "You are requesting no change in knot multiplicity."))
+    if (multiplicityincr == 0) {
+        // no change in multiplicity
+        THROWMT(Base::ValueError,
+                QT_TRANSLATE_NOOP("Exceptions", "You are requesting no change in knot multiplicity."));
+    }
 
     const Part::Geometry* geo = getGeometry(GeoId);
 
-    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+    if (geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
         THROWMT(Base::TypeError,
                 QT_TRANSLATE_NOOP("Exceptions",
-                                  "The Geometry Index (GeoId) provided is not a B-spline."))
+                                  "The Geometry Index (GeoId) provided is not a B-spline."));
+    }
 
     const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
 
     int degree = bsp->getDegree();
 
-    if (knotIndex > bsp->countKnots() || knotIndex < 1)// knotindex in OCC 1 -> countKnots
+    if (knotIndex > bsp->countKnots() || knotIndex < 1) {
+        // knotindex in OCC 1 -> countKnots
         THROWMT(Base::ValueError,
                 QT_TRANSLATE_NOOP("Exceptions",
                                   "The knot index is out of bounds. Note that in accordance with "
-                                  "OCC notation, the first knot has index 1 and not zero."))
+                                  "OCC notation, the first knot has index 1 and not zero."));
+    }
 
     std::unique_ptr<Part::GeomBSplineCurve> bspline;
 
     int curmult = bsp->getMultiplicity(knotIndex);
 
     // zero is removing the knot, degree is just positional continuity
-    if ((curmult + multiplicityincr) > degree)
+    if ((curmult + multiplicityincr) > degree) {
         THROWMT(Base::ValueError,
                 QT_TRANSLATE_NOOP(
                     "Exceptions",
-                    "The multiplicity cannot be increased beyond the degree of the B-spline."))
+                    "The multiplicity cannot be increased beyond the degree of the B-spline."));
+    }
 
     // zero is removing the knot, degree is just positional continuity
-    if ((curmult + multiplicityincr) < 0)
-        THROWMT(
-            Base::ValueError,
-            QT_TRANSLATE_NOOP("Exceptions", "The multiplicity cannot be decreased beyond zero."))
+    if ((curmult + multiplicityincr) < 0) {
+        THROWMT(Base::ValueError,
+                QT_TRANSLATE_NOOP("Exceptions", "The multiplicity cannot be decreased beyond zero."));
+    }
 
     try {
         bspline.reset(static_cast<Part::GeomBSplineCurve*>(bsp->clone()));
@@ -7303,12 +7307,12 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         else {// decrease multiplicity
             bool result = bspline->removeKnot(knotIndex, curmult + multiplicityincr, 1E6);
 
-            if (!result)
-                THROWMT(
-                    Base::CADKernelError,
-                    QT_TRANSLATE_NOOP(
-                        "Exceptions",
-                        "OCC is unable to decrease the multiplicity within the maximum tolerance."))
+            if (!result) {
+                THROWMT(Base::CADKernelError,
+                        QT_TRANSLATE_NOOP(
+                            "Exceptions",
+                            "OCC is unable to decrease the multiplicity within the maximum tolerance."));
+            }
         }
     }
     catch (const Base::Exception& e) {
@@ -7323,38 +7327,28 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     std::vector<Base::Vector3d> poles = bsp->getPoles();
     std::vector<Base::Vector3d> newpoles = bspline->getPoles();
-    std::vector<int> prevpole(bsp->countPoles());
-
-    for (int i = 0; i < int(poles.size()); i++)
-        prevpole[i] = -1;
+    std::vector<int> prevpole(bsp->countPoles(), -1);
 
     int taken = 0;
     for (int j = 0; j < int(poles.size()); j++) {
-        for (int i = taken; i < int(newpoles.size()); i++) {
-            if (newpoles[i] == poles[j]) {
-                prevpole[j] = i;
-                taken++;
-                break;
-            }
+        const auto it = std::find(newpoles.begin() + taken, newpoles.end(), poles[j]);
+        if (it != newpoles.end()) {
+            prevpole[j] = it - newpoles.begin();
+            ++taken;
         }
     }
 
     // on fully removing a knot the knot geometry changes
     std::vector<double> knots = bsp->getKnots();
     std::vector<double> newknots = bspline->getKnots();
-    std::vector<int> prevknot(bsp->countKnots());
-
-    for (int i = 0; i < int(knots.size()); i++)
-        prevknot[i] = -1;
+    std::vector<int> prevknot(bsp->countKnots(), -1);
 
     taken = 0;
     for (int j = 0; j < int(knots.size()); j++) {
-        for (int i = taken; i < int(newknots.size()); i++) {
-            if (newknots[i] == knots[j]) {
-                prevknot[j] = i;
-                taken++;
-                break;
-            }
+        const auto it = std::find(newknots.begin() + taken, newknots.end(), knots[j]);
+        if (it != newknots.end()) {
+            prevknot[j] = it - newknots.begin();
+            ++taken;
         }
     }
 
@@ -7363,41 +7357,39 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     std::vector<Constraint*> newcVals(0);
 
     // modify pole constraints
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = cvals.begin(); it != cvals.end();
-         ++it) {
-        if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
-            if ((*it)->AlignmentType == Sketcher::BSplineControlPoint) {
-                if (prevpole[(*it)->InternalAlignmentIndex] != -1) {
-                    assert(prevpole[(*it)->InternalAlignmentIndex] < bspline->countPoles());
-                    Constraint* newConstr = (*it)->clone();
-                    newConstr->InternalAlignmentIndex = prevpole[(*it)->InternalAlignmentIndex];
-                    newcVals.push_back(newConstr);
-                }
-                else {
-                    // it is an internal alignment geometry that is no longer valid => delete it and
-                    // the pole circle
-                    delGeoId.push_back((*it)->First);
-                }
-            }
-            else if ((*it)->AlignmentType == Sketcher::BSplineKnotPoint) {
-                if (prevknot[(*it)->InternalAlignmentIndex] != -1) {
-                    assert(prevknot[(*it)->InternalAlignmentIndex] < bspline->countKnots());
-                    Constraint* newConstr = (*it)->clone();
-                    newConstr->InternalAlignmentIndex = prevknot[(*it)->InternalAlignmentIndex];
-                    newcVals.push_back(newConstr);
-                }
-                else {
-                    // it is an internal alignment geometry that is no longer valid => delete it and
-                    // the knot point
-                    delGeoId.push_back((*it)->First);
-                }
-            }
-            else {// it is a bspline geometry, but not a controlpoint or knot
-                newcVals.push_back(*it);
-            }
+    for (const auto& constr : cvals) {
+        if (!(constr->Type == Sketcher::InternalAlignment && constr->Second == GeoId)) {
+            newcVals.push_back(constr);
+            continue;
         }
-        else {
-            newcVals.push_back(*it);
+        if (constr->AlignmentType == Sketcher::BSplineControlPoint) {
+            if (prevpole[constr->InternalAlignmentIndex] == -1) {
+                // it is an internal alignment geometry that is no longer valid => delete it and
+                // the pole circle
+                delGeoId.push_back(constr->First);
+                continue;
+            }
+
+            assert(prevpole[constr->InternalAlignmentIndex] < bspline->countPoles());
+            Constraint* newConstr = constr->clone();
+            newConstr->InternalAlignmentIndex = prevpole[constr->InternalAlignmentIndex];
+            newcVals.push_back(newConstr);
+        }
+        else if (constr->AlignmentType == Sketcher::BSplineKnotPoint) {
+            if (prevknot[constr->InternalAlignmentIndex] == -1) {
+                // it is an internal alignment geometry that is no longer valid => delete it and
+                // the knot point
+                delGeoId.push_back(constr->First);
+                continue;
+            }
+
+            assert(prevknot[constr->InternalAlignmentIndex] < bspline->countKnots());
+            Constraint* newConstr = constr->clone();
+            newConstr->InternalAlignmentIndex = prevknot[constr->InternalAlignmentIndex];
+            newcVals.push_back(newConstr);
+        }
+        else {// it is a bspline geometry, but not a controlpoint or knot
+            newcVals.push_back(constr);
         }
     }
 
