@@ -1477,9 +1477,7 @@ int SketchObject::moveGeometries(const std::vector<GeoElementId>& geoEltIds, con
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         for (auto* geo :  geomlist) {
-            if (geo){
-                delete geo;
-            }
+            delete geo;
         }
     }
 
@@ -4986,8 +4984,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
     std::map<int, int> geoIdMap;
 
-    Base::Vector3d perpendicularDisplacement =
-        Base::Vector3d(perpscale * displacement.y, perpscale * -displacement.x, 0);
+    Base::Vector3d perpendicularDisplacement
+        = Base::Vector3d(perpscale * displacement.y, perpscale * -displacement.x, 0);
 
     int x, y;
 
@@ -5004,20 +5002,23 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 // the list.
 
                 auto constrIt = std::ranges::find_if(constrvals, [&newgeoIdList](auto c) {
-                    return (c->Type == Sketcher::InternalAlignment
-                            && c->First == *(newgeoIdList.begin()));
+                    return (
+                        c->Type == Sketcher::InternalAlignment && c->First == *(newgeoIdList.begin())
+                    );
                 });
 
-                int definedGeo =
-                    (constrIt != constrvals.end()) ? (*constrIt)->Second : GeoEnum::GeoUndef;
+                int definedGeo = (constrIt != constrvals.end()) ? (*constrIt)->Second
+                                                                : GeoEnum::GeoUndef;
 
                 if (std::ranges::find(newgeoIdList, definedGeo) == newgeoIdList.end()) {
                     // the first element setting the reference is an internal alignment
                     // geometry, wherein the geometry it defines is not part of the copy
                     // operation.
-                    THROWM(Base::ValueError,
-                           "A move/copy/array operation on an internal alignment geometry is "
-                           "only possible together with the geometry it defines.");
+                    THROWM(
+                        Base::ValueError,
+                        "A move/copy/array operation on an internal alignment geometry is "
+                        "only possible together with the geometry it defines."
+                    );
                 }
             }
 
@@ -5087,9 +5088,10 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 Base::Vector3d ssp = geosymline->getStartPoint() + double(x) * displacement
                     + double(y) * perpendicularDisplacement;
 
-                geosymline->setPoints(ssp,
-                                      ep + double(x) * displacement
-                                          + double(y) * perpendicularDisplacement);
+                geosymline->setPoints(
+                    ssp,
+                    ep + double(x) * displacement + double(y) * perpendicularDisplacement
+                );
 
                 if (it == newgeoIdList.begin()) {
                     iterfirstpoint = ssp;
@@ -5098,8 +5100,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomCircle>()) {
                 auto* geosymcircle = static_cast<Part::GeomCircle*>(geocopy);
                 Base::Vector3d cp = geosymcircle->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geosymcircle->setCenter(scp);
 
@@ -5110,8 +5112,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfCircle>()) {
                 auto* geoaoc = static_cast<Part::GeomArcOfCircle*>(geocopy);
                 Base::Vector3d cp = geoaoc->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoc->setCenter(scp);
 
@@ -5122,8 +5124,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomEllipse>()) {
                 auto* geosymellipse = static_cast<Part::GeomEllipse*>(geocopy);
                 Base::Vector3d cp = geosymellipse->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geosymellipse->setCenter(scp);
 
@@ -5134,8 +5136,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfEllipse>()) {
                 auto* geoaoe = static_cast<Part::GeomArcOfEllipse*>(geocopy);
                 Base::Vector3d cp = geoaoe->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoe->setCenter(scp);
 
@@ -5146,8 +5148,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfHyperbola>()) {
                 auto* geoaoe = static_cast<Part::GeomArcOfHyperbola*>(geocopy);
                 Base::Vector3d cp = geoaoe->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoe->setCenter(scp);
 
@@ -5158,8 +5160,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomArcOfParabola>()) {
                 auto* geoaoe = static_cast<Part::GeomArcOfParabola*>(geocopy);
                 Base::Vector3d cp = geoaoe->getCenter();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
 
                 geoaoe->setCenter(scp);
 
@@ -5172,11 +5174,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
                 std::vector<Base::Vector3d> poles = geobsp->getPoles();
 
-                for (std::vector<Base::Vector3d>::iterator jt = poles.begin(); jt != poles.end();
-                     ++jt) {
-
-                    (*jt) =
-                        (*jt) + double(x) * displacement + double(y) * perpendicularDisplacement;
+                for (auto& pole : poles) {
+                    pole = pole + double(x) * displacement + double(y) * perpendicularDisplacement;
                 }
 
                 geobsp->setPoles(poles);
@@ -5188,8 +5187,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             else if (geocopy->is<Part::GeomPoint>()) {
                 Part::GeomPoint* geopoint = static_cast<Part::GeomPoint*>(geocopy);
                 Base::Vector3d cp = geopoint->getPoint();
-                Base::Vector3d scp =
-                    cp + double(x) * displacement + double(y) * perpendicularDisplacement;
+                Base::Vector3d scp = cp + double(x) * displacement
+                    + double(y) * perpendicularDisplacement;
                 geopoint->setPoint(scp);
 
                 if (it == newgeoIdList.begin()) {
@@ -7062,7 +7061,6 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 
     return true;
 }
-// clang-format off
 
 int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 {
@@ -7074,8 +7072,9 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     // so far only externals to the support of the sketch and datum features
     bool xinv = false, yinv = false;
 
-    if (!isCarbonCopyAllowed(pObj->getDocument(), pObj, xinv, yinv))
+    if (!isCarbonCopyAllowed(pObj->getDocument(), pObj, xinv, yinv)) {
         return -1;
+    }
 
     SketchObject* psObj = static_cast<SketchObject*>(pObj);
 
@@ -7111,17 +7110,18 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         auto geos = this->ExternalGeo.getValues();
         std::string myName(this->getNameInDocument());
         myName += ".";
-        for (const auto &geo : psObj->ExternalGeo.getValues()) {
-            if (++i < 2) // skip h/v axes
+        for (const auto& geo : psObj->ExternalGeo.getValues()) {
+            if (++i < 2) {  // skip h/v axes
                 continue;
+            }
             else {
                 auto egf = ExternalGeometryFacade::getFacade(geo);
-                const auto &ref = egf->getRef();
+                const auto& ref = egf->getRef();
                 if (boost::starts_with(ref, myName)) {
                     int geoId;
                     PointPos posId;
-                    if (this->geoIdFromShapeType(ref.c_str()+myName.size(), geoId, posId)) {
-                        extMap[-i-1] = geoId;
+                    if (this->geoIdFromShapeType(ref.c_str() + myName.size(), geoId, posId)) {
+                        extMap[-i - 1] = geoId;
                         continue;
                     }
                 }
@@ -7130,15 +7130,17 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             auto egf = ExternalGeometryFacade::getFacade(copy);
             egf->setId(++geoLastId);
             if (!egf->getRef().empty()) {
-                auto &refs = this->externalGeoRefMap[egf->getRef()];
+                auto& refs = this->externalGeoRefMap[egf->getRef()];
                 refs.push_back(geoLastId);
             }
             this->externalGeoMap[geoLastId] = (int)geos.size();
             geos.push_back(copy);
-            extMap[-i-1] = -(int)geos.size();
+            extMap[-i - 1] = -(int)geos.size();
         }
-        Base::ObjectStatusLocker<App::Property::Status,App::Property>
-            guard(App::Property::User3, &this->ExternalGeo);
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+            App::Property::User3,
+            &this->ExternalGeo
+        );
         this->ExternalGeo.setValues(std::move(geos));
     }
 
@@ -7154,8 +7156,10 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
         if (Objects.size() != SubElements.size() || sObjects.size() != sSubElements.size()) {
             assert(0 /*counts of objects and subelements in external geometry links do not match*/);
-            Base::Console().error("Internal error: counts of objects and subelements in external "
-                                  "geometry links do not match\n");
+            Base::Console().error(
+                "Internal error: counts of objects and subelements in external "
+                "geometry links do not match\n"
+            );
             return -1;
         }
 
@@ -7166,7 +7170,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                 if (obj == sobj && SubElements[i] == sSubElements[si]) {
                     Base::Console().error(
                         "Link to %s already exists in this sketch. Delete the link and try again\n",
-                        sSubElements[si].c_str());
+                        sSubElements[si].c_str()
+                    );
                     return -1;
                 }
 
@@ -7194,8 +7199,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         solverNeedsUpdate = true;
     }
 
-    auto applyGeometryFlipCorrection = [xinv, yinv, origin, axisV, axisH]
-                                       (Part::Geometry* geoNew) {
+    auto applyGeometryFlipCorrection = [xinv, yinv, origin, axisV, axisH](Part::Geometry* geoNew) {
         if (!xinv && !yinv) {
             return;
         }
@@ -7208,8 +7212,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         }
     };
 
-    for (std::vector<Part::Geometry*>::const_iterator it = svals.begin(); it != svals.end(); ++it) {
-        Part::Geometry* geoNew = (*it)->copy();
+    for (const auto& geoOld : svals) {
+        Part::Geometry* geoNew = geoOld->copy();
         if (xinv || yinv) {
             // corrections for flipped geometry
             applyGeometryFlipCorrection(geoNew);
@@ -7221,18 +7225,18 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         newVals.push_back(geoNew);
     }
 
-    auto applyConstraintFlipCorrection = [xinv, yinv]
-                                         (Sketcher::Constraint* newConstr) {
+    auto applyConstraintFlipCorrection = [xinv, yinv](Sketcher::Constraint* newConstr) {
         if (!xinv && !yinv) {
             return;
         }
 
         // DistanceX, DistanceY
-        if ((xinv && newConstr->Type == Sketcher::DistanceX) ||
-            (yinv && newConstr->Type == Sketcher::DistanceY)) {
+        if ((xinv && newConstr->Type == Sketcher::DistanceX)
+            || (yinv && newConstr->Type == Sketcher::DistanceY)) {
             if (newConstr->First == newConstr->Second) {
                 std::swap(newConstr->FirstPos, newConstr->SecondPos);
-            } else{
+            }
+            else {
                 newConstr->setValue(-newConstr->getValue());
             }
         }
@@ -7240,15 +7244,18 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         // Angle
         if (newConstr->Type == Sketcher::Angle) {
             auto normalizeAngle = [](double angleDeg) {
-                while (angleDeg > pi) angleDeg -= pi * 2.0;
-                while (angleDeg <= -pi) angleDeg += pi * 2.0;
+                while (angleDeg > pi) {
+                    angleDeg -= pi * 2.0;
+                }
+                while (angleDeg <= -pi) {
+                    angleDeg += pi * 2.0;
+                }
                 return angleDeg;
             };
 
-            if (xinv && yinv) { // rotation 180 degrees around normal axis
-                if (newConstr->First ==-1 || newConstr->Second == -1
-                    || newConstr->First == -2 || newConstr->Second == -2
-                    || newConstr->Second == GeoEnum::GeoUndef) {
+            if (xinv && yinv) {  // rotation 180 degrees around normal axis
+                if (newConstr->First == -1 || newConstr->Second == -1 || newConstr->First == -2
+                    || newConstr->Second == -2 || newConstr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
                     newConstr->setValue(normalizeAngle(newConstr->getValue() + pi));
                 }
@@ -7257,8 +7264,9 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                     // do nothing
                 }
             }
-            else if (xinv) { // rotation 180 degrees around vertical axis
-                if (newConstr->First == -1 || newConstr->Second == -1 || newConstr->Second == GeoEnum::GeoUndef) {
+            else if (xinv) {  // rotation 180 degrees around vertical axis
+                if (newConstr->First == -1 || newConstr->Second == -1
+                    || newConstr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal axis
                     newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
                 }
@@ -7267,7 +7275,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                     newConstr->setValue(normalizeAngle(-newConstr->getValue()));
                 }
             }
-            else if (yinv) { // rotation 180 degrees around horizontal axis
+            else if (yinv) {  // rotation 180 degrees around horizontal axis
                 if (newConstr->First == -2 || newConstr->Second == -2) {
                     // angle to vertical axis
                     newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
@@ -7280,22 +7288,27 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         }
     };
 
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
-         ++it) {
-        Sketcher::Constraint* newConstr = (*it)->copy();
-        if ((*it)->First >= 0)
+    for (const auto& constr : scvals) {
+        Sketcher::Constraint* newConstr = constr->copy();
+        if (constr->First >= 0) {
             newConstr->First += nextgeoid;
-        if ((*it)->Second >= 0)
+        }
+        if (constr->Second >= 0) {
             newConstr->Second += nextgeoid;
-        if ((*it)->Third >= 0)
+        }
+        if (constr->Third >= 0) {
             newConstr->Third += nextgeoid;
+        }
 
-        if ((*it)->First < -2 && (*it)->First != GeoEnum::GeoUndef)
+        if (constr->First < -2 && constr->First != GeoEnum::GeoUndef) {
             newConstr->First -= (nextextgeoid - 2);
-        if ((*it)->Second < -2 && (*it)->Second != GeoEnum::GeoUndef)
+        }
+        if (constr->Second < -2 && constr->Second != GeoEnum::GeoUndef) {
             newConstr->Second -= (nextextgeoid - 2);
-        if ((*it)->Third < -2 && (*it)->Third != GeoEnum::GeoUndef)
+        }
+        if (constr->Third < -2 && constr->Third != GeoEnum::GeoUndef) {
             newConstr->Third -= (nextextgeoid - 2);
+        }
 
         if (xinv || yinv) {
             // corrections for flipped constraints
@@ -7316,29 +7329,28 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     // ViewProvider::UpdateData is triggered.
     Geometry.touch();
 
-    auto makeCorrectedExpressionString = [xinv, yinv]
-                                         (const Sketcher::Constraint* constr, const std::string expr)
-                                         -> std::string {
+    auto makeCorrectedExpressionString =
+        [xinv, yinv](const Sketcher::Constraint* constr, const std::string expr) -> std::string {
         if (!xinv && !yinv) {
             return expr;
         }
 
         // DistanceX, DistanceY
-        if ((xinv && constr->Type == Sketcher::DistanceX) ||
-            (yinv && constr->Type == Sketcher::DistanceY)) {
+        if ((xinv && constr->Type == Sketcher::DistanceX)
+            || (yinv && constr->Type == Sketcher::DistanceY)) {
             if (constr->First == constr->Second) {
                 return expr;
-            } else{
+            }
+            else {
                 return "-(" + expr + ")";
             }
         }
 
         // Angle
         if (constr->Type == Sketcher::Angle) {
-            if (xinv && yinv) { // rotation 180 degrees around normal axis
-                if (constr->First ==-1 || constr->Second == -1
-                    || constr->First == -2 || constr->Second == -2
-                    || constr->Second == GeoEnum::GeoUndef) {
+            if (xinv && yinv) {  // rotation 180 degrees around normal axis
+                if (constr->First == -1 || constr->Second == -1 || constr->First == -2
+                    || constr->Second == -2 || constr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
                     return "(" + expr + ") + 180 deg";
                 }
@@ -7348,8 +7360,9 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                     return expr;
                 }
             }
-            else if (xinv) { // rotation 180 degrees around vertical axis
-                if (constr->First == -1 || constr->Second == -1 || constr->Second == GeoEnum::GeoUndef) {
+            else if (xinv) {  // rotation 180 degrees around vertical axis
+                if (constr->First == -1 || constr->Second == -1
+                    || constr->Second == GeoEnum::GeoUndef) {
                     // angle to horizontal axis
                     return "180 deg - (" + expr + ")";
                 }
@@ -7358,7 +7371,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                     return "-(" + expr + ")";
                 }
             }
-            else if (yinv) { // rotation 180 degrees around horizontal axis
+            else if (yinv) {  // rotation 180 degrees around horizontal axis
                 if (constr->First == -2 || constr->Second == -2) {
                     // angle to vertical axis
                     return "180 deg - (" + expr + ")";
@@ -7373,34 +7386,30 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     };
 
     int sourceid = 0;
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
-         ++it, nextcid++, sourceid++) {
-
-        if ((*it)->isDimensional()) {
-            // then we link its value to the parent
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath;
-                std::shared_ptr<App::Expression> expr;
-                std::string scname = (*it)->Name;
-                std::string sref;
-                if (App::ExpressionParser::isTokenAnIndentifier(scname)) {
-                    spath = App::ObjectIdentifier(psObj->Constraints)
-                        << App::ObjectIdentifier::SimpleComponent(scname);
-                    sref = spath.getDocumentObjectName().getString() + spath.toString();
-                }
-                else {
-                    spath = psObj->Constraints.createPath(sourceid);
-                    sref = spath.getDocumentObjectName().getString()
-                           + std::string(1, '.') + spath.toString();
-                }
-                if (xinv || yinv) {
-                    // corrections for flipped expressions
-                    sref = makeCorrectedExpressionString((*it), sref);
-                }
-                expr = std::shared_ptr<App::Expression>(App::Expression::parse(this, sref));
-                setExpression(Constraints.createPath(nextcid), std::move(expr));
-            }
+    for (auto it = scvals.cbegin(); it != scvals.cend(); ++it, ++nextcid, ++sourceid) {
+        if (!((*it)->isDimensional() && (*it)->isDriving)) {
+            continue;
         }
+
+        App::ObjectIdentifier spath;
+        std::shared_ptr<App::Expression> expr;
+        std::string scname = (*it)->Name;
+        std::string sref;
+        if (App::ExpressionParser::isTokenAnIndentifier(scname)) {
+            spath = App::ObjectIdentifier(psObj->Constraints)
+                << App::ObjectIdentifier::SimpleComponent(scname);
+            sref = spath.getDocumentObjectName().getString() + spath.toString();
+        }
+        else {
+            spath = psObj->Constraints.createPath(sourceid);
+            sref = spath.getDocumentObjectName().getString() + std::string(1, '.') + spath.toString();
+        }
+        if (xinv || yinv) {
+            // corrections for flipped expressions
+            sref = makeCorrectedExpressionString((*it), sref);
+        }
+        expr = std::shared_ptr<App::Expression>(App::Expression::parse(this, sref));
+        setExpression(Constraints.createPath(nextcid), std::move(expr));
     }
 
     // Solve even if `noRecomputes==false`, because recompute may fail, and leave the
@@ -7414,7 +7423,6 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     return svals.size();
 }
 
-// clang-format on
 int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, bool defining, bool intersection)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -7758,11 +7766,10 @@ int SketchObject::delConstraintsToExternal(DeleteOptions options)
     const std::vector<Constraint*>& constraints = Constraints.getValuesForce();
     std::vector<Constraint*> newConstraints(0);
     int GeoId = GeoEnum::RefExt, NullId = GeoEnum::GeoUndef;
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->First > GeoId && ((*it)->Second > GeoId || (*it)->Second == NullId)
-            && ((*it)->Third > GeoId || (*it)->Third == NullId)) {
-            newConstraints.push_back(*it);
+    for (const auto& constr : constraints) {
+        if (constr->First > GeoId && (constr->Second > GeoId || constr->Second == NullId)
+            && (constr->Third > GeoId || constr->Third == NullId)) {
+            newConstraints.push_back(constr);
         }
     }
 
@@ -9727,30 +9734,29 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
     PosIdList.clear();
     GeoIdList.push_back(GeoId);
     PosIdList.push_back(PosId);
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                GeoIdList.push_back((*it)->Second);
-                PosIdList.push_back((*it)->SecondPos);
+    for (const auto& constr : constraints) {
+        if (constr->Type == Sketcher::Coincident) {
+            if (constr->First == GeoId && constr->FirstPos == PosId) {
+                GeoIdList.push_back(constr->Second);
+                PosIdList.push_back(constr->SecondPos);
             }
-            else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                GeoIdList.push_back((*it)->First);
-                PosIdList.push_back((*it)->FirstPos);
+            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
+                GeoIdList.push_back(constr->First);
+                PosIdList.push_back(constr->FirstPos);
             }
         }
-        if ((*it)->Type == Sketcher::Tangent) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId &&
-                ((*it)->SecondPos == Sketcher::PointPos::start ||
-                 (*it)->SecondPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back((*it)->Second);
-                PosIdList.push_back((*it)->SecondPos);
+        if (constr->Type == Sketcher::Tangent) {
+            if (constr->First == GeoId && constr->FirstPos == PosId &&
+                (constr->SecondPos == Sketcher::PointPos::start ||
+                 constr->SecondPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->Second);
+                PosIdList.push_back(constr->SecondPos);
             }
-            if ((*it)->Second == GeoId && (*it)->SecondPos == PosId &&
-                ((*it)->FirstPos == Sketcher::PointPos::start ||
-                 (*it)->FirstPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back((*it)->First);
-                PosIdList.push_back((*it)->FirstPos);
+            if (constr->Second == GeoId && constr->SecondPos == PosId &&
+                (constr->FirstPos == Sketcher::PointPos::start ||
+                 constr->FirstPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->First);
+                PosIdList.push_back(constr->FirstPos);
             }
         }
     }
