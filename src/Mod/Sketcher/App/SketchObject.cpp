@@ -1416,9 +1416,7 @@ int SketchObject::moveGeometries(const std::vector<GeoElementId>& geoEltIds, con
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         for (auto* geo :  geomlist) {
-            if (geo){
-                delete geo;
-            }
+            delete geo;
         }
     }
 
@@ -4987,11 +4985,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
                 std::vector<Base::Vector3d> poles = geobsp->getPoles();
 
-                for (std::vector<Base::Vector3d>::iterator jt = poles.begin(); jt != poles.end();
-                     ++jt) {
-
-                    (*jt) =
-                        (*jt) + double(x) * displacement + double(y) * perpendicularDisplacement;
+                for (auto& pole : poles) {
+                    pole = pole + double(x) * displacement + double(y) * perpendicularDisplacement;
                 }
 
                 geobsp->setPoles(poles);
@@ -6975,8 +6970,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         solverNeedsUpdate = true;
     }
 
-    for (std::vector<Part::Geometry*>::const_iterator it = svals.begin(); it != svals.end(); ++it) {
-        Part::Geometry* geoNew = (*it)->copy();
+    for (const auto& geoOld : svals) {
+        Part::Geometry* geoNew = geoOld->copy();
         generateId(geoNew);
         if (construction && !geoNew->is<Part::GeomPoint>()) {
             GeometryFacade::setConstruction(geoNew, true);
@@ -6984,21 +6979,20 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         newVals.push_back(geoNew);
     }
 
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
-         ++it) {
-        Sketcher::Constraint* newConstr = (*it)->copy();
-        if ((*it)->First >= 0)
+    for (const auto& constr : scvals) {
+        Sketcher::Constraint* newConstr = constr->copy();
+        if (constr->First >= 0)
             newConstr->First += nextgeoid;
-        if ((*it)->Second >= 0)
+        if (constr->Second >= 0)
             newConstr->Second += nextgeoid;
-        if ((*it)->Third >= 0)
+        if (constr->Third >= 0)
             newConstr->Third += nextgeoid;
 
-        if ((*it)->First < -2 && (*it)->First != GeoEnum::GeoUndef)
+        if (constr->First < -2 && constr->First != GeoEnum::GeoUndef)
             newConstr->First -= (nextextgeoid - 2);
-        if ((*it)->Second < -2 && (*it)->Second != GeoEnum::GeoUndef)
+        if (constr->Second < -2 && constr->Second != GeoEnum::GeoUndef)
             newConstr->Second -= (nextextgeoid - 2);
-        if ((*it)->Third < -2 && (*it)->Third != GeoEnum::GeoUndef)
+        if (constr->Third < -2 && constr->Third != GeoEnum::GeoUndef)
             newConstr->Third -= (nextextgeoid - 2);
 
         newcVals.push_back(newConstr);
@@ -7018,29 +7012,27 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     int sourceid = 0;
     for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
          ++it, nextcid++, sourceid++) {
-
-        if ((*it)->isDimensional()) {
-            // then we link its value to the parent
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath;
-                std::shared_ptr<App::Expression> expr;
-                std::string scname = (*it)->Name;
-                if (App::ExpressionParser::isTokenAnIndentifier(scname)) {
-                    spath = App::ObjectIdentifier(psObj->Constraints)
-                        << App::ObjectIdentifier::SimpleComponent(scname);
-                    expr = std::shared_ptr<App::Expression>(App::Expression::parse(
-                        this, spath.getDocumentObjectName().getString() + spath.toString()));
-                }
-                else {
-                    spath = psObj->Constraints.createPath(sourceid);
-                    expr = std::shared_ptr<App::Expression>(
-                        App::Expression::parse(this,
-                                               spath.getDocumentObjectName().getString()
-                                                   + std::string(1, '.') + spath.toString()));
-                }
-                setExpression(Constraints.createPath(nextcid), std::move(expr));
-            }
+        if (!((*it)->isDimensional() && (*it)->isDriving)) {
+            continue;
         }
+
+        App::ObjectIdentifier spath;
+        std::shared_ptr<App::Expression> expr;
+        std::string scname = (*it)->Name;
+        if (App::ExpressionParser::isTokenAnIndentifier(scname)) {
+            spath = App::ObjectIdentifier(psObj->Constraints)
+                << App::ObjectIdentifier::SimpleComponent(scname);
+            expr = std::shared_ptr<App::Expression>(App::Expression::parse(
+                this, spath.getDocumentObjectName().getString() + spath.toString()));
+        }
+        else {
+            spath = psObj->Constraints.createPath(sourceid);
+            expr = std::shared_ptr<App::Expression>(
+                App::Expression::parse(this,
+                                       spath.getDocumentObjectName().getString()
+                                           + std::string(1, '.') + spath.toString()));
+        }
+        setExpression(Constraints.createPath(nextcid), std::move(expr));
     }
 
     // Solve even if `noRecomputes==false`, because recompute may fail, and leave the
@@ -7397,11 +7389,10 @@ int SketchObject::delConstraintsToExternal()
     const std::vector<Constraint*>& constraints = Constraints.getValuesForce();
     std::vector<Constraint*> newConstraints(0);
     int GeoId = GeoEnum::RefExt, NullId = GeoEnum::GeoUndef;
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->First > GeoId && ((*it)->Second > GeoId || (*it)->Second == NullId)
-            && ((*it)->Third > GeoId || (*it)->Third == NullId)) {
-            newConstraints.push_back(*it);
+    for (const auto& constr : constraints) {
+        if (constr->First > GeoId && (constr->Second > GeoId || constr->Second == NullId)
+            && (constr->Third > GeoId || constr->Third == NullId)) {
+            newConstraints.push_back(constr);
         }
     }
 
@@ -9335,30 +9326,29 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
     PosIdList.clear();
     GeoIdList.push_back(GeoId);
     PosIdList.push_back(PosId);
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                GeoIdList.push_back((*it)->Second);
-                PosIdList.push_back((*it)->SecondPos);
+    for (const auto& constr : constraints) {
+        if (constr->Type == Sketcher::Coincident) {
+            if (constr->First == GeoId && constr->FirstPos == PosId) {
+                GeoIdList.push_back(constr->Second);
+                PosIdList.push_back(constr->SecondPos);
             }
-            else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                GeoIdList.push_back((*it)->First);
-                PosIdList.push_back((*it)->FirstPos);
+            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
+                GeoIdList.push_back(constr->First);
+                PosIdList.push_back(constr->FirstPos);
             }
         }
-        if ((*it)->Type == Sketcher::Tangent) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId &&
-                ((*it)->SecondPos == Sketcher::PointPos::start ||
-                 (*it)->SecondPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back((*it)->Second);
-                PosIdList.push_back((*it)->SecondPos);
+        if (constr->Type == Sketcher::Tangent) {
+            if (constr->First == GeoId && constr->FirstPos == PosId &&
+                (constr->SecondPos == Sketcher::PointPos::start ||
+                 constr->SecondPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->Second);
+                PosIdList.push_back(constr->SecondPos);
             }
-            if ((*it)->Second == GeoId && (*it)->SecondPos == PosId &&
-                ((*it)->FirstPos == Sketcher::PointPos::start ||
-                 (*it)->FirstPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back((*it)->First);
-                PosIdList.push_back((*it)->FirstPos);
+            if (constr->Second == GeoId && constr->SecondPos == PosId &&
+                (constr->FirstPos == Sketcher::PointPos::start ||
+                 constr->FirstPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->First);
+                PosIdList.push_back(constr->FirstPos);
             }
         }
     }
