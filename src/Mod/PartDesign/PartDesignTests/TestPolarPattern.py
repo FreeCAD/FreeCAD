@@ -44,7 +44,8 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
-        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
 
     def testYAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -62,7 +63,8 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
-        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
 
     def testZAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -80,7 +82,8 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
-        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
 
     def testNormalSketchAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -101,7 +104,8 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
-        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
 
     def testVerticalSketchAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -122,7 +126,8 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
-        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
 
     def testHorizontalSketchAxisPolarPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -143,7 +148,12 @@ class TestPolarPattern(unittest.TestCase):
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
-        self.assertEqual(self.PolarPattern.Shape.ElementMapSize,26)
+        # 26 original plus 3 new instances:
+        # First and second have 4 new vertexes, 8 new edges and 5 new faces
+        # Final one has  2 new vertexes, 5 new edges and original loses one face.
+        # That makes 40.
+        # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
 
     def tearDown(self):
         #closing doc

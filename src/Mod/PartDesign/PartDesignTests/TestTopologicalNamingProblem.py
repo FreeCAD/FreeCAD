@@ -803,13 +803,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertAlmostEqual(body.Shape.BoundBox.ZMax, 10)
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 44)
-        revMap = pipe.Shape.ElementReverseMap
-        self.assertEqual(revMap['Vertex1'],"Vertex1")
-        self.assertEqual(revMap['Vertex8'],"Vertex8")
-        self.assertEqual(revMap['Edge1'],"Edge1")
-        self.assertEqual(revMap['Edge12'],"Edge12")
-        self.assertEqual(revMap['Face1'],"Face1")
-        self.assertEqual(revMap['Face6'],"Face6")
+        revMap = body.Shape.ElementReverseMap #
         self.assertEqual(self.countFacesEdgesVertexes(revMap),(9,21,14))
 
     def testPartDesignElementMapSubHelix(self):

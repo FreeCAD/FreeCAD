@@ -777,7 +777,7 @@ size_t StringHasher::count() const
 {
     size_t count = 0;
     for (auto& hasher : _hashes->right) {
-        if (hasher.second->getRefCount() > 1) {
+        if (hasher.second->isMarked() || hasher.second->isPersistent() ) {
             ++count;
         }
     }
