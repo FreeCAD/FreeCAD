@@ -1376,10 +1376,8 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         // Constraints.acceptGeometry(getCompleteGeometry());
-        for (std::vector<Part::Geometry*>::iterator it = geomlist.begin(); it != geomlist.end();
-             ++it) {
-            if (*it)
-                delete *it;
+        for (auto& geo : geomlist) {
+            delete geo;
         }
     }
 
@@ -5492,11 +5490,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList, const Base::Vector3
 
                 std::vector<Base::Vector3d> poles = geobsp->getPoles();
 
-                for (std::vector<Base::Vector3d>::iterator jt = poles.begin();
-                     jt != poles.end();
-                     ++jt) {
-
-                    (*jt) = (*jt) + double(x) * displacement
+                for (auto& pole : poles) {
+                    pole = pole + double(x) * displacement
                         + double(y) * perpendicularDisplacement;
                 }
 
@@ -6087,16 +6082,13 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
 
-    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
-        delete *it;
+    for (auto& geo : igeo) {
+        delete geo;
     }
 
-    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
-        delete *it;
+    for (auto& con : icon) {
+        delete con;
     }
-
-    icon.clear();
-    igeo.clear();
 
     return incrgeo;// number of added elements
 }
@@ -6231,18 +6223,13 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
 
-    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
-        if (*it)
-            delete *it;
+    for (auto& geo : igeo) {
+        delete geo;
     }
 
-    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
-        if (*it)
-            delete *it;
+    for (auto& con : icon) {
+        delete con;
     }
-
-    icon.clear();
-    igeo.clear();
 
     return incrgeo;// number of added elements
 
@@ -6354,16 +6341,13 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
 
-    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it)
-        if (*it)
-            delete *it;
+    for (auto& geo : igeo) {
+        delete geo;
+    }
 
-    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it)
-        if (*it)
-            delete *it;
-
-    icon.clear();
-    igeo.clear();
+    for (auto& con : icon) {
+        delete con;
+    }
 
     return incrgeo;// number of added elements
 }
@@ -6444,18 +6428,13 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
 
-    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
-        if (*it)
-            delete *it;
+    for (auto& geo : igeo) {
+        delete geo;
     }
 
-    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
-        if (*it)
-            delete *it;
+    for (auto& con : icon) {
+        delete con;
     }
-
-    icon.clear();
-    igeo.clear();
 
     return incrgeo;// number of added elements
 }
@@ -6600,16 +6579,13 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
     this->addGeometry(igeo, true);
     this->addConstraints(icon);
 
-    for (std::vector<Part::Geometry*>::iterator it = igeo.begin(); it != igeo.end(); ++it) {
-        delete *it;
+    for (auto& geo : igeo) {
+        delete geo;
     }
 
-    for (std::vector<Constraint*>::iterator it = icon.begin(); it != icon.end(); ++it) {
-        delete *it;
+    for (auto& con : icon) {
+        delete con;
     }
-
-    icon.clear();
-    igeo.clear();
 
     return incrgeo;// number of added elements
 }
@@ -6728,19 +6704,13 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
             delgeometries.push_back(GeoId);
 
         // indices over an erased element get automatically updated!!
-        std::sort(delgeometries.begin(), delgeometries.end());
+        std::sort(delgeometries.begin(), delgeometries.end(), std::greater<>());
 
-        if (!delgeometries.empty()) {
-            for (std::vector<int>::reverse_iterator it = delgeometries.rbegin();
-                 it != delgeometries.rend();
-                 ++it) {
-                delGeometry(*it, false);
-            }
+        for (auto& dGeoId : delgeometries) {
+            delGeometry(dGeoId, false);
         }
 
         int ndeleted = delgeometries.size();
-
-        delgeometries.clear();
 
         return ndeleted;// number of deleted elements
     }
@@ -6776,16 +6746,17 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         int majorconstraints = 0;
         int focus1constraints = 0;
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin(); it != vals.end();
-             ++it) {
-            if ((*it)->Second == majorelementindex
-                || (*it)->First == majorelementindex
-                || (*it)->Third == majorelementindex)
+        for (const auto& constr : vals) {
+            if (constr->Second == majorelementindex
+                || constr->First == majorelementindex
+                || constr->Third == majorelementindex) {
                 majorconstraints++;
-            else if ((*it)->Second == focus1elementindex
-                     || (*it)->First == focus1elementindex
-                     || (*it)->Third == focus1elementindex)
+            }
+            else if (constr->Second == focus1elementindex
+                     || constr->First == focus1elementindex
+                     || constr->Third == focus1elementindex) {
                 focus1constraints++;
+            }
         }
 
         std::vector<int> delgeometries;
@@ -6802,14 +6773,10 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
             delgeometries.push_back(GeoId);
 
         // indices over an erased element get automatically updated!!
-        std::sort(delgeometries.begin(), delgeometries.end());
+        std::sort(delgeometries.begin(), delgeometries.end(), std::greater<>());
 
-        if (!delgeometries.empty()) {
-            for (std::vector<int>::reverse_iterator it = delgeometries.rbegin();
-                 it != delgeometries.rend();
-                 ++it) {
-                delGeometry(*it, false);
-            }
+        for (auto& dGeoId : delgeometries) {
+            delGeometry(dGeoId, false);
         }
 
         int ndeleted = delgeometries.size();
@@ -6819,32 +6786,17 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         return ndeleted;// number of deleted elements
     }
     else if (geo->is<Part::GeomBSplineCurve>()) {
-
         const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
 
         // First we search existing IA
-        std::vector<int> controlpointgeoids(bsp->countPoles());
-        std::vector<int> cpassociatedconstraints(bsp->countPoles());
+        std::vector<int> controlpointgeoids(bsp->countPoles(), -1);
+        std::vector<int> cpassociatedconstraints(bsp->countPoles(), 0);
 
-        std::vector<int> knotgeoids(bsp->countKnots());
-        std::vector<int> kassociatedconstraints(bsp->countKnots());
+        std::vector<int> knotgeoids(bsp->countKnots(), -1);
+        std::vector<int> kassociatedconstraints(bsp->countKnots(), 0);
 
         std::vector<int>::iterator it;
         std::vector<int>::iterator ita;
-
-        for (it = controlpointgeoids.begin(), ita = cpassociatedconstraints.begin();
-             it != controlpointgeoids.end() && ita != cpassociatedconstraints.end();
-             ++it, ++ita) {
-            (*it) = -1;
-            (*ita) = 0;
-        }
-
-        for (it = knotgeoids.begin(), ita = kassociatedconstraints.begin();
-             it != knotgeoids.end() && ita != kassociatedconstraints.end();
-             ++it, ++ita) {
-            (*it) = -1;
-            (*ita) = 0;
-        }
 
         const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
@@ -6876,30 +6828,17 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
             }
 
             // look for a circle at geoid index
-            for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin();
-                 itc != vals.end();
-                 ++itc) {
-                if ((*itc)->Type == Sketcher::Equal) {
-                    bool f = false, s = false;
-                    for (std::vector<int>::iterator its = controlpointgeoids.begin();
-                         its != controlpointgeoids.end();
-                         ++its) {
-                        if ((*itc)->First == *its) {
-                            f = true;
-                        }
-                        else if ((*itc)->Second == *its) {
-                            s = true;
-                        }
+            for (auto const& constr : vals) {
+                if (constr->Type != Sketcher::Equal) {
+                    continue;
+                }
 
-                        if (f && s) {// the equality constraint is not interpole
-                            break;
-                        }
-                    }
+                bool firstIsInCPGeoIds = std::find(controlpointgeoids.begin(), controlpointgeoids.end(), constr->First) != controlpointgeoids.end();
+                bool secondIsInCPGeoIds = std::find(controlpointgeoids.begin(), controlpointgeoids.end(), constr->Second) != controlpointgeoids.end();
 
-                    // the equality constraint constraints a pole but it is not interpole
-                    if (f != s) {
-                        (*ita)++;
-                    }
+                // the equality constraint constrains a pole but it is not interpole
+                if (firstIsInCPGeoIds != secondIsInCPGeoIds) {
+                    (*ita)++;
                 }
                 // We do not ignore weight constraints as we did with radius constraints,
                 // because the radius magnitude no longer makes sense without the B-Spline.
@@ -6918,11 +6857,9 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
             }
 
             // look for a point at geoid index
-            for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin();
-                 itc != vals.end();
-                 ++itc) {
-                if ((*itc)->Second == (*it) || (*itc)->First == (*it)
-                    || (*itc)->Third == (*it)) {
+            for (auto const& constr : vals) {
+                if (constr->Second == (*it) || constr->First == (*it)
+                    || constr->Third == (*it)) {
                     (*ita)++;
                 }
             }
@@ -6931,7 +6868,6 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
                 delgeometries.push_back((*it));
             }
         }
-
 
         if (delgeoid)
             delgeometries.push_back(GeoId);
@@ -7615,8 +7551,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         solverNeedsUpdate = true;
     }
 
-    for (std::vector<Part::Geometry*>::const_iterator it = svals.begin(); it != svals.end(); ++it) {
-        Part::Geometry* geoNew = (*it)->copy();
+    for (const auto& geoOld : svals) {
+        Part::Geometry* geoNew = geoOld->copy();
         generateId(geoNew);
         if (construction && geoNew->getTypeId() != Part::GeomPoint::getClassTypeId()) {
             GeometryFacade::setConstruction(geoNew, true);
@@ -7624,21 +7560,20 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         newVals.push_back(geoNew);
     }
 
-    for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
-         ++it) {
-        Sketcher::Constraint* newConstr = (*it)->copy();
-        if ((*it)->First >= 0)
+    for (const auto& constr : scvals) {
+        Sketcher::Constraint* newConstr = constr->copy();
+        if (constr->First >= 0)
             newConstr->First += nextgeoid;
-        if ((*it)->Second >= 0)
+        if (constr->Second >= 0)
             newConstr->Second += nextgeoid;
-        if ((*it)->Third >= 0)
+        if (constr->Third >= 0)
             newConstr->Third += nextgeoid;
 
-        if ((*it)->First < -2 && (*it)->First != GeoEnum::GeoUndef)
+        if (constr->First < -2 && constr->First != GeoEnum::GeoUndef)
             newConstr->First -= (nextextgeoid - 2);
-        if ((*it)->Second < -2 && (*it)->Second != GeoEnum::GeoUndef)
+        if (constr->Second < -2 && constr->Second != GeoEnum::GeoUndef)
             newConstr->Second -= (nextextgeoid - 2);
-        if ((*it)->Third < -2 && (*it)->Third != GeoEnum::GeoUndef)
+        if (constr->Third < -2 && constr->Third != GeoEnum::GeoUndef)
             newConstr->Third -= (nextextgeoid - 2);
 
         newcVals.push_back(newConstr);
@@ -7659,36 +7594,35 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     for (std::vector<Sketcher::Constraint*>::const_iterator it = scvals.begin(); it != scvals.end();
          ++it, nextcid++, sourceid++) {
 
-        if ((*it)->isDimensional()) {
-            // then we link its value to the parent
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath;
-                std::shared_ptr<App::Expression> expr;
-                std::string scname = (*it)->Name;
-                if (App::ExpressionParser::isTokenAnIndentifier(scname)) {
-                    spath = App::ObjectIdentifier(psObj->Constraints)
-                        << App::ObjectIdentifier::SimpleComponent(scname);
-                    expr = std::shared_ptr<App::Expression>(App::Expression::parse(
-                        this, spath.getDocumentObjectName().getString() + spath.toString()));
-                }
-                else {
-                    spath = psObj->Constraints.createPath(sourceid);
-                    expr = std::shared_ptr<App::Expression>(
-                        App::Expression::parse(this,
-                                               spath.getDocumentObjectName().getString()
-                                                   + std::string(1, '.') + spath.toString()));
-                }
-                // (there is a plausible alternative for a slightly different use case to copy the
-                // expression of the parent if one is existing)
-                /*
-                 *           App::PropertyExpressionEngine::ExpressionInfo expr_info =
-                 * psObj->getExpression(path);
-                 *
-                 *           if (expr_info.expression)*/
-                // App::Expression * expr = parse(this, const std::string& buffer);
-                setExpression(Constraints.createPath(nextcid), expr);
-            }
+        if (!((*it)->isDimensional() && (*it)->isDriving)) {
+            continue;
         }
+
+        App::ObjectIdentifier spath;
+        std::shared_ptr<App::Expression> expr;
+        std::string scname = (*it)->Name;
+        if (App::ExpressionParser::isTokenAnIndentifier(scname)) {
+            spath = App::ObjectIdentifier(psObj->Constraints)
+                << App::ObjectIdentifier::SimpleComponent(scname);
+            expr = std::shared_ptr<App::Expression>(App::Expression::parse(
+                                                        this, spath.getDocumentObjectName().getString() + spath.toString()));
+        }
+        else {
+            spath = psObj->Constraints.createPath(sourceid);
+            expr = std::shared_ptr<App::Expression>(
+                App::Expression::parse(this,
+                                       spath.getDocumentObjectName().getString()
+                                       + std::string(1, '.') + spath.toString()));
+        }
+        // (there is a plausible alternative for a slightly different use case to copy the
+        // expression of the parent if one is existing)
+        /*
+         *           App::PropertyExpressionEngine::ExpressionInfo expr_info =
+         * psObj->getExpression(path);
+         *
+         *           if (expr_info.expression)*/
+        // App::Expression * expr = parse(this, const std::string& buffer);
+        setExpression(Constraints.createPath(nextcid), expr);
     }
 
     // We shall solve in all cases, because recompute may fail, and leave the
@@ -7701,7 +7635,6 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
     if (noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
 #endif
         solve();
-
 
     return svals.size();
 }
@@ -7975,12 +7908,11 @@ int SketchObject::delAllExternal()
     const std::vector<Constraint*>& constraints = Constraints.getValues();
     std::vector<Constraint*> newConstraints(0);
 
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->First > GeoEnum::RefExt
-            && ((*it)->Second > GeoEnum::RefExt || (*it)->Second == GeoEnum::GeoUndef)
-            && ((*it)->Third > GeoEnum::RefExt || (*it)->Third == GeoEnum::GeoUndef)) {
-            Constraint* copiedConstr = (*it)->clone();
+    for (const auto& constr : constraints) {
+        if (constr->First > GeoEnum::RefExt
+            && (constr->Second > GeoEnum::RefExt || constr->Second == GeoEnum::GeoUndef)
+            && (constr->Third > GeoEnum::RefExt || constr->Third == GeoEnum::GeoUndef)) {
+            Constraint* copiedConstr = constr->clone();
 
             newConstraints.push_back(copiedConstr);
         }
@@ -8015,11 +7947,10 @@ int SketchObject::delConstraintsToExternal()
     const std::vector<Constraint*>& constraints = Constraints.getValuesForce();
     std::vector<Constraint*> newConstraints(0);
     int GeoId = GeoEnum::RefExt, NullId = GeoEnum::GeoUndef;
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->First > GeoId && ((*it)->Second > GeoId || (*it)->Second == NullId)
-            && ((*it)->Third > GeoId || (*it)->Third == NullId)) {
-            newConstraints.push_back(*it);
+    for (const auto& constr : constraints) {
+        if (constr->First > GeoId && (constr->Second > GeoId || constr->Second == NullId)
+            && (constr->Third > GeoId || constr->Third == NullId)) {
+            newConstraints.push_back(constr);
         }
     }
 
@@ -9524,30 +9455,29 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
     PosIdList.clear();
     GeoIdList.push_back(GeoId);
     PosIdList.push_back(PosId);
-    for (std::vector<Constraint*>::const_iterator it = constraints.begin(); it != constraints.end();
-         ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId) {
-                GeoIdList.push_back((*it)->Second);
-                PosIdList.push_back((*it)->SecondPos);
+    for (const auto& constr : constraints) {
+        if (constr->Type == Sketcher::Coincident) {
+            if (constr->First == GeoId && constr->FirstPos == PosId) {
+                GeoIdList.push_back(constr->Second);
+                PosIdList.push_back(constr->SecondPos);
             }
-            else if ((*it)->Second == GeoId && (*it)->SecondPos == PosId) {
-                GeoIdList.push_back((*it)->First);
-                PosIdList.push_back((*it)->FirstPos);
+            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
+                GeoIdList.push_back(constr->First);
+                PosIdList.push_back(constr->FirstPos);
             }
         }
-        if ((*it)->Type == Sketcher::Tangent) {
-            if ((*it)->First == GeoId && (*it)->FirstPos == PosId &&
-                ((*it)->SecondPos == Sketcher::PointPos::start ||
-                 (*it)->SecondPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back((*it)->Second);
-                PosIdList.push_back((*it)->SecondPos);
+        if (constr->Type == Sketcher::Tangent) {
+            if (constr->First == GeoId && constr->FirstPos == PosId &&
+                (constr->SecondPos == Sketcher::PointPos::start ||
+                 constr->SecondPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->Second);
+                PosIdList.push_back(constr->SecondPos);
             }
-            if ((*it)->Second == GeoId && (*it)->SecondPos == PosId &&
-                ((*it)->FirstPos == Sketcher::PointPos::start ||
-                 (*it)->FirstPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back((*it)->First);
-                PosIdList.push_back((*it)->FirstPos);
+            if (constr->Second == GeoId && constr->SecondPos == PosId &&
+                (constr->FirstPos == Sketcher::PointPos::start ||
+                 constr->FirstPos == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->First);
+                PosIdList.push_back(constr->FirstPos);
             }
         }
     }
