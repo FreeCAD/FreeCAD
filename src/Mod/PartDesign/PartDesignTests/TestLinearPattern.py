@@ -44,7 +44,17 @@ class TestLinearPattern(unittest.TestCase):
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize,26)
+        # 44 + 84 + 42 = 170.  44 - 8 = 36 / 9 = 4.  84-12 = 72 / 9 = 8.  42 - 6 = 36 / 9 = 4
+        # We have the original 26 from the first shape, plus 4 more vertices, 8 more edges and
+        # 4 more faces for each additional copy.  Since they have to touch ( single shape rule ),
+        # We're adding 4 points to define each additional prism's new points, 8 edges makes sense,
+        # and 4 faces makes sense since we're defining essentially a tube, not a box for each copy.
+        # self.assertNotEqual(self.LinearPattern.Shape.ElementReverseMap["Vertex44"], "")
+        # self.assertNotEqual(self.LinearPattern.Shape.ElementReverseMap["Edge84"], "")
+        # self.assertNotEqual(self.LinearPattern.Shape.ElementReverseMap["Face42"], "")
+        #
+        # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def testYAxisLinearPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -62,7 +72,8 @@ class TestLinearPattern(unittest.TestCase):
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def testZAxisLinearPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -80,7 +91,8 @@ class TestLinearPattern(unittest.TestCase):
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def testNormalSketchAxisLinearPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -101,7 +113,8 @@ class TestLinearPattern(unittest.TestCase):
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def testVerticalSketchAxisLinearPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -122,7 +135,8 @@ class TestLinearPattern(unittest.TestCase):
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def testHorizontalSketchAxisLinearPattern(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
@@ -143,7 +157,9 @@ class TestLinearPattern(unittest.TestCase):
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize,26)
+        # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
+        # self.assertEqual(len(self.LinearPattern.Shape.ElementReverseMap), 170)
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
 
     def tearDown(self):
         #closing doc
