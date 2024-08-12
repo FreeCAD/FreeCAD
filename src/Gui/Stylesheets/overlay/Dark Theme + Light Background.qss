@@ -17,7 +17,7 @@ QFrame {
    background-color: #252525;
   }
 
- QTreeView {
+  Gui--TreePanel QTreeView {
   background-color: rgba(0, 0, 0, 0.55);
   border: 0px solid #696968;
   /* alternate-background-color: rgba(255, 0, 0, 0.611); */
@@ -26,31 +26,16 @@ QFrame {
   border-radius: 0px;
 }
 
- QTreeView::item {
+ Gui--TreePanel QTreeView::item {
   color: #ffffff;
 }
 
- Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
+ Gui--OverlayTabWidget[transparent="false"] Gui--TreePanel QTreeView::item {
   color: #ffffff;
 }
 
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
+Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item {
   color: #000000;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
-  color: #000000;
-  background-color: #799fff;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
-  color: #000000;
-  background-color: #799fff;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
-  color: #000000;
-  background-color: #799fff;
 }
 
 /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
@@ -180,20 +165,40 @@ Gui--OverlayToolButton:hover {
 
  QTreeView::branch:open:has-children:has-siblings  {
   border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png);
+  image: url(qss:images_classic/Arrow-down-white.png);
 }
 
  QTreeView::branch:open:has-children:!has-siblings  {
   border-image: none;
-  image: url(qss:images_classic/Arrow-down-black.png);
+  image: url(qss:images_classic/Arrow-down-white.png);
 }
 
 QTreeView::branch:closed:has-children:has-siblings  {
   border-image: none;
-  image: url(qss:images_classic/Arrow-right-black.png);
+  image: url(qss:images_classic/Arrow-right-white.png);
 }
 
 QTreeView::branch:has-children:!has-siblings:closed  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-white.png);
+}
+
+Gui--TreePanel QTreeView::branch:open:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-black.png);
+}
+
+Gui--TreePanel QTreeView::branch:open:has-children:!has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-black.png);
+}
+
+ Gui--TreePanel QTreeView::branch:closed:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-black.png);
+}
+
+ Gui--TreePanel QTreeView::branch:has-children:!has-siblings:closed  {
   border-image: none;
   image: url(qss:images_classic/Arrow-right-black.png);
 }
