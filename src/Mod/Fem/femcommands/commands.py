@@ -657,7 +657,8 @@ class _FEMMesh2Mesh(CommandManager):
         gsecondorder = hasattr(self.selobj, "ElementOrder") and self.selobj.ElementOrder == "2nd"
         femmeshargs = ["FreeCAD.ActiveDocument.{}.FemMesh".format(self.selobj.Name)]
         if gsecondorder or (self.selobj2 != None):
-            s = os.path.join(os.path.split(__file__)[0], "../femmesh/femmesh2mesh.ui")
+            s = os.path.join(os.path.split(__file__)[0], "../Gui/Resources/ui/femmesh2mesh.ui")
+            print("trying FreeCADGui.PySideUic.loadUi on: ", s)
             dialog = FreeCADGui.PySideUic.loadUi(s)
             dialog.groupBoxDeformed.setEnabled(self.selobj2 != None)
             if self.selobj2 == None:
