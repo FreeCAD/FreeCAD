@@ -658,7 +658,10 @@ class _FEMMesh2Mesh(CommandManager):
         femmeshargs = ["FreeCAD.ActiveDocument.{}.FemMesh".format(self.selobj.Name)]
         if gsecondorder or (self.selobj2 != None):
             s = os.path.join(os.path.split(__file__)[0], "../Gui/Resources/ui/femmesh2mesh.ui")
-            print("trying FreeCADGui.PySideUic.loadUi on: ", s)
+            if not os.path.exists(s):
+                print("for FreeCADGui.PySideUic.loadUi, file does not exist: ", s)
+                s = os.path.join(os.path.split(__file__)[0], "../Resources/ui/femmesh2mesh.ui")
+                print("trying instead file: ", s)
             dialog = FreeCADGui.PySideUic.loadUi(s)
             dialog.groupBoxDeformed.setEnabled(self.selobj2 != None)
             if self.selobj2 == None:
