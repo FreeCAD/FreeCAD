@@ -631,13 +631,14 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject('PartDesign::Body', 'Body')
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
-        TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
+        TestSketcherApp.CreateRectangleSketch(sketch, (0,0), (1,1))
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
         helix = self.Doc.addObject('PartDesign::AdditiveHelix', 'Helix')
         helix.Profile = sketch
-        helix.ReferenceAxis = (self.Doc.getObject('Sketch'), ['V_Axis'])
+        helix.ReferenceAxis = (self.Doc.getObject('Sketch'), ['N_Axis'])
+        # helix.Mode = 0
         body.addObject(sketch)
         body.addObject(helix)
         self.Doc.recompute()
@@ -646,8 +647,17 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertGreaterEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
         revMap = body.Shape.childShapes()[0].ElementReverseMap
         self.assertEqual(self.countFacesEdgesVertexes(revMap), (6, 12, 8))
-        volume = 9.424696540407776  # TODO:  math formula to calc this.
-        self.assertAlmostEqual(helix.Shape.Volume, volume)
+        Radius = 0 # Rectangle is on the axis, but wouldn't matter regardless here
+        Area = Part.Face(sketch.Shape).Area
+        # General helix formula; not actually used here since devolves to just the
+        # height in this orientation.
+        helixLength = (helix.Height.Value / helix.Pitch.Value *
+                       math.sqrt(  (math.pi * Radius) ** 2 + helix.Pitch.Value ** 2))
+        Volume = Area * helixLength
+        self.assertAlmostEqual(Area, 1)
+        self.assertAlmostEqual(helixLength, helix.Height.Value)
+        self.assertAlmostEqual(helix.Shape.Volume, Volume, 2)
+        self.assertEqual(body.Shape.ElementMapSize,26)
 
     def testPartDesignElementMapPocket(self):
         # Arrange
