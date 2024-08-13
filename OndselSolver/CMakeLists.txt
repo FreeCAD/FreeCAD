@@ -643,9 +643,9 @@ set_target_properties(OndselSolver
         PUBLIC_HEADER "${ONDSELSOLVER_HEADERS}"
 )
 
-if(MSVC)
+if(WIN32)
     target_compile_definitions(OndselSolver PRIVATE _USE_MATH_DEFINES)
-endif(MSVC)
+endif(WIN32)
 
 configure_file(../OndselSolver.pc.in ${CMAKE_BINARY_DIR}/OndselSolver.pc @ONLY)
 install(TARGETS OndselSolver
