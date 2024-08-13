@@ -165,6 +165,10 @@ private:
     static const char* ThreadSize_BSW_Enums[];
     static const char* ThreadClass_BSW_Enums[];
 
+    /* BSF profile */
+    static const char* HoleCutType_BSF_Enums[];
+    static const char* ThreadSize_BSF_Enums[];
+    static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size][2];
 
