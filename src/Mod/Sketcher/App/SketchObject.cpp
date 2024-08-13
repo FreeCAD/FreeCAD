@@ -7203,8 +7203,8 @@ int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
     return 0;
 }
 
-void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef) {
-
+void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef)
+{
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
     std::set<std::string> refs;
@@ -7212,7 +7212,7 @@ void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef)
     // avoid index change
     std::set<int, std::greater<int>> geoIds;
 
-    for(auto id : ids) {
+    for (auto id : ids) {
         auto it = externalGeoMap.find(id);
         if(it == externalGeoMap.end())
             continue;
@@ -7223,48 +7223,28 @@ void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef)
         geoIds.insert(-it->second-1);
     }
 
-    if(geoIds.empty())
+    if (geoIds.empty())
         return;
 
     std::vector< Constraint * > newConstraints;
-    for(auto cstr : Constraints.getValues()) {
-        if(!geoIds.count(cstr->First) &&
-           (cstr->Second==GeoEnum::GeoUndef || !geoIds.count(cstr->Second)) &&
-           (cstr->Third==GeoEnum::GeoUndef || !geoIds.count(cstr->Third)))
-        {
-            bool cloned = false;
-            int offset = 0;
-            for(auto GeoId : geoIds) {
-                GeoId += offset++;
-                bool done = true;
-                if (cstr->First < GeoId && cstr->First != GeoEnum::GeoUndef) {
-                    if (!cloned) {
-                        cloned = true;
-                        cstr = cstr->clone();
-                    }
-                    cstr->First += 1;
-                    done = false;
-                }
-                if (cstr->Second < GeoId && cstr->Second != GeoEnum::GeoUndef) {
-                    if (!cloned) {
-                        cloned = true;
-                        cstr = cstr->clone();
-                    }
-                    cstr->Second += 1;
-                    done = false;
-                }
-                if (cstr->Third < GeoId && cstr->Third != GeoEnum::GeoUndef) {
-                    if (!cloned) {
-                        cloned = true;
-                        cstr = cstr->clone();
-                    }
-                    cstr->Third += 1;
-                    done = false;
-                }
-                if(done) break;
-            }
-            newConstraints.push_back(cstr);
+    for (const auto& cstr : Constraints.getValues()) {
+        if (geoIds.count(cstr->First) ||
+            (cstr->Second!=GeoEnum::GeoUndef && geoIds.count(cstr->Second)) ||
+            (cstr->Third!=GeoEnum::GeoUndef && geoIds.count(cstr->Third))) {
+            continue;
         }
+        int offset = 0;
+        std::unique_ptr<Constraint> newCstr(cstr->clone());
+        for(auto GeoId : geoIds) {
+            GeoId += offset++;
+            if (newCstr->First >= GeoId &&
+                newCstr->Second >= GeoId &&
+                newCstr->Third >= GeoId) {
+                break;
+            }
+            changeConstraintAfterDeletingGeo(newCstr.get(), GeoId);
+        }
+        newConstraints.push_back(cstr);
     }
 
     auto geos = ExternalGeo.getValues();
@@ -7275,32 +7255,32 @@ void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef)
         ++offset;
     }
 
-    if(refs.size()) {
-        std::vector<std::string> newSubs;
-        std::vector<App::DocumentObject*> newObjs;
-        const auto &subs = ExternalGeometry.getSubValues();
-        auto itSub = subs.begin();
-        const auto &objs = ExternalGeometry.getValues();
-        auto itObj = objs.begin();
-        bool touched = false;
-        assert(externalGeoRef.size() == objs.size());
-        assert(externalGeoRef.size() == subs.size());
-        for(auto it=externalGeoRef.begin();it!=externalGeoRef.end();++it,++itObj,++itSub) {
-            if(refs.count(*it)) {
-                if(!touched) {
-                    touched = true;
-                    if(newObjs.empty()) {
-                        newObjs.insert(newObjs.end(),objs.begin(),itObj);
-                        newSubs.insert(newSubs.end(),subs.begin(),itSub);
-                    }
-                }
-            }else if(touched) {
-                newObjs.push_back(*itObj);
-                newSubs.push_back(*itSub);
-            }
+    if(refs.empty()) {
+        ExternalGeo.setValues(std::move(geos));
+
+        solverNeedsUpdate = true;
+        Constraints.setValues(std::move(newConstraints));
+        acceptGeometry(); // This may need to be refactored into OnChanged for ExternalGeometry.
+    }
+
+    std::vector<std::string> newSubs;
+    std::vector<App::DocumentObject*> newObjs;
+    const auto &subs = ExternalGeometry.getSubValues();
+    auto itSub = subs.begin();
+    const auto &objs = ExternalGeometry.getValues();
+    auto itObj = objs.begin();
+    bool touched = false;
+    assert(externalGeoRef.size() == objs.size());
+    assert(externalGeoRef.size() == subs.size());
+    for(auto it = externalGeoRef.begin(); it!=externalGeoRef.end(); ++it, ++itObj, ++itSub) {
+        if (refs.count(*it) == 0) {
+            touched = true;
+            newObjs.push_back(*itObj);
+            newSubs.push_back(*itSub);
         }
-        if(touched)
-            ExternalGeometry.setValues(newObjs,newSubs);
+    }
+    if(touched) {
+        ExternalGeometry.setValues(newObjs,newSubs);
     }
 
     ExternalGeo.setValues(std::move(geos));
