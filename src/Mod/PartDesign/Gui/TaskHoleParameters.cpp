@@ -69,6 +69,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("ANSI pipe profile"), QByteArray("NPT"));
     ui->ThreadType->addItem(tr("BSP pipe profile"), QByteArray("BSP"));
     ui->ThreadType->addItem(tr("BSW whitworth profile"), QByteArray("BSW"));
+    ui->ThreadType->addItem(tr("BSF whitworth fine profile"), QByteArray("BSF"));
 
     // read values from the hole properties
     auto pcHole = getObject<PartDesign::Hole>();
