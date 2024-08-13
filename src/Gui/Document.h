@@ -95,9 +95,9 @@ protected:
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
 
+public:
     void addViewProvider(Gui::ViewProviderDocumentObject*);
 
-public:
     /** @name Signals of the document */
     //@{
     /// signal on new Object
