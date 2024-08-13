@@ -2972,9 +2972,7 @@ void SketchObject::changeConstraintAfterDeletingGeo(Constraint* constr,
         return;
     }
 
-    if (constr->First == deletedGeoId ||
-        constr->Second == deletedGeoId ||
-        constr->Third == deletedGeoId) {
+    if (constr->involvesGeoId(deletedGeoId)) {
         constr->Type = ConstraintType::None;
         return;
     }
@@ -5324,9 +5322,7 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
 
     for (size_t i = 0; i < constrvals.size(); i++) {
         for (const auto& geoid : geoIdList) {
-            if (constrvals[i]->First != geoid
-                && constrvals[i]->Second != geoid
-                && constrvals[i]->Third != geoid) {
+            if (!constrvals[i]->involvesGeoId(geoid)) {
                 continue;
             }
             switch (constrvals[i]->Type) {
@@ -6407,14 +6403,10 @@ bool SketchObject::convertToNURBS(int GeoId)
             // to-be-converted curve.
             for (; index >= 0; index--) {
                 auto otherthancoincident = cvals[index]->Type != Sketcher::Coincident
-                    && (cvals[index]->First == GeoId || cvals[index]->Second == GeoId
-                        || cvals[index]->Third == GeoId);
+                    && cvals[index]->involvesGeoId(GeoId);
 
                 auto coincidentonmidpoint = cvals[index]->Type == Sketcher::Coincident
-                    && ((cvals[index]->First == GeoId
-                         && cvals[index]->FirstPos == Sketcher::PointPos::mid)
-                        || (cvals[index]->Second == GeoId
-                            && cvals[index]->SecondPos == Sketcher::PointPos::mid));
+                    && cvals[index]->involvesGeoIdAndPosId(GeoId, Sketcher::PointPos::mid);
 
                 if (otherthancoincident || coincidentonmidpoint)
                     newcVals.erase(newcVals.begin() + index);
@@ -9398,7 +9390,7 @@ void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintL
     int i = 0;
 
     for (const auto& constr : constraints) {
-        if (constr->First == GeoId || constr->Second == GeoId || constr->Third == GeoId) {
+        if (constr->involvesGeoId(GeoId)) {
             constraintList.push_back(i);
         }
         ++i;
