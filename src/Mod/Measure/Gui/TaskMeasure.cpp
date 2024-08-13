@@ -207,12 +207,14 @@ Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObje
 
 void TaskMeasure::saveObject() {
     if (_mViewObject && _mGuiDocument) {
-        _mGuiDocument->removeAnnotationViewProvider(_mViewObject->getTypeId().getName());
+        _mGuiDocument->addViewProvider(_mViewObject);
+        _mGuiDocument->takeAnnotationViewProvider(_mViewObject->getTypeId().getName());
         _mViewObject = nullptr;
     }
 
     _mDocument = App::GetApplication().getActiveDocument();
     _mDocument->addObject(_mMeasureObject, _mMeasureType->label.c_str());
+    _mMeasureObject = nullptr;
 }
 
 
