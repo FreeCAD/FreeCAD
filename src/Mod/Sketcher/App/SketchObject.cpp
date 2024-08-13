@@ -2337,9 +2337,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     std::vector<Constraint*> newVals;
     for (auto& constr : vals) {
         // keep the constraint if it doesn't involve the point
-        if (!((constr->First == GeoId && constr->FirstPos == PosId)
-              || (constr->Second == GeoId && constr->SecondPos == PosId)
-              || (constr->Third == GeoId && constr->ThirdPos == PosId))) {
+        if (!constr->involvesGeoIdAndPosId(GeoId, PosId)) {
             newVals.push_back(constr);
             continue;
         }
@@ -3414,9 +3412,7 @@ void SketchObject::changeConstraintAfterDeletingGeo(Constraint* constr,
         return;
     }
 
-    if (constr->First == deletedGeoId ||
-        constr->Second == deletedGeoId ||
-        constr->Third == deletedGeoId) {
+    if (constr->involvesGeoId(deletedGeoId)) {
         constr->Type = ConstraintType::None;
         return;
     }
@@ -5915,9 +5911,7 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
 
     for (size_t i = 0; i < constrvals.size(); i++) {
         for (const auto& geoid : geoIdList) {
-            if (constrvals[i]->First != geoid
-                && constrvals[i]->Second != geoid
-                && constrvals[i]->Third != geoid) {
+            if (!constrvals[i]->involvesGeoId(geoid)) {
                 continue;
             }
             switch (constrvals[i]->Type) {
@@ -6749,21 +6743,13 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         int focus2constraints = 0;
 
         for (const auto& constr : vals) {
-            if (constr->Second == majorelementindex
-                || constr->First == majorelementindex
-                || constr->Third == majorelementindex)
+            if (constr->involvesGeoId(majorelementindex))
                 majorconstraints++;
-            else if (constr->Second == minorelementindex
-                     || constr->First == minorelementindex
-                     || constr->Third == minorelementindex)
+            else if (constr->involvesGeoId(minorelementindex))
                 minorconstraints++;
-            else if (constr->Second == focus1elementindex
-                     || constr->First == focus1elementindex
-                     || constr->Third == focus1elementindex)
+            else if (constr->involvesGeoId(focus1elementindex))
                 focus1constraints++;
-            else if (constr->Second == focus2elementindex
-                     || constr->First == focus2elementindex
-                     || constr->Third == focus2elementindex)
+            else if (constr->involvesGeoId(focus2elementindex))
                 focus2constraints++;
         }
 
@@ -6829,14 +6815,10 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
         int focus1constraints = 0;
 
         for (const auto& constr : vals) {
-            if (constr->Second == majorelementindex
-                || constr->First == majorelementindex
-                || constr->Third == majorelementindex) {
+            if (constr->involvesGeoId(majorelementindex)) {
                 majorconstraints++;
             }
-            else if (constr->Second == focus1elementindex
-                     || constr->First == focus1elementindex
-                     || constr->Third == focus1elementindex) {
+            else if (constr->involvesGeoId(focus1elementindex)) {
                 focus1constraints++;
             }
         }
@@ -6940,8 +6922,7 @@ int SketchObject::deleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 
             // look for a point at geoid index
             for (auto const& constr : vals) {
-                if (constr->Second == (*it) || constr->First == (*it)
-                    || constr->Third == (*it)) {
+                if (constr->involvesGeoId(*it)) {
                     (*ita)++;
                 }
             }
@@ -7058,14 +7039,10 @@ bool SketchObject::convertToNURBS(int GeoId)
             // to-be-converted curve.
             for (; index >= 0; index--) {
                 auto otherthancoincident = cvals[index]->Type != Sketcher::Coincident
-                    && (cvals[index]->First == GeoId || cvals[index]->Second == GeoId
-                        || cvals[index]->Third == GeoId);
+                    && cvals[index]->involvesGeoId(GeoId);
 
                 auto coincidentonmidpoint = cvals[index]->Type == Sketcher::Coincident
-                    && ((cvals[index]->First == GeoId
-                         && cvals[index]->FirstPos == Sketcher::PointPos::mid)
-                        || (cvals[index]->Second == GeoId
-                            && cvals[index]->SecondPos == Sketcher::PointPos::mid));
+                    && cvals[index]->involvesGeoIdAndPosId(GeoId, Sketcher::PointPos::mid);
 
                 if (otherthancoincident || coincidentonmidpoint)
                     newcVals.erase(newcVals.begin() + index);
@@ -9809,7 +9786,7 @@ void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintL
     int i = 0;
 
     for (const auto& constr : constraints) {
-        if (constr->First == GeoId || constr->Second == GeoId || constr->Third == GeoId) {
+        if (constr->involvesGeoId(GeoId)) {
             constraintList.push_back(i);
         }
         ++i;
