@@ -71,8 +71,8 @@ void _class_::init(void) { \
 
 namespace Gui {
 
-namespace Dialog { 
-class TaskPlacement; 
+namespace Dialog {
+class TaskPlacement;
 class DlgPropertyLink;
 }
 
@@ -146,7 +146,7 @@ public:
 
     PropertyEditorWidget* createPropertyEditorWidget(QWidget* parent) const;
 
-    /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
+    /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by
        childs which like to be informed of a binding*/
     void bind(const App::Property& prop) override;
     void bind(const App::ObjectIdentifier& _path) override;
@@ -488,7 +488,7 @@ protected:
 };
 
 /**
- * Edit properties of boolean type. 
+ * Edit properties of boolean type.
  * \author Werner Mayer
  */
 class GuiExport PropertyBoolItem: public PropertyItem
@@ -509,7 +509,7 @@ protected:
 };
 
 /**
- * Edit properties of vector type. 
+ * Edit properties of vector type.
  * \author Werner Mayer
  */
 class PropertyFloatItem;
@@ -614,7 +614,7 @@ protected:
 };
 
 /**
- * Edit properties of vector type which hold distances. 
+ * Edit properties of vector type which hold distances.
  * \author Stefan Troeger
  */
 class PropertyUnitItem;
@@ -722,7 +722,7 @@ class GuiExport PropertyMatrixItem: public PropertyItem
     void setA43(double A43);
     double getA44() const;
     void setA44(double A44);
-    
+
 protected:
     QVariant toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
@@ -748,7 +748,7 @@ private:
     PropertyFloatItem* m_a41;
     PropertyFloatItem* m_a42;
     PropertyFloatItem* m_a43;
-    PropertyFloatItem* m_a44; 
+    PropertyFloatItem* m_a44;
 };
 
 class RotationHelper
@@ -831,7 +831,7 @@ private:
 };
 
 /**
- * Edit properties of placement type. 
+ * Edit properties of placement type.
  * \author Werner Mayer
  */
 class GuiExport PropertyPlacementItem: public PropertyItem
@@ -874,7 +874,7 @@ private:
 class PropertyStringListItem;
 
 /**
- * Edit properties of enum type. 
+ * Edit properties of enum type.
  * \author Werner Mayer
  */
 class GuiExport PropertyEnumItem: public PropertyItem
@@ -1221,7 +1221,7 @@ private:
 };
 
 /**
- * Edit properties of link type. 
+ * Edit properties of link type.
  * \author Werner Mayer
  */
 class GuiExport PropertyLinkItem: public PropertyItem
