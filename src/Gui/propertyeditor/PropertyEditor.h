@@ -47,7 +47,7 @@ class PropertyItemDelegate;
 class PropertyModel;
 /*!
  Put this into the .qss file after Gui--PropertyEditor--PropertyEditor
- 
+
  Gui--PropertyEditor--PropertyEditor
  {
     qproperty-groupBackground: gray;
@@ -122,7 +122,7 @@ private:
     void closeTransaction();
     void recomputeDocument(App::Document*);
 
-    // check if mouse_pos is around right or bottom side of a cell 
+    // check if mouse_pos is around right or bottom side of a cell
     // and return the index of that cell if found
     QModelIndex indexResizable(QPoint mouse_pos);
 
