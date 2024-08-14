@@ -88,7 +88,10 @@ class FilenameGenerator:
             filename = FreeCAD.ActiveDocument.Label
 
         if not outputpath:
-            outputpath = os.getcwd()
+            outputpath, _ = os.path.split(FreeCAD.ActiveDocument.getFileName())
+
+        if not outputpath:
+            outputpath = os.getcwd() ## TODO: This should be avoided as it would give the Freecad executable's path
 
         if not ext:
             ext = ".nc"
