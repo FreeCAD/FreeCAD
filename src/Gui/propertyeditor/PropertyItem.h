@@ -178,7 +178,7 @@ public:
     int columnCount() const;
     QString propertyName() const;
     void setPropertyName(const QString& name, const QString& realName=QString());
-    void setPropertyValue(const QString&);
+    void setPropertyValue(const std::string&);
     virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);
     Qt::ItemFlags flags(int column) const;
