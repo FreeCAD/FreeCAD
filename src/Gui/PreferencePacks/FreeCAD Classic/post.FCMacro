@@ -210,4 +210,3 @@ navcubePrefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/NaviCube")
 navcubePrefs.RemUnsigned("BaseColor")
 
 mwPrefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
-mwPrefs.RemString("StyleSheet")
