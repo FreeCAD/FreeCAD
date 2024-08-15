@@ -161,7 +161,7 @@ void SystemSolver::runBasicKinematic()
 		basicIntegrator->setSystem(this);
 		basicIntegrator->run();
 	}
-	catch (NotKinematicError ex) {
+	catch (const NotKinematicError& ex) {
 		this->runQuasiKinematic();
 	}
 }
@@ -186,7 +186,7 @@ void SystemSolver::runQuasiKinematic()
 		basicIntegrator->setSystem(this);
 		basicIntegrator->run();
 	}
-	catch (DiscontinuityError ex) {
+	catch (const DiscontinuityError& ex) {
 		this->discontinuityBlock();
 	}
 }

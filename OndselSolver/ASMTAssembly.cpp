@@ -1434,7 +1434,7 @@ void MbD::ASMTAssembly::runKINEMATIC()
     try {
         mbdSystem->runKINEMATIC(mbdSystem);
     }
-    catch (SimulationStoppingError ex) {
+    catch (const SimulationStoppingError& ex) {
     }
 }
 

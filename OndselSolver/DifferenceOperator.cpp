@@ -36,7 +36,7 @@ void DifferenceOperator::calcOperatorMatrix()
 	try {
 		operatorMatrix = CREATE<LDUFullMatParPv>::With()->inversesaveOriginal(taylorMatrix, false);
 	}
-	catch (SingularMatrixError ex) {
+	catch (const SingularMatrixError& ex) {
 	}
 }
 

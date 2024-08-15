@@ -41,7 +41,7 @@ void QuasiIntegrator::run()
 			try {
 				IntegratorInterface::run();
 			}
-			catch (SingularMatrixError ex) {
+			catch (const SingularMatrixError& ex) {
 				std::stringstream ss;
 				ss << "MbD: Solver has encountered a singular matrix." << std::endl;
 				ss << "MbD: Check to see if a massless or a very low mass part is under constrained." << std::endl;
@@ -53,7 +53,7 @@ void QuasiIntegrator::run()
 				throw SimulationStoppingError("singular matrix");
 			}
 		}
-		catch (TooSmallStepSizeError ex) {
+		catch (const TooSmallStepSizeError& ex) {
 			std::stringstream ss;
 			ss << "MbD: Step size is prevented from going below the user specified minimum." << std::endl;
 			ss << "MbD: Check to see if the system is in a locked position." << std::endl;
@@ -64,7 +64,7 @@ void QuasiIntegrator::run()
 			throw SimulationStoppingError("stepSize < stepSizeMin");
 		}
 	}
-	catch (TooManyTriesError ex) {
+	catch (const TooManyTriesError& ex) {
 		std::stringstream ss;
 		ss << "MbD: Check to see if the error tolerance is too demanding." << std::endl;
 		auto str = ss.str();

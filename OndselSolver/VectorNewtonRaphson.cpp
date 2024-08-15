@@ -53,7 +53,7 @@ void VectorNewtonRaphson::solveEquations()
 	try {
 		this->basicSolveEquations();
 	}
-	catch (SingularMatrixError ex) {
+	catch (const SingularMatrixError& ex) {
 		this->handleSingularMatrix();
 	}
 }
