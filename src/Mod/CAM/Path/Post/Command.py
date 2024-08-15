@@ -137,6 +137,7 @@ class CommandPathPost:
                 Path.Log.debug(filename)
                 with open(filename, "w") as f:
                     f.write(gcode)
+            else: return
 
         elif policy == "Append Unique ID on conflict":
             while os.path.isfile(filename):
@@ -157,12 +158,15 @@ class CommandPathPost:
                     Path.Log.debug(filename)
                     with open(filename, "w") as f:
                         f.write(gcode)
+                else: return
             else:
                 with open(filename, "w") as f:
                     f.write(gcode)
+
         else:  # Overwrite
             with open(filename, "w") as f:
                 f.write(gcode)
+
         FreeCAD.Console.PrintMessage(f"File written to {filename}\n")
 
     def Activated(self):
