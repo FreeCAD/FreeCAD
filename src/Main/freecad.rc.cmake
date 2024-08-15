@@ -21,9 +21,9 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "${PROJECT_NAME} Team"
             VALUE "FileDescription", "${PROJECT_NAME} main executable"
-            VALUE "InternalName", "FreeCAD.exe"
+            VALUE "InternalName", "RWPS.exe"
             VALUE "LegalCopyright", "Copyright (C) 2022"
-            VALUE "OriginalFilename", "FreeCAD.exe"
+            VALUE "OriginalFilename", "RWPS.exe"
             VALUE "ProductName", "${PROJECT_NAME}"
             VALUE "ProductVersion", "${PACKAGE_VERSION}${PACKAGE_VERSION_SUFFIX}"
         END
