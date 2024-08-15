@@ -136,6 +136,8 @@ protected:
     void changeEvent    ( QEvent            * e ) override;
     void mouseReleaseEvent( QMouseEvent     * e ) override;
 
+    void wheelEvent(QWheelEvent *e) override;
+
     void overrideCursor(const QString& txt);
 
     /** Pops up the context menu with some extensions */

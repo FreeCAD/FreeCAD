@@ -1045,6 +1045,17 @@ void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
     TextEdit::mouseReleaseEvent( e );
 }
 
+void PythonConsole::wheelEvent(QWheelEvent *e)
+{
+    if (e->modifiers() & Qt::ControlModifier) {
+            float delta = e->angleDelta().y() / 120.f;
+            zoomInF(delta);
+            return;
+        }
+
+    TextEdit::wheelEvent(e);
+}
+
 /**
  * Drops the event \a e and writes the right Python command.
  */
