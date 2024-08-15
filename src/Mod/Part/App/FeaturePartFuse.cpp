@@ -276,14 +276,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
             }
             if (this->Refine.getValue()) {
                 try {
-                    TopoDS_Shape oldShape = res.getShape();
-                    BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                    res.setShape(mkRefine.Shape());
-                    ShapeHistory hist =
-                        buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
-                    for (auto& jt : history) {
-                        jt = joinHistory(jt, hist);
-                    }
+                    res = res.makeElementRefine();
                 }
                 catch (Standard_Failure&) {
                     // do nothing

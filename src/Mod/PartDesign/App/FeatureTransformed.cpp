@@ -374,26 +374,6 @@ TopoShape Transformed::refineShapeIfActive(const TopoShape& oldShape) const
     return oldShape;
 }
 
-// Deprecated, prefer the TopoShape method
-TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            if (!TopoShape(resShape).isClosed()) {
-                return oldShape;
-            }
-            return resShape;
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
-    return oldShape;
-}
-
 TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
 {
     BRep_Builder builder;
