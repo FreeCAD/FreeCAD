@@ -29,6 +29,7 @@
 #include <App/MeasureManager.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
+#include <Mod/Measure/Gui/ViewProviderMeasureBase.h>
 
 
 #include <Gui/TaskView/TaskDialog.h>
