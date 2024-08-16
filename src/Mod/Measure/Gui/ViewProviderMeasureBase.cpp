@@ -300,8 +300,6 @@ void ViewProviderMeasureBase::updateIcon() {
 void ViewProviderMeasureBase::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
-    auto measureObj = static_cast<MeasureBase*>(pcObj);
-    positionAnno(measureObj);
     updateIcon();
 }
 
