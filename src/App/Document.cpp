@@ -757,6 +757,12 @@ void Document::onChanged(const Property* prop)
             // recursive call of onChanged()
             this->Uid.setValue(id);
         }
+    } else if(prop == &UseHasher) {
+        for(auto obj : d->objectArray) {
+            auto geofeature = dynamic_cast<GeoFeature*>(obj);
+            if(geofeature && geofeature->getPropertyOfGeometry())
+                geofeature->enforceRecompute();
+        }
     }
 }
 
@@ -864,6 +870,8 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_None),
                       "Whether to show hidden object items in the tree view");
+    ADD_PROPERTY_TYPE(UseHasher,(true), 0,PropertyType(Prop_Hidden),
+                        "Whether to use hasher on topological naming");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,
@@ -1074,10 +1082,13 @@ std::pair<bool,int> Document::addStringHasher(const StringHasherRef & hasher) co
 }
 
 StringHasherRef Document::getStringHasher(int idx) const {
-    if(idx<0) {
-        return d->Hasher;
-    }
     StringHasherRef hasher;
+    if(idx<0) {
+        if(UseHasher.getValue()) {
+            return d->Hasher;
+        }
+        return hasher;
+    }
     auto it = d->hashers.right.find(idx);
     if(it == d->hashers.right.end()) {
         hasher = new StringHasher;
