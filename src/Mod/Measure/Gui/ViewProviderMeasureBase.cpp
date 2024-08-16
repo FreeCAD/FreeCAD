@@ -642,8 +642,8 @@ Base::Vector3d ViewProviderMeasure::getBasePosition(){
     return placement.getPosition();
 }
 
-
 Base::Vector3d ViewProviderMeasure::getTextPosition(){
+    // Return the initial position relative to the base position
     auto basePoint = getBasePosition();
 
     Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
@@ -652,12 +652,14 @@ Base::Vector3d ViewProviderMeasure::getTextPosition(){
         return Base::Vector3d();
     }
     
-    Gui::View3DInventorViewer* viewer = view->getViewer();    
+    Gui::View3DInventorViewer* viewer = view->getViewer();
 
     // Convert to screenspace, offset and convert back to world space
     SbVec2s screenPos = viewer->getPointOnViewport(SbVec3f(basePoint.x, basePoint.y, basePoint.z));
-    SbVec3f textPos = viewer->getPointOnFocalPlane(screenPos + SbVec2s(30.0, 30.0));
-    return Base::Vector3d(textPos[0], textPos[1], textPos[2]);
+    SbVec3f vec = viewer->getPointOnFocalPlane(screenPos + SbVec2s(30.0, 30.0)); 
+    Base::Vector3d textPos(vec[0], vec[1], vec[2]);
+
+    return textPos - basePoint;
 }
 
 //! called by the system when it is time to display this measure
