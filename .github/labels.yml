@@ -98,7 +98,7 @@
 
 "Topic: Measurement":
 - changed-files:
-  - any-glob-to-any-file: ['src/Mod/Measure/**/*']
+  - any-glob-to-any-file:  ['src/Mod/Measure/**/*']
 
 "Topic: Stylesheets":
 - changed-files:
