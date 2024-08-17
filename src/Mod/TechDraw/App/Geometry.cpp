@@ -1593,7 +1593,6 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
         sumCenter += DrawUtil::toVector3d(curveCenter);
     }
     catch (Standard_Failure&) {
-        // Base::Console().Error("OCC error.  Could not interpret BSpline as Circle\n");
         return false;
     }
     Base::Vector3d avgCenter = sumCenter/testCount;
@@ -1601,7 +1600,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     double avgCurve = sumCurvature/testCount;
     double errorCurve  = 0;
     for (auto& cv: curvatures) {
-        errorCurve += fabs(avgCurve - cv);    //fabs???
+        errorCurve += avgCurve - cv;
     }
     errorCurve  = errorCurve/testCount;
 
@@ -1617,6 +1616,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
 
 //! make a circle or arc of circle Edge from BSpline Edge
 //! assumes the spline is generally circular but does not check
+// ??? why does this not use getCircleParms to retrieve centre, radius, start/end, isArc
 TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
 {
     BRepAdaptor_Curve curveAdapt(splineEdge);
