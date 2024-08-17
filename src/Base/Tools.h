@@ -329,6 +329,14 @@ struct BaseExport Tools
     static std::vector<std::string> splitSubName(const std::string& subname);
 };
 
+struct BaseExport ZipTools
+{
+    /**
+     * @brief rewrite Rewrite a zip file under a new name.
+     */
+    static void rewrite(const std::string& source, const std::string& target);
+};
+
 
 }  // namespace Base
 

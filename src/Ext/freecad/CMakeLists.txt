@@ -35,6 +35,7 @@ set(EXT_FILES
     sketcher.py
     UiTools.py
     utils.py
+    utils_zip.py
 )
 
 foreach (it ${EXT_FILES})
