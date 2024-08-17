@@ -213,27 +213,13 @@ SET(PatternLib_Files
 )
 
 SET(MachiningLib_Files
-    Resources/Materials/Machining/Aluminum-6061.FCMat
-    Resources/Materials/Machining/Aluminum-7075.FCMat
-    Resources/Materials/Machining/Aluminum-Cast.FCMat
     Resources/Materials/Machining/AluminumCastAlloy.FCMat
     Resources/Materials/Machining/AluminumWroughtAlloy.FCMat
     Resources/Materials/Machining/AusteniticStainlessSteel.FCMat
-    Resources/Materials/Machining/Brass-Hard.FCMat
-    Resources/Materials/Machining/Brass-Medium.FCMat
-    Resources/Materials/Machining/Brass-Soft.FCMat
-    Resources/Materials/Machining/CarbonSteel.FCMat
     Resources/Materials/Machining/GrayCastIron.FCMat
-    Resources/Materials/Machining/HardPlastics.FCMat
-    Resources/Materials/Machining/Hardwood.FCMat
     Resources/Materials/Machining/LowAlloySteel.FCMat
     Resources/Materials/Machining/MalleableCastIron.FCMat
     Resources/Materials/Machining/MildSteel.FCMat
-    Resources/Materials/Machining/SoftPlastics.FCMat
-    Resources/Materials/Machining/Softwood.FCMat
-    Resources/Materials/Machining/Stainless-303.FCMat
-    Resources/Materials/Machining/Stainless-304.FCMat
-    Resources/Materials/Machining/Stainless-316.FCMat
     Resources/Materials/Machining/ToolSteel.FCMat
 )
 
