@@ -165,11 +165,10 @@ App::DocumentObjectExecReturn* Revolution::execute()
 #else
         TopoDS_Shape result;
 #endif
-        TopoDS_Face supportface = getSupportFace();
-        supportface.Move(invObjLoc);
-
         if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst
             || method == RevolMethod::ToLast) {
+            TopoDS_Face supportface = getSupportFace();
+            supportface.Move(invObjLoc);
             TopoDS_Face upToFace;
             if (method == RevolMethod::ToFace) {
                 getFaceFromLinkSub(upToFace, UpToFace);
@@ -239,6 +238,9 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 result = result.makeElementFuse(base);
                 result = refineShapeIfActive(result);
             }
+
+            this->Shape.setValue(getSolid(result));
+        }
 #else
         if (!result.IsNull()) {
             result = refineShapeIfActive(result);
@@ -256,10 +258,10 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 result = mkFuse.Shape();
                 result = refineShapeIfActive(result);
             }
-#endif
 
             this->Shape.setValue(getSolid(result));
         }
+#endif
         else {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Could not revolve the sketch!"));
@@ -271,7 +273,6 @@ App::DocumentObjectExecReturn* Revolution::execute()
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         if (std::string(e.GetMessageString()) == "TopoDS::Face") {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception",
