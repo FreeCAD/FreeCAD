@@ -2177,6 +2177,12 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     auto mdi = mw->findChild<QMdiArea*>();
     mdi->setProperty("showImage", tiledBackground);
 
+    // If there was an old style, make sure it un-polishes itself
+    auto style = qApp->style();
+    if (style && !d->startingUp) {
+        style->unpolish(qApp);
+    }
+
     // Qt's style sheet doesn't support it to define the link color of a QLabel
     // or in the property editor when an expression is set because therefore the
     // link color of the application's palette is used.
@@ -2199,11 +2205,11 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     static bool init = true;
     if (init) {
         init = false;
-        mw->setProperty("fc_originalLinkCoor", qApp->palette().color(QPalette::Link));
+        mw->setProperty("fc_originalLinkColor", qApp->palette().color(QPalette::Link));
     }
     else {
         QPalette newPal(qApp->palette());
-        newPal.setColor(QPalette::Link, mw->property("fc_originalLinkCoor").value<QColor>());
+        newPal.setColor(QPalette::Link, mw->property("fc_originalLinkColor").value<QColor>());
         qApp->setPalette(newPal);
     }
 
