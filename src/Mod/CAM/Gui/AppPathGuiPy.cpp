@@ -106,7 +106,7 @@ private:
                 for (int i = 0; i < list.size(); ++i) {
                     QFileInfo fileInfo = list.at(i);
                     if (fileInfo.baseName().toStdString() == processor) {
-                        if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
+                        if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("scripts"))) {
                             pre << "from Path.Post.scripts import " << processor;
                         } else {
                             pre << "import " << processor;
@@ -182,7 +182,7 @@ private:
                 for (int i = 0; i < list.size(); ++i) {
                     QFileInfo fileInfo = list.at(i);
                     if (fileInfo.baseName().toStdString() == processor) {
-                        if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
+                        if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("scripts"))) {
                             pre << "from Path.Post.scripts import " << processor;
                         } else {
                             pre << "import " << processor;
@@ -258,7 +258,7 @@ private:
                 for (int i = 0; i < list.size(); ++i) {
                     QFileInfo fileInfo = list.at(i);
                     if (fileInfo.baseName().toStdString() == processor) {
-                        if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
+                        if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("scripts"))) {
                             pre << "from Path.Post.scripts import " << processor;
                         } else {
                             pre << "import " << processor;
