@@ -108,6 +108,31 @@ struct QUAD
     int iV[4];
 };
 
+class ZipFixer
+{
+public:
+    ZipFixer(const char* filename)
+        : tmp {Base::FileInfo::getTempFileName()}
+    {
+        Base::ZipTools::rewrite(filename, tmp.filePath().c_str());
+        str.open(tmp, std::ios::in | std::ios::binary);
+    }
+
+    ~ZipFixer()
+    {
+        tmp.deleteFile();
+    }
+
+    Base::ifstream& getStream()
+    {
+        return str;
+    }
+
+private:
+    Base::FileInfo tmp;
+    Base::ifstream str;
+};
+
 }  // namespace MeshCore
 
 // --------------------------------------------------------------
@@ -227,7 +252,13 @@ bool MeshInput::LoadAny(const char* FileName)
         ok = LoadSMF(str);
     }
     else if (fi.hasExtension("3mf")) {
-        ok = Load3MF(str);
+        try {
+            ok = Load3MF(str);
+        }
+        catch (const zipios::FCollException&) {
+            ZipFixer zip(FileName);
+            ok = Load3MF(zip.getStream());
+        }
     }
     else if (fi.hasExtension("off")) {
         ok = LoadOFF(str);
