@@ -372,3 +372,17 @@ std::string Base::Tools::currentDateTimeString()
         .toString(Qt::ISODate)
         .toStdString();
 }
+
+// ------------------------------------------------------------------------------------------------
+
+void Base::ZipTools::rewrite(const std::string& source, const std::string& target)
+{
+    Base::PyGILStateLocker lock;
+    PyObject* module = PyImport_ImportModule("freecad.utils_zip");
+    if (!module) {
+        throw Py::Exception();
+    }
+
+    Py::Module commands(module, true);
+    commands.callMemberFunction("rewrite", Py::TupleN(Py::String(source), Py::String(target)));
+}

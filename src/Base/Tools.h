@@ -327,6 +327,14 @@ struct BaseExport Tools
     static std::string currentDateTimeString();
 };
 
+struct BaseExport ZipTools
+{
+    /**
+     * @brief rewrite Rewrite a zip file under a new name.
+     */
+    static void rewrite(const std::string& source, const std::string& target);
+};
+
 
 }  // namespace Base
 
