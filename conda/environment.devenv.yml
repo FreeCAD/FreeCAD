@@ -1,5 +1,6 @@
 name: freecad
 channels:
+- freecad/label/dev
 - conda-forge
 dependencies:
 - libspnav                             # [linux]
@@ -66,20 +67,20 @@ dependencies:
 - doxygen
 - eigen
 - fmt
-- freetype
+- freetype==2.12.1
 - git
 - gmsh
 - graphviz
-- hdf5
-- libboost-devel
+- hdf5==1.14.3
+- libboost-devel==1.82.0
 - libcxx
 - mamba
 - matplotlib
 - ninja
 - numpy
-- occt
+- occt==7.7.2
 - openssl
-- pcl
+- pcl==1.14.0
 - pip
 - pivy
 - pkg-config
@@ -89,12 +90,12 @@ dependencies:
 - pyside2
 - python==3.11.*
 - pyyaml
-- qt-main
+- qt-main==5.15.13
 - six
 - smesh
 - swig
 - vtk==9.2.6
-- xerces-c
+- xerces-c==3.2.5
 - yaml-cpp
-- zlib
+- zlib==1.2.13
 - zstd==1.5.6
