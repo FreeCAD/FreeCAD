@@ -69,7 +69,7 @@ StdCmdWorkbench::StdCmdWorkbench()
   : Command("Std_Workbench")
 {
     sGroup        = "View";
-    sMenuText     = QT_TR_NOOP("Workbench");
+    sMenuText     = QT_TR_NOOP("&Workbench");
     sToolTipText  = QT_TR_NOOP("Switch between workbenches");
     sWhatsThis    = "Std_Workbench";
     sStatusTip    = QT_TR_NOOP("Switch between workbenches");
@@ -134,7 +134,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
   :Command("Std_RecentFiles")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Open Recent");
+    sMenuText     = QT_TR_NOOP("Open &Recent");
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = QT_TR_NOOP("Recent file list");
@@ -175,7 +175,7 @@ StdCmdRecentMacros::StdCmdRecentMacros()
   :Command("Std_RecentMacros")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("Recent macros");
+    sMenuText     = QT_TR_NOOP("&Recent macros");
     sToolTipText  = QT_TR_NOOP("Recent macro list");
     sWhatsThis    = "Std_RecentMacros";
     sStatusTip    = QT_TR_NOOP("Recent macro list");
@@ -328,7 +328,7 @@ StdCmdDlgParameter::StdCmdDlgParameter()
   :Command("Std_DlgParameter")
 {
   sGroup        = "Tools";
-  sMenuText     = QT_TR_NOOP("E&dit parameters ...");
+  sMenuText     = QT_TR_NOOP("E&dit parameters...");
   sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the parameters");
   sWhatsThis    = "Std_DlgParameter";
   sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the parameters");
@@ -353,7 +353,7 @@ StdCmdDlgPreferences::StdCmdDlgPreferences()
   :Command("Std_DlgPreferences")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("&Preferences ...");
+    sMenuText     = QT_TR_NOOP("Prefere&nces ...");
     sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the preferences");
     sWhatsThis    = "Std_DlgPreferences";
     sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the preferences");
@@ -471,7 +471,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
   :Command("Std_OnlineHelp")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("&Help");
     sToolTipText  = QT_TR_NOOP("Show help to the application");
     sWhatsThis    = "Std_OnlineHelp";
     sStatusTip    = QT_TR_NOOP("Help");
@@ -523,7 +523,7 @@ StdCmdFreeCADDonation::StdCmdFreeCADDonation()
   :Command("Std_FreeCADDonation")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Donate");
+    sMenuText     = QT_TR_NOOP("&Donate");
     sToolTipText  = QT_TR_NOOP("Donate to FreeCAD development");
     sWhatsThis    = "Std_FreeCADDonation";
     sStatusTip    = sToolTipText;
@@ -550,7 +550,7 @@ StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
   :Command("Std_FreeCADWebsite")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("FreeCAD Website");
+    sMenuText     = QT_TR_NOOP("FreeCAD W&ebsite");
     sToolTipText  = QT_TR_NOOP("The FreeCAD website");
     sWhatsThis    = "Std_FreeCADWebsite";
     sStatusTip    = QT_TR_NOOP("FreeCAD Website");
@@ -578,7 +578,7 @@ StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
   :Command("Std_FreeCADUserHub")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Users documentation");
+    sMenuText     = QT_TR_NOOP("&Users documentation");
     sToolTipText  = QT_TR_NOOP("Documentation for users on the FreeCAD website");
     sWhatsThis    = "Std_FreeCADUserHub";
     sStatusTip    = QT_TR_NOOP("Users documentation");
@@ -606,7 +606,7 @@ StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
   :Command("Std_FreeCADPowerUserHub")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Python scripting documentation");
+    sMenuText     = QT_TR_NOOP("&Python scripting documentation");
     sToolTipText  = QT_TR_NOOP("Python scripting documentation on the FreeCAD website");
     sWhatsThis    = "Std_FreeCADPowerUserHub";
     sStatusTip    = QT_TR_NOOP("PowerUsers documentation");
@@ -634,7 +634,7 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
   :Command("Std_FreeCADForum")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("FreeCAD Forum");
+    sMenuText     = QT_TR_NOOP("FreeCAD &Forum");
     sToolTipText  = QT_TR_NOOP("The FreeCAD forum, where you can find help from other users");
     sWhatsThis    = "Std_FreeCADForum";
     sStatusTip    = QT_TR_NOOP("The FreeCAD Forum");
@@ -662,7 +662,7 @@ StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
   :Command("Std_FreeCADFAQ")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("FreeCAD FAQ");
+    sMenuText     = QT_TR_NOOP("FreeCAD FA&Q");
     sToolTipText  = QT_TR_NOOP("Frequently Asked Questions on the FreeCAD website");
     sWhatsThis    = "Std_FreeCADFAQ";
     sStatusTip    = QT_TR_NOOP("Frequently Asked Questions");
@@ -715,7 +715,7 @@ StdCmdReportBug::StdCmdReportBug()
   :Command("Std_ReportBug")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Report a bug");
+    sMenuText     = QT_TR_NOOP("Report a &bug");
     sToolTipText  = QT_TR_NOOP("Report a bug or suggest a feature");
     sWhatsThis    = "Std_ReportBug";
     sStatusTip    = QT_TR_NOOP("Report a bug or suggest a feature");
@@ -742,7 +742,7 @@ StdCmdTextDocument::StdCmdTextDocument()
   :Command("Std_TextDocument")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Add text document");
+    sMenuText     = QT_TR_NOOP("Add te&xt document");
     sToolTipText  = QT_TR_NOOP("Add text document to active document");
     sWhatsThis    = "Std_TextDocument";
     sStatusTip    = QT_TR_NOOP("Add text document to active document");
@@ -811,7 +811,7 @@ StdCmdUserEditMode::StdCmdUserEditMode()
   : Command("Std_UserEditMode")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Edit mode");
+    sMenuText     = QT_TR_NOOP("Edit &mode");
     sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from tree");
     sStatusTip    = QT_TR_NOOP("Defines behavior when editing an object from tree");
     sWhatsThis    = "Std_UserEditMode";
@@ -832,7 +832,7 @@ Gui::Action * StdCmdUserEditMode::createAction()
 
     for (auto const &uem : Gui::Application::Instance->listUserEditModes()) {
         QAction* act = pcAction->addAction(QString());
-        auto modeName = QString::fromStdString(uem.second.first);
+        auto modeName = QString::fromStdString(uem.second.first).remove(QChar::fromLatin1('&'));
         act->setCheckable(true);
         act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("Std_UserEditMode")+modeName)));
         act->setObjectName(QString::fromLatin1("Std_UserEditMode")+modeName);
