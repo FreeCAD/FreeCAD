@@ -145,8 +145,6 @@ private:
     static App::PropertyFloatConstraint::Constraints floatRange;
     static const char* colorModeEnum[];
 
-    Py::Object PythonObject;
-
 protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
