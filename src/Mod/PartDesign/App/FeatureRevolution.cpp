@@ -202,10 +202,23 @@ App::DocumentObjectExecReturn* Revolution::execute()
             TopoShape supportface = getTopoShapeSupportFace();
             supportface.move(invObjLoc);
 
+            TopoDS_Shape tempResult;
+
             // revolve the face to a solid
             //            TopoShape result(0);
             try {
-                result = base.makeElementRevolution(gp_Ax1(pnt, dir),  TopoDS::Face(supportface.getShape()), TopoDS::Face(upToFace.getShape()));
+                RevolMode mode = RevolMode::None;
+                generateRevolution(tempResult,
+                                   base.getShape(),
+                                   sketchshape.getShape(),
+                                   TopoDS::Face(supportface.getShape()),
+                                   TopoDS::Face(upToFace.getShape()),
+                                   gp_Ax1(pnt, dir),
+                                   method,
+                                   mode,
+                                   Standard_True);
+                result = tempResult;
+                // result = base.makeElementRevolution(gp_Ax1(pnt, dir),  TopoDS::Face(supportface.getShape()), TopoDS::Face(upToFace.getShape()));
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
