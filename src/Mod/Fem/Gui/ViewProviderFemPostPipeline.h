@@ -23,7 +23,7 @@
 #ifndef FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 #define FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 #include "ViewProviderFemPostObject.h"

@@ -25,7 +25,7 @@
 
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 class SoCoordinate3;
@@ -185,7 +185,7 @@ private:
     class Private;
 };
 
-using ViewProviderFemMeshPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemMesh>;
+using ViewProviderFemMeshPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemMesh>;
 
 
 }  // namespace FemGui

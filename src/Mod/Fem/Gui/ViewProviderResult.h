@@ -25,7 +25,7 @@
 #define FEM_ViewProviderResult_H
 
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui
@@ -49,7 +49,7 @@ public:
     }
 };
 
-using ViewProviderResultPython = Gui::ViewProviderPythonFeatureT<ViewProviderResult>;
+using ViewProviderResultPython = Gui::ViewProviderFeaturePythonT<ViewProviderResult>;
 
 }  // namespace FemGui
 

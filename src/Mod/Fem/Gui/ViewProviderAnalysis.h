@@ -24,7 +24,7 @@
 #define FEM_ViewProviderAnalysis_H
 
 #include <Gui/ViewProviderDocumentObjectGroup.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 #include <QCoreApplication>
 
@@ -115,7 +115,7 @@ private:
     ViewProviderFemHighlighter extension;
 };
 
-using ViewProviderFemAnalysisPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemAnalysis>;
+using ViewProviderFemAnalysisPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemAnalysis>;
 
 }  // namespace FemGui
 
