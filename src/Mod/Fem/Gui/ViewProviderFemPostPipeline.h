@@ -52,9 +52,6 @@ public:
     void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
     PyObject* getPyObject() override;
 
-private:
-    Py::Object PythonObject;
-
 protected:
     void updateFunctionSize();
 };
