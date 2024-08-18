@@ -2364,13 +2364,6 @@ QTableCornerButton::section {
   border-radius: 0px;
 }
 
-QTableView::item {
-    color: black;
-}
-QTableView {
-  /*qproperty-AliasedCellBackgroundColor: #f700ff;*/
-  /*qproperty-aliasBgColor: #f700ff;*/
-}
 
 /* QHeaderView ------------------------------------------------------------
 
@@ -2784,7 +2777,7 @@ QWidget#thumbnailWidget[state="pressed"] {
   padding-right: 12px;
  }
 
-/* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
+/* Below is a fix for identation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 /* QTreeView::item:selected:active#groupsTreeView {
   background-color: @ThemeAccentColor1;
     margin-left:-8px;
