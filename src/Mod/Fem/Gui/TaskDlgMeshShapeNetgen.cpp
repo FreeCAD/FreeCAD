@@ -29,7 +29,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/WaitCursor.h>
@@ -112,7 +112,9 @@ bool TaskDlgMeshShapeNetgen::accept()
         }
 
         // FemSetNodesObject->Label.setValue(name->name);
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        App::Document* doc = FemMeshShapeNetgenObject->getDocument();
+        Gui::cmdAppDocument(doc, "recompute()");
+        Gui::cmdGuiDocument(doc, "resetEdit()");
         Gui::Command::commitCommand();
 
         return true;
@@ -132,7 +134,9 @@ bool TaskDlgMeshShapeNetgen::reject()
     //     //    doc->resetEdit();
     // param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    App::Document* doc = FemMeshShapeNetgenObject->getDocument();
+    Gui::cmdGuiDocument(doc, "resetEdit()");
+    Gui::cmdAppDocument(doc, "recompute()");
 
     return true;
 }
