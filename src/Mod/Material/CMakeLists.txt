@@ -175,6 +175,7 @@ SET(AppearanceLib_Files
     Resources/Materials/Appearance/Silver.FCMat
     Resources/Materials/Appearance/Steel.FCMat
     Resources/Materials/Appearance/Stone.FCMat
+    Resources/Materials/Appearance/Wood.FCMat
 )
 
 SET(PatternLib_Files
