@@ -377,6 +377,12 @@ class AddonInstaller(QtCore.QObject):
         subdirectory of the main directory."""
 
         destination = os.path.join(self.installation_path, self.addon_to_install.name)
+        if os.path.exists(destination):
+            remove_succeeded = utils.rmdir(destination)
+            if not remove_succeeded:
+                FreeCAD.Console.PrintError(f"Failed to remove {destination}, aborting update")
+                raise RuntimeError(f"Failed to remove outdated Addon from {destination}")
+
         with zipfile.ZipFile(filename, "r") as zfile:
             zfile.extractall(destination)
 
