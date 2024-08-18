@@ -474,13 +474,16 @@ std::string BaseGeom::geomTypeName()
 }
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
-BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
+// this should not return nullptr as things will break later on.
+// regular geometry is stored scaled, but cosmetic geometry is stored in 1:1 scale, so the crazy edge
+// check is not appropriate.
+BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
 {
     if (edge.IsNull()) {
         Base::Console().Message("BG::baseFactory - input edge is NULL \n");
     }
     //weed out rubbish edges before making geometry
-    if (!validateEdge(edge)) {
+    if (!isCosmetic && !validateEdge(edge)) {
         return nullptr;
     }
 

@@ -109,7 +109,7 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         double minDist(Base::Vector3d p);
         Base::Vector3d nearPoint(Base::Vector3d p);
         Base::Vector3d nearPoint(const BaseGeomPtr p);
-        static BaseGeomPtr baseFactory(TopoDS_Edge edge);
+        static BaseGeomPtr baseFactory(TopoDS_Edge edge, bool isCosmetic=false);
         static bool validateEdge(TopoDS_Edge edge);
         static TopoDS_Edge completeEdge(const TopoDS_Edge &edge);
         bool closed();
