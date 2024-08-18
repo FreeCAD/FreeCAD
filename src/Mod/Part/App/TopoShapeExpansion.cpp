@@ -4507,6 +4507,7 @@ TopoShape& TopoShape::makeElementRevolve(const TopoShape& _base,
 }
 
 TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
+                                            const TopoShape& _profile,
                                             const gp_Ax1& axis,
                                             const TopoDS_Face& supportface,
                                             const TopoDS_Face& uptoface,
@@ -4531,7 +4532,7 @@ TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
     }
 
     BRepFeat_MakeRevol mkRevol;
-    for (TopExp_Explorer xp(base.getShape(), TopAbs_FACE); xp.More(); xp.Next()) {
+    for (TopExp_Explorer xp(_profile.getShape(), TopAbs_FACE); xp.More(); xp.Next()) {
         mkRevol.Init(_base.getShape(),
                      xp.Current(),
                      supportface,

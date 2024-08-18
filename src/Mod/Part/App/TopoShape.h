@@ -1120,6 +1120,7 @@ public:
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
     TopoShape& makeElementRevolution(const TopoShape& _base,
+                                     const TopoShape& _profile,
                                      const gp_Ax1& axis,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
@@ -1142,7 +1143,8 @@ public:
      *
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
-    TopoShape& makeElementRevolution(const gp_Ax1& axis,
+    TopoShape& makeElementRevolution(const TopoShape& _profile,
+                                     const gp_Ax1& axis,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
                                      const char* face_maker = nullptr,
@@ -1151,6 +1153,7 @@ public:
                                      const char* op = nullptr) const
     {
         return TopoShape(0, Hasher).makeElementRevolution(*this,
+                                                          _profile,
                                                           axis,
                                                           supportface,
                                                           uptoface,
