@@ -189,7 +189,7 @@ TEST_F(FeaturePartFuseTest, testRefine)
     EXPECT_EQ(subs.size(), 14);
     // 14 Faces
     // 28 Edges
-    // 16 Vetexes
+    // 16 Vertices
     // -----------
     // 58 Elements
     EXPECT_EQ(_fuse->Shape.getShape().getElementMapSize(), 58);
@@ -202,7 +202,7 @@ TEST_F(FeaturePartFuseTest, testRefine)
     EXPECT_EQ(subs.size(), 6);
     // 6 Faces
     // 12 Edges
-    // 8 Vetexes
+    // 8 Vertices
     // -----------
     // 58 Elements
     EXPECT_EQ(_fuse->Shape.getShape().getElementMapSize(), 26);
