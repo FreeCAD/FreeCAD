@@ -43,20 +43,21 @@ import FreeCADGui
 import FemGui
 from femtools.femutils import is_of_type
 from femtools.femutils import getOutputWinColor
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of
     MeshGmsh objects and creation of new FEM mesh
     """
 
     def __init__(self, obj):
-        self.mesh_obj = obj
+        super().__init__(obj)
+
         self.form = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGmsh.ui"
         )
-
         self.Timer = QtCore.QTimer()
         self.Timer.start(100)  # 100 milli seconds
         self.gmsh_runs = False
@@ -79,9 +80,9 @@ class _TaskPanel:
             self.form.pb_get_gmsh_version, QtCore.SIGNAL("clicked()"), self.get_gmsh_version
         )
 
-        self.form.cb_dimension.addItems(self.mesh_obj.getEnumerationsOfProperty("ElementDimension"))
+        self.form.cb_dimension.addItems(self.obj.getEnumerationsOfProperty("ElementDimension"))
 
-        self.form.cb_order.addItems(self.mesh_obj.getEnumerationsOfProperty("ElementOrder"))
+        self.form.cb_order.addItems(self.obj.getEnumerationsOfProperty("ElementOrder"))
 
         self.get_mesh_params()
         self.get_active_analysis()
@@ -98,15 +99,11 @@ class _TaskPanel:
 
     def accept(self):
         self.set_mesh_params()
-        self.mesh_obj.ViewObject.Document.resetEdit()
-        self.mesh_obj.Document.recompute()
-        return True
+        return super().accept()
 
     def reject(self):
-        self.mesh_obj.ViewObject.Document.resetEdit()
-        self.mesh_obj.Document.recompute()
         self.Timer.stop()
-        return True
+        return super().reject()
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
@@ -114,16 +111,16 @@ class _TaskPanel:
             self.run_gmsh()
 
     def get_mesh_params(self):
-        self.clmax = self.mesh_obj.CharacteristicLengthMax
-        self.clmin = self.mesh_obj.CharacteristicLengthMin
-        self.dimension = self.mesh_obj.ElementDimension
-        self.order = self.mesh_obj.ElementOrder
+        self.clmax = self.obj.CharacteristicLengthMax
+        self.clmin = self.obj.CharacteristicLengthMin
+        self.dimension = self.obj.ElementDimension
+        self.order = self.obj.ElementOrder
 
     def set_mesh_params(self):
-        self.mesh_obj.CharacteristicLengthMax = self.clmax
-        self.mesh_obj.CharacteristicLengthMin = self.clmin
-        self.mesh_obj.ElementDimension = self.dimension
-        self.mesh_obj.ElementOrder = self.order
+        self.obj.CharacteristicLengthMax = self.clmax
+        self.obj.CharacteristicLengthMin = self.clmin
+        self.obj.ElementDimension = self.dimension
+        self.obj.ElementOrder = self.order
 
     def update(self):
         "fills the widgets"
@@ -182,7 +179,7 @@ class _TaskPanel:
     def get_gmsh_version(self):
         from femmesh import gmshtools
 
-        version, full_message = gmshtools.GmshTools(self.mesh_obj, self.analysis).get_gmsh_version()
+        version, full_message = gmshtools.GmshTools(self.obj, self.analysis).get_gmsh_version()
         if version[0] and version[1] and version[2]:
             messagebox = QtGui.QMessageBox.information
         else:
@@ -192,11 +189,11 @@ class _TaskPanel:
     def run_gmsh(self):
         from femmesh import gmshtools
 
-        gmsh_mesh = gmshtools.GmshTools(self.mesh_obj, self.analysis)
+        gmsh_mesh = gmshtools.GmshTools(self.obj, self.analysis)
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        part = self.mesh_obj.Shape
+        part = self.obj.Shape
         if (
-            self.mesh_obj.MeshRegionList
+            self.obj.MeshRegionList
             and part.Shape.ShapeType == "Compound"
             and (
                 is_of_type(part, "FeatureBooleanFragments")
@@ -239,7 +236,7 @@ class _TaskPanel:
             self.analysis = None  # no group meshing
         else:
             for m in analysis.Group:
-                if m.Name == self.mesh_obj.Name:
+                if m.Name == self.obj.Name:
                     FreeCAD.Console.PrintLog(f"Active analysis found: {analysis.Name}\n")
                     self.analysis = analysis  # group meshing
                     break
