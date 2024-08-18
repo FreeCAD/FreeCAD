@@ -148,10 +148,7 @@ App::DocumentObjectExecReturn *Groove::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Revolve axis intersects the sketch"));
         }
 
-        // Create a fresh support even when base exists so that it can be used for patterns
         TopoDS_Shape result;
-        TopoDS_Face supportface = getSupportFace();
-        supportface.Move(invObjLoc);
 
         if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst) {
             TopoDS_Face upToFace;
@@ -165,6 +162,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             // TODO: This method is designed for extrusions. needs to be adapted for grooves.
             // getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
 
+            // Create a fresh support even when base exists so that it can be used for patterns
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
