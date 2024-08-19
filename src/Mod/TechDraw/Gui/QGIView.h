@@ -56,6 +56,7 @@ namespace TechDraw
 {
 class DrawView;
 class DrawViewSection;
+class DrawViewPart;
 }
 
 namespace TechDrawGui
@@ -127,7 +128,7 @@ public:
     void snapPosition(QPointF& position);
     void snapSectionView(const TechDraw::DrawViewSection* sectionView,
                          QPointF& newPosition);
-
+    Base::Vector3d projItemPagePos(TechDraw::DrawViewPart* item);
     void alignTo(QGraphicsItem*, const QString &alignment);
 
     QColor prefNormalColor(); //preference

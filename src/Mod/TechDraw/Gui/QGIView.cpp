@@ -243,24 +243,31 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-            // For general views we check if the view is close to aligned vertically or horizontally to another view.
+    // For general views we check if the view is close to aligned vertically or horizontally to another view.
 
-            // if we are not a section view, then we could be in a projection group and
-            // need to get the correct scene position.
+    // if we are not a section view, then we could be in a projection group and
+    // need to get the correct scene position.
     auto newScenePos = newPosition;
     if (parentItem()) {
         newScenePos = parentItem()->mapToScene(newPosition);
     }
 
-            // First get a list of the views of the page.
+    // First get a list of the views of the page.
     qreal snapPercent = Preferences::SnapLimitFactor();
     std::vector<QGIView*> views = scenePage->getViews();
     for (auto* view : views) {
         if (view == this) {
             continue;
         }
+        auto viewFeature = view->getViewObject();
+        auto viewDvp = dynamic_cast<DrawViewPart*>(viewFeature);
 
         auto viewScenePos = view->scenePos();
+        if (viewDvp &&
+            DrawView::isProjGroupItem(viewDvp)) {
+            viewScenePos = DU::toQPointF(projItemPagePos(viewDvp));
+            viewScenePos = DU::invertY(Rez::guiX(viewScenePos));
+        }
 
         auto xwindow = view->boundingRect().width() * snapPercent;
         auto ywindow = view->boundingRect().height() * snapPercent;
@@ -325,10 +332,13 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
     double baseSize = Rez::guiX(baseView->getSizeAlongVector(arrowDirectionOnBase));
     double snapDist = baseSize * getScale() * Preferences::SnapLimitFactor();
 
-            // find the scene position of the SO on the base view
+    // find the scene position of the SO on the base view
     auto baseX = baseView->X.getValue();
     auto baseY = baseView->Y.getValue();
     Base::Vector3d baseScenePos{baseX, baseY, 0};       // paper space position
+    if (DrawView::isProjGroupItem(baseView)) {
+        baseScenePos = projItemPagePos(baseView);
+    }
     auto sectionOrg3d      = sectionView->SectionOrigin.getValue();
     auto shapeCenter3d     = baseView->getCurrentCentroid();
     auto baseShapeCenter   = baseView->projectPoint(shapeCenter3d, false);
@@ -336,7 +346,7 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
     auto baseSOOffset      = (baseSectionOrg - baseShapeCenter) * baseView->getScale();
     auto baseSOScenePos    = baseScenePos + baseSOOffset;
 
-            // find the SO offset from origin on the rotated & scaled sectionView
+    // find the SO offset from origin on the rotated & scaled sectionView
     auto sectionCutCenter     = sectionView->projectPoint(sectionView->getCutCentroid(), false);
     auto sectionSectionOrg    = sectionView->projectPoint(sectionOrg3d, false);
     auto sectionSOOffset      = (sectionSectionOrg - sectionCutCenter) * sectionView->getScale();
@@ -353,7 +363,7 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
     Base::Vector3d actualAlignmentVector = newSOPosition - baseSOScenePos;
     actualAlignmentVector.Normalize();
 
-            // if we are not on the correct side of the section line, we should not try to snap
+    // if we are not on the correct side of the section line, we should not try to snap
     auto dot = arrowDirectionOnBase.Dot(actualAlignmentVector);
     if (dot <= 0) {
         return;
@@ -361,7 +371,6 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
 
     auto pointOnArrowLine = newSOPosition.Perpendicular(baseSOScenePos, arrowDirectionOnBase);
     auto errorVector = pointOnArrowLine - newSOPosition;
-
     if (errorVector.Length() < snapDist) {
         // get the position point corresponding to our SO alignment
         auto netPosition = pointOnArrowLine - sectionSOOffset;
@@ -371,6 +380,24 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
 
     return;
 }
+
+Base::Vector3d  QGIView::projItemPagePos(DrawViewPart* item)
+{
+    if (!DrawView::isProjGroupItem(item)) {
+        return Base::Vector3d(0, 0, 0);
+    }
+    auto dpgi = static_cast<DrawProjGroupItem*>(item);
+    auto group = dpgi->getPGroup();
+
+    auto itemX = dpgi->X.getValue();
+    auto itemY = dpgi->Y.getValue();
+    Base::Vector3d itemOffsetPos{itemX, itemY, 0};       // relative to group
+    auto groupX = group->X.getValue();
+    auto groupY = group->Y.getValue();
+    Base::Vector3d groupPagePos{groupX, groupY, 0};    // relative to page
+    return groupPagePos + itemOffsetPos;
+}
+
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
