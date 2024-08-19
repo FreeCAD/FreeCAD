@@ -2026,7 +2026,7 @@ void setAppNameAndIcon()
     else {
         QApplication::setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
     }
-#ifndef Q_OS_MACX
+#ifndef Q_OS_MACOS
     QApplication::setWindowIcon(
         Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
 #endif

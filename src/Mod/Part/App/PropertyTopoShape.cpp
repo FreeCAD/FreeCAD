@@ -356,32 +356,28 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     _Ver = "?";
     bool has_ver = reader.hasAttribute("ElementMap");
-    if(has_ver)
+    if (has_ver)
         _Ver = reader.getAttribute("ElementMap");
 
-    int hasher_idx = -1;
-    int save_hasher = 0;
-    if ( reader.hasAttribute("HasherIndex") ) {
-        reader.getAttributeAsInteger("HasherIndex");
-    }
-    if ( reader.hasAttribute("SaveHasher") ) {
-        save_hasher = reader.getAttributeAsInteger("SaveHasher");
-    }
-    TopoDS_Shape sh;
+    int hasher_idx = static_cast<int>(reader.getAttributeAsInteger("HasherIndex", "-1"));
+    int save_hasher = static_cast<int>(reader.getAttributeAsInteger("SaveHasher", "0"));
 
-    if(reader.hasAttribute("file")) {
+    TopoShape shape;
+
+    if (reader.hasAttribute("file")) {
         std::string file = reader.getAttribute("file");
         if (!file.empty()) {
             // initiate a file read
-            reader.addFile(file.c_str(),this);
+            reader.addFile(file.c_str(), this);
         }
-    } else if( reader.hasAttribute(("binary")) && reader.getAttributeAsInteger("binary")) {
+    }
+    else if (reader.hasAttribute(("binary")) && reader.getAttributeAsInteger("binary")) {
         TopoShape shape;
         shape.importBinary(reader.beginCharStream());
-        sh = shape.getShape();
-    } else if( reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
-        BRep_Builder builder;
-        BRepTools::Read(sh, reader.beginCharStream(), builder);
+        shape = shape.getShape();
+    }
+    else if (reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
+        shape.importBrep(reader.beginCharStream(Base::CharStreamFormat::Raw));
     }
 
     reader.readEndElement("Part");
@@ -433,25 +429,27 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
         }
     }
 
-    if (!sh.IsNull() || !_Shape.isNull()) {
+    if (!shape.isNull() || !_Shape.isNull()) {
         aboutToSetValue();
-        _Shape.setShape(sh,false);
+        _Shape.setShape(shape.getShape(),false);
         hasSetValue();
     }
 }
 
-// void PropertyPartShape::afterRestore()
-// {
-//     if (_Shape.isRestoreFailed()) {
-//         // this cause GeoFeature::updateElementReference() to call
-//         // PropertyLinkBase::updateElementReferences() with reverse = true, in
-//         // order to try to regenerate the element map
-//         _Ver = "?";
-//     }
-//     else if (_Shape.getElementMapSize() == 0)
-//         _Shape.Hasher->clear(); //reset();
-//     PropertyComplexGeoData::afterRestore();
-// }
+void PropertyPartShape::afterRestore()
+{
+    if (_Shape.isRestoreFailed()) {
+        // this cause GeoFeature::updateElementReference() to call
+        // PropertyLinkBase::updateElementReferences() with reverse = true, in
+        // order to try to regenerate the element map
+        _Ver = "?";
+    }
+    else if (_Shape.getElementMapSize() == 0) {
+        if (_Shape.Hasher)
+            _Shape.Hasher->clear();
+    }
+    PropertyComplexGeoData::afterRestore();
+}
 #endif
 
 // The following function is copied from OCCT BRepTools.cxx and modified

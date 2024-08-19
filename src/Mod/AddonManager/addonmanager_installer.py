@@ -275,21 +275,30 @@ class AddonInstaller(QtCore.QObject):
         self._finalize_successful_installation()
         return True
 
+    def _can_use_update(self) -> bool:
+        addon = self.addon_to_install
+        install_path = os.path.join(self.installation_path, self.addon_to_install.name)
+        if not os.path.isdir(install_path):
+            return False
+        if addon.metadata is None or addon.installed_metadata is None:
+            return True  # We can't check if the branch name changed, but the install path exists
+        old_branch = get_branch_from_metadata(self.addon_to_install.installed_metadata)
+        new_branch = get_branch_from_metadata(self.addon_to_install.metadata)
+        if old_branch != new_branch:
+            return False  # Branch name changed, we have to re-clone
+        return True  # Checkout exists, same branch as last time, update OK
+
     def _install_by_git(self) -> bool:
         """Installs the specified url by using git to clone from it. The URL can be local or remote,
         but must represent a git repository, and the url must be in a format that git can handle
         (git, ssh, rsync, file, or a bare filesystem path)."""
         install_path = os.path.join(self.installation_path, self.addon_to_install.name)
         try:
-            if os.path.isdir(install_path):
-                old_branch = get_branch_from_metadata(self.addon_to_install.installed_metadata)
-                new_branch = get_branch_from_metadata(self.addon_to_install.metadata)
-                if old_branch != new_branch:
-                    utils.rmdir(install_path)
-                    self.git_manager.clone(self.addon_to_install.url, install_path)
-                else:
-                    self.git_manager.update(install_path)
+            if self._can_use_update():
+                self.git_manager.update(install_path)
             else:
+                if os.path.isdir(install_path):
+                    utils.rmdir(install_path)
                 self.git_manager.clone(self.addon_to_install.url, install_path)
             self.git_manager.checkout(install_path, self.addon_to_install.branch)
         except GitFailed as e:

@@ -2690,7 +2690,7 @@ public:
         qreal pRatio = widget->devicePixelRatioF();
         qreal hotXF = hotX;
         qreal hotYF = hotY;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
         if (qApp->platformName() == QLatin1String("xcb")) {
             hotXF *= pRatio;
             hotYF *= pRatio;

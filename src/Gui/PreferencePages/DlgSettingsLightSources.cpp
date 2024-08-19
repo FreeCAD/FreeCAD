@@ -57,7 +57,6 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
 
 DlgSettingsLightSources::~DlgSettingsLightSources()
 {
-    delete view;
 }
 
 void DlgSettingsLightSources::setupConnection()
@@ -73,14 +72,16 @@ void DlgSettingsLightSources::setupConnection()
 void DlgSettingsLightSources::showEvent(QShowEvent* event)
 {
     Q_UNUSED(event)
-    if (!view) {
+    static bool underConstruction = false;  // Prevent recursion
+    if (!underConstruction && !view) {
+        underConstruction = true;
         QGroupBox* box = ui->groupBoxLight;
         QWidget* widget = createViewer(box);
         auto grid = new QGridLayout(box);
         grid->addWidget(widget);
-        box->setLayout(grid);
 
         loadDirection();
+        underConstruction = false;
     }
 }
 

@@ -1536,7 +1536,7 @@ border-top: 1px solid #020202;
 border-left: 1px solid #020202;
 border-right: 1px solid #020202;
 /*background-color: #d4d4d4; /* Task Panel Header background color */
-background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #000000 stop:1 @ThemeAccentColor3);
+background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop:0 #000000, stop:1 @ThemeAccentColor3);
 border-top-left-radius: 3px;
 border-top-right-radius: 3px;
 border-bottom-left-radius: 0px;
@@ -2788,7 +2788,7 @@ QWidget#thumbnailWidget[state="pressed"] {
   padding-right: 12px;
  }
 
-/* Below is a fix for identation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
+/* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 /* QTreeView::item:selected:active#groupsTreeView {
   background-color: @ThemeAccentColor1;
     margin-left:-8px;

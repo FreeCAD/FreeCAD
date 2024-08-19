@@ -2078,6 +2078,7 @@ def getRepresentation(
                             pstr = str([v.Point for v in p[i].Vertexes])
                             if pstr in profiledefs:
                                 profile = profiledefs[pstr]
+                                profiles = [profile]
                                 shapetype = "reusing profile"
                             else:
                                 # Fix bug in Forum Discussion

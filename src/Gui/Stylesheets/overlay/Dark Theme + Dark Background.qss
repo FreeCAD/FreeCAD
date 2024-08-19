@@ -17,29 +17,6 @@ QFrame {
    background-color: #252525;
  }
 
- Gui--OverlayTabWidget[transparent="false"] QTreeView::item {
-  color: #ffffff;
- }
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item {
-  color: #ffffff;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected {
-  color: #ffffff;
-  background-color: #234497;
-}
-
-Gui--OverlayTabWidget[transparent="true"] QTreeView::item:focus {
-  color: #ffffff;
-  background-color: #234497;
-}
-
- Gui--OverlayTabWidget[transparent="true"] QTreeView::item:selected:focus {
-  color: #ffffff;
-  background-color: #234497;
-}
-
  /* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
  To customize for each overlay docking site, use the following selector
 

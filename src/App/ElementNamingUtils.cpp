@@ -92,3 +92,13 @@ bool Data::hasMissingElement(const char *subname) {
 const char *Data::hasMappedElementName(const char *subname) {
     return isMappedElement(findElementName(subname));
 }
+
+const std::string Data::indexSuffix(int index, const char *label)
+{
+    if ( index < 2 ) {  // Don't add a suffix for item #1, begin appending at 2
+        return {""};
+    }
+    std::string name(label);
+    name += std::to_string(index);
+    return name;
+}

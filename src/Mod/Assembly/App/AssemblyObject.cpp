@@ -575,7 +575,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
         App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
         App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
         if (obj == obj1 || obj == obj2) {
-            jointsOf.push_back(obj);
+            jointsOf.push_back(joint);
         }
     }
 
@@ -947,8 +947,8 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObj
 {
     DistanceType type = getDistanceType(joint);
 
-    const char* elt1 = getElementFromProp(joint, "Reference1");
-    const char* elt2 = getElementFromProp(joint, "Reference2");
+    std::string elt1 = getElementFromProp(joint, "Reference1");
+    std::string elt2 = getElementFromProp(joint, "Reference2");
     auto* obj1 = getLinkedObjFromRef(joint, "Reference1");
     auto* obj2 = getLinkedObjFromRef(joint, "Reference2");
 
@@ -1740,13 +1740,13 @@ bool AssemblyObject::isFaceType(App::DocumentObject* obj,
     return false;
 }
 
-double AssemblyObject::getFaceRadius(App::DocumentObject* obj, const char* elt)
+double AssemblyObject::getFaceRadius(App::DocumentObject* obj, std::string& elt)
 {
     auto base = static_cast<PartApp::Feature*>(obj);
     const PartApp::TopoShape& TopShape = base->Shape.getShape();
 
     // Check for valid face types
-    TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(elt));
+    TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(elt.c_str()));
     BRepAdaptor_Surface sf(face);
 
     if (sf.GetType() == GeomAbs_Cylinder) {
@@ -1759,13 +1759,13 @@ double AssemblyObject::getFaceRadius(App::DocumentObject* obj, const char* elt)
     return 0.0;
 }
 
-double AssemblyObject::getEdgeRadius(App::DocumentObject* obj, const char* elt)
+double AssemblyObject::getEdgeRadius(App::DocumentObject* obj, std::string& elt)
 {
     auto base = static_cast<PartApp::Feature*>(obj);
     const PartApp::TopoShape& TopShape = base->Shape.getShape();
 
     // Check for valid face types
-    TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(elt));
+    TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(elt.c_str()));
     BRepAdaptor_Curve sf(edge);
 
     if (sf.GetType() == GeomAbs_Circle) {
@@ -2145,7 +2145,7 @@ std::vector<std::string> AssemblyObject::splitSubName(const std::string& sub)
     return subNames;
 }
 
-const char* AssemblyObject::getElementFromProp(App::DocumentObject* obj, const char* pName)
+std::string AssemblyObject::getElementFromProp(App::DocumentObject* obj, const char* pName)
 {
     std::vector<std::string> names = getSubAsList(obj, pName);
 
@@ -2153,14 +2153,14 @@ const char* AssemblyObject::getElementFromProp(App::DocumentObject* obj, const c
         return "";
     }
 
-    return names.back().c_str();
+    return names.back();
 }
 
 std::string AssemblyObject::getElementTypeFromProp(App::DocumentObject* obj, const char* propName)
 {
     // The prop is going to be something like 'Edge14' or 'Face7'. We need 'Edge' or 'Face'
     std::string elementType;
-    for (char ch : std::string(getElementFromProp(obj, propName))) {
+    for (char ch : getElementFromProp(obj, propName)) {
         if (std::isalpha(ch)) {
             elementType += ch;
         }
@@ -2289,6 +2289,10 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
         }
         if (!assemblyPassed) {
             continue;
+        }
+
+        if (obj->isDerivedFrom<App::DocumentObjectGroup>()) {
+            continue;  // we ignore groups.
         }
 
         return obj;

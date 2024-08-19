@@ -170,6 +170,7 @@ public:
 
     bool canDragObjectIn3d(App::DocumentObject* obj) const;
     bool getSelectedObjectsWithinAssembly(bool addPreselection = true, bool onlySolids = false);
+    App::DocumentObject* getSelectedJoint();
 
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
