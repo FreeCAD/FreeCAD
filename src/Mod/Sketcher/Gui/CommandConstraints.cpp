@@ -3777,7 +3777,9 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsPoin
         if ((*it)->Type == Sketcher::Tangent && (*it)->FirstPos == Sketcher::PointPos::none
             && (*it)->SecondPos == Sketcher::PointPos::none && (*it)->Third == GeoEnum::GeoUndef
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+            && (PosId1 == Sketcher::PointPos::start
+                || PosId1 == Sketcher::PointPos::end)) {
 
             // NOTE: This function does not either open or commit a command as it is used for group
             // addition it relies on such infrastructure being provided by the caller.
@@ -3813,6 +3815,12 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsCoin
         if ((*it)->Type == Sketcher::Tangent && (*it)->Third == GeoEnum::GeoUndef
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
                 || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+            if (!(PosId1 == Sketcher::PointPos::start
+                  || PosId1 == Sketcher::PointPos::end)
+                || !(PosId2 == Sketcher::PointPos::start
+                     || PosId2 == Sketcher::PointPos::end)) {
+                continue;
+            }
             if ((*it)->FirstPos == Sketcher::PointPos::none
                 && (*it)->SecondPos == Sketcher::PointPos::none) {
 
@@ -6569,8 +6577,11 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
          ++it, ++cid) {
         if ((*it)->Type == Sketcher::Coincident
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
-
+                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+            && ((*it)->FirstPos == Sketcher::PointPos::start
+                || (*it)->FirstPos == Sketcher::PointPos::end)
+            && ((*it)->SecondPos == Sketcher::PointPos::start
+                || (*it)->SecondPos == Sketcher::PointPos::end)) {
             // save values because 'doEndpointTangency' changes the
             // constraint property and thus invalidates this iterator
             int first = (*it)->First;
@@ -6596,8 +6607,9 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
         }
         else if ((*it)->Type == Sketcher::PointOnObject
                  && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                     || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
-
+                     || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+                 && ((*it)->FirstPos == Sketcher::PointPos::start
+                     || (*it)->FirstPos == Sketcher::PointPos::end)) {
             Gui::Command::openCommand(
                 QT_TRANSLATE_NOOP("Command",
                                   "Swap point on object and tangency with point to curve tangency"));

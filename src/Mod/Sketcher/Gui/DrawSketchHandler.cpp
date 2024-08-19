@@ -440,8 +440,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     int preSelPnt = getPreselectPoint();
     int preSelCrv = getPreselectCurve();
     int preSelCrs = getPreselectCross();
-    int GeoId = GeoEnum::GeoUndef;
 
+    int GeoId = GeoEnum::GeoUndef;
     PointPos PosId = PointPos::none;
 
     if (preSelPnt != -1) {
@@ -459,15 +459,18 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
             }
         }
     }
-    else if (preSelCrs == 0) {  // root point
+    else if (preSelCrs == 0) {
+        // root point
         GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = PointPos::start;
     }
-    else if (preSelCrs == 1) {  // x axis
+    else if (preSelCrs == 1) {
+        // x axis
         GeoId = Sketcher::GeoEnum::HAxis;
         hitShapeDir = Base::Vector3d(1, 0, 0);
     }
-    else if (preSelCrs == 2) {  // y axis
+    else if (preSelCrs == 2) {
+        // y axis
         GeoId = Sketcher::GeoEnum::VAxis;
         hitShapeDir = Base::Vector3d(0, 1, 0);
     }
