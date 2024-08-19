@@ -55,7 +55,7 @@ TaskMeasure::TaskMeasure()
     modeSwitch = new QComboBox();
     modeSwitch->addItem(QString::fromLatin1("Auto"));
 
-    for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()){
+    for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
         modeSwitch->addItem(QString::fromLatin1(mType->label.c_str()));
     }
 
@@ -95,7 +95,7 @@ TaskMeasure::TaskMeasure()
     QTimer::singleShot(0, this, &TaskMeasure::invoke);
 }
 
-TaskMeasure::~TaskMeasure(){
+TaskMeasure::~TaskMeasure() {
     Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
     detachSelection();
     qApp->removeEventFilter(this);
@@ -128,7 +128,7 @@ bool canAnnotate(Measure::MeasureBase* obj) {
 
     auto vpName = obj->getViewProviderName();
     // if there is not a vp, return false
-    if ((vpName == nullptr) || (vpName[0] == '\0')){
+    if ((vpName == nullptr) || (vpName[0] == '\0')) {
         return false;
     }
 
@@ -250,7 +250,7 @@ void TaskMeasure::update() {
     valueResult->setText(_mMeasureObject->getResultString());
 }
 
-void TaskMeasure::close(){
+void TaskMeasure::close() {
     Control().closeDialog();
 }
 
@@ -279,7 +279,7 @@ void TaskMeasure::invoke() {
     update();
 }
 
-bool TaskMeasure::apply(){
+bool TaskMeasure::apply() {
     ensureGroup(_mMeasureObject);
     _mMeasureObject = nullptr;
     reset();
@@ -290,7 +290,7 @@ bool TaskMeasure::apply(){
     return false;
 }
 
-bool TaskMeasure::reject(){
+bool TaskMeasure::reject() {
     removeObject();
     close();
 
@@ -322,11 +322,11 @@ void TaskMeasure::removeObject() {
     setMeasureObject(nullptr);
 }
 
-bool TaskMeasure::hasSelection(){
+bool TaskMeasure::hasSelection() {
     return !Gui::Selection().getSelection().empty();
 }
 
-void TaskMeasure::clearSelection(){
+void TaskMeasure::clearSelection() {
     Gui::Selection().clearSelection();
 }
 
