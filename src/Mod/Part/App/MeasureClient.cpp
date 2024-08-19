@@ -102,6 +102,11 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
         return {};
     }
 
+    auto gf = dynamic_cast<const App::GeoFeature*>(obj);
+    if (gf) {
+        shape.setPlacement(gf->globalPlacement());
+    }
+
     // Don't get the subShape from datum elements
     if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
         return shape.getShape();
