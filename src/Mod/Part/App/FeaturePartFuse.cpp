@@ -251,10 +251,8 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                 throw Base::RuntimeError("MultiFusion failed");
             }
 
-            //        TopoDS_Shape resShape = mkFuse.Shape();
             TopoShape res(0);
-            res.makeShapeWithElementMap(mkFuse.Shape(), MapperMaker(mkFuse), shapes, OpCodes::Fuse);
-
+            res = res.makeShapeWithElementMap(mkFuse.Shape(), MapperMaker(mkFuse), shapes, OpCodes::Fuse);
             for (const auto& it2 : shapes) {
                 history.push_back(
                     buildHistory(mkFuse, TopAbs_FACE, res.getShape(), it2.getShape()));
@@ -276,7 +274,15 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
             }
             if (this->Refine.getValue()) {
                 try {
-                    res = res.makeElementRefine();
+                    TopoDS_Shape oldShape = res.getShape();
+                    BRepBuilderAPI_RefineModel mkRefine(oldShape);
+                    // We just built an element map above for the fuse, don't erase it for a refine.
+                    res.setShape(mkRefine.Shape(), false);
+                    ShapeHistory hist =
+                            buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
+                    for (auto& jt : history) {
+                        jt = joinHistory(jt, hist);
+                    }
                 }
                 catch (Standard_Failure&) {
                     // do nothing

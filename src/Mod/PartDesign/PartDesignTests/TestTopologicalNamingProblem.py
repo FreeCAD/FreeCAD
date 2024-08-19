@@ -136,6 +136,34 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(len(edges), 4)
         self.assertEqual(len(vertexes), 4)
 
+
+    def testPartDesignBasicFusion(self):
+        """ Test that a basic fusion creates an element map, and refine retains it """
+        # Arrange
+        doc = self.Doc
+        box1 = doc.addObject("Part::Box","Box")
+        if App.GuiUp:
+            mat = App.Material()
+            mat.AmbientColor = (128,0,0)
+            box1.ViewObject.ShapeAppearance = mat # Change color ( material ) for at least one
+        box2 = doc.addObject("Part::Box","Box001")
+        box3 = doc.addObject("Part::Box","Box002")
+        cyl1 = doc.addObject("Part::Cylinder","Cylinder")
+        fuse1 = doc.addObject("Part::MultiFuse","Fusion")
+        doc.Fusion.Shapes = [box1, box2]
+        fuse2 = doc.addObject("Part::MultiFuse","Fusion001")
+        doc.Fusion001.Shapes = [box3, cyl1]
+        doc.recompute()
+        # Assert
+        self.assertEqual(fuse1.Shape.ElementMapSize,26)
+        self.assertEqual(fuse2.Shape.ElementMapSize,44)
+        # Act
+        doc.Fusion.Refine = True  # activate refinement
+        doc.Fusion001.Refine = True  # activate refinement
+        doc.recompute()
+        self.assertEqual(fuse1.Shape.ElementMapSize,26)
+        self.assertEqual(fuse2.Shape.ElementMapSize,44)
+
     def testPartDesignElementMapPad(self):
         """ Test that padding a sketch results in a correct element map.  Note that comprehensive testing
             of the geometric functionality of the Pad is in TestPad.py """
