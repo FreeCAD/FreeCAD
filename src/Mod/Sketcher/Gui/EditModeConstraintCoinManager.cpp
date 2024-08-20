@@ -564,8 +564,7 @@ Restart:
 
                     Base::Vector3d midpos1, dir1, norm1;
                     Base::Vector3d midpos2, dir2, norm2;
-                    if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-                        || geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                    if (!geo1->is<Part::GeomLineSegment>() || !geo2->is<Part::GeomLineSegment>()) {
                         if (Constr->Type == Equal) {
                             double r1a = 0, r1b = 0, r2a = 0, r2b = 0;
                             double angle1,
@@ -731,8 +730,7 @@ Restart:
 
 
                             if (geo2->is<Part::GeomEllipse>() || geo2->is<Part::GeomArcOfEllipse>()
-                                || geo2->getTypeId()
-                                    == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                                || geo2->is<Part::GeomArcOfHyperbola>()) {
 
                                 Base::Vector3d majDir, minDir, rvec;
                                 majDir = Base::Vector3d(cos(angle2),
