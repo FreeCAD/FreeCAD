@@ -497,8 +497,6 @@ protected:
 
                     createAutoConstraints();
                 }
-
-                tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
             }
             catch (const Base::RuntimeError& e) {
                 // RuntimeError exceptions inside of the block above must provide a translatable
@@ -507,6 +505,17 @@ protected:
                 Base::Console().Error(e.what());
             }
 
+            // Keep the recompute separate so that everything is drawn even if execution fails
+            // partially
+            try {
+                tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
+            }
+            catch (const Base::RuntimeError& e) {
+                // RuntimeError exceptions inside of the block above must provide a translatable
+                // message. It is reported both to developer (report view) and user (notifications
+                // area).
+                Base::Console().Error(e.what());
+            }
             return handleContinuousMode();
         }
         return false;
