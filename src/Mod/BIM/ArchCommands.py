@@ -870,7 +870,6 @@ def survey(callback=False):
                                 else:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
                                     t = u.getUserPreferred()[0]
-                                    t = t.encode("utf8")
                                     anno.LabelText = "l " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t + "\n")
                                     FreeCAD.SurveyObserver.totalLength += u.Value
