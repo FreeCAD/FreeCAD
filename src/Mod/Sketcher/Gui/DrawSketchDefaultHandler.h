@@ -774,10 +774,8 @@ protected:
 
                         // ellipse tangency support using construction elements (lines)
                         if (geom1 && geom2
-                            && (geom1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                                || geom2->getTypeId() == Part::GeomEllipse::getClassTypeId())) {
-
-                            if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId()) {
+                            && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
+                            if (!geom1->is<Part::GeomEllipse>()) {
                                 std::swap(geoId1, geoId2);
                             }
 
@@ -785,10 +783,10 @@ protected:
                             geom1 = Obj->getGeometry(geoId1);
                             geom2 = Obj->getGeometry(geoId2);
 
-                            if (geom2->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                                || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                                || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                                || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            if (geom2->is<Part::GeomEllipse>()
+                                || geom2->is<Part::GeomArcOfEllipse>()
+                                || geom2->is<Part::GeomCircle>()
+                                || geom2->is<Part::GeomArcOfCircle>()) {
                                 // in all these cases an intermediate element is needed
                                 // makeTangentToEllipseviaNewPoint(
                                 //     Obj,
@@ -801,11 +799,10 @@ protected:
 
                         // arc of ellipse tangency support using external elements
                         if (geom1 && geom2
-                            && (geom1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                                || geom2->getTypeId()
-                                    == Part::GeomArcOfEllipse::getClassTypeId())) {
+                            && (geom1->is<Part::GeomArcOfEllipse>()
+                                || geom2->is<Part::GeomArcOfEllipse>())) {
 
-                            if (geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()) {
+                            if (!geom1->is<Part::GeomArcOfEllipse>()) {
                                 std::swap(geoId1, geoId2);
                             }
 
@@ -813,9 +810,8 @@ protected:
                             geom1 = Obj->getGeometry(geoId1);
                             geom2 = Obj->getGeometry(geoId2);
 
-                            if (geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                                || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                                || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            if (geom2->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomCircle>()
+                                || geom2->is<Part::GeomArcOfCircle>()) {
                                 // in all these cases an intermediate element is needed
                                 // makeTangentToArcOfEllipseviaNewPoint(
                                 //     Obj,

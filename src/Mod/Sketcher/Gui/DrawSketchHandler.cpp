@@ -822,7 +822,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                     if (geom1 && geom2
                         && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
 
-                        if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId()) {
+                        if (!geom1->is<Part::GeomEllipse>()) {
                             std::swap(geoId1, geoId2);
                         }
 
@@ -849,7 +849,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         && (geom1->is<Part::GeomArcOfEllipse>()
                             || geom2->is<Part::GeomArcOfEllipse>())) {
 
-                        if (geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()) {
+                        if (!geom1->is<Part::GeomArcOfEllipse>()) {
                             std::swap(geoId1, geoId2);
                         }
 
