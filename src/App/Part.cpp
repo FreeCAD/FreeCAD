@@ -55,7 +55,7 @@ Part::Part()
     ADD_PROPERTY_TYPE(License, (""), 0, App::Prop_None, "License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL, (""), 0, App::Prop_None, "URL to the license text/contract");
     // color and appearance
-    ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
+    ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 0.0));  // set transparent -> not used
 
     GroupExtension::initExtension(this);
 }

@@ -540,8 +540,9 @@ inline Color ColorGradient::getColor (float fVal) const
 {
     Color color = _getColor(fVal);
     if (isOutsideInvisible()) {
-        if (isOutOfRange(fVal))
-            color.a = 0.8f;
+        if (isOutOfRange(fVal)) {
+            color.a = 0.2F;
+        }
     }
 
     return color;

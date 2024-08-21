@@ -243,5 +243,6 @@ TEST(TestColor, fromHexString)
     EXPECT_FLOAT_EQ(color.r, 85.0F / 255.0F);
     EXPECT_FLOAT_EQ(color.g, 170.0F / 255.0F);
     EXPECT_FLOAT_EQ(color.b, 255.0F / 255.0F);
+    EXPECT_FLOAT_EQ(color.a, 255.0F / 255.0F);
 }
 // NOLINTEND
