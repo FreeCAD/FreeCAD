@@ -30,9 +30,16 @@
 #include "GlUtils.h"
 #include "StockObject.h"
 #include "MillPathSegment.h"
+#include "SimDisplay.h"
 #include "GuiDisplay.h"
+#include "MillPathLine.h"
+#include "SolidObject.h"
 #include <sstream>
 #include <vector>
+
+#define VIEWITEM_SIMULATION   1
+#define VIEWITEM_BASE_SHAPE   2
+#define VIEWITEM_MAX          4
 
 namespace MillSim
 {
@@ -41,6 +48,7 @@ class MillSimulation
 {
 public:
     MillSimulation();
+    ~MillSimulation();
     void ClearMillPathSegments();
     void Clear();
     void SimNext();
@@ -51,23 +59,27 @@ public:
     {
         return GetTool(toolid) != nullptr;
     }
+    void RenderSimulation();
+    void RenderTool();
+    void RenderPath();
+    void RenderBaseShape();
     void Render();
     void ProcessSim(unsigned int time_ms);
     void HandleKeyPress(int key);
-    void UpdateEyeFactor(float factor);
-    void TiltEye(float tiltStep);
-    void RotateEye(float rotStep);
-    void MoveEye(float x, float y);
-    void UpdateProjection();
+    void HandleGuiAction(eGuiItems actionItem, bool checked);
     bool LoadGCodeFile(const char* fileName);
     bool AddGcodeLine(const char* line);
     void SetSimulationStage(float stage);
     void SetBoxStock(float x, float y, float z, float l, float w, float h);
+    void SetArbitraryStock(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
+    void SetBaseObject(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
     void MouseDrag(int buttons, int dx, int dy);
     void MouseMove(int px, int py);
     void MouseScroll(float dy);
     void MouseHover(int px, int py);
     void MousePress(int button, bool isPressed, int px, int py);
+    void UpdateWindowScale(int width, int height);
+
 
 
 protected:
@@ -88,44 +100,25 @@ protected:
 
 protected:
     std::vector<EndMill*> mToolTable;
-    Shader shader3D, shaderInv3D, shaderFlat;
     GCodeParser mCodeParser;
     GuiDisplay guiDisplay;
+    SimDisplay simDisplay;
+    MillPathLine millPathLine;
     std::vector<MillPathSegment*> MillPathSegments;
     std::ostringstream mFpsStream;
 
-    MillMotion mZeroPos = {eNop, -1, 0.0F, 0.0F, 100.0F, 0.0F, 0.0F, 0.0F, 0.0F};
-    MillMotion mCurMotion = {eNop, -1, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F};
-    MillMotion mDestMotion = {eNop, -1, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F};
+    MillMotion mZeroPos = {eNop, -1, 0, 0, 100, 0, 0, 0, 0};
+    MillMotion mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
+    MillMotion mDestMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
 
     StockObject mStockObject;
-    StockObject mlightObject;
+    SolidObject mBaseShape;
 
-    vec3 lightColor = {0.8f, 0.9f, 1.0f};
-    vec3 lightPos = {20.0f, 20.0f, 10.0f};
-    vec3 ambientCol = {0.3f, 0.3f, 0.5f};
-
-    vec3 eye = {0, 100, 40};
-    vec3 target = {0, 0, -10};
-    vec3 upvec = {0, 0, 1};
-
-    vec3 stockColor = {0.7f, 0.7f, 0.7f};
-    vec3 cutColor = {0.4f, 0.7f, 0.4f};
-    vec3 toolColor = {0.4f, 0.4f, 0.7f};
-
-    float mEyeDistance = 30;
-    float mEyeRoration = 0;
-    float mEyeInclination = PI / 6;  // 30 degree
-    float mEyeStep = PI / 36;        // 5 degree
-
-    float mMaxStockDim = 100;
-    float mMaxFar = 100;
-    float mEyeDistFactor = 0.4f;
-    float mEyeXZFactor = 0.01f;
-    float mEyeXZScale = 0;
-    float mEyeX = 0.0f;
-    float mEyeZ = 0.0f;
-
+    vec3 bgndColor = {0.1f, 0.2f, 0.3f};
+    vec3 stockColor = {0.7f, 0.75f, 0.9f};
+    vec3 cutColor = {0.85f, 0.95f, 0.85f};
+    vec3 toolColor = {0.5f, 0.4f, 0.3f};
+    vec3 baseShapeColor = {0.7f, 0.6f, 0.5f};
 
     int mCurStep = 0;
     int mNTotalSteps = 0;
@@ -136,14 +129,15 @@ protected:
     int mDebug1 = 0;
     int mDebug2 = 12;
     int mSimSpeed = 1;
+    int mViewItems = VIEWITEM_SIMULATION;
 
     int mLastMouseX = 0, mLastMouseY = 0;
     int mMouseButtonState = 0;
 
     bool mIsInStock = false;
-    bool mIsRotate = true;
     bool mSimPlaying = false;
     bool mSingleStep = false;
+
 };
 }  // namespace MillSim
 #endif

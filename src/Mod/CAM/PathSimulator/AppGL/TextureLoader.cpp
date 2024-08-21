@@ -36,6 +36,9 @@ TextureItem texItems[] = {
     {70, 50, 0, 0},
     {27, 50, 0, 0},
     {44, 50, 0, 0},
+    {90, 50, 0, 0},
+    {128, 50, 0, 0},
+    {168, 50, 0, 0},
 };
 
 
@@ -51,7 +54,7 @@ TextureLoader::TextureLoader(std::string imgFolder, std::vector<std::string> fil
     if (mRawData == nullptr) {
         return;
     }
-    memset(mRawData, 0x80, buffsize);
+    memset(mRawData, 0x00, buffsize);
     for (std::size_t i = 0; i < fileNames.size(); i++) {
         QImage pixmap((imgFolder + fileNames[i]).c_str());
         AddImage(&(texItems[i]), pixmap, mRawData, textureSize);

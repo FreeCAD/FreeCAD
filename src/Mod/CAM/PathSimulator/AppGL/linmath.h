@@ -1,12 +1,11 @@
-/*************************************************************************************************/
-/* Taken from https://github.com/datenwolf/linmath.h under 'Do whatever you want' license        */
-/*************************************************************************************************/
+//*************************************************************************************************
+//* Taken from https://github.com/datenwolf/linmath.h under 'Do whatever you want' license        *
+//*************************************************************************************************
 #ifndef LINMATH_H
 #define LINMATH_H
 
 #include <string.h>
 #include <math.h>
-#include <string.h>
 
 #ifdef LINMATH_NO_INLINE
 #define LINMATH_H_FUNC static
@@ -630,5 +629,4 @@ LINMATH_H_FUNC void mat4x4_arcball(mat4x4 R, mat4x4 const M, vec2 const _a, vec2
     float const angle = acosf(vec3_mul_inner(a_, b_)) * s;
     mat4x4_rotate(R, M, c_[0], c_[1], c_[2], angle);
 }
-
 #endif
