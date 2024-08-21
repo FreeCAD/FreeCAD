@@ -4,7 +4,7 @@ version = "0.22.0"
 description = "pixi instructions for FreeCAD"
 authors = ["looooo <sppedflyer@gmail.com>"]
 channels = ["conda-forge/label/pivy_rc", "conda-forge"]
-platforms = ["osx-arm64", "linux-64", "linux-aarch64"]
+platforms = ["osx-arm64", "linux-64", "linux-aarch64", "win-64", "osx-64"]
 
 
 [environments]
@@ -14,7 +14,6 @@ build = ["build"]
 ninja = ">=1.12.1,<1.13"
 cmake = ">=3.30.1,<3.31"
 swig = ">=4.2.1,<4.3"
-sed = ">=4.8,<5"
 python = ">=3.12.4,<3.13"
 libboost-devel = ">=1.84.0,<1.86"
 qt6-main = ">=6.7.2,<6.8"
@@ -39,24 +38,47 @@ pivy = ">=0.6.9.a0,<0.6.10"
 numpy = ">=2.0.0,<2.1"
 pyyaml = ">=6.0.1,<6.1"
 graphviz = ">=11.0.0,<11.1"
+clangxx = ">=18.1.8,<19"
 # gmsh  needs to be build for occt7.8.1
+
+[feature.build.target.linux-64.dependencies]
+sed = ">=4.7,<5"
+
+[feature.build.target.linux-aarch64.dependencies]
+sed = ">=4.7,<5"
+
+[feature.build.target.osx-64.dependencies]
+sed = ">=4.7,<5"
+
+[feature.build.target.osx-arm64.dependencies]
+sed = ">=4.7,<5"
+
+[feature.build.target.win-64.dependencies]
 
 [feature.build.tasks]
 
 initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
+
+# this line is needed for shiboken to not propagate the Py_LIMITED_API definition (as freecad is not yet able to be compiled
+# with Py_LIMITED_API)
 patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cmake/Shiboken6/Shiboken6Targets.cmake"
 configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
                      "-D", "CMAKE_INSTALL_PREFIX:STRING=$CONDA_PREFIX",
                      "-D", "CMAKE_INSTALL_RPATH=$CONDA_PREFIX/lib",
                      "-D", "CMAKE_BUILD_TYPE:STRING=Debug",
                      "-D", "QT_HOST_PATH=$CONDA_PREFIX",
+                     "-D", "Boost_NO_BOOST_CMAKE:BOOL=ON",
                      "-D", "BUILD_WITH_CONDA:BOOL=ON",
                      "-D", "BUILD_FLAT_MESH:BOOL=ON",
                      "-D", "BUILD_FEM_NETGEN:BOOL=ON",
                      "-D", "FREECAD_USE_PYBIND11:BOOL=ON",
                      "-D", "FREECAD_USE_PCL:BOOL=ON",
-                     "-D", "FREECAD_USE_EXTERNAL_SMESH=ON"
+                     "-D", "FREECAD_USE_EXTERNAL_SMESH=ON",
+                     "-D", "FREECAD_USE_EXTERNAL_FMT:BOOL=OFF"
                      ], depends-on = ["initialize", "patch_shiboken"]}
 build = { cmd = ["ninja", "-C", "build", "-j", "3", "install"], depends-on = ["configure"]}
 build_only = { cmd = ["ninja", "-C", "build", "-j", "3", "install"]}
+freecad = "FreeCAD"
+
+
 
