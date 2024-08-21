@@ -196,7 +196,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         }
 
         QRegularExpression rx;
-        rx.setPattern(QLatin1String(R"(\s(\(\*\.\w{1,})\W)"));
+        rx.setPattern(QLatin1String(R"(\s\((\*\.\w{1,})\W)"));
         QStringList possibleSuffixes;
         getPossibleSuffixes(possibleSuffixes, rx, filterToSearch);
         auto match = rx.match(*filterToSearch);
@@ -207,7 +207,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             int offsetStart = 3;
             int offsetEnd = 4;
             QString suffix = filterToSearch->mid(index + offsetStart, length - offsetEnd);
-            if (fi.suffix().isEmpty() || !possibleSuffixes.contains(fi.suffix())) {
+            QString fiSuffix = QLatin1String("*.") + fi.suffix();  // To match with possibleSuffixes
+            if (fi.suffix().isEmpty() || !possibleSuffixes.contains(fiSuffix)) {
                 dirName += suffix;
             }
         }

@@ -246,8 +246,15 @@ void TaskMeasure::update() {
     // Fill measure object's properties from selection
     _mMeasureObject->parseSelection(selection);
 
+    // Init the view object
+    Gui::ViewProvider* viewObj = Gui::Application::Instance->getViewProvider(_mMeasureObject);
+    if (viewObj) {
+        static_cast<MeasureGui::ViewProviderMeasureBase*>(viewObj)->positionAnno(_mMeasureObject);
+    }
+
     // Get result
     valueResult->setText(_mMeasureObject->getResultString());
+
 }
 
 void TaskMeasure::close(){

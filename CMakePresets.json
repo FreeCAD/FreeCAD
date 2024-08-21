@@ -276,7 +276,13 @@
         "inherits": [
           "conda-debug",
           "conda-windows"
-        ]
+        ],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": {
+            "type": "STRING",
+            "value": "RelWithDebInfo"
+          }
+        }
       },
       {
         "name": "conda-windows-release",

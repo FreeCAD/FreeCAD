@@ -77,7 +77,7 @@ CosmeticEdge::CosmeticEdge(const Base::Vector3d& pt1, const Base::Vector3d& pt2)
 }
 
 CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) :
-        CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
+        CosmeticEdge(TechDraw::BaseGeom::baseFactory(e, true))
 {
 }
 
