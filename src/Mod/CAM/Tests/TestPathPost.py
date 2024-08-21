@@ -33,12 +33,13 @@ import difflib
 import os
 import unittest
 
+from .FilePathTestUtils import assertFilePathsEqual
+
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)
 
 
 class TestFileNameGenerator(unittest.TestCase):
-
     """
     String substitution allows the following:
     %D ... directory of the active document
@@ -147,8 +148,8 @@ class TestFileNameGenerator(unittest.TestCase):
         # subpart, objs = outlist[0]
 
         # filename = PathPost.resolveFileName(self.job, subpart, 0)
-        #self.assertEqual(filename, os.path.normpath(f"{self.testfilename}.nc"))
-        self.assertEqual(filename, os.path.join(os.getcwd(), f"{self.testfilename}.nc"))
+        # self.assertEqual(filename, os.path.normpath(f"{self.testfilename}.nc"))
+        assertFilePathsEqual( self, filename, os.path.join(self.testfilepath, f"{self.testfilename}.nc"))
 
     def test010(self):
         # Substitute current file path
@@ -163,10 +164,7 @@ class TestFileNameGenerator(unittest.TestCase):
         filename = next(filename_generator)
 
         print(os.path.normpath(filename))
-        self.assertEqual(
-            filename,
-            os.path.normpath(f"{self.testfilepath}/testfile.nc"),
-        )
+        assertFilePathsEqual(self, filename, f"{self.testfilepath}/testfile.nc")
 
     def test015(self):
         # Test basic string substitution without splitting
@@ -185,9 +183,7 @@ class TestFileNameGenerator(unittest.TestCase):
         filename = next(filename_generator)
 
         # filename = PathPost.resolveFileName(self.job, subpart, 0)
-        self.assertEqual(
-            os.path.normpath(filename), os.path.normpath("~/Desktop/MainJob.nc")
-        )
+        assertFilePathsEqual(self, filename, "~/Desktop/MainJob.nc")
 
     def test020(self):
         teststring = "%d.nc"
@@ -200,9 +196,9 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        expected = os.path.join(os.getcwd(), f"{self.testfilename}.nc")
+        expected = os.path.join(self.testfilepath, f"{self.testfilename}.nc")
 
-        self.assertEqual(filename, expected ) #f"{self.testfilename}.nc")
+        assertFilePathsEqual(self, filename, expected)
 
     def test030(self):
         teststring = "%M/outfile.nc"
@@ -215,7 +211,7 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        self.assertEqual(filename, os.path.normpath(f"{self.macro}outfile.nc"))
+        assertFilePathsEqual(self, filename, f"{self.macro}outfile.nc")
 
     def test040(self):
         # unused substitution strings should be ignored
@@ -229,10 +225,7 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        self.assertEqual(
-            filename,
-            os.path.normpath(f"{self.testfilename}/testdoc.nc"),
-        )
+        assertFilePathsEqual(self, filename, f"{self.testfilename}/testdoc.nc")
 
     def test045(self):
         """Testing the sequence number substitution"""
@@ -243,7 +236,7 @@ class TestFileNameGenerator(unittest.TestCase):
         ]
         for expected_filename in expected_filenames:
             filename = next(filename_generator)
-            self.assertEqual(filename, os.path.normpath(expected_filename))
+            assertFilePathsEqual(self, filename, expected_filename)
 
     def test046(self):
         """Testing the sequence number substitution"""
@@ -251,10 +244,12 @@ class TestFileNameGenerator(unittest.TestCase):
         self.job.PostProcessorOutputFile = teststring
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
-        expected_filenames = [os.path.join( os.getcwd(), f"{i}-test_filenaming.nc") for i in range(5)]
+        expected_filenames = [
+            os.path.join(self.testfilepath, f"{i}-test_filenaming.nc") for i in range(5)
+        ]
         for expected_filename in expected_filenames:
             filename = next(filename_generator)
-            self.assertEqual(filename, os.path.normpath(expected_filename))
+            assertFilePathsEqual(self, filename, expected_filename)
 
     def test050(self):
         # explicitly using the sequence number should include it where indicated.
@@ -268,7 +263,9 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        self.assertEqual(filename, os.path.join(os.getcwd(), "0-test_filenaming.nc"))
+        assertFilePathsEqual(
+            self, filename, os.path.join(self.testfilepath, "0-test_filenaming.nc")
+        )
 
     def test060(self):
         """Test subpart naming"""
@@ -283,7 +280,7 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        self.assertEqual(filename, os.path.normpath(f"{self.macro}outfile-Tool.nc"))
+        assertFilePathsEqual(self, filename, f"{self.macro}outfile-Tool.nc")
 
 
 class TestResolvingPostProcessorName(unittest.TestCase):

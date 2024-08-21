@@ -106,7 +106,7 @@ bool MeasureDistance::isPrioritizedSelection(const App::MeasureSelection& select
     // if (selection.size() == 2) {
     //     return true;
     // }
-    
+
     return false;
 }
 
@@ -133,7 +133,7 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
 
     App::DocumentObject* ob = prop->getValue();
     std::vector<std::string> subs = prop->getSubValues();
-    
+
     if (!ob || !ob->isValid() || subs.empty() ) {
         return false;
     }
@@ -142,7 +142,7 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
     App::SubObjectT subject{ob, subName.c_str()};
 
     auto info = getMeasureInfo(subject);
-    
+
     if (!info || !info->valid) {
         return false;
     }
@@ -187,18 +187,17 @@ App::DocumentObjectExecReturn *MeasureDistance::execute()
         return new App::DocumentObjectExecReturn("Could not get extrema");
     }
 
-    gp_Pnt delta = measure.PointOnShape2(1).XYZ() - measure.PointOnShape1(1).XYZ();
-    Distance.setValue(measure.Value());
-    DistanceX.setValue(fabs(delta.X()));
-    DistanceY.setValue(fabs(delta.Y()));
-    DistanceZ.setValue(fabs(delta.Z()));
-
     gp_Pnt p1 = measure.PointOnShape1(1);
     Position1.setValue(p1.X(), p1.Y(), p1.Z());
 
     gp_Pnt p2 = measure.PointOnShape2(1);
     Position2.setValue(p2.X(), p2.Y(), p2.Z());
 
+    gp_Pnt delta = measure.PointOnShape2(1).XYZ() - measure.PointOnShape1(1).XYZ();
+    Distance.setValue(measure.Value());
+    DistanceX.setValue(fabs(delta.X()));
+    DistanceY.setValue(fabs(delta.Y()));
+    DistanceZ.setValue(fabs(delta.Z()));
 
     return DocumentObject::StdReturn;
 }
@@ -257,7 +256,7 @@ bool MeasureDistanceDetached::isValidSelection(const App::MeasureSelection& sele
 void MeasureDistanceDetached::parseSelection(const App::MeasureSelection& selection) {
     auto sel1 = selection.at(0);
     auto sel2 = selection.at(1);
-    
+
     Position1.setValue(sel1.pickedPoint);
     Position2.setValue(sel2.pickedPoint);
 }
@@ -287,7 +286,7 @@ void MeasureDistanceDetached::onChanged(const App::Property* prop)
     if (prop == &Position1 || prop == &Position2) {
         recalculateDistance();
     }
-    
+
     MeasureBase::onChanged(prop);
 }
 

@@ -41,6 +41,7 @@ class TestPolarPattern(unittest.TestCase):
         self.PolarPattern.Axis = (self.Doc.X_Axis,[""])
         self.PolarPattern.Angle = 360
         self.PolarPattern.Occurrences = 4
+        self.PolarPattern.Refine = True
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
@@ -60,6 +61,7 @@ class TestPolarPattern(unittest.TestCase):
         self.PolarPattern.Axis = (self.Doc.Y_Axis,[""])
         self.PolarPattern.Angle = 360
         self.PolarPattern.Occurrences = 4
+        self.PolarPattern.Refine = True
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
@@ -79,6 +81,7 @@ class TestPolarPattern(unittest.TestCase):
         self.PolarPattern.Axis = (self.Doc.Z_Axis,[""])
         self.PolarPattern.Angle = 360
         self.PolarPattern.Occurrences = 4
+        self.PolarPattern.Refine = True
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
@@ -101,6 +104,7 @@ class TestPolarPattern(unittest.TestCase):
         self.PolarPattern.Axis = (self.PadSketch,["N_Axis"])
         self.PolarPattern.Angle = 360
         self.PolarPattern.Occurrences = 4
+        self.PolarPattern.Refine = True
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
@@ -123,6 +127,7 @@ class TestPolarPattern(unittest.TestCase):
         self.PolarPattern.Axis = (self.PadSketch,["V_Axis"])
         self.PolarPattern.Angle = 360
         self.PolarPattern.Occurrences = 4
+        self.PolarPattern.Refine = True
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
@@ -145,6 +150,7 @@ class TestPolarPattern(unittest.TestCase):
         self.PolarPattern.Axis = (self.PadSketch,["H_Axis"])
         self.PolarPattern.Angle = 360
         self.PolarPattern.Occurrences = 4
+        self.PolarPattern.Refine = True
         self.Body.addObject(self.PolarPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)

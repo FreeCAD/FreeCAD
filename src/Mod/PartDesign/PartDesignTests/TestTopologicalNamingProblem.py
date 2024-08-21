@@ -676,6 +676,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pocket.Length = 5
         pocket.Direction = (0, 0, -1)
         pocket.ReferenceAxis = (sketch, ['N_Axis'])
+        pocket.Refine = True
 
         body.addObject(sketch)
         body.addObject(pocket)

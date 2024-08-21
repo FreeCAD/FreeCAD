@@ -474,13 +474,16 @@ std::string BaseGeom::geomTypeName()
 }
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
-BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
+// this should not return nullptr as things will break later on.
+// regular geometry is stored scaled, but cosmetic geometry is stored in 1:1 scale, so the crazy edge
+// check is not appropriate.
+BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
 {
     if (edge.IsNull()) {
         Base::Console().Message("BG::baseFactory - input edge is NULL \n");
     }
     //weed out rubbish edges before making geometry
-    if (!validateEdge(edge)) {
+    if (!isCosmetic && !validateEdge(edge)) {
         return nullptr;
     }
 
@@ -1593,7 +1596,6 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
         sumCenter += DrawUtil::toVector3d(curveCenter);
     }
     catch (Standard_Failure&) {
-        // Base::Console().Error("OCC error.  Could not interpret BSpline as Circle\n");
         return false;
     }
     Base::Vector3d avgCenter = sumCenter/testCount;
@@ -1601,7 +1603,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     double avgCurve = sumCurvature/testCount;
     double errorCurve  = 0;
     for (auto& cv: curvatures) {
-        errorCurve += fabs(avgCurve - cv);    //fabs???
+        errorCurve += avgCurve - cv;
     }
     errorCurve  = errorCurve/testCount;
 
@@ -1617,6 +1619,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
 
 //! make a circle or arc of circle Edge from BSpline Edge
 //! assumes the spline is generally circular but does not check
+// ??? why does this not use getCircleParms to retrieve centre, radius, start/end, isArc
 TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
 {
     BRepAdaptor_Curve curveAdapt(splineEdge);
