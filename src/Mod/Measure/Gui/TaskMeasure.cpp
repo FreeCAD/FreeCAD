@@ -197,6 +197,10 @@ Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObje
     _mGuiDocument = Gui::Application::Instance->activeDocument();
     _mGuiDocument->setAnnotationViewProvider(vp->getTypeId().getName(), vp);
     vp->attach(measureObj);
+
+    // Init the position of the annotation
+    static_cast<MeasureGui::ViewProviderMeasureBase*>(vp)->positionAnno(_mMeasureObject);
+
     vp->updateView();
     vp->setActiveMode();
 
@@ -293,12 +297,6 @@ void TaskMeasure::update() {
 
     // Fill measure object's properties from selection
     _mMeasureObject->parseSelection(selection);
-
-    // Init the view object
-    Gui::ViewProvider* viewObj = Gui::Application::Instance->getViewProvider(_mMeasureObject);
-    if (viewObj) {
-        static_cast<MeasureGui::ViewProviderMeasureBase*>(viewObj)->positionAnno(_mMeasureObject);
-    }
 
     // Get result
     valueResult->setText(_mMeasureObject->getResultString());
