@@ -10724,63 +10724,64 @@ void SketchObject::restoreFinished()
 
 void SketchObject::migrateSketch()
 {
-    bool noextensions = false;
 
-    for (const auto& g : getInternalGeometry())
-        // no extension - legacy file
-        if (!g->hasExtension(SketchGeometryExtension::getClassTypeId()))
-            noextensions = true;
+    const auto& allGeoms = getInternalGeometry();
+    bool noextensions = std::any_of(allGeoms.begin(), allGeoms.end(), [](const auto& geo) {
+        return !geo->hasExtension(SketchGeometryExtension::getClassTypeId());
+    });
 
     if (noextensions) {
-        for (auto c : Constraints.getValues()) {
-
+        for (const auto& c : Constraints.getValues()) {
             addGeometryState(c);
 
             // Convert B-Spline controlpoints radius/diameter constraints to Weight constraints
-            if (c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint) {
-                int circlegeoid = c->First;
-                int bsplinegeoid = c->Second;
+            if (c->Type != InternalAlignment || c->AlignmentType != BSplineControlPoint) {
+                continue;
+            }
 
-                auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bsplinegeoid));
+            int circlegeoid = c->First;
+            int bsplinegeoid = c->Second;
 
-                std::vector<double> weights = bsp->getWeights();
+            auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bsplinegeoid));
 
-                for (auto ccp : Constraints.getValues()) {
+            std::vector<double> weights = bsp->getWeights();
 
-                    if ((ccp->Type == Radius || ccp->Type == Diameter)
-                        && ccp->First == circlegeoid) {
+            if (!(c->InternalAlignmentIndex < int(weights.size()))) {
+                continue;
+            }
 
-                        if (c->InternalAlignmentIndex < int(weights.size())) {
-                            ccp->Type = Weight;
-                            ccp->setValue(weights[c->InternalAlignmentIndex]);
-                        }
-                    }
+            for (auto& ccp : Constraints.getValues()) {
+                if ((ccp->Type == Radius || ccp->Type == Diameter) && ccp->First == circlegeoid) {
+                    ccp->Type = Weight;
+                    ccp->setValue(weights[c->InternalAlignmentIndex]);
                 }
             }
         }
 
         // Construction migration to extension
-        for (auto g : Geometry.getValues()) {
-
-            if (g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())) {
-                auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
-                    g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
-
-                if (ext->testMigrationType(Part::GeometryMigrationExtension::Construction)) {
-                    // at this point IA geometry is already migrated
-                    auto gf = GeometryFacade::getFacade(g);
-
-                    bool oldconstr = ext->getConstruction();
-
-                    if (g->is<Part::GeomPoint>()
-                        && !gf->isInternalAligned())
-                        oldconstr = true;
-
-                    GeometryFacade::setConstruction(g, oldconstr);
-                }
-
-                g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
+        for (auto& g : Geometry.getValues()) {
+            if (!g->hasExtension(Part::GeometryMigrationExtension::getClassTypeId())) {
+                continue;
             }
+
+            auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
+                g->getExtension(Part::GeometryMigrationExtension::getClassTypeId()).lock());
+
+            if (!ext->testMigrationType(Part::GeometryMigrationExtension::Construction)) {
+                continue;
+            }
+            // at this point IA geometry is already migrated
+            auto gf = GeometryFacade::getFacade(g);
+
+            bool oldconstr = ext->getConstruction();
+
+            if (g->is<Part::GeomPoint>() && !gf->isInternalAligned()) {
+                oldconstr = true;
+            }
+
+            GeometryFacade::setConstruction(g, oldconstr);
+
+            g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
     }
 
@@ -10792,126 +10793,124 @@ void SketchObject::migrateSketch()
         return g->is<Part::GeomArcOfParabola>();
     });
 
-    if (parabolafound != geometries.end()) {
+    if (parabolafound == geometries.end()) {
+        return;
+    }
 
-        auto focalaxisfound = std::find_if(constraints.begin(), constraints.end(), [](auto c) {
-            return c->Type == InternalAlignment && c->AlignmentType == ParabolaFocalAxis;
-        });
+    auto focalaxisfound = std::find_if(constraints.begin(), constraints.end(), [](auto c) {
+        return c->Type == InternalAlignment && c->AlignmentType == ParabolaFocalAxis;
+    });
 
-        // There are parabolas and there isn't an IA axis. (1) there are no axis or (2) there is a
-        // legacy construction line
-        if (focalaxisfound == constraints.end()) {
+    if (focalaxisfound != constraints.end()) {
+        return;
+    }
 
-            // maps parabola geoid to focusgeoid
-            std::map<int, int> parabolageoid2focusgeoid;
+    // There are parabolas and there isn't an IA axis. (1) there are no axis or (2) there is a
+    // legacy construction line
 
-            // populate parabola and focus geoids
-            for (const auto& c : constraints) {
-                if (c->Type == InternalAlignment && c->AlignmentType == ParabolaFocus) {
-                    parabolageoid2focusgeoid[c->Second] = {c->First};
-                }
-            }
+    // maps parabola geoid to focusgeoid
+    std::map<int, int> parabolageoid2focusgeoid;
 
-            // maps axis geoid to parabolageoid
-            std::map<int, int> axisgeoid2parabolageoid;
-
-            // populate axis geoid
-            for (const auto& [parabolageoid, focusgeoid] : parabolageoid2focusgeoid) {
-                // look for a line from focusgeoid:start to Geoid:mid_external
-                std::vector<int> focusgeoidlistgeoidlist;
-                std::vector<PointPos> focusposidlist;
-                getDirectlyCoincidentPoints(
-                    focusgeoid, Sketcher::PointPos::start, focusgeoidlistgeoidlist, focusposidlist);
-
-                std::vector<int> parabgeoidlistgeoidlist;
-                std::vector<PointPos> parabposidlist;
-                getDirectlyCoincidentPoints(parabolageoid,
-                                            Sketcher::PointPos::mid,
-                                            parabgeoidlistgeoidlist,
-                                            parabposidlist);
-
-                if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
-                    std::size_t i, j;
-                    for (i = 0; i < focusgeoidlistgeoidlist.size(); i++) {
-                        for (j = 0; j < parabgeoidlistgeoidlist.size(); j++) {
-                            if (focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
-                                axisgeoid2parabolageoid[focusgeoidlistgeoidlist[i]] = parabolageoid;
-                            }
-                        }
-                    }
-                }
-            }
-
-            std::vector<Constraint*> newconstraints;
-            newconstraints.reserve(constraints.size());
-
-            for (const auto& c : constraints) {
-
-                if (c->Type != Coincident) {
-                    newconstraints.push_back(c);
-                }
-                else {
-                    auto axismajorcoincidentfound =
-                        std::find_if(axisgeoid2parabolageoid.begin(),
-                                     axisgeoid2parabolageoid.end(),
-                                     [&](const auto& pair) {
-                                         auto parabolageoid = pair.second;
-                                         auto axisgeoid = pair.first;
-                                         return (c->First == axisgeoid && c->Second == parabolageoid
-                                                 && c->SecondPos == PointPos::mid)
-                                             || (c->Second == axisgeoid && c->First == parabolageoid
-                                                 && c->FirstPos == PointPos::mid);
-                                     });
-
-                    if (axismajorcoincidentfound != axisgeoid2parabolageoid.end()) {
-                        // we skip this coincident, the other coincident on axis will be substituted
-                        // by internal geometry constraint
-                        continue;
-                    }
-
-                    auto focuscoincidentfound =
-                        std::find_if(axisgeoid2parabolageoid.begin(),
-                                     axisgeoid2parabolageoid.end(),
-                                     [&](const auto& pair) {
-                                         auto parabolageoid = pair.second;
-                                         auto axisgeoid = pair.first;
-                                         auto focusgeoid = parabolageoid2focusgeoid[parabolageoid];
-                                         return (c->First == axisgeoid && c->Second == focusgeoid
-                                                 && c->SecondPos == PointPos::start)
-                                             || (c->Second == axisgeoid && c->First == focusgeoid
-                                                 && c->FirstPos == PointPos::start);
-                                     });
-
-                    if (focuscoincidentfound != axisgeoid2parabolageoid.end()) {
-                        Sketcher::Constraint* newConstr = new Sketcher::Constraint();
-                        newConstr->Type = Sketcher::InternalAlignment;
-                        newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
-                        newConstr->First = focuscoincidentfound->first;// axis geoid
-                        newConstr->FirstPos = Sketcher::PointPos::none;
-                        newConstr->Second = focuscoincidentfound->second;// parabola geoid
-                        newConstr->SecondPos = Sketcher::PointPos::none;
-                        newconstraints.push_back(newConstr);
-
-                        addGeometryState(newConstr);
-
-                        // we skip the coincident, as we have substituted it by internal geometry
-                        // constraint
-                        continue;
-                    }
-
-                    newconstraints.push_back(c);
-                }
-            }
-
-            Constraints.setValues(std::move(newconstraints));
-
-            Base::Console().Critical(
-                this->getFullName(),
-                QT_TRANSLATE_NOOP("Notifications",
-                                  "Parabolas were migrated. Migrated files won't open in previous "
-                                  "versions of FreeCAD!!\n"));
+    // populate parabola and focus geoids
+    for (const auto& c : constraints) {
+        if (c->Type == InternalAlignment && c->AlignmentType == ParabolaFocus) {
+            parabolageoid2focusgeoid[c->Second] = {c->First};
         }
     }
+
+    // maps axis geoid to parabolageoid
+    std::map<int, int> axisgeoid2parabolageoid;
+
+    // populate axis geoid
+    for (const auto& [parabolageoid, focusgeoid] : parabolageoid2focusgeoid) {
+        // look for a line from focusgeoid:start to Geoid:mid_external
+        std::vector<int> focusgeoidlistgeoidlist;
+        std::vector<PointPos> focusposidlist;
+        getDirectlyCoincidentPoints(
+            focusgeoid, Sketcher::PointPos::start, focusgeoidlistgeoidlist, focusposidlist);
+
+        std::vector<int> parabgeoidlistgeoidlist;
+        std::vector<PointPos> parabposidlist;
+        getDirectlyCoincidentPoints(
+            parabolageoid, Sketcher::PointPos::mid, parabgeoidlistgeoidlist, parabposidlist);
+
+        for (const auto& parabGeoIdListGeoId : parabgeoidlistgeoidlist) {
+            auto iterParabolaGeoId = std::find(focusgeoidlistgeoidlist.begin(),
+                                                focusgeoidlistgeoidlist.end(),
+                                                parabGeoIdListGeoId);
+            if (iterParabolaGeoId != focusgeoidlistgeoidlist.end()) {
+                axisgeoid2parabolageoid[*iterParabolaGeoId] = parabolageoid;
+            }
+        }
+    }
+
+    std::vector<Constraint*> newconstraints;
+    newconstraints.reserve(constraints.size());
+
+    for (const auto& c : constraints) {
+        if (c->Type != Coincident) {
+            newconstraints.push_back(c);
+            continue;
+        }
+
+        auto axismajorcoincidentfound = std::find_if(
+            axisgeoid2parabolageoid.begin(),
+            axisgeoid2parabolageoid.end(),
+            [&](const auto& pair) {
+                auto parabolageoid = pair.second;
+                auto axisgeoid = pair.first;
+                return (c->First == axisgeoid && c->Second == parabolageoid
+                        && c->SecondPos == PointPos::mid)
+                    || (c->Second == axisgeoid && c->First == parabolageoid
+                        && c->FirstPos == PointPos::mid);
+            });
+
+        if (axismajorcoincidentfound != axisgeoid2parabolageoid.end()) {
+            // we skip this coincident, the other coincident on axis will be substituted
+            // by internal geometry constraint
+            continue;
+        }
+
+        auto focuscoincidentfound = std::find_if(
+            axisgeoid2parabolageoid.begin(),
+            axisgeoid2parabolageoid.end(),
+            [&](const auto& pair) {
+                auto parabolageoid = pair.second;
+                auto axisgeoid = pair.first;
+                auto focusgeoid = parabolageoid2focusgeoid[parabolageoid];
+                return (c->First == axisgeoid && c->Second == focusgeoid
+                        && c->SecondPos == PointPos::start)
+                    || (c->Second == axisgeoid && c->First == focusgeoid
+                        && c->FirstPos == PointPos::start);
+            });
+
+        if (focuscoincidentfound != axisgeoid2parabolageoid.end()) {
+            Sketcher::Constraint* newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
+            newConstr->First = focuscoincidentfound->first;// axis geoid
+            newConstr->FirstPos = Sketcher::PointPos::none;
+            newConstr->Second = focuscoincidentfound->second;// parabola geoid
+            newConstr->SecondPos = Sketcher::PointPos::none;
+            newconstraints.push_back(newConstr);
+
+            addGeometryState(newConstr);
+
+            // we skip the coincident, as we have substituted it by internal geometry
+            // constraint
+            continue;
+        }
+
+        newconstraints.push_back(c);
+    }
+
+    Constraints.setValues(std::move(newconstraints));
+
+    Base::Console().Critical(
+        this->getFullName(),
+        QT_TRANSLATE_NOOP("Notifications",
+                          "Parabolas were migrated. Migrated files won't open in previous "
+                          "versions of FreeCAD!!\n"));
 }
 
 void SketchObject::getGeoVertexIndex(int VertexId, int& GeoId, PointPos& PosId) const
