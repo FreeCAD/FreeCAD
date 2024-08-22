@@ -10666,7 +10666,8 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
     for (std::size_t ic = 0; ic < newVals.size(); ic++) {// ic = index of constraint
         bool affected = false;
         Constraint* constNew = nullptr;
-        for (int ig = 1; ig <= 3; ig++) {// cycle through constraint.first, second, third
+        for (int ig = 1; ig <= 3; ig++) {
+            // cycle through constraint.first, second, third
             int geoId = 0;
             Sketcher::PointPos posId = PointPos::none;
             switch (ig) {
@@ -10689,8 +10690,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
                 // we are dealing with a link to an endpoint of external geom
                 Part::Geometry* g = this->ExternalGeo[-geoId - 1];
                 if (g->is<Part::GeomArcOfCircle>()) {
-                    const Part::GeomArcOfCircle* segm =
-                        static_cast<const Part::GeomArcOfCircle*>(g);
+                    const auto* segm = static_cast<const Part::GeomArcOfCircle*>(g);
                     if (segm->isReversed()) {
                         // Gotcha! a link to an endpoint of external arc that is reversed.
                         // create a constraint copy, affect it, replace the pointer
@@ -10850,8 +10850,9 @@ App::DocumentObject *SketchObject::getSubObject(
     while(subname && *subname=='.') ++subname; // skip leading .
     std::string sub;
     const char *mapped = Data::isMappedElement(subname);
-    if(!subname || !subname[0])
+    if(!subname || !subname[0]) {
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
+    }
     const char *element = Data::findElementName(subname);
     if(element != subname) {
         const char *dot = strchr(subname,'.');
@@ -10884,11 +10885,12 @@ App::DocumentObject *SketchObject::getSubObject(
     }
     else if (!pyObj || !mapped) {
         if (!pyObj
-                || (index > 0
-                    && !boost::algorithm::contains(subname, "edge")
-                    && !boost::algorithm::contains(subname, "vertex")))
+            || (index > 0
+                && !boost::algorithm::contains(subname, "edge")
+                && !boost::algorithm::contains(subname, "vertex")))
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
-    } else {
+    }
+    else {
         subshape = Shape.getShape().getSubTopoShape(subname, true);
         if (!subshape.isNull())
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
@@ -10900,14 +10902,16 @@ App::DocumentObject *SketchObject::getSubObject(
             geo = getGeometry(index - 1);
             if (!geo)
                 return nullptr;
-        } else if (boost::equals(shapetype,"ExternalEdge")) {
+        }
+        else if (boost::equals(shapetype,"ExternalEdge")) {
             int GeoId = index - 1;
             GeoId = -GeoId - 3;
             geo = getGeometry(GeoId);
             if(!geo)
                 return nullptr;
-        } else if (boost::equals(shapetype,"Vertex") ||
-                boost::equals(shapetype,"vertex")) {
+        }
+        else if (boost::equals(shapetype,"Vertex") ||
+                 boost::equals(shapetype,"vertex")) {
             int VtId = index- 1;
             int GeoId;
             PointPos PosId;
@@ -10930,40 +10934,50 @@ App::DocumentObject *SketchObject::getSubObject(
             if(pyObj)
                 *pyObj = vals[ConstrId]->getPyObject();
             return const_cast<SketchObject*>(this);
-        } else
+        }
+        else {
             return nullptr;
+        }
     }
 
     if (pmat && transform)
         *pmat *= Placement.getValue().toMatrix();
 
-    if (pyObj) {
-        Part::TopoShape shape;
-        std::string name = convertSubName(indexedName,false);
-        if (geo) {
-            shape = getEdge(geo,name.c_str());
-            if(pmat && !shape.isNull())
-                shape.transformShape(*pmat,false,true);
-        } else if (!subshape.isNull()) {
-            shape = subshape;
-            if (pmat)
-                shape.transformShape(*pmat,false,true);
-        } else {
-            if(pmat)
-                point = (*pmat)*point;
-            shape = BRepBuilderAPI_MakeVertex(gp_Pnt(point.x,point.y,point.z)).Vertex();
-            // Originally in ComplexGeoData::setElementName
-            // LinkStable/src/App/ComplexGeoData.cpp#L1631
-            // No longer possible after map separated in ElementMap.cpp
-            if ( !shape.hasElementMap() ) {
-                shape.resetElementMap(std::make_shared<Data::ElementMap>());
-            }
-            shape.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-                                 Data::MappedName::fromRawData(name.c_str()),0);
-        }
-        shape.Tag = getID();
-        *pyObj = Py::new_reference_to(Part::shape2pyshape(shape));
+    if (!pyObj) {
+        return const_cast<SketchObject*>(this);
     }
+
+    // pyObj exists from here
+    Part::TopoShape shape;
+    std::string name = convertSubName(indexedName,false);
+    if (geo) {
+        shape = getEdge(geo,name.c_str());
+        if(pmat && !shape.isNull()) {
+            shape.transformShape(*pmat,false,true);
+        }
+    }
+    else if (!subshape.isNull()) {
+        shape = subshape;
+        if (pmat) {
+            shape.transformShape(*pmat,false,true);
+        }
+    }
+    else {
+        if(pmat) {
+            point = (*pmat)*point;
+        }
+        shape = BRepBuilderAPI_MakeVertex(gp_Pnt(point.x,point.y,point.z)).Vertex();
+        // Originally in ComplexGeoData::setElementName
+        // LinkStable/src/App/ComplexGeoData.cpp#L1631
+        // No longer possible after map separated in ElementMap.cpp
+        if (!shape.hasElementMap()) {
+            shape.resetElementMap(std::make_shared<Data::ElementMap>());
+        }
+        shape.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                             Data::MappedName::fromRawData(name.c_str()),0);
+    }
+    shape.Tag = getID();
+    *pyObj = Py::new_reference_to(Part::shape2pyshape(shape));
 
     return const_cast<SketchObject*>(this);
 }
@@ -11157,7 +11171,8 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
     return shape;
 }
 
-Data::IndexedName SketchObject::checkSubName(const char *subname) const{
+Data::IndexedName SketchObject::checkSubName(const char *subname) const
+{
     static std::vector<const char *> types = {
         "Edge",
         "Vertex",
