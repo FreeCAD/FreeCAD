@@ -24,7 +24,7 @@
 installed addons will be checked for available updates</string>
      </property>
      <property name="text">
-      <string>Automatically check for updates at start (requires git)</string>
+      <string>Automatically check for updates at start (requires Git)</string>
      </property>
      <property name="autoExclusive">
       <bool>false</bool>
@@ -366,7 +366,7 @@ installed addons will be checked for available updates</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>The path to the git executable. Autodetected if needed and not specified.</string>
+        <string>The path to the Git executable. Autodetected if needed and not specified.</string>
        </property>
        <property name="prefEntry" stdset="0">
         <cstring>GitExecutable</cstring>
@@ -393,7 +393,7 @@ installed addons will be checked for available updates</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="guiprefcheckboxShowBranchSwitcher">
         <property name="text">
-         <string>Show option to change branches (requires git)</string>
+         <string>Show option to change branches (requires Git)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowBranchSwitcher</cstring>
@@ -406,7 +406,7 @@ installed addons will be checked for available updates</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="guiprefcheckboxDisableGit">
         <property name="text">
-         <string>Disable git (fall back to ZIP downloads only)</string>
+         <string>Disable Git (fall back to ZIP downloads only)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>disableGit</cstring>
