@@ -4149,18 +4149,17 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     // Find out if reference is aligned with V or H axis,
     // if so we can keep Vertical and Horizontal constraints in the mirrored geometry.
     bool refIsLine = refPosId == Sketcher::PointPos::none;
-    bool refIsAxisAligned = false;
-    if (refGeoId == Sketcher::GeoEnum::VAxis || refGeoId == Sketcher::GeoEnum::HAxis || !refIsLine) {
-        refIsAxisAligned = true;
-    }
-    else {
-        for (auto* constr : constrvals) {
-            if (constr->First == refGeoId
-                && (constr->Type == Sketcher::Vertical || constr->Type == Sketcher::Horizontal)) {
-                refIsAxisAligned = true;
-            }
-        }
-    }
+    bool refIsAxisAligned =
+        (refGeoId == Sketcher::GeoEnum::VAxis
+         || refGeoId == Sketcher::GeoEnum::HAxis
+         || !refIsLine
+         || (std::find_if(
+                 constrvals.begin(),
+                 constrvals.end(),
+                 [&refGeoId](auto* constr) {
+                     return (constr->First == refGeoId
+                             && (constr->Type == Sketcher::Vertical
+                                 || constr->Type == Sketcher::Horizontal));}) != constrvals.end()));
 
     std::vector<Part::Geometry*> symgeos = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
 
@@ -4246,8 +4245,9 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                         constNew->SecondPos = Sketcher::PointPos::start;
                 }
 
-                if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+                if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
                     AutoLockTangencyAndPerpty(constNew, true);
+                }
 
                 if ((constr->Type == Sketcher::Angle)
                     && (refPosId == Sketcher::PointPos::none)) {
@@ -4292,65 +4292,72 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
             newconstrVals.push_back(constNew);
         }
 
-        if (addSymmetryConstraints) {
-            auto createSymConstr = [&]
+        if (!addSymmetryConstraints) {
+            if (newconstrVals.size() > constrvals.size()) {
+                Constraints.setValues(std::move(newconstrVals));
+            }
+
+            // we delayed update, so trigger it now.
+            // Update geometry indices and rebuild vertexindex now via onChanged, so that
+            // ViewProvider::UpdateData is triggered.
+            Geometry.touch();
+
+            return Geometry.getSize() - 1;
+        }
+
+        auto createSymConstr = [&]
             (int first, int second, Sketcher::PointPos firstPos, Sketcher::PointPos secondPos) {
-                auto symConstr = new Constraint();
-                symConstr->Type = Symmetric;
-                symConstr->First = first;
-                symConstr->Second = second;
-                symConstr->Third = refGeoId;
-                symConstr->FirstPos = firstPos;
-                symConstr->SecondPos = secondPos;
-                symConstr->ThirdPos = refPosId;
-                newconstrVals.push_back(symConstr);
-            };
-            auto createEqualityConstr = [&]
+            auto symConstr = new Constraint();
+            symConstr->Type = Symmetric;
+            symConstr->First = first;
+            symConstr->Second = second;
+            symConstr->Third = refGeoId;
+            symConstr->FirstPos = firstPos;
+            symConstr->SecondPos = secondPos;
+            symConstr->ThirdPos = refPosId;
+            newconstrVals.push_back(symConstr);
+        };
+        auto createEqualityConstr = [&]
             (int first, int second) {
-                auto symConstr = new Constraint();
-                symConstr->Type = Equal;
-                symConstr->First = first;
-                symConstr->Second = second;
-                newconstrVals.push_back(symConstr);
-            };
+            auto symConstr = new Constraint();
+            symConstr->Type = Equal;
+            symConstr->First = first;
+            symConstr->Second = second;
+            newconstrVals.push_back(symConstr);
+        };
 
-            for (auto geoIdPair : geoIdMap) {
-                int geoId1 = geoIdPair.first;
-                int geoId2 = geoIdPair.second;
-                const Part::Geometry* geo = getGeometry(geoId1);
+        for (auto geoIdPair : geoIdMap) {
+            int geoId1 = geoIdPair.first;
+            int geoId2 = geoIdPair.second;
+            const Part::Geometry* geo = getGeometry(geoId1);
 
-                if (geo->is<Part::GeomLineSegment>()) {
-                    auto gf = GeometryFacade::getFacade(geo);
-                    if (!gf->isInternalAligned()) {
-                        // Note internal aligned lines (ellipse, parabola, hyperbola) are causing redundant constraint.
-                        createSymConstr(geoId1, geoId2, PointPos::start, isStartEndInverted[geoId1] ? PointPos::end : PointPos::start);
-                        createSymConstr(geoId1, geoId2, PointPos::end, isStartEndInverted[geoId1] ? PointPos::start : PointPos::end);
-                    }
-                }
-                else if (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>()) {
-                    createEqualityConstr(geoId1, geoId2);
-                    createSymConstr(geoId1, geoId2, PointPos::mid, PointPos::mid);
-                }
-                else if (geo->is<Part::GeomArcOfCircle>()
-                    || geo->is<Part::GeomArcOfEllipse>()
-                    || geo->is<Part::GeomArcOfHyperbola>()
-                    || geo->is<Part::GeomArcOfParabola>()) {
-                    createEqualityConstr(geoId1, geoId2);
+            if (geo->is<Part::GeomLineSegment>()) {
+                auto gf = GeometryFacade::getFacade(geo);
+                if (!gf->isInternalAligned()) {
+                    // Note internal aligned lines (ellipse, parabola, hyperbola) are causing redundant constraint.
                     createSymConstr(geoId1, geoId2, PointPos::start, isStartEndInverted[geoId1] ? PointPos::end : PointPos::start);
                     createSymConstr(geoId1, geoId2, PointPos::end, isStartEndInverted[geoId1] ? PointPos::start : PointPos::end);
                 }
-                else if (geo->is<Part::GeomPoint>()) {
-                    auto gf = GeometryFacade::getFacade(geo);
-                    if (!gf->isInternalAligned()) {
-                        createSymConstr(geoId1, geoId2, PointPos::start, PointPos::start);
-                    }
-                }
-                // Note bspline has symmetric by the internal aligned circles.
             }
-        }
-
-        if (newconstrVals.size() > constrvals.size()){
-            Constraints.setValues(std::move(newconstrVals));
+            else if (geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>()) {
+                createEqualityConstr(geoId1, geoId2);
+                createSymConstr(geoId1, geoId2, PointPos::mid, PointPos::mid);
+            }
+            else if (geo->is<Part::GeomArcOfCircle>()
+                     || geo->is<Part::GeomArcOfEllipse>()
+                     || geo->is<Part::GeomArcOfHyperbola>()
+                     || geo->is<Part::GeomArcOfParabola>()) {
+                createEqualityConstr(geoId1, geoId2);
+                createSymConstr(geoId1, geoId2, PointPos::start, isStartEndInverted[geoId1] ? PointPos::end : PointPos::start);
+                createSymConstr(geoId1, geoId2, PointPos::end, isStartEndInverted[geoId1] ? PointPos::start : PointPos::end);
+            }
+            else if (geo->is<Part::GeomPoint>()) {
+                auto gf = GeometryFacade::getFacade(geo);
+                if (!gf->isInternalAligned()) {
+                    createSymConstr(geoId1, geoId2, PointPos::start, PointPos::start);
+                }
+            }
+            // Note bspline has symmetric by the internal aligned circles.
         }
     }
 
@@ -4588,7 +4595,8 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(const std::vector<int>& 
             cgeoid++;
         }
     }
-    else {// reference is a point
+    else {
+        // reference is a point
         Vector3d refpoint;
         const Part::Geometry* georef = getGeometry(refGeoId);
 
