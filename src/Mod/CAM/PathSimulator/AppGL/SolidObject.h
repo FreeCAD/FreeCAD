@@ -20,79 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __mill_path_segment_h__
-#define __mill_path_segment_h__
-
-
-#include "MillMotion.h"
-#include "EndMill.h"
+#ifndef __solid_object_h__
+#define __solid_object_h__
+#include "SimShapes.h"
 #include "linmath.h"
-#include "MillPathLine.h"
+#include <vector>
 
 namespace MillSim
 {
 
-enum MotionType
-{
-    MTVertical = 0,
-    MTHorizontal,
-    MTCurved
-};
-
-bool IsVerticalMotion(MillMotion* m1, MillMotion* m2);
-
-
-class MillPathSegment
+class SolidObject
 {
 public:
-    /// <summary>
-    /// Create a mill path segment primitive
-    /// </summary>
-    /// <param name="endmill">Mill object</param>
-    /// <param name="from">Start point</param>
-    /// <param name="to">End point</param>
-    MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion* to);
-    virtual ~MillPathSegment();
+    SolidObject();
+    virtual ~SolidObject();
+    void SetPosition(vec3 position);
 
-
-    virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
-    virtual void render(int substep);
-    virtual void GetHeadPosition(vec3 headPos);
-    static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
-
-public:
-    EndMill* endmill = nullptr;
-    bool isMultyPart;
-    int numSimSteps;
-    int indexInArray;
-    int segmentIndex;
-
+    /// Calls the display list.
+    virtual void render();
+    Shape shape;
+    void GenerateSolid(std::vector<Vertex> & verts, std::vector<GLushort>& indices);
+    vec3 center = {};
+    vec3 size = {};
+    vec3 position = {};
+    bool isValid = false;
 
 protected:
-    mat4x4 mShearMat;
-    Shape mShape;
-    float mXYDistance;
-    float mXYZDistance;
-    float mZDistance;
-    float mXYAngle;
-    float mStartAngRad;
-    float mStepAngRad;
-    float mStepDistance = 0;
-    float mSweepAng;
-    float mRadius = 0;
-    float mArcDir = 0;
-    bool mSmallRad = false;
-    int mStepNumber = 0;
-
-    static float mSmallRadStep;
-    static float mResolution;
-
-    vec3 mDiff;
-    vec3 mStepLength = {0};
-    vec3 mCenter = {0};
-    vec3 mStartPos;
-    vec3 mHeadPos = {0};
-    MotionType mMotionType;
+    mat4x4 mModelMat;
 };
 }  // namespace MillSim
 

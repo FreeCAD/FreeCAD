@@ -135,6 +135,9 @@
         <file>gl_simulator/SingleStep.png</file>
         <file>gl_simulator/Slider.png</file>
         <file>gl_simulator/Thumb.png</file>
+        <file>gl_simulator/Path.png</file>
+        <file>gl_simulator/View.png</file>
+        <file>gl_simulator/AmbientOclusion.png</file>
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>

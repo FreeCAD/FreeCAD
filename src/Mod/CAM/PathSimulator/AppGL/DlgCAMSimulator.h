@@ -23,6 +23,7 @@
 #ifndef PATHSIMULATOR_CAMSimulatorGui_H
 #define PATHSIMULATOR_CAMSimulatorGui_H
 
+#include <Mod/Part/App/TopoShape.h>
 #include <QWindow>
 #include <QOpenGLExtraFunctions>
 #include <QPainter>
@@ -33,7 +34,9 @@
 
 namespace MillSim
 {
-class MillSimulation;  // use short declaration as using 'include' causes a header loop
+// use short declaration as using 'include' causes a header loop
+class MillSimulation;
+struct Vertex;
 }
 
 namespace CAMSimulator
@@ -63,11 +66,13 @@ public:
 
     void setAnimating(bool animating);
     static DlgCAMSimulator* GetInstance();
+    void SetStockShape(const Part::TopoShape& tshape, float resolution);
+    void SetBaseShape(const Part::TopoShape& tshape, float resolution);
 
-public:  // slots:
+    public:  // slots:
     void renderLater();
     void renderNow();
-    void startSimulation(const SimStock* stock, float quality);
+    void startSimulation(const Part::TopoShape& stock, float quality);
     void resetSimulation();
     void addGcodeCommand(const char* cmd);
     void addTool(const std::vector<float> toolProfilePoints,
@@ -77,23 +82,28 @@ public:  // slots:
 
 protected:
     bool event(QEvent* event) override;
-
     void checkInitialization();
+    void doGlCleanup();
     void exposeEvent(QExposeEvent* event) override;
     void mouseMoveEvent(QMouseEvent* ev) override;
     void mousePressEvent(QMouseEvent* ev) override;
     void mouseReleaseEvent(QMouseEvent* ev) override;
     void wheelEvent(QWheelEvent* ev) override;
     void hideEvent(QHideEvent* ev) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void GetMeshData(const Part::TopoShape& tshape,
+                     float resolution,
+                     std::vector<MillSim::Vertex>& verts,
+                     std::vector<GLushort>& indices);
 
 private:
     bool mAnimating = false;
     bool mNeedsInitialize = false;
 
     QOpenGLContext* mContext = nullptr;
+    QOpenGLContext* mLastContext = nullptr;
     MillSim::MillSimulation* mMillSimulator = nullptr;
     static DlgCAMSimulator* mInstance;
-    SimStock mStock = {0, 0, 0, 1, 1, 1, 1};
     float mQuality = 10;
 };
 
