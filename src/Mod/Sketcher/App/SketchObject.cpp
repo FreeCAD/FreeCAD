@@ -5324,52 +5324,54 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
 
     const std::vector<Constraint*>& constrvals = this->Constraints.getValues();
 
-    unsigned int nhoriz = 0;
-    unsigned int nvert = 0;
+    std::map<Sketcher::ConstraintType, size_t> numConstrOfType =
+        {{Sketcher::Horizontal, 0}, {Sketcher::Vertical, 0}};
 
     bool changed = false;
 
     std::vector<std::pair<size_t, Sketcher::ConstraintType>> changeConstraintIndices;
 
+    auto chooseActionForConstraint = [&]
+        (size_t i, const int geoid) {
+        if (!constrvals[i]->involvesGeoId(geoid)) {
+            return;
+        }
+        switch (constrvals[i]->Type) {
+        case Sketcher::Horizontal:
+        case Sketcher::Vertical: {
+            if (constrvals[i]->FirstPos == Sketcher::PointPos::none
+                && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
+                changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+                numConstrOfType[constrvals[i]->Type]++;
+            }
+            break;
+        }
+        case Sketcher::Symmetric: {
+            // only remove symmetric to axes
+            if ((constrvals[i]->Third == GeoEnum::HAxis || constrvals[i]->Third == GeoEnum::VAxis)
+                && constrvals[i]->ThirdPos == Sketcher::PointPos::none)
+                changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+            break;
+        }
+        case Sketcher::PointOnObject: {
+            if ((constrvals[i]->Second == GeoEnum::HAxis || constrvals[i]->Second == GeoEnum::VAxis)
+                && constrvals[i]->SecondPos == Sketcher::PointPos::none)
+                changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+            break;
+        }
+        case Sketcher::DistanceX:
+        case Sketcher::DistanceY: {
+            changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
+            break;
+        }
+        default:
+            break;
+        }
+    };
+
     for (size_t i = 0; i < constrvals.size(); i++) {
         for (const auto& geoid : geoIdList) {
-            if (!constrvals[i]->involvesGeoId(geoid)) {
-                continue;
-            }
-            switch (constrvals[i]->Type) {
-            case Sketcher::Horizontal:
-                if (constrvals[i]->FirstPos == Sketcher::PointPos::none
-                    && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
-                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                    nhoriz++;
-                }
-                break;
-            case Sketcher::Vertical:
-                if (constrvals[i]->FirstPos == Sketcher::PointPos::none
-                    && constrvals[i]->SecondPos == Sketcher::PointPos::none) {
-                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                    nvert++;
-                }
-                break;
-            case Sketcher::Symmetric:// only remove symmetric to axes
-                if ((constrvals[i]->Third == GeoEnum::HAxis
-                     || constrvals[i]->Third == GeoEnum::VAxis)
-                    && constrvals[i]->ThirdPos == Sketcher::PointPos::none)
-                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                break;
-            case Sketcher::PointOnObject:
-                if ((constrvals[i]->Second == GeoEnum::HAxis
-                     || constrvals[i]->Second == GeoEnum::VAxis)
-                    && constrvals[i]->SecondPos == Sketcher::PointPos::none)
-                    changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                break;
-            case Sketcher::DistanceX:
-            case Sketcher::DistanceY:
-                changeConstraintIndices.emplace_back(i, constrvals[i]->Type);
-                break;
-            default:
-                break;
-            }
+            chooseActionForConstraint(i, geoid);
         }
     }
 
@@ -5379,8 +5381,9 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
     std::vector<Constraint*> newconstrVals;
     newconstrVals.reserve(constrvals.size());
 
-    int referenceHorizontal = GeoEnum::GeoUndef;
-    int referenceVertical = GeoEnum::GeoUndef;
+    std::map<Sketcher::ConstraintType, int> refConstrOfType =
+        {{Sketcher::Horizontal, GeoEnum::GeoUndef},
+         {Sketcher::Vertical, GeoEnum::GeoUndef}};
 
     int cindex = 0;
     for (size_t i = 0; i < constrvals.size(); i++) {
@@ -5389,57 +5392,52 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
             continue;
         }
 
-        if (changeConstraintIndices[cindex].second == Sketcher::Horizontal && nhoriz > 0) {
+        switch (changeConstraintIndices[cindex].second) {
+        case Sketcher::Horizontal:
+        case Sketcher::Vertical: {
+            if (!(numConstrOfType[changeConstraintIndices[cindex].second] > 0)) {
+                break;
+            }
             changed = true;
-            if (referenceHorizontal == GeoEnum::GeoUndef) {
-                referenceHorizontal = constrvals[i]->First;
+            if (refConstrOfType[changeConstraintIndices[cindex].second] == GeoEnum::GeoUndef) {
+                refConstrOfType[changeConstraintIndices[cindex].second] = constrvals[i]->First;
                 ++cindex;
                 continue;
             }
             auto newConstr = new Constraint();
 
             newConstr->Type = Sketcher::Parallel;
-            newConstr->First = referenceHorizontal;
+            newConstr->First = refConstrOfType[changeConstraintIndices[cindex].second];
             newConstr->Second = constrvals[i]->First;
 
             newconstrVals.push_back(newConstr);
+            break;
         }
-        else if (changeConstraintIndices[cindex].second == Sketcher::Vertical && nvert > 0) {
+        case Sketcher::Symmetric:
+        case Sketcher::PointOnObject: {
+            changed = true; // We remove symmetric/point-on-object on axes
+            break;
+        }
+        case Sketcher::DistanceX:
+        case Sketcher::DistanceY: {
             changed = true;
-            if (referenceVertical == GeoEnum::GeoUndef) {
-                referenceVertical = constrvals[i]->First;
-                ++cindex;
-                continue;
-            }
-            auto newConstr = new Constraint();
-
-            newConstr->Type = Sketcher::Parallel;
-            newConstr->First = referenceVertical;
-            newConstr->Second = constrvals[i]->First;
-
-            newconstrVals.push_back(newConstr);
-        }
-        else if (changeConstraintIndices[cindex].second == Sketcher::Symmetric
-                 || changeConstraintIndices[cindex].second == Sketcher::PointOnObject) {
-            changed = true;// We remove symmetric on axes
-        }
-        else if (changeConstraintIndices[cindex].second == Sketcher::DistanceX
-                 || changeConstraintIndices[cindex].second == Sketcher::DistanceY) {
-            changed = true;// We remove symmetric on axes
             // TODO: Handle pathological cases like DistanceY on horizontal constraint
             newconstrVals.push_back(constrvals[i]->clone());
             newconstrVals.back()->Type = Sketcher::Distance;
+            break;
+        }
+        default: break;
         }
 
         ++cindex;
     }
 
-    if (nhoriz > 0 && nvert > 0) {
+    if (numConstrOfType[Sketcher::Horizontal] > 0 && numConstrOfType[Sketcher::Vertical] > 0) {
         auto newConstr = new Constraint();
 
         newConstr->Type = Sketcher::Perpendicular;
-        newConstr->First = referenceVertical;
-        newConstr->Second = referenceHorizontal;
+        newConstr->First = refConstrOfType[Sketcher::Horizontal];
+        newConstr->Second = refConstrOfType[Sketcher::Vertical];
 
         newconstrVals.push_back(newConstr);
     }
