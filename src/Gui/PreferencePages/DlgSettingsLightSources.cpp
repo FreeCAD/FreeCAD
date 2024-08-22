@@ -111,7 +111,7 @@ void DlgSettingsLightSources::dragMotionCallback(void *data, SoDragger *drag)
     setValueSilently(self->ui->z_spnBox, dir[2]);
 }
 
-void DlgSettingsLightSources::createViewer(void)
+void DlgSettingsLightSources::createViewer()
 {
     const QColor default_bg_color {200, 200, 200};
     const SbVec3f default_view_direction {1.0f, 1.0f, -5.0f};

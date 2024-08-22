@@ -55,8 +55,8 @@ public:
     void resetSettingsToDefaults() override;
 
 public Q_SLOTS:
-    void updateDraggerQS (void);
-    void updateDraggerXYZ(void);
+    void updateDraggerQS ();
+    void updateDraggerXYZ();
     void toggleLight(bool on);
     void lightIntensity(int value);
     void lightColor();
@@ -67,7 +67,7 @@ protected:
 private:
     void saveDirection();
     void loadDirection();
-    void createViewer(void);
+    void createViewer();
     SoDirectionalLightDragger* createDragger();
     static void dragMotionCallback(void *data, SoDragger *drag);
 
