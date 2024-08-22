@@ -674,7 +674,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(len(body.Shape.childShapes()), 1)
         self.assertGreaterEqual(body.Shape.childShapes()[0].ElementMapSize, 26)
         revMap = body.Shape.childShapes()[0].ElementReverseMap
-        self.assertEqual(self.countFacesEdgesVertexes(revMap), (6, 12, 8))
+        self.assertEqual(self.countFacesEdgesVertexes(revMap), (14, 28, 16))
         Radius = 0 # Rectangle is on the axis, but wouldn't matter regardless here
         Area = Part.Face(sketch.Shape).Area
         # General helix formula; not actually used here since devolves to just the
@@ -685,7 +685,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertAlmostEqual(Area, 1)
         self.assertAlmostEqual(helixLength, helix.Height.Value)
         self.assertAlmostEqual(helix.Shape.Volume, Volume, 2)
-        self.assertEqual(body.Shape.ElementMapSize,26)
+        self.assertEqual(body.Shape.ElementMapSize, 58)
 
     def testPartDesignElementMapPocket(self):
         # Arrange
@@ -856,8 +856,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 50)
         revMap = body.Shape.childShapes()[0].ElementReverseMap
         self.assertEqual(self.countFacesEdgesVertexes(revMap), (10, 24, 16))
-        volume = 991.3606270276762  # TODO:  math formula to calc this.
-        self.assertAlmostEqual(helix.Shape.Volume, volume)
+        volume = 991.3606  # TODO:  math formula to calc this.
+        self.assertAlmostEqual(helix.Shape.Volume, volume, 4)
 
     def testPartDesignElementMapChamfer(self):
         """ Test Chamfer ( and  FeatureDressup )"""

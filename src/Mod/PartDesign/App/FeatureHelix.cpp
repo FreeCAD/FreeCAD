@@ -215,41 +215,36 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.move(invObjLoc);
 
-
-        std::vector<TopoDS_Wire> wires;
-        try {
-            // Iterate over wires in sketch shape.
-            for (TopExp_Explorer explorer(sketchshape, TopAbs_WIRE); explorer.More(); explorer.Next())
-            {
-                const TopoDS_Wire& aWire = TopoDS::Wire(explorer.Current());
-                wires.push_back(aWire);
-            }
-        }
-        catch (const Base::Exception& e) {
-            return new App::DocumentObjectExecReturn(e.what());
-        }
         TopoDS_Shape result;
 
         // generate the helix path
-        TopoDS_Shape path = generateHelixPath();
+        TopoDS_Shape path;
+        if (Angle.getValue()==0.){
+            // breaking the path at each turn prevents an OCC issue
+            path = generateHelixPath();
+        } else {
+            // don't break the path or the generated solid is invalid
+            path = generateHelixPath(1000.);
+        }
 
-        TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
+        TopoDS_Shape face = sketchshape;
         face.Move(invObjLoc);
         BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
-        mkPS.Build();
         result = mkPS.Shape();
 
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
-        if (SC.State() == TopAbs_IN)
+        if (SC.State() == TopAbs_IN) {
             result.Reverse();
+        }
 
         AddSubShape.setValue(result);
 
         if (base.isNull()) {
 
-            if (getAddSubType() == FeatureAddSub::Subtractive)
+            if (getAddSubType() == FeatureAddSub::Subtractive){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
+            }
 
             if (!isSingleSolidRuleSatisfied(result)) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
@@ -262,15 +257,16 @@ App::DocumentObjectExecReturn* Helix::execute()
         if (getAddSubType() == FeatureAddSub::Additive) {
 
             BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
-            if (!mkFuse.IsDone())
+            if (!mkFuse.IsDone()){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
+            }
             // we have to get the solids (fuse sometimes creates compounds)
             TopoShape boolOp = this->getSolid(mkFuse.Shape());
 
             // lets check if the result is a solid
-            if (boolOp.isNull())
+            if (boolOp.isNull()){
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-
+            }
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
@@ -335,7 +331,7 @@ void Helix::updateAxis()
     Axis.setValue(dir.x, dir.y, dir.z);
 }
 
-TopoDS_Shape Helix::generateHelixPath()
+TopoDS_Shape Helix::generateHelixPath(double breakAtTurn)
 {
     double turns = Turns.getValue();
     double height = Height.getValue();
@@ -398,7 +394,7 @@ TopoDS_Shape Helix::generateHelixPath()
         radiusTop = radius + height * tan(Base::toRadians(angle));
 
     //build the helix path
-    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1000, leftHanded);
+    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, breakAtTurn, leftHanded);
 
     /*
      * The helix wire is created with the axis coinciding with z-axis and the start point at (radius, 0, 0)
