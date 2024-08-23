@@ -75,6 +75,10 @@ public:
      * If no such icon is found in the current theme fallback is returned instead.
      */
     QIcon iconFromTheme(const char* name, const QIcon& fallback = QIcon());
+    /** Returns the QIcon corresponding to name in the default (FreeCAD's) icon theme.
+     * If no such icon is found in the current theme fallback is returned instead.
+     */
+    QIcon iconFromDefaultTheme(const char* name, const QIcon& fallback = QIcon());
     /// Retrieves a pixmap by name
     QPixmap pixmap(const char* name) const;
     /** Retrieves a pixmap by name and size created by an
@@ -150,6 +154,7 @@ public:
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;
     void restoreCustomPaths();
+    void configureUseIconTheme();
 
     static BitmapFactoryInst* _pcSingleton;
     BitmapFactoryInst();
