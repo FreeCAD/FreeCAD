@@ -217,10 +217,15 @@ SET(MachiningLib_Files
     Resources/Materials/Machining/AluminumCastAlloy.FCMat
     Resources/Materials/Machining/AluminumWroughtAlloy.FCMat
     Resources/Materials/Machining/AusteniticStainlessSteel.FCMat
+    Resources/Materials/Machining/BalsaWood.FCMat
     Resources/Materials/Machining/GrayCastIron.FCMat
+    Resources/Materials/Machining/HardWood.FCMat
     Resources/Materials/Machining/LowAlloySteel.FCMat
     Resources/Materials/Machining/MalleableCastIron.FCMat
     Resources/Materials/Machining/MildSteel.FCMat
+    Resources/Materials/Machining/MDF.FCMat
+    Resources/Materials/Machining/ParticleBoard.FCMat
+    Resources/Materials/Machining/SoftWood.FCMat
     Resources/Materials/Machining/ToolSteel.FCMat
 )
 
