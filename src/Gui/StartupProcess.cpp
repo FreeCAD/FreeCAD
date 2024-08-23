@@ -178,13 +178,8 @@ void StartupProcess::setThemePaths()
         QIcon::setThemeSearchPaths(searchPaths);
     }
 
-    // KDE file dialog needs icons from the desktop theme
-    QIcon::setFallbackThemeName(QIcon::themeName());
-
     std::string name = hTheme->GetASCII("Name");
-    if (name.empty()) {
-        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-    } else {
+    if (!name.empty()) {
         QIcon::setThemeName(QString::fromLatin1(name.c_str()));
     }
 }
