@@ -782,11 +782,9 @@ void DlgPreferencesImp::expandToMinimumDialogWidth()
     auto screen = windowHandle()->screen();
     auto availableSize = screen->availableSize();
 
-    // if the expanded dialog occupies less than 50% of the screen
     int mw = minimumDialogWidth(minimumPageWidth());
-    if (availableSize.width() > 2 * mw) {
-        resize(mw, height());
-    }
+    // expand dialog to minimum size required but do not use more than 80% of screen real estate
+    resize(std::min(int(0.8 * availableSize.width()), mw), height());
 }
 
 void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
