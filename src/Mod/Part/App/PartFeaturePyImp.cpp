@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 #include "PartFeature.h"
 
 // inclusion of the generated files (generated out of PartFeaturePy.xml)
@@ -42,9 +44,11 @@ PyObject *PartFeaturePy::getElementHistory(PyObject *args, PyObject *kwds) {
     PyObject *recursive = Py_True;
     PyObject *sameType = Py_False;
     PyObject *showName = Py_False;
-    static char *kwlist[] = {"elementName", "recursive", "sameType", "showName", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|OOO", kwlist, &name, &recursive, &sameType, &showName))
+
+    static const std::array<const char *, 5> kwlist{"elementName", "recursive", "sameType", "showName", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "s|OOO", kwlist, &name, &recursive, &sameType, &showName)) {
         return {};
+    }
 
     auto feature = getFeaturePtr();
     Py::List list;
