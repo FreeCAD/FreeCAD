@@ -62,11 +62,11 @@ format:
   _help_separate_ctrl_name_with_space:
   - If true, separate flow control names from their parentheses
   - with a space
-  separate_ctrl_name_with_space: false
+  separate_ctrl_name_with_space: true
   _help_separate_fn_name_with_space:
   - If true, separate function names from parentheses with a
   - space
-  separate_fn_name_with_space: false
+  separate_fn_name_with_space: true
   _help_dangle_parens:
   - If a statement is wrapped to more than one line, than dangle
   - the closing parenthesis on its own line.
