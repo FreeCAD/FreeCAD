@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>SearchBar</name>
+  <description>Adds a search bar widget for tools, document objects, and preferences</description>
+  <version>1.0.2</version>
+  <date>2022-06-01</date>
+  <author email="searchbar@suzanne.soy">Suzanne Soy</author>
+  <maintainer email="searchbar@suzanne.soy">Suzanne Soy</maintainer>
+  <license file="LICENSE">CCOv1</license>
+  <url type="repository" branch="main">https://github.com/SuzanneSoy/SearchBar</url>
+  <url type="bugtracker">https://github.com/SuzanneSoy/SearchBar/issues</url>
+  <url type="documentation">https://github.com/SuzanneSoy/SearchBar</url>
+  <icon>Tango-System-search.svg</icon>
+  <depend type="python">lxml</depend>
+  <content>
+    <workbench>
+      <name>SearchBar</name>
+      <description>Adds a search bar widget for tools, document objects, and preferences</description>
+      <classname></classname>
+      <icon>Tango-System-search.svg</icon>
+      <subdirectory>./</subdirectory>
+      <tag>search</tag>
+      <tag>widget</tag>
+      <tag>ui/ux</tag>
+      <version>0.1.0</version>
+    </workbench>
+  </content>
+</package>
