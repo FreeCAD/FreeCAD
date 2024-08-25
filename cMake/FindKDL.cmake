@@ -1,6 +1,9 @@
 # Locate KDL install directory
 
-# This module defines KDL_INSTALL where to find include, lib, bin, etc. KDL_FOUND, is set to true
+# This module defines:
+#
+# * KDL_INSTALL where to find include, lib, bin, etc.
+# * KDL_FOUND is set to true
 
 # INCLUDE (${PROJECT_SOURCE_DIR}/config/FindPkgConfig.cmake)
 

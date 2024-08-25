@@ -1,7 +1,8 @@
 # Try to find Coin3D Doc If found, this will define
 #
-# COIN3D_DOC_FOUND    - we have access to Coin3D doc, either locally or on the net
-# COIN3D_DOC_TAGFILE  - full name of the tag file COIN3D_DOC_PATH     - path to html Coin3D doc
+# * COIN3D_DOC_FOUND    - we have access to Coin3D doc, either locally or on the net
+# * COIN3D_DOC_TAGFILE  - full name of the tag file
+# * COIN3D_DOC_PATH     - path to html Coin3D doc
 
 set (COIN3D_DOC_FOUND "NO")
 

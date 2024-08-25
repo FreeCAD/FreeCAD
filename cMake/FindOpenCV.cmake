@@ -4,11 +4,18 @@
 # OpenCv tree to use. OpenCV_FIND_REQUIRED_COMPONENTS : FIND_PACKAGE(OpenCV COMPONENTS ..)
 # compatible interface. typically  CV CXCORE CVAUX HIGHGUI CVCAM .. etc.
 #
-# The following are set after configuration is done: OpenCV_FOUND OpenCV_INCLUDE_DIR
-# OpenCV_LIBRARIES OpenCV_LINK_DIRECTORIES
+# The following are set after configuration is done:
 #
-# deprecated: OPENCV_* uppercase replaced by case sensitive OpenCV_* OPENCV_EXE_LINKER_FLAGS
-# OPENCV_INCLUDE_DIR : replaced by plural *_DIRS
+# * OpenCV_FOUND
+# * OpenCV_INCLUDE_DIR
+# * OpenCV_LIBRARIES
+# * OpenCV_LINK_DIRECTORIES
+#
+# deprecated:
+#
+# * OPENCV_* uppercase replaced by case sensitive * OpenCV_*
+# * OPENCV_EXE_LINKER_FLAGS
+# * OPENCV_INCLUDE_DIR : replaced by plural *_DIRS
 #
 # 2004/05 Jan Woetzel, Friso, Daniel Grest 2006/01 complete rewrite by Jan Woetzel 1006/09 2nd
 # rewrite introducing ROOT_DIR and PATH_SUFFIXES to handle multiple installed versions gracefully by

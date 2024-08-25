@@ -1,7 +1,8 @@
 # Try to find Salome SMESH Once done this will define
 #
-# SMESH_FOUND         - system has Salome SMESH SMESH_INCLUDE_DIR   - where the Salome SMESH include
-# directory can be found SMESH_LIBRARIES     - Link this to use Salome SMESH
+# * SMESH_FOUND         - system has Salome SMESH
+# * SMESH_INCLUDE_DIR   - where the Salome SMESH include directory can be found
+# * SMESH_LIBRARIES     - Link this to use Salome SMESH
 #
 
 # SMESH needs VTK

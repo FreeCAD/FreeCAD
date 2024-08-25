@@ -1,6 +1,8 @@
-# Try to find PySide2 utilities, PYSIDE2UIC and PYSIDE2RCC: PYSIDE_UIC_EXECUTABLE - Location of
-# PYSIDE2UIC executable PYSIDE_RCC_EXECUTABLE - Location of PYSIDE2RCC executable PYSIDE_TOOLS_FOUND
-# - PySide2 utilities found.
+# Try to find PySide2 utilities, PYSIDE2UIC and PYSIDE2RCC:
+#
+# * PYSIDE_UIC_EXECUTABLE - Location of PYSIDE2UIC executable
+# * PYSIDE_RCC_EXECUTABLE - Location of PYSIDE2RCC executable
+# * PYSIDE_TOOLS_FOUND - PySide2 utilities found
 
 if (WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # pyside2 tools are often in same location as python interpreter

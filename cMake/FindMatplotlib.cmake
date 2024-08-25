@@ -1,11 +1,12 @@
 # * Find the matplotlib libraries This module finds IF matplotlib is installed, and sets the
 #   following variables indicating where it is.
 #
-# MATPLOTLIB_FOUND            - was matplotlib found MATPLOTLIB_VERSION - the version of matplotlib
-# found as a string MATPLOTLIB_VERSION_MAJOR    - the major version number of matplotlib
-# MATPLOTLIB_VERSION_MINOR    - the minor version number of matplotlib MATPLOTLIB_VERSION_PATCH    -
-# the patch version number of matplotlib MATPLOTLIB_PATH_DIRS        - path to the matplotlib
-# include files
+# * MATPLOTLIB_FOUND            - was matplotlib found
+# * MATPLOTLIB_VERSION          - the version of matplotlib found as a string
+# * MATPLOTLIB_VERSION_MAJOR    - the major version number of matplotlib
+# * MATPLOTLIB_VERSION_MINOR    - the minor version number of matplotlib
+# * MATPLOTLIB_VERSION_PATCH    - the patch version number of matplotlib
+# * MATPLOTLIB_PATH_DIRS        - path to the matplotlib include files
 
 if (Python3_Interpreter_FOUND)
     # Try to import matplotlib into Python interpreter. Python interpreter was found previously as

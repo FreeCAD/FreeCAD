@@ -1,8 +1,10 @@
 # Try to find OCE / OCC Once done this will define
 #
-# OCC_FOUND          - system has OCC - OpenCASCADE OCC_INCLUDE_DIR    - where the OCC include
-# directory can be found OCC_LIBRARY_DIR    - where the OCC library directory can be found
-# OCC_LIBRARIES      - Link this to use OCC OCC_OCAF_LIBRARIES - Link this to use OCC OCAF framework
+# * OCC_FOUND          - system has OCC - OpenCASCADE
+# * OCC_INCLUDE_DIR    - where the OCC include directory can be found
+# * OCC_LIBRARY_DIR    - where the OCC library directory can be found
+# * OCC_LIBRARIES      - Link this to use OCC
+# * OCC_OCAF_LIBRARIES - Link this to use OCC OCAF framework
 
 # First try to find OpenCASCADE Community Edition
 if (NOT DEFINED OCE_DIR)

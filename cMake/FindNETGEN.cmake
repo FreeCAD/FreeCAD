@@ -1,13 +1,16 @@
 # Try to find nglib/netgen
 #
-# Optional input NETGENDATA is path to the netgen libsrc source tree - this is required due to some
-# headers not being installed by netgen.
+# Optional input:
+#
+# * NETGENDATA is path to the netgen libsrc source tree - this is required due to some headers not
+#   being installed by netgen.
 #
 # Once done this will define
 #
-# NGLIB_INCLUDE_DIR   - where the nglib include directory can be found NGLIB_LIBRARIES     - Link
-# this to use nglib NETGEN_INCLUDE_DIRS - where the netgen include directories can be found
-# NETGEN_DEFINITIONS  - C++ compiler defines required to use netgen/nglib
+# * NGLIB_INCLUDE_DIR   - where the nglib include directory can be found
+# * NGLIB_LIBRARIES     - Link this to use nglib
+# * NETGEN_INCLUDE_DIRS - where the netgen include directories can be found
+# * NETGEN_DEFINITIONS  - C++ compiler defines required to use netgen/nglib
 #
 # See also: http://git.salome-platform.org/gitweb/?p=NETGENPLUGIN_SRC.git;a=summary
 

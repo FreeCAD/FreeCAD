@@ -1,7 +1,12 @@
 # * Find MED file installation
 #
-# The following variable are set: MEDFILE_INCLUDE_DIRS MEDFILE_LIBRARIES MEDFILE_C_LIBRARIES
-# MEDFILE_F_LIBRARIES MEDFILE_VERSION
+# The following variable are set:
+#
+# * MEDFILE_INCLUDE_DIRS
+# * MEDFILE_LIBRARIES
+# * MEDFILE_C_LIBRARIES
+# * MEDFILE_F_LIBRARIES
+# * MEDFILE_VERSION
 #
 # The CMake (or environment) variable MEDFILE_ROOT_DIR can be set to guide the detection and
 # indicate a root directory to look into.

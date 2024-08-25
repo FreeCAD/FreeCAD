@@ -2,8 +2,9 @@
 #
 # Sets the usual variables expected for find_package scripts:
 #
-# SPNAV_INCLUDE_DIR - header location SPNAV_LIBRARIES - library to link against SPNAV_FOUND - true
-# if pugixml was found.
+# * SPNAV_INCLUDE_DIR - header location
+# * SPNAV_LIBRARIES - library to link against
+# * SPNAV_FOUND - true if spnav was found
 
 if (UNIX)
 

@@ -40,10 +40,14 @@ macro (fc_copy_file_if_different inputfile outputfile)
 endmacro (fc_copy_file_if_different)
 
 macro (fc_target_copy_resource target_name inpath outpath)
-    # Macro to copy a list of files into a nested directory structure Arguments - target_name - name
-    # of the target the files will be added to inpath      - name of the source directory outpath -
-    # name of the destination directory ARGN        - a list of relative file names that will be
-    # copied
+    # Macro to copy a list of files into a nested directory structure
+    #
+    # Arguments:
+    #
+    # * target_name - name of the target the files will be added to
+    # * inpath      - name of the source directory
+    # * outpath     - name of the destination directory
+    # * ARGN        - a list of relative file names that will be copied
     #
     # If a relative file name is foo/bar.txt then the foo directory part will be kept so that the
     # destination file name will be ${outpath}/foo/bar.txt
@@ -67,10 +71,14 @@ macro (fc_target_copy_resource target_name inpath outpath)
 endmacro (fc_target_copy_resource)
 
 macro (fc_target_copy_resource_flat target_name inpath outpath)
-    # Macro to copy a list of files into a flat directory structure Arguments - target_name - name
-    # of the target the files will be added to inpath      - name of the source directory outpath -
-    # name of the destination directory ARGN        - a list of relative file names that will be
-    # copied
+    # Macro to copy a list of files into a flat directory structure
+    #
+    # Arguments:
+    #
+    # * target_name - name of the target the files will be added to
+    # * inpath      - name of the source directory
+    # * outpath     - name of the destination directory
+    # * ARGN        - a list of relative file names that will be copied
     #
     # If a relative file name is foo/bar.txt then the foo directory part will be removed so that the
     # destination file name will be ${outpath}/bar.txt

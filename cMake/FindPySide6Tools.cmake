@@ -1,6 +1,8 @@
-# Try to find PYSIDE6 utilities, PYSIDE6UIC and PYSIDE6RCC: PYSIDE_UIC_EXECUTABLE - Location of
-# PYSIDE6UIC executable PYSIDE_RCC_EXECUTABLE - Location of PYSIDE6RCC executable PYSIDE_TOOLS_FOUND
-# - PYSIDE6 utilities found.
+# Try to find PySide6 utilities, PYSIDE6UIC and PYSIDE6RCC:
+#
+# * PYSIDE_UIC_EXECUTABLE - Location of PYSIDE6UIC executable
+# * PYSIDE_RCC_EXECUTABLE - Location of PYSIDE6RCC executable
+# * PYSIDE_TOOLS_FOUND - PySide6 utilities found
 
 if (TARGET Qt6::uic)
     get_target_property (PYSIDE6_UIC_EXECUTABLE Qt6::uic LOCATION)

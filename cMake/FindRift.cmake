@@ -1,6 +1,10 @@
 # Find OCULUS
 #
-# This module defines OCULUS_FOUND OCULUS_INCLUDE_DIRS OCULUS_LIBRARIES
+# This module defines:
+#
+# * OCULUS_FOUND
+# * OCULUS_INCLUDE_DIRS
+# * OCULUS_LIBRARIES
 #
 # Copyright (c) 2012 I-maginer
 #
