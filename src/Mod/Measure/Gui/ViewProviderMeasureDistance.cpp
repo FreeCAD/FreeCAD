@@ -96,8 +96,8 @@ MeasureGui::DimensionLinear::DimensionLinear()
     SO_NODE_ADD_FIELD(text, ("test"));                // dimension text
     SO_NODE_ADD_FIELD(dColor, (1.0, 0.0, 0.0));       // dimension color.
     SO_NODE_ADD_FIELD(backgroundColor, (1.0, 1.0, 1.0));
-    SO_NODE_ADD_FIELD(showArrows, (false));           // display dimension arrows
-    SO_NODE_ADD_FIELD(fontSize, (12.0));                // size of the dimension font
+    SO_NODE_ADD_FIELD(showArrows, (false));  // display dimension arrows
+    SO_NODE_ADD_FIELD(fontSize, (12.0));     // size of the dimension font
 }
 
 MeasureGui::DimensionLinear::~DimensionLinear()
@@ -231,13 +231,16 @@ void MeasureGui::DimensionLinear::setupDimension()
 }
 
 
-SbMatrix ViewProviderMeasureDistance::getMatrix() {
+SbMatrix ViewProviderMeasureDistance::getMatrix()
+{
     if (!pcObject) {
         return {};
     }
-    
-    auto prop1 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
-    auto prop2 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
+
+    auto prop1 =
+        Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
+    auto prop2 =
+        Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
 
     if (!prop1 || !prop2) {
         return {};
@@ -255,23 +258,34 @@ SbMatrix ViewProviderMeasureDistance::getMatrix() {
     assert(fabs(localYAxis.Dot(localXAxis)) < tolerance);
     Base::Vector3d localZAxis = localYAxis.Cross(localXAxis).Normalize();
 
-    SbMatrix matrix = SbMatrix(
-        localXAxis.x, localXAxis.y, localXAxis.z, 0,
-        localYAxis.x, localYAxis.y, localYAxis.z ,0,
-        localZAxis.x, localZAxis.y, localZAxis.z, 0,
-        // 0,0,0,1
-        origin[0], origin[1], origin[2], 1
-    );
+    SbMatrix matrix = SbMatrix(localXAxis.x,
+                               localXAxis.y,
+                               localXAxis.z,
+                               0,
+                               localYAxis.x,
+                               localYAxis.y,
+                               localYAxis.z,
+                               0,
+                               localZAxis.x,
+                               localZAxis.y,
+                               localZAxis.z,
+                               0,
+                               // 0,0,0,1
+                               origin[0],
+                               origin[1],
+                               origin[2],
+                               1);
 
     return matrix;
 }
 
 
-//! calculate a good direction from the elements being measured to the annotation text based on the layout
-//! of the elements and its relationship with the cardinal axes and the view direction.  elementDirection
-//! is expected to be a normalized vector.
-//! an example of an elementDirection would be the vector from the start of a line to the end.
-Base::Vector3d ViewProviderMeasureDistance::getTextDirection(Base::Vector3d elementDirection, double tolerance)
+//! calculate a good direction from the elements being measured to the annotation text based on the
+//! layout of the elements and its relationship with the cardinal axes and the view direction.
+//! elementDirection is expected to be a normalized vector. an example of an elementDirection would
+//! be the vector from the start of a line to the end.
+Base::Vector3d ViewProviderMeasureDistance::getTextDirection(Base::Vector3d elementDirection,
+                                                             double tolerance)
 {
     const Base::Vector3d stdX(1.0, 0.0, 0.0);
     const Base::Vector3d stdY(0.0, 1.0, 0.0);
@@ -297,20 +311,31 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
 {
     sPixmap = "Measurement-Distance";
 
-    ADD_PROPERTY_TYPE(ShowDelta, (false), "Appearance", App::Prop_None, "Display the X, Y and Z components of the distance");
+    ADD_PROPERTY_TYPE(ShowDelta,
+                      (false),
+                      "Appearance",
+                      App::Prop_None,
+                      "Display the X, Y and Z components of the distance");
 
     // vert indexes used to create the annotation lines
     const size_t lineCount(3);
-    static const int32_t lines[lineCount] =
-    {
-        2,3,-1 // dimension line
+    static const int32_t lines[lineCount] = {
+        2,
+        3,
+        -1  // dimension line
     };
 
     const size_t lineCountSecondary(9);
     static const int32_t linesSecondary[lineCountSecondary] = {
-        0,2,-1, // extension line 1
-        1,3,-1, // extension line 2
-        2,4,-1  // label helper line
+        0,
+        2,
+        -1,  // extension line 1
+        1,
+        3,
+        -1,  // extension line 2
+        2,
+        4,
+        -1  // label helper line
     };
 
     // Line Coordinates
@@ -354,9 +379,10 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     pLineSeparatorSecondary->addChild(lineSetSecondary);
 
     auto points = new SoMarkerSet();
-    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
-            ViewParams::instance()->getMarkerSize());
-    points->numPoints=2;
+    points->markerIndex =
+        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
+                                                     ViewParams::instance()->getMarkerSize());
+    points->numPoints = 2;
     pLineSeparator->addChild(points);
 
 
@@ -431,9 +457,11 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     if (!pcObject) {
         return;
     }
-    
-    auto prop1 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
-    auto prop2 = Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
+
+    auto prop1 =
+        Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position1"));
+    auto prop2 =
+        Base::freecad_dynamic_cast<App::PropertyVector>(pcObject->getPropertyByName("Position2"));
 
     if (!prop1 || !prop2) {
         return;
@@ -448,19 +476,23 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     // Set the distance
     fieldDistance = (vec2 - vec1).Length();
 
-    auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
+    auto propDistance =
+        dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
     setLabelValue(propDistance->getQuantityValue().getUserString());
 
     // Set delta distance
-    auto propDistanceX = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceX"));
+    auto propDistanceX =
+        static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceX"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
         ->text.setValue("Δx: " + propDistanceX->getQuantityValue().getUserString().toUtf8());
 
-    auto propDistanceY = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceY"));
+    auto propDistanceY =
+        static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceY"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
         ->text.setValue("Δy: " + propDistanceY->getQuantityValue().getUserString().toUtf8());
 
-    auto propDistanceZ = static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceZ"));
+    auto propDistanceZ =
+        static_cast<App::PropertyDistance*>(getMeasureObject()->getPropertyByName("DistanceZ"));
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
         ->text.setValue("Δz: " + propDistanceZ->getQuantityValue().getUserString().toUtf8());
 
@@ -472,27 +504,38 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     updateView();
 }
 
-void ViewProviderMeasureDistance::onChanged(const App::Property* prop) {
+void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
+{
 
     if (prop == &ShowDelta) {
-        pDeltaDimensionSwitch->whichChild.setValue(ShowDelta.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE);
-    } else if (prop == &FontSize) {
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))->fontSize.setValue(FontSize.getValue());
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))->fontSize.setValue(FontSize.getValue());
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))->fontSize.setValue(FontSize.getValue());
-    } else if (prop == &TextBackgroundColor) {
-        auto bColor = TextBackgroundColor.getValue();
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+        pDeltaDimensionSwitch->whichChild.setValue(ShowDelta.getValue() ? SO_SWITCH_ALL
+                                                                        : SO_SWITCH_NONE);
     }
-    
+    else if (prop == &FontSize) {
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
+            ->fontSize.setValue(FontSize.getValue());
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
+            ->fontSize.setValue(FontSize.getValue());
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
+            ->fontSize.setValue(FontSize.getValue());
+    }
+    else if (prop == &TextBackgroundColor) {
+        auto bColor = TextBackgroundColor.getValue();
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
+            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
+            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
+            ->backgroundColor.setValue(bColor.r, bColor.g, bColor.g);
+    }
+
 
     ViewProviderMeasureBase::onChanged(prop);
 }
 
 
-void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject) {
+void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject)
+{
     (void)measureObject;
     setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
 }
