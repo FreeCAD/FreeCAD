@@ -28,6 +28,7 @@
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
+#include <QGraphicsItemGroup>
 #include <QGraphicsObject>
 #include <QStyleOptionGraphicsItem>
 
@@ -99,8 +100,8 @@ public:
 
     double getTolAdjust();
 
-    bool isFramed() const { return m_isFramed; }
-    void setFramed(bool framed) { m_isFramed = framed; }
+    bool isFramed() const { return m_frame->parentItem(); }  // If empty pointer, then no frame
+    void setFramed(bool framed);
 
     double getLineWidth() const { return m_lineWidth; }
     void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
@@ -119,6 +120,7 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+    void updateFrameRect();
 
     int getPrecision();
 
@@ -139,13 +141,14 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
+    QGraphicsItemGroup* m_textItems;
+    QGraphicsRectItem* m_frame;
     QColor m_colNormal;
     bool m_ctrl;
 
     double posX;
     double posY;
 
-    bool m_isFramed;
     double m_lineWidth;
 
     int m_dragState;
