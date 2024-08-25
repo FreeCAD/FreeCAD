@@ -116,12 +116,12 @@ Base::Vector3d FemFace::set(short size,
     hide = false;
 
     // sorting the nodes for later easier comparison (bubble sort)
-    int i, j, flag = 1;         // set flag to 1 to start first pass
+    int flag = 1;               // set flag to 1 to start first pass
     const SMDS_MeshNode* temp;  // holding variable
 
-    for (i = 1; (i <= size) && flag; i++) {
+    for (int i = 1; (i <= size) && flag; i++) {
         flag = 0;
-        for (j = 0; j < (size - 1); j++) {
+        for (int j = 0; j < (size - 1); j++) {
             if (Nodes[j + 1] > Nodes[j])  // ascending order simply changes to <
             {
                 temp = Nodes[j];  // swap elements
@@ -659,7 +659,7 @@ void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
         return;
     }
 
-    float x, y, z;
+    float x = 0, y = 0, z = 0;
     // set the point coordinates
     long sz = pcCoords->point.getNum();
     SbVec3f* verts = pcCoords->point.startEditing();
