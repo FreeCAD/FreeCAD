@@ -142,6 +142,7 @@ DlgRevolution::~DlgRevolution()
 
 void DlgRevolution::setupConnections()
 {
+    // clang-format off
     connect(ui->selectLine, &QPushButton::clicked,
             this, &DlgRevolution::onSelectLineClicked);
     connect(ui->btnX, &QPushButton::clicked,
@@ -152,6 +153,7 @@ void DlgRevolution::setupConnections()
             this, &DlgRevolution::onButtonZClicked);
     connect(ui->txtAxisLink, &QLineEdit::textChanged,
             this, &DlgRevolution::onAxisLinkTextChanged);
+    // clang-format on
 }
 
 Base::Vector3d DlgRevolution::getDirection() const
