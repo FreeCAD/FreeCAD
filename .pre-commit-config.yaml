@@ -17,6 +17,7 @@ files: |
         src/Mod/Import|
         src/Mod/Inspection|
         src/Mod/JtReader|
+        src/Mod/Measure|
         src/Mod/Mesh|
         src/Mod/MeshPart|
         src/Mod/Plot|
