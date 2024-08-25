@@ -148,7 +148,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
             angle = angle_edge;
 
         //apply "midplane" symmetry
-        TopoShape sourceShape = Feature::getShape(link);
+        TopoShape sourceShape = Feature::getTopoShape(link);
         if (Symmetric.getValue()) {
             //rotate source shape backwards by half angle, to make resulting revolution symmetric to the profile
             gp_Trsf mov;

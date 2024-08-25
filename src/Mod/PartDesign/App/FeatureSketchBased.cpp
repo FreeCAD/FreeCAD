@@ -758,7 +758,8 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
         throw Base::TypeError("SketchBased: Must be face of a feature");
     Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
 
-    if (subStrings.empty() || subStrings[0].empty())
+    // Allow an empty sub here - example is a sketch reference (no sub) that creates a face.
+    if (subStrings.empty() )
         throw Base::ValueError("SketchBased: No face selected");
     // TODO: Check for multiple UpToFaces?
 
