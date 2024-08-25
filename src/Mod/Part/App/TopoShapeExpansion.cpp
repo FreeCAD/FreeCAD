@@ -4439,6 +4439,10 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
                 srcShapes.push_back(result);
 
+                if (result.isInfinite()){
+                    result = face;
+                }
+
                 PrismMaker.Init(result.getShape(),
                                 face.getShape(),
                                 TopoDS::Face(supportFace.getShape()),
