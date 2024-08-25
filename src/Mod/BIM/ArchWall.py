@@ -210,6 +210,8 @@ class _Wall(ArchComponent.Component):
         if not "ArchSketchData" in lp:
             obj.addProperty("App::PropertyBool","ArchSketchData","Wall",QT_TRANSLATE_NOOP("App::Property","Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties"))
             obj.ArchSketchData = True
+        if not "ArchSketchEdges" in lp:
+            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Wall",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used."))
 
         self.Type = "Wall"
 
@@ -232,6 +234,9 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", ["ReadOnly"])
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+
         else:
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", 0)
@@ -245,6 +250,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", 0)
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", 0)
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
 
     def execute(self,obj):
         """Method run when the object is recomputed.
@@ -530,6 +537,9 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", ["ReadOnly"])
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", ["ReadOnly"])
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", ["ReadOnly"])
+
         else:
             if hasattr(obj,"Width"):
                 obj.setEditorMode("Width", 0)
@@ -543,6 +553,8 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("OverrideAlign", 0)
             if hasattr(obj,"OverrideOffset"):
                 obj.setEditorMode("OverrideOffset", 0)
+            if hasattr(obj,"ArchSketchEdges"):
+                obj.setEditorMode("ArchSketchEdges", 0)
 
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
@@ -585,6 +597,7 @@ class _Wall(ArchComponent.Component):
 
         import Part
         import DraftGeomUtils
+        import ArchSketchObject
 
         # If ArchComponent.Component.getExtrusionData() can successfully get
         # extrusion data, just use that.
@@ -620,7 +633,7 @@ class _Wall(ArchComponent.Component):
                     except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
-                        widths = ArchSketchObject.sortSketchWidth(obj.Base, obj.OverrideWidth)
+                        widths = ArchSketchObject.sortSketchWidth(obj.Base, obj.OverrideWidth, obj.ArchSketchEdges)
                     except Exception:
                         widths = obj.OverrideWidth
                 else:
@@ -665,7 +678,7 @@ class _Wall(ArchComponent.Component):
                     except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
-                        aligns = ArchSketchObject.sortSketchAlign(obj.Base, obj.OverrideAlign)
+                        aligns = ArchSketchObject.sortSketchAlign(obj.Base, obj.OverrideAlign, obj.ArchSketchEdges)
                     except Exception:
                         aligns = obj.OverrideAlign
                 else:
@@ -697,7 +710,7 @@ class _Wall(ArchComponent.Component):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
                     # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
                     if hasattr(ArchSketchObject, 'sortSketchOffset'):
-                        offsets = ArchSketchObject.sortSketchOffset(obj.Base, obj.OverrideOffset)
+                        offsets = ArchSketchObject.sortSketchOffset(obj.Base, obj.OverrideOffset, obj.ArchSketchEdges)
                     else:
                         offsets = obj.OverrideOffset
                 else:
@@ -801,11 +814,14 @@ class _Wall(ArchComponent.Component):
                         skGeom = obj.Base.GeometryFacadeList
                         skGeomEdges = []
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
-                        for i in skGeom:
-                            if not i.Construction:
+
+                        # Get ArchSketch edges to construct ArchWall
+                        # No need to test obj.ArchSketchData ...
+                        for ig, geom  in enumerate(skGeom):
+                            if not geom.Construction and (not obj.ArchSketchEdges or str(ig) in obj.ArchSketchEdges):
                                 # support Line, Arc, Circle for Sketch as Base at the moment
-                                if isinstance(i.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
-                                    skGeomEdgesI = i.Geometry.toShape()
+                                if isinstance(geom.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+                                    skGeomEdgesI = geom.Geometry.toShape()
                                     skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
