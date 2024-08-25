@@ -2088,7 +2088,8 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
             }
             break;
         }
-        if (err > divergingLim || err != err) {  // check for diverging and NaN
+        if (err > divergingLim || err != err) {
+            // check for diverging and NaN
             if (debugMode == IterationLevel) {
                 std::stringstream stream;
                 stream << "BFGS Failed: Diverging!!: "
@@ -5596,23 +5597,23 @@ void System::identifyConflictingRedundantConstraints(
     SET_I satisfiedGroups;
     while (1) {
         // conflictingMap contains all the eligible constraints of conflict groups not yet
-        // satisfied. as groups get satisfied, the map created on every iteration is smaller, until
+        // satisfied. As groups get satisfied, the map created on every iteration is smaller, until
         // such time it is empty and the infinite loop is exited. The guarantee that the loop will
         // be exited originates from the fact that in each iteration the algorithm will select one
         // constraint from the conflict groups, which will satisfy at least one group.
         std::map<Constraint*, SET_I> conflictingMap;
         for (std::size_t i = 0; i < conflictGroups.size(); i++) {
-            if (satisfiedGroups.count(i) == 0) {
-                for (std::size_t j = 0; j < conflictGroups[i].size(); j++) {
-                    Constraint* constr = conflictGroups[i][j];
-                    bool isinternalalignment =
-                        (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
-                    bool priorityconstraint = (constr->getTag() == 0);
-                    if (!priorityconstraint && !isinternalalignment) {  // exclude constraints
-                                                                        // tagged with zero and
-                                                                        // internal alignment
-                        conflictingMap[constr].insert(i);
-                    }
+            if (satisfiedGroups.count(i) != 0) {
+                continue;
+            }
+
+            for (const auto& constr : conflictGroups[i]) {
+                bool isinternalalignment =
+                    (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+                bool priorityconstraint = (constr->getTag() == 0);
+                if (!priorityconstraint && !isinternalalignment) {
+                    // exclude constraints tagged with zero and internal alignment
+                    conflictingMap[constr].insert(i);
                 }
             }
         }
@@ -5621,65 +5622,61 @@ void System::identifyConflictingRedundantConstraints(
             break;
         }
 
-        int maxPopularity = 0;
-        Constraint* mostPopular = nullptr;
-        for (std::map<Constraint*, SET_I>::const_iterator it = conflictingMap.begin();
-             it != conflictingMap.end();
-             ++it) {
+        /* This is a heuristic algorithm to propose the user which constraints from a
+         * redundant/conflicting set should be removed. It is based on the following principles:
+         * 1. if the current constraint is more popular than previous ones (appears in more
+         * sets), take it. This prioritises removal of constraints that cause several
+         * independent groups of constraints to be conflicting/redundant. It is based on the
+         * observation that the redundancy/conflict is caused by the lesser amount of
+         * constraints.
+         * 2. if there is already a constraint ranking in the contest, and the current one is as
+         * popular, prefer the constraint that removes a lesser amount of DoFs. This prioritises
+         * removal of sketcher constraints (not solver constraints) that generates a higher
+         * amount of solver constraints. It is based on the observation that constraints taking
+         * a higher amount of DoFs (such as symmetry) are preferred by the user, who may not see
+         * the redundancy of simpler ones.
+         * 3. if there is already a constraint ranking in the context, the current one is as
+         * popular, and they remove the same amount of DoFs, prefer removal of the latest
+         * introduced.
+         */
+        auto iterMostPopular = std::max_element(
+            conflictingMap.begin(),
+            conflictingMap.end(),
+            [&tagmultiplicity](const auto& pair1, const auto& pair2) {
+                size_t sizeOfSet1 = pair1.second.size();
+                size_t sizeOfSet2 = pair2.second.size();
+                auto tag1 = pair1.first->getTag();
+                auto tag2 = pair2.first->getTag();
 
-            int numberofsets = static_cast<int>(
-                it->second.size());  // number of sets in which the constraint appears
+                return (sizeOfSet2 > sizeOfSet1  // (1)
+                        || (sizeOfSet2 == sizeOfSet1
+                            && tagmultiplicity.at(tag2) < tagmultiplicity.at(tag1))  // (2)
+                        || (sizeOfSet2 == sizeOfSet1
+                            && tagmultiplicity.at(tag2) == tagmultiplicity.at(tag1)
+                            && tag2 > tag1));  // (3)
+            });
 
-            /* This is a heuristic algorithm to propose the user which constraints from a
-             * redundant/conflicting set should be removed. It is based on the following principles:
-             * 1. if the current constraint is more popular than previous ones (appears in more
-             * sets), take it. This prioritises removal of constraints that cause several
-             * independent groups of constraints to be conflicting/redundant. It is based on the
-             * observation that the redundancy/conflict is caused by the lesser amount of
-             * constraints.
-             * 2. if there is already a constraint ranking in the contest, and the current one is as
-             * popular, prefer the constraint that removes a lesser amount of DoFs. This prioritises
-             * removal of sketcher constraints (not solver constraints) that generates a higher
-             * amount of solver constraints. It is based on the observation that constraints taking
-             * a higher amount of DoFs (such as symmetry) are preferred by the user, who may not see
-             * the redundancy of simpler ones.
-             * 3. if there is already a constraint ranking in the context, the current one is as
-             * popular, and they remove the same amount of DoFs, prefer removal of the latest
-             * introduced.
-             */
+        Constraint* mostPopular = iterMostPopular->first;
+        int maxPopularity = iterMostPopular->second.size();
 
-            if ((numberofsets > maxPopularity ||  // (1)
-                 (numberofsets == maxPopularity && mostPopular
-                  && tagmultiplicity.at(it->first->getTag())
-                      < tagmultiplicity.at(mostPopular->getTag()))
-                 ||  // (2)
-
-                 (numberofsets == maxPopularity && mostPopular
-                  && tagmultiplicity.at(it->first->getTag())
-                      == tagmultiplicity.at(mostPopular->getTag())
-                  && it->first->getTag() > mostPopular->getTag()))  // (3)
-
-            ) {
-                mostPopular = it->first;
-                maxPopularity = numberofsets;
-            }
+        if (!(maxPopularity > 0)) {
+            continue;
         }
-        if (maxPopularity > 0) {
-            // adding for skipping not only the mostPopular, but also any other constraint in the
-            // conflicting map associated with the same tag (namely any other solver
-            // constraint associated with the same sketcher constraint that is also conflicting)
-            auto maxPopularityTag = mostPopular->getTag();
 
-            for (const auto& c : conflictingMap) {
-                if (c.first->getTag() == maxPopularityTag) {
-                    skipped.insert(c.first);
-                    for (SET_I::const_iterator it = conflictingMap[c.first].begin();
-                         it != conflictingMap[c.first].end();
-                         ++it) {
-                        satisfiedGroups.insert(*it);
-                    }
-                }
+        // adding for skipping not only the mostPopular, but also any other constraint in the
+        // conflicting map associated with the same tag (namely any other solver
+        // constraint associated with the same sketcher constraint that is also conflicting)
+        auto maxPopularityTag = mostPopular->getTag();
+
+        for (const auto& [constr, conflSet] : conflictingMap) {
+            if (!(constr->getTag() == maxPopularityTag)) {
+                continue;
             }
+
+            skipped.insert(constr);
+            std::copy(conflSet.begin(),
+                      conflSet.end(),
+                      std::inserter(satisfiedGroups, satisfiedGroups.begin()));
         }
     }
 
@@ -5690,12 +5687,12 @@ void System::identifyConflictingRedundantConstraints(
 
     std::vector<Constraint*> clistTmp;
     clistTmp.reserve(clist.size());
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        if ((*constr)->isDriving() && skipped.count(*constr) == 0) {
-            clistTmp.push_back(*constr);
-        }
-    }
+    std::copy_if(clist.begin(),
+                 clist.end(),
+                 std::back_inserter(clistTmp),
+                 [&skipped](const auto& constr) {
+                     return (constr->isDriving() && skipped.count(constr) == 0);
+                 });
 
     SubSystem* subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
     int res = solve(subSysTmp, true, alg, true);
@@ -5719,78 +5716,77 @@ void System::identifyConflictingRedundantConstraints(
 
     if (res == Success) {
         subSysTmp->applySolution();
-        for (std::set<Constraint*>::const_iterator constr = skipped.begin();
-             constr != skipped.end();
-             ++constr) {
-            double err = (*constr)->error();
-            if (err * err < convergenceRedundant) {
-                redundant.insert(*constr);
-            }
-        }
+        std::copy_if(skipped.begin(),
+                     skipped.end(),
+                     std::inserter(redundant, redundant.begin()),
+                     [this](const auto& constr) {
+                         double err = constr->error();
+                         return (err * err < this->convergenceRedundant);
+                     });
         resetToReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
             Base::Console().Log("Sketcher Redundant solving: %d redundants\n", redundant.size());
         }
 
+        // TODO: Figure out why we need to iterate in reverse order and add explanation here.
         std::vector<std::vector<Constraint*>> conflictGroupsOrig = conflictGroups;
         conflictGroups.clear();
         for (int i = conflictGroupsOrig.size() - 1; i >= 0; i--) {
-            bool isRedundant = false;
-            for (std::size_t j = 0; j < conflictGroupsOrig[i].size(); j++) {
-                if (redundant.count(conflictGroupsOrig[i][j]) > 0) {
-                    isRedundant = true;
-
-                    if (debugMode == IterationLevel) {
-                        Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
-                                            i,
-                                            j,
-                                            (conflictGroupsOrig[i][j])->getTag());
-                    }
-
-                    break;
-                }
-            }
-            if (!isRedundant) {
+            auto iterRedundantEntry = std::find_if(conflictGroups[i].begin(),
+                                                   conflictGroups[i].end(),
+                                                   [this](const auto item) {
+                                                       return (this->redundant.count(item) > 0);
+                                                   });
+            bool hasRedundant = (iterRedundantEntry != conflictGroups[i].end());
+            if (!hasRedundant) {
                 conflictGroups.push_back(conflictGroupsOrig[i]);
+                continue;
             }
-            else {
-                constrNum--;
+
+            if (debugMode == IterationLevel) {
+                Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                                    i,
+                                    iterRedundantEntry - conflictGroupsOrig[i].begin(),
+                                    (*iterRedundantEntry)->getTag());
             }
+
+            constrNum--;
         }
     }
     delete subSysTmp;
 
     // simplified output of conflicting tags
     SET_I conflictingTagsSet;
-    for (std::size_t i = 0; i < conflictGroups.size(); i++) {
-        for (std::size_t j = 0; j < conflictGroups[i].size(); j++) {
-            bool isinternalalignment = (conflictGroups[i][j]->isInternalAlignment()
-                                        == Constraint::Alignment::InternalAlignment);
-            if (conflictGroups[i][j]->getTag() != 0
-                && !isinternalalignment) {  // exclude constraints tagged with zero and internal
-                                            // alignment
-                conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
-            }
-        }
+    for (const auto& cGroup : conflictGroups) {
+        // exclude internal alignment
+        std::transform(cGroup.begin(),
+                       cGroup.end(),
+                       std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
+                       [](const auto& constr) {
+                           bool isinternalalignment = (constr->isInternalAlignment()
+                                                       == Constraint::Alignment::InternalAlignment);
+                           return (isinternalalignment ? 0 : constr->getTag());
+                       });
     }
+
+    // exclude constraints tagged with zero
+    conflictingTagsSet.erase(0);
 
     conflictingTags.resize(conflictingTagsSet.size());
     std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(), conflictingTags.begin());
 
     // output of redundant tags
     SET_I redundantTagsSet, partiallyRedundantTagsSet;
-    for (std::set<Constraint*>::iterator constr = redundant.begin(); constr != redundant.end();
-         ++constr) {
-        redundantTagsSet.insert((*constr)->getTag());
-        partiallyRedundantTagsSet.insert((*constr)->getTag());
+    for (const auto& constr : redundant) {
+        redundantTagsSet.insert(constr->getTag());
+        partiallyRedundantTagsSet.insert(constr->getTag());
     }
 
     // remove tags represented at least in one non-redundant constraint
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        if (redundant.count(*constr) == 0) {
-            redundantTagsSet.erase((*constr)->getTag());
+    for (const auto& constr : clist) {
+        if (redundant.count(constr) == 0) {
+            redundantTagsSet.erase(constr->getTag());
         }
     }
 
@@ -5896,7 +5892,6 @@ double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
     return alphaStar;
 }
 
-
 void free(VEC_pD& doublevec)
 {
     for (VEC_pD::iterator it = doublevec.begin(); it != doublevec.end(); ++it) {
@@ -5960,6 +5955,5 @@ void free(std::vector<SubSystem*>& subsysvec)
         }
     }
 }
-
 
 }  // namespace GCS
