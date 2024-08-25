@@ -49,7 +49,7 @@ exclude: |
     )
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: c4a0b883114b00d8d76b479c820ce7950211c99b # frozen: v4.5.0
+    rev: 2c9f875913ee60ca25ce70243dc24d5b6415598c # frozen: v4.6.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -57,11 +57,11 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black
-    rev: 552baf822992936134cbd31a38f69c8cfe7c0f05 # frozen: 24.3.0
+    rev: b965c2a5026f8ba399283ba3e01898b012853c79 # frozen: 24.8.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: ea59a72ffc9a1ce6b79b02a8076d031aa7ea7805 # frozen: v15.0.7
+    rev: 7d85583be209cb547946c82fbe51f4bc5dd1d017 # frozen: v18.1.8
     hooks:
         -   id: clang-format
