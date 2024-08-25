@@ -30,6 +30,7 @@
 # include <cmath>
 
 # include <QApplication>
+# include <QGraphicsRectItem>
 # include <QGraphicsScene>
 # include <QGraphicsSceneMouseEvent>
 # include <QPaintDevice>
@@ -98,23 +99,37 @@ QGIDatumLabel::QGIDatumLabel() : m_dragState(NoDrag)
     setSelectability(true);
     setFiltersChildEvents(true);
 
+    m_lineWidth = Rez::guiX(0.5);
+
+    m_textItems = new QGraphicsItemGroup();
+    m_textItems->setParentItem(this);
     m_dimText = new QGCustomText();
     m_dimText->setTightBounding(true);
-    m_dimText->setParentItem(this);
+    m_dimText->setParentItem(m_textItems);
     m_tolTextOver = new QGCustomText();
     m_tolTextOver->setTightBounding(true);
-    m_tolTextOver->setParentItem(this);
+    m_tolTextOver->setParentItem(m_textItems);
     m_tolTextUnder = new QGCustomText();
     m_tolTextUnder->setTightBounding(true);
-    m_tolTextUnder->setParentItem(this);
+    m_tolTextUnder->setParentItem(m_textItems);
     m_unitText = new QGCustomText();
     m_unitText->setTightBounding(true);
-    m_unitText->setParentItem(this);
+    m_unitText->setParentItem(m_textItems);
 
+    m_frame = new QGraphicsRectItem();
     m_ctrl = false;
+}
 
-    m_isFramed = false;
-    m_lineWidth = Rez::guiX(0.5);
+void QGIDatumLabel::setFramed(bool framed)
+{
+    if(framed) {
+        m_frame->setVisible(true);
+        m_frame->setParentItem(this);
+    }
+    else {
+        m_frame->setVisible(false);
+        m_frame->setParentItem(nullptr);
+    }
 }
 
 QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -332,9 +347,21 @@ void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 
 QRectF QGIDatumLabel::boundingRect() const
 {
-    QRectF result = childrenBoundingRect();
-    result.adjust(-m_lineWidth * 4.0, 0.0, 0.0, 0.0);
-    return result;
+    return childrenBoundingRect();
+}
+
+void QGIDatumLabel::updateFrameRect() {
+    prepareGeometryChange();
+    int fontSize = m_dimText->font().pixelSize();
+    int paddingLeft = fontSize * 0.3;
+    int paddingTop = fontSize * 0.1;
+    int paddingRight = fontSize * 0.3;
+    int paddingBottom = fontSize * 0.125;
+    // Why top and bottom padding different?
+    // Because the m_dimText bouding box isn't relative to X height :(
+    // And we want padding to be relative to X height
+    // TODO: make QGCustomLabel::boundingBoxXHeight
+    m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bouding rect
 }
 
 void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
@@ -348,17 +375,13 @@ void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
     //    painter->setPen(Qt::blue);
     //    painter->drawRect(boundingRect());          //good for debugging
 
-    if (m_isFramed) {
-        QPen prevPen = painter->pen();
-        QPen framePen(prevPen);
+    QPen framePen;
+    framePen.setWidthF(m_lineWidth);
+    framePen.setColor(m_dimText->defaultTextColor());
+    framePen.setJoinStyle(Qt::MiterJoin);
+    m_frame->setPen(framePen);
 
-        framePen.setWidthF(m_lineWidth);
-        framePen.setColor(m_dimText->defaultTextColor());
 
-        painter->setPen(framePen);
-        painter->drawRect(boundingRect());
-        painter->setPen(prevPen);
-    }
 }
 
 void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
@@ -420,7 +443,7 @@ void QGIDatumLabel::setLabelCenter()
 
 Base::Vector2d QGIDatumLabel::getPosToCenterVec()
 {
-    QPointF center = m_dimText->boundingRect().center();
+    QPointF center = boundingRect().center();
 
     return Base::Vector2d(center.x(), center.y());
 }
@@ -436,12 +459,14 @@ void QGIDatumLabel::setFont(QFont font)
     tFont.setPixelSize((int)(fontSize * tolAdj));
     m_tolTextOver->setFont(tFont);
     m_tolTextUnder->setFont(tFont);
+    updateFrameRect();
 }
 
 void QGIDatumLabel::setDimString(QString text)
 {
     prepareGeometryChange();
     m_dimText->setPlainText(text);
+    updateFrameRect();
 }
 
 void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
@@ -449,6 +474,7 @@ void QGIDatumLabel::setDimString(QString text, qreal maxWidth)
     prepareGeometryChange();
     m_dimText->setPlainText(text);
     m_dimText->setTextWidth(maxWidth);
+    updateFrameRect();
 }
 
 void QGIDatumLabel::setToleranceString()
@@ -471,6 +497,7 @@ void QGIDatumLabel::setToleranceString()
         // TheoreticalExact would be as wide as necessary for the text
         m_tolTextOver->setPlainText(QString());
         m_tolTextUnder->setPlainText(QString());
+        updateFrameRect();
         return;
     }
 
@@ -508,7 +535,7 @@ void QGIDatumLabel::setToleranceString()
         m_tolTextOver->show();
     }
 
-    return;
+    updateFrameRect();
 }
 
 void QGIDatumLabel::setUnitString(QString text)
@@ -521,6 +548,7 @@ void QGIDatumLabel::setUnitString(QString text)
         m_unitText->setPlainText(text);
         m_unitText->show();
     }
+    updateFrameRect();
 }
 
 
