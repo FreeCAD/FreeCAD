@@ -1833,12 +1833,9 @@ void System::initSolution(Algorithm alg)
     }
     std::vector<Constraint*> clistR;
     if (!redundant.empty()) {
-        for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-             ++constr) {
-            if (redundant.count(*constr) == 0) {
-                clistR.push_back(*constr);
-            }
-        }
+        std::copy_if(clist.begin(), clist.end(), std::back_inserter(clistR), [this](auto constr) {
+            return this->redundant.count(constr) == 0;
+        });
     }
     else {
         clistR = clist;
@@ -1851,15 +1848,15 @@ void System::initSolution(Algorithm alg)
     }
 
     int cvtid = int(plist.size());
-    for (std::vector<Constraint*>::const_iterator constr = clistR.begin(); constr != clistR.end();
-         ++constr, cvtid++) {
-        VEC_pD& cparams = c2p[*constr];
-        for (VEC_pD::const_iterator param = cparams.begin(); param != cparams.end(); ++param) {
-            MAP_pD_I::const_iterator it = pIndex.find(*param);
+    for (const auto constr : clistR) {
+        VEC_pD& cparams = c2p[constr];
+        for (const auto param : cparams) {
+            MAP_pD_I::const_iterator it = pIndex.find(param);
             if (it != pIndex.end()) {
                 boost::add_edge(cvtid, it->second, g);
             }
         }
+        ++cvtid;
     }
 
     VEC_I components(boost::num_vertices(g));
@@ -1875,26 +1872,21 @@ void System::initSolution(Algorithm alg)
     {
         VEC_pD reducedParams = plist;
 
-        for (std::vector<Constraint*>::const_iterator constr = clistR.begin();
-             constr != clistR.end();
-             ++constr) {
-            if ((*constr)->getTag() >= 0 && (*constr)->getTypeId() == Equal) {
-                MAP_pD_I::const_iterator it1, it2;
-                it1 = pIndex.find((*constr)->params()[0]);
-                it2 = pIndex.find((*constr)->params()[1]);
-                if (it1 != pIndex.end() && it2 != pIndex.end()) {
-                    reducedConstrs.insert(*constr);
-                    double* p_kept = reducedParams[it1->second];
-                    double* p_replaced = reducedParams[it2->second];
-                    for (int i = 0; i < int(plist.size()); ++i) {
-                        if (reducedParams[i] == p_replaced) {
-                            reducedParams[i] = p_kept;
-                        }
-                    }
-                }
+        for (const auto& constr : clistR) {
+            if (!(constr->getTag() >= 0 && constr->getTypeId() == Equal)) {
+                continue;
             }
+            const auto it1 = pIndex.find(constr->params()[0]);
+            const auto it2 = pIndex.find(constr->params()[1]);
+            if (it1 == pIndex.end() || it2 == pIndex.end()) {
+                continue;
+            }
+            reducedConstrs.insert(constr);
+            double* p_kept = reducedParams[it1->second];
+            double* p_replaced = reducedParams[it2->second];
+            std::replace(reducedParams.begin(), reducedParams.end(), p_replaced, p_kept);
         }
-        for (int i = 0; i < int(plist.size()); ++i) {
+        for (size_t i = 0; i < plist.size(); ++i) {
             if (plist[i] != reducedParams[i]) {
                 int cid = components[i];
                 reductionmaps[cid][plist[i]] = reducedParams[i];
@@ -1904,9 +1896,9 @@ void System::initSolution(Algorithm alg)
 
     clists.clear();                 // destroy any lists
     clists.resize(componentsSize);  // create empty lists to be filled in
-    int i = int(plist.size());
+    size_t i = plist.size();
     for (std::vector<Constraint*>::const_iterator constr = clistR.begin(); constr != clistR.end();
-         ++constr, i++) {
+         ++constr, ++i) {
         if (reducedConstrs.count(*constr) == 0) {
             int cid = components[i];
             clists[cid].push_back(*constr);
@@ -1915,28 +1907,25 @@ void System::initSolution(Algorithm alg)
 
     plists.clear();                 // destroy any lists
     plists.resize(componentsSize);  // create empty lists to be filled in
-    for (int i = 0; i < int(plist.size()); ++i) {
+    for (size_t i = 0; i < plist.size(); ++i) {
         int cid = components[i];
         plists[cid].push_back(plist[i]);
     }
 
     // calculates subSystems and subSystemsAux from clists, plists and reductionmaps
     clearSubSystems();
-    for (std::size_t cid = 0; cid < clists.size(); cid++) {
+    subSystems.resize(clists.size(), nullptr);
+    subSystemsAux.resize(clists.size(), nullptr);
+    for (std::size_t cid = 0; cid < clists.size(); ++cid) {
         std::vector<Constraint*> clist0, clist1;
-        for (std::vector<Constraint*>::const_iterator constr = clists[cid].begin();
-             constr != clists[cid].end();
-             ++constr) {
-            if ((*constr)->getTag() >= 0) {
-                clist0.push_back(*constr);
-            }
-            else {  // move or distance from reference constraints
-                clist1.push_back(*constr);
-            }
-        }
+        std::partition_copy(clists[cid].begin(),
+                            clists[cid].end(),
+                            std::back_inserter(clist0),
+                            std::back_inserter(clist1),
+                            [](auto constr) {
+                                return constr->getTag() >= 0;
+                            });
 
-        subSystems.push_back(nullptr);
-        subSystemsAux.push_back(nullptr);
         if (!clist0.empty()) {
             subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
         }
