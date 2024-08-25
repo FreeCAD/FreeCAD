@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -11,16 +11,17 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR})
 
-set(SurfaceGui_LIBS Surface PartGui FreeCADGui)
+set (SurfaceGui_LIBS Surface PartGui FreeCADGui)
 
-qt_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
+qt_add_resources (SurfaceGui_QRC_SRCS Resources/Surface.qrc)
 
-set(SurfaceGui_UIC_SRCS TaskFilling.ui TaskFillingEdge.ui TaskFillingVertex.ui
-                        TaskGeomFillSurface.ui TaskSections.ui)
+set (SurfaceGui_UIC_SRCS TaskFilling.ui TaskFillingEdge.ui TaskFillingVertex.ui
+                         TaskGeomFillSurface.ui TaskSections.ui)
 
-set(BlendingGui_SRCS Blending/ViewProviderBlendCurve.cpp Blending/ViewProviderBlendCurve.h)
+set (BlendingGui_SRCS Blending/ViewProviderBlendCurve.cpp Blending/ViewProviderBlendCurve.h)
 
-set(SurfaceGui_SRCS
+set (
+    SurfaceGui_SRCS
     ${SurfaceGui_QRC_SRCS}
     ${SurfaceGui_UIC_HDRS}
     ${BlendingGui_SRCS}
@@ -45,27 +46,27 @@ set(SurfaceGui_SRCS
     # ViewProviderCut.cpp ViewProviderCut.h
 )
 
-set(SurfaceGuiIcon_SVG Resources/icons/Surface_Workbench.svg)
+set (SurfaceGuiIcon_SVG Resources/icons/Surface_Workbench.svg)
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${SurfaceGui_SRCS})
-    add_msvc_precompiled_header(SurfaceGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${SurfaceGui_SRCS})
+    add_msvc_precompiled_header (SurfaceGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-link_directories(${OCC_LIBRARY_DIR})
-add_library(SurfaceGui SHARED ${SurfaceGui_SRCS} ${SurfaceGuiIcon_SVG})
-target_link_libraries(SurfaceGui ${SurfaceGui_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(SurfaceGui)
-endif()
+link_directories (${OCC_LIBRARY_DIR})
+add_library (SurfaceGui SHARED ${SurfaceGui_SRCS} ${SurfaceGuiIcon_SVG})
+target_link_libraries (SurfaceGui ${SurfaceGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (SurfaceGui)
+endif ()
 
-set_bin_dir(SurfaceGui SurfaceGui /Mod/Surface)
-set_python_prefix_suffix(SurfaceGui)
+set_bin_dir (SurfaceGui SurfaceGui /Mod/Surface)
+set_python_prefix_suffix (SurfaceGui)
 
-fc_copy_sources(SurfaceGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Surface"
-                ${SurfaceGuiIcon_SVG})
+fc_copy_sources (SurfaceGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Surface"
+                 ${SurfaceGuiIcon_SVG})
 
-install(TARGETS SurfaceGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES ${SurfaceGuiIcon_SVG}
-        DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Surface/Resources/icons")
+install (TARGETS SurfaceGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (FILES ${SurfaceGuiIcon_SVG}
+         DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Surface/Resources/icons")

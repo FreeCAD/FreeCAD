@@ -1,9 +1,10 @@
-if(BUILD_GUI)
-    pyside_wrap_rc(AddonManager_QRC_SRCS Resources/AddonManager.qrc)
-    add_subdirectory(Widgets)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    pyside_wrap_rc (AddonManager_QRC_SRCS Resources/AddonManager.qrc)
+    add_subdirectory (Widgets)
+endif (BUILD_GUI)
 
-set(AddonManager_SRCS
+set (
+    AddonManager_SRCS
     add_toolbar_button_dialog.ui
     Addon.py
     AddonStats.py
@@ -76,15 +77,16 @@ set(AddonManager_SRCS
     select_toolbar_dialog.ui
     TestAddonManagerApp.py
     update_all.ui)
-if(BUILD_GUI)
-    list(APPEND AddonManager_SRCS TestAddonManagerGui.py)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    list (APPEND AddonManager_SRCS TestAddonManagerGui.py)
+endif (BUILD_GUI)
 
-source_group("" FILES ${AddonManager_SRCS})
+source_group ("" FILES ${AddonManager_SRCS})
 
-set(AddonManagerTests_SRCS AddonManagerTest/__init__.py AddonManagerTest/test_information.md)
+set (AddonManagerTests_SRCS AddonManagerTest/__init__.py AddonManagerTest/test_information.md)
 
-set(AddonManagerTestsApp_SRCS
+set (
+    AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
     AddonManagerTest/app/mocks.py
     AddonManagerTest/app/test_addon.py
@@ -99,7 +101,8 @@ set(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/test_utilities.py
     AddonManagerTest/app/test_uninstaller.py)
 
-set(AddonManagerTestsGui_SRCS
+set (
+    AddonManagerTestsGui_SRCS
     AddonManagerTest/gui/__init__.py
     AddonManagerTest/gui/gui_mocks.py
     AddonManagerTest/gui/test_gui.py
@@ -109,7 +112,8 @@ set(AddonManagerTestsGui_SRCS
     AddonManagerTest/gui/test_workers_startup.py
     AddonManagerTest/gui/test_workers_utility.py)
 
-set(AddonManagerTestsFiles_SRCS
+set (
+    AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/__init__.py
     AddonManagerTest/data/addon_update_stats.json
     AddonManagerTest/data/bad_macro_metadata.FCStd
@@ -136,29 +140,29 @@ set(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/TestWorkbench.zip
     AddonManagerTest/data/workbench_only.xml)
 
-set(AddonManagerTests_ALL ${AddonManagerTests_SRCS} ${AddonManagerTestsApp_SRCS}
-                          ${AddonManagerTestsFiles_SRCS})
+set (AddonManagerTests_ALL ${AddonManagerTests_SRCS} ${AddonManagerTestsApp_SRCS}
+                           ${AddonManagerTestsFiles_SRCS})
 
-if(BUILD_GUI)
-    list(APPEND AddonManagerTests_ALL ${AddonManagerTestsGui_SRCS})
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    list (APPEND AddonManagerTests_ALL ${AddonManagerTestsGui_SRCS})
+endif (BUILD_GUI)
 
-add_custom_target(AddonManager ALL SOURCES ${AddonManager_SRCS} ${AddonManager_QRC_SRCS})
+add_custom_target (AddonManager ALL SOURCES ${AddonManager_SRCS} ${AddonManager_QRC_SRCS})
 
-add_custom_target(AddonManagerTests ALL SOURCES ${AddonManagerTests_ALL})
+add_custom_target (AddonManagerTests ALL SOURCES ${AddonManagerTests_ALL})
 
-fc_copy_sources(AddonManager "${CMAKE_BINARY_DIR}/Mod/AddonManager" ${AddonManager_SRCS})
+fc_copy_sources (AddonManager "${CMAKE_BINARY_DIR}/Mod/AddonManager" ${AddonManager_SRCS})
 
-fc_copy_sources(AddonManagerTests "${CMAKE_BINARY_DIR}/Mod/AddonManager" ${AddonManagerTests_ALL})
+fc_copy_sources (AddonManagerTests "${CMAKE_BINARY_DIR}/Mod/AddonManager" ${AddonManagerTests_ALL})
 
-if(BUILD_GUI)
-    fc_target_copy_resource(AddonManager ${CMAKE_CURRENT_BINARY_DIR}
-                            ${CMAKE_BINARY_DIR}/Mod/AddonManager AddonManager_rc.py)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    fc_target_copy_resource (AddonManager ${CMAKE_CURRENT_BINARY_DIR}
+                             ${CMAKE_BINARY_DIR}/Mod/AddonManager AddonManager_rc.py)
+endif (BUILD_GUI)
 
-install(FILES ${AddonManager_SRCS} ${AddonManager_QRC_SRCS} DESTINATION Mod/AddonManager)
+install (FILES ${AddonManager_SRCS} ${AddonManager_QRC_SRCS} DESTINATION Mod/AddonManager)
 
-install(FILES ${AddonManagerTests_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest)
-install(FILES ${AddonManagerTestsApp_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest/app)
-install(FILES ${AddonManagerTestsGui_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest/gui)
-install(FILES ${AddonManagerTestsFiles_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest/data)
+install (FILES ${AddonManagerTests_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest)
+install (FILES ${AddonManagerTestsApp_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest/app)
+install (FILES ${AddonManagerTestsGui_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest/gui)
+install (FILES ${AddonManagerTestsFiles_SRCS} DESTINATION Mod/AddonManager/AddonManagerTest/data)

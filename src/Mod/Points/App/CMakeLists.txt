@@ -1,8 +1,8 @@
-if(WIN32)
-    add_definitions(-DFCAppPoints)
-endif(WIN32)
+if (WIN32)
+    add_definitions (-DFCAppPoints)
+endif (WIN32)
 
-include_directories(
+include_directories (
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
@@ -13,14 +13,15 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libE57Format/include)
 
-set(Points_LIBS FreeCADApp)
+set (Points_LIBS FreeCADApp)
 
-include_directories(${QtConcurrent_INCLUDE_DIRS})
-list(APPEND Points_LIBS ${QtConcurrent_LIBRARIES})
+include_directories (${QtConcurrent_INCLUDE_DIRS})
+list (APPEND Points_LIBS ${QtConcurrent_LIBRARIES})
 
-generate_from_xml(PointsPy)
+generate_from_xml (PointsPy)
 
-set(Points_SRCS
+set (
+    Points_SRCS
     AppPoints.cpp
     AppPointsPy.cpp
     Points.cpp
@@ -43,27 +44,27 @@ set(Points_SRCS
     Structured.h
     Tools.h)
 
-set(Points_Scripts ../Init.py)
+set (Points_Scripts ../Init.py)
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${Points_SRCS})
-    add_msvc_precompiled_header(Points PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${Points_SRCS})
+    add_msvc_precompiled_header (Points PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-add_library(Points SHARED ${Points_SRCS} ${Points_Scripts})
+add_library (Points SHARED ${Points_SRCS} ${Points_Scripts})
 
-link_directories(${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
+link_directories (${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
 
-target_link_libraries(Points E57Format ${Points_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(Points)
-endif()
+target_link_libraries (Points E57Format ${Points_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (Points)
+endif ()
 
-fc_target_copy_resource_flat(Points ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Points
-                             ${Points_Scripts})
+fc_target_copy_resource_flat (Points ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Points
+                              ${Points_Scripts})
 
-set_bin_dir(Points Points /Mod/Points)
-set_python_prefix_suffix(Points)
+set_bin_dir (Points Points /Mod/Points)
+set_python_prefix_suffix (Points)
 
-install(TARGETS Points DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Points DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -1,25 +1,26 @@
-project(ThumbnailProvider)
+project (ThumbnailProvider)
 
-cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
+cmake_minimum_required (VERSION 2.6.0 FATAL_ERROR)
 
-add_definitions(-D_UNICODE -D_CRT_SECURE_NO_WARNINGS)
+add_definitions (-D_UNICODE -D_CRT_SECURE_NO_WARNINGS)
 
 # =================================================
 # zlib
 # =================================================
 
-find_package(ZLIB REQUIRED)
+find_package (ZLIB REQUIRED)
 
 # =================================================
 # FCStdThumbnail
 # =================================================
 
-include_directories(. ../../../ ${ZLIB_INCLUDE_DIR})
+include_directories (. ../../../ ${ZLIB_INCLUDE_DIR})
 
-set(THUMBS_LIBS Shlwapi.lib ${ZLIB_LIBRARIES})
+set (THUMBS_LIBS Shlwapi.lib ${ZLIB_LIBRARIES})
 
-set(zipios_DIR ../../..)
-set(zipios_SRCS
+set (zipios_DIR ../../..)
+set (
+    zipios_SRCS
     ${zipios_DIR}/zipios++/backbuffer.h
     # ${zipios_DIR}/zipios++/basicentry.cpp ${zipios_DIR}/zipios++/basicentry.h
     ${zipios_DIR}/zipios++/collcoll.cpp
@@ -67,9 +68,10 @@ set(zipios_SRCS
     ${zipios_DIR}/zipios++/zipoutputstreambuf.h
     ${zipios_DIR}/zipios++/zipoutputstream.cpp
     ${zipios_DIR}/zipios++/zipoutputstream.h)
-source_group("zipios++" FILES ${zipios_SRCS})
+source_group ("zipios++" FILES ${zipios_SRCS})
 
-set(THUMBS_SRCS
+set (
+    THUMBS_SRCS
     ${zipios_SRCS}
     ClassFactory.cpp
     ClassFactory.h
@@ -80,5 +82,5 @@ set(THUMBS_SRCS
     ThumbnailProvider.def
     ThumbnailProvider.h)
 
-add_library(FCStdThumbnail SHARED ${THUMBS_SRCS})
-target_link_libraries(FCStdThumbnail ${THUMBS_LIBS})
+add_library (FCStdThumbnail SHARED ${THUMBS_SRCS})
+target_link_libraries (FCStdThumbnail ${THUMBS_LIBS})

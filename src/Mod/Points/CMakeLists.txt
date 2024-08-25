@@ -1,25 +1,25 @@
-add_subdirectory(App)
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-endif(BUILD_GUI)
+add_subdirectory (App)
+if (BUILD_GUI)
+    add_subdirectory (Gui)
+endif (BUILD_GUI)
 
-set(Points_Scripts Init.py)
+set (Points_Scripts Init.py)
 
-if(BUILD_GUI)
-    list(APPEND Points_Scripts InitGui.py)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    list (APPEND Points_Scripts InitGui.py)
+endif (BUILD_GUI)
 
 # ************************************************************************************************
 # ****** Python non Gui packages and modules *****************************************************
 # ************************************************************************************************
 
-set(PointsCommands_SRCS pointscommands/__init__.py pointscommands/commands.py)
+set (PointsCommands_SRCS pointscommands/__init__.py pointscommands/commands.py)
 
-set(PointsAllScripts ${PointsCommands_SRCS})
+set (PointsAllScripts ${PointsCommands_SRCS})
 
-add_custom_target(PointsScripts ALL SOURCES ${PointsAllScripts})
-fc_copy_sources(PointsScripts "${CMAKE_BINARY_DIR}/Mod/Points" ${PointsAllScripts})
+add_custom_target (PointsScripts ALL SOURCES ${PointsAllScripts})
+fc_copy_sources (PointsScripts "${CMAKE_BINARY_DIR}/Mod/Points" ${PointsAllScripts})
 
 # install directories for Python packages
-install(FILES ${Points_Scripts} DESTINATION Mod/Points)
-install(FILES ${PointsCommands_SRCS} DESTINATION Mod/Points/pointscommands)
+install (FILES ${Points_Scripts} DESTINATION Mod/Points)
+install (FILES ${PointsCommands_SRCS} DESTINATION Mod/Points/pointscommands)

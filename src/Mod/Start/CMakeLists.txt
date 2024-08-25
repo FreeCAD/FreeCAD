@@ -21,32 +21,32 @@
 # * *
 # ***************************************************************************/
 
-if(EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include")
-    include_directories(${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include)
-else()
-    find_package(Microsoft.GSL)
-    if(Microsoft.GSL_FOUND)
-        message(STATUS "Found Microsoft.GSL: version ${Microsoft.GSL_VERSION}")
-    else()
-        message(
+if (EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include")
+    include_directories (${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include)
+else ()
+    find_package (Microsoft.GSL)
+    if (Microsoft.GSL_FOUND)
+        message (STATUS "Found Microsoft.GSL: version ${Microsoft.GSL_VERSION}")
+    else ()
+        message (
             SEND_ERROR
                 "The C++ Guidelines Support Library (GSL) submodule is not available. Please run git submodule update --init"
         )
-    endif()
-endif()
+    endif ()
+endif ()
 
-add_subdirectory(App)
+add_subdirectory (App)
 
-set(Start_Scripts Init.py)
+set (Start_Scripts Init.py)
 
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-    list(APPEND Start_Scripts InitGui.py StartMigrator.py)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    add_subdirectory (Gui)
+    list (APPEND Start_Scripts InitGui.py StartMigrator.py)
+endif (BUILD_GUI)
 
-add_custom_target(StartScripts ALL SOURCES ${Start_Scripts})
+add_custom_target (StartScripts ALL SOURCES ${Start_Scripts})
 
-fc_target_copy_resource(StartScripts ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Start
-                        ${Start_Scripts})
+fc_target_copy_resource (StartScripts ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Start
+                         ${Start_Scripts})
 
-install(FILES ${Start_Scripts} DESTINATION Mod/Start)
+install (FILES ${Start_Scripts} DESTINATION Mod/Start)

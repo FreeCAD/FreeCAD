@@ -1,15 +1,15 @@
-if(BUILD_SMESH)
-    add_definitions(-DHAVE_SMESH)
-    if(SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10)
-        add_definitions(-DHAVE_MEFISTO)
-    endif()
-endif(BUILD_SMESH)
+if (BUILD_SMESH)
+    add_definitions (-DHAVE_SMESH)
+    if (SMESH_VERSION_MAJOR LESS_EQUAL 9 AND SMESH_VERSION_MINOR LESS 10)
+        add_definitions (-DHAVE_MEFISTO)
+    endif ()
+endif (BUILD_SMESH)
 
-if(BUILD_FEM_NETGEN)
-    add_definitions(-DHAVE_NETGEN)
-endif(BUILD_FEM_NETGEN)
+if (BUILD_FEM_NETGEN)
+    add_definitions (-DHAVE_NETGEN)
+endif (BUILD_FEM_NETGEN)
 
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -19,20 +19,21 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS})
 
-link_directories(${OCC_LIBRARY_DIR})
-link_directories(${SMESH_LIB_PATH})
+link_directories (${OCC_LIBRARY_DIR})
+link_directories (${SMESH_LIB_PATH})
 
-set(MeshPartGui_LIBS MeshPart PartGui MeshGui FreeCADGui)
+set (MeshPartGui_LIBS MeshPart PartGui MeshGui FreeCADGui)
 
-set(MeshPartGui_UIC_SRCS CrossSections.ui TaskCurveOnMesh.ui Tessellation.ui)
+set (MeshPartGui_UIC_SRCS CrossSections.ui TaskCurveOnMesh.ui Tessellation.ui)
 
-set(MeshPart_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/MeshPart_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-                            ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${MeshPart_TR_QRC} ${QM_SRCS})
-qt_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc ${MeshPart_TR_QRC})
+set (MeshPart_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/MeshPart_translation.qrc)
+qt_find_and_add_translation (QM_SRCS "Resources/translations/*_*.ts"
+                             ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file (${MeshPart_TR_QRC} ${QM_SRCS})
+qt_add_resources (MeshPartGui_QRC_SRCS Resources/MeshPart.qrc ${MeshPart_TR_QRC})
 
-set(MeshPartGui_SRCS
+set (
+    MeshPartGui_SRCS
     ${MeshPartGui_QRC_SRCS}
     ${MeshPartGui_UIC_HDRS}
     AppMeshPartGui.cpp
@@ -54,29 +55,29 @@ set(MeshPartGui_SRCS
     Workbench.cpp
     Workbench.h)
 
-set(MeshPartGui_Scripts ../InitGui.py)
+set (MeshPartGui_Scripts ../InitGui.py)
 
-set(FLATMESH_PY_SRCS MeshFlatteningCommand.py)
+set (FLATMESH_PY_SRCS MeshFlatteningCommand.py)
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${MeshPartGui_SRCS})
-    add_msvc_precompiled_header(MeshPartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${MeshPartGui_SRCS})
+    add_msvc_precompiled_header (MeshPartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
-target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeshPartGui)
-endif()
+add_library (MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
+target_link_libraries (MeshPartGui ${MeshPartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (MeshPartGui)
+endif ()
 
-set_bin_dir(MeshPartGui MeshPartGui /Mod/MeshPart)
-set_python_prefix_suffix(MeshPartGui)
+set_bin_dir (MeshPartGui MeshPartGui /Mod/MeshPart)
+set_python_prefix_suffix (MeshPartGui)
 
-fc_target_copy_resource_flat(MeshPartGui ${CMAKE_CURRENT_SOURCE_DIR}
-                             ${CMAKE_BINARY_DIR}/Mod/MeshPart ${MeshPartGui_Scripts})
+fc_target_copy_resource_flat (MeshPartGui ${CMAKE_CURRENT_SOURCE_DIR}
+                              ${CMAKE_BINARY_DIR}/Mod/MeshPart ${MeshPartGui_Scripts})
 
-fc_copy_sources(MeshPartGui "${CMAKE_BINARY_DIR}/Mod/MeshPart" ${FLATMESH_PY_SRCS})
+fc_copy_sources (MeshPartGui "${CMAKE_BINARY_DIR}/Mod/MeshPart" ${FLATMESH_PY_SRCS})
 
-install(TARGETS MeshPartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES ${FLATMESH_PY_SRCS} DESTINATION Mod/MeshPart)
+install (TARGETS MeshPartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (FILES ${FLATMESH_PY_SRCS} DESTINATION Mod/MeshPart)

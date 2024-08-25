@@ -1,16 +1,17 @@
-add_subdirectory(App)
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-endif(BUILD_GUI)
+add_subdirectory (App)
+if (BUILD_GUI)
+    add_subdirectory (Gui)
+endif (BUILD_GUI)
 
-set(Robot_Scripts Init.py KukaExporter.py RobotExample.py RobotExampleTrajectoryOutOfShapes.py)
+set (Robot_Scripts Init.py KukaExporter.py RobotExample.py RobotExampleTrajectoryOutOfShapes.py)
 
-if(BUILD_GUI)
-    list(APPEND Robot_Scripts InitGui.py MovieTool.py)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    list (APPEND Robot_Scripts InitGui.py MovieTool.py)
+endif (BUILD_GUI)
 
-if(EXISTS ${CMAKE_SOURCE_DIR}/src/Mod/Robot/Lib/Kuka)
-    set(Robot_Resources
+if (EXISTS ${CMAKE_SOURCE_DIR}/src/Mod/Robot/Lib/Kuka)
+    set (
+        Robot_Resources
         Lib/Kuka/kr500_1.wrl
         Lib/Kuka/kr500_1.csv
         Lib/Kuka/kr_500_2.pdf
@@ -23,19 +24,19 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/src/Mod/Robot/Lib/Kuka)
         Lib/Kuka/kr125_3.wrl
         Lib/Kuka/kr_125.csv
         Lib/Kuka/kr125_2.pdf)
-endif()
+endif ()
 
-add_custom_target(RobotScripts ALL SOURCES ${Robot_Scripts} ${Robot_Resources})
+add_custom_target (RobotScripts ALL SOURCES ${Robot_Scripts} ${Robot_Resources})
 
-fc_target_copy_resource(RobotScripts ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Robot
-                        ${Robot_Scripts})
+fc_target_copy_resource (RobotScripts ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/Mod/Robot
+                         ${Robot_Scripts})
 
-fc_target_copy_resource(RobotScripts ${CMAKE_CURRENT_SOURCE_DIR}
-                        ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot ${Robot_Resources})
+fc_target_copy_resource (RobotScripts ${CMAKE_CURRENT_SOURCE_DIR}
+                         ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot ${Robot_Resources})
 
-install(FILES ${Robot_Scripts} DESTINATION Mod/Robot)
+install (FILES ${Robot_Scripts} DESTINATION Mod/Robot)
 
-install(
+install (
     DIRECTORY Lib
     DESTINATION ${CMAKE_INSTALL_DATADIR}/Mod/Robot
     PATTERN "Makefile*" EXCLUDE

@@ -1,7 +1,7 @@
-target_include_directories(
+target_include_directories (
     PartDesign_tests_run PUBLIC ${EIGEN3_INCLUDE_DIR} ${OCC_INCLUDE_DIR} ${Python3_INCLUDE_DIRS}
                                 ${XercesC_INCLUDE_DIRS})
 
-target_link_libraries(PartDesign_tests_run gtest_main ${Google_Tests_LIBS} PartDesign)
+target_link_libraries (PartDesign_tests_run gtest_main ${Google_Tests_LIBS} PartDesign)
 
-add_subdirectory(App)
+add_subdirectory (App)

@@ -1,19 +1,19 @@
 # Many warnings caused by vtk
-if(CMAKE_COMPILER_IS_CLANGXX)
-    add_compile_options(-Wno-pedantic) # needed for vtk headers
+if (CMAKE_COMPILER_IS_CLANGXX)
+    add_compile_options (-Wno-pedantic) # needed for vtk headers
 
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.0)
-        add_compile_options(-Wno-inconsistent-missing-override)
-    endif()
-elseif(CMAKE_COMPILER_IS_GNUCXX)
-    add_compile_options(-Wno-pedantic) # needed for vtk headers
-endif()
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.0)
+        add_compile_options (-Wno-inconsistent-missing-override)
+    endif ()
+elseif (CMAKE_COMPILER_IS_GNUCXX)
+    add_compile_options (-Wno-pedantic) # needed for vtk headers
+endif ()
 
-if(BUILD_FEM_NETGEN)
-    add_definitions(-DFCWithNetgen)
-endif(BUILD_FEM_NETGEN)
+if (BUILD_FEM_NETGEN)
+    add_definitions (-DFCWithNetgen)
+endif (BUILD_FEM_NETGEN)
 
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -25,22 +25,24 @@ include_directories(
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS})
 
-link_directories(${OCC_LIBRARY_DIR})
-link_directories(${SMESH_LIB_PATH})
+link_directories (${OCC_LIBRARY_DIR})
+link_directories (${SMESH_LIB_PATH})
 
-set(FemGui_LIBS Fem FreeCADGui PartGui)
+set (FemGui_LIBS Fem FreeCADGui PartGui)
 
-generate_from_xml(ViewProviderFemConstraintPy)
-generate_from_xml(ViewProviderFemMeshPy)
-generate_from_xml(ViewProviderFemPostPipelinePy)
+generate_from_xml (ViewProviderFemConstraintPy)
+generate_from_xml (ViewProviderFemMeshPy)
+generate_from_xml (ViewProviderFemPostPipelinePy)
 
-set(Python_SRCS
+set (
+    Python_SRCS
     ViewProviderFemConstraintPy.xml ViewProviderFemConstraintPyImp.cpp ViewProviderFemMeshPy.xml
     ViewProviderFemMeshPyImp.cpp ViewProviderFemPostPipelinePy.xml
     ViewProviderFemPostPipelinePyImp.cpp)
-source_group("Python" FILES ${Python_SRCS})
+source_group ("Python" FILES ${Python_SRCS})
 
-set(FemGui_UIC_SRCS
+set (
+    FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemElmer.ui
     DlgSettingsFemExportAbaqus.ui
@@ -71,8 +73,9 @@ set(FemGui_UIC_SRCS
     TaskAnalysisInfo.ui
     TaskDriver.ui)
 
-if(BUILD_FEM_VTK)
-    set(FemGui_UIC_SRCS
+if (BUILD_FEM_VTK)
+    set (
+        FemGui_UIC_SRCS
         ${FemGui_UIC_SRCS}
         BoxWidget.ui
         CylinderWidget.ui
@@ -86,9 +89,10 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui)
-endif(BUILD_FEM_VTK)
+endif (BUILD_FEM_VTK)
 
-set(FemGui_DLG_SRCS
+set (
+    FemGui_DLG_SRCS
     ${FemGui_UIC_HDRS}
     DlgSettingsFemCcx.ui
     DlgSettingsFemCcxImp.cpp
@@ -165,16 +169,17 @@ set(FemGui_DLG_SRCS
     TaskFemConstraintTransform.ui
     TaskFemConstraintTransform.cpp
     TaskFemConstraintTransform.h)
-source_group("Constraint-Dialogs" FILES ${FemGui_DLG_SRCS})
+source_group ("Constraint-Dialogs" FILES ${FemGui_DLG_SRCS})
 
-set(Fem_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Fem_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-                            ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${Fem_TR_QRC} ${QM_SRCS})
-qt_add_resources(FemResource_SRCS Resources/Fem.qrc ${Fem_TR_QRC})
-source_group("Resources" FILES ${FemResource_SRCS})
+set (Fem_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Fem_translation.qrc)
+qt_find_and_add_translation (QM_SRCS "Resources/translations/*_*.ts"
+                             ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file (${Fem_TR_QRC} ${QM_SRCS})
+qt_add_resources (FemResource_SRCS Resources/Fem.qrc ${Fem_TR_QRC})
+source_group ("Resources" FILES ${FemResource_SRCS})
 
-set(FemGui_SRCS_ViewProvider
+set (
+    FemGui_SRCS_ViewProvider
     ViewProviderFemMesh.cpp
     ViewProviderFemMesh.h
     ViewProviderFemMeshShape.cpp
@@ -235,9 +240,10 @@ set(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintTransform.h
     ViewProviderResult.cpp
     ViewProviderResult.h)
-source_group("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
+source_group ("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
-set(FemGui_SRCS_TaskBoxes
+set (
+    FemGui_SRCS_TaskBoxes
     TaskObjectName.ui
     TaskObjectName.cpp
     TaskObjectName.h
@@ -257,8 +263,9 @@ set(FemGui_SRCS_TaskBoxes
     TaskTetParameter.cpp
     TaskTetParameter.h)
 
-if(BUILD_FEM_VTK)
-    set(FemGui_SRCS_TaskBoxes
+if (BUILD_FEM_VTK)
+    set (
+        FemGui_SRCS_TaskBoxes
         ${FemGui_SRCS_TaskBoxes}
         BoxWidget.ui
         CylinderWidget.ui
@@ -274,11 +281,12 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui)
-endif(BUILD_FEM_VTK)
+endif (BUILD_FEM_VTK)
 
-source_group("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
+source_group ("Task_Boxes" FILES ${FemGui_SRCS_TaskBoxes})
 
-set(FemGui_SRCS_TaskDlg
+set (
+    FemGui_SRCS_TaskDlg
     TaskDlgCreateElementSet.h
     TaskDlgCreateElementSet.cpp
     TaskDlgCreateNodeSet.h
@@ -287,9 +295,10 @@ set(FemGui_SRCS_TaskDlg
     TaskDlgMeshShapeNetgen.cpp
     TaskDlgAnalysis.h
     TaskDlgAnalysis.cpp)
-source_group("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
+source_group ("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
 
-set(FemGui_SRCS_Module
+set (
+    FemGui_SRCS_Module
     AppFemGui.cpp
     AppFemGuiPy.cpp
     AbaqusHighlighter.cpp
@@ -308,10 +317,11 @@ set(FemGui_SRCS_Module
     PropertyFemMeshItem.h
     Workbench.cpp
     Workbench.h)
-source_group("Module" FILES ${FemGui_SRCS_Module})
+source_group ("Module" FILES ${FemGui_SRCS_Module})
 
-if(BUILD_FEM_VTK)
-    set(FemGui_SRCS_Post
+if (BUILD_FEM_VTK)
+    set (
+        FemGui_SRCS_Post
         ViewProviderFemPostObject.h
         ViewProviderFemPostObject.cpp
         ViewProviderFemPostPipeline.h
@@ -320,10 +330,11 @@ if(BUILD_FEM_VTK)
         ViewProviderFemPostFunction.cpp
         ViewProviderFemPostFilter.h
         ViewProviderFemPostFilter.cpp)
-    source_group("PostObjects" FILES ${FemGui_SRCS_Post})
-endif(BUILD_FEM_VTK)
+    source_group ("PostObjects" FILES ${FemGui_SRCS_Post})
+endif (BUILD_FEM_VTK)
 
-set(FemGui_SRCS
+set (
+    FemGui_SRCS
     ${Python_SRCS}
     ${FemGui_DLG_SRCS}
     ${FemResource_SRCS}
@@ -333,15 +344,16 @@ set(FemGui_SRCS
     ${FemGui_SRCS_Module}
     ${FemGui_SRCS_Post})
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
-    add_msvc_precompiled_header(FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
+    add_msvc_precompiled_header (FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-set(FemGuiIcon_SVG Resources/icons/FemWorkbench.svg)
+set (FemGuiIcon_SVG Resources/icons/FemWorkbench.svg)
 
-set(FemGuiSymbol_IV
+set (
+    FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
     Resources/symbols/ConstraintFixed.iv
@@ -356,21 +368,22 @@ set(FemGuiSymbol_IV
     Resources/symbols/ConstraintTransform.iv
     Resources/symbols/ConstraintTie.iv)
 
-add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
-target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(FemGui)
-endif()
+add_library (FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
+target_link_libraries (FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (FemGui)
+endif ()
 
-fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
-fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiSymbol_IV})
+fc_copy_sources (FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
+fc_copy_sources (FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiSymbol_IV})
 
-install(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons")
-install(FILES ${FemGuiSymbol_IV} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/symbols")
+install (FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons")
+install (FILES ${FemGuiSymbol_IV} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/symbols")
 
 # Python modules ui files, they are copied as they are, thus the need not to be added to Fem.qrc see
 # https://forum.freecad.org/viewtopic.php?f=10&t=25833
-set(FemGuiPythonUI_SRCS
+set (
+    FemGuiPythonUI_SRCS
     Resources/ui/BodyHeatSource.ui
     Resources/ui/ConstraintCentrif.ui
     Resources/ui/ConstraintTie.ui
@@ -396,13 +409,13 @@ set(FemGuiPythonUI_SRCS
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculix.ui)
 
-add_custom_target(FemPythonUi ALL SOURCES ${FemGuiPythonUI_SRCS})
+add_custom_target (FemPythonUi ALL SOURCES ${FemGuiPythonUI_SRCS})
 
-fc_copy_sources(FemPythonUi "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemGuiPythonUI_SRCS})
+fc_copy_sources (FemPythonUi "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemGuiPythonUI_SRCS})
 
-install(FILES ${FemGuiPythonUI_SRCS} DESTINATION Mod/Fem/Resources/ui)
+install (FILES ${FemGuiPythonUI_SRCS} DESTINATION Mod/Fem/Resources/ui)
 
-set_bin_dir(FemGui FemGui /Mod/Fem)
-set_python_prefix_suffix(FemGui)
+set_bin_dir (FemGui FemGui /Mod/Fem)
+set_python_prefix_suffix (FemGui)
 
-install(TARGETS FemGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS FemGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

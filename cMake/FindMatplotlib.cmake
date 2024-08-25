@@ -7,10 +7,10 @@
 # the patch version number of matplotlib MATPLOTLIB_PATH_DIRS        - path to the matplotlib
 # include files
 
-if(Python3_Interpreter_FOUND)
+if (Python3_Interpreter_FOUND)
     # Try to import matplotlib into Python interpreter. Python interpreter was found previously as
     # required package, so don't take care about this.
-    execute_process(
+    execute_process (
         COMMAND "${PYTHON_EXECUTABLE}" "-c"
                 "import matplotlib as m; print(m.__version__); print(m.__path__[0]);"
         RESULT_VARIABLE _MATPLOTLIB_SEARCH_SUCCESS
@@ -18,26 +18,26 @@ if(Python3_Interpreter_FOUND)
         ERROR_VARIABLE _MATPLOTLIB_ERROR_VALUE
         OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-    if(_MATPLOTLIB_SEARCH_SUCCESS MATCHES 0)
-        set(MATPLOTLIB_FOUND TRUE)
+    if (_MATPLOTLIB_SEARCH_SUCCESS MATCHES 0)
+        set (MATPLOTLIB_FOUND TRUE)
 
         # Convert the process output into a list
-        string(REGEX REPLACE ";" "\\\\;" _MATPLOTLIB_VALUES ${_MATPLOTLIB_VALUES})
-        string(REGEX REPLACE "\n" ";" _MATPLOTLIB_VALUES ${_MATPLOTLIB_VALUES})
-        list(GET _MATPLOTLIB_VALUES 0 MATPLOTLIB_VERSION)
-        list(GET _MATPLOTLIB_VALUES 1 MATPLOTLIB_PATH_DIRS)
+        string (REGEX REPLACE ";" "\\\\;" _MATPLOTLIB_VALUES ${_MATPLOTLIB_VALUES})
+        string (REGEX REPLACE "\n" ";" _MATPLOTLIB_VALUES ${_MATPLOTLIB_VALUES})
+        list (GET _MATPLOTLIB_VALUES 0 MATPLOTLIB_VERSION)
+        list (GET _MATPLOTLIB_VALUES 1 MATPLOTLIB_PATH_DIRS)
 
         # Make sure all directory separators are '/'
-        string(REGEX REPLACE "\\\\" "/" MATPLOTLIB_PATH_DIRS ${MATPLOTLIB_PATH_DIRS})
+        string (REGEX REPLACE "\\\\" "/" MATPLOTLIB_PATH_DIRS ${MATPLOTLIB_PATH_DIRS})
 
         # Get the major and minor version numbers
-        string(REGEX REPLACE "\\." ";" _MATPLOTLIB_VERSION_LIST ${MATPLOTLIB_VERSION})
-        list(GET _MATPLOTLIB_VERSION_LIST 0 MATPLOTLIB_VERSION_MAJOR)
-        list(GET _MATPLOTLIB_VERSION_LIST 1 MATPLOTLIB_VERSION_MINOR)
-        list(GET _MATPLOTLIB_VERSION_LIST 2 MATPLOTLIB_VERSION_PATCH)
-    else()
-        set(MATPLOTLIB_FOUND FALSE)
-    endif()
-else()
-    set(MATPLOTLIB_FOUND FALSE)
-endif()
+        string (REGEX REPLACE "\\." ";" _MATPLOTLIB_VERSION_LIST ${MATPLOTLIB_VERSION})
+        list (GET _MATPLOTLIB_VERSION_LIST 0 MATPLOTLIB_VERSION_MAJOR)
+        list (GET _MATPLOTLIB_VERSION_LIST 1 MATPLOTLIB_VERSION_MINOR)
+        list (GET _MATPLOTLIB_VERSION_LIST 2 MATPLOTLIB_VERSION_PATCH)
+    else ()
+        set (MATPLOTLIB_FOUND FALSE)
+    endif ()
+else ()
+    set (MATPLOTLIB_FOUND FALSE)
+endif ()

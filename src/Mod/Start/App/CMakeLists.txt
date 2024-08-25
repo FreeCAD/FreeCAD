@@ -21,11 +21,12 @@
 # * *
 # ***************************************************************************/
 
-include_directories(${PYTHON_INCLUDE_DIRS} ${QtCore_INCLUDE_DIRS})
+include_directories (${PYTHON_INCLUDE_DIRS} ${QtCore_INCLUDE_DIRS})
 
-set(Start_LIBS FreeCADApp)
+set (Start_LIBS FreeCADApp)
 
-set(Start_SRCS
+set (
+    Start_SRCS
     AppStart.cpp
     DisplayedFilesModel.cpp
     DisplayedFilesModel.h
@@ -36,13 +37,13 @@ set(Start_SRCS
     RecentFilesModel.cpp
     RecentFilesModel.h)
 
-add_library(Start SHARED ${Start_SRCS})
-target_link_libraries(Start ${Start_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(Start)
-endif()
+add_library (Start SHARED ${Start_SRCS})
+target_link_libraries (Start ${Start_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (Start)
+endif ()
 
-set_bin_dir(Start Start /Mod/Start)
-set_python_prefix_suffix(Start)
+set_bin_dir (Start Start /Mod/Start)
+set_python_prefix_suffix (Start)
 
-install(TARGETS Start DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Start DESTINATION ${CMAKE_INSTALL_LIBDIR})

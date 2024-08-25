@@ -21,7 +21,7 @@
 # * *
 # ***************************************************************************/
 
-include_directories(
+include_directories (
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
@@ -33,16 +33,17 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR})
 
-set(StartGui_LIBS Start FreeCADGui)
+set (StartGui_LIBS Start FreeCADGui)
 
-set(Start_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Start_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-                            ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${Start_TR_QRC} ${QM_SRCS})
-qt_add_resources(Start_QRC_SRCS Resources/Start.qrc ${Start_TR_QRC})
+set (Start_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Start_translation.qrc)
+qt_find_and_add_translation (QM_SRCS "Resources/translations/*_*.ts"
+                             ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file (${Start_TR_QRC} ${QM_SRCS})
+qt_add_resources (Start_QRC_SRCS Resources/Start.qrc ${Start_TR_QRC})
 # qtquick_compiler_add_resources(Start_QRC_SRCS Resources/Start.qrc ${Start_TR_QRC} qml.qrc)
 
-set(StartGui_SRCS
+set (
+    StartGui_SRCS
     ${Start_QRC_SRCS}
     ${StartGui_UIC_SRCS}
     AppStartGui.cpp
@@ -65,31 +66,31 @@ set(StartGui_SRCS
     ThemeSelectorWidget.cpp
     ThemeSelectorWidget.h)
 
-set(StartGuiIcon_SVG Resources/icons/StartCommandIcon.svg Resources/icons/PartDesignWorkbench.svg)
+set (StartGuiIcon_SVG Resources/icons/StartCommandIcon.svg Resources/icons/PartDesignWorkbench.svg)
 
-set(StartGuiThumbnail_PNG
-    Resources/thumbnails/Theme_thumbnail_classic.png Resources/thumbnails/Theme_thumbnail_dark.png
-    Resources/thumbnails/Theme_thumbnail_light.png)
+set (StartGuiThumbnail_PNG
+     Resources/thumbnails/Theme_thumbnail_classic.png Resources/thumbnails/Theme_thumbnail_dark.png
+     Resources/thumbnails/Theme_thumbnail_light.png)
 
 # TODO: Evaluate PCH use with Qt6/QtQuick/Qml
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
-    add_msvc_precompiled_header(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
+    add_msvc_precompiled_header (StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
+add_library (StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)
-target_link_libraries(StartGui ${StartGui_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(StartGui)
-endif()
+target_link_libraries (StartGui ${StartGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (StartGui)
+endif ()
 
-set_bin_dir(StartGui StartGui /Mod/Start)
-set_python_prefix_suffix(StartGui)
+set_bin_dir (StartGui StartGui /Mod/Start)
+set_python_prefix_suffix (StartGui)
 
-fc_copy_sources(StartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start"
-                ${StartGuiIcon_SVG})
+fc_copy_sources (StartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start"
+                 ${StartGuiIcon_SVG})
 
-install(TARGETS StartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES ${StartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Start/Resources/icons")
+install (TARGETS StartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (FILES ${StartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Start/Resources/icons")

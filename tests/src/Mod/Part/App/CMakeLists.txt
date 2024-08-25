@@ -1,4 +1,4 @@
-target_sources(
+target_sources (
     Part_tests_run
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Attacher.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/AttachExtension.cpp

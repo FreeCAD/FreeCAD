@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
@@ -11,25 +11,26 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${FREETYPE_INCLUDE_DIRS})
 
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Blending)
+file (MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Blending)
 
-generate_from_xml(Blending/BlendPointPy)
-generate_from_xml(Blending/BlendCurvePy)
+generate_from_xml (Blending/BlendPointPy)
+generate_from_xml (Blending/BlendCurvePy)
 
-set(Surface_LIBS FreeCADApp Part)
+set (Surface_LIBS FreeCADApp Part)
 
 # BlendPoint Wrapper
-set(BlendingPy_SRCS Blending/BlendPointPy.xml Blending/BlendPointPyImp.cpp
-                    Blending/BlendCurvePy.xml Blending/BlendCurvePyImp.cpp)
-source_group("Blending" FILES ${BlendingPy_SRCS})
+set (BlendingPy_SRCS Blending/BlendPointPy.xml Blending/BlendPointPyImp.cpp
+                     Blending/BlendCurvePy.xml Blending/BlendCurvePyImp.cpp)
+source_group ("Blending" FILES ${BlendingPy_SRCS})
 
-set(Blending_SRCS
-    Blending/FeatureBlendCurve.cpp Blending/FeatureBlendCurve.h Blending/BlendPoint.cpp
-    Blending/BlendPoint.h Blending/BlendCurve.cpp Blending/BlendCurve.h)
+set (Blending_SRCS
+     Blending/FeatureBlendCurve.cpp Blending/FeatureBlendCurve.h Blending/BlendPoint.cpp
+     Blending/BlendPoint.h Blending/BlendCurve.cpp Blending/BlendCurve.h)
 
-set(Surface_SRCS
+set (
+    Surface_SRCS
     ${Blending_SRCS}
     ${BlendingPy_SRCS}
     AppSurface.cpp
@@ -48,20 +49,20 @@ set(Surface_SRCS
     FeatureCut.cpp
     FeatureCut.h)
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${Surface_SRCS})
-    add_msvc_precompiled_header(Surface PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${Surface_SRCS})
+    add_msvc_precompiled_header (Surface PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-link_directories(${OCC_LIBRARY_DIR})
-add_library(Surface SHARED ${Surface_SRCS})
-target_link_libraries(Surface ${Surface_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(Surface)
-endif()
+link_directories (${OCC_LIBRARY_DIR})
+add_library (Surface SHARED ${Surface_SRCS})
+target_link_libraries (Surface ${Surface_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (Surface)
+endif ()
 
-set_bin_dir(Surface Surface /Mod/Surface)
-set_python_prefix_suffix(Surface)
+set_bin_dir (Surface Surface /Mod/Surface)
+set_python_prefix_suffix (Surface)
 
-install(TARGETS Surface DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Surface DESTINATION ${CMAKE_INSTALL_LIBDIR})

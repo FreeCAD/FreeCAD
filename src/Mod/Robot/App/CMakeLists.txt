@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -9,16 +9,17 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS})
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(Robot_LIBS Part ${QT_QTCORE_LIBRARY} FreeCADApp)
+set (Robot_LIBS Part ${QT_QTCORE_LIBRARY} FreeCADApp)
 
-generate_from_xml(Robot6AxisPy)
-generate_from_xml(TrajectoryPy)
-generate_from_xml(WaypointPy)
-generate_from_xml(RobotObjectPy)
+generate_from_xml (Robot6AxisPy)
+generate_from_xml (TrajectoryPy)
+generate_from_xml (WaypointPy)
+generate_from_xml (RobotObjectPy)
 
-set(Python_SRCS
+set (
+    Python_SRCS
     Robot6AxisPy.xml
     Robot6AxisPyImp.cpp
     TrajectoryPy.xml
@@ -28,9 +29,10 @@ set(Python_SRCS
     WaypointPy.xml
     WaypointPyImp.cpp)
 
-set(Mod_SRCS AppRobot.cpp PreCompiled.cpp PreCompiled.h)
+set (Mod_SRCS AppRobot.cpp PreCompiled.cpp PreCompiled.h)
 
-set(Robot_SRCS
+set (
+    Robot_SRCS
     RobotObject.cpp
     RobotObject.h
     TrajectoryObject.cpp
@@ -56,11 +58,11 @@ set(Robot_SRCS
     ${Mod_SRCS}
     ${Python_SRCS})
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${Robot_SRCS})
-    add_msvc_precompiled_header(Robot PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${Robot_SRCS})
+    add_msvc_precompiled_header (Robot PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
 # FIXME: The bundled KDL has some extensions which makes it incompatible to an installed KDL. To fix
 # the issue two things must be done: * revert the changes (and look for an alternative) * it must be
@@ -74,39 +76,39 @@ endif(FREECAD_USE_PCH)
 # specified but was not found.") endif()
 #
 # else(FREECAD_USE_EXTERNAL_KDL) here we use the internal supplied kdl
-add_definitions(-DKDL_USE_NEW_TREE_INTERFACE=1)
-file(GLOB KDL_SRCS kdl_cp/[^.]*.cpp)
-file(GLOB KDL_HPPS kdl_cp/[^.]*.hpp kdl_cp/[^.]*.inl)
+add_definitions (-DKDL_USE_NEW_TREE_INTERFACE=1)
+file (GLOB KDL_SRCS kdl_cp/[^.]*.cpp)
+file (GLOB KDL_HPPS kdl_cp/[^.]*.hpp kdl_cp/[^.]*.inl)
 
-file(GLOB UTIL_SRCS kdl_cp/utilities/[^.]*.cpp kdl_cp/utilities/[^.]*.cxx)
-file(GLOB UTIL_HPPS kdl_cp/utilities/[^.]*.h kdl_cp/utilities/[^.]*.hpp)
+file (GLOB UTIL_SRCS kdl_cp/utilities/[^.]*.cpp kdl_cp/utilities/[^.]*.cxx)
+file (GLOB UTIL_HPPS kdl_cp/utilities/[^.]*.h kdl_cp/utilities/[^.]*.hpp)
 
-set(Robot_SRCS ${Robot_SRCS} ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS})
+set (Robot_SRCS ${Robot_SRCS} ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS})
 
-source_group("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS})
+source_group ("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS})
 
 # endif(FREECAD_USE_EXTERNAL_KDL)
 
-source_group("Python" FILES ${Python_SRCS})
-source_group("Module" FILES ${Mod_SRCS})
+source_group ("Python" FILES ${Python_SRCS})
+source_group ("Module" FILES ${Mod_SRCS})
 
-add_library(Robot SHARED ${Robot_SRCS})
-target_link_libraries(Robot ${Robot_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(Robot)
-endif()
+add_library (Robot SHARED ${Robot_SRCS})
+target_link_libraries (Robot ${Robot_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (Robot)
+endif ()
 
-unset(_flag_found CACHE)
-check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
-if(_flag_found)
-    target_compile_options(Robot PRIVATE -Wno-deprecated-copy)
-endif()
+unset (_flag_found CACHE)
+check_cxx_compiler_flag ("-Wno-deprecated-copy" _flag_found)
+if (_flag_found)
+    target_compile_options (Robot PRIVATE -Wno-deprecated-copy)
+endif ()
 
-if(MINGW)
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
-endif()
+if (MINGW)
+    set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
+endif ()
 
-set_bin_dir(Robot Robot /Mod/Robot)
-set_python_prefix_suffix(Robot)
+set_bin_dir (Robot Robot /Mod/Robot)
+set_python_prefix_suffix (Robot)
 
-install(TARGETS Robot DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Robot DESTINATION ${CMAKE_INSTALL_LIBDIR})

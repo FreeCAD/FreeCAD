@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -8,11 +8,12 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS})
 
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(Import_LIBS Part ${OCC_OCAF_LIBRARIES} ${OCC_OCAF_DEBUG_LIBRARIES})
+set (Import_LIBS Part ${OCC_OCAF_LIBRARIES} ${OCC_OCAF_DEBUG_LIBRARIES})
 
-set(Import_SRCS
+set (
+    Import_SRCS
     AppImport.cpp
     AppImportPy.cpp
     ExportOCAF.cpp
@@ -51,7 +52,8 @@ set(Import_SRCS
     dxf/dxf.cpp
     dxf/dxf.h)
 
-set(SCL_Resources
+set (
+    SCL_Resources
     SCL/__init__.py
     SCL/AggregationDataTypes.py
     SCL/BaseType.py
@@ -73,22 +75,22 @@ set(SCL_Resources
     SCL_output/ifc2x3.py # IFC
     SCL_output/ifc4.py # IFC 4
     PlmXmlParser.py)
-source_group("SCL" FILES ${SCL_Resources})
+source_group ("SCL" FILES ${SCL_Resources})
 
-generate_from_xml(StepShapePy)
+generate_from_xml (StepShapePy)
 
-add_library(Import SHARED ${Import_SRCS})
-target_link_libraries(Import ${Import_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(Import)
-endif()
+add_library (Import SHARED ${Import_SRCS})
+target_link_libraries (Import ${Import_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (Import)
+endif ()
 
-add_custom_target(ImportPy ALL SOURCES ${SCL_Resources})
+add_custom_target (ImportPy ALL SOURCES ${SCL_Resources})
 
-fc_target_copy_resource(ImportPy ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
-                        ${CMAKE_BINARY_DIR}/Mod/Import ${SCL_Resources})
+fc_target_copy_resource (ImportPy ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
+                         ${CMAKE_BINARY_DIR}/Mod/Import ${SCL_Resources})
 
-set_bin_dir(Import Import /Mod/Import)
-set_python_prefix_suffix(Import)
+set_bin_dir (Import Import /Mod/Import)
+set_python_prefix_suffix (Import)
 
-install(TARGETS Import DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Import DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -1,27 +1,28 @@
-project(RegExp)
-set(APP_VERSION "1.0")
+project (RegExp)
+set (APP_VERSION "1.0")
 
-cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
+cmake_minimum_required (VERSION 2.6.0 FATAL_ERROR)
 
-find_package(Qt5)
+find_package (Qt5)
 
-include_directories(${QT_INCLUDE_DIR} ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
-                    ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-link_directories(${QT_LIBRARY_DIR})
+include_directories (${QT_INCLUDE_DIR} ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
+                     ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+link_directories (${QT_LIBRARY_DIR})
 
-add_definitions(-D_UNICODE)
+add_definitions (-D_UNICODE)
 
-qt5_wrap_cpp(RegExp_MOC_SRCS regexpdialog.h)
+qt5_wrap_cpp (RegExp_MOC_SRCS regexpdialog.h)
 
-qt5_wrap_ui(RegExp_UIC_HDRS regexpdialog.ui)
+qt5_wrap_ui (RegExp_UIC_HDRS regexpdialog.ui)
 
-set(RegExp_SRCS ${RegExp_UIC_HDRS} ${RegExp_MOC_SRCS} main.cpp regexpdialog.cpp regexpdialog.h)
+set (RegExp_SRCS ${RegExp_UIC_HDRS} ${RegExp_MOC_SRCS} main.cpp regexpdialog.cpp regexpdialog.h)
 
-if(WIN32)
-    set(RegExp_LIBS debug qtmaind.lib optimized qtmain.lib)
-endif(WIN32)
+if (WIN32)
+    set (RegExp_LIBS debug qtmaind.lib optimized qtmain.lib)
+endif (WIN32)
 
-set(RegExp_LIBS
+set (
+    RegExp_LIBS
     ${RegExp_LIBS}
     ${QT_QTCORE_LIBRARY_DEBUG}
     ${QT_QTCORE_LIBRARY}
@@ -30,12 +31,12 @@ set(RegExp_LIBS
     ${QT_QTXML_LIBRARY_DEBUG}
     ${QT_QTXML_LIBRARY})
 
-add_executable(RegExp WIN32 ${RegExp_SRCS})
+add_executable (RegExp WIN32 ${RegExp_SRCS})
 
-target_link_libraries(RegExp ${RegExp_LIBS})
+target_link_libraries (RegExp ${RegExp_LIBS})
 
-set_target_properties(RegExp PROPERTIES OUTPUT_NAME "RegExp")
-set_target_properties(RegExp PROPERTIES DEBUG_OUTPUT_NAME "RegExpD")
+set_target_properties (RegExp PROPERTIES OUTPUT_NAME "RegExp")
+set_target_properties (RegExp PROPERTIES DEBUG_OUTPUT_NAME "RegExpD")
 # dirty hack to avoid Debug/Release subdirectory
-set_target_properties(RegExp PROPERTIES PREFIX "../")
-set_target_properties(RegExp PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set_target_properties (RegExp PROPERTIES PREFIX "../")
+set_target_properties (RegExp PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

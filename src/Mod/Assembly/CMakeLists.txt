@@ -1,10 +1,11 @@
-add_subdirectory(App)
+add_subdirectory (App)
 
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    add_subdirectory (Gui)
+endif (BUILD_GUI)
 
-set(Assembly_Scripts
+set (
+    Assembly_Scripts
     Init.py
     CommandCreateAssembly.py
     CommandCreateBom.py
@@ -19,26 +20,26 @@ set(Assembly_Scripts
     AssemblyImport.py
     UtilsAssembly.py)
 
-if(BUILD_GUI)
-    list(APPEND Assembly_Scripts InitGui.py)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    list (APPEND Assembly_Scripts InitGui.py)
+endif (BUILD_GUI)
 
-install(FILES ${Assembly_Scripts} DESTINATION Mod/Assembly)
+install (FILES ${Assembly_Scripts} DESTINATION Mod/Assembly)
 
-set(AssemblyScripts_SRCS Assembly/__init__.py)
+set (AssemblyScripts_SRCS Assembly/__init__.py)
 
-set(AssemblyTests_SRCS AssemblyTests/__init__.py AssemblyTests/TestCore.py)
+set (AssemblyTests_SRCS AssemblyTests/__init__.py AssemblyTests/TestCore.py)
 
-set(all_files ${AssemblyTests_SRCS} ${AssemblyScripts_SRCS})
+set (all_files ${AssemblyTests_SRCS} ${AssemblyScripts_SRCS})
 
-add_custom_target(AssemblyScripts ALL SOURCES ${all_files})
+add_custom_target (AssemblyScripts ALL SOURCES ${all_files})
 
-set(test_files ${Assembly_Scripts} ${AssemblyTests_SRCS})
+set (test_files ${Assembly_Scripts} ${AssemblyTests_SRCS})
 
-add_custom_target(AssemblyTests ALL SOURCES ${test_files})
+add_custom_target (AssemblyTests ALL SOURCES ${test_files})
 
-fc_copy_sources(AssemblyScripts "${CMAKE_BINARY_DIR}/Mod/Assembly" ${all_files})
-fc_copy_sources(AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${test_files})
+fc_copy_sources (AssemblyScripts "${CMAKE_BINARY_DIR}/Mod/Assembly" ${all_files})
+fc_copy_sources (AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${test_files})
 
-install(FILES ${AssemblyTests_SRCS} DESTINATION Mod/Assembly/AssemblyTests)
-install(FILES ${AssemblyScripts_SRCS} DESTINATION Mod/Assembly/Assembly)
+install (FILES ${AssemblyTests_SRCS} DESTINATION Mod/Assembly/AssemblyTests)
+install (FILES ${AssemblyScripts_SRCS} DESTINATION Mod/Assembly/Assembly)

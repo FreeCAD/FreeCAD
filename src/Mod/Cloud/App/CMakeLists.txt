@@ -1,8 +1,8 @@
-if(APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OPENSSL_CFLAGS}")
-endif()
+if (APPLE)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OPENSSL_CFLAGS}")
+endif ()
 
-include_directories(
+include_directories (
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
@@ -11,15 +11,15 @@ include_directories(
     ${OPENSSL_INCLUDE_DIR}
     ${CURL_INCLUDE_DIR})
 
-set(Cloud_LIBS FreeCADApp ${OPENSSL_LIBRARIES} ${CURL_LIBRARIES} ${XercesC_LIBRARIES}
-               ${Boost_LIBRARIES} ${ZLIB_LIBRARIES})
+set (Cloud_LIBS FreeCADApp ${OPENSSL_LIBRARIES} ${CURL_LIBRARIES} ${XercesC_LIBRARIES}
+                ${Boost_LIBRARIES} ${ZLIB_LIBRARIES})
 
-set(Cloud_SRCS AppCloud.cpp PreCompiled.cpp PreCompiled.h)
+set (Cloud_SRCS AppCloud.cpp PreCompiled.cpp PreCompiled.h)
 
-add_library(Cloud SHARED ${Cloud_SRCS})
-target_link_libraries(Cloud ${Cloud_LIBS})
+add_library (Cloud SHARED ${Cloud_SRCS})
+target_link_libraries (Cloud ${Cloud_LIBS})
 
-set_bin_dir(Cloud Cloud /Mod/Cloud)
-set_python_prefix_suffix(Cloud)
+set_bin_dir (Cloud Cloud /Mod/Cloud)
+set_python_prefix_suffix (Cloud)
 
-install(TARGETS Cloud DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Cloud DESTINATION ${CMAKE_INSTALL_LIBDIR})

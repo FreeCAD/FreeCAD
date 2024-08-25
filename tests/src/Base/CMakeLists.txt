@@ -1,4 +1,4 @@
-target_sources(
+target_sources (
     Tests_run
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Axis.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Base64.cpp
@@ -25,4 +25,4 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/ViewProj.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Writer.cpp)
 
-setup_qt_test(InventorBuilder)
+setup_qt_test (InventorBuilder)

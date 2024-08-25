@@ -3,43 +3,50 @@
 # find script also locates that package and ensures the inclusion of its include directory when
 # using the pip finding mechanism
 
-find_package(Shiboken6 CONFIG QUIET)
-if(NOT Shiboken6_FOUND)
-    if(NOT Shiboken6_INCLUDE_DIR AND TARGET Shiboken6::Shiboken6)
-        get_property(
+find_package (Shiboken6 CONFIG QUIET)
+if (NOT Shiboken6_FOUND)
+    if (NOT Shiboken6_INCLUDE_DIR AND TARGET Shiboken6::Shiboken6)
+        get_property (
             Shiboken6_INCLUDE_DIR
             TARGET Shiboken6::Shiboken6
             PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    endif()
-    if(NOT Shiboken6_INCLUDE_DIR)
-        find_pip_package(Shiboken6)
-        if(Shiboken6_FOUND)
-            set(SHIBOKEN_LIBRARY
+    endif ()
+    if (NOT Shiboken6_INCLUDE_DIR)
+        find_pip_package (Shiboken6)
+        if (Shiboken6_FOUND)
+            set (
+                SHIBOKEN_LIBRARY
                 ${Shiboken6_LIBRARIES}
                 CACHE INTERNAL "")
-            set(SHIBOKEN_MAJOR_VERSION
+            set (
+                SHIBOKEN_MAJOR_VERSION
                 6
                 CACHE INTERNAL 6)
-            set(SHIBOKEN_FOUND
+            set (
+                SHIBOKEN_FOUND
                 ON
                 CACHE BOOL OFF)
-        endif()
+        endif ()
         # The include directory we actually want is part of shiboken6-generator
-        find_pip_package(shiboken6_generator)
-        if(shiboken6_generator_FOUND)
-            set(SHIBOKEN_INCLUDE_DIR
+        find_pip_package (shiboken6_generator)
+        if (shiboken6_generator_FOUND)
+            set (
+                SHIBOKEN_INCLUDE_DIR
                 ${shiboken6_generator_INCLUDE_DIRS}
                 CACHE PATH "")
-        endif()
-    endif()
-else()
-    set(SHIBOKEN_INCLUDE_DIR
+        endif ()
+    endif ()
+else ()
+    set (
+        SHIBOKEN_INCLUDE_DIR
         ${Shiboken6_INCLUDE_DIRS}
         CACHE PATH "")
-    set(SHIBOKEN_LIBRARY
+    set (
+        SHIBOKEN_LIBRARY
         ${Shiboken6_LIBRARIES}
         CACHE INTERNAL "")
-    set(SHIBOKEN_FOUND
+    set (
+        SHIBOKEN_FOUND
         ON
         CACHE BOOL OFF)
-endif()
+endif ()

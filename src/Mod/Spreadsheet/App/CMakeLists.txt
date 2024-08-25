@@ -1,13 +1,14 @@
-if(WIN32)
-    add_definitions(-DFCAppSpreadsheet)
-endif(WIN32)
+if (WIN32)
+    add_definitions (-DFCAppSpreadsheet)
+endif (WIN32)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${PYTHON_INCLUDE_DIRS}
-                    ${Boost_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIR} ${XercesC_INCLUDE_DIRS})
+include_directories (${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${PYTHON_INCLUDE_DIRS}
+                     ${Boost_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIR} ${XercesC_INCLUDE_DIRS})
 
-set(Spreadsheet_LIBS FreeCADApp)
+set (Spreadsheet_LIBS FreeCADApp)
 
-set(Spreadsheet_SRCS
+set (
+    Spreadsheet_SRCS
     Cell.cpp
     Cell.h
     DisplayUnit.h
@@ -35,24 +36,24 @@ set(Spreadsheet_SRCS
     Utils.h
     AppSpreadsheet.cpp)
 
-generate_from_xml(SheetPy)
-generate_from_xml(PropertySheetPy)
-generate_from_xml(PropertyColumnWidthsPy)
-generate_from_xml(PropertyRowHeightsPy)
+generate_from_xml (SheetPy)
+generate_from_xml (PropertySheetPy)
+generate_from_xml (PropertyColumnWidthsPy)
+generate_from_xml (PropertyRowHeightsPy)
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    get_msvc_precompiled_source("PreCompiled.cpp" PCH_SRCS ${Spreadsheet_SRCS})
-    add_msvc_precompiled_header(Spreadsheet PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${Spreadsheet_SRCS})
+    add_msvc_precompiled_header (Spreadsheet PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
-target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
-if(FREECAD_WARN_ERROR)
-    target_compile_warn_error(Spreadsheet)
-endif()
+add_library (Spreadsheet SHARED ${Spreadsheet_SRCS})
+target_link_libraries (Spreadsheet ${Spreadsheet_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error (Spreadsheet)
+endif ()
 
-set_bin_dir(Spreadsheet Spreadsheet /Mod/Spreadsheet)
-set_python_prefix_suffix(Spreadsheet)
+set_bin_dir (Spreadsheet Spreadsheet /Mod/Spreadsheet)
+set_python_prefix_suffix (Spreadsheet)
 
-install(TARGETS Spreadsheet DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS Spreadsheet DESTINATION ${CMAKE_INSTALL_LIBDIR})

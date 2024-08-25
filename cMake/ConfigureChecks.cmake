@@ -1,42 +1,42 @@
-include(CheckIncludeFile)
-include(CheckIncludeFiles)
-include(CheckSymbolExists)
-include(CheckFunctionExists)
-include(CheckLibraryExists)
-include(CheckTypeSize)
-include(CheckCSourceCompiles)
-include(CheckIncludeFileCXX)
-include(CheckCXXSourceCompiles)
+include (CheckIncludeFile)
+include (CheckIncludeFiles)
+include (CheckSymbolExists)
+include (CheckFunctionExists)
+include (CheckLibraryExists)
+include (CheckTypeSize)
+include (CheckCSourceCompiles)
+include (CheckIncludeFileCXX)
+include (CheckCXXSourceCompiles)
 
-check_include_file(GL/gl.h HAVE_GL_GL_H)
+check_include_file (GL/gl.h HAVE_GL_GL_H)
 
 # i/o streams
-check_include_file_cxx(istream HAVE_ISTREAM)
-check_include_file_cxx(ostream HAVE_OSTREAM)
-check_include_file_cxx(fstream HAVE_FSTREAM)
-check_include_file_cxx(sstream HAVE_SSTREAM)
-check_include_file_cxx(ios HAVE_IOS)
-check_include_file_cxx(iostream HAVE_IOSTREAM)
-check_include_file_cxx(iomanip HAVE_IOMANIP)
+check_include_file_cxx (istream HAVE_ISTREAM)
+check_include_file_cxx (ostream HAVE_OSTREAM)
+check_include_file_cxx (fstream HAVE_FSTREAM)
+check_include_file_cxx (sstream HAVE_SSTREAM)
+check_include_file_cxx (ios HAVE_IOS)
+check_include_file_cxx (iostream HAVE_IOSTREAM)
+check_include_file_cxx (iomanip HAVE_IOMANIP)
 
-include(TestForANSIStreamHeaders)
-if(NOT CMAKE_NO_ANSI_STREAM_HEADERS)
-    set(HAVE_STD_IOSTREAM 1)
-    set(USE_STD_IOSTREAM 1)
-endif(NOT CMAKE_NO_ANSI_STREAM_HEADERS)
+include (TestForANSIStreamHeaders)
+if (NOT CMAKE_NO_ANSI_STREAM_HEADERS)
+    set (HAVE_STD_IOSTREAM 1)
+    set (USE_STD_IOSTREAM 1)
+endif (NOT CMAKE_NO_ANSI_STREAM_HEADERS)
 
-include(TestForSTDNamespace)
-if(NOT CMAKE_NO_ANSI_STRING_STREAM)
-    set(HAVE_NAMESPACES 1)
-endif(NOT CMAKE_NO_ANSI_STRING_STREAM)
+include (TestForSTDNamespace)
+if (NOT CMAKE_NO_ANSI_STRING_STREAM)
+    set (HAVE_NAMESPACES 1)
+endif (NOT CMAKE_NO_ANSI_STRING_STREAM)
 
-set(HAVE_QGLFORMAT_EQ_OP 1)
-set(HAVE_QGLFORMAT_SETOVERLAY 1)
-set(HAVE_QGLWIDGET_SETAUTOBUFFERSWAP 1)
-set(HAVE_QT_KEYPAD_DEFINE 1)
-set(HAVE_QWIDGET_SHOWFULLSCREEN 1)
+set (HAVE_QGLFORMAT_EQ_OP 1)
+set (HAVE_QGLFORMAT_SETOVERLAY 1)
+set (HAVE_QGLWIDGET_SETAUTOBUFFERSWAP 1)
+set (HAVE_QT_KEYPAD_DEFINE 1)
+set (HAVE_QWIDGET_SHOWFULLSCREEN 1)
 
-file(
+file (
     WRITE ${CMAKE_BINARY_DIR}/backtrace.cpp
     "#include <cstddef>\n"
     "#include <execinfo.h>\n\n"
@@ -48,4 +48,4 @@ file(
     "    return 0;\n"
     "}")
 
-try_compile(HAVE_BACKTRACE_SYMBOLS ${CMAKE_BINARY_DIR} SOURCES ${CMAKE_BINARY_DIR}/backtrace.cpp)
+try_compile (HAVE_BACKTRACE_SYMBOLS ${CMAKE_BINARY_DIR} SOURCES ${CMAKE_BINARY_DIR}/backtrace.cpp)

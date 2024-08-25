@@ -1,10 +1,10 @@
-macro(SetupSpaceball)
+macro (SetupSpaceball)
     # ------------------------------ Spaceball -------------------------------
 
-    if(WIN32)
+    if (WIN32)
         # future
-    else(WIN32)
-        find_package(Spnav)
-    endif(WIN32)
+    else (WIN32)
+        find_package (Spnav)
+    endif (WIN32)
 
-endmacro(SetupSpaceball)
+endmacro (SetupSpaceball)
