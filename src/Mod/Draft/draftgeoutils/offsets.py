@@ -344,7 +344,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if i != 0:  # else:
             # TODO Should also calculate 1st edge direction above
             if isinstance(curredge.Curve, (Part.Circle,Part.Ellipse)):
-            # Seems Circle/Ellipse (1 geomtry) would be sorted in 1 list, 
+            # Seems Circle/Ellipse (1 geometry) would be sorted in 1 list, 
             # so i=0; should not happen here in fact (i != 0). 2024.8.25.
                 delta = curredge.tangentAt(curredge.FirstParameter).cross(norm)
             else:
