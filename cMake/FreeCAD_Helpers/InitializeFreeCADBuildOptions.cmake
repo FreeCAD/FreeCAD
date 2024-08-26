@@ -122,7 +122,7 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_OPENSCAD "Build the FreeCAD openscad module" ON)
     option(BUILD_PART "Build the FreeCAD part module" ON)
     option(BUILD_PART_DESIGN "Build the FreeCAD part design module" ON)
-    option(BUILD_PATH "Build the FreeCAD path module" ON)
+    option(BUILD_CAM "Build the FreeCAD CAM module" ON)
     option(BUILD_ASSEMBLY "Build the FreeCAD Assembly module" ON)
     option(BUILD_PLOT "Build the FreeCAD plot module" ON)
     option(BUILD_POINTS "Build the FreeCAD points module" ON)
@@ -184,10 +184,10 @@ macro(InitializeFreeCADBuildOptions)
         set(BUILD_SMESH ON )
     endif()
 
-    # for Windows the minimum required cmake version is 3.4.3 to build the Path module
+    # for Windows the minimum required cmake version is 3.4.3 to build the CAM module
     if(WIN32 AND CMAKE_VERSION VERSION_LESS 3.4.3)
-        message(WARNING "Disable Path, requires cmake >= 3.4.3 in order to build this module")
-        set(BUILD_PATH OFF )
+        message(WARNING "Disable CAM, requires cmake >= 3.4.3 in order to build this module")
+        set(BUILD_CAM OFF )
     endif()
 
     # force build directory to be different to source directory
