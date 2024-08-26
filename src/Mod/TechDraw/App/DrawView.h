@@ -96,6 +96,7 @@ public:
     virtual bool checkFit() const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
+    virtual Base::Vector3d getPosition() const { return Base::Vector3d(X.getValue(), Y.getValue(), 0.0); }
     virtual bool keepUpdated(void);
 
     boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
