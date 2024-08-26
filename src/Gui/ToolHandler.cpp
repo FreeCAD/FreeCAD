@@ -109,9 +109,9 @@ void ToolHandler::setCrosshairCursor(const char* svgName)
 }
 
 void ToolHandler::setSvgCursor(const QString& cursorName,
-                                     int x,
-                                     int y,
-                                     const std::map<unsigned long, unsigned long>& colorMapping)
+                               int x,
+                               int y,
+                               const std::map<unsigned long, unsigned long>& colorMapping)
 {
     // The TechDraw_Pointer_*.svg icons have a default size of 64x64. When directly creating
     // them with a size of 32x32 they look very bad.
@@ -202,10 +202,10 @@ void ToolHandler::addCursorTail(std::vector<QPixmap>& pixmaps)
     qp.begin(&newIcon);
 
     qp.drawPixmap(QPointF(0, 0),
-                    baseIcon.scaled(baseCursorWidth * pixelRatio,
-                                    baseCursorHeight * pixelRatio,
-                                    Qt::KeepAspectRatio,
-                                    Qt::SmoothTransformation));
+                  baseIcon.scaled(baseCursorWidth * pixelRatio,
+                                  baseCursorHeight * pixelRatio,
+                                  Qt::KeepAspectRatio,
+                                  Qt::SmoothTransformation));
 
     // Iterate through pixmaps and them to the cursor pixmap
     qreal currentIconX = baseCursorWidth;

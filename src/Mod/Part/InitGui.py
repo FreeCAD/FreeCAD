@@ -31,10 +31,9 @@ class PartWorkbench(Gui.Workbench):
     """Part workbench object."""
 
     def __init__(self):
-        self.__class__.Icon = os.path.join(App.getResourceDir(),
-                                           "Mod", "Part",
-                                           "Resources", "icons",
-                                           "PartWorkbench.svg")
+        self.__class__.Icon = os.path.join(
+            App.getResourceDir(), "Mod", "Part", "Resources", "icons", "PartWorkbench.svg"
+        )
         self.__class__.MenuText = "Part"
         self.__class__.ToolTip = "Part workbench"
 
@@ -44,9 +43,10 @@ class PartWorkbench(Gui.Workbench):
 
             class Manipulator:
                 def modifyToolBars(self):
-                    return [{"insert" : "Sketcher_NewSketch", "toolItem" : "Part_Extrude"}]
+                    return [{"insert": "Sketcher_NewSketch", "toolItem": "Part_Extrude"}]
+
                 def modifyMenuBar(self):
-                    return [{"insert" : "Sketcher_NewSketch", "menuItem" : "Part_Extrude"}]
+                    return [{"insert": "Sketcher_NewSketch", "menuItem": "Part_Extrude"}]
 
             manip = Manipulator()
             Gui.addWorkbenchManipulator(manip)
@@ -60,15 +60,17 @@ class PartWorkbench(Gui.Workbench):
         try:
             import BasicShapes.CommandShapes
         except ImportError as err:
-            App.Console.PrintError("'BasicShapes' package cannot be loaded. "
-                                   "{err}\n".format(err=str(err)))
+            App.Console.PrintError(
+                "'BasicShapes' package cannot be loaded. " "{err}\n".format(err=str(err))
+            )
 
         try:
             import CompoundTools._CommandCompoundFilter
             import CompoundTools._CommandExplodeCompound
         except ImportError as err:
-            App.Console.PrintError("'CompoundTools' package cannot be loaded. "
-                                   "{err}\n".format(err=str(err)))
+            App.Console.PrintError(
+                "'CompoundTools' package cannot be loaded. " "{err}\n".format(err=str(err))
+            )
 
         try:
             bop = __import__("BOPTools")
@@ -76,8 +78,9 @@ class PartWorkbench(Gui.Workbench):
             bop.addCommands()
             PartGui.BOPTools = bop
         except Exception as err:
-            App.Console.PrintError("'BOPTools' package cannot be loaded. "
-                                   "{err}\n".format(err=str(err)))
+            App.Console.PrintError(
+                "'BOPTools' package cannot be loaded. " "{err}\n".format(err=str(err))
+            )
 
         self.tryAddManipulator()
 

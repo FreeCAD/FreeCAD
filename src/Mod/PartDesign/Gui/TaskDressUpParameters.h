@@ -36,31 +36,38 @@ class QAction;
 class QListWidget;
 class QListWidgetItem;
 
-namespace Part {
-    class Feature;
+namespace Part
+{
+class Feature;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskDressUpParameters: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = nullptr);
+    TaskDressUpParameters(ViewProviderDressUp* DressUpView,
+                          bool selectEdges,
+                          bool selectFaces,
+                          QWidget* parent = nullptr);
     ~TaskDressUpParameters() override;
 
     const std::vector<std::string> getReferences() const;
-    Part::Feature *getBase() const;
+    Part::Feature* getBase() const;
 
     void hideObject();
     void showObject();
     void setupTransaction();
 
     /// Apply the changes made to the object to it
-    virtual void apply() {}
+    virtual void apply()
+    {}
 
-    int getTransactionID() const {
+    int getTransactionID() const
+    {
         return transactionID;
     }
 
@@ -76,21 +83,28 @@ protected Q_SLOTS:
 protected:
     void referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget);
     bool wasDoubleClicked = false;
-    bool KeyEvent(QEvent *e);
+    bool KeyEvent(QEvent* e);
     void hideOnError();
     void addAllEdges(QListWidget* listWidget);
     void deleteRef(QListWidget* listWidget);
     void updateFeature(PartDesign::DressUp* pcDressUp, const std::vector<std::string>& refs);
 
 protected:
-    enum selectionModes { none, refSel, plane, line };
+    enum selectionModes
+    {
+        none,
+        refSel,
+        plane,
+        line
+    };
     void setSelectionMode(selectionModes mode);
     virtual void setButtons(const selectionModes mode) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
     ViewProviderDressUp* getDressUpView() const;
 
-    template<typename T = App::DocumentObject> T* getObject() const
+    template<typename T = App::DocumentObject>
+    T* getObject() const
     {
         static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
         if (!DressUpView.expired()) {
@@ -117,12 +131,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDressUpParameters : public TaskDlgFeatureParameters
+class TaskDlgDressUpParameters: public TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView);
+    explicit TaskDlgDressUpParameters(ViewProviderDressUp* DressUpView);
     ~TaskDlgDressUpParameters() override;
 
 public:
@@ -131,9 +145,9 @@ public:
     bool reject() override;
 
 protected:
-    TaskDressUpParameters  *parameter;
+    TaskDressUpParameters* parameter;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskDressUpParameters_H
+#endif  // GUI_TASKVIEW_TaskDressUpParameters_H

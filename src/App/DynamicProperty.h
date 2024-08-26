@@ -35,11 +35,12 @@
 #include <boost/multi_index/mem_fun.hpp>
 
 
-namespace Base {
+namespace Base
+{
 class Writer;
 class XMLReader;
 class XMLWriter;
-}
+}  // namespace Base
 
 namespace App
 {
@@ -48,15 +49,24 @@ class PropertyContainer;
 
 namespace bmi = boost::multi_index;
 
-struct CStringHasher {
-    inline std::size_t operator()(const char *s) const {
-        if(!s) return 0;
-        return boost::hash_range(s,s+std::strlen(s));
+struct CStringHasher
+{
+    inline std::size_t operator()(const char* s) const
+    {
+        if (!s) {
+            return 0;
+        }
+        return boost::hash_range(s, s + std::strlen(s));
     }
-    inline bool operator()(const char *a, const char *b) const {
-        if(!a) return !b;
-        if(!b) return false;
-        return std::strcmp(a,b)==0;
+    inline bool operator()(const char* a, const char* b) const
+    {
+        if (!a) {
+            return !b;
+        }
+        if (!b) {
+            return false;
+        }
+        return std::strcmp(a, b) == 0;
     }
 };
 
@@ -73,13 +83,13 @@ public:
     /** @name Access properties */
     //@{
     /// Get all properties of the class (including parent)
-    void getPropertyList(std::vector<Property*> &List) const;
+    void getPropertyList(std::vector<Property*>& List) const;
     /// get all properties with their names
-    void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
+    void getPropertyNamedList(std::vector<std::pair<const char*, Property*>>& List) const;
     /// Get all properties of the class (including parent)
-    void getPropertyMap(std::map<std::string,Property*> &Map) const;
+    void getPropertyMap(std::map<std::string, Property*>& Map) const;
     /// Find a dynamic property by its name
-    Property *getDynamicPropertyByName(const char* name) const;
+    Property* getDynamicPropertyByName(const char* name) const;
     /*!
       Add a dynamic property of the type @a type and with the name @a name.
       @a Group gives the grouping name which appears in the property editor and
@@ -97,22 +107,28 @@ public:
        addDynamicProperty(..., ..., "Base","blah", Prop_None, true, true);
       @endcode
      */
-    Property* addDynamicProperty(PropertyContainer &pc, const char* type, const char* name=nullptr, const char* group=nullptr,
-                                 const char* doc=nullptr, short attr=0, bool ro=false, bool hidden=false);
+    Property* addDynamicProperty(PropertyContainer& pc,
+                                 const char* type,
+                                 const char* name = nullptr,
+                                 const char* group = nullptr,
+                                 const char* doc = nullptr,
+                                 short attr = 0,
+                                 bool ro = false,
+                                 bool hidden = false);
     /** Add a pre-existing property
      *
      * The property is not treated as dynamic, and will not trigger signal.
      *
      * @return Return false if there is a property exist with the same name.
      */
-    bool addProperty(Property *prop);
+    bool addProperty(Property* prop);
     /*!
-      Removes a dynamic property by name. Returns true if the property is part of the container, otherwise
-      false is returned.
+      Removes a dynamic property by name. Returns true if the property is part of the container,
+      otherwise false is returned.
      */
     bool removeDynamicProperty(const char* name);
     /// Remove pre-existing property, which will not be deleted.
-    bool removeProperty(const Property *prop);
+    bool removeProperty(const Property* prop);
     /// Get a list of all dynamic properties.
     std::vector<std::string> getDynamicPropertyNames() const;
     /// Get the name of a property
@@ -124,72 +140,86 @@ public:
     /// Get the attributes of a property
     short getPropertyType(const Property* prop) const;
     /// Get the attributes of a named property
-    short getPropertyType(const char *name) const;
+    short getPropertyType(const char* name) const;
     /// Get the group name of a property
     const char* getPropertyGroup(const Property* prop) const;
     /// Get the group name of a named property
-    const char* getPropertyGroup(const char *name) const;
+    const char* getPropertyGroup(const char* name) const;
     /// Get the documentation of a property
     const char* getPropertyDocumentation(const Property* prop) const;
     /// Get the documentation of a named property
-    const char* getPropertyDocumentation(const char *name) const;
+    const char* getPropertyDocumentation(const char* name) const;
     //@}
 
     /// Remove all properties
     void clear();
 
     /// Get property count
-    size_t size() const { return props.size(); }
+    size_t size() const
+    {
+        return props.size();
+    }
 
-    void save(const Property *prop, Base::Writer &writer) const;
+    void save(const Property* prop, Base::Writer& writer) const;
 
-    Property *restore(PropertyContainer &pc, 
-        const char *PropName, const char *TypeName, Base::XMLReader &reader);
+    Property* restore(PropertyContainer& pc,
+                      const char* PropName,
+                      const char* TypeName,
+                      Base::XMLReader& reader);
 
-    struct PropData {
+    struct PropData
+    {
         Property* property;
         std::string name;
-        const char *pName;
+        const char* pName;
         mutable std::string group;
         mutable std::string doc;
         short attr;
         bool readonly;
         bool hidden;
 
-        PropData(Property *prop=nullptr, std::string &&n=std::string(), const char *pn=nullptr,
-                const char *g=nullptr, const char *d=nullptr, short a=0, bool ro=false, bool h=false)
-            :property(prop),name(std::move(n)),pName(pn)
-            ,group(g?g:""),doc(d?d:""),attr(a),readonly(ro),hidden(h)
+        PropData(Property* prop = nullptr,
+                 std::string&& n = std::string(),
+                 const char* pn = nullptr,
+                 const char* g = nullptr,
+                 const char* d = nullptr,
+                 short a = 0,
+                 bool ro = false,
+                 bool h = false)
+            : property(prop)
+            , name(std::move(n))
+            , pName(pn)
+            , group(g ? g : "")
+            , doc(d ? d : "")
+            , attr(a)
+            , readonly(ro)
+            , hidden(h)
         {}
 
-        const char *getName() const {
-            return pName?pName:name.c_str();
+        const char* getName() const
+        {
+            return pName ? pName : name.c_str();
         }
     };
 
     PropData getDynamicPropertyData(const Property* prop) const;
 
-    bool changeDynamicProperty(const Property *prop, const char *group, const char *doc);
+    bool changeDynamicProperty(const Property* prop, const char* group, const char* doc);
 
 private:
-    std::string getUniquePropertyName(PropertyContainer &pc, const char *Name) const;
+    std::string getUniquePropertyName(PropertyContainer& pc, const char* Name) const;
 
 private:
     bmi::multi_index_container<
         PropData,
         bmi::indexed_by<
-            bmi::hashed_unique<
-                bmi::const_mem_fun<PropData, const char*, &PropData::getName>,
-                CStringHasher,
-                CStringHasher
-            >,
-            bmi::hashed_unique<
-                bmi::member<PropData, Property*, &PropData::property>
-            >
-        >
-    > props;
+            bmi::hashed_unique<bmi::const_mem_fun<PropData, const char*, &PropData::getName>,
+                               CStringHasher,
+                               CStringHasher>,
+            bmi::hashed_unique<bmi::member<PropData, Property*, &PropData::property>>>>
+        props;
 };
 
-} // namespace App
+}  // namespace App
 
-#endif // APP_DYNAMICPROPERTY_H
+#endif  // APP_DYNAMICPROPERTY_H

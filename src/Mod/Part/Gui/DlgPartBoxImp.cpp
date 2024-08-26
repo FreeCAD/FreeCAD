@@ -37,8 +37,7 @@ using namespace PartGui;
  */
 DlgPartBoxImp::DlgPartBoxImp(QWidget* parent, Qt::WindowFlags fl)
     : Gui::LocationDialogUiImp(new Ui_DlgPartBox, parent, fl)
-{
-}
+{}
 
 /*
  *  Destroys the object and frees any allocated resources

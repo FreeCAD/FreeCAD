@@ -38,33 +38,41 @@
 class QMenu;
 class QAction;
 
-namespace SIM { namespace Coin3D { namespace Quarter {
+namespace SIM
+{
+namespace Coin3D
+{
+namespace Quarter
+{
 
 class QuarterWidget;
 
-class ContextMenu : public QObject {
-  Q_OBJECT
+class ContextMenu: public QObject
+{
+    Q_OBJECT
 public:
-  explicit ContextMenu(QuarterWidget * quarterwidget);
-  ~ContextMenu() override;
+    explicit ContextMenu(QuarterWidget* quarterwidget);
+    ~ContextMenu() override;
 
-  QMenu * getMenu() const;
+    QMenu* getMenu() const;
 
 public Q_SLOTS:
-  void changeRenderMode(QAction * action);
-  void changeStereoMode(QAction * action);
-  void changeTransparencyType(QAction * action);
+    void changeRenderMode(QAction* action);
+    void changeStereoMode(QAction* action);
+    void changeTransparencyType(QAction* action);
 
 private:
-  QuarterWidget * quarterwidget;
+    QuarterWidget* quarterwidget;
 
-  QMenu * contextmenu;
-  QMenu * rendermenu;
-  QMenu * stereomenu;
-  QMenu * functionsmenu;
-  QMenu * transparencymenu;
+    QMenu* contextmenu;
+    QMenu* rendermenu;
+    QMenu* stereomenu;
+    QMenu* functionsmenu;
+    QMenu* transparencymenu;
 };
 
-}}} // namespace
+}  // namespace Quarter
+}  // namespace Coin3D
+}  // namespace SIM
 
-#endif // QUARTER_CONTEXTMENUHANDLERP_H
+#endif  // QUARTER_CONTEXTMENUHANDLERP_H

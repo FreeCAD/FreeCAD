@@ -33,7 +33,8 @@
 
 class QDir;
 
-namespace Gui {
+namespace Gui
+{
 
 using TStringList = std::list<std::string>;
 using TStringMap = std::map<std::string, std::string>;
@@ -47,7 +48,7 @@ using TStringMap = std::map<std::string, std::string>;
  * \author Werner Mayer
  */
 class TranslatorP;
-class GuiExport Translator : public QObject
+class GuiExport Translator: public QObject
 {
     Q_OBJECT
 
@@ -57,14 +58,15 @@ public:
     /// Creates an instance
     static Translator* instance();
     /// Destroys the instance
-    static void destruct ();
+    static void destruct();
     //@}
 
     /** Activates the specified language \a lang if available. */
-    void activateLanguage (const char* lang);
+    void activateLanguage(const char* lang);
     /* Reloads the translators */
     void refresh();
-    /** Returns the currently installed language. If no language is installed an empty string is returned. */
+    /** Returns the currently installed language. If no language is installed an empty string is
+     * returned. */
     std::string activeLanguage() const;
     /** Returns the locale (e.g. "de") to the given language name. */
     std::string locale(const std::string&) const;
@@ -97,6 +99,6 @@ private:
     std::unique_ptr<Translator, std::function<void(Translator*)>> decimalPointConverter;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_TRANSLATOR_H
+#endif  // GUI_TRANSLATOR_H

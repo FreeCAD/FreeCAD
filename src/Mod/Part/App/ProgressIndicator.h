@@ -32,16 +32,17 @@
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace Part {
+namespace Part
+{
 
 #if OCC_VERSION_HEX < 0x070500
-class PartExport ProgressIndicator : public Message_ProgressIndicator
+class PartExport ProgressIndicator: public Message_ProgressIndicator
 {
 public:
-    ProgressIndicator (int theMaxVal = 100);
-    virtual ~ProgressIndicator ();
+    ProgressIndicator(int theMaxVal = 100);
+    virtual ~ProgressIndicator();
 
-    virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
+    virtual Standard_Boolean Show(const Standard_Boolean theForce = Standard_True);
     virtual Standard_Boolean UserBreak();
 
 private:
@@ -49,6 +50,6 @@ private:
 };
 #endif
 
-}
+}  // namespace Part
 
-#endif // PART_PROGRESSINDICATOR_H
+#endif  // PART_PROGRESSINDICATOR_H

@@ -33,7 +33,7 @@
 namespace Part
 {
 
-class PartExport ProjectOnSurface : public Part::Feature
+class PartExport ProjectOnSurface: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(ProjectOnSurface);
 
@@ -54,7 +54,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     const char* getViewProviderName() const override;
     //@}
 
@@ -73,14 +73,11 @@ private:
     std::vector<TopoDS_Wire> createWiresFromWires(const std::vector<TopoDS_Shape>& wires,
                                                   const TopoDS_Face& supportFace) const;
     std::vector<TopoDS_Wire> getWires(const TopoDS_Face& face) const;
-    std::vector<TopoDS_Shape> projectFace(const TopoDS_Face& face,
-                                          const TopoDS_Face& supportFace,
-                                          const gp_Dir& dir);
-    std::vector<TopoDS_Shape> projectWire(const TopoDS_Shape& wire,
-                                          const TopoDS_Face& supportFace,
-                                          const gp_Dir& dir);
-    TopoDS_Wire fixWire(const TopoDS_Shape& shape,
-                        const TopoDS_Face& supportFace) const;
+    std::vector<TopoDS_Shape>
+    projectFace(const TopoDS_Face& face, const TopoDS_Face& supportFace, const gp_Dir& dir);
+    std::vector<TopoDS_Shape>
+    projectWire(const TopoDS_Shape& wire, const TopoDS_Face& supportFace, const gp_Dir& dir);
+    TopoDS_Wire fixWire(const TopoDS_Shape& shape, const TopoDS_Face& supportFace) const;
     TopoDS_Wire fixWire(const std::vector<TopoDS_Edge>& edges,
                         const TopoDS_Face& supportFace) const;
     std::vector<TopoDS_Shape> filterShapes(const std::vector<TopoDS_Shape>& shapes) const;
@@ -88,7 +85,7 @@ private:
     TopLoc_Location getOffsetPlacement() const;
 };
 
-} //namespace Part
+}  // namespace Part
 
 
 #endif  // PART_FEATUREPROJECTONSURFACE_H

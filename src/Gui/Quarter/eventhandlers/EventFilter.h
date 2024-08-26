@@ -4,22 +4,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -39,29 +39,37 @@
 class QEvent;
 class QPoint;
 
-namespace SIM { namespace Coin3D { namespace Quarter {
+namespace SIM
+{
+namespace Coin3D
+{
+namespace Quarter
+{
 
 class InputDevice;
 
-class QUARTER_DLL_API EventFilter : public QObject {
-  Q_OBJECT
+class QUARTER_DLL_API EventFilter: public QObject
+{
+    Q_OBJECT
 
 public:
-  EventFilter(QObject * parent);
-  ~EventFilter() override;
+    EventFilter(QObject* parent);
+    ~EventFilter() override;
 
-  void registerInputDevice(InputDevice * device);
-  void unregisterInputDevice(InputDevice * device);
+    void registerInputDevice(InputDevice* device);
+    void unregisterInputDevice(InputDevice* device);
 
-  const QPoint & globalMousePosition() const;
+    const QPoint& globalMousePosition() const;
 
 protected:
-  bool eventFilter(QObject * obj, QEvent * event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
-  class EventFilterP * pimpl;
+    class EventFilterP* pimpl;
 };
 
-}}} // namespace
+}  // namespace Quarter
+}  // namespace Coin3D
+}  // namespace SIM
 
-#endif // QUARTER_EVENTFILTER_H
+#endif  // QUARTER_EVENTFILTER_H

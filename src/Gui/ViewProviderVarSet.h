@@ -26,18 +26,23 @@
 #include "ViewProviderDocumentObject.h"
 #include "DlgAddPropertyVarSet.h"
 
-namespace Gui {
+namespace Gui
+{
 
 /** View provider associated with an App::VarSet
  */
-class GuiExport ViewProviderVarSet : public ViewProviderDocumentObject
+class GuiExport ViewProviderVarSet: public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderVarSet);
+
 public:
     ViewProviderVarSet();
     ~ViewProviderVarSet() override = default;
 
-    bool isShow() const override { return true; }
+    bool isShow() const override
+    {
+        return true;
+    }
 
     bool doubleClicked() override;
 
@@ -47,6 +52,6 @@ private:
     std::unique_ptr<Dialog::DlgAddPropertyVarSet> dialog;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 #endif

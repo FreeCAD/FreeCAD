@@ -23,13 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgo.hxx>
-# include <BRepFilletAPI_MakeFillet.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopTools_ListOfShape.hxx>
-# include <ShapeFix_Shape.hxx>
-# include <ShapeFix_ShapeTolerance.hxx>
+#include <BRepAlgo.hxx>
+#include <BRepFilletAPI_MakeFillet.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopTools_ListOfShape.hxx>
+#include <ShapeFix_Shape.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -44,26 +44,31 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Fillet, PartDesign::DressUp)
 
-const App::PropertyQuantityConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.1};
+const App::PropertyQuantityConstraint::Constraints floatRadius = {0.0, FLT_MAX, 0.1};
 
 Fillet::Fillet()
 {
     ADD_PROPERTY_TYPE(Radius, (1.0), "Fillet", App::Prop_None, "Fillet radius.");
     Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
-    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Fillet", App::Prop_None,
-      "Fillet all edges if true, else use only those edges in Base property.\n"
-      "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
+    ADD_PROPERTY_TYPE(UseAllEdges,
+                      (false),
+                      "Fillet",
+                      App::Prop_None,
+                      "Fillet all edges if true, else use only those edges in Base property.\n"
+                      "If true, then this overrides any edge changes made to the Base property or "
+                      "in the dialog.\n");
 }
 
 short Fillet::mustExecute() const
 {
-    if (Placement.isTouched() || Radius.isTouched())
+    if (Placement.isTouched() || Radius.isTouched()) {
         return 1;
+    }
     return DressUp::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Fillet::execute()
+App::DocumentObjectExecReturn* Fillet::execute()
 {
     Part::TopoShape baseShape;
     try {
@@ -114,7 +119,9 @@ App::DocumentObjectExecReturn *Fillet::execute()
             shape = getSolid(shape);
         }
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception",
+                                  "Result has multiple solids: that is not currently supported."));
         }
         this->Shape.setValue(shape);
 
@@ -128,15 +135,17 @@ App::DocumentObjectExecReturn *Fillet::execute()
     }
 }
 
-void Fillet::Restore(Base::XMLReader &reader)
+void Fillet::Restore(Base::XMLReader& reader)
 {
     DressUp::Restore(reader);
 }
 
-void Fillet::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+void Fillet::handleChangedPropertyType(Base::XMLReader& reader,
+                                       const char* TypeName,
+                                       App::Property* prop)
 {
-    if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
-        strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
+    if (prop && strcmp(TypeName, "App::PropertyFloatConstraint") == 0
+        && strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
         App::PropertyFloatConstraint p;
         p.Restore(reader);
         static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());

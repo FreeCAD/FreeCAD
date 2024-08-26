@@ -30,7 +30,8 @@
 #include <functional>
 #endif
 
-namespace Part {
+namespace Part
+{
 
 class ShapeMapHasher
 {
@@ -40,11 +41,11 @@ public:
 #if OCC_VERSION_HEX < 0x070800
         return theShape.HashCode(INT_MAX);
 #else
-        return std::hash<TopoDS_Shape>{}(theShape);
+        return std::hash<TopoDS_Shape> {}(theShape);
 #endif
     }
 };
 
-}
+}  // namespace Part
 
 #endif  // PART_SHAPEMAPHASHER_H

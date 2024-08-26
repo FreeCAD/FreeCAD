@@ -63,7 +63,7 @@
 
 // Inventor includes OpenGL
 #ifndef __InventorAll__
-# include <Gui/InventorAll.h>
+#include <Gui/InventorAll.h>
 #endif
 
 #endif  //_PreComp_

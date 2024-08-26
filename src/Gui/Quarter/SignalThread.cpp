@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -37,40 +37,35 @@
 using namespace SIM::Coin3D::Quarter;
 
 SignalThread::SignalThread()
-  : isstopped(false)
-{
-}
+    : isstopped(false)
+{}
 
 SignalThread::~SignalThread()
+{}
+
+void SignalThread::trigger()
 {
+    // lock first to make sure the QThread is actually waiting for a signal
+    QMutexLocker ml(&this->mutex);
+    this->waitcond.wakeOne();
 }
 
-void
-SignalThread::trigger()
+void SignalThread::stopThread()
 {
-  // lock first to make sure the QThread is actually waiting for a signal
-  QMutexLocker ml(&this->mutex);
-  this->waitcond.wakeOne();
-}
-
-void
-SignalThread::stopThread()
-{
-  QMutexLocker ml(&this->mutex);
-  this->isstopped = true;
-  this->waitcond.wakeOne();
+    QMutexLocker ml(&this->mutex);
+    this->isstopped = true;
+    this->waitcond.wakeOne();
 }
 
 
-void
-SignalThread::run()
+void SignalThread::run()
 {
-  QMutexLocker ml(&this->mutex);
-  while (!this->isstopped) {
-    // just wait, and trigger every time we receive a signal
-    this->waitcond.wait(&this->mutex);
-    if (!this->isstopped) {
-      Q_EMIT triggerSignal();
+    QMutexLocker ml(&this->mutex);
+    while (!this->isstopped) {
+        // just wait, and trigger every time we receive a signal
+        this->waitcond.wait(&this->mutex);
+        if (!this->isstopped) {
+            Q_EMIT triggerSignal();
+        }
     }
-  }
 }

@@ -27,7 +27,8 @@
 #include "TextEdit.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
 class PythonSyntaxHighlighter;
 class PythonSyntaxHighlighterP;
@@ -36,12 +37,12 @@ class PythonSyntaxHighlighterP;
  * Python text editor with syntax highlighting.
  * \author Werner Mayer
  */
-class GuiExport PythonEditor : public TextEditor
+class GuiExport PythonEditor: public TextEditor
 {
     Q_OBJECT
 
 public:
-    explicit PythonEditor(QWidget *parent = nullptr);
+    explicit PythonEditor(QWidget* parent = nullptr);
     ~PythonEditor() override;
 
     void toggleBreakpoint();
@@ -64,12 +65,12 @@ public Q_SLOTS:
 
 protected:
     /** Pops up the context menu with some extensions */
-    void contextMenuEvent ( QContextMenuEvent* e ) override;
+    void contextMenuEvent(QContextMenuEvent* e) override;
     void drawMarker(int line, int x, int y, QPainter*) override;
-    void keyPressEvent(QKeyEvent *) override;
+    void keyPressEvent(QKeyEvent*) override;
 
 private:
-    //PythonSyntaxHighlighter* pythonSyntax;
+    // PythonSyntaxHighlighter* pythonSyntax;
     struct PythonEditorP* d;
 };
 
@@ -77,18 +78,18 @@ private:
  * Syntax highlighter for Python.
  * \author Werner Mayer
  */
-class GuiExport PythonSyntaxHighlighter : public SyntaxHighlighter
+class GuiExport PythonSyntaxHighlighter: public SyntaxHighlighter
 {
 public:
     explicit PythonSyntaxHighlighter(QObject* parent);
     ~PythonSyntaxHighlighter() override;
 
-    void highlightBlock (const QString & text) override;
+    void highlightBlock(const QString& text) override;
 
 private:
     PythonSyntaxHighlighterP* d;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_PYTHONEDITOR_H
+#endif  // GUI_PYTHONEDITOR_H

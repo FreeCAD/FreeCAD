@@ -3677,14 +3677,14 @@ click again to end selection</translation>
       <location filename="../../CommandBody.cpp" line="158"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>Ang napiling hugis ay binubuo ng maramhang mga solid. 
+      <translation>Ang napiling hugis ay binubuo ng maramhang mga solid.
 Ito ay pwedeng humantong sa hindi inaasahang mga resulta.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="162"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation>Ang napiling hugis ay binubuo ng maramhang mga shell. 
+      <translation>Ang napiling hugis ay binubuo ng maramhang mga shell.
 Ito ay pwedeng humantong sa hindi inaasahang mga resulta.</translation>
     </message>
     <message>
@@ -3698,7 +3698,7 @@ Ito ay pwedeng humantong sa hindi inaasahang mga resulta.</translation>
       <location filename="../../CommandBody.cpp" line="170"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>Ang napiling hugis ay binubuo ng maramhang mga solid o shell. 
+      <translation>Ang napiling hugis ay binubuo ng maramhang mga solid o shell.
 Ito ay pwedeng humantong sa hindi inaasahang mga resulta.</translation>
     </message>
     <message>

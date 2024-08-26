@@ -86,7 +86,8 @@ public:
      * @return
      */
     int addLink(const App::PropertyLinkSub& lnk, QString const& itemText);
-    int addLink(App::DocumentObject* linkObj, std::string const& linkSubname, QString const& itemText);
+    int
+    addLink(App::DocumentObject* linkObj, std::string const& linkSubname, QString const& itemText);
     void clear();
     App::PropertyLinkSub& getLink(int index) const;
 

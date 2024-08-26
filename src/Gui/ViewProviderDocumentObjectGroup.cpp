@@ -33,7 +33,8 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup,
+                                Gui::ViewProviderDocumentObject)
 
 
 /**
@@ -61,23 +62,25 @@ bool ViewProviderDocumentObjectGroup::isShow() const
 
 QIcon ViewProviderDocumentObjectGroup::getIcon() const
 {
-    return mergeGreyableOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
+    return mergeGreyableOverlayIcons(Gui::BitmapFactory().iconFromTheme(sPixmap));
 }
 
 /**
  * Extracts the associated view providers of the objects of the associated object group group.
  */
-void ViewProviderDocumentObjectGroup::getViewProviders(std::vector<ViewProviderDocumentObject*>& vp) const
+void ViewProviderDocumentObjectGroup::getViewProviders(
+    std::vector<ViewProviderDocumentObject*>& vp) const
 {
     App::DocumentObject* doc = getObject();
     if (doc->isDerivedFrom<App::DocumentObjectGroup>()) {
         Gui::Document* gd = Application::Instance->getDocument(doc->getDocument());
         auto grp = static_cast<App::DocumentObjectGroup*>(doc);
         std::vector<App::DocumentObject*> obj = grp->getObjects();
-        for (const auto & it : obj) {
+        for (const auto& it : obj) {
             ViewProvider* v = gd->getViewProvider(it);
-            if (v && v->isDerivedFrom<ViewProviderDocumentObject>())
+            if (v && v->isDerivedFrom<ViewProviderDocumentObject>()) {
                 vp.push_back(static_cast<ViewProviderDocumentObject*>(v));
+            }
         }
     }
 }
@@ -85,11 +88,13 @@ void ViewProviderDocumentObjectGroup::getViewProviders(std::vector<ViewProviderD
 
 // Python feature -----------------------------------------------------------------------
 
-namespace Gui {
+namespace Gui
+{
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderDocumentObjectGroupPython, Gui::ViewProviderDocumentObjectGroup)
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderDocumentObjectGroupPython,
+                         Gui::ViewProviderDocumentObjectGroup)
 /// @endcond
 
 // explicit template instantiation
 template class GuiExport ViewProviderFeaturePythonT<ViewProviderDocumentObjectGroup>;
-}
+}  // namespace Gui

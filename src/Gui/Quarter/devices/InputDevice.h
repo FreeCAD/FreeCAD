@@ -40,31 +40,40 @@ class QEvent;
 class SoEvent;
 class QInputEvent;
 
-namespace SIM { namespace Coin3D { namespace Quarter {
+namespace SIM
+{
+namespace Coin3D
+{
+namespace Quarter
+{
 
 class QuarterWidget;
 
-class QUARTER_DLL_API InputDevice {
+class QUARTER_DLL_API InputDevice
+{
 public:
-  explicit InputDevice(QuarterWidget* quarter);
-  virtual ~InputDevice() {}
+    explicit InputDevice(QuarterWidget* quarter);
+    virtual ~InputDevice()
+    {}
 
-  /*!
-    Subclasses must override this method to provide custom event
-    handling
-  */
-  virtual const SoEvent * translateEvent(QEvent * event) = 0;
+    /*!
+      Subclasses must override this method to provide custom event
+      handling
+    */
+    virtual const SoEvent* translateEvent(QEvent* event) = 0;
 
-  void setMousePosition(const SbVec2s & pos);
-  void setWindowSize(const SbVec2s & size);
-  void setModifiers(SoEvent * soevent, const QInputEvent * qevent);
+    void setMousePosition(const SbVec2s& pos);
+    void setWindowSize(const SbVec2s& size);
+    void setModifiers(SoEvent* soevent, const QInputEvent* qevent);
 
 protected:
-  SbVec2s mousepos;
-  SbVec2s windowsize;
-  QuarterWidget* quarter;
+    SbVec2s mousepos;
+    SbVec2s windowsize;
+    QuarterWidget* quarter;
 };
 
-}}} // namespace
+}  // namespace Quarter
+}  // namespace Coin3D
+}  // namespace SIM
 
-#endif // QUARTER_INPUTDEVICE_H
+#endif  // QUARTER_INPUTDEVICE_H

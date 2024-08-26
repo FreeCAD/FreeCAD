@@ -29,7 +29,8 @@
 
 class QApplication;
 
-namespace Gui {
+namespace Gui
+{
 
 class Application;
 class MainWindow;
@@ -85,6 +86,6 @@ private:
 };
 
 
-}
+}  // namespace Gui
 
-#endif // GUI_STARTUPPROCESS_H
+#endif  // GUI_STARTUPPROCESS_H

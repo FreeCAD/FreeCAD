@@ -53,162 +53,192 @@ class SoRenderManager;
 class SoDirectionalLight;
 class SoScXMLStateMachine;
 
-namespace SIM { namespace Coin3D { namespace Quarter {
+namespace SIM
+{
+namespace Coin3D
+{
+namespace Quarter
+{
 
 class EventFilter;
-const char DEFAULT_NAVIGATIONFILE []  = "coin:///scxml/navigation/examiner.xml";
+const char DEFAULT_NAVIGATIONFILE[] = "coin:///scxml/navigation/examiner.xml";
 
-class QUARTER_DLL_API QuarterWidget : public QGraphicsView {
-  typedef QGraphicsView inherited;
-  Q_OBJECT
-
-public:
-  enum TransparencyType {
-    SCREEN_DOOR = SoGLRenderAction::SCREEN_DOOR,
-    ADD = SoGLRenderAction::ADD,
-    DELAYED_ADD = SoGLRenderAction::DELAYED_ADD,
-    SORTED_OBJECT_ADD = SoGLRenderAction::SORTED_OBJECT_ADD,
-    BLEND = SoGLRenderAction::BLEND,
-    DELAYED_BLEND = SoGLRenderAction::DELAYED_BLEND,
-    SORTED_OBJECT_BLEND = SoGLRenderAction::SORTED_OBJECT_BLEND,
-    SORTED_OBJECT_SORTED_TRIANGLE_ADD = SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD,
-    SORTED_OBJECT_SORTED_TRIANGLE_BLEND = SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND,
-    NONE = SoGLRenderAction::NONE,
-    SORTED_LAYERS_BLEND = SoGLRenderAction::SORTED_LAYERS_BLEND
-  };
-
-  enum RenderMode {
-    AS_IS = SoRenderManager::AS_IS,
-    WIREFRAME = SoRenderManager::WIREFRAME,
-    WIREFRAME_OVERLAY = SoRenderManager::WIREFRAME_OVERLAY,
-    POINTS = SoRenderManager::POINTS,
-    HIDDEN_LINE = SoRenderManager::HIDDEN_LINE,
-    BOUNDING_BOX = SoRenderManager::BOUNDING_BOX
-  };
-
-  enum StereoMode {
-    MONO = SoRenderManager::MONO,
-    ANAGLYPH = SoRenderManager::ANAGLYPH,
-    QUAD_BUFFER = SoRenderManager::QUAD_BUFFER,
-    INTERLEAVED_ROWS = SoRenderManager::INTERLEAVED_ROWS,
-    INTERLEAVED_COLUMNS = SoRenderManager::INTERLEAVED_COLUMNS
-  };
-
-  Q_PROPERTY(QUrl navigationModeFile READ navigationModeFile WRITE setNavigationModeFile RESET resetNavigationModeFile) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool contextMenuEnabled READ contextMenuEnabled WRITE setContextMenuEnabled) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool headlightEnabled READ headlightEnabled WRITE setHeadlightEnabled) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool clearZBuffer READ clearZBuffer WRITE setClearZBuffer) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool clearWindow READ clearWindow WRITE setClearWindow) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool interactionModeEnabled READ interactionModeEnabled WRITE setInteractionModeEnabled) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(bool interactionModeOn READ interactionModeOn WRITE setInteractionModeOn) // clazy:exclude=qproperty-without-notify
-
-  Q_PROPERTY(TransparencyType transparencyType READ transparencyType WRITE setTransparencyType) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(RenderMode renderMode READ renderMode WRITE setRenderMode) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(StereoMode stereoMode READ stereoMode WRITE setStereoMode) // clazy:exclude=qproperty-without-notify
-  Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio NOTIFY devicePixelRatioChanged)
-
-  Q_ENUM(TransparencyType)
-  Q_ENUM(RenderMode)
-  Q_ENUM(StereoMode)
-
+class QUARTER_DLL_API QuarterWidget: public QGraphicsView
+{
+    typedef QGraphicsView inherited;
+    Q_OBJECT
 
 public:
-  explicit QuarterWidget(QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(QtGLContext * context, QWidget * parent = nullptr, const QtGLWidget * sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = nullptr, const QtGLWidget * shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-  ~QuarterWidget() override;
+    enum TransparencyType
+    {
+        SCREEN_DOOR = SoGLRenderAction::SCREEN_DOOR,
+        ADD = SoGLRenderAction::ADD,
+        DELAYED_ADD = SoGLRenderAction::DELAYED_ADD,
+        SORTED_OBJECT_ADD = SoGLRenderAction::SORTED_OBJECT_ADD,
+        BLEND = SoGLRenderAction::BLEND,
+        DELAYED_BLEND = SoGLRenderAction::DELAYED_BLEND,
+        SORTED_OBJECT_BLEND = SoGLRenderAction::SORTED_OBJECT_BLEND,
+        SORTED_OBJECT_SORTED_TRIANGLE_ADD = SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD,
+        SORTED_OBJECT_SORTED_TRIANGLE_BLEND = SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND,
+        NONE = SoGLRenderAction::NONE,
+        SORTED_LAYERS_BLEND = SoGLRenderAction::SORTED_LAYERS_BLEND
+    };
 
-  TransparencyType transparencyType() const;
-  RenderMode renderMode() const;
-  StereoMode stereoMode() const;
+    enum RenderMode
+    {
+        AS_IS = SoRenderManager::AS_IS,
+        WIREFRAME = SoRenderManager::WIREFRAME,
+        WIREFRAME_OVERLAY = SoRenderManager::WIREFRAME_OVERLAY,
+        POINTS = SoRenderManager::POINTS,
+        HIDDEN_LINE = SoRenderManager::HIDDEN_LINE,
+        BOUNDING_BOX = SoRenderManager::BOUNDING_BOX
+    };
 
-  void setBackgroundColor(const QColor & color);
-  QColor backgroundColor() const;
+    enum StereoMode
+    {
+        MONO = SoRenderManager::MONO,
+        ANAGLYPH = SoRenderManager::ANAGLYPH,
+        QUAD_BUFFER = SoRenderManager::QUAD_BUFFER,
+        INTERLEAVED_ROWS = SoRenderManager::INTERLEAVED_ROWS,
+        INTERLEAVED_COLUMNS = SoRenderManager::INTERLEAVED_COLUMNS
+    };
 
-  qreal devicePixelRatio() const;
+    Q_PROPERTY(QUrl navigationModeFile READ navigationModeFile WRITE setNavigationModeFile RESET
+                   resetNavigationModeFile)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE
+                   setBackgroundColor)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool contextMenuEnabled READ contextMenuEnabled WRITE
+                   setContextMenuEnabled)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool headlightEnabled READ headlightEnabled WRITE
+                   setHeadlightEnabled)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool clearZBuffer READ clearZBuffer WRITE
+                   setClearZBuffer)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool clearWindow READ clearWindow WRITE
+                   setClearWindow)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool interactionModeEnabled READ interactionModeEnabled WRITE
+                   setInteractionModeEnabled)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(bool interactionModeOn READ interactionModeOn WRITE
+                   setInteractionModeOn)  // clazy:exclude=qproperty-without-notify
 
-  void resetNavigationModeFile();
-  void setNavigationModeFile(const QUrl & url = QUrl(QString::fromLatin1(DEFAULT_NAVIGATIONFILE)));
-  const QUrl & navigationModeFile() const;
-  void setupDefaultCursors();
+    Q_PROPERTY(TransparencyType transparencyType READ transparencyType WRITE
+                   setTransparencyType)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(RenderMode renderMode READ renderMode WRITE
+                   setRenderMode)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(StereoMode stereoMode READ stereoMode WRITE
+                   setStereoMode)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio NOTIFY devicePixelRatioChanged)
 
-  void setContextMenuEnabled(bool yes);
-  bool contextMenuEnabled() const;
-  QMenu * getContextMenu() const;
+    Q_ENUM(TransparencyType)
+    Q_ENUM(RenderMode)
+    Q_ENUM(StereoMode)
 
-  bool headlightEnabled() const;
-  void setHeadlightEnabled(bool onoff);
-  SoDirectionalLight * getHeadlight() const;
 
-  bool clearZBuffer() const;
-  void setClearZBuffer(bool onoff);
+public:
+    explicit QuarterWidget(QWidget* parent = nullptr,
+                           const QtGLWidget* sharewidget = nullptr,
+                           Qt::WindowFlags f = Qt::WindowFlags());
+    explicit QuarterWidget(QtGLContext* context,
+                           QWidget* parent = nullptr,
+                           const QtGLWidget* sharewidget = nullptr,
+                           Qt::WindowFlags f = Qt::WindowFlags());
+    explicit QuarterWidget(const QtGLFormat& format,
+                           QWidget* parent = nullptr,
+                           const QtGLWidget* shareWidget = nullptr,
+                           Qt::WindowFlags f = Qt::WindowFlags());
+    ~QuarterWidget() override;
 
-  bool clearWindow() const;
-  void setClearWindow(bool onoff);
+    TransparencyType transparencyType() const;
+    RenderMode renderMode() const;
+    StereoMode stereoMode() const;
 
-  bool interactionModeEnabled() const;
-  void setInteractionModeEnabled(bool onoff);
+    void setBackgroundColor(const QColor& color);
+    QColor backgroundColor() const;
 
-  bool interactionModeOn() const;
-  void setInteractionModeOn(bool onoff);
+    qreal devicePixelRatio() const;
 
-  void setStateCursor(const SbName & state, const QCursor & cursor);
-  QCursor stateCursor(const SbName & state);
+    void resetNavigationModeFile();
+    void setNavigationModeFile(const QUrl& url = QUrl(QString::fromLatin1(DEFAULT_NAVIGATIONFILE)));
+    const QUrl& navigationModeFile() const;
+    void setupDefaultCursors();
 
-  uint32_t getCacheContextId() const;
+    void setContextMenuEnabled(bool yes);
+    bool contextMenuEnabled() const;
+    QMenu* getContextMenu() const;
 
-  virtual void setSceneGraph(SoNode * root);
-  virtual SoNode * getSceneGraph() const;
+    bool headlightEnabled() const;
+    void setHeadlightEnabled(bool onoff);
+    SoDirectionalLight* getHeadlight() const;
 
-  void setSoEventManager(SoEventManager * manager);
-  SoEventManager * getSoEventManager() const;
+    bool clearZBuffer() const;
+    void setClearZBuffer(bool onoff);
 
-  void setSoRenderManager(SoRenderManager * manager);
-  SoRenderManager * getSoRenderManager() const;
+    bool clearWindow() const;
+    void setClearWindow(bool onoff);
 
-  EventFilter * getEventFilter() const;
+    bool interactionModeEnabled() const;
+    void setInteractionModeEnabled(bool onoff);
 
-  void addStateMachine(SoScXMLStateMachine * statemachine);
-  void removeStateMachine(SoScXMLStateMachine * statemachine);
+    bool interactionModeOn() const;
+    void setInteractionModeOn(bool onoff);
 
-  virtual bool processSoEvent(const SoEvent * event);
-  QSize minimumSizeHint() const override;
+    void setStateCursor(const SbName& state, const QCursor& cursor);
+    QCursor stateCursor(const SbName& state);
 
-  QList<QAction *> transparencyTypeActions() const;
-  QList<QAction *> stereoModeActions() const;
-  QList<QAction *> renderModeActions() const;
+    uint32_t getCacheContextId() const;
+
+    virtual void setSceneGraph(SoNode* root);
+    virtual SoNode* getSceneGraph() const;
+
+    void setSoEventManager(SoEventManager* manager);
+    SoEventManager* getSoEventManager() const;
+
+    void setSoRenderManager(SoRenderManager* manager);
+    SoRenderManager* getSoRenderManager() const;
+
+    EventFilter* getEventFilter() const;
+
+    void addStateMachine(SoScXMLStateMachine* statemachine);
+    void removeStateMachine(SoScXMLStateMachine* statemachine);
+
+    virtual bool processSoEvent(const SoEvent* event);
+    QSize minimumSizeHint() const override;
+
+    QList<QAction*> transparencyTypeActions() const;
+    QList<QAction*> stereoModeActions() const;
+    QList<QAction*> renderModeActions() const;
 
 public Q_SLOTS:
-  virtual void viewAll();
-  virtual void seek();
+    virtual void viewAll();
+    virtual void seek();
 
-  void redraw();
+    void redraw();
 
-  void setRenderMode(SIM::Coin3D::Quarter::QuarterWidget::RenderMode mode);
-  void setStereoMode(SIM::Coin3D::Quarter::QuarterWidget::StereoMode mode);
-  void setTransparencyType(SIM::Coin3D::Quarter::QuarterWidget::TransparencyType type);
+    void setRenderMode(SIM::Coin3D::Quarter::QuarterWidget::RenderMode mode);
+    void setStereoMode(SIM::Coin3D::Quarter::QuarterWidget::StereoMode mode);
+    void setTransparencyType(SIM::Coin3D::Quarter::QuarterWidget::TransparencyType type);
 
 Q_SIGNALS:
-  void devicePixelRatioChanged(qreal dev_pixel_ratio);
+    void devicePixelRatioChanged(qreal dev_pixel_ratio);
 
 private Q_SLOTS:
-  void replaceViewport();
+    void replaceViewport();
 
 protected:
-  void paintEvent(QPaintEvent*) override;
-  void resizeEvent(QResizeEvent*) override;
-  bool viewportEvent(QEvent* event) override;
-  virtual void actualRedraw();
-  virtual bool updateDevicePixelRatio();
+    void paintEvent(QPaintEvent*) override;
+    void resizeEvent(QResizeEvent*) override;
+    bool viewportEvent(QEvent* event) override;
+    virtual void actualRedraw();
+    virtual bool updateDevicePixelRatio();
 
 private:
-  void constructor(const QtGLFormat& format, const QtGLWidget* sharewidget);
-  friend class QuarterWidgetP;
-  class QuarterWidgetP * pimpl;
-  bool initialized;
+    void constructor(const QtGLFormat& format, const QtGLWidget* sharewidget);
+    friend class QuarterWidgetP;
+    class QuarterWidgetP* pimpl;
+    bool initialized;
 };
 
-}}} // namespace
+}  // namespace Quarter
+}  // namespace Coin3D
+}  // namespace SIM
 
-#endif // QUARTER_QUARTERWIDGET_H
+#endif  // QUARTER_QUARTERWIDGET_H

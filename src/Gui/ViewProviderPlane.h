@@ -30,18 +30,19 @@
 namespace Gui
 {
 
-class GuiExport ViewProviderPlane : public ViewProviderOriginFeature
+class GuiExport ViewProviderPlane: public ViewProviderOriginFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPlane);
+
 public:
     /// Constructor
     ViewProviderPlane();
     ~ViewProviderPlane() override;
 
-    void attach ( App::DocumentObject * ) override;
+    void attach(App::DocumentObject*) override;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_ViewProviderPlane_H
+#endif  // GUI_ViewProviderPlane_H

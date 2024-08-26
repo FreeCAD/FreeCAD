@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -47,43 +47,38 @@
 
 using namespace SIM::Coin3D::Quarter;
 
-FocusHandler::FocusHandler(QObject * parent)
-  : QObject(parent)
+FocusHandler::FocusHandler(QObject* parent)
+    : QObject(parent)
 {
-  this->quarterwidget = dynamic_cast<QuarterWidget *>(parent);
+    this->quarterwidget = dynamic_cast<QuarterWidget*>(parent);
 }
 
 FocusHandler::~FocusHandler()
-{
+{}
 
-}
-
-bool 
-FocusHandler::eventFilter(QObject * obj, QEvent * event)
+bool FocusHandler::eventFilter(QObject* obj, QEvent* event)
 {
-  switch (event->type()) {
-  case QEvent::FocusIn:
-    this->focusEvent("sim.coin3d.coin.InputFocus.IN");
-    break;
-  case QEvent::FocusOut:
-    this->focusEvent("sim.coin3d.coin.InputFocus.OUT");
-    break;
-  default:
-    break;
-  }
-  return QObject::eventFilter(obj, event);
-}
-
-void
-FocusHandler::focusEvent(const SbName & focusevent)
-{
-  SoEventManager * eventmanager = this->quarterwidget->getSoEventManager();
-  for (int c = 0; c < eventmanager->getNumSoScXMLStateMachines(); ++c) {
-    SoScXMLStateMachine * sostatemachine =
-      eventmanager->getSoScXMLStateMachine(c);
-    if (sostatemachine->isActive()) {
-      sostatemachine->queueEvent(focusevent);
-      sostatemachine->processEventQueue();
+    switch (event->type()) {
+        case QEvent::FocusIn:
+            this->focusEvent("sim.coin3d.coin.InputFocus.IN");
+            break;
+        case QEvent::FocusOut:
+            this->focusEvent("sim.coin3d.coin.InputFocus.OUT");
+            break;
+        default:
+            break;
     }
-  }
+    return QObject::eventFilter(obj, event);
+}
+
+void FocusHandler::focusEvent(const SbName& focusevent)
+{
+    SoEventManager* eventmanager = this->quarterwidget->getSoEventManager();
+    for (int c = 0; c < eventmanager->getNumSoScXMLStateMachines(); ++c) {
+        SoScXMLStateMachine* sostatemachine = eventmanager->getSoScXMLStateMachine(c);
+        if (sostatemachine->isActive()) {
+            sostatemachine->queueEvent(focusevent);
+            sostatemachine->processEventQueue();
+        }
+    }
 }

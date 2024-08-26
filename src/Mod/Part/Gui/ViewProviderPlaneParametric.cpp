@@ -86,7 +86,8 @@ void ViewProviderFace::dragObject(App::DocumentObject* obj)
 {
     Part::Face* face = static_cast<Part::Face*>(getObject());
     std::vector<App::DocumentObject*> sources = face->Sources.getValues();
-    for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
+    for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end();
+         ++it) {
         if (*it == obj) {
             sources.erase(it);
             face->Sources.setValues(sources);

@@ -31,17 +31,20 @@
 
 class Ui_TaskRevolutionParameters;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskRevolutionParameters : public TaskSketchBasedParameters
+class TaskRevolutionParameters: public TaskSketchBasedParameters
 {
     Q_OBJECT
 
@@ -59,7 +62,7 @@ public:
      * list (if necessary), and selected. If the list is empty, it will be refilled anyway.
      */
     void fillAxisCombo(bool forceRefill = false);
-    void addAxisToCombo(App::DocumentObject *linkObj, std::string linkSubname, QString itemText);
+    void addAxisToCombo(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
 
 private Q_SLOTS:
     void onAngleChanged(double);
@@ -73,16 +76,16 @@ private Q_SLOTS:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void changeEvent(QEvent *event) override;
-    void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
+    void changeEvent(QEvent* event) override;
+    void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getMidplane() const;
     bool getReversed() const;
     QString getFaceName() const;
     void setupDialog(void);
     void setCheckboxes(PartDesign::Revolution::RevolMethod mode);
 
-    //mirrors of revolution's or groove's properties
-    //should have been done by inheriting revolution and groove from common class...
+    // mirrors of revolution's or groove's properties
+    // should have been done by inheriting revolution and groove from common class...
     App::PropertyAngle* propAngle;
     App::PropertyAngle* propAngle2;
     App::PropertyBool* propReversed;
@@ -100,7 +103,7 @@ private:
 
 private:
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;
-    QWidget *proxy;
+    QWidget* proxy;
     bool selectionFace;
     bool isGroove;
 
@@ -116,14 +119,14 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
+class TaskDlgRevolutionParameters: public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
+    explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView);
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

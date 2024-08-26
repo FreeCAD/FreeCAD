@@ -1,4 +1,4 @@
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -18,7 +18,7 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 # import FreeCAD
 from os import walk

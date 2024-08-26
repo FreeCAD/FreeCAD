@@ -28,7 +28,8 @@
 #include <QTextBrowser>
 #include <Gui/MDIView.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class SplashObserver;
 
@@ -36,24 +37,25 @@ class SplashObserver;
  *
  * \author Werner Mayer
  */
-class SplashScreen : public QSplashScreen
+class SplashScreen: public QSplashScreen
 {
     Q_OBJECT
 
 public:
-    explicit SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
+    explicit SplashScreen(const QPixmap& pixmap = QPixmap(), Qt::WindowFlags f = Qt::WindowFlags());
     ~SplashScreen() override;
 
     void setShowMessages(bool on);
 
 protected:
-    void drawContents ( QPainter * painter ) override;
+    void drawContents(QPainter* painter) override;
 
 private:
     SplashObserver* messages;
 };
 
-namespace Dialog {
+namespace Dialog
+{
 class Ui_AboutApplication;
 
 class GuiExport AboutDialogFactory
@@ -62,25 +64,26 @@ public:
     AboutDialogFactory() = default;
     virtual ~AboutDialogFactory();
 
-    virtual QDialog *create(QWidget *parent) const;
+    virtual QDialog* create(QWidget* parent) const;
 
-    static const AboutDialogFactory *defaultFactory();
-    static void setDefaultFactory(AboutDialogFactory *factory);
+    static const AboutDialogFactory* defaultFactory();
+    static void setDefaultFactory(AboutDialogFactory* factory);
 
 private:
     static AboutDialogFactory* factory;
 };
 
-class GuiExport LicenseView : public Gui::MDIView
+class GuiExport LicenseView: public Gui::MDIView
 {
     Q_OBJECT
 
 public:
-    explicit LicenseView(QWidget* parent=nullptr);
+    explicit LicenseView(QWidget* parent = nullptr);
     ~LicenseView() override;
 
-    void setSource(const QUrl & url);
-    const char *getName() const override {
+    void setSource(const QUrl& url);
+    const char* getName() const override
+    {
         return "LicenseView";
     }
 
@@ -92,7 +95,7 @@ private:
  * This shows the current version, the build number and date.
  * \author Werner Mayer
  */
-class GuiExport AboutDialog : public QDialog
+class GuiExport AboutDialog: public QDialog
 {
     Q_OBJECT
 
@@ -119,8 +122,8 @@ private:
     class LibraryInfo;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
 
-#endif // GUI_SPLASHSCREEN_H
+#endif  // GUI_SPLASHSCREEN_H

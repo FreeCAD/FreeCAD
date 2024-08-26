@@ -28,8 +28,11 @@
 
 using namespace Gui;
 
-SoQtOffscreenRendererPy::SoQtOffscreenRendererPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds)
-    : Py::PythonClass<SoQtOffscreenRendererPy>(self, args, kwds), renderer(SbViewportRegion())
+SoQtOffscreenRendererPy::SoQtOffscreenRendererPy(Py::PythonClassInstance* self,
+                                                 Py::Tuple& args,
+                                                 Py::Dict& kwds)
+    : Py::PythonClass<SoQtOffscreenRendererPy>(self, args, kwds)
+    , renderer(SbViewportRegion())
 {
     this->setViewportRegion(args);
 }
@@ -80,7 +83,10 @@ PYCXX_VARARGS_METHOD_DECL(SoQtOffscreenRendererPy, setBackgroundColor)
 Py::Object SoQtOffscreenRendererPy::getBackgroundColor()
 {
     SbColor4f color = renderer.getBackgroundColor();
-    return Py::TupleN(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]), Py::Float(color[3]));
+    return Py::TupleN(Py::Float(color[0]),
+                      Py::Float(color[1]),
+                      Py::Float(color[2]),
+                      Py::Float(color[3]));
 }
 PYCXX_NOARGS_METHOD_DECL(SoQtOffscreenRendererPy, getBackgroundColor)
 
@@ -184,15 +190,25 @@ void SoQtOffscreenRendererPy::init_type()
 
     PYCXX_ADD_VARARGS_METHOD(setViewportRegion, setViewportRegion, "setViewportRegion(int, int)");
     PYCXX_ADD_NOARGS_METHOD(getViewportRegion, getViewportRegion, "getViewportRegion() -> tuple");
-    PYCXX_ADD_VARARGS_METHOD(setBackgroundColor, setBackgroundColor, "setBackgroundColor(float, float, float, [float])");
-    PYCXX_ADD_NOARGS_METHOD(getBackgroundColor, getBackgroundColor, "getBackgroundColor() -> tuple");
+    PYCXX_ADD_VARARGS_METHOD(setBackgroundColor,
+                             setBackgroundColor,
+                             "setBackgroundColor(float, float, float, [float])");
+    PYCXX_ADD_NOARGS_METHOD(getBackgroundColor,
+                            getBackgroundColor,
+                            "getBackgroundColor() -> tuple");
     PYCXX_ADD_VARARGS_METHOD(setNumPasses, setNumPasses, "setNumPasses(int)");
     PYCXX_ADD_NOARGS_METHOD(getNumPasses, getNumPasses, "getNumPasses() -> int");
-    PYCXX_ADD_VARARGS_METHOD(setInternalTextureFormat, setInternalTextureFormat, "setInternalTextureFormat(int)");
-    PYCXX_ADD_NOARGS_METHOD(getInternalTextureFormat, getInternalTextureFormat, "getInternalTextureFormat() -> int");
+    PYCXX_ADD_VARARGS_METHOD(setInternalTextureFormat,
+                             setInternalTextureFormat,
+                             "setInternalTextureFormat(int)");
+    PYCXX_ADD_NOARGS_METHOD(getInternalTextureFormat,
+                            getInternalTextureFormat,
+                            "getInternalTextureFormat() -> int");
     PYCXX_ADD_VARARGS_METHOD(render, render, "render(node)");
     PYCXX_ADD_VARARGS_METHOD(writeToImage, writeToImage, "writeToImage(string)");
-    PYCXX_ADD_NOARGS_METHOD(getWriteImageFiletypeInfo, getWriteImageFiletypeInfo, "getWriteImageFiletypeInfo() -> tuple");
+    PYCXX_ADD_NOARGS_METHOD(getWriteImageFiletypeInfo,
+                            getWriteImageFiletypeInfo,
+                            "getWriteImageFiletypeInfo() -> tuple");
 
     behaviors().readyType();
 }

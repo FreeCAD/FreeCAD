@@ -2672,7 +2672,7 @@ Kies een andere map, alstublieft.</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="31"/>
       <source>Main coordinate system will always be shown in
 lower right corner within opened files</source>
-      <translation>Het hoofdcoördinatensysteem wordt altijd 
+      <translation>Het hoofdcoördinatensysteem wordt altijd
 rechtsonder in de geopende bestanden getoond</translation>
     </message>
     <message>
@@ -2690,7 +2690,7 @@ in the corner -- in % of height/width of viewport</source>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="128"/>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation>Assenkruis wordt standaard getoond 
+      <translation>Assenkruis wordt standaard getoond
 het openen of aanmaken van bestand</translation>
     </message>
     <message>
@@ -12739,7 +12739,7 @@ op het scherm terwijl de fout wordt weergegeven</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="131"/>
       <source>When a warning has occurred, the Report View dialog becomes visible
 on-screen while displaying the warning</source>
-      <translation>Wanneer er een waarschuwing is opgetreden, wordt het dialoogvenster Rapportweergave zichtbaar 
+      <translation>Wanneer er een waarschuwing is opgetreden, wordt het dialoogvenster Rapportweergave zichtbaar
 op het scherm terwijl de waarschuwing wordt weergegeven</translation>
     </message>
     <message>
@@ -12835,7 +12835,7 @@ op het scherm zichtbaar terwijl het bericht wordt weergegeven</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="507"/>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>De interne Python-uitvoer wordt omgeleid 
+      <translation>De interne Python-uitvoer wordt omgeleid
 van de Python-console naar het rapportweergavepaneel</translation>
     </message>
     <message>
@@ -12847,7 +12847,7 @@ van de Python-console naar het rapportweergavepaneel</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="527"/>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>Interne Python-foutberichten worden omgeleid 
+      <translation>Interne Python-foutberichten worden omgeleid
 van de Python-console naar het rapportweergavepaneel</translation>
     </message>
     <message>

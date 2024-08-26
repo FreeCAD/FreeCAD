@@ -58,7 +58,7 @@ Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 #include <map>
 
 #define LOGITECH_VENDOR_ID 0x46d
-#define CONNEXION_VENDOR_ID  0x256f
+#define CONNEXION_VENDOR_ID 0x256f
 #define _CONSTANT_INPUT_PERIOD 0
 
 #ifndef RIDEV_DEVNOTIFY
@@ -74,7 +74,7 @@ Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 
 #ifdef _WIN64
 typedef unsigned __int64 QWORD;
-#endif // _WIN64
+#endif  // _WIN64
 
 static const int kTimeToLive = 5;
 
@@ -116,145 +116,214 @@ static const int kTimeToLive = 5;
     Universal Receiver: USB\0x256f:0xc652
 */
 
-enum e3dconnexion_pid {
-   eSpaceMousePlusXT = 0xc603,
-   eSpacePilot = 0xc625,
-   eSpaceNavigator = 0xc626,
-   eSpaceExplorer = 0xc627,
-   eSpaceNavigatorForNotebooks = 0xc628,
-   eSpacePilotPRO = 0xc629,
-   eSpaceMouseWireless = 0xc62e,
-   eSpaceMouseWirelessReceiver = 0xc62f,
-   eSpaceMousePROWireless = 0xc631,
-   eSpaceMousePROWirelessReceiver = 0xc632,
-   eSpaceMouseEnterprise = 0xc633,
-   eSpaceMouseCompact = 0xc635
+enum e3dconnexion_pid
+{
+    eSpaceMousePlusXT = 0xc603,
+    eSpacePilot = 0xc625,
+    eSpaceNavigator = 0xc626,
+    eSpaceExplorer = 0xc627,
+    eSpaceNavigatorForNotebooks = 0xc628,
+    eSpacePilotPRO = 0xc629,
+    eSpaceMouseWireless = 0xc62e,
+    eSpaceMouseWirelessReceiver = 0xc62f,
+    eSpaceMousePROWireless = 0xc631,
+    eSpaceMousePROWirelessReceiver = 0xc632,
+    eSpaceMouseEnterprise = 0xc633,
+    eSpaceMouseCompact = 0xc635
 };
 
 enum e3dmouse_virtual_key
 {
-   V3DK_INVALID=0
-   , V3DK_MENU=1, V3DK_FIT
-   , V3DK_TOP, V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT, V3DK_BOTTOM, V3DK_BACK
-   , V3DK_CW, V3DK_CCW
-   , V3DK_ISO1, V3DK_ISO2
-   , V3DK_1, V3DK_2, V3DK_3, V3DK_4, V3DK_5, V3DK_6, V3DK_7, V3DK_8, V3DK_9, V3DK_10
-   , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
-   , V3DK_ROTATE, V3DK_PANZOOM, V3DK_DOMINANT
-   , V3DK_PLUS, V3DK_MINUS
+    V3DK_INVALID = 0,
+    V3DK_MENU = 1,
+    V3DK_FIT,
+    V3DK_TOP,
+    V3DK_LEFT,
+    V3DK_RIGHT,
+    V3DK_FRONT,
+    V3DK_BOTTOM,
+    V3DK_BACK,
+    V3DK_CW,
+    V3DK_CCW,
+    V3DK_ISO1,
+    V3DK_ISO2,
+    V3DK_1,
+    V3DK_2,
+    V3DK_3,
+    V3DK_4,
+    V3DK_5,
+    V3DK_6,
+    V3DK_7,
+    V3DK_8,
+    V3DK_9,
+    V3DK_10,
+    V3DK_ESC,
+    V3DK_ALT,
+    V3DK_SHIFT,
+    V3DK_CTRL,
+    V3DK_ROTATE,
+    V3DK_PANZOOM,
+    V3DK_DOMINANT,
+    V3DK_PLUS,
+    V3DK_MINUS
 };
 
 // SpaceMouse Enterprise: map to virtual keycodes
 std::map<unsigned long, unsigned short> mapEnterpriseKey = {
-   {0x0002, 0x01} // V3DK_MENU
- , {0x0004, 0x02} // V3DK_FIT
- , {0x0006, 0x03} // V3DK_TOP
- , {0x0007, 0x04} // V3DK_BOTTOM
- , {0x000A, 0x05} // V3DK_RIGHT
- , {0x000B, 0x06} // V3DK_LEFT
- , {0x000C, 0x07} // V3DK_FRONT
- , {0x000D, 0x08} // V3DK_BACK
- , {0x0012, 0x09} // V3DK_CW
- , {0x0013, 0x0a} // V3DK_CCW
- , {0x0016, 0x0b} // V3DK_ISO1
- , {0x0017, 0x0c} // V3DK_ISO2
- , {0x001a, 0x0d} // V3DK_1
- , {0x001c, 0x0e} // V3DK_2
- , {0x001e, 0x0f} // V3DK_3
- , {0x0020, 0x10} // V3DK_4
- , {0x0022, 0x11} // V3DK_5
- , {0x0024, 0x12} // V3DK_6
- , {0x0026, 0x13} // V3DK_7
- , {0x0028, 0x14} // V3DK_8
- , {0x002a, 0x15} // V3DK_9
- , {0x002c, 0x16} // V3DK_10
- , {0x0090, 0x17} // V3DK_11
- , {0x0092, 0x18} // V3DK_12
- , {0x002e, 0x19} // V3DK_ESC
- , {0x0030, 0x1a} // V3DK_ALT
- , {0x0032, 0x1b} // V3DK_SHIFT
- , {0x0034, 0x1c} // V3DK_CTRL
- , {0x0048, 0x1d} // V3DK_ENTER
- , {0x004a, 0x1e} // V3DK_DEL
- , {0x015e, 0x1f} // V3DK_TAB
- , {0x0160, 0x20} // V3DK_SPACE
+    {0x0002, 0x01}  // V3DK_MENU
+    ,
+    {0x0004, 0x02}  // V3DK_FIT
+    ,
+    {0x0006, 0x03}  // V3DK_TOP
+    ,
+    {0x0007, 0x04}  // V3DK_BOTTOM
+    ,
+    {0x000A, 0x05}  // V3DK_RIGHT
+    ,
+    {0x000B, 0x06}  // V3DK_LEFT
+    ,
+    {0x000C, 0x07}  // V3DK_FRONT
+    ,
+    {0x000D, 0x08}  // V3DK_BACK
+    ,
+    {0x0012, 0x09}  // V3DK_CW
+    ,
+    {0x0013, 0x0a}  // V3DK_CCW
+    ,
+    {0x0016, 0x0b}  // V3DK_ISO1
+    ,
+    {0x0017, 0x0c}  // V3DK_ISO2
+    ,
+    {0x001a, 0x0d}  // V3DK_1
+    ,
+    {0x001c, 0x0e}  // V3DK_2
+    ,
+    {0x001e, 0x0f}  // V3DK_3
+    ,
+    {0x0020, 0x10}  // V3DK_4
+    ,
+    {0x0022, 0x11}  // V3DK_5
+    ,
+    {0x0024, 0x12}  // V3DK_6
+    ,
+    {0x0026, 0x13}  // V3DK_7
+    ,
+    {0x0028, 0x14}  // V3DK_8
+    ,
+    {0x002a, 0x15}  // V3DK_9
+    ,
+    {0x002c, 0x16}  // V3DK_10
+    ,
+    {0x0090, 0x17}  // V3DK_11
+    ,
+    {0x0092, 0x18}  // V3DK_12
+    ,
+    {0x002e, 0x19}  // V3DK_ESC
+    ,
+    {0x0030, 0x1a}  // V3DK_ALT
+    ,
+    {0x0032, 0x1b}  // V3DK_SHIFT
+    ,
+    {0x0034, 0x1c}  // V3DK_CTRL
+    ,
+    {0x0048, 0x1d}  // V3DK_ENTER
+    ,
+    {0x004a, 0x1e}  // V3DK_DEL
+    ,
+    {0x015e, 0x1f}  // V3DK_TAB
+    ,
+    {0x0160, 0x20}  // V3DK_SPACE
 };
 
 struct tag_VirtualKeys
 {
-   e3dconnexion_pid pid;
-   size_t nKeys;
-   e3dmouse_virtual_key *vkeys;
+    e3dconnexion_pid pid;
+    size_t nKeys;
+    e3dmouse_virtual_key* vkeys;
 };
 
-static const e3dmouse_virtual_key SpaceMouseWirelessKeys [] =
-{
-   V3DK_INVALID     // there is no button 0
-   , V3DK_1, V3DK_2
-   , V3DK_TOP, V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT
-   , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
-   , V3DK_FIT, V3DK_MENU
-   , V3DK_PLUS, V3DK_MINUS
-   , V3DK_ROTATE
-};
+static const e3dmouse_virtual_key SpaceMouseWirelessKeys[] = {V3DK_INVALID  // there is no button 0
+                                                              ,
+                                                              V3DK_1,
+                                                              V3DK_2,
+                                                              V3DK_TOP,
+                                                              V3DK_LEFT,
+                                                              V3DK_RIGHT,
+                                                              V3DK_FRONT,
+                                                              V3DK_ESC,
+                                                              V3DK_ALT,
+                                                              V3DK_SHIFT,
+                                                              V3DK_CTRL,
+                                                              V3DK_FIT,
+                                                              V3DK_MENU,
+                                                              V3DK_PLUS,
+                                                              V3DK_MINUS,
+                                                              V3DK_ROTATE};
 
-static const e3dmouse_virtual_key SpaceMouseWirelessReceiverKeys [] =
-{
-   V3DK_INVALID     // there is no button 0
-   , V3DK_1, V3DK_2
-   , V3DK_TOP, V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT
-   , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
-   , V3DK_FIT, V3DK_MENU
-   , V3DK_PLUS, V3DK_MINUS
-   , V3DK_ROTATE
-};
+static const e3dmouse_virtual_key SpaceMouseWirelessReceiverKeys[] = {
+    V3DK_INVALID  // there is no button 0
+    ,
+    V3DK_1,
+    V3DK_2,
+    V3DK_TOP,
+    V3DK_LEFT,
+    V3DK_RIGHT,
+    V3DK_FRONT,
+    V3DK_ESC,
+    V3DK_ALT,
+    V3DK_SHIFT,
+    V3DK_CTRL,
+    V3DK_FIT,
+    V3DK_MENU,
+    V3DK_PLUS,
+    V3DK_MINUS,
+    V3DK_ROTATE};
 
-static const e3dmouse_virtual_key SpaceExplorerKeys [] =
-{
-   V3DK_INVALID     // there is no button 0
-   , V3DK_1, V3DK_2
-   , V3DK_TOP, V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT
-   , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
-   , V3DK_FIT, V3DK_MENU
-   , V3DK_PLUS, V3DK_MINUS
-   , V3DK_ROTATE
-};
+static const e3dmouse_virtual_key SpaceExplorerKeys[] = {V3DK_INVALID  // there is no button 0
+                                                         ,
+                                                         V3DK_1,
+                                                         V3DK_2,
+                                                         V3DK_TOP,
+                                                         V3DK_LEFT,
+                                                         V3DK_RIGHT,
+                                                         V3DK_FRONT,
+                                                         V3DK_ESC,
+                                                         V3DK_ALT,
+                                                         V3DK_SHIFT,
+                                                         V3DK_CTRL,
+                                                         V3DK_FIT,
+                                                         V3DK_MENU,
+                                                         V3DK_PLUS,
+                                                         V3DK_MINUS,
+                                                         V3DK_ROTATE};
 
-static const e3dmouse_virtual_key SpacePilotKeys [] =
-{
-   V3DK_INVALID
-   , V3DK_1, V3DK_2, V3DK_3, V3DK_4, V3DK_5, V3DK_6
-   , V3DK_TOP, V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT
-   , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
-   , V3DK_FIT, V3DK_MENU
-   , V3DK_PLUS, V3DK_MINUS
-   , V3DK_DOMINANT, V3DK_ROTATE
-};
+static const e3dmouse_virtual_key SpacePilotKeys[] = {
+    V3DK_INVALID, V3DK_1,    V3DK_2,     V3DK_3,     V3DK_4,     V3DK_5,        V3DK_6,
+    V3DK_TOP,     V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT, V3DK_ESC,   V3DK_ALT,      V3DK_SHIFT,
+    V3DK_CTRL,    V3DK_FIT,  V3DK_MENU,  V3DK_PLUS,  V3DK_MINUS, V3DK_DOMINANT, V3DK_ROTATE};
 
 
-static const struct tag_VirtualKeys _3dmouseVirtualKeys[]=
-{
-   eSpacePilot
-   , sizeof(SpacePilotKeys)/sizeof(SpacePilotKeys[0])
-   , const_cast<e3dmouse_virtual_key *>(SpacePilotKeys),
-   eSpaceExplorer
-   , sizeof(SpaceExplorerKeys)/sizeof(SpaceExplorerKeys[0])
-   , const_cast<e3dmouse_virtual_key *>(SpaceExplorerKeys),
-   eSpaceMouseWireless
-   , sizeof(SpaceMouseWirelessKeys)/sizeof(SpaceMouseWirelessKeys[0])
-   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessKeys),
-   eSpaceMouseWirelessReceiver
-   , sizeof(SpaceMouseWirelessReceiverKeys)/sizeof(SpaceMouseWirelessReceiverKeys[0])
-   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessReceiverKeys),
-   eSpaceMousePROWireless
-   , sizeof(SpaceMouseWirelessKeys)/sizeof(SpaceMouseWirelessKeys[0])
-   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessKeys),
-   eSpaceMousePROWirelessReceiver
-   , sizeof(SpaceMouseWirelessReceiverKeys)/sizeof(SpaceMouseWirelessReceiverKeys[0])
-   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessReceiverKeys)
-};
+static const struct tag_VirtualKeys _3dmouseVirtualKeys[] = {
+    eSpacePilot,
+    sizeof(SpacePilotKeys) / sizeof(SpacePilotKeys[0]),
+    const_cast<e3dmouse_virtual_key*>(SpacePilotKeys),
+    eSpaceExplorer,
+    sizeof(SpaceExplorerKeys) / sizeof(SpaceExplorerKeys[0]),
+    const_cast<e3dmouse_virtual_key*>(SpaceExplorerKeys),
+    eSpaceMouseWireless,
+    sizeof(SpaceMouseWirelessKeys) / sizeof(SpaceMouseWirelessKeys[0]),
+    const_cast<e3dmouse_virtual_key*>(SpaceMouseWirelessKeys),
+    eSpaceMouseWirelessReceiver,
+    sizeof(SpaceMouseWirelessReceiverKeys) / sizeof(SpaceMouseWirelessReceiverKeys[0]),
+    const_cast<e3dmouse_virtual_key*>(SpaceMouseWirelessReceiverKeys),
+    eSpaceMousePROWireless,
+    sizeof(SpaceMouseWirelessKeys) / sizeof(SpaceMouseWirelessKeys[0]),
+    const_cast<e3dmouse_virtual_key*>(SpaceMouseWirelessKeys),
+    eSpaceMousePROWirelessReceiver,
+    sizeof(SpaceMouseWirelessReceiverKeys) / sizeof(SpaceMouseWirelessReceiverKeys[0]),
+    const_cast<e3dmouse_virtual_key*>(SpaceMouseWirelessReceiverKeys)};
 
-Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
+Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
     : GuiAbstractNativeEvent(app)
 {}
 
@@ -266,7 +335,7 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
     }
 }
 
-void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
+void Gui::GuiNativeEvent::initSpaceball(QMainWindow* mainWindow)
 {
     mainApp->setSpaceballPresent(Is3dmouseAttached());
 
@@ -291,7 +360,8 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
 // Methods for windows events
 
 /*!
-    Converts a hid device keycode (button identifier) of a pre-2009 3Dconnexion USB device to the standard 3d mouse virtual key definition.
+    Converts a hid device keycode (button identifier) of a pre-2009 3Dconnexion USB device to the
+   standard 3d mouse virtual key definition.
 
     \a pid USB Product ID (PID) of 3D mouse device
     \a hidKeyCode  Hid keycode as retrieved from a Raw Input packet
@@ -307,10 +377,12 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
     unsigned short virtualkey = hidKeyCode;
     for (size_t i = 0; i < sizeof(_3dmouseVirtualKeys) / sizeof(_3dmouseVirtualKeys[0]); ++i) {
         if (pid == _3dmouseVirtualKeys[i].pid) {
-            if (hidKeyCode < _3dmouseVirtualKeys[i].nKeys)
+            if (hidKeyCode < _3dmouseVirtualKeys[i].nKeys) {
                 virtualkey = _3dmouseVirtualKeys[i].vkeys[hidKeyCode];
-            else
+            }
+            else {
                 virtualkey = V3DK_INVALID;
+            }
             break;
         }
     }
@@ -318,16 +390,17 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
     return virtualkey;
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-bool Gui::GuiNativeEvent::RawInputEventFilter(void *msg, long *result)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, long* result)
 #else
-bool Gui::GuiNativeEvent::RawInputEventFilter(void *msg, qintptr *result)
+bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, qintptr* result)
 #endif
 {
-    if (gMouseInput == 0)
+    if (gMouseInput == 0) {
         return false;
+    }
 
-    MSG *message = (MSG *)(msg);
+    MSG* message = (MSG*)(msg);
 
     if (message->message == WM_INPUT) {
         HRAWINPUT hRawInput = reinterpret_cast<HRAWINPUT>(message->lParam);
@@ -406,13 +479,16 @@ void Gui::GuiNativeEvent::On3dmouseKeyUp(HANDLE device, int virtualKeyCode)
 
     pNumDevices returns the number of devices to register. Currently this is always 1.
  */
-static PRAWINPUTDEVICE GetDevicesToRegister(unsigned int *pNumDevices)
+static PRAWINPUTDEVICE GetDevicesToRegister(unsigned int* pNumDevices)
 {
     // Array of raw input devices to register
     static RAWINPUTDEVICE sRawInputDevices[] = {
-        {0x01, 0x08, 0x00, 0x00} // Usage Page = 0x01 Generic Desktop Page, Usage Id= 0x08 Multi-axis Controller
-       ,{0x01, 0x05, 0x00, 0x00} // game pad
-       ,{0x01, 0x04, 0x00, 0x00} // joystick
+        {0x01, 0x08, 0x00, 0x00}
+        // Usage Page = 0x01 Generic Desktop Page, Usage Id= 0x08 Multi-axis Controller
+        ,
+        {0x01, 0x05, 0x00, 0x00}  // game pad
+        ,
+        {0x01, 0x04, 0x00, 0x00}  // joystick
     };
 
     if (pNumDevices) {
@@ -436,8 +512,9 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
         return false;
     }
 
-    if (nDevices == 0)
+    if (nDevices == 0) {
         return false;
+    }
 
     std::vector<RAWINPUTDEVICELIST> rawInputDeviceList(nDevices);
     if (::GetRawInputDeviceList(&rawInputDeviceList[0], &nDevices, sizeof(RAWINPUTDEVICELIST))
@@ -451,14 +528,14 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
 
         if (GetRawInputDeviceInfo(rawInputDeviceList[i].hDevice, RIDI_DEVICEINFO, &rdi, &cbSize)
             > 0) {
-            //skip non HID and non logitec (3DConnexion) devices
+            // skip non HID and non logitec (3DConnexion) devices
             if (!(rdi.dwType == RIM_TYPEHID
                   && (rdi.hid.dwVendorId == LOGITECH_VENDOR_ID
                       || rdi.hid.dwVendorId == CONNEXION_VENDOR_ID))) {
                 continue;
             }
 
-            //check if devices matches Multi-axis Controller
+            // check if devices matches Multi-axis Controller
             for (unsigned int j = 0; j < numDevicesOfInterest; ++j) {
                 if (devicesToRegister[j].usUsage == rdi.hid.usUsage
                     && devicesToRegister[j].usUsagePage == rdi.hid.usUsagePage) {
@@ -474,21 +551,24 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
 /*!
     Initialize the window to receive raw-input messages
 
-    This needs to be called initially so that Windows will send the messages from the 3D mouse to the window.
+    This needs to be called initially so that Windows will send the messages from the 3D mouse to
+   the window.
 */
 bool Gui::GuiNativeEvent::InitializeRawInput(HWND hwndTarget)
 {
     fWindow = hwndTarget;
 
     // Simply fail if there is no window
-    if (!hwndTarget)
+    if (!hwndTarget) {
         return false;
+    }
 
     unsigned int numDevices = 0;
     PRAWINPUTDEVICE devicesToRegister = GetDevicesToRegister(&numDevices);
 
-    if (numDevices == 0)
+    if (numDevices == 0) {
         return false;
+    }
 
     // Get OS version.
     OSVERSIONINFO osvi = {sizeof(OSVERSIONINFO), 0};
@@ -497,7 +577,7 @@ bool Gui::GuiNativeEvent::InitializeRawInput(HWND hwndTarget)
     unsigned int cbSize = sizeof(devicesToRegister[0]);
     for (size_t i = 0; i < numDevices; i++) {
         // Set the target window to use
-        //devicesToRegister[i].hwndTarget = hwndTarget;
+        // devicesToRegister[i].hwndTarget = hwndTarget;
 
         // If Vista or newer, enable receiving the WM_INPUT_DEVICE_CHANGE message.
         if (osvi.dwMajorVersion >= 6) {
@@ -535,7 +615,7 @@ UINT Gui::GuiNativeEvent::GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT
         return ::GetRawInputBuffer(pData, pcbSize, cbSizeHeader);
     }
     else {
-        HWND hwndTarget = fWindow;//fParent->winId();
+        HWND hwndTarget = fWindow;  // fParent->winId();
 
         size_t cbDataSize = 0;
         UINT nCount = 0;
@@ -585,17 +665,18 @@ void Gui::GuiNativeEvent::On3dmouseInput()
     if (!bIsForeground) {
         // set all cached data to zero so that a zero event is seen and the cached data deleted
         for (std::map<HANDLE, TInputData>::iterator it = fDevice2Data.begin();
-             it != fDevice2Data.end(); it++) {
+             it != fDevice2Data.end();
+             it++) {
             it->second.fAxes.assign(6, .0);
             it->second.fIsDirty = true;
         }
     }
 
-    DWORD dwNow = ::GetTickCount();// Current time;
-    DWORD dwElapsedTime;           // Elapsed time since we were last here
+    DWORD dwNow = ::GetTickCount();  // Current time;
+    DWORD dwElapsedTime;             // Elapsed time since we were last here
 
     if (0 == fLast3dmouseInputTime) {
-        dwElapsedTime = 10;// System timer resolution
+        dwElapsedTime = 10;  // System timer resolution
     }
     else {
         dwElapsedTime = dwNow - fLast3dmouseInputTime;
@@ -620,7 +701,7 @@ void Gui::GuiNativeEvent::On3dmouseInput()
     float mouseData2PanZoom;
 
     // Grab the I3dmouseParam interface
-    I3dMouseParam &i3dmouseParam = f3dMouseParams;
+    I3dMouseParam& i3dmouseParam = f3dMouseParams;
     // Take a look at the users preferred speed setting and adjust the sensitivity accordingly
     I3dMouseSensor::ESpeed speedSetting = i3dmouseParam.GetSpeed();
     // See "Programming for the 3D Mouse", Section 5.1.3
@@ -669,14 +750,20 @@ void Gui::GuiNativeEvent::On3dmouseInput()
         }
 
         // convert the translation vector into physical data
-        for (int axis = 0; axis < 3; axis++) { motionData[axis] *= mouseData2PanZoom; }
+        for (int axis = 0; axis < 3; axis++) {
+            motionData[axis] *= mouseData2PanZoom;
+        }
         // convert the directed Rotate vector into physical data
         // See "Programming for the 3D Mouse", Section 7.2.2
-        for (int axis = 3; axis < 6; axis++) { motionData[axis] *= mouseData2Rotation; }
+        for (int axis = 3; axis < 6; axis++) {
+            motionData[axis] *= mouseData2Rotation;
+        }
 
         // Now that the data has had the filters and sensitivity settings applied
         // calculate the displacements since the last view update
-        for (int axis = 0; axis < 6; axis++) { motionData[axis] *= dwElapsedTime; }
+        for (int axis = 0; axis < 6; axis++) {
+            motionData[axis] *= dwElapsedTime;
+        }
 
 
         // Now a bit of book keeping before passing on the data
@@ -762,17 +849,21 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
     qDebug("Rawinput.header.dwType=0x%x\n", pRawInput->header.dwType);
 #endif
     // We are not interested in keyboard or mouse data received via raw input
-    if (pRawInput->header.dwType != RIM_TYPEHID)
+    if (pRawInput->header.dwType != RIM_TYPEHID) {
         return false;
+    }
 
 #if _TRACE_RIDI_DEVICENAME
     UINT dwSize = 0;
     if (::GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_DEVICENAME, NULL, &dwSize) == 0) {
         std::vector<wchar_t> szDeviceName(dwSize + 1);
-        if (::GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_DEVICENAME, &szDeviceName[0],
+        if (::GetRawInputDeviceInfo(pRawInput->header.hDevice,
+                                    RIDI_DEVICENAME,
+                                    &szDeviceName[0],
                                     &dwSize)
             > 0) {
-            qDebug("Device Name = %s\nDevice handle = 0x%x\n", &szDeviceName[0],
+            qDebug("Device Name = %s\nDevice handle = 0x%x\n",
+                   &szDeviceName[0],
                    pRawInput->header.hDevice);
         }
     }
@@ -782,13 +873,19 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
     sRidDeviceInfo.cbSize = sizeof(RID_DEVICE_INFO);
     UINT cbSize = sizeof(RID_DEVICE_INFO);
 
-    if (::GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_DEVICEINFO, &sRidDeviceInfo,
+    if (::GetRawInputDeviceInfo(pRawInput->header.hDevice,
+                                RIDI_DEVICEINFO,
+                                &sRidDeviceInfo,
                                 &cbSize)
         == cbSize) {
 #if _TRACE_RIDI_DEVICEINFO
         switch (sRidDeviceInfo.dwType) {
-            case RIM_TYPEMOUSE: qDebug("\tsRidDeviceInfo.dwType=RIM_TYPEMOUSE\n"); break;
-            case RIM_TYPEKEYBOARD: qDebug("\tsRidDeviceInfo.dwType=RIM_TYPEKEYBOARD\n"); break;
+            case RIM_TYPEMOUSE:
+                qDebug("\tsRidDeviceInfo.dwType=RIM_TYPEMOUSE\n");
+                break;
+            case RIM_TYPEKEYBOARD:
+                qDebug("\tsRidDeviceInfo.dwType=RIM_TYPEKEYBOARD\n");
+                break;
             case RIM_TYPEHID:
                 qDebug("\tsRidDeviceInfo.dwType=RIM_TYPEHID\n");
                 qDebug("\tVendor=0x%x\n\tProduct=0x%x\n\tUsagePage=0x%x\n\tUsage=0x%x\n",
@@ -805,15 +902,18 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
             switch (sRidDeviceInfo.hid.dwProductId) {
                 case eSpaceMousePlusXT:
                     if (pRawInput->data.hid.bRawData[0] != 0x00) {
-                        return TranslateSpaceMouseNewGeneric(nInputCode, pRawInput,
+                        return TranslateSpaceMouseNewGeneric(nInputCode,
+                                                             pRawInput,
                                                              sRidDeviceInfo.hid.dwProductId);
                     }
                     else {
-                        return TranslateSpaceMouseOldGeneric(nInputCode, pRawInput,
+                        return TranslateSpaceMouseOldGeneric(nInputCode,
+                                                             pRawInput,
                                                              sRidDeviceInfo.hid.dwProductId);
                     }
                 case eSpaceMouseEnterprise:
-                    return TranslateSpaceMouseEnterprise(nInputCode, pRawInput,
+                    return TranslateSpaceMouseEnterprise(nInputCode,
+                                                         pRawInput,
                                                          sRidDeviceInfo.hid.dwProductId);
                 case eSpacePilot:
                 case eSpaceNavigator:
@@ -823,7 +923,8 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
                 case eSpaceMouseWireless:
                 case eSpaceMousePROWireless:
                 default:
-                    return TranslateSpaceMouseNewGeneric(nInputCode, pRawInput,
+                    return TranslateSpaceMouseNewGeneric(nInputCode,
+                                                         pRawInput,
                                                          sRidDeviceInfo.hid.dwProductId);
             }
         }
@@ -832,51 +933,56 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
     return false;
 }
 
-bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINPUT pRawInput,
+bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode,
+                                                        PRAWINPUT pRawInput,
                                                         DWORD dwProductId)
 {
     bool bIsForeground = (nInputCode == RIM_INPUT);
 
-    if (pRawInput->data.hid.bRawData[0] == 0x01) {// Translation vector
+    if (pRawInput->data.hid.bRawData[0] == 0x01) {  // Translation vector
 
-        TInputData &deviceData = fDevice2Data[pRawInput->header.hDevice];
+        TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
         deviceData.fTimeToLive = kTimeToLive;
         if (bIsForeground) {
-            short *pnRawData = reinterpret_cast<short *>(&pRawInput->data.hid.bRawData[1]);
+            short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
             // Cache the pan zoom data
             deviceData.fAxes[0] = static_cast<float>(pnRawData[0]);
             deviceData.fAxes[1] = static_cast<float>(pnRawData[1]);
             deviceData.fAxes[2] = static_cast<float>(pnRawData[2]);
 
 #if _TRACE_RI_RAWDATA
-            qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n", pnRawData[0], pnRawData[1],
+            qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+                   pnRawData[0],
+                   pnRawData[1],
                    pnRawData[2]);
 #endif
-            if (pRawInput->data.hid.dwSizeHid >= 13) {// Highspeed package
+            if (pRawInput->data.hid.dwSizeHid >= 13) {  // Highspeed package
                 // Cache the rotation data
                 deviceData.fAxes[3] = static_cast<float>(pnRawData[3]);
                 deviceData.fAxes[4] = static_cast<float>(pnRawData[4]);
                 deviceData.fAxes[5] = static_cast<float>(pnRawData[5]);
                 deviceData.fIsDirty = true;
 #if _TRACE_RI_RAWDATA
-                qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n", pnRawData[3], pnRawData[4],
+                qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+                       pnRawData[3],
+                       pnRawData[4],
                        pnRawData[5]);
 #endif
                 return true;
             }
         }
-        else {// Zero out the data if the app is not in foreground
+        else {  // Zero out the data if the app is not in foreground
             deviceData.fAxes.assign(6, 0.f);
         }
     }
-    else if (pRawInput->data.hid.bRawData[0] == 0x02) {// Rotation vector
+    else if (pRawInput->data.hid.bRawData[0] == 0x02) {  // Rotation vector
         // If we are not in foreground do nothing
         // The rotation vector was zeroed out with the translation vector in the previous message
         if (bIsForeground) {
-            TInputData &deviceData = fDevice2Data[pRawInput->header.hDevice];
+            TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
             deviceData.fTimeToLive = kTimeToLive;
 
-            short *pnRawData = reinterpret_cast<short *>(&pRawInput->data.hid.bRawData[1]);
+            short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
             // Cache the rotation data
             deviceData.fAxes[3] = static_cast<float>(pnRawData[0]);
             deviceData.fAxes[4] = static_cast<float>(pnRawData[1]);
@@ -884,19 +990,21 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINP
             deviceData.fIsDirty = true;
 
 #if _TRACE_RI_RAWDATA
-            qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n", pnRawData[0], pnRawData[1],
+            qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+                   pnRawData[0],
+                   pnRawData[1],
                    pnRawData[2]);
 #endif
             return true;
         }
     }
-    else if (pRawInput->data.hid.bRawData[0] == 0x03) {// Keystate change
+    else if (pRawInput->data.hid.bRawData[0] == 0x03) {  // Keystate change
         // this is a package that contains 3d mouse keystate information
         // bit0=key1, bit=key2 etc.
 
 
         unsigned long dwKeystate =
-            *reinterpret_cast<unsigned long *>(&pRawInput->data.hid.bRawData[1]);
+            *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]);
 #if _TRACE_RI_RAWDATA
         qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
         qDebug("ButtonData =0x%x\n", dwKeystate);
@@ -935,51 +1043,56 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseNewGeneric(UINT nInputCode, PRAWINP
     return false;
 }
 
-bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINPUT pRawInput,
+bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode,
+                                                        PRAWINPUT pRawInput,
                                                         DWORD dwProductId)
 {
     bool bIsForeground = (nInputCode == RIM_INPUT);
 
-    if (pRawInput->data.hid.bRawData[0] == 0x01) {// Translation vector
+    if (pRawInput->data.hid.bRawData[0] == 0x01) {  // Translation vector
 
-        TInputData &deviceData = fDevice2Data[pRawInput->header.hDevice];
+        TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
         deviceData.fTimeToLive = kTimeToLive;
         if (bIsForeground) {
-            short *pnRawData = reinterpret_cast<short *>(&pRawInput->data.hid.bRawData[1]);
+            short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
             // Cache the pan zoom data
             deviceData.fAxes[0] = static_cast<float>(pnRawData[0]);
             deviceData.fAxes[1] = static_cast<float>(pnRawData[1]);
             deviceData.fAxes[2] = static_cast<float>(pnRawData[2]);
 
 #if _TRACE_RI_RAWDATA
-            qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n", pnRawData[0], pnRawData[1],
+            qDebug("Pan/Zoom RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+                   pnRawData[0],
+                   pnRawData[1],
                    pnRawData[2]);
 #endif
-            if (pRawInput->data.hid.dwSizeHid >= 13) {// Highspeed package
+            if (pRawInput->data.hid.dwSizeHid >= 13) {  // Highspeed package
                 // Cache the rotation data
                 deviceData.fAxes[3] = static_cast<float>(pnRawData[3]);
                 deviceData.fAxes[4] = static_cast<float>(pnRawData[4]);
                 deviceData.fAxes[5] = static_cast<float>(pnRawData[5]);
                 deviceData.fIsDirty = true;
 #if _TRACE_RI_RAWDATA
-                qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n", pnRawData[3], pnRawData[4],
+                qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+                       pnRawData[3],
+                       pnRawData[4],
                        pnRawData[5]);
 #endif
                 return true;
             }
         }
-        else {// Zero out the data if the app is not in foreground
+        else {  // Zero out the data if the app is not in foreground
             deviceData.fAxes.assign(6, 0.f);
         }
     }
-    else if (pRawInput->data.hid.bRawData[0] == 0x02) {// Rotation vector
+    else if (pRawInput->data.hid.bRawData[0] == 0x02) {  // Rotation vector
         // If we are not in foreground do nothing
         // The rotation vector was zeroed out with the translation vector in the previous message
         if (bIsForeground) {
-            TInputData &deviceData = fDevice2Data[pRawInput->header.hDevice];
+            TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
             deviceData.fTimeToLive = kTimeToLive;
 
-            short *pnRawData = reinterpret_cast<short *>(&pRawInput->data.hid.bRawData[1]);
+            short* pnRawData = reinterpret_cast<short*>(&pRawInput->data.hid.bRawData[1]);
             // Cache the rotation data
             deviceData.fAxes[3] = static_cast<float>(pnRawData[0]);
             deviceData.fAxes[4] = static_cast<float>(pnRawData[1]);
@@ -987,7 +1100,9 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINP
             deviceData.fIsDirty = true;
 
 #if _TRACE_RI_RAWDATA
-            qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n", pnRawData[0], pnRawData[1],
+            qDebug("Rotation RI Data =\t0x%x,\t0x%x,\t0x%x\n",
+                   pnRawData[0],
+                   pnRawData[1],
                    pnRawData[2]);
 #endif
             return true;
@@ -999,7 +1114,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINP
 #if _TRACE_RI_RAWDATA
         qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
         qDebug("ButtonData = 0x%x\n",
-               *reinterpret_cast<unsigned long *>(&pRawInput->data.hid.bRawData[1]));
+               *reinterpret_cast<unsigned long*>(&pRawInput->data.hid.bRawData[1]));
 #endif
         // calculate a KeyCode
         unsigned long dwKeyCode = pRawInput->data.hid.bRawData[1] << 1;
@@ -1061,14 +1176,25 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseEnterprise(UINT nInputCode, PRAWINP
 #include <hidpi.h>
 #include <hidusage.h>
 
-//#pragma comment(lib, "user32.lib")
-//#pragma comment(lib, "hid.lib")
+// #pragma comment(lib, "user32.lib")
+// #pragma comment(lib, "hid.lib")
 
-#define MAX_BUTTONS		128
-#define CHECK(exp)		{ if(!(exp)) goto Error; }
-#define SAFE_FREE(p)	{ if(p) { HeapFree(hHeap, 0, p); (p) = NULL; } }
+#define MAX_BUTTONS 128
+#define CHECK(exp)                                                                                 \
+    {                                                                                              \
+        if (!(exp))                                                                                \
+            goto Error;                                                                            \
+    }
+#define SAFE_FREE(p)                                                                               \
+    {                                                                                              \
+        if (p) {                                                                                   \
+            HeapFree(hHeap, 0, p);                                                                 \
+            (p) = NULL;                                                                            \
+        }                                                                                          \
+    }
 
-bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINPUT pRawInput,
+bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode,
+                                                        PRAWINPUT pRawInput,
                                                         DWORD /*dwProductId*/)
 {
     bool processed = false;
@@ -1078,24 +1204,24 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     if (fDevice2Data.empty()) {
         return false;
     }
-    TInputData &deviceData = fDevice2Data.begin()->second;
+    TInputData& deviceData = fDevice2Data.begin()->second;
 
     PHIDP_PREPARSED_DATA pPreparsedData;
-    HIDP_CAPS            Caps;
-    PHIDP_BUTTON_CAPS    pButtonCaps;
-    PHIDP_VALUE_CAPS     pValueCaps;
-    USHORT               capsLength;
-    UINT                 bufferSize;
-    HANDLE               hHeap;
-    USAGE                usage[MAX_BUTTONS];
-    ULONG                i, usageLength, value;
+    HIDP_CAPS Caps;
+    PHIDP_BUTTON_CAPS pButtonCaps;
+    PHIDP_VALUE_CAPS pValueCaps;
+    USHORT capsLength;
+    UINT bufferSize;
+    HANDLE hHeap;
+    USAGE usage[MAX_BUTTONS];
+    ULONG i, usageLength, value;
 
     BOOL bButtonStates[MAX_BUTTONS];
 
     pPreparsedData = NULL;
-    pButtonCaps    = NULL;
-    pValueCaps     = NULL;
-    hHeap          = GetProcessHeap();
+    pButtonCaps = NULL;
+    pValueCaps = NULL;
+    hHeap = GetProcessHeap();
 
 #ifdef _TRACE_RI_RAWDATA
     qDebug("pRawInput->data.hid.bRawData[0] = 0x%x", pRawInput->data.hid.bRawData[0]);
@@ -1108,7 +1234,9 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     CHECK(GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_PREPARSEDDATA, NULL, &bufferSize)
           == 0);
     CHECK(pPreparsedData = (PHIDP_PREPARSED_DATA)HeapAlloc(hHeap, 0, bufferSize));
-    CHECK((int)GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_PREPARSEDDATA, pPreparsedData,
+    CHECK((int)GetRawInputDeviceInfo(pRawInput->header.hDevice,
+                                     RIDI_PREPARSEDDATA,
+                                     pPreparsedData,
                                      &bufferSize)
           >= 0);
 
@@ -1118,8 +1246,8 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
 
     // Button caps
     CHECK(HidP_GetCaps(pPreparsedData, &Caps) == HIDP_STATUS_SUCCESS)
-    CHECK(pButtonCaps = (PHIDP_BUTTON_CAPS)HeapAlloc(
-              hHeap, 0, sizeof(HIDP_BUTTON_CAPS) * Caps.NumberInputButtonCaps));
+    CHECK(pButtonCaps = (PHIDP_BUTTON_CAPS)
+              HeapAlloc(hHeap, 0, sizeof(HIDP_BUTTON_CAPS) * Caps.NumberInputButtonCaps));
 
     capsLength = Caps.NumberInputButtonCaps;
     CHECK(HidP_GetButtonCaps(HidP_Input, pButtonCaps, &capsLength, pPreparsedData)
@@ -1127,8 +1255,8 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     usageLength = pButtonCaps->Range.UsageMax - pButtonCaps->Range.UsageMin + 1;
 
     // Value caps
-    CHECK(pValueCaps = (PHIDP_VALUE_CAPS)HeapAlloc(
-              hHeap, 0, sizeof(HIDP_VALUE_CAPS) * Caps.NumberInputValueCaps));
+    CHECK(pValueCaps = (PHIDP_VALUE_CAPS)
+              HeapAlloc(hHeap, 0, sizeof(HIDP_VALUE_CAPS) * Caps.NumberInputValueCaps));
     capsLength = Caps.NumberInputValueCaps;
     CHECK(HidP_GetValueCaps(HidP_Input, pValueCaps, &capsLength, pPreparsedData)
           == HIDP_STATUS_SUCCESS)
@@ -1139,12 +1267,20 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     // Get the pressed buttons
     //
 
-    CHECK(HidP_GetUsages(HidP_Input, pButtonCaps->UsagePage, 0, usage, &usageLength, pPreparsedData,
-                         (PCHAR)pRawInput->data.hid.bRawData, pRawInput->data.hid.dwSizeHid)
+    CHECK(HidP_GetUsages(HidP_Input,
+                         pButtonCaps->UsagePage,
+                         0,
+                         usage,
+                         &usageLength,
+                         pPreparsedData,
+                         (PCHAR)pRawInput->data.hid.bRawData,
+                         pRawInput->data.hid.dwSizeHid)
           == HIDP_STATUS_SUCCESS);
 
     ZeroMemory(bButtonStates, sizeof(bButtonStates));
-    for (i = 0; i < usageLength; i++) bButtonStates[usage[i] - pButtonCaps->Range.UsageMin] = TRUE;
+    for (i = 0; i < usageLength; i++) {
+        bButtonStates[usage[i] - pButtonCaps->Range.UsageMin] = TRUE;
+    }
 
     //
     // Get the state of discrete-valued-controls
@@ -1154,13 +1290,18 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
     deviceData.fTimeToLive = kTimeToLive;
     if (bIsForeground) {
         for (i = 0; i < Caps.NumberInputValueCaps; i++) {
-            HidP_GetUsageValue(HidP_Input, pValueCaps[i].UsagePage, 0, pValueCaps[i].Range.UsageMin,
-                               &value, pPreparsedData, (PCHAR)pRawInput->data.hid.bRawData,
+            HidP_GetUsageValue(HidP_Input,
+                               pValueCaps[i].UsagePage,
+                               0,
+                               pValueCaps[i].Range.UsageMin,
+                               &value,
+                               pPreparsedData,
+                               (PCHAR)pRawInput->data.hid.bRawData,
                                pRawInput->data.hid.dwSizeHid);
 
             short svalue = static_cast<short>(value);
             switch (pValueCaps[i].Range.UsageMin) {
-                case HID_USAGE_GENERIC_X:// X-axis
+                case HID_USAGE_GENERIC_X:  // X-axis
 #ifdef _TRACE_RI_RAWDATA
                     qDebug("X-Axis: %d\n", svalue);
 #endif
@@ -1168,7 +1309,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
                     deviceData.fIsDirty = true;
                     break;
 
-                case HID_USAGE_GENERIC_Y:// Y-axis
+                case HID_USAGE_GENERIC_Y:  // Y-axis
 #ifdef _TRACE_RI_RAWDATA
                     qDebug("Y-Axis: %d\n", svalue);
 #endif
@@ -1176,7 +1317,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
                     deviceData.fIsDirty = true;
                     break;
 
-                case HID_USAGE_GENERIC_Z:// Z-axis
+                case HID_USAGE_GENERIC_Z:  // Z-axis
 #ifdef _TRACE_RI_RAWDATA
                     qDebug("Z-Axis: %d\n", svalue);
 #endif
@@ -1184,7 +1325,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
                     deviceData.fIsDirty = true;
                     break;
 
-                case HID_USAGE_GENERIC_RX:// Rotate-X
+                case HID_USAGE_GENERIC_RX:  // Rotate-X
 #ifdef _TRACE_RI_RAWDATA
                     qDebug("X-Rotate: %d\n", svalue);
 #endif
@@ -1192,7 +1333,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
                     deviceData.fIsDirty = true;
                     break;
 
-                case HID_USAGE_GENERIC_RY:// Rotate-Y
+                case HID_USAGE_GENERIC_RY:  // Rotate-Y
 #ifdef _TRACE_RI_RAWDATA
                     qDebug("Y-Rotate: %d\n", svalue);
 #endif
@@ -1200,7 +1341,7 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
                     deviceData.fIsDirty = true;
                     break;
 
-                case HID_USAGE_GENERIC_RZ:// Rotate-Z
+                case HID_USAGE_GENERIC_RZ:  // Rotate-Z
 #ifdef _TRACE_RI_RAWDATA
                     qDebug("Z-Rotate: %d\n", svalue);
 #endif
@@ -1208,7 +1349,8 @@ bool Gui::GuiNativeEvent::TranslateSpaceMouseOldGeneric(UINT nInputCode, PRAWINP
                     deviceData.fIsDirty = true;
                     break;
 
-                default: break;
+                default:
+                    break;
             }
         }
     }

@@ -2841,10 +2841,10 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="681"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Não é possível determinar o vetor normal da forma a ser extrudada. Por favor use outro modo. 
+      <translation>Não é possível determinar o vetor normal da forma a ser extrudada. Por favor use outro modo.
 
 (%1)</translation>
     </message>
@@ -5048,9 +5048,9 @@ mas mais estável. Padrão: falso</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Expandir o conteúdo da forma. As alterações terão efeito na próxima vez que você usar 
+      <translation>Expandir o conteúdo da forma. As alterações terão efeito na próxima vez que você usar
 a ferramenta de verificação de geometria. Padrão: falso</translation>
     </message>
     <message>
@@ -5060,9 +5060,9 @@ a ferramenta de verificação de geometria. Padrão: falso</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Exibe o conteúdo avançado da forma. As alterações terão efeito na próxima vez que você usar 
+      <translation>Exibe o conteúdo avançado da forma. As alterações terão efeito na próxima vez que você usar
 a ferramenta de verificação de geometria. Padrão: falso</translation>
     </message>
     <message>
@@ -5547,7 +5547,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="476"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>O uso de não-sólidos para operações booleanas pode levar a resultados inesperados. 
+      <translation>O uso de não-sólidos para operações booleanas pode levar a resultados inesperados.
 Deseja continuar?</translation>
     </message>
     <message>

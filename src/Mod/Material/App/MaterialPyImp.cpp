@@ -523,8 +523,7 @@ PyObject* MaterialPy::setPhysicalValue(PyObject* args)
         return nullptr;
     }
 
-    getMaterialPtr()->setPhysicalValue(QString::fromStdString(name),
-                                         QString::fromStdString(value));
+    getMaterialPtr()->setPhysicalValue(QString::fromStdString(name), QString::fromStdString(value));
     Py_INCREF(Py_None);
     return Py_None;
 }

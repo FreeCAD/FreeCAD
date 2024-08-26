@@ -113,13 +113,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertTrue(self.Pad1.isValid())
 
         if self.Body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
-            self.assertFalse(
-                self.Pad2.isValid()
-            )  # TNP problem is present without ElementMaps
+            self.assertFalse(self.Pad2.isValid())  # TNP problem is present without ElementMaps
         else:
-            self.assertTrue(
-                self.Pad2.isValid()
-            )  # TNP problem is not present with ElementMaps
+            self.assertTrue(self.Pad2.isValid())  # TNP problem is not present with ElementMaps
 
     def testPartDesignElementMapSketch(self):
         """Test that creating a sketch results in a correct element map."""
@@ -151,9 +147,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         if App.GuiUp:
             mat = App.Material()
             mat.AmbientColor = (128, 0, 0)
-            box1.ViewObject.ShapeAppearance = (
-                mat  # Change color ( material ) for at least one
-            )
+            box1.ViewObject.ShapeAppearance = mat  # Change color ( material ) for at least one
         box2 = doc.addObject("Part::Box", "Box001")
         box3 = doc.addObject("Part::Box", "Box002")
         cyl1 = doc.addObject("Part::Cylinder", "Cylinder")
@@ -480,9 +474,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Act
-        subellipsoid = self.Doc.addObject(
-            "PartDesign::SubtractiveEllipsoid", "Ellipsoid"
-        )
+        subellipsoid = self.Doc.addObject("PartDesign::SubtractiveEllipsoid", "Ellipsoid")
         subellipsoid.BaseFeature = box
         body.addObject(subellipsoid)
         self.Doc.recompute()
@@ -565,15 +557,11 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 30)  # The pad
         self.assertEqual(body.Shape.ElementMapSize, 26)
         self.assertEqual(sketch.Shape.ElementMapSize, 12)
-        self.assertEqual(
-            pad.Shape.ElementMapSize, 30
-        )  # pad has the 26 plus the 4 original
+        self.assertEqual(pad.Shape.ElementMapSize, 30)  # pad has the 26 plus the 4 original
         self.assertNotEqual(
             pad.Shape.ElementReverseMap["Vertex1"], "Vertex1"
         )  # NewName, not OldName
-        self.assertEqual(
-            self.countFacesEdgesVertexes(pad.Shape.ElementReverseMap), (6, 12, 8)
-        )
+        self.assertEqual(self.countFacesEdgesVertexes(pad.Shape.ElementReverseMap), (6, 12, 8))
 
         # Todo: Offer a way to turn on hashing and check that with a # starting
         #  Pad -> Extrusion -> makes compounds and does booleans, thus the resulting newName element maps
@@ -630,9 +618,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         revMap = body.Shape.ElementReverseMap
         self.assertNotEqual(loft.Shape.ElementReverseMap["Vertex1"], "Vertex1")
         self.assertNotEqual(revMap["Vertex1"], "Vertex1")
-        self.assertEqual(
-            self.countFacesEdgesVertexes(loft.Shape.ElementReverseMap), (6, 12, 8)
-        )
+        self.assertEqual(self.countFacesEdgesVertexes(loft.Shape.ElementReverseMap), (6, 12, 8))
         volume = 7.0
         self.assertAlmostEqual(loft.Shape.Volume, volume)
 
@@ -740,9 +726,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertNotEqual(
             pocket.Shape.ElementReverseMap["Vertex1"], "Vertex1"
         )  # NewName, not OldName
-        self.assertEqual(
-            self.countFacesEdgesVertexes(pocket.Shape.ElementReverseMap), (11, 24, 16)
-        )
+        self.assertEqual(self.countFacesEdgesVertexes(pocket.Shape.ElementReverseMap), (11, 24, 16))
         volume = 1000 - 5 * 1 * 1
         self.assertAlmostEqual(pocket.Shape.Volume, volume)
 
@@ -771,9 +755,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(sketch.Shape.ElementMapSize, 2)
         self.assertEqual(hole.Shape.ElementMapSize, 32)
         # self.assertNotEqual(hole.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
-        self.assertEqual(
-            self.countFacesEdgesVertexes(hole.Shape.ElementReverseMap), (7, 15, 10)
-        )
+        self.assertEqual(self.countFacesEdgesVertexes(hole.Shape.ElementReverseMap), (7, 15, 10))
         volume = 1000 - 10 * math.pi * 3 * 3
         self.assertAlmostEqual(hole.Shape.Volume, volume)
 
@@ -795,9 +777,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Assert
-        revMap = (
-            groove.Shape.ElementReverseMap
-        )  # body.Shape.childShapes()[0].ElementReverseMap
+        revMap = groove.Shape.ElementReverseMap  # body.Shape.childShapes()[0].ElementReverseMap
         self.assertEqual(self.countFacesEdgesVertexes(revMap), (5, 9, 6))
         volume = 785.3981633974482  # TODO:  math formula to calc this.  Maybe make a sketch as the Profile.
         self.assertAlmostEqual(groove.Shape.Volume, volume)
@@ -823,9 +803,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
             return
         # Assert
-        revMap = (
-            loft.Shape.ElementReverseMap
-        )  # body.Shape.childShapes()[0].ElementReverseMap
+        revMap = loft.Shape.ElementReverseMap  # body.Shape.childShapes()[0].ElementReverseMap
         self.assertEqual(self.countFacesEdgesVertexes(revMap), (11, 24, 16))
         volume = 993  # TODO:  math formula to calc this.
         self.assertAlmostEqual(loft.Shape.Volume, volume)
@@ -979,9 +957,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
         if body.Shape.ElementMapVersion == "":  # Skip without element maps.
             return
-        multitransform = self.Doc.addObject(
-            "PartDesign::MultiTransform", "MultiTransform"
-        )
+        multitransform = self.Doc.addObject("PartDesign::MultiTransform", "MultiTransform")
         scaled = self.Doc.addObject("PartDesign::Scaled", "Scaled")
         scaled.Factor = 2
         scaled.Occurrences = 2
@@ -1016,9 +992,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
-        subshapebinder = self.Doc.addObject(
-            "PartDesign::SubShapeBinder", "SubShapeBinder"
-        )
+        subshapebinder = self.Doc.addObject("PartDesign::SubShapeBinder", "SubShapeBinder")
         if body.Shape.ElementMapVersion == "":  # Skip without element maps.
             return
         # Act / Assert
@@ -1045,9 +1019,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             return
         # Assert
         self.assertEqual(sketch.Shape.ElementMapSize, 12)
-        self.assertEqual(
-            pad.Shape.ElementMapSize, 30
-        )  # The sketch plus the pad in the map
+        self.assertEqual(pad.Shape.ElementMapSize, 30)  # The sketch plus the pad in the map
         # TODO:  differing results between main and LS3 on these values.  Does it matter?
         # self.assertEqual(body.Shape.ElementMapSize,0)   # 8?
         # self.assertEqual(body.Shape.ElementMapSize,30) # 26
@@ -1274,9 +1246,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.getObject("TNP_Test_Body_SubShape").Label = "TNP_Test_Body_SubShape"
 
         doc.recompute()
-        doc.getObject("TNP_Test_Body_SubShape").newObject(
-            "Sketcher::SketchObject", "Sketch"
-        )
+        doc.getObject("TNP_Test_Body_SubShape").newObject("Sketcher::SketchObject", "Sketch")
         doc.Sketch.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
         doc.Sketch.MapMode = "FlatFace"
         doc.recompute()
@@ -1356,9 +1326,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         )
         obj.Support = (doc.getObject("TNP_Test_Body_SubShape"), ["Face6"])
         doc.recompute()
-        doc.getObject("TNP_Test_Body_Second").newObject(
-            "Sketcher::SketchObject", "Sketch001"
-        )
+        doc.getObject("TNP_Test_Body_Second").newObject("Sketcher::SketchObject", "Sketch001")
         doc.getObject("Sketch001").AttachmentSupport = (
             doc.getObject("ShapeBinder"),
             [""],
@@ -1528,9 +1496,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.addObject("PartDesign::Body", "Body001")
         doc.getObject("Body001").Label = "Body"
         doc.recompute()
-        binder = doc.getObject("Body001").newObject(
-            "PartDesign::SubShapeBinder", "Binder"
-        )
+        binder = doc.getObject("Body001").newObject("PartDesign::SubShapeBinder", "Binder")
         binder.Support = self.Body
         doc.getObject("Body001").newObject("Sketcher::SketchObject", "Sketch001")
         doc.getObject("Sketch001").AttachmentSupport = (
@@ -1663,18 +1629,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             11,
         )
         geoList = []
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0))
-        )
+        geoList.append(Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0)))
+        geoList.append(Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0)))
+        geoList.append(Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0)))
+        geoList.append(Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0)))
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
@@ -1725,9 +1683,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         boxVolume = 10 * 10 * 10
         chamferVolume = 1 * 1 * 0.5 * 10
         # cut area is rectangle with sqrt(2) as one side minus 2 isosceles right triangles
-        cutArea = (2 * math.sqrt(2)) * 3 - (
-            (math.sqrt(2) / 2 * math.sqrt(2) / 2) / 2
-        ) * 2
+        cutArea = (2 * math.sqrt(2)) * 3 - ((math.sqrt(2) / 2 * math.sqrt(2) / 2) / 2) * 2
         cutVolume = cutArea * 4  # height is 4  ( 11-6 with a limit of 10 from the box )
         self.assertAlmostEqual(volume1, boxVolume)
         self.assertAlmostEqual(volume2, boxVolume - 3 * chamferVolume)
@@ -1765,18 +1721,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         x1, x2, y1, y2 = 4, 6, 6, 11
         geoList = []
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0))
-        )
+        geoList.append(Part.LineSegment(App.Vector(x1, y1, 0.0), App.Vector(x1, y2, 0.0)))
+        geoList.append(Part.LineSegment(App.Vector(x1, y2, 0.0), App.Vector(x2, y2, 0.0)))
+        geoList.append(Part.LineSegment(App.Vector(x2, y2, 0.0), App.Vector(x2, y1, 0.0)))
+        geoList.append(Part.LineSegment(App.Vector(x2, y1, 0.0), App.Vector(x1, y1, 0.0)))
         doc.Sketch.addGeometry(geoList, False)
         del geoList
 
@@ -1925,9 +1873,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad.ReferenceAxis = (doc.Sketch, ["N_Axis"])
         doc.Sketch.Visibility = False
         doc.recompute()
-        expected_volume = (
-            math.pi * radius * radius * 10 * 4
-        )  # Volume of 4 padded circles
+        expected_volume = math.pi * radius * radius * 10 * 4  # Volume of 4 padded circles
         # self.assertAlmostEqual(doc.Body.Shape.Volume, expected_volume ) # TODO ENABLE THIS ASSERTION WHEN IT PASSES
 
     #   # Add additional code to attach another sketch, then change the original sketch and check TNP
@@ -2127,18 +2073,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         )
         doc.Sketch001.MapMode = "FlatFace"
         geoList = []
-        geoList.append(
-            Part.LineSegment(App.Vector(-5, 5, 0.000000), App.Vector(-5, -5, 0.000000))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(-5, -5, 0.000000), App.Vector(5, -5, 0.000000))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(5, -5, 0.000000), App.Vector(5, 5, 0.000000))
-        )
-        geoList.append(
-            Part.LineSegment(App.Vector(5, 5, 0.000000), App.Vector(-5, 5, 0.000000))
-        )
+        geoList.append(Part.LineSegment(App.Vector(-5, 5, 0.000000), App.Vector(-5, -5, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(-5, -5, 0.000000), App.Vector(5, -5, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(5, -5, 0.000000), App.Vector(5, 5, 0.000000)))
+        geoList.append(Part.LineSegment(App.Vector(5, 5, 0.000000), App.Vector(-5, 5, 0.000000)))
         doc.Sketch001.addGeometry(geoList, False)
         del geoList
         constraintList = []
@@ -2242,13 +2180,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Act
         App.Gui.Selection.addSelection("", extrude.Name, "Face2")
         # Assert
-        self.assertEqual(
-            len(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames), 1
-        )
+        self.assertEqual(len(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames), 1)
         if extrude.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(
-                App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0], "Face2"
-            )
+            self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0], "Face2")
         else:
             self.assertEqual(
                 App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0][-8:],
@@ -2334,9 +2268,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(
             doc.Body001.BaseFeature.Shape.ElementMapSize, 26
         )  # base feature lookup should have element map
-        self.assertEqual(
-            doc.Body001.Shape.ElementMapSize, 26
-        )  # Body Shape should have element map
+        self.assertEqual(doc.Body001.Shape.ElementMapSize, 26)  # Body Shape should have element map
 
     def testBaseFeatureAttachmentSupport(self):
         # Arrange
@@ -2375,24 +2307,16 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.recompute()
         geoList = []
         geoList.append(
-            Part.LineSegment(
-                App.Vector(12.0, 13.0, 0.000000), App.Vector(12.0, 11.0, 0.000000)
-            )
+            Part.LineSegment(App.Vector(12.0, 13.0, 0.000000), App.Vector(12.0, 11.0, 0.000000))
         )
         geoList.append(
-            Part.LineSegment(
-                App.Vector(12.0, 11, 0.000000), App.Vector(14.0, 11.0, 0.000000)
-            )
+            Part.LineSegment(App.Vector(12.0, 11, 0.000000), App.Vector(14.0, 11.0, 0.000000))
         )
         geoList.append(
-            Part.LineSegment(
-                App.Vector(14.0, 11, 0.000000), App.Vector(14.0, 13.0, 0.000000)
-            )
+            Part.LineSegment(App.Vector(14.0, 11, 0.000000), App.Vector(14.0, 13.0, 0.000000))
         )
         geoList.append(
-            Part.LineSegment(
-                App.Vector(14.0, 13.0, 0.000000), App.Vector(12, 13.0, 0.000000)
-            )
+            Part.LineSegment(App.Vector(14.0, 13.0, 0.000000), App.Vector(12, 13.0, 0.000000))
         )
         doc.Sketch.addGeometry(geoList, False)
         del geoList
@@ -2448,9 +2372,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         )
         doc.recompute()
         # Assert
-        self.assertEqual(
-            len(doc.Body.Shape.Faces), 17
-        )  # Check that the object seems right.
+        self.assertEqual(len(doc.Body.Shape.Faces), 17)  # Check that the object seems right.
         self.assertEqual(len(doc.Body.Shape.Edges), 42)
         self.assertEqual(len(doc.Body.Shape.Vertexes), 28)
         self.assertEqual(len(doc.Body.Shape.Shells), 1)
@@ -2547,9 +2469,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.PadSketch.addConstraint(Sketcher.Constraint("Horizontal", 5))
         self.PadSketch.addConstraint(Sketcher.Constraint("Radius", 4, 73.031111))
         self.PadSketch.setDatum(18, App.Units.Quantity("70.000000 mm"))
-        self.PadSketch.addConstraint(
-            Sketcher.Constraint("DistanceY", 4, 3, -1, 1, 88.867210)
-        )
+        self.PadSketch.addConstraint(Sketcher.Constraint("DistanceY", 4, 3, -1, 1, 88.867210))
         self.PadSketch.setDatum(19, App.Units.Quantity("80.000000 mm"))
 
         self.Doc.recompute()

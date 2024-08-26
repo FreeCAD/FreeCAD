@@ -3897,7 +3897,7 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Để sử dụng PartDesign, bạn cần một đối tượng Phần thân đang hoạt động trong tài liệu. Hãy kích hoạt (nhấp đúp) hoặc tạo một cái. 
+      <translation>Để sử dụng PartDesign, bạn cần một đối tượng Phần thân đang hoạt động trong tài liệu. Hãy kích hoạt (nhấp đúp) hoặc tạo một cái.
 
 Nếu bạn có một tài liệu cũ với các đối tượng PartDesign không có Phần thân, hãy sử dụng chức năng nâng cấp trong PartDesign để đưa chúng vào một phần thân.</translation>
     </message>

@@ -86,8 +86,8 @@ private:
         }
     }
     static void setLegacyValue(const std::shared_ptr<Material>& finalModel,
-                                   const std::string& name,
-                                   const QString& value)
+                               const std::string& name,
+                               const QString& value)
     {
         if (!value.isEmpty()) {
             finalModel->setLegacyValue(QString::fromStdString(name), value);
@@ -156,7 +156,7 @@ private:
     static void addRenderWB(QMap<QString, QString>& fcmat,
                             const std::shared_ptr<Material>& finalModel);
     static void addLegacy(const QMap<QString, QString>& fcmat,
-                            const std::shared_ptr<Material>& finalModel);
+                          const std::shared_ptr<Material>& finalModel);
 };
 
 }  // namespace Materials

@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -55,10 +55,10 @@
 #include <cassert>
 
 #if HAVE_CONFIG_H
-# include <config.h>
-# ifdef  HAVE_GL_GL_H
-#  include <GL/gl.h>
-# endif
+#include <config.h>
+#ifdef HAVE_GL_GL_H
+#include <GL/gl.h>
+#endif
 #endif
 
 #include <QAction>
@@ -128,13 +128,14 @@ using namespace SIM::Coin3D::Quarter;
   See \ref SoRenderManager::StereoMode for a full description of the modes
 */
 
-  enum StereoMode {
+enum StereoMode
+{
     MONO = SoRenderManager::MONO,
     ANAGLYPH = SoRenderManager::ANAGLYPH,
     QUAD_BUFFER = SoRenderManager::QUAD_BUFFER,
     INTERLEAVED_ROWS = SoRenderManager::INTERLEAVED_ROWS,
     INTERLEAVED_COLUMNS = SoRenderManager::INTERLEAVED_COLUMNS
-  };
+};
 
 #define PRIVATE(obj) obj->pimpl
 
@@ -142,13 +143,18 @@ using namespace SIM::Coin3D::Quarter;
 #define GL_MULTISAMPLE_BIT_EXT 0x20000000
 #endif
 
-//We need to avoid buffer swapping when initializing a QPainter on this widget
-class CustomGLWidget : public QOpenGLWidget {
+// We need to avoid buffer swapping when initializing a QPainter on this widget
+class CustomGLWidget: public QOpenGLWidget
+{
 public:
     QSurfaceFormat myFormat;
 
-    CustomGLWidget(const QSurfaceFormat& format, QWidget* parent = nullptr, const QOpenGLWidget* shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags())
-     : QOpenGLWidget(parent, f), myFormat(format)
+    CustomGLWidget(const QSurfaceFormat& format,
+                   QWidget* parent = nullptr,
+                   const QOpenGLWidget* shareWidget = nullptr,
+                   Qt::WindowFlags f = Qt::WindowFlags())
+        : QOpenGLWidget(parent, f)
+        , myFormat(format)
     {
         Q_UNUSED(shareWidget);
         QSurfaceFormat surfaceFormat(format);
@@ -156,10 +162,10 @@ public:
         // With the settings below we could determine deprecated OpenGL API
         // but can't do this since otherwise it will complain about almost any
         // OpenGL call in Coin3d
-        //surfaceFormat.setMajorVersion(3);
-        //surfaceFormat.setMinorVersion(2);
-        //surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
-#if defined (_DEBUG) && 0
+        // surfaceFormat.setMajorVersion(3);
+        // surfaceFormat.setMinorVersion(2);
+        // surfaceFormat.setProfile(QSurfaceFormat::CoreProfile);
+#if defined(_DEBUG) && 0
         surfaceFormat.setOption(QSurfaceFormat::DebugContext);
 #endif
         setFormat(surfaceFormat);
@@ -168,14 +174,18 @@ public:
 
     void initializeGL() override
     {
-#if defined (_DEBUG) && 0
-        QOpenGLContext *context = QOpenGLContext::currentContext();
+#if defined(_DEBUG) && 0
+        QOpenGLContext* context = QOpenGLContext::currentContext();
         if (context && context->hasExtension(QByteArrayLiteral("GL_KHR_debug"))) {
-            QOpenGLDebugLogger *logger = new QOpenGLDebugLogger(this);
-            connect(logger, &QOpenGLDebugLogger::messageLogged, this, &CustomGLWidget::handleLoggedMessage);
+            QOpenGLDebugLogger* logger = new QOpenGLDebugLogger(this);
+            connect(logger,
+                    &QOpenGLDebugLogger::messageLogged,
+                    this,
+                    &CustomGLWidget::handleLoggedMessage);
 
-            if (logger->initialize())
+            if (logger->initialize()) {
                 logger->startLogging(QOpenGLDebugLogger::SynchronousLogging);
+            }
         }
 #endif
 
@@ -197,7 +207,7 @@ public:
         }
     }
 
-    bool event(QEvent *e) override
+    bool event(QEvent* e) override
     {
         // If a debug logger is activated then Qt's default implementation
         // first releases the context before stopping the logger. However,
@@ -215,125 +225,131 @@ public:
 
         return QOpenGLWidget::event(e);
     }
-    void handleLoggedMessage(const QOpenGLDebugMessage &message)
+    void handleLoggedMessage(const QOpenGLDebugMessage& message)
     {
         qDebug() << message;
     }
     void showEvent(QShowEvent*) override
     {
-        update(); // force update when changing window mode
+        update();  // force update when changing window mode
     }
     void slotResized()
     {
-        update(); // fixes flickering on some systems
+        update();  // fixes flickering on some systems
     }
 };
 
 /*! constructor */
-QuarterWidget::QuarterWidget(const QtGLFormat & format, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
-  : inherited(parent)
+QuarterWidget::QuarterWidget(const QtGLFormat& format,
+                             QWidget* parent,
+                             const QtGLWidget* sharewidget,
+                             Qt::WindowFlags f)
+    : inherited(parent)
 {
-  Q_UNUSED(f); 
-  this->constructor(format, sharewidget);
+    Q_UNUSED(f);
+    this->constructor(format, sharewidget);
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
-  : inherited(parent)
+QuarterWidget::QuarterWidget(QWidget* parent, const QtGLWidget* sharewidget, Qt::WindowFlags f)
+    : inherited(parent)
 {
-  Q_UNUSED(f); 
-  this->constructor(QtGLFormat(), sharewidget);
+    Q_UNUSED(f);
+    this->constructor(QtGLFormat(), sharewidget);
 }
 
 /*! constructor */
-QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGLWidget * sharewidget, Qt::WindowFlags f)
-  : inherited(parent)
+QuarterWidget::QuarterWidget(QtGLContext* context,
+                             QWidget* parent,
+                             const QtGLWidget* sharewidget,
+                             Qt::WindowFlags f)
+    : inherited(parent)
 {
-  Q_UNUSED(f); 
-  this->constructor(context->format(), sharewidget);
+    Q_UNUSED(f);
+    this->constructor(context->format(), sharewidget);
 }
 
-void
-QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewidget)
+void QuarterWidget::constructor(const QtGLFormat& format, const QtGLWidget* sharewidget)
 {
-  QGraphicsScene* scene = new QGraphicsScene(this);
-  setScene(scene);
-  setViewport(new CustomGLWidget(format, this, sharewidget)); 
-  
-  setFrameStyle(QFrame::NoFrame);
-  setAutoFillBackground(false);
-  viewport()->setAutoFillBackground(false);
-  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    
-  PRIVATE(this) = new QuarterWidgetP(this, sharewidget);
+    QGraphicsScene* scene = new QGraphicsScene(this);
+    setScene(scene);
+    setViewport(new CustomGLWidget(format, this, sharewidget));
 
-  PRIVATE(this)->sorendermanager = new SoRenderManager;
-  PRIVATE(this)->initialsorendermanager = true;
-  PRIVATE(this)->soeventmanager = new SoEventManager;
-  PRIVATE(this)->initialsoeventmanager = true;
-  PRIVATE(this)->processdelayqueue = true;
+    setFrameStyle(QFrame::NoFrame);
+    setAutoFillBackground(false);
+    viewport()->setAutoFillBackground(false);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-  //Mind the order of initialization as the XML state machine uses
-  //callbacks which depends on other state being initialized
-  PRIVATE(this)->eventfilter = new EventFilter(this);
-  PRIVATE(this)->interactionmode = new InteractionMode(this);
+    PRIVATE(this) = new QuarterWidgetP(this, sharewidget);
 
-  PRIVATE(this)->currentStateMachine = nullptr;
+    PRIVATE(this)->sorendermanager = new SoRenderManager;
+    PRIVATE(this)->initialsorendermanager = true;
+    PRIVATE(this)->soeventmanager = new SoEventManager;
+    PRIVATE(this)->initialsoeventmanager = true;
+    PRIVATE(this)->processdelayqueue = true;
 
-  PRIVATE(this)->headlight = new SoDirectionalLight;
-  PRIVATE(this)->headlight->ref();
+    // Mind the order of initialization as the XML state machine uses
+    // callbacks which depends on other state being initialized
+    PRIVATE(this)->eventfilter = new EventFilter(this);
+    PRIVATE(this)->interactionmode = new InteractionMode(this);
 
-  PRIVATE(this)->sorendermanager->setAutoClipping(SoRenderManager::VARIABLE_NEAR_PLANE);
-  PRIVATE(this)->sorendermanager->setRenderCallback(QuarterWidgetP::rendercb, this);
-  PRIVATE(this)->sorendermanager->setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f, 0.0f));
-  PRIVATE(this)->sorendermanager->activate();
-  PRIVATE(this)->sorendermanager->addPreRenderCallback(QuarterWidgetP::prerendercb, PRIVATE(this));
-  PRIVATE(this)->sorendermanager->addPostRenderCallback(QuarterWidgetP::postrendercb, PRIVATE(this));
+    PRIVATE(this)->currentStateMachine = nullptr;
 
-  PRIVATE(this)->soeventmanager->setNavigationState(SoEventManager::MIXED_NAVIGATION);
+    PRIVATE(this)->headlight = new SoDirectionalLight;
+    PRIVATE(this)->headlight->ref();
 
-  // set up a cache context for the default SoGLRenderAction
-  PRIVATE(this)->sorendermanager->getGLRenderAction()->setCacheContext(this->getCacheContextId());
+    PRIVATE(this)->sorendermanager->setAutoClipping(SoRenderManager::VARIABLE_NEAR_PLANE);
+    PRIVATE(this)->sorendermanager->setRenderCallback(QuarterWidgetP::rendercb, this);
+    PRIVATE(this)->sorendermanager->setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f, 0.0f));
+    PRIVATE(this)->sorendermanager->activate();
+    PRIVATE(this)->sorendermanager->addPreRenderCallback(QuarterWidgetP::prerendercb,
+                                                         PRIVATE(this));
+    PRIVATE(this)->sorendermanager->addPostRenderCallback(QuarterWidgetP::postrendercb,
+                                                          PRIVATE(this));
 
-  this->setMouseTracking(true);
+    PRIVATE(this)->soeventmanager->setNavigationState(SoEventManager::MIXED_NAVIGATION);
 
-  // Qt::StrongFocus means the widget will accept keyboard focus by
-  // both tabbing and clicking
-  this->setFocusPolicy(Qt::StrongFocus);
+    // set up a cache context for the default SoGLRenderAction
+    PRIVATE(this)->sorendermanager->getGLRenderAction()->setCacheContext(this->getCacheContextId());
 
-  this->installEventFilter(PRIVATE(this)->eventfilter);
-  this->installEventFilter(PRIVATE(this)->interactionmode);
+    this->setMouseTracking(true);
 
-  initialized = false;
+    // Qt::StrongFocus means the widget will accept keyboard focus by
+    // both tabbing and clicking
+    this->setFocusPolicy(Qt::StrongFocus);
+
+    this->installEventFilter(PRIVATE(this)->eventfilter);
+    this->installEventFilter(PRIVATE(this)->interactionmode);
+
+    initialized = false;
 }
 
-void
-QuarterWidget::replaceViewport()
+void QuarterWidget::replaceViewport()
 {
-  CustomGLWidget* oldvp = static_cast<CustomGLWidget*>(viewport());
-  CustomGLWidget* newvp = new CustomGLWidget(oldvp->myFormat, this);
-  PRIVATE(this)->replaceGLWidget(newvp);
-  setViewport(newvp);
+    CustomGLWidget* oldvp = static_cast<CustomGLWidget*>(viewport());
+    CustomGLWidget* newvp = new CustomGLWidget(oldvp->myFormat, this);
+    PRIVATE(this)->replaceGLWidget(newvp);
+    setViewport(newvp);
 
-  setAutoFillBackground(false);
-  viewport()->setAutoFillBackground(false);
+    setAutoFillBackground(false);
+    viewport()->setAutoFillBackground(false);
 }
 
 /*! destructor */
 QuarterWidget::~QuarterWidget()
 {
-  if (PRIVATE(this)->currentStateMachine) {
-    this->removeStateMachine(PRIVATE(this)->currentStateMachine);
-    delete PRIVATE(this)->currentStateMachine;
-  }
-  PRIVATE(this)->headlight->unref();
-  PRIVATE(this)->headlight = nullptr;
-  this->setSceneGraph(nullptr);
-  this->setSoRenderManager(nullptr);
-  this->setSoEventManager(nullptr);
-  delete PRIVATE(this)->eventfilter;
-  delete PRIVATE(this);
+    if (PRIVATE(this)->currentStateMachine) {
+        this->removeStateMachine(PRIVATE(this)->currentStateMachine);
+        delete PRIVATE(this)->currentStateMachine;
+    }
+    PRIVATE(this)->headlight->unref();
+    PRIVATE(this)->headlight = nullptr;
+    this->setSceneGraph(nullptr);
+    this->setSoRenderManager(nullptr);
+    this->setSoEventManager(nullptr);
+    delete PRIVATE(this)->eventfilter;
+    delete PRIVATE(this);
 }
 
 /*!
@@ -341,12 +357,11 @@ QuarterWidget::~QuarterWidget()
   state. See the Coin documentation on navigation for information
   about available states
 */
-void
-QuarterWidget::setStateCursor(const SbName & state, const QCursor & cursor)
+void QuarterWidget::setStateCursor(const SbName& state, const QCursor& cursor)
 {
-  assert(QuarterP::statecursormap);
-  // will overwrite the value of an existing item
-  QuarterP::statecursormap->insert(state, cursor);
+    assert(QuarterP::statecursormap);
+    // will overwrite the value of an existing item
+    QuarterP::statecursormap->insert(state, cursor);
 }
 
 /*!
@@ -355,11 +370,10 @@ QuarterWidget::setStateCursor(const SbName & state, const QCursor & cursor)
   \param[in] state Named state in the statemachine
   \retval Cursor corresponding to the given state
 */
-QCursor
-QuarterWidget::stateCursor(const SbName & state)
+QCursor QuarterWidget::stateCursor(const SbName& state)
 {
-  assert(QuarterP::statecursormap);
-  return QuarterP::statecursormap->value(state);
+    assert(QuarterP::statecursormap);
+    return QuarterP::statecursormap->value(state);
 }
 
 /*!
@@ -372,28 +386,25 @@ QuarterWidget::stateCursor(const SbName & state)
   Enable/disable the headlight. This will toggle the SoDirectionalLight::on
   field (returned from getHeadlight()).
 */
-void
-QuarterWidget::setHeadlightEnabled(bool onoff)
+void QuarterWidget::setHeadlightEnabled(bool onoff)
 {
-  PRIVATE(this)->headlight->on = onoff;
+    PRIVATE(this)->headlight->on = onoff;
 }
 
 /*!
   Returns true if the headlight is on, false if it is off
 */
-bool
-QuarterWidget::headlightEnabled() const
+bool QuarterWidget::headlightEnabled() const
 {
-  return PRIVATE(this)->headlight->on.getValue();
+    return PRIVATE(this)->headlight->on.getValue();
 }
 
 /*!
   Returns the light used for the headlight.
 */
-SoDirectionalLight *
-QuarterWidget::getHeadlight() const
+SoDirectionalLight* QuarterWidget::getHeadlight() const
 {
-  return PRIVATE(this)->headlight;
+    return PRIVATE(this)->headlight;
 }
 
 /*!
@@ -406,19 +417,17 @@ QuarterWidget::getHeadlight() const
   Specify if you want the z buffer to be cleared before
   redraw. This is on by default.
 */
-void
-QuarterWidget::setClearZBuffer(bool onoff)
+void QuarterWidget::setClearZBuffer(bool onoff)
 {
-  PRIVATE(this)->clearzbuffer = onoff;
+    PRIVATE(this)->clearzbuffer = onoff;
 }
 
 /*!
   Returns true if the z buffer is cleared before rendering.
 */
-bool
-QuarterWidget::clearZBuffer() const
+bool QuarterWidget::clearZBuffer() const
 {
-  return PRIVATE(this)->clearzbuffer;
+    return PRIVATE(this)->clearzbuffer;
 }
 
 /*!
@@ -431,19 +440,17 @@ QuarterWidget::clearZBuffer() const
   Specify if you want the rendering buffer to be cleared before
   rendering. This is on by default.
  */
-void
-QuarterWidget::setClearWindow(bool onoff)
+void QuarterWidget::setClearWindow(bool onoff)
 {
-  PRIVATE(this)->clearwindow = onoff;
+    PRIVATE(this)->clearwindow = onoff;
 }
 
 /*!
   Returns true if the rendering buffer is cleared before rendering.
 */
-bool
-QuarterWidget::clearWindow() const
+bool QuarterWidget::clearWindow() const
 {
-  return PRIVATE(this)->clearwindow;
+    return PRIVATE(this)->clearwindow;
 }
 
 /*!
@@ -457,19 +464,17 @@ QuarterWidget::clearWindow() const
 
   Specifies whether you may use the alt-key to enter interaction mode.
 */
-void
-QuarterWidget::setInteractionModeEnabled(bool onoff)
+void QuarterWidget::setInteractionModeEnabled(bool onoff)
 {
-  PRIVATE(this)->interactionmode->setEnabled(onoff);
+    PRIVATE(this)->interactionmode->setEnabled(onoff);
 }
 
 /*!
   Returns true if interaction mode is enabled, false otherwise.
  */
-bool
-QuarterWidget::interactionModeEnabled() const
+bool QuarterWidget::interactionModeEnabled() const
 {
-  return PRIVATE(this)->interactionmode->enabled();
+    return PRIVATE(this)->interactionmode->enabled();
 }
 
 /*!
@@ -481,28 +486,25 @@ QuarterWidget::interactionModeEnabled() const
 /*!
   Turn interaction mode on or off.
 */
-void
-QuarterWidget::setInteractionModeOn(bool onoff)
+void QuarterWidget::setInteractionModeOn(bool onoff)
 {
-  PRIVATE(this)->interactionmode->setOn(onoff);
+    PRIVATE(this)->interactionmode->setOn(onoff);
 }
 
 /*!
   Returns true if interaction mode is on.
  */
-bool
-QuarterWidget::interactionModeOn() const
+bool QuarterWidget::interactionModeOn() const
 {
-  return PRIVATE(this)->interactionmode->on();
+    return PRIVATE(this)->interactionmode->on();
 }
 
 /*!
   Returns the Coin cache context id for this widget.
 */
-uint32_t
-QuarterWidget::getCacheContextId() const
+uint32_t QuarterWidget::getCacheContextId() const
 {
-  return PRIVATE(this)->getCacheContextId();
+    return PRIVATE(this)->getCacheContextId();
 }
 
 /*!
@@ -514,23 +516,22 @@ QuarterWidget::getCacheContextId() const
 /*!
   Sets the transparency type to be used for the scene.
 */
-void
-QuarterWidget::setTransparencyType(TransparencyType type)
+void QuarterWidget::setTransparencyType(TransparencyType type)
 {
-  assert(PRIVATE(this)->sorendermanager);
-  PRIVATE(this)->sorendermanager->getGLRenderAction()->setTransparencyType((SoGLRenderAction::TransparencyType)type);
-  PRIVATE(this)->sorendermanager->scheduleRedraw();
+    assert(PRIVATE(this)->sorendermanager);
+    PRIVATE(this)->sorendermanager->getGLRenderAction()->setTransparencyType(
+        (SoGLRenderAction::TransparencyType)type);
+    PRIVATE(this)->sorendermanager->scheduleRedraw();
 }
 
 /*!
   \retval The current \ref TransparencyType
 */
-QuarterWidget::TransparencyType
-QuarterWidget::transparencyType() const
+QuarterWidget::TransparencyType QuarterWidget::transparencyType() const
 {
-  assert(PRIVATE(this)->sorendermanager);
-  SoGLRenderAction * action = PRIVATE(this)->sorendermanager->getGLRenderAction();
-  return static_cast<QuarterWidget::TransparencyType>(action->getTransparencyType());
+    assert(PRIVATE(this)->sorendermanager);
+    SoGLRenderAction* action = PRIVATE(this)->sorendermanager->getGLRenderAction();
+    return static_cast<QuarterWidget::TransparencyType>(action->getTransparencyType());
 }
 
 /*!
@@ -542,22 +543,20 @@ QuarterWidget::transparencyType() const
 /*!
   \copydoc RenderMode
 */
-void
-QuarterWidget::setRenderMode(RenderMode mode)
+void QuarterWidget::setRenderMode(RenderMode mode)
 {
-  assert(PRIVATE(this)->sorendermanager);
-  PRIVATE(this)->sorendermanager->setRenderMode(static_cast<SoRenderManager::RenderMode>(mode));
-  PRIVATE(this)->sorendermanager->scheduleRedraw();
+    assert(PRIVATE(this)->sorendermanager);
+    PRIVATE(this)->sorendermanager->setRenderMode(static_cast<SoRenderManager::RenderMode>(mode));
+    PRIVATE(this)->sorendermanager->scheduleRedraw();
 }
 
 /*!
   \retval The current \ref RenderMode
 */
-QuarterWidget::RenderMode
-QuarterWidget::renderMode() const
+QuarterWidget::RenderMode QuarterWidget::renderMode() const
 {
-  assert(PRIVATE(this)->sorendermanager);
-  return static_cast<RenderMode>(PRIVATE(this)->sorendermanager->getRenderMode());
+    assert(PRIVATE(this)->sorendermanager);
+    return static_cast<RenderMode>(PRIVATE(this)->sorendermanager->getRenderMode());
 }
 
 /*!
@@ -569,23 +568,21 @@ QuarterWidget::renderMode() const
 /*!
   \copydoc StereoMode
 */
-void
-QuarterWidget::setStereoMode(StereoMode mode)
+void QuarterWidget::setStereoMode(StereoMode mode)
 {
-  assert(PRIVATE(this)->sorendermanager);
-  PRIVATE(this)->sorendermanager->setStereoMode(static_cast<SoRenderManager::StereoMode>(mode));
-  PRIVATE(this)->sorendermanager->scheduleRedraw();
+    assert(PRIVATE(this)->sorendermanager);
+    PRIVATE(this)->sorendermanager->setStereoMode(static_cast<SoRenderManager::StereoMode>(mode));
+    PRIVATE(this)->sorendermanager->scheduleRedraw();
 }
 
 
 /*!
   \retval The current \ref StereoMode
 */
-QuarterWidget::StereoMode
-QuarterWidget::stereoMode() const
+QuarterWidget::StereoMode QuarterWidget::stereoMode() const
 {
-  assert(PRIVATE(this)->sorendermanager);
-  return static_cast<StereoMode>(PRIVATE(this)->sorendermanager->getStereoMode());
+    assert(PRIVATE(this)->sorendermanager);
+    return static_cast<StereoMode>(PRIVATE(this)->sorendermanager->getStereoMode());
 }
 
 /*!
@@ -596,218 +593,230 @@ QuarterWidget::stereoMode() const
 
 /*!
   The ratio between logical and physical pixel sizes -- obtained from the window that
-the widget is located within, and updated whenever any change occurs, emitting a devicePixelRatioChanged signal.  Only available for version Qt 5.6 and above (will be 1.0 for all previous versions)
+the widget is located within, and updated whenever any change occurs, emitting a
+devicePixelRatioChanged signal.  Only available for version Qt 5.6 and above (will be 1.0 for all
+previous versions)
  */
 
-qreal
-QuarterWidget::devicePixelRatio() const
+qreal QuarterWidget::devicePixelRatio() const
 {
-  return PRIVATE(this)->device_pixel_ratio;
+    return PRIVATE(this)->device_pixel_ratio;
 }
 
 /*!
   Sets the Inventor scenegraph to be rendered
  */
-void
-QuarterWidget::setSceneGraph(SoNode * node)
+void QuarterWidget::setSceneGraph(SoNode* node)
 {
-  if (node == PRIVATE(this)->scene) {
-    return;
-  }
-
-  if (PRIVATE(this)->scene) {
-    PRIVATE(this)->scene->unref();
-    PRIVATE(this)->scene = nullptr;
-  }
-
-  SoCamera * camera = nullptr;
-  SoSeparator * superscene = nullptr;
-  bool viewall = false;
-
-  if (node) {
-    PRIVATE(this)->scene = node;
-    PRIVATE(this)->scene->ref();
-
-    superscene = new SoSeparator;
-    superscene->addChild(PRIVATE(this)->headlight);
-
-    // if the scene does not contain a camera, add one
-    if (!(camera = PRIVATE(this)->searchForCamera(node))) {
-      camera = new SoPerspectiveCamera;
-      superscene->addChild(camera);
-      viewall = true;
+    if (node == PRIVATE(this)->scene) {
+        return;
     }
 
-    superscene->addChild(node);
-  }
+    if (PRIVATE(this)->scene) {
+        PRIVATE(this)->scene->unref();
+        PRIVATE(this)->scene = nullptr;
+    }
 
-  PRIVATE(this)->soeventmanager->setCamera(camera);
-  PRIVATE(this)->sorendermanager->setCamera(camera);
-  PRIVATE(this)->soeventmanager->setSceneGraph(superscene);
-  PRIVATE(this)->sorendermanager->setSceneGraph(superscene);
+    SoCamera* camera = nullptr;
+    SoSeparator* superscene = nullptr;
+    bool viewall = false;
 
-  if (viewall) { this->viewAll(); }
-  if (superscene) { superscene->touch(); }
+    if (node) {
+        PRIVATE(this)->scene = node;
+        PRIVATE(this)->scene->ref();
+
+        superscene = new SoSeparator;
+        superscene->addChild(PRIVATE(this)->headlight);
+
+        // if the scene does not contain a camera, add one
+        if (!(camera = PRIVATE(this)->searchForCamera(node))) {
+            camera = new SoPerspectiveCamera;
+            superscene->addChild(camera);
+            viewall = true;
+        }
+
+        superscene->addChild(node);
+    }
+
+    PRIVATE(this)->soeventmanager->setCamera(camera);
+    PRIVATE(this)->sorendermanager->setCamera(camera);
+    PRIVATE(this)->soeventmanager->setSceneGraph(superscene);
+    PRIVATE(this)->sorendermanager->setSceneGraph(superscene);
+
+    if (viewall) {
+        this->viewAll();
+    }
+    if (superscene) {
+        superscene->touch();
+    }
 }
 
 /*!
   Returns pointer to root of scene graph
 */
-SoNode *
-QuarterWidget::getSceneGraph() const
+SoNode* QuarterWidget::getSceneGraph() const
 {
-  return PRIVATE(this)->scene;
+    return PRIVATE(this)->scene;
 }
 
 /*!
   Set the render manager for the widget.
 */
-void
-QuarterWidget::setSoRenderManager(SoRenderManager * manager)
+void QuarterWidget::setSoRenderManager(SoRenderManager* manager)
 {
-  bool carrydata = false;
-  SoNode * scene = nullptr;
-  SoCamera * camera = nullptr;
-  SbViewportRegion vp;
-  if (PRIVATE(this)->sorendermanager && manager) {
-    scene = PRIVATE(this)->sorendermanager->getSceneGraph();
-    camera = PRIVATE(this)->sorendermanager->getCamera();
-    vp = PRIVATE(this)->sorendermanager->getViewportRegion(); // clazy:exclude=rule-of-two-soft
-    carrydata = true;
-  }
+    bool carrydata = false;
+    SoNode* scene = nullptr;
+    SoCamera* camera = nullptr;
+    SbViewportRegion vp;
+    if (PRIVATE(this)->sorendermanager && manager) {
+        scene = PRIVATE(this)->sorendermanager->getSceneGraph();
+        camera = PRIVATE(this)->sorendermanager->getCamera();
+        vp = PRIVATE(this)->sorendermanager->getViewportRegion();  // clazy:exclude=rule-of-two-soft
+        carrydata = true;
+    }
 
-  // ref before deleting the old scene manager to avoid that the nodes are deleted
-  if (scene) scene->ref();
-  if (camera) camera->ref();
-  
-  if (PRIVATE(this)->initialsorendermanager) {
-    delete PRIVATE(this)->sorendermanager;
-    PRIVATE(this)->initialsorendermanager = false;
-  }
-  PRIVATE(this)->sorendermanager = manager;
-  if (carrydata) {
-    PRIVATE(this)->sorendermanager->setSceneGraph(scene);
-    PRIVATE(this)->sorendermanager->setCamera(camera);
-    PRIVATE(this)->sorendermanager->setViewportRegion(vp);
-  }
+    // ref before deleting the old scene manager to avoid that the nodes are deleted
+    if (scene) {
+        scene->ref();
+    }
+    if (camera) {
+        camera->ref();
+    }
 
-  if (scene) scene->unref();
-  if (camera) camera->unref();
+    if (PRIVATE(this)->initialsorendermanager) {
+        delete PRIVATE(this)->sorendermanager;
+        PRIVATE(this)->initialsorendermanager = false;
+    }
+    PRIVATE(this)->sorendermanager = manager;
+    if (carrydata) {
+        PRIVATE(this)->sorendermanager->setSceneGraph(scene);
+        PRIVATE(this)->sorendermanager->setCamera(camera);
+        PRIVATE(this)->sorendermanager->setViewportRegion(vp);
+    }
+
+    if (scene) {
+        scene->unref();
+    }
+    if (camera) {
+        camera->unref();
+    }
 }
 
 /*!
   Returns a pointer to the render manager.
 */
-SoRenderManager *
-QuarterWidget::getSoRenderManager() const
+SoRenderManager* QuarterWidget::getSoRenderManager() const
 {
-  return PRIVATE(this)->sorendermanager;
+    return PRIVATE(this)->sorendermanager;
 }
 
 /*!
   Set the Coin event manager for the widget.
 */
-void
-QuarterWidget::setSoEventManager(SoEventManager * manager)
+void QuarterWidget::setSoEventManager(SoEventManager* manager)
 {
-  bool carrydata = false;
-  SoNode * scene = nullptr;
-  SoCamera * camera = nullptr;
-  SbViewportRegion vp;
-  if (PRIVATE(this)->soeventmanager && manager) {
-    scene = PRIVATE(this)->soeventmanager->getSceneGraph();
-    camera = PRIVATE(this)->soeventmanager->getCamera();
-    vp = PRIVATE(this)->soeventmanager->getViewportRegion(); // clazy:exclude=rule-of-two-soft
-    carrydata = true;
-  }
+    bool carrydata = false;
+    SoNode* scene = nullptr;
+    SoCamera* camera = nullptr;
+    SbViewportRegion vp;
+    if (PRIVATE(this)->soeventmanager && manager) {
+        scene = PRIVATE(this)->soeventmanager->getSceneGraph();
+        camera = PRIVATE(this)->soeventmanager->getCamera();
+        vp = PRIVATE(this)->soeventmanager->getViewportRegion();  // clazy:exclude=rule-of-two-soft
+        carrydata = true;
+    }
 
-  // ref before deleting the old scene manager to avoid that the nodes are deleted
-  if (scene) scene->ref();
-  if (camera) camera->ref();
+    // ref before deleting the old scene manager to avoid that the nodes are deleted
+    if (scene) {
+        scene->ref();
+    }
+    if (camera) {
+        camera->ref();
+    }
 
-  if (PRIVATE(this)->initialsoeventmanager) {
-    delete PRIVATE(this)->soeventmanager;
-    PRIVATE(this)->initialsoeventmanager = false;
-  }
-  PRIVATE(this)->soeventmanager = manager;
-  if (carrydata) {
-    PRIVATE(this)->soeventmanager->setSceneGraph(scene);
-    PRIVATE(this)->soeventmanager->setCamera(camera);
-    PRIVATE(this)->soeventmanager->setViewportRegion(vp);
-  }
+    if (PRIVATE(this)->initialsoeventmanager) {
+        delete PRIVATE(this)->soeventmanager;
+        PRIVATE(this)->initialsoeventmanager = false;
+    }
+    PRIVATE(this)->soeventmanager = manager;
+    if (carrydata) {
+        PRIVATE(this)->soeventmanager->setSceneGraph(scene);
+        PRIVATE(this)->soeventmanager->setCamera(camera);
+        PRIVATE(this)->soeventmanager->setViewportRegion(vp);
+    }
 
-  if (scene) scene->unref();
-  if (camera) camera->unref();
+    if (scene) {
+        scene->unref();
+    }
+    if (camera) {
+        camera->unref();
+    }
 }
 
 /*!
   Returns a pointer to the event manager
 */
-SoEventManager *
-QuarterWidget::getSoEventManager() const
+SoEventManager* QuarterWidget::getSoEventManager() const
 {
-  return PRIVATE(this)->soeventmanager;
+    return PRIVATE(this)->soeventmanager;
 }
 
 /*!
   Returns a pointer to the event filter
  */
-EventFilter *
-QuarterWidget::getEventFilter() const
+EventFilter* QuarterWidget::getEventFilter() const
 {
-  return PRIVATE(this)->eventfilter;
+    return PRIVATE(this)->eventfilter;
 }
 
 /*!
   Reposition the current camera to display the entire scene
  */
-void
-QuarterWidget::viewAll()
+void QuarterWidget::viewAll()
 {
-  const SbName viewallevent("sim.coin3d.coin.navigation.ViewAll");
-  for (int c = 0; c < PRIVATE(this)->soeventmanager->getNumSoScXMLStateMachines(); ++c) {
-    SoScXMLStateMachine * sostatemachine =
-      PRIVATE(this)->soeventmanager->getSoScXMLStateMachine(c);
-    if (sostatemachine->isActive()) {
-      sostatemachine->queueEvent(viewallevent);
-      sostatemachine->processEventQueue();
+    const SbName viewallevent("sim.coin3d.coin.navigation.ViewAll");
+    for (int c = 0; c < PRIVATE(this)->soeventmanager->getNumSoScXMLStateMachines(); ++c) {
+        SoScXMLStateMachine* sostatemachine =
+            PRIVATE(this)->soeventmanager->getSoScXMLStateMachine(c);
+        if (sostatemachine->isActive()) {
+            sostatemachine->queueEvent(viewallevent);
+            sostatemachine->processEventQueue();
+        }
     }
-  }
 }
 
 /*!
   Sets the current camera in seek mode, if supported by the underlying navigation system.
   Camera typically seeks towards what the mouse is pointing at.
 */
-void
-QuarterWidget::seek()
+void QuarterWidget::seek()
 {
-  const SbName seekevent("sim.coin3d.coin.navigation.Seek");
-  for (int c = 0; c < PRIVATE(this)->soeventmanager->getNumSoScXMLStateMachines(); ++c) {
-    SoScXMLStateMachine * sostatemachine =
-      PRIVATE(this)->soeventmanager->getSoScXMLStateMachine(c);
-    if (sostatemachine->isActive()) {
-      sostatemachine->queueEvent(seekevent);
-      sostatemachine->processEventQueue();
+    const SbName seekevent("sim.coin3d.coin.navigation.Seek");
+    for (int c = 0; c < PRIVATE(this)->soeventmanager->getNumSoScXMLStateMachines(); ++c) {
+        SoScXMLStateMachine* sostatemachine =
+            PRIVATE(this)->soeventmanager->getSoScXMLStateMachine(c);
+        if (sostatemachine->isActive()) {
+            sostatemachine->queueEvent(seekevent);
+            sostatemachine->processEventQueue();
+        }
     }
-  }
 }
 
-bool
-QuarterWidget::updateDevicePixelRatio() {
+bool QuarterWidget::updateDevicePixelRatio()
+{
     qreal dev_pix_ratio = 1.0;
     QWidget* winwidg = window();
     QWindow* win = nullptr;
-    if(winwidg) {
+    if (winwidg) {
         win = winwidg->windowHandle();
     }
-    if(win) {
+    if (win) {
         dev_pix_ratio = win->devicePixelRatio();
     }
     else {
         dev_pix_ratio = ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
     }
-    if(PRIVATE(this)->device_pixel_ratio != dev_pix_ratio) {
+    if (PRIVATE(this)->device_pixel_ratio != dev_pix_ratio) {
         PRIVATE(this)->device_pixel_ratio = dev_pix_ratio;
         Q_EMIT devicePixelRatioChanged(dev_pix_ratio);
         return true;
@@ -828,8 +837,9 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
     SbViewportRegion vp(width, height);
     PRIVATE(this)->sorendermanager->setViewportRegion(vp);
     PRIVATE(this)->soeventmanager->setViewportRegion(vp);
-    if (scene())
+    if (scene()) {
         scene()->setSceneRect(QRect(QPoint(0, 0), event->size()));
+    }
     QGraphicsView::resizeEvent(event);
 }
 
@@ -847,7 +857,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
         PRIVATE(this)->soeventmanager->setViewportRegion(vp);
     }
 
-    if(!initialized) {
+    if (!initialized) {
         this->getSoRenderManager()->reinitialize();
         initialized = true;
     }
@@ -861,13 +871,13 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
         qWarning() << "No valid GL context found!";
         return;
     }
-    //assert(w->isValid() && "No valid GL context found!");
-    // We might have to process the delay queue here since we don't know
-    // if paintGL() is called from Qt, and we might have some sensors
-    // waiting to trigger (the redraw sensor has a lower priority than a
-    // normal field sensor to guarantee that your sensor is processed
-    // before the next redraw). Disable autorendering while we do this
-    // to avoid recursive redraws.
+    // assert(w->isValid() && "No valid GL context found!");
+    //  We might have to process the delay queue here since we don't know
+    //  if paintGL() is called from Qt, and we might have some sensors
+    //  waiting to trigger (the redraw sensor has a lower priority than a
+    //  normal field sensor to guarantee that your sensor is processed
+    //  before the next redraw). Disable autorendering while we do this
+    //  to avoid recursive redraws.
 
     // We set the PRIVATE(this)->processdelayqueue = false in redraw()
     // to avoid processing the delay queue when paintGL() is triggered
@@ -876,7 +886,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
 
     PRIVATE(this)->autoredrawenabled = false;
 
-    if(PRIVATE(this)->processdelayqueue && SoDB::getSensorManager()->isDelaySensorPending()) {
+    if (PRIVATE(this)->processdelayqueue && SoDB::getSensorManager()->isDelaySensorPending()) {
         // processing the sensors might trigger a redraw in another
         // context. Release this context temporarily
         w->doneCurrent();
@@ -887,20 +897,21 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     assert(w->isValid() && "No valid GL context found!");
 
     // Causes an OpenGL error on resize
-    //glDrawBuffer(w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer ? GL_BACK : GL_FRONT);
+    // glDrawBuffer(w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer ? GL_BACK :
+    // GL_FRONT);
 
     w->makeCurrent();
     this->actualRedraw();
 
-    //start the standard graphics view processing for all widgets and graphic items. As 
-    //QGraphicsView initaliizes a QPainter which changes the Opengl context in an unpredictable 
-    //manner we need to store the context and recreate it after Qt is done.
+    // start the standard graphics view processing for all widgets and graphic items. As
+    // QGraphicsView initaliizes a QPainter which changes the Opengl context in an unpredictable
+    // manner we need to store the context and recreate it after Qt is done.
     glPushAttrib(GL_MULTISAMPLE_BIT_EXT);
     inherited::paintEvent(event);
     glPopAttrib();
 
     // Causes an OpenGL error on resize
-    //if (w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer)
+    // if (w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer)
     //    w->context()->swapBuffers(w->context()->surface());
 
     PRIVATE(this)->autoredrawenabled = true;
@@ -917,17 +928,15 @@ bool QuarterWidget::viewportEvent(QEvent* event)
     // additionally handle it by this viewer. This is e.g. needed when
     // resizing a widget item because the cursor may already be outside
     // this widget.
-    if (event->type() == QEvent::MouseButtonDblClick ||
-        event->type() == QEvent::MouseButtonPress) {
+    if (event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonPress) {
         QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
-        QGraphicsItem *item = itemAt(mouse->pos());
+        QGraphicsItem* item = itemAt(mouse->pos());
         if (!item) {
             QGraphicsView::viewportEvent(event);
             return false;
         }
     }
-    else if (event->type() == QEvent::MouseMove ||
-             event->type() == QEvent::MouseButtonRelease) {
+    else if (event->type() == QEvent::MouseMove || event->type() == QEvent::MouseButtonRelease) {
         QGraphicsScene* glScene = this->scene();
         if (!(glScene && glScene->mouseGrabberItem())) {
             QGraphicsView::viewportEvent(event);
@@ -959,38 +968,35 @@ bool QuarterWidget::viewportEvent(QEvent* event)
   when the scene is rendered yourself, you can turn off autoredraw in the
   render manager and render the scene by calling this method.
 */
-void
-QuarterWidget::redraw()
+void QuarterWidget::redraw()
 {
-  // we're triggering the next paintGL(). Set a flag to remember this
-  // to avoid that we process the delay queue in paintGL()
-  PRIVATE(this)->processdelayqueue = false;
+    // we're triggering the next paintGL(). Set a flag to remember this
+    // to avoid that we process the delay queue in paintGL()
+    PRIVATE(this)->processdelayqueue = false;
 
-  // When stylesheet is used, there is recursive repaint warning caused by
-  // repaint() here. It happens when switching active documents. Based on call
-  // stacks, it happens like this, the repaint event first triggers a series
-  // calls of QWidgetPrivate::paintSiblingsRecrusive(), and then reaches one of
-  // the QuarterWidget. From its paintEvent(), it calls
-  // SoSensorManager::processDelayQueue(), which triggers redraw() of another
-  // QuarterWidget. And if repaint() is called here, it will trigger another
-  // series call of QWidgetPrivate::paintSiblingRecursive(), and eventually
-  // back to the first QuarterWidget, at which time the "Recursive repaint
-  // detected" Qt warning message will be printed.
-  //
-  // Note that, the recursive repaint is not infinite due to setting
-  // 'processdelayqueue = false' above. However, it does cause annoying
-  // flickering, and actually crash on Windows.
-  this->viewport()->update();
+    // When stylesheet is used, there is recursive repaint warning caused by
+    // repaint() here. It happens when switching active documents. Based on call
+    // stacks, it happens like this, the repaint event first triggers a series
+    // calls of QWidgetPrivate::paintSiblingsRecrusive(), and then reaches one of
+    // the QuarterWidget. From its paintEvent(), it calls
+    // SoSensorManager::processDelayQueue(), which triggers redraw() of another
+    // QuarterWidget. And if repaint() is called here, it will trigger another
+    // series call of QWidgetPrivate::paintSiblingRecursive(), and eventually
+    // back to the first QuarterWidget, at which time the "Recursive repaint
+    // detected" Qt warning message will be printed.
+    //
+    // Note that, the recursive repaint is not infinite due to setting
+    // 'processdelayqueue = false' above. However, it does cause annoying
+    // flickering, and actually crash on Windows.
+    this->viewport()->update();
 }
 
 /*!
   Overridden from QGLWidget to render the scenegraph
  */
-void
-QuarterWidget::actualRedraw()
+void QuarterWidget::actualRedraw()
 {
-  PRIVATE(this)->sorendermanager->render(PRIVATE(this)->clearwindow,
-                                         PRIVATE(this)->clearzbuffer);
+    PRIVATE(this)->sorendermanager->render(PRIVATE(this)->clearwindow, PRIVATE(this)->clearzbuffer);
 }
 
 
@@ -1000,13 +1006,10 @@ QuarterWidget::actualRedraw()
   \param[in] event to pass
   \retval Returns true if the event was successfully processed
 */
-bool
-QuarterWidget::processSoEvent(const SoEvent * event)
+bool QuarterWidget::processSoEvent(const SoEvent* event)
 {
-  return
-    event &&
-    PRIVATE(this)->soeventmanager &&
-    PRIVATE(this)->soeventmanager->processEvent(event);
+    return event && PRIVATE(this)->soeventmanager
+        && PRIVATE(this)->soeventmanager->processEvent(event);
 }
 
 /*!
@@ -1022,49 +1025,45 @@ QuarterWidget::processSoEvent(const SoEvent * event)
   a QColor is 255, but you'll probably want to set it to zero before
   using it as an OpenGL clear color.
  */
-void
-QuarterWidget::setBackgroundColor(const QColor & color)
+void QuarterWidget::setBackgroundColor(const QColor& color)
 {
-  SbColor4f bgcolor(SbClamp(color.red()   / 255.0, 0.0, 1.0),
-                    SbClamp(color.green() / 255.0, 0.0, 1.0),
-                    SbClamp(color.blue()  / 255.0, 0.0, 1.0),
-                    SbClamp(color.alpha() / 255.0, 0.0, 1.0));
+    SbColor4f bgcolor(SbClamp(color.red() / 255.0, 0.0, 1.0),
+                      SbClamp(color.green() / 255.0, 0.0, 1.0),
+                      SbClamp(color.blue() / 255.0, 0.0, 1.0),
+                      SbClamp(color.alpha() / 255.0, 0.0, 1.0));
 
-  PRIVATE(this)->sorendermanager->setBackgroundColor(bgcolor);
-  PRIVATE(this)->sorendermanager->scheduleRedraw();
+    PRIVATE(this)->sorendermanager->setBackgroundColor(bgcolor);
+    PRIVATE(this)->sorendermanager->scheduleRedraw();
 }
 
 /*!
   Returns color used for clearing the rendering area before
   rendering the scene.
  */
-QColor
-QuarterWidget::backgroundColor() const
+QColor QuarterWidget::backgroundColor() const
 {
-  SbColor4f bg = PRIVATE(this)->sorendermanager->getBackgroundColor();
+    SbColor4f bg = PRIVATE(this)->sorendermanager->getBackgroundColor();
 
-  return {SbClamp(int(bg[0] * 255.0), 0, 255),
-                SbClamp(int(bg[1] * 255.0), 0, 255),
-                SbClamp(int(bg[2] * 255.0), 0, 255),
-                SbClamp(int(bg[3] * 255.0), 0, 255)};
+    return {SbClamp(int(bg[0] * 255.0), 0, 255),
+            SbClamp(int(bg[1] * 255.0), 0, 255),
+            SbClamp(int(bg[2] * 255.0), 0, 255),
+            SbClamp(int(bg[3] * 255.0), 0, 255)};
 }
 
 /*!
   Returns the context menu used by the widget.
 */
-QMenu *
-QuarterWidget::getContextMenu() const
+QMenu* QuarterWidget::getContextMenu() const
 {
-  return PRIVATE(this)->contextMenu();
+    return PRIVATE(this)->contextMenu();
 }
 
 /*!
   \retval Is context menu enabled?
 */
-bool
-QuarterWidget::contextMenuEnabled() const
+bool QuarterWidget::contextMenuEnabled() const
 {
-  return PRIVATE(this)->contextmenuenabled;
+    return PRIVATE(this)->contextmenuenabled;
 }
 
 /*!
@@ -1078,10 +1077,9 @@ QuarterWidget::contextMenuEnabled() const
 
   \param[in] yes Context menu on?
 */
-void
-QuarterWidget::setContextMenuEnabled(bool yes)
+void QuarterWidget::setContextMenuEnabled(bool yes)
 {
-  PRIVATE(this)->contextmenuenabled = yes;
+    PRIVATE(this)->contextmenuenabled = yes;
 }
 
 /*!
@@ -1092,14 +1090,13 @@ QuarterWidget::setContextMenuEnabled(bool yes)
 
   \sa removeStateMachine
 */
-void
-QuarterWidget::addStateMachine(SoScXMLStateMachine * statemachine)
+void QuarterWidget::addStateMachine(SoScXMLStateMachine* statemachine)
 {
-  SoEventManager * em = this->getSoEventManager();
-  em->addSoScXMLStateMachine(statemachine);
-  statemachine->setSceneGraphRoot(this->getSoRenderManager()->getSceneGraph());
-  statemachine->setActiveCamera(this->getSoRenderManager()->getCamera());
-  statemachine->addStateChangeCallback(QuarterWidgetP::statechangecb, PRIVATE(this));
+    SoEventManager* em = this->getSoEventManager();
+    em->addSoScXMLStateMachine(statemachine);
+    statemachine->setSceneGraphRoot(this->getSoRenderManager()->getSceneGraph());
+    statemachine->setActiveCamera(this->getSoRenderManager()->getCamera());
+    statemachine->addStateChangeCallback(QuarterWidgetP::statechangecb, PRIVATE(this));
 }
 
 /*!
@@ -1108,22 +1105,20 @@ QuarterWidget::addStateMachine(SoScXMLStateMachine * statemachine)
 
   \sa addStateMachine
 */
-void
-QuarterWidget::removeStateMachine(SoScXMLStateMachine * statemachine)
+void QuarterWidget::removeStateMachine(SoScXMLStateMachine* statemachine)
 {
-  SoEventManager * em = this->getSoEventManager();
-  statemachine->setSceneGraphRoot(nullptr);
-  statemachine->setActiveCamera(nullptr);
-  em->removeSoScXMLStateMachine(statemachine);
+    SoEventManager* em = this->getSoEventManager();
+    statemachine->setSceneGraphRoot(nullptr);
+    statemachine->setActiveCamera(nullptr);
+    em->removeSoScXMLStateMachine(statemachine);
 }
 
 /*!
   See \ref QWidget::minimumSizeHint
  */
-QSize
-QuarterWidget::minimumSizeHint() const
+QSize QuarterWidget::minimumSizeHint() const
 {
-  return {50, 50};
+    return {50, 50};
 }
 
 /*!  Returns a list of grouped actions that corresponds to the
@@ -1131,10 +1126,9 @@ QuarterWidget::minimumSizeHint() const
   application that controls the transparency type used in
   QuarterWidget, add these actions to the menu.
  */
-QList<QAction *>
-QuarterWidget::transparencyTypeActions() const
+QList<QAction*> QuarterWidget::transparencyTypeActions() const
 {
-  return PRIVATE(this)->transparencyTypeActions();
+    return PRIVATE(this)->transparencyTypeActions();
 }
 
 /*!  Returns a list of grouped actions that corresponds to the
@@ -1142,10 +1136,9 @@ QuarterWidget::transparencyTypeActions() const
   application that controls the stereo mode used in
   QuarterWidget, add these actions to the menu.
  */
-QList<QAction *>
-QuarterWidget::stereoModeActions() const
+QList<QAction*> QuarterWidget::stereoModeActions() const
 {
-  return PRIVATE(this)->stereoModeActions();
+    return PRIVATE(this)->stereoModeActions();
 }
 
 /*!  Returns a list of grouped actions that corresponds to the
@@ -1153,10 +1146,9 @@ QuarterWidget::stereoModeActions() const
   application that controls the render mode type used in
   QuarterWidget, add these actions to the menu.
  */
-QList<QAction *>
-QuarterWidget::renderModeActions() const
+QList<QAction*> QuarterWidget::renderModeActions() const
 {
-  return PRIVATE(this)->renderModeActions();
+    return PRIVATE(this)->renderModeActions();
 }
 
 /*!
@@ -1175,9 +1167,9 @@ QuarterWidget::renderModeActions() const
 /*!
   Removes any navigationModeFile set.
 */
-void
-QuarterWidget::resetNavigationModeFile() {
-  this->setNavigationModeFile(QUrl());
+void QuarterWidget::resetNavigationModeFile()
+{
+    this->setNavigationModeFile(QUrl());
 }
 
 /**
@@ -1200,98 +1192,96 @@ void QuarterWidget::setupDefaultCursors()
 
   \param[in] url URL to the resource
 */
-void
-QuarterWidget::setNavigationModeFile(const QUrl & url)
+void QuarterWidget::setNavigationModeFile(const QUrl& url)
 {
-  QString filename;
+    QString filename;
 
-  if (url.scheme()=="coin") {
-    filename = url.path();
+    if (url.scheme() == "coin") {
+        filename = url.path();
 
-    //Workaround for differences between url scheme, and Coin internal
-    //scheme in Coin 3.0.
-    if (filename[0]=='/') {
-      filename.remove(0,1);
+        // Workaround for differences between url scheme, and Coin internal
+        // scheme in Coin 3.0.
+        if (filename[0] == '/') {
+            filename.remove(0, 1);
+        }
+
+        filename = url.scheme() + ':' + filename;
+    }
+    else if (url.scheme() == "file") {
+        filename = url.toLocalFile();
+    }
+    else if (url.isEmpty()) {
+        if (PRIVATE(this)->currentStateMachine) {
+            this->removeStateMachine(PRIVATE(this)->currentStateMachine);
+            delete PRIVATE(this)->currentStateMachine;
+            PRIVATE(this)->currentStateMachine = nullptr;
+            PRIVATE(this)->navigationModeFile = url;
+        }
+        return;
+    }
+    else {
+        qDebug() << url.scheme() << "is not recognized";
+        return;
     }
 
-    filename = url.scheme()+':'+filename;
-  }
-  else if (url.scheme()=="file")
-    filename = url.toLocalFile();
-  else if (url.isEmpty()) {
-    if (PRIVATE(this)->currentStateMachine) {
-      this->removeStateMachine(PRIVATE(this)->currentStateMachine);
-      delete PRIVATE(this)->currentStateMachine;
-      PRIVATE(this)->currentStateMachine = nullptr;
-      PRIVATE(this)->navigationModeFile = url;
+    QByteArray filenametmp = filename.toLocal8Bit();
+    ScXMLStateMachine* stateMachine = nullptr;
+
+    if (filenametmp.startsWith("coin:")) {
+        stateMachine = ScXML::readFile(filenametmp.data());
     }
-    return;
-  }
-  else {
-    qDebug()<<url.scheme()<<"is not recognized";
-    return;
-  }
-
-  QByteArray filenametmp = filename.toLocal8Bit();
-  ScXMLStateMachine * stateMachine = nullptr;
-
-  if (filenametmp.startsWith("coin:")){
-    stateMachine = ScXML::readFile(filenametmp.data());
-  }
-  else {
-    //Use Qt to read the file in case it is a Qt resource
-    QFile file(filenametmp);
-    if (file.open(QIODevice::ReadOnly)){
-      QByteArray fileContents = file.readAll();
+    else {
+        // Use Qt to read the file in case it is a Qt resource
+        QFile file(filenametmp);
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray fileContents = file.readAll();
 #if COIN_MAJOR_VERSION >= 4
-      stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
+            stateMachine =
+                ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
 #else
-      stateMachine = ScXML::readBuffer(fileContents.constData());
+            stateMachine = ScXML::readBuffer(fileContents.constData());
 #endif
-      file.close();
+            file.close();
+        }
     }
-  }
 
-  if (stateMachine &&
-      stateMachine->isOfType(SoScXMLStateMachine::getClassTypeId())) {
-    SoScXMLStateMachine * newsm = 
-      static_cast<SoScXMLStateMachine *>(stateMachine);
-    if (PRIVATE(this)->currentStateMachine) {
-      this->removeStateMachine(PRIVATE(this)->currentStateMachine);
-      delete PRIVATE(this)->currentStateMachine;
+    if (stateMachine && stateMachine->isOfType(SoScXMLStateMachine::getClassTypeId())) {
+        SoScXMLStateMachine* newsm = static_cast<SoScXMLStateMachine*>(stateMachine);
+        if (PRIVATE(this)->currentStateMachine) {
+            this->removeStateMachine(PRIVATE(this)->currentStateMachine);
+            delete PRIVATE(this)->currentStateMachine;
+        }
+        this->addStateMachine(newsm);
+        newsm->initialize();
+        PRIVATE(this)->currentStateMachine = newsm;
     }
-    this->addStateMachine(newsm);
-    newsm->initialize();
-    PRIVATE(this)->currentStateMachine = newsm;
-  }
-  else {
-    delete stateMachine;
-    stateMachine = nullptr;
-    qDebug()<<filename;
-    qDebug()<<"Unable to load"<<url;
-    return;
-  }
+    else {
+        delete stateMachine;
+        stateMachine = nullptr;
+        qDebug() << filename;
+        qDebug() << "Unable to load" << url;
+        return;
+    }
 
-  //If we have gotten this far, we have successfully loaded the
-  //navigation file, so we set the property
-  PRIVATE(this)->navigationModeFile = url;
+    // If we have gotten this far, we have successfully loaded the
+    // navigation file, so we set the property
+    PRIVATE(this)->navigationModeFile = url;
 
-  if (QUrl(DEFAULT_NAVIGATIONFILE) == PRIVATE(this)->navigationModeFile ) {
+    if (QUrl(DEFAULT_NAVIGATIONFILE) == PRIVATE(this)->navigationModeFile) {
 
-    // set up default cursors for the examiner navigation states
-    //FIXME: It may be overly restrictive to not do this for arbitrary
-    //navigation systems? - BFG 20090117
-    setupDefaultCursors();
-  }
+        // set up default cursors for the examiner navigation states
+        // FIXME: It may be overly restrictive to not do this for arbitrary
+        // navigation systems? - BFG 20090117
+        setupDefaultCursors();
+    }
 }
 
 /*!
   \retval The current navigation mode file
 */
-const QUrl &
-QuarterWidget::navigationModeFile() const
+const QUrl& QuarterWidget::navigationModeFile() const
 {
-  return PRIVATE(this)->navigationModeFile;
+    return PRIVATE(this)->navigationModeFile;
 }
 
 #undef PRIVATE

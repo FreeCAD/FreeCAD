@@ -2841,10 +2841,10 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="681"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Impossible de déterminer le vecteur normal de la forme à extruder. Veuillez utiliser un autre mode. 
+      <translation>Impossible de déterminer le vecteur normal de la forme à extruder. Veuillez utiliser un autre mode.
 
 (%1)</translation>
     </message>
@@ -3950,7 +3950,7 @@ during file reading (slower but higher details).</source>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Le lien à la direction d'extrusion est invalide. 
+      <translation>Le lien à la direction d'extrusion est invalide.
 
 %1</translation>
     </message>
@@ -5016,7 +5016,7 @@ Remarque : la position est exprimée dans le système de coordonnées local de l
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>La vérification supplémentaire des opérations booléennes peut parfois
-trouver des erreurs que la vérification standard de la géométrie BRep aura 
+trouver des erreurs que la vérification standard de la géométrie BRep aura
 manqué. Ces erreurs ne signifient pas toujours que l’objet vérifié est inutilisable.
 Valeur par défaut : faux</translation>
     </message>
@@ -5051,7 +5051,7 @@ Valeur par défaut : true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Développer le contenu de la forme. Les modifications prendront effet la
 prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
@@ -5064,7 +5064,7 @@ Valeur par défaut : false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
       <translation>Afficher le contenu avancé de la forme. Les modifications prendront effet la
 prochaine fois que vous utiliserez l'outil de vérification de la géométrie.
@@ -5148,7 +5148,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1100"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation>Vérifier la présence de faces non récupérables. 
+      <translation>Vérifier la présence de faces non récupérables.
 Valeur par défaut : true</translation>
     </message>
     <message>

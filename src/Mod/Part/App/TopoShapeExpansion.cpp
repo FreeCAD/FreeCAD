@@ -1006,7 +1006,8 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 }
                 ss.str("");
 
-                ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
+                ensureElementMap()
+                    ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
                 elementMap()->setElementName(element, name, Tag, &sids);
             }
         }
@@ -1733,12 +1734,12 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     Data::MappedName other_name = other_key.name;
 
                     ensureElementMap()->encodeElementName(*other_info.shapetype,
-                                                    other_name,
-                                                    ss2,
-                                                    &sids,
-                                                    Tag,
-                                                    nullptr,
-                                                    other_key.tag);
+                                                          other_name,
+                                                          ss2,
+                                                          &sids,
+                                                          Tag,
+                                                          nullptr,
+                                                          other_key.tag);
                     ss << other_name;
                     if ((name_type == 1 && other_info.index < 0)
                         || (name_type == 2 && other_info.index > 0)) {
@@ -1875,9 +1876,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         ss << nameInfo.index;
                     }
 
-                    ensureElementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
+                    ensureElementMap()
+                        ->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
                     elementMap()->setElementName(indexedName, newName, Tag, &sids);
-               }
+                }
             }
         }
 
@@ -3059,7 +3061,7 @@ TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
                                        ConnectionPolicy policy,
                                        TopoShapeMap* output)
 {
-    return makeElementWires(std::vector<TopoShape>{shape}, op , tol, policy, output);
+    return makeElementWires(std::vector<TopoShape> {shape}, op, tol, policy, output);
 }
 
 
@@ -3082,8 +3084,8 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
         // resulting edges.
         Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
         Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-        for (const auto &shape : shapes) {
-            for (const auto &edge : shape.getSubShapes(TopAbs_EDGE)) {
+        for (const auto& shape : shapes) {
+            for (const auto& edge : shape.getSubShapes(TopAbs_EDGE)) {
                 hEdges->Append(edge);
             }
         }
@@ -3098,7 +3100,7 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
         std::vector<TopoShape> wires;
         for (int i = 1; i <= hWires->Length(); i++) {
             auto wire = hWires->Value(i);
-            wires.emplace_back(Tag,Hasher,wire);
+            wires.emplace_back(Tag, Hasher, wire);
             wires.back().mapSubElement(shapes, op);
         }
         return makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::returnShape);
@@ -3107,8 +3109,8 @@ TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
     std::vector<TopoShape> wires;
     std::list<TopoShape> edgeList;
 
-    for (const auto &shape : shapes) {
-        for(const auto &e : shape.getSubTopoShapes(TopAbs_EDGE)) {
+    for (const auto& shape : shapes) {
+        for (const auto& e : shape.getSubTopoShapes(TopAbs_EDGE)) {
             edgeList.emplace_back(e);
         }
     }
@@ -4296,7 +4298,8 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
-    if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE && uptoface.hasSubShape(TopAbs_WIRE)) {
+    if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE
+        && uptoface.hasSubShape(TopAbs_WIRE)) {
         TopoDS_Face face = TopoDS::Face(uptoface.getShape());
         bool remove_limits = false;
         // Remove the limits of the upToFace so that the extrusion works even if profile is larger
@@ -4691,22 +4694,23 @@ TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, 
     return *this;
 }
 
-    std::vector<Data::IndexedName>
-    TopoShape::getHigherElements(const char *element, bool silent) const
-    {
-        TopoShape shape = getSubTopoShape(element, silent);
-        if(shape.isNull())
-            return {};
-
-        std::vector<Data::IndexedName> res;
-
-        for (int type = shape.shapeType() - 1; type >= 0; type--) {
-            const char* shapetype = shapeName((TopAbs_ShapeEnum)type).c_str();
-            for (int idx : findAncestors(shape.getShape(), (TopAbs_ShapeEnum)type))
-                res.emplace_back(shapetype, idx);
-        }
-        return res;
+std::vector<Data::IndexedName> TopoShape::getHigherElements(const char* element, bool silent) const
+{
+    TopoShape shape = getSubTopoShape(element, silent);
+    if (shape.isNull()) {
+        return {};
     }
+
+    std::vector<Data::IndexedName> res;
+
+    for (int type = shape.shapeType() - 1; type >= 0; type--) {
+        const char* shapetype = shapeName((TopAbs_ShapeEnum)type).c_str();
+        for (int idx : findAncestors(shape.getShape(), (TopAbs_ShapeEnum)type)) {
+            res.emplace_back(shapetype, idx);
+        }
+    }
+    return res;
+}
 
 TopoShape& TopoShape::makeElementBSplineFace(const TopoShape& shape,
                                              FillingStyle style,
@@ -5658,8 +5662,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         for (auto it = shapes.begin(); it != shapes.end(); ++it) {
             auto& s = *it;
             if (s.isNull()) {
-                if ( it == shapes.begin() ) {
-                    return *this; // Compatible with pre-TNP allowing <null shape>.fuse() behavior
+                if (it == shapes.begin()) {
+                    return *this;  // Compatible with pre-TNP allowing <null shape>.fuse() behavior
                 }
                 FC_THROWM(NullShapeException, "Null input shape");
             }
@@ -5817,8 +5821,9 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
         return;
     }
 
-    if (_Shape.IsNull())
+    if (_Shape.IsNull()) {
         return;
+    }
 
     TopoShape tmp(*this);
     initCache(1);

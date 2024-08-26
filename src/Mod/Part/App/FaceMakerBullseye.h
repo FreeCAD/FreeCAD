@@ -44,6 +44,7 @@ namespace Part
 class PartExport FaceMakerBullseye: public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     FaceMakerBullseye() = default;
     /**
@@ -61,8 +62,8 @@ protected:
     void Build_Essence() override;
 
 protected:
-    gp_Pln myPlane; //externally supplied plane (if any)
-    bool planeSupplied{false};
+    gp_Pln myPlane;  // externally supplied plane (if any)
+    bool planeSupplied {false};
 
     /**
      * @brief The FaceDriller class is similar to BRepBuilderAPI_MakeFace,
@@ -82,7 +83,11 @@ protected:
 
         void addHole(TopoDS_Wire w);
 
-        const TopoDS_Face& Face() const {return myFace;}
+        const TopoDS_Face& Face() const
+        {
+            return myFace;
+        }
+
     public:
         /**
          * @brief wireDirection: determines direction of wire with respect to
@@ -90,7 +95,8 @@ protected:
          * @param w
          * @return  1 = CCW (suits as outer wire), -1 = CW (suits as hole)
          */
-        static int getWireDirection(const gp_Pln &plane, const TopoDS_Wire &w);
+        static int getWireDirection(const gp_Pln& plane, const TopoDS_Wire& w);
+
     private:
         gp_Pln myPlane;
         TopoDS_Face myFace;
@@ -99,5 +105,5 @@ protected:
 };
 
 
-}//namespace Part
-#endif // PART_FACEMAKER_BULLSEYE_H
+}  // namespace Part
+#endif  // PART_FACEMAKER_BULLSEYE_H

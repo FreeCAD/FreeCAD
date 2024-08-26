@@ -29,9 +29,11 @@
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
-class PartGuiExport SoFCControlPoints : public SoShape {
+class PartGuiExport SoFCControlPoints: public SoShape
+{
     using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCControlPoints);
@@ -44,20 +46,20 @@ public:
     SoSFUInt32 numPolesV;
     SoSFUInt32 numKnotsU;
     SoSFUInt32 numKnotsV;
-    SoSFColor  lineColor;
+    SoSFColor lineColor;
 
 protected:
-    ~SoFCControlPoints() override = default;;
-    void GLRender(SoGLRenderAction *action) override;
-    void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center) override;
-    void generatePrimitives(SoAction *action) override;
+    ~SoFCControlPoints() override = default;
+    ;
+    void GLRender(SoGLRenderAction* action) override;
+    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
+    void generatePrimitives(SoAction* action) override;
 
 private:
-    void drawControlPoints(const SbVec3f *,int32_t) const;
+    void drawControlPoints(const SbVec3f*, int32_t) const;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_SOFCSHAPEOBJECT_H
-
+#endif  // PARTGUI_SOFCSHAPEOBJECT_H

@@ -37,8 +37,8 @@ using namespace Gui;
 
 struct PythonTracing::Private
 {
-    bool active{false};
-    int timeout{200}; //NOLINT
+    bool active {false};
+    int timeout {200};  // NOLINT
 
     // NOLINTBEGIN
     static int profilerInterval;
@@ -52,9 +52,8 @@ bool PythonTracing::Private::profilerDisabled = false;
 // NOLINTEND
 
 PythonTracing::PythonTracing()
-    : d{std::make_unique<Private>()}
-{
-}
+    : d {std::make_unique<Private>()}
+{}
 
 PythonTracing::~PythonTracing() = default;
 
@@ -125,7 +124,7 @@ void PythonTracing::setPythonTraceEnabled(bool enabled) const
  * mouse events, etc.) at least every 200 ms, even when there is long-running Python code on the
  * main thread. It is registered as the global trace function of the Python environment.
  */
-int PythonTracing::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject *arg)
+int PythonTracing::tracer_callback(PyObject* obj, PyFrameObject* frame, int what, PyObject* arg)
 {
     Q_UNUSED(obj)
     Q_UNUSED(frame)
@@ -154,7 +153,7 @@ int PythonTracing::tracer_callback(PyObject *obj, PyFrameObject *frame, int what
 // ------------------------------------------------------------------------------------------------
 
 PythonTracingLocker::PythonTracingLocker(PythonTracing& trace)
-    : trace{trace}
+    : trace {trace}
 {
     trace.activate();
 }

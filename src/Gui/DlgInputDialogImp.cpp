@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QPushButton>
+#include <QPushButton>
 #endif
 
 #include "DlgInputDialogImp.h"
@@ -42,9 +42,12 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgInputDialogImp::DlgInputDialogImp( const QString& labelTxt, QWidget* parent, bool modal, Type type )
-  : QDialog(parent)
-  , ui(new Ui_DlgInputDialog)
+DlgInputDialogImp::DlgInputDialogImp(const QString& labelTxt,
+                                     QWidget* parent,
+                                     bool modal,
+                                     Type type)
+    : QDialog(parent)
+    , ui(new Ui_DlgInputDialog)
 {
     this->setModal(modal);
     ui->setupUi(this);
@@ -63,59 +66,59 @@ DlgInputDialogImp::DlgInputDialogImp( const QString& labelTxt, QWidget* parent, 
  */
 DlgInputDialogImp::~DlgInputDialogImp() = default;
 
-void DlgInputDialogImp::textChanged( const QString &s )
+void DlgInputDialogImp::textChanged(const QString& s)
 {
     bool on = true;
 
     if (ui->lineEdit->validator()) {
         QString str = ui->lineEdit->text();
         int index = ui->lineEdit->cursorPosition();
-        on = ( ui->lineEdit->validator()->validate(str, index) == QValidator::Acceptable );
+        on = (ui->lineEdit->validator()->validate(str, index) == QValidator::Acceptable);
     }
-    else if ( type() != LineEdit ) {
+    else if (type() != LineEdit) {
         on = !s.isEmpty();
     }
 
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled( on );
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(on);
 }
 
 void DlgInputDialogImp::tryAccept()
 {
-    if (!ui->lineEdit->text().isEmpty())
+    if (!ui->lineEdit->text().isEmpty()) {
         accept();
+    }
 }
 
-void DlgInputDialogImp::setType( DlgInputDialogImp::Type t )
+void DlgInputDialogImp::setType(DlgInputDialogImp::Type t)
 {
     inputtype = t;
 
-    QWidget *input = nullptr;
-    switch (inputtype)
-    {
-    case LineEdit:
-        input = ui->lineEdit;
-        break;
-    case SpinBox:
-        input = ui->spinBox;
-        break;
-    case UIntBox:
-        input = ui->uIntSpinBox;
-        break;
-    case FloatSpinBox:
-        input = ui->floatSpinBox;
-        break;
-    case ComboBox:
-        input = ui->comboBox;
-        break;
-    default:
-        break;
+    QWidget* input = nullptr;
+    switch (inputtype) {
+        case LineEdit:
+            input = ui->lineEdit;
+            break;
+        case SpinBox:
+            input = ui->spinBox;
+            break;
+        case UIntBox:
+            input = ui->uIntSpinBox;
+            break;
+        case FloatSpinBox:
+            input = ui->floatSpinBox;
+            break;
+        case ComboBox:
+            input = ui->comboBox;
+            break;
+        default:
+            break;
     }
 
     if (input) {
         ui->stack->setCurrentWidget(input->parentWidget());
-        ui->stack->setFixedHeight( input->sizeHint().height() );
+        ui->stack->setFixedHeight(input->sizeHint().height());
         input->setFocus();
-        ui->label->setBuddy( input );
+        ui->label->setBuddy(input);
     }
 }
 
@@ -124,27 +127,27 @@ DlgInputDialogImp::Type DlgInputDialogImp::type() const
     return inputtype;
 }
 
-QSpinBox *DlgInputDialogImp::getSpinBox() const
+QSpinBox* DlgInputDialogImp::getSpinBox() const
 {
     return ui->spinBox;
 }
 
-Gui::UIntSpinBox *DlgInputDialogImp::getUIntBox() const
+Gui::UIntSpinBox* DlgInputDialogImp::getUIntBox() const
 {
     return ui->uIntSpinBox;
 }
 
-QDoubleSpinBox *DlgInputDialogImp::getFloatSpinBox() const
+QDoubleSpinBox* DlgInputDialogImp::getFloatSpinBox() const
 {
     return ui->floatSpinBox;
 }
 
-QLineEdit *DlgInputDialogImp::getLineEdit() const
+QLineEdit* DlgInputDialogImp::getLineEdit() const
 {
     return ui->lineEdit;
 }
 
-QComboBox *DlgInputDialogImp::getComboBox() const
+QComboBox* DlgInputDialogImp::getComboBox() const
 {
     return ui->comboBox;
 }

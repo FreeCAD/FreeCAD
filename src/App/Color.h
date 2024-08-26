@@ -25,7 +25,7 @@
 #define APP_COLOR_H
 
 #ifdef __GNUC__
-# include <cstdint>
+#include <cstdint>
 #endif
 #include <cmath>
 #include <string>
@@ -44,7 +44,7 @@ public:
      * Defines the color as (R,G,B,A) whereas all values are in the range [0,1].
      * \a A defines the transparency.
      */
-    explicit Color(float R=0.0,float G=0.0, float B=0.0, float A=0.0);
+    explicit Color(float R = 0.0, float G = 0.0, float B = 0.0, float A = 0.0);
 
     /**
      * Does basically the same as the constructor above unless that (R,G,B,A) is
@@ -63,7 +63,7 @@ public:
      * Defines the color as (R,G,B,A) whereas all values are in the range [0,1].
      * \a A defines the transparency, 0 means complete opaque and 1 invisible.
      */
-    void set(float R,float G, float B, float A=0.0);
+    void set(float R, float G, float B, float A = 0.0);
     Color& operator=(const Color& c) = default;
     Color& operator=(Color&& c) = default;
     /**
@@ -97,37 +97,42 @@ public:
      */
     void setPackedARGB(uint32_t);
 
-    template <typename T>
-    static uint32_t asPackedRGBA(const T& color) {
+    template<typename T>
+    static uint32_t asPackedRGBA(const T& color)
+    {
         return (color.red() << 24) | (color.green() << 16) | (color.blue() << 8) | color.alpha();
     }
 
-    template <typename T>
-    static T fromPackedRGBA(uint32_t color) {
+    template<typename T>
+    static T fromPackedRGBA(uint32_t color)
+    {
         return T((color >> 24) & 0xff, (color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff);
     }
 
-    template <typename T>
-    static uint32_t asPackedRGB(const T& color) {
+    template<typename T>
+    static uint32_t asPackedRGB(const T& color)
+    {
         return (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
     }
 
-    template <typename T>
-    static T fromPackedRGB(uint32_t color) {
+    template<typename T>
+    static T fromPackedRGB(uint32_t color)
+    {
         return T((color >> 24) & 0xff, (color >> 16) & 0xff, (color >> 8) & 0xff);
     }
     /**
      * creates FC Color from template type, e.g. Qt QColor
      */
-    template <typename T>
-    void setValue(const T& q) {
-        set(q.redF(),q.greenF(),q.blueF());
+    template<typename T>
+    void setValue(const T& q)
+    {
+        set(q.redF(), q.greenF(), q.blueF());
     }
     /**
      * returns a template type e.g. Qt color equivalent to FC color
      *
      */
-    template <typename T>
+    template<typename T>
     inline T asValue() const
     {
         // clang-format off
@@ -149,9 +154,9 @@ public:
     bool fromHexString(const std::string& hex);
 
     /// color values, public accessible
-    float r,g,b,a;
+    float r, g, b, a;
 };
 
-} //namespace App
+}  // namespace App
 
-#endif // APP_COLOR_H
+#endif  // APP_COLOR_H

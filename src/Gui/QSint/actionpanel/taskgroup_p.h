@@ -19,37 +19,37 @@ namespace QSint
 {
 
 
-class TaskGroup : public QFrame
+class TaskGroup: public QFrame
 {
-  typedef QFrame BaseClass;
+    typedef QFrame BaseClass;
 
 public:
-  TaskGroup(QWidget *parent, bool hasHeader = false);
+    TaskGroup(QWidget* parent, bool hasHeader = false);
 
-  void setScheme(ActionPanelScheme *scheme);
+    void setScheme(ActionPanelScheme* scheme);
 
-  inline QBoxLayout* groupLayout()
-  {
-    return (QBoxLayout*)layout();
-  }
+    inline QBoxLayout* groupLayout()
+    {
+        return (QBoxLayout*)layout();
+    }
 
-  bool addActionLabel(ActionLabel *label, bool addToLayout, bool addStretch);
+    bool addActionLabel(ActionLabel* label, bool addToLayout, bool addStretch);
 
-  bool addWidget(QWidget *widget, bool addToLayout, bool addStretch);
+    bool addWidget(QWidget* widget, bool addToLayout, bool addStretch);
 
-  QPixmap transparentRender();
+    QPixmap transparentRender();
 
 protected:
-  void paintEvent ( QPaintEvent * event ) override;
-  void keyPressEvent ( QKeyEvent * event ) override;
-  void keyReleaseEvent ( QKeyEvent * event ) override;
+    void paintEvent(QPaintEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 
-  ActionPanelScheme *myScheme;
+    ActionPanelScheme* myScheme;
 
-  bool myHasHeader;
+    bool myHasHeader;
 };
 
 
-}
+}  // namespace QSint
 
-#endif // TASKGROUP_P_H
+#endif  // TASKGROUP_P_H

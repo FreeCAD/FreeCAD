@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,35 +36,33 @@
 using namespace SIM::Coin3D::Quarter;
 
 #ifdef HAVE_SPACENAV_LIB
-NativeEvent::NativeEvent(XEvent * nativeevent)
-  : QEvent(QEvent::User)
+NativeEvent::NativeEvent(XEvent* nativeevent)
+    : QEvent(QEvent::User)
 {
-  this->rawevent = nativeevent;
+    this->rawevent = nativeevent;
 }
 
 
-XEvent * 
-NativeEvent::getEvent() const
+XEvent* NativeEvent::getEvent() const
 {
-  return static_cast<XEvent *>(this->rawevent);
+    return static_cast<XEvent*>(this->rawevent);
 }
 
-#else // !HAVE_SPACENAV_LIB
+#else  // !HAVE_SPACENAV_LIB
 
 // Dummy constructor when Spacenav is not available.
 NativeEvent::NativeEvent()
-  : QEvent(QEvent::User)
+    : QEvent(QEvent::User)
 {
-  this->rawevent = nullptr;
+    this->rawevent = nullptr;
 }
 
-#endif // !HAVE_SPACENAV_LIB
+#endif  // !HAVE_SPACENAV_LIB
 
 
 NativeEvent::~NativeEvent()
 {
 #ifdef HAVE_SPACENAV_LIB
-  delete (XEvent *) this->rawevent;
-#endif // HAVE_SPACENAV_LIB
+    delete (XEvent*)this->rawevent;
+#endif  // HAVE_SPACENAV_LIB
 }
-

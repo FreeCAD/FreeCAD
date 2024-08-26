@@ -1,4 +1,4 @@
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2017 Kurt Kremitzki <kkremitzki@gmail.com>              *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -18,7 +18,7 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 from math import pi
 import unittest
 
@@ -27,22 +27,23 @@ import TestSketcherApp
 
 App = FreeCAD
 
+
 class TestHole(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestHole")
-        self.Body = self.Doc.addObject('PartDesign::Body','Body')
-        self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
-        self.Box.Length=10
-        self.Box.Width=10
-        self.Box.Height=10
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        self.Box.Length = 10
+        self.Box.Width = 10
+        self.Box.Height = 10
         self.Body.addObject(self.Box)
         self.Doc.recompute()
-        self.HoleSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchHole')
-        self.HoleSketch.AttachmentSupport = (self.Doc.XY_Plane, [''])
-        self.HoleSketch.MapMode = 'FlatFace'
+        self.HoleSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchHole")
+        self.HoleSketch.AttachmentSupport = (self.Doc.XY_Plane, [""])
+        self.HoleSketch.MapMode = "FlatFace"
         self.HoleSketch.MapReversed = True
         self.Body.addObject(self.HoleSketch)
-        TestSketcherApp.CreateCircleSketch(self.HoleSketch, (-5, 5),  1)
+        TestSketcherApp.CreateCircleSketch(self.HoleSketch, (-5, 5), 1)
         self.Doc.recompute()
         self.Hole = self.Doc.addObject("PartDesign::Hole", "Hole")
         self.Hole.Profile = self.HoleSketch
@@ -55,13 +56,13 @@ class TestHole(unittest.TestCase):
         # self.Hole.DrillPointAngle = 118.000000
         # self.Hole.TaperedAngle = 90
         self.Hole.ThreadType = 0
-        self.Hole.HoleCutType = 0 # 1 = Counterbore, 2 = Countersink
+        self.Hole.HoleCutType = 0  # 1 = Counterbore, 2 = Countersink
         # self.Hole.HoleCutDiameter = 5
         # self.Hole.HoleCutCountersinkAngle = 90
         # self.Hole.HoleCutDepth = 2 # Counterbore
-        self.Hole.DepthType = 0 # 1 = Through all
-        self.Hole.DrillPoint = 0 # 1 = Angled
-        self.Hole.Tapered = 0 # On/off
+        self.Hole.DepthType = 0  # 1 = Through all
+        self.Hole.DrillPoint = 0  # 1 = Angled
+        self.Hole.Tapered = 0  # On/off
         self.Doc.recompute()
         self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 10)
 
@@ -117,7 +118,6 @@ class TestHole(unittest.TestCase):
         self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 10 - 24.7400421)
 
     def tearDown(self):
-        #closing doc
+        # closing doc
         FreeCAD.closeDocument("PartDesignTestHole")
-        #print ("omit closing document for debugging")
-
+        # print ("omit closing document for debugging")

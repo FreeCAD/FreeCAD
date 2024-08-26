@@ -29,9 +29,13 @@
 class SoDragger;
 class SoTransform;
 
-namespace Base { class Placement;}
+namespace Base
+{
+class Placement;
+}
 
-namespace Gui {
+namespace Gui
+{
 
 class View3DInventorViewer;
 class SoFCCSysDragger;
@@ -41,7 +45,7 @@ class SoFCCSysDragger;
  * of a geometric feature.
  * @author Werner Mayer
  */
-class GuiExport ViewProviderDragger : public ViewProviderDocumentObject
+class GuiExport ViewProviderDragger: public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDragger);
 
@@ -58,10 +62,10 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
 
-    ViewProvider *startEditing(int ModNum=0) override;
+    ViewProvider* startEditing(int ModNum = 0) override;
 
     /*! synchronize From FC placement to Coin placement*/
-    static void updateTransform(const Base::Placement &from, SoTransform *to);
+    static void updateTransform(const Base::Placement& from, SoTransform* to);
 
 protected:
     bool setEdit(int ModNum) override;
@@ -69,19 +73,19 @@ protected:
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(View3DInventorViewer*) override;
     //@}
-    SoFCCSysDragger *csysDragger = nullptr;
+    SoFCCSysDragger* csysDragger = nullptr;
 
 private:
-    static void dragFinishCallback(void * data, SoDragger * d);
-    static void updatePlacementFromDragger(ViewProviderDragger *sudoThis, SoFCCSysDragger *draggerIn);
+    static void dragFinishCallback(void* data, SoDragger* d);
+    static void updatePlacementFromDragger(ViewProviderDragger* sudoThis,
+                                           SoFCCSysDragger* draggerIn);
 
     bool checkLink();
 
-    ViewProvider *_linkDragger = nullptr;
+    ViewProvider* _linkDragger = nullptr;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_VIEWPROVIDER_DRAGGER_H
-
+#endif  // GUI_VIEWPROVIDER_DRAGGER_H

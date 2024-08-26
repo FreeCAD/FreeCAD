@@ -56,13 +56,21 @@ static std::array<const char*, 4> modes = {"All", "Faces", "Edges", nullptr};  /
 
 ProjectOnSurface::ProjectOnSurface()
 {
-    ADD_PROPERTY_TYPE(Mode,(0L), "Projection", App::Prop_None, "Projection mode");
+    ADD_PROPERTY_TYPE(Mode, (0L), "Projection", App::Prop_None, "Projection mode");
     Mode.setEnums(modes.data());
-    ADD_PROPERTY_TYPE(Height,(0.0), "Projection", App::Prop_None, "Extrusion height");
-    ADD_PROPERTY_TYPE(Offset,(0.0), "Projection", App::Prop_None, "Offset of solid");
-    ADD_PROPERTY_TYPE(Direction,(Base::Vector3d(0, 0, 1)), "Projection", App::Prop_None, "Direction of projection");
-    ADD_PROPERTY_TYPE(SupportFace,(nullptr), "Projection", App::Prop_None, "Support faceo");
-    ADD_PROPERTY_TYPE(Projection,(nullptr), "Projection", App::Prop_None, "Shapes to project onto support face");
+    ADD_PROPERTY_TYPE(Height, (0.0), "Projection", App::Prop_None, "Extrusion height");
+    ADD_PROPERTY_TYPE(Offset, (0.0), "Projection", App::Prop_None, "Offset of solid");
+    ADD_PROPERTY_TYPE(Direction,
+                      (Base::Vector3d(0, 0, 1)),
+                      "Projection",
+                      App::Prop_None,
+                      "Direction of projection");
+    ADD_PROPERTY_TYPE(SupportFace, (nullptr), "Projection", App::Prop_None, "Support faceo");
+    ADD_PROPERTY_TYPE(Projection,
+                      (nullptr),
+                      "Projection",
+                      App::Prop_None,
+                      "Shapes to project onto support face");
 }
 
 App::DocumentObjectExecReturn* ProjectOnSurface::execute()
@@ -226,9 +234,8 @@ TopoDS_Face ProjectOnSurface::createFaceFromWire(const std::vector<TopoDS_Shape>
     return createFaceFromParametricWire(wiresInParametricSpace, supportFace);
 }
 
-TopoDS_Face
-ProjectOnSurface::createFaceFromParametricWire(const std::vector<TopoDS_Wire>& wires,
-                                               const TopoDS_Face& supportFace) const
+TopoDS_Face ProjectOnSurface::createFaceFromParametricWire(const std::vector<TopoDS_Wire>& wires,
+                                                           const TopoDS_Face& supportFace) const
 {
     auto surface = BRep_Tool::Surface(supportFace);
 
@@ -297,10 +304,8 @@ ProjectOnSurface::createWiresFromWires(const std::vector<TopoDS_Shape>& wires,
         for (const auto& edge : edges) {
             Standard_Real first {};
             Standard_Real last {};
-            auto currentCurve = BRep_Tool::CurveOnSurface(TopoDS::Edge(edge),
-                                                          supportFace,
-                                                          first,
-                                                          last);
+            auto currentCurve =
+                BRep_Tool::CurveOnSurface(TopoDS::Edge(edge), supportFace, first, last);
             if (!currentCurve) {
                 continue;
             }
@@ -396,7 +401,8 @@ TopoDS_Wire ProjectOnSurface::fixWire(const std::vector<TopoDS_Edge>& edges,
     return {};
 }
 
-namespace {
+namespace
+{
 TopoDS_Wire getProjectedWire(BRepProj_Projection& projection, const TopoDS_Shape& reference)
 {
     double minDistance = std::numeric_limits<double>::max();
@@ -415,7 +421,7 @@ TopoDS_Wire getProjectedWire(BRepProj_Projection& projection, const TopoDS_Shape
 
     return wireToTake;
 }
-}
+}  // namespace
 
 std::vector<TopoDS_Shape> ProjectOnSurface::projectFace(const TopoDS_Face& face,
                                                         const TopoDS_Face& supportFace,

@@ -22,11 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
+#include <memory>
 
-# include <BRepAlgoAPI_BooleanOperation.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <BRepCheck_Analyzer.hxx>
+#include <Standard_Failure.hxx>
 #endif
 
 #include <App/Application.h>
@@ -44,17 +44,28 @@ PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 Boolean::Boolean()
 {
-    ADD_PROPERTY(Base,(nullptr));
-    ADD_PROPERTY(Tool,(nullptr));
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY(Base, (nullptr));
+    ADD_PROPERTY(Tool, (nullptr));
+    ADD_PROPERTY_TYPE(
+        History,
+        (ShapeHistory()),
+        "Boolean",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Transient | App::Prop_Hidden),
+        "Shape history");
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Boolean",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after this boolean operation");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    // init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
@@ -71,7 +82,7 @@ short Boolean::mustExecute() const
     return 0;
 }
 
-const char *Boolean::opCode() const
+const char* Boolean::opCode() const
 {
     return Part::OpCodes::Boolean;
 }

@@ -31,26 +31,30 @@
 #include "TaskFeatureParameters.h"
 #include "EnumFlags.h"
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
 /// Convenience class to collect common methods for all SketchBased features
-class TaskSketchBasedParameters : public PartDesignGui::TaskFeatureParameters,
-                                  public Gui::SelectionObserver
+class TaskSketchBasedParameters: public PartDesignGui::TaskFeatureParameters,
+                                 public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskSketchBasedParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
-                              const std::string& pixmapname, const QString& parname);
+    TaskSketchBasedParameters(PartDesignGui::ViewProvider* vp,
+                              QWidget* parent,
+                              const std::string& pixmapname,
+                              const QString& parname);
     ~TaskSketchBasedParameters() override;
 
 protected:
-    void onSelectionChanged(const Gui::SelectionChanges& msg) override =0;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override = 0;
     const QString onAddSelection(const Gui::SelectionChanges& msg);
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
@@ -74,12 +78,12 @@ protected:
                         const std::vector<std::string>& subValues);
 };
 
-class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters
+class TaskDlgSketchBasedParameters: public PartDesignGui::TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp);
+    explicit TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider* vp);
     ~TaskDlgSketchBasedParameters() override;
 
 public:
@@ -89,6 +93,6 @@ public:
     bool reject() override;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskSketchBasedParameters_H
+#endif  // GUI_TASKVIEW_TaskSketchBasedParameters_H

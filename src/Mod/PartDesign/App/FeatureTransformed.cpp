@@ -79,9 +79,12 @@ Transformed::Transformed()
                       (App::PropertyType)(App::Prop_None),
                       "Refine shape (clean up redundant edges) after adding/subtracting");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    // init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
@@ -171,8 +174,8 @@ bool Transformed::isMultiTransformChild() const
     }
     */
 
-    // instead check for default property values because these are invalid for a standalone transform feature.
-    // This will mislabel standalone features during the initialization phase.
+    // instead check for default property values because these are invalid for a standalone
+    // transform feature. This will mislabel standalone features during the initialization phase.
     if (TransformMode.getValue() == 0 && Originals.getValue().empty()) {
         return true;
     }
@@ -218,7 +221,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
     auto const mode = static_cast<Mode>(TransformMode.getValue());
     if (mode == Mode::TransformBody) {
         Originals.setStatus(App::Property::Status::Hidden, true);
-    } else {
+    }
+    else {
         Originals.setStatus(App::Property::Status::Hidden, false);
         originals = Originals.getValues();
     }
@@ -286,11 +290,11 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
         std::vector<TopoShape> shapes = {supportShape};
-        TopoShape shape (origShape);
-        int idx=1;
+        TopoShape shape(origShape);
+        int idx = 1;
         auto transformIter = transformations.cbegin();
         transformIter++;
-        for ( ; transformIter != transformations.end(); transformIter++) {
+        for (; transformIter != transformations.end(); transformIter++) {
             auto opName = Data::indexSuffix(idx++);
             shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
         }
@@ -346,7 +350,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape = refineShapeIfActive((supportShape));
     if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
-        Base::Console().Warning("Transformed: Result has multiple solids. Only keeping the first.\n");
+        Base::Console().Warning(
+            "Transformed: Result has multiple solids. Only keeping the first.\n");
     }
 
     this->Shape.setValue(getSolid(supportShape));  // picking the first solid

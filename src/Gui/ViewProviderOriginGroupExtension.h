@@ -30,7 +30,7 @@
 namespace Gui
 {
 
-class GuiExport ViewProviderOriginGroupExtension : public ViewProviderGeoFeatureGroupExtension
+class GuiExport ViewProviderOriginGroupExtension: public ViewProviderGeoFeatureGroupExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOriginGroupExtension);
 
@@ -39,28 +39,29 @@ public:
     ViewProviderOriginGroupExtension();
     ~ViewProviderOriginGroupExtension() override;
 
-    std::vector<App::DocumentObject*> extensionClaimChildren()const override;
-    std::vector<App::DocumentObject*> extensionClaimChildren3D()const override;
+    std::vector<App::DocumentObject*> extensionClaimChildren() const override;
+    std::vector<App::DocumentObject*> extensionClaimChildren3D() const override;
 
-    void extensionAttach(App::DocumentObject *pcObject) override;
+    void extensionAttach(App::DocumentObject* pcObject) override;
     void extensionUpdateData(const App::Property* prop) override;
 
     void updateOriginSize();
 
 protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
+    void slotChangedObjectApp(const App::DocumentObject& obj);
+    void slotChangedObjectGui(const Gui::ViewProviderDocumentObject& obj);
 
 private:
-    std::vector<App::DocumentObject*> constructChildren (
-            const std::vector<App::DocumentObject*> &children ) const;
+    std::vector<App::DocumentObject*>
+    constructChildren(const std::vector<App::DocumentObject*>& children) const;
 
     boost::signals2::connection connectChangedObjectApp;
     boost::signals2::connection connectChangedObjectGui;
 };
 
-using ViewProviderOriginGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension>;
+using ViewProviderOriginGroupExtensionPython =
+    ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension>;
 
-} //namespace Gui
+}  // namespace Gui
 
-#endif // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+#endif  // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H

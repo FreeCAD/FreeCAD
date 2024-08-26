@@ -27,7 +27,8 @@
 #include <Mod/Part/PartGlobal.h>
 #include <App/ComplexGeoData.h>
 
-namespace Part {
+namespace Part
+{
 
 class PartExport BRepMesh
 {
@@ -45,6 +46,6 @@ private:
     std::vector<std::size_t> domainSizes;
 };
 
-}
+}  // namespace Part
 
 #endif  // PART_BREPMESH_H

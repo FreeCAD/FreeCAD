@@ -25,11 +25,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMenu>
-# include <QAction>
-# include <QMessageBox>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopExp.hxx>
 #endif
 
 #include <Gui/Application.h>
@@ -41,7 +41,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp, PartDesignGui::ViewProvider)
 
 
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -51,7 +51,8 @@ void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-const std::string & ViewProviderDressUp::featureName() const {
+const std::string& ViewProviderDressUp::featureName() const
+{
     static const std::string name = "Undefined";
     return name;
 }
@@ -62,24 +63,26 @@ std::string ViewProviderDressUp::featureIcon() const
 }
 
 
-bool ViewProviderDressUp::setEdit(int ModNum) {
+bool ViewProviderDressUp::setEdit(int ModNum)
+{
     if (ModNum == ViewProvider::Default) {
         // Here we should prevent edit of a Feature with missing base
         // Otherwise it could call unhandled exception.
         PartDesign::DressUp* dressUp = static_cast<PartDesign::DressUp*>(getObject());
-        assert (dressUp);
-        if (dressUp->getBaseObject (/*silent =*/ true)) {
+        assert(dressUp);
+        if (dressUp->getBaseObject(/*silent =*/true)) {
             return ViewProvider::setEdit(ModNum);
-        } else {
-            QMessageBox::warning ( nullptr, QObject::tr("Feature error"),
-                    QObject::tr("%1 misses a base feature.\n"
-                           "This feature is broken and can't be edited.")
-                        .arg( QString::fromLatin1(dressUp->getNameInDocument()) )
-                );
+        }
+        else {
+            QMessageBox::warning(nullptr,
+                                 QObject::tr("Feature error"),
+                                 QObject::tr("%1 misses a base feature.\n"
+                                             "This feature is broken and can't be edited.")
+                                     .arg(QString::fromLatin1(dressUp->getNameInDocument())));
             return false;
         }
-
-    } else {
+    }
+    else {
         return ViewProvider::setEdit(ModNum);
     }
 }
@@ -87,13 +90,15 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
 void ViewProviderDressUp::highlightReferences(const bool on)
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
-    Part::Feature* base = pcDressUp->getBaseObject (/*silent =*/ true);
-    if (!base)
+    Part::Feature* base = pcDressUp->getBaseObject(/*silent =*/true);
+    if (!base) {
         return;
-    PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
-                Gui::Application::Instance->getViewProvider(base));
-    if (!vp)
+    }
+    PartGui::ViewProviderPart* vp =
+        dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
+    if (!vp) {
         return;
+    }
 
     std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
     std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
@@ -102,7 +107,8 @@ void ViewProviderDressUp::highlightReferences(const bool on)
         if (!faces.empty()) {
             std::vector<App::Material> materials = vp->ShapeAppearance.getValues();
 
-            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), ShapeAppearance.getDiffuseColor());
+            PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(),
+                                                      ShapeAppearance.getDiffuseColor());
             highlighter.getFaceMaterials(faces, materials);
 
             vp->setHighlightedFaces(materials);
@@ -115,9 +121,9 @@ void ViewProviderDressUp::highlightReferences(const bool on)
 
             vp->setHighlightedEdges(colors);
         }
-    } else {
+    }
+    else {
         vp->unsetHighlightedFaces();
         vp->unsetHighlightedEdges();
     }
 }
-

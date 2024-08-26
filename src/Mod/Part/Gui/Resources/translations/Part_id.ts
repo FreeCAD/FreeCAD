@@ -2943,10 +2943,10 @@ If both lengths are zero, magnitude of direction is used.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="681"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>Tidak dapat menentukan bentuk vektor normal yang akan diekstrusi. Silakan gunakan mode lain. 
+      <translation>Tidak dapat menentukan bentuk vektor normal yang akan diekstrusi. Silakan gunakan mode lain.
 
 ( % 1)</translation>
     </message>
@@ -5156,9 +5156,9 @@ but more stable.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
@@ -5168,9 +5168,9 @@ the check geometry tool.  Default: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
+      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</translation>
     </message>
     <message>
@@ -5576,7 +5576,7 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../TaskSweep.cpp" line="480"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Pilih satu atau lebih profil dan pilih tepi atau kawat 
+      <translation>Pilih satu atau lebih profil dan pilih tepi atau kawat
 di 3D pandangan untuk menyapu jalan.</translation>
     </message>
   </context>

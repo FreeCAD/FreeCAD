@@ -35,8 +35,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgMaterialPropertiesImp */
 
 DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
-  , ui(new Ui_DlgMaterialProperties)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgMaterialProperties)
 {
     ui->setupUi(this);
     setupConnections();
@@ -51,20 +51,31 @@ DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp() = default;
 
 void DlgMaterialPropertiesImp::setupConnections()
 {
-    connect(ui->ambientColor, &ColorButton::changed,
-            this, &DlgMaterialPropertiesImp::onAmbientColorChanged);
-    connect(ui->diffuseColor, &ColorButton::changed,
-            this, &DlgMaterialPropertiesImp::onDiffuseColorChanged);
-    connect(ui->emissiveColor, &ColorButton::clicked,
-            this, &DlgMaterialPropertiesImp::onEmissiveColorChanged);
-    connect(ui->specularColor, &ColorButton::clicked,
-            this, &DlgMaterialPropertiesImp::onSpecularColorChanged);
-    connect(ui->shininess, qOverload<int>(&QSpinBox::valueChanged),
-            this, &DlgMaterialPropertiesImp::onShininessValueChanged);
-    connect(ui->buttonReset, &QPushButton::clicked,
-            this, &DlgMaterialPropertiesImp::onButtonReset);
-    connect(ui->buttonDefault, &QPushButton::clicked,
-            this, &DlgMaterialPropertiesImp::onButtonDefault);
+    connect(ui->ambientColor,
+            &ColorButton::changed,
+            this,
+            &DlgMaterialPropertiesImp::onAmbientColorChanged);
+    connect(ui->diffuseColor,
+            &ColorButton::changed,
+            this,
+            &DlgMaterialPropertiesImp::onDiffuseColorChanged);
+    connect(ui->emissiveColor,
+            &ColorButton::clicked,
+            this,
+            &DlgMaterialPropertiesImp::onEmissiveColorChanged);
+    connect(ui->specularColor,
+            &ColorButton::clicked,
+            this,
+            &DlgMaterialPropertiesImp::onSpecularColorChanged);
+    connect(ui->shininess,
+            qOverload<int>(&QSpinBox::valueChanged),
+            this,
+            &DlgMaterialPropertiesImp::onShininessValueChanged);
+    connect(ui->buttonReset, &QPushButton::clicked, this, &DlgMaterialPropertiesImp::onButtonReset);
+    connect(ui->buttonDefault,
+            &QPushButton::clicked,
+            this,
+            &DlgMaterialPropertiesImp::onButtonDefault);
 }
 
 void DlgMaterialPropertiesImp::setCustomMaterial(const App::Material& mat)

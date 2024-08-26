@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Standard_Failure.hxx>
+#include <BRepAlgoAPI_Common.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <Standard_Failure.hxx>
 #endif
 
 #include <App/Application.h>
@@ -42,22 +42,34 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
-const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",nullptr};
+const char* Boolean::TypeEnums[] = {"Fuse", "Cut", "Common", nullptr};
 
 Boolean::Boolean()
 {
-    ADD_PROPERTY(Type,((long)0));
+    ADD_PROPERTY(Type, ((long)0));
     Type.setEnums(TypeEnums);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Part Design",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after adding/subtracting");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", true));
-    ADD_PROPERTY_TYPE(UsePlacement,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Apply the placement of the second ( tool ) object");
+    ADD_PROPERTY_TYPE(UsePlacement,
+                      (0),
+                      "Part Design",
+                      (App::PropertyType)(App::Prop_None),
+                      "Apply the placement of the second ( tool ) object");
     this->UsePlacement.setValue(false);
 
     App::GeoFeatureGroupExtension::initExtension(this);
@@ -65,12 +77,13 @@ Boolean::Boolean()
 
 short Boolean::mustExecute() const
 {
-    if (Group.isTouched())
+    if (Group.isTouched()) {
         return 1;
+    }
     return PartDesign::Feature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Boolean::execute()
+App::DocumentObjectExecReturn* Boolean::execute()
 {
     // Get the operation type
     std::string type = Type.getValueAsString();
@@ -79,132 +92,174 @@ App::DocumentObjectExecReturn *Boolean::execute()
     const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
 
     if (!baseFeature && type == "Cut") {
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean cut without BaseFeature"));
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Cannot do boolean cut without BaseFeature"));
     }
 
     std::vector<App::DocumentObject*> tools = Group.getValues();
-    if (tools.empty())
+    if (tools.empty()) {
         return App::DocumentObject::StdReturn;
+    }
 
     // Get the base shape to operate on
     Part::TopoShape baseTopShape;
-    if(baseFeature)
+    if (baseFeature) {
         baseTopShape = baseFeature->Shape.getShape();
+    }
     else {
         auto feature = tools.back();
-        if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
+        if (!feature->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Cannot do boolean with anything but Part::Feature and its derivatives"));
+        }
 
         baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
         tools.pop_back();
     }
 
-    if (baseTopShape.getShape().IsNull())
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean operation with invalid base shape"));
+    if (baseTopShape.getShape().IsNull()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Cannot do boolean operation with invalid base shape"));
+    }
 
-    //get the body this boolean feature belongs to
+    // get the body this boolean feature belongs to
     Part::BodyBase* baseBody = Part::BodyBase::findBodyOf(this);
 
-    if(!baseBody)
-         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean on feature which is not in a body"));
+    if (!baseBody) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Cannot do boolean on feature which is not in a body"));
+    }
 
     std::vector<TopoShape> shapes;
     shapes.push_back(baseTopShape);
-    for(auto it=tools.begin(); it<tools.end(); ++it) {
+    for (auto it = tools.begin(); it < tools.end(); ++it) {
         auto shape = getTopoShape(*it);
-        if (shape.isNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception","Tool shape is null"));
+        if (shape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Tool shape is null"));
+        }
         shapes.push_back(shape);
     }
     TopoShape result(baseTopShape);
 
-    Base::Placement  bodyPlacement = baseBody->globalPlacement().inverse();
-    for (auto tool : tools)
-    {
-        if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
+    Base::Placement bodyPlacement = baseBody->globalPlacement().inverse();
+    for (auto tool : tools) {
+        if (!tool->isDerivedFrom(Part::Feature::getClassTypeId())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Cannot do boolean with anything but Part::Feature and its derivatives"));
+        }
 
         Part::TopoShape toolShape = static_cast<Part::Feature*>(tool)->Shape.getShape();
-        if ( UsePlacement.getValue() )
+        if (UsePlacement.getValue()) {
             toolShape.setPlacement(bodyPlacement * toolShape.getPlacement());
+        }
         TopoDS_Shape shape = toolShape.getShape();
         TopoDS_Shape boolOp;
 
         // Must not pass null shapes to the boolean operations
-        if (result.isNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Base shape is null"));
+        if (result.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Base shape is null"));
+        }
 
-        if (shape.IsNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Tool shape is null"));
+        if (shape.IsNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Tool shape is null"));
+        }
 
 #ifdef FC_USE_TNP_FIX
-        const char *op = nullptr;
-        if (type == "Fuse")
+        const char* op = nullptr;
+        if (type == "Fuse") {
             op = Part::OpCodes::Fuse;
-        else if(type == "Cut")
+        }
+        else if (type == "Cut") {
             op = Part::OpCodes::Cut;
-        else if(type == "Common")
+        }
+        else if (type == "Common") {
             op = Part::OpCodes::Common;
+        }
         // LinkStage3 defines these other types of Boolean operations.  Removed for now pending
         // decision to bring them in or not.
-       // else if(type == "Compound")
+        // else if(type == "Compound")
         //     op = Part::OpCodes::Compound;
         // else if(type == "Section")
         //     op = Part::OpCodes::Section;
-        else
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Unsupported boolean operation"));
+        else {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Unsupported boolean operation"));
+        }
 
         try {
             result.makeElementBoolean(op, shapes);
-        } catch (Standard_Failure &e) {
+        }
+        catch (Standard_Failure& e) {
             FC_ERR("Boolean operation failed: " << e.GetMessageString());
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
         }
 #else
         if (type == "Fuse") {
             BRepAlgoAPI_Fuse mkFuse(result, shape);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Fusion of tools failed"));
+            if (!mkFuse.IsDone()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Fusion of tools failed"));
+            }
             // we have to get the solids (fuse sometimes creates compounds)
             boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-        } else if (type == "Cut") {
+            if (boolOp.IsNull()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
+            }
+        }
+        else if (type == "Cut") {
             BRepAlgoAPI_Cut mkCut(result, shape);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cut out failed"));
+            if (!mkCut.IsDone()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Cut out failed"));
+            }
             boolOp = mkCut.Shape();
-        } else if (type == "Common") {
+        }
+        else if (type == "Common") {
             BRepAlgoAPI_Common mkCommon(result, shape);
-            if (!mkCommon.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Common operation failed"));
+            if (!mkCommon.IsDone()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Common operation failed"));
+            }
             boolOp = mkCommon.Shape();
         }
 
-        result = boolOp; // Use result of this operation for fuse/cut of next body
+        result = boolOp;  // Use result of this operation for fuse/cut of next body
 #endif
     }
 
     result = refineShapeIfActive(result);
 
     if (!isSingleSolidRuleSatisfied(result.getShape())) {
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception",
+                              "Result has multiple solids: that is not currently supported."));
     }
 
     this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;
 }
 
-void Boolean::onChanged(const App::Property* prop) {
+void Boolean::onChanged(const App::Property* prop)
+{
 
-    if(strcmp(prop->getName(), "Group") == 0)
+    if (strcmp(prop->getName(), "Group") == 0) {
         touch();
+    }
 
     PartDesign::Feature::onChanged(prop);
 }
 
-void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+void Boolean::handleChangedPropertyName(Base::XMLReader& reader,
+                                        const char* TypeName,
+                                        const char* PropName)
 {
     // The App::PropertyLinkList property was Bodies in the past
     Base::Type type = Base::Type::fromName(TypeName);
@@ -234,4 +289,4 @@ TopoShape Boolean::refineShapeIfActive(const TopoShape& oldShape) const
     return oldShape;
 }
 
-}
+}  // namespace PartDesign

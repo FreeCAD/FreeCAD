@@ -29,11 +29,12 @@
 #include "ViewProviderDocumentObject.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
 class Document;
 
-class GuiExport ViewProviderOrigin : public ViewProviderDocumentObject
+class GuiExport ViewProviderOrigin: public ViewProviderDocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOrigin);
 
@@ -51,7 +52,10 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     std::vector<App::DocumentObject*> claimChildren3D() const override;
 
-    SoGroup* getChildRoot() const override {return pcGroupChildren;}
+    SoGroup* getChildRoot() const override
+    {
+        return pcGroupChildren;
+    }
 
     void attach(App::DocumentObject* pcObject) override;
     std::vector<std::string> getDisplayModes() const override;
@@ -63,18 +67,20 @@ public:
      */
     ///@{
     /// Set temporary visibility of some of origin's objects e.g. while rotating or mirroring
-    void setTemporaryVisibility (bool axis, bool planes);
+    void setTemporaryVisibility(bool axis, bool planes);
     /// Returns true if the origin in temporary visibility mode
-    bool isTemporaryVisibility ();
+    bool isTemporaryVisibility();
     /// Reset the visibility
-    void resetTemporaryVisibility ();
+    void resetTemporaryVisibility();
     ///@}
 
-    bool canDragObjects() const override {
+    bool canDragObjects() const override
+    {
         return false;
     }
 
-    /// Returns default size. Use this if it is not possible to determine appropriate size by other means
+    /// Returns default size. Use this if it is not possible to determine appropriate size by other
+    /// means
     static double defaultSize();
 
     // the factor by which the axes are longer than the planes
@@ -82,17 +88,17 @@ public:
 
     // default color for origini: light-blue (50, 150, 250, 255 stored as 0xRRGGBBAA)
     static const uint32_t defaultColor = 0x3296faff;
+
 protected:
     void onChanged(const App::Property* prop) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
 private:
-    SoGroup *pcGroupChildren;
+    SoGroup* pcGroupChildren;
 
     std::map<Gui::ViewProvider*, bool> tempVisMap;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_ViewProviderOrigin_H
-
+#endif  // GUI_VIEWPROVIDER_ViewProviderOrigin_H

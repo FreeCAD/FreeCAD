@@ -34,10 +34,11 @@ class SoSeparator;
 class SbVec3f;
 class SoTransform;
 
-namespace PartGui {
+namespace PartGui
+{
 
 
-class PartGuiExport ViewProvider2DObject : public PartGui::ViewProviderPart
+class PartGuiExport ViewProvider2DObject: public PartGui::ViewProviderPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProvider2DObject);
 
@@ -50,7 +51,7 @@ public:
     const char* getDefaultDisplayMode() const override;
 };
 
-class PartGuiExport ViewProvider2DObjectGrid : public ViewProvider2DObject
+class PartGuiExport ViewProvider2DObjectGrid: public ViewProvider2DObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProvider2DObjectGrid);
 
@@ -70,7 +71,7 @@ public:
     App::PropertyBool GridAutoSize;
     App::PropertyInteger maxNumberOfLines;
 
-    void attach(App::DocumentObject *) override;
+    void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
 
     /// creates the grid
@@ -81,10 +82,12 @@ protected:
     void unsetEdit(int ModNum) override;
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
-    void Restore(Base::XMLReader &reader) override;
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void Restore(Base::XMLReader& reader) override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
 
-    SoSeparator  *GridRoot;
+    SoSeparator* GridRoot;
 
     void updateGridExtent(float minx, float maxx, float miny, float maxy);
 
@@ -100,8 +103,7 @@ private:
 
 using ViewProvider2DObjectPython = Gui::ViewProviderFeaturePythonT<ViewProvider2DObject>;
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_VIEWPROVIDER2DOBJECT_H
-
+#endif  // PARTGUI_VIEWPROVIDER2DOBJECT_H

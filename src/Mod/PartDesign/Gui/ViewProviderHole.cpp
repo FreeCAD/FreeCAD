@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMenu>
-# include <QMessageBox>
+#include <QMenu>
+#include <QMessageBox>
 #endif
 
 #include <Gui/Application.h>
@@ -39,7 +39,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderHole,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderHole, PartDesignGui::ViewProvider)
 
 ViewProviderHole::ViewProviderHole()
 {
@@ -48,7 +48,7 @@ ViewProviderHole::ViewProviderHole()
 
 ViewProviderHole::~ViewProviderHole() = default;
 
-std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderHole::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<PartDesign::Hole*>(getObject())->Profile.getValue());
@@ -59,19 +59,22 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
 void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit hole"));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
+    PartGui::ViewProviderPart::setupContextMenu(menu,
+                                                receiver,
+                                                member);  // clazy:exclude=skipped-base-method
 }
 
 bool ViewProviderHole::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this hole the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgHoleParameters *holeDlg = qobject_cast<TaskDlgHoleParameters *>(dlg);
-        if (holeDlg && holeDlg->getViewObject() != this)
-            holeDlg = nullptr; // another hole left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgHoleParameters* holeDlg = qobject_cast<TaskDlgHoleParameters*>(dlg);
+        if (holeDlg && holeDlg->getViewObject() != this) {
+            holeDlg = nullptr;  // another hole left open its task panel
+        }
         if (dlg && !holeDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -79,10 +82,12 @@ bool ViewProviderHole::setEdit(int ModNum)
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
+            if (ret == QMessageBox::Yes) {
                 Gui::Control().closeDialog();
-            else
+            }
+            else {
                 return false;
+            }
         }
 
         // clear the selection (convenience)
@@ -92,29 +97,33 @@ bool ViewProviderHole::setEdit(int ModNum)
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // start the edit dialog
-        if (holeDlg)
+        if (holeDlg) {
             Gui::Control().showDialog(holeDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgHoleParameters(this));
+        }
 
         return true;
     }
     else {
-        return PartGui::ViewProviderPart::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return PartGui::ViewProviderPart::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
-bool ViewProviderHole::onDelete(const std::vector<std::string> &s)
+bool ViewProviderHole::onDelete(const std::vector<std::string>& s)
 {
     // get the Sketch
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(getObject());
-    Sketcher::SketchObject *pcSketch = nullptr;
-    if (pcHole->Profile.getValue())
+    Sketcher::SketchObject* pcSketch = nullptr;
+    if (pcHole->Profile.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcHole->Profile.getValue());
+    }
 
     // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
+    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch)) {
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
+    }
 
     return ViewProvider::onDelete(s);
 }

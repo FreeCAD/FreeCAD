@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QPushButton>
+#include <QPushButton>
 #endif
 
 #include "DlgSettingsViewColor.h"
@@ -42,20 +42,30 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     , ui(new Ui_DlgSettingsViewColor)
 {
     ui->setupUi(this);
-    connect(ui->SwitchGradientColors, &QPushButton::pressed, this,
-        &DlgSettingsViewColor::onSwitchGradientColorsPressed);
+    connect(ui->SwitchGradientColors,
+            &QPushButton::pressed,
+            this,
+            &DlgSettingsViewColor::onSwitchGradientColorsPressed);
 
-    connect(ui->radioButtonSimple, &QRadioButton::toggled, this,
-        &DlgSettingsViewColor::onRadioButtonSimpleToggled);
+    connect(ui->radioButtonSimple,
+            &QRadioButton::toggled,
+            this,
+            &DlgSettingsViewColor::onRadioButtonSimpleToggled);
 
-    connect(ui->radioButtonGradient, &QRadioButton::toggled, this,
-        &DlgSettingsViewColor::onRadioButtonGradientToggled);
+    connect(ui->radioButtonGradient,
+            &QRadioButton::toggled,
+            this,
+            &DlgSettingsViewColor::onRadioButtonGradientToggled);
 
-    connect(ui->rbRadialGradient, &QRadioButton::toggled, this,
-        &DlgSettingsViewColor::onRadioButtonRadialGradientToggled);
+    connect(ui->rbRadialGradient,
+            &QRadioButton::toggled,
+            this,
+            &DlgSettingsViewColor::onRadioButtonRadialGradientToggled);
 
-    connect(ui->checkMidColor, &QCheckBox::toggled, this,
-        &DlgSettingsViewColor::onCheckMidColorToggled);
+    connect(ui->checkMidColor,
+            &QCheckBox::toggled,
+            this,
+            &DlgSettingsViewColor::onCheckMidColorToggled);
 }
 
 /**
@@ -93,19 +103,22 @@ void DlgSettingsViewColor::loadSettings()
     ui->TreeActiveColor->onRestore();
     ui->CbLabelColor->onRestore();
     ui->CbLabelTextSize->onRestore();
-    
-    if (ui->radioButtonSimple->isChecked())
+
+    if (ui->radioButtonSimple->isChecked()) {
         onRadioButtonSimpleToggled(true);
-    else if(ui->radioButtonGradient->isChecked())
+    }
+    else if (ui->radioButtonGradient->isChecked()) {
         onRadioButtonGradientToggled(true);
-    else
+    }
+    else {
         onRadioButtonRadialGradientToggled(true);
+    }
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsViewColor::changeEvent(QEvent *e)
+void DlgSettingsViewColor::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -161,8 +174,9 @@ void DlgSettingsViewColor::setGradientColorVisibility(bool val)
     ui->checkMidColor->setVisible(val);
     ui->SwitchGradientColors->setVisible(val);
 
-    if (val)
+    if (val) {
         onCheckMidColorToggled(ui->checkMidColor->isChecked());
+    }
 }
 
 #include "moc_DlgSettingsViewColor.cpp"

@@ -57,21 +57,21 @@ DlgPartImportIgesImp::~DlgPartImportIgesImp() = default;
  */
 void DlgPartImportIgesImp::OnApply()
 {
-    qWarning( "DlgPartImportIgesImp::OnApply() not yet implemented!" );
+    qWarning("DlgPartImportIgesImp::OnApply() not yet implemented!");
 }
 
 void DlgPartImportIgesImp::onChooseFileName()
 {
-    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(),
-        QString::fromLatin1("%1 (*.igs *.iges);;%2 (*.*)"))
-        .arg(tr("IGES"),
-             tr("All Files"));
+    QString fn =
+        Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                                         QString(),
+                                         QString(),
+                                         QString::fromLatin1("%1 (*.igs *.iges);;%2 (*.*)"))
+            .arg(tr("IGES"), tr("All Files"));
     if (!fn.isEmpty()) {
         ui->FileName->setText(fn);
     }
 }
-
-
 
 
 #include "moc_DlgPartImportIgesImp.cpp"
