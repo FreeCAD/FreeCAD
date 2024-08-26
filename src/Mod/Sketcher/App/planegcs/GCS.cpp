@@ -1827,10 +1827,13 @@ void System::initSolution(Algorithm alg)
     // diagnose conflicting or redundant constraints
     if (!hasDiagnosis) {
         diagnose(alg);
-        if (!hasDiagnosis) {
-            return;
-        }
     }
+
+    // if still no diagnosis after explicitly calling `diagnose`, nothing to do here
+    if (!hasDiagnosis) {
+        return;
+    }
+
     std::vector<Constraint*> clistR;
     if (!redundant.empty()) {
         std::copy_if(clist.begin(), clist.end(), std::back_inserter(clistR), [this](auto constr) {
@@ -1894,15 +1897,18 @@ void System::initSolution(Algorithm alg)
         }
     }
 
+    // TODO: Why are the later (constraint-related) items added first?
+    // Adding plist-related items first would simplify assignment of `i`, but is not a big expense
+    // overall. Leaving as is to avoid any unintended consequences.
     clists.clear();                 // destroy any lists
     clists.resize(componentsSize);  // create empty lists to be filled in
     size_t i = plist.size();
-    for (std::vector<Constraint*>::const_iterator constr = clistR.begin(); constr != clistR.end();
-         ++constr, ++i) {
-        if (reducedConstrs.count(*constr) == 0) {
+    for (const auto& constr : clistR) {
+        if (reducedConstrs.count(constr) == 0) {
             int cid = components[i];
-            clists[cid].push_back(*constr);
+            clists[cid].push_back(constr);
         }
+        ++i;
     }
 
     plists.clear();                 // destroy any lists
@@ -2058,15 +2064,18 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     h = x - h;  // = x - xold
 
     // double convergence = isFine ? convergence : XconvergenceRough;
-    int maxIterNumber =
-        (isRedundantsolving
-             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
-             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
+    int maxIterNumber = (sketchSizeMultiplier ? maxIter * xsize : maxIter);
+    double convCriterion = convergence;
+    if (isRedundantsolving) {
+        maxIterNumber =
+            (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
+        convCriterion = convergenceRedundant;
+    }
 
     if (debugMode == IterationLevel) {
         std::stringstream stream;
-        stream << "BFGS: convergence: " << (isRedundantsolving ? convergenceRedundant : convergence)
-               << ", xsize: " << xsize << ", maxIter: " << maxIterNumber << "\n";
+        stream << "BFGS: convergence: " << convCriterion << ", xsize: " << xsize
+               << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
         Base::Console().Log(tmp.c_str());
@@ -2075,9 +2084,9 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     double divergingLim = 1e6 * err + 1e12;
     double h_norm {};
 
-    for (int iter = 1; iter < maxIterNumber; iter++) {
+    for (int iter = 1; iter < maxIterNumber; ++iter) {
         h_norm = h.norm();
-        if (h_norm <= (isRedundantsolving ? convergenceRedundant : convergence) || err <= smallF) {
+        if (h_norm <= convCriterion || err <= smallF) {
             if (debugMode == IterationLevel) {
                 std::stringstream stream;
                 stream << "BFGS Converged!!: "
@@ -2142,7 +2151,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     if (err <= smallF) {
         return Success;
     }
-    if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence)) {
+    if (h.norm() <= convCriterion) {
         return Converged;
     }
     return Failed;
@@ -2173,16 +2182,21 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     subsys->calcResidual(e);
     e *= -1;
 
-    int maxIterNumber =
-        (isRedundantsolving
-             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
-             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
+    int maxIterNumber = (sketchSizeMultiplier ? maxIter * xsize : maxIter);
 
     double divergingLim = 1e6 * e.squaredNorm() + 1e12;
 
-    double eps = (isRedundantsolving ? LM_epsRedundant : LM_eps);
-    double eps1 = (isRedundantsolving ? LM_eps1Redundant : LM_eps1);
-    double tau = (isRedundantsolving ? LM_tauRedundant : LM_tau);
+    double eps = LM_eps;
+    double eps1 = LM_eps1;
+    double tau = LM_tau;
+
+    if (isRedundantsolving) {
+        maxIterNumber =
+            (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
+        eps = LM_epsRedundant;
+        eps1 = LM_eps1Redundant;
+        tau = LM_tauRedundant;
+    }
 
     if (debugMode == IterationLevel) {
         std::stringstream stream;
@@ -2197,21 +2211,21 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     double nu = 2, mu = 0;
     int iter = 0, stop = 0;
     for (iter = 0; iter < maxIterNumber && !stop; ++iter) {
-
         // check error
         double err = e.squaredNorm();
-        if (err <= eps * eps) {  // error is small, Success
+        if (err <= eps * eps) {
+            // error is small, Success
             stop = 1;
             break;
         }
-        else if (err > divergingLim || err != err) {  // check for diverging and NaN
+        else if (err > divergingLim || err != err) {
+            // check for diverging and NaN
             stop = 6;
             break;
         }
 
         // J^T J, J^T e
         subsys->calcJacobi(J);
-        ;
 
         A = J.transpose() * J;
         g = J.transpose() * e;
@@ -2246,7 +2260,6 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
             // check if solving works
             if (rel_error < 1e-5) {
-
                 // restrict h according to maxStep
                 double scale = subsys->maxStep(h);
                 if (scale < 1.) {
@@ -2257,12 +2270,13 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                 x_new = x + h;
                 h_norm = h.squaredNorm();
 
-                if (h_norm <= eps1 * eps1 * x.norm()) {  // relative change in p is small, stop
+                if (h_norm <= eps1 * eps1 * x.norm()) {
+                    // relative change in p is small, stop
                     stop = 3;
                     break;
                 }
-                else if (h_norm
-                         >= (x.norm() + eps1) / (DBL_EPSILON * DBL_EPSILON)) {  // almost singular
+                else if (h_norm >= (x.norm() + eps1) / (DBL_EPSILON * DBL_EPSILON)) {
+                    // almost singular
                     stop = 4;
                     break;
                 }
@@ -2322,16 +2336,11 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     return (stop == 1) ? Success : Failed;
 }
 
-
 int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
 #endif
-
-    double tolg = (isRedundantsolving ? DL_tolgRedundant : DL_tolg);
-    double tolx = (isRedundantsolving ? DL_tolxRedundant : DL_tolx);
-    double tolf = (isRedundantsolving ? DL_tolfRedundant : DL_tolf);
 
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
@@ -2340,10 +2349,19 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         return Success;
     }
 
-    int maxIterNumber =
-        (isRedundantsolving
-             ? (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant)
-             : (sketchSizeMultiplier ? maxIter * xsize : maxIter));
+    double tolg = DL_tolg;
+    double tolx = DL_tolx;
+    double tolf = DL_tolf;
+
+    int maxIterNumber = (sketchSizeMultiplier ? maxIter * xsize : maxIter);
+    if (isRedundantsolving) {
+        tolg = DL_tolgRedundant;
+        tolx = DL_tolxRedundant;
+        tolf = DL_tolfRedundant;
+
+        maxIterNumber =
+            (sketchSizeMultiplierRedundant ? maxIterRedundant * xsize : maxIterRedundant);
+    }
 
     if (debugMode == IterationLevel) {
         std::stringstream stream;
@@ -2386,84 +2404,83 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     double nu = 2.;
     int iter = 0, stop = 0, reduce = 0;
     while (!stop) {
-
         // check if finished
-        if (fx_inf <= tolf) {  // Success
+        if (fx_inf <= tolf) {
+            // Success
             stop = 1;
+            break;
         }
         else if (g_inf <= tolg) {
             stop = 2;
+            break;
         }
         else if (delta <= tolx * (tolx + x.norm())) {
             stop = 2;
+            break;
         }
         else if (iter >= maxIterNumber) {
             stop = 4;
+            break;
         }
-        else if (err > divergingLim || err != err) {  // check for diverging and NaN
+        else if (err > divergingLim || err != err) {
+            // check for diverging and NaN
             stop = 6;
-        }
-        else {
-            // get the steepest descent direction
-            alpha = g.squaredNorm() / (Jx * g).squaredNorm();
-            h_sd = alpha * g;
-
-            // get the gauss-newton step
-            // https://forum.freecad.org/viewtopic.php?f=10&t=12769&start=50#p106220
-            // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
-            switch (dogLegGaussStep) {
-                case FullPivLU:
-                    h_gn = Jx.fullPivLu().solve(-fx);
-                    break;
-                case LeastNormFullPivLU:
-                    h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).fullPivLu().solve(-fx);
-                    break;
-                case LeastNormLdlt:
-                    h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).ldlt().solve(-fx);
-                    break;
-            }
-
-            double rel_error = (Jx * h_gn + fx).norm() / fx.norm();
-            if (rel_error > 1e15) {
-                break;
-            }
-
-            // compute the dogleg step
-            if (h_gn.norm() < delta) {
-                h_dl = h_gn;
-                if (h_dl.norm() <= tolx * (tolx + x.norm())) {
-                    stop = 5;
-                    break;
-                }
-            }
-            else if (alpha * g.norm() >= delta) {
-                h_dl = (delta / (alpha * g.norm())) * h_sd;
-            }
-            else {
-                // compute beta
-                double beta = 0;
-                Eigen::VectorXd b = h_gn - h_sd;
-                double bb = (b.transpose() * b).norm();
-                double gb = (h_sd.transpose() * b).norm();
-                double c = (delta + h_sd.norm()) * (delta - h_sd.norm());
-
-                if (gb > 0) {
-                    beta = c / (gb + sqrt(gb * gb + c * bb));
-                }
-                else {
-                    beta = (sqrt(gb * gb + c * bb) - gb) / bb;
-                }
-
-                // and update h_dl and dL with beta
-                h_dl = h_sd + beta * b;
-            }
-        }
-
-        // see if we are already finished
-        if (stop) {
             break;
         }
 
+        // get the steepest descent direction
+        alpha = g.squaredNorm() / (Jx * g).squaredNorm();
+        h_sd = alpha * g;
+
+        // get the gauss-newton step
+        // https://forum.freecad.org/viewtopic.php?f=10&t=12769&start=50#p106220
+        // https://forum.kde.org/viewtopic.php?f=74&t=129439#p346104
+        switch (dogLegGaussStep) {
+            case FullPivLU:
+                h_gn = Jx.fullPivLu().solve(-fx);
+                break;
+            case LeastNormFullPivLU:
+                h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).fullPivLu().solve(-fx);
+                break;
+            case LeastNormLdlt:
+                h_gn = Jx.adjoint() * (Jx * Jx.adjoint()).ldlt().solve(-fx);
+                break;
+        }
+
+        double rel_error = (Jx * h_gn + fx).norm() / fx.norm();
+        if (rel_error > 1e15) {
+            break;
+        }
+
+        // compute the dogleg step
+        if (h_gn.norm() < delta) {
+            h_dl = h_gn;
+            if (h_dl.norm() <= tolx * (tolx + x.norm())) {
+                stop = 5;
+                break;
+            }
+        }
+        else if (alpha * g.norm() >= delta) {
+            h_dl = (delta / (alpha * g.norm())) * h_sd;
+        }
+        else {
+            // compute beta
+            double beta = 0;
+            Eigen::VectorXd b = h_gn - h_sd;
+            double bb = (b.transpose() * b).norm();
+            double gb = (h_sd.transpose() * b).norm();
+            double c = (delta + h_sd.norm()) * (delta - h_sd.norm());
+
+            if (gb > 0) {
+                beta = c / (gb + sqrt(gb * gb + c * bb));
+            }
+            else {
+                beta = (sqrt(gb * gb + c * bb) - gb) / bb;
+            }
+
+            // and update h_dl and dL with beta
+            h_dl = h_sd + beta * b;
+        }
 
         // get the new values
         double err_new;
@@ -4974,17 +4991,12 @@ int System::diagnose(Algorithm alg)
     // like 0 and -1.
     std::map<int, int> tagmultiplicity;
 
-
     makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
 
     // this function will exit with a diagnosis and, unless overridden by functions below, with full
     // DoFs
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
-
-    if (J.rows() > 0) {
-        emptyDiagnoseMatrix = false;
-    }
 
     // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
     // consideration taken in that decisions. I see that:
@@ -5040,65 +5052,73 @@ int System::diagnose(Algorithm alg)
     }
 #endif
 
+    if (J.rows() == 0) {
+        return dofs;
+    }
+
+    // From here on, presuming `J.rows() > 0`.
+    emptyDiagnoseMatrix = false;
+
     if (qrAlgorithm == EigenDenseQR) {
 #ifdef PROFILE_DIAGNOSE
         Base::TimeElapsed DenseQR_start_time;
 #endif
-        if (J.rows() > 0) {
-            int rank = 0;  // rank is not cheap to retrieve from qrJT in DenseQR
-            Eigen::MatrixXd R;
-            Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
-            // Here we give the system the possibility to run the two QR decompositions in parallel,
-            // depending on the load of the system so we are using the default std::launch::async |
-            // std::launch::deferred policy, as nobody better than the system nows if it can run the
-            // task in parallel or is oversubscribed and should deferred it. Care to wait() for the
-            // future before any prospective detection of conflicting/redundant, because the
-            // redundant solve modifies pdiagnoselist and it would NOT be thread-safe. Care to call
-            // the thread with silent=true, unless the present thread does not use Base::Console, or
-            // the launch policy is set to std::launch::deferred policy, as it is not thread-safe to
-            // use them in both at the same time.
-            //
-            // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
-            //
-            auto fut = std::async(&System::identifyDependentParametersDenseQR,
-                                  this,
-                                  J,
-                                  jacobianconstraintmap,
-                                  pdiagnoselist,
-                                  true);
 
-            makeDenseQRDecomposition(J, jacobianconstraintmap, qrJT, rank, R);
+        int rank = 0;  // rank is not cheap to retrieve from qrJT in DenseQR
+        Eigen::MatrixXd R;
+        Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
+        // Here we give the system the possibility to run the two QR decompositions in parallel,
+        // depending on the load of the system so we are using the default std::launch::async |
+        // std::launch::deferred policy, as nobody better than the system nows if it can run the
+        // task in parallel or is oversubscribed and should deferred it. Care to wait() for the
+        // future before any prospective detection of conflicting/redundant, because the
+        // redundant solve modifies pdiagnoselist and it would NOT be thread-safe. Care to call
+        // the thread with silent=true, unless the present thread does not use Base::Console, or
+        // the launch policy is set to std::launch::deferred policy, as it is not thread-safe to
+        // use them in both at the same time.
+        //
+        // identifyDependentParametersDenseQR(J, jacobianconstraintmap, pdiagnoselist, true)
+        //
+        auto fut = std::async(&System::identifyDependentParametersDenseQR,
+                              this,
+                              J,
+                              jacobianconstraintmap,
+                              pdiagnoselist,
+                              true);
 
-            int paramsNum = qrJT.rows();
-            int constrNum = qrJT.cols();
+        makeDenseQRDecomposition(J, jacobianconstraintmap, qrJT, rank, R);
 
-            // This function is legacy code that was used to obtain partial geometry dependency
-            // information from a SINGLE Dense QR decomposition. I am reluctant to remove it from
-            // here until everything new is well tested.
-            // identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition( qrJT,
-            // pdiagnoselist, paramsNum, rank);
+        int paramsNum = qrJT.rows();
+        int constrNum = qrJT.cols();
 
-            fut.wait();  // wait for the execution of identifyDependentParametersSparseQR to finish
+        // This function is legacy code that was used to obtain partial geometry dependency
+        // information from a SINGLE Dense QR decomposition. I am reluctant to remove it from
+        // here until everything new is well tested.
+        // identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition( qrJT,
+        // pdiagnoselist, paramsNum, rank);
 
-            dofs = paramsNum - rank;  // unless overconstraint, which will be overridden below
+        fut.wait();  // wait for the execution of identifyDependentParametersSparseQR to finish
 
-            // Detecting conflicting or redundant constraints
-            if (constrNum > rank) {  // conflicting or redundant constraints
-                int nonredundantconstrNum;
-                identifyConflictingRedundantConstraints(alg,
-                                                        qrJT,
-                                                        jacobianconstraintmap,
-                                                        tagmultiplicity,
-                                                        pdiagnoselist,
-                                                        R,
-                                                        constrNum,
-                                                        rank,
-                                                        nonredundantconstrNum);
-                if (paramsNum == rank && nonredundantconstrNum > rank) {  // over-constrained
-                    dofs = paramsNum - nonredundantconstrNum;
-                }
+        dofs = paramsNum - rank;  // unless overconstraint, which will be overridden below
+
+        // Detecting conflicting or redundant constraints
+        if (constrNum > rank) {
+            // conflicting or redundant constraints
+            int nonredundantconstrNum;
+            identifyConflictingRedundantConstraints(alg,
+                                                    qrJT,
+                                                    jacobianconstraintmap,
+                                                    tagmultiplicity,
+                                                    pdiagnoselist,
+                                                    R,
+                                                    constrNum,
+                                                    rank,
+                                                    nonredundantconstrNum);
+            if (paramsNum == rank && nonredundantconstrNum > rank) {  // over-constrained
+                dofs = paramsNum - nonredundantconstrNum;
             }
         }
+
 #ifdef PROFILE_DIAGNOSE
         Base::TimeElapsed DenseQR_end_time;
 
@@ -5113,66 +5133,64 @@ int System::diagnose(Algorithm alg)
 #ifdef PROFILE_DIAGNOSE
         Base::TimeElapsed SparseQR_start_time;
 #endif
-        if (J.rows() > 0) {
-            int rank = 0;
-            Eigen::MatrixXd R;
-            Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> SqrJT;
-            // Here we give the system the possibility to run the two QR decompositions in parallel,
-            // depending on the load of the system so we are using the default std::launch::async |
-            // std::launch::deferred policy, as nobody better than the system nows if it can run the
-            // task in parallel or is oversubscribed and should deferred it. Care to wait() for the
-            // future before any prospective detection of conflicting/redundant, because the
-            // redundant solve modifies pdiagnoselist and it would NOT be thread-safe. Care to call
-            // the thread with silent=true, unless the present thread does not use Base::Console, or
-            // the launch policy is set to std::launch::deferred policy, as it is not thread-safe to
-            // use them in both at the same time.
-            //
-            // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
-            //
-            // Debug:
-            // auto fut =
-            // std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR, this,
-            // J, jacobianconstraintmap, pdiagnoselist, false);
-            auto fut = std::async(&System::identifyDependentParametersSparseQR,
-                                  this,
-                                  J,
+        int rank = 0;
+        Eigen::MatrixXd R;
+        Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> SqrJT;
+        // Here we give the system the possibility to run the two QR decompositions in parallel,
+        // depending on the load of the system so we are using the default std::launch::async |
+        // std::launch::deferred policy, as nobody better than the system nows if it can run the
+        // task in parallel or is oversubscribed and should deferred it. Care to wait() for the
+        // future before any prospective detection of conflicting/redundant, because the
+        // redundant solve modifies pdiagnoselist and it would NOT be thread-safe. Care to call
+        // the thread with silent=true, unless the present thread does not use Base::Console, or
+        // the launch policy is set to std::launch::deferred policy, as it is not thread-safe to
+        // use them in both at the same time.
+        //
+        // identifyDependentParametersSparseQR(J, jacobianconstraintmap, pdiagnoselist, true)
+        //
+        // Debug:
+        // auto fut =
+        // std::async(std::launch::deferred,&System::identifyDependentParametersSparseQR, this,
+        // J, jacobianconstraintmap, pdiagnoselist, false);
+        auto fut = std::async(&System::identifyDependentParametersSparseQR,
+                              this,
+                              J,
+                              jacobianconstraintmap,
+                              pdiagnoselist,
+                              /*silent=*/true);
+
+        makeSparseQRDecomposition(J,
                                   jacobianconstraintmap,
-                                  pdiagnoselist,
-                                  /*silent=*/true);
+                                  SqrJT,
+                                  rank,
+                                  R,
+                                  /*transposed=*/true,
+                                  /*silent=*/false);
 
-            makeSparseQRDecomposition(J,
-                                      jacobianconstraintmap,
-                                      SqrJT,
-                                      rank,
-                                      R,
-                                      /*transposed=*/true,
-                                      /*silent=*/false);
+        int paramsNum = SqrJT.rows();
+        int constrNum = SqrJT.cols();
 
-            int paramsNum = SqrJT.rows();
-            int constrNum = SqrJT.cols();
+        fut.wait();  // wait for the execution of identifyDependentParametersSparseQR to finish
 
-            fut.wait();  // wait for the execution of identifyDependentParametersSparseQR to finish
+        dofs = paramsNum - rank;  // unless overconstraint, which will be overridden below
 
-            dofs = paramsNum - rank;  // unless overconstraint, which will be overridden below
+        // Detecting conflicting or redundant constraints
+        if (constrNum > rank) {
+            int nonredundantconstrNum;
 
-            // Detecting conflicting or redundant constraints
-            if (constrNum > rank) {
+            identifyConflictingRedundantConstraints(alg,
+                                                    SqrJT,
+                                                    jacobianconstraintmap,
+                                                    tagmultiplicity,
+                                                    pdiagnoselist,
+                                                    R,
+                                                    constrNum,
+                                                    rank,
+                                                    nonredundantconstrNum);
 
-                int nonredundantconstrNum;
-
-                identifyConflictingRedundantConstraints(alg,
-                                                        SqrJT,
-                                                        jacobianconstraintmap,
-                                                        tagmultiplicity,
-                                                        pdiagnoselist,
-                                                        R,
-                                                        constrNum,
-                                                        rank,
-                                                        nonredundantconstrNum);
-
-                if (paramsNum == rank && nonredundantconstrNum > rank) {  // over-constrained
-                    dofs = paramsNum - nonredundantconstrNum;
-                }
+            if (paramsNum == rank && nonredundantconstrNum > rank) {
+                // over-constrained
+                dofs = paramsNum - nonredundantconstrNum;
             }
         }
 
