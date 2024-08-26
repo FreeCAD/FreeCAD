@@ -68,8 +68,7 @@ class MaterialEditor:
         filePath = os.path.dirname(__file__) + os.sep
         self.iconPath = (filePath + "Resources" + os.sep + "icons" + os.sep)
 
-        # load the UI file from the same directory as this script
-        self.widget = FreeCADGui.PySideUic.loadUi(filePath + "Resources" + os.sep + "ui" + os.sep + "materials-editor.ui")
+        self.widget = FreeCADGui.PySideUic.loadUi(":/ui/materials-editor.ui")
         # remove unused Help button
         self.widget.setWindowFlags(self.widget.windowFlags()
                                    & ~QtCore.Qt.WindowContextHelpButtonHint)
