@@ -38,16 +38,19 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class TaskMeasure : public TaskView::TaskDialog, public Gui::SelectionObserver {
+class TaskMeasure: public TaskView::TaskDialog, public Gui::SelectionObserver
+{
 
 public:
     TaskMeasure();
     ~TaskMeasure() override;
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
-    QDialogButtonBox::StandardButtons getStandardButtons() const override {
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
         return QDialogButtonBox::Apply | QDialogButtonBox::Abort | QDialogButtonBox::Reset;
     }
 
@@ -69,11 +72,11 @@ private:
     App::Document* _mDocument = nullptr;
     Gui::Document* _mGuiDocument = nullptr;
     App::MeasureType* _mMeasureType = nullptr;
-    Measure::MeasureBase *_mMeasureObject = nullptr;
+    Measure::MeasureBase* _mMeasureObject = nullptr;
     Gui::ViewProviderDocumentObject* _mViewObject = nullptr;
 
-    QLineEdit* valueResult{nullptr};
-    QComboBox* modeSwitch{nullptr};
+    QLineEdit* valueResult {nullptr};
+    QComboBox* modeSwitch {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
@@ -91,7 +94,6 @@ private:
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
-
 };
 
-} // namespace Gui
+}  // namespace Gui

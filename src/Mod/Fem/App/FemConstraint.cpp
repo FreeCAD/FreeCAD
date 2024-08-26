@@ -118,7 +118,10 @@ Constraint::Constraint()
     App::SuppressibleExtension::initExtension(this);
 }
 
-Constraint::~Constraint() = default;
+Constraint::~Constraint()
+{
+    connDocChangedObject.disconnect();
+}
 
 App::DocumentObjectExecReturn* Constraint::execute()
 {

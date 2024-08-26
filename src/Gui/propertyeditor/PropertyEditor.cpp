@@ -261,7 +261,23 @@ void PropertyEditor::closeEditor()
     if (editingIndex.isValid()) {
         Base::StateLocker guard(closingEditor);
         bool hasFocus = activeEditor && activeEditor->hasFocus();
+#ifdef Q_OS_MACOS
+        // Brute-force workaround for https://github.com/FreeCAD/FreeCAD/issues/14350
+        int currentIndex = 0;
+        QTabBar *tabBar = nullptr;
+        if (auto mdiArea = Gui::MainWindow::getInstance()->findChild<QMdiArea*>()) {
+            tabBar = mdiArea->findChild<QTabBar*>();
+            if (tabBar) {
+                currentIndex = tabBar->currentIndex();
+            }
+        }
+#endif
         closePersistentEditor(editingIndex);
+#ifdef Q_OS_MACOS
+        if (tabBar) {
+            tabBar->setCurrentIndex(currentIndex);
+        }
+#endif
         editingIndex = QPersistentModelIndex();
         activeEditor = nullptr;
         if(hasFocus)

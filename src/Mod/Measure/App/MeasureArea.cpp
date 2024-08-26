@@ -34,22 +34,28 @@ using namespace Measure;
 PROPERTY_SOURCE(Measure::MeasureArea, Measure::MeasureBase)
 
 
-
 MeasureArea::MeasureArea()
 {
-    ADD_PROPERTY_TYPE(Elements,(nullptr), "Measurement", App::Prop_None, "Element to get the area from");
+    ADD_PROPERTY_TYPE(Elements,
+                      (nullptr),
+                      "Measurement",
+                      App::Prop_None,
+                      "Element to get the area from");
     Elements.setScope(App::LinkScope::Global);
     Elements.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Area,(0.0), "Measurement", App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                            "Area of element");
-
+    ADD_PROPERTY_TYPE(Area,
+                      (0.0),
+                      "Measurement",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Area of element");
 }
 
 MeasureArea::~MeasureArea() = default;
 
 
-bool MeasureArea::isValidSelection(const App::MeasureSelection& selection){
+bool MeasureArea::isValidSelection(const App::MeasureSelection& selection)
+{
 
     if (selection.empty()) {
         return false;
@@ -70,7 +76,8 @@ bool MeasureArea::isValidSelection(const App::MeasureSelection& selection){
     return true;
 }
 
-void MeasureArea::parseSelection(const App::MeasureSelection& selection) {
+void MeasureArea::parseSelection(const App::MeasureSelection& selection)
+{
     // Set properties from selection, method is only invoked when isValid Selection returns true
 
     std::vector<App::DocumentObject*> objects;
@@ -87,7 +94,7 @@ void MeasureArea::parseSelection(const App::MeasureSelection& selection) {
 }
 
 
-App::DocumentObjectExecReturn *MeasureArea::execute()
+App::DocumentObjectExecReturn* MeasureArea::execute()
 {
     recalculateArea();
     return DocumentObject::StdReturn;
@@ -101,8 +108,8 @@ void MeasureArea::recalculateArea()
     double result(0.0);
 
     // Loop through Elements and call the valid geometry handler
-    for (std::vector<App::DocumentObject*>::size_type i=0; i<objects.size(); i++) {
-        App::SubObjectT subject{objects.at(i), subElements.at(i).c_str()};
+    for (std::vector<App::DocumentObject*>::size_type i = 0; i < objects.size(); i++) {
+        App::SubObjectT subject {objects.at(i), subElements.at(i).c_str()};
 
         auto info = getMeasureInfo(subject);
         if (!info || !info->valid) {
@@ -129,7 +136,8 @@ void MeasureArea::onChanged(const App::Property* prop)
 }
 
 
-Base::Placement MeasureArea::getPlacement() {
+Base::Placement MeasureArea::getPlacement()
+{
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();
 
@@ -137,7 +145,7 @@ Base::Placement MeasureArea::getPlacement() {
         return Base::Placement();
     }
 
-    App::SubObjectT subject{objects.front(), subElements.front().c_str()};
+    App::SubObjectT subject {objects.front(), subElements.front().c_str()};
 
     auto info = getMeasureInfo(subject);
     if (!info) {

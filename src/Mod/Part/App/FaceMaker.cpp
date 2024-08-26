@@ -71,6 +71,10 @@ void Part::FaceMaker::addTopoShape(const TopoShape& shape) {
         case TopAbs_FACE:
             this->myInputFaces.push_back(sh);
         break;
+        case TopAbs_VERTEX:
+            // This is a special case, since this is generally a stand-alone point in a sketch.  We
+            // need to ignore it rather than throw an error
+        break;
         default:
             throw Base::TypeError(tr("Shape must be a wire, edge or compound. Something else was supplied.").toStdString());
         break;

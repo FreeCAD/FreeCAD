@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QKeyEvent>
+#include <QApplication>
+#include <QKeyEvent>
 #endif
 
 
@@ -49,7 +49,10 @@ TaskMeasure::TaskMeasure()
     qApp->installEventFilter(this);
 
     this->setButtonPosition(TaskMeasure::South);
-    auto taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("umf-measurement"), tr("Measurement"), true, nullptr);
+    auto taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("umf-measurement"),
+                                              tr("Measurement"),
+                                              true,
+                                              nullptr);
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
@@ -60,14 +63,17 @@ TaskMeasure::TaskMeasure()
     }
 
     // Connect dropdown's change signal to our onModeChange slot
-    connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
+    connect(modeSwitch,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskMeasure::onModeChanged);
 
     // Result widget
     valueResult = new QLineEdit();
     valueResult->setReadOnly(true);
 
     // Main layout
-    QBoxLayout *layout = taskbox->groupLayout();
+    QBoxLayout* layout = taskbox->groupLayout();
 
     QFormLayout* formLayout = new QFormLayout();
     formLayout->setHorizontalSpacing(10);
@@ -87,22 +93,25 @@ TaskMeasure::TaskMeasure()
     // Set selection style
     Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
 
-    if(!App::GetApplication().getActiveTransaction())
+    if (!App::GetApplication().getActiveTransaction()) {
         App::GetApplication().setActiveTransaction("Add Measurement");
+    }
 
 
     // Call invoke method delayed, otherwise the dialog might not be fully initialized
     QTimer::singleShot(0, this, &TaskMeasure::invoke);
 }
 
-TaskMeasure::~TaskMeasure() {
+TaskMeasure::~TaskMeasure()
+{
     Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
     detachSelection();
     qApp->removeEventFilter(this);
 }
 
 
-void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box) {
+void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box)
+{
 
     QPushButton* btn = box->button(QDialogButtonBox::Apply);
     btn->setText(tr("Save"));
@@ -120,7 +129,8 @@ void TaskMeasure::modifyStandardButtons(QDialogButtonBox* box) {
     connect(btn, &QPushButton::released, this, &TaskMeasure::reset);
 }
 
-bool canAnnotate(Measure::MeasureBase* obj) {
+bool canAnnotate(Measure::MeasureBase* obj)
+{
     if (obj == nullptr) {
         // null object, can't annotate this
         return false;
@@ -135,7 +145,8 @@ bool canAnnotate(Measure::MeasureBase* obj) {
     return true;
 }
 
-void TaskMeasure::enableAnnotateButton(bool state) {
+void TaskMeasure::enableAnnotateButton(bool state)
+{
     // if the task ui is not init yet we don't have a button box.
     if (!this->buttonBox) {
         return;
@@ -145,7 +156,8 @@ void TaskMeasure::enableAnnotateButton(bool state) {
     btn->setEnabled(state);
 }
 
-void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj) {
+void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj)
+{
     _mMeasureObject = obj;
 }
 
@@ -223,10 +235,10 @@ void TaskMeasure::saveObject() {
 
 
 void TaskMeasure::update() {
-    App::Document *doc = App::GetApplication().getActiveDocument();
+    App::Document* doc = App::GetApplication().getActiveDocument();
 
     // Reset selection if the selected object is not valid
-    for(auto sel : Gui::Selection().getSelection()) {
+    for (auto sel : Gui::Selection().getSelection()) {
         App::DocumentObject* ob = sel.pObject;
         App::DocumentObject* sub = ob->getSubObject(sel.SubName);
 
@@ -238,7 +250,8 @@ void TaskMeasure::update() {
 
         std::string mod = Base::Type::getModuleName(sub->getTypeId().getName());
         if (!App::MeasureManager::hasMeasureHandler(mod.c_str())) {
-            Base::Console().Message("No measure handler available for geometry of module: %s\n", mod);
+            Base::Console().Message("No measure handler available for geometry of module: %s\n",
+                                    mod);
             clearSelection();
             return;
         }
@@ -254,7 +267,7 @@ void TaskMeasure::update() {
     for (auto s : Gui::Selection().getSelection(doc->getName(), ResolveMode::NoResolve)) {
         App::SubObjectT sub(s.pObject, s.SubName);
 
-        App::MeasureSelectionItem item = { sub, Base::Vector3d(s.x, s.y, s.z) };
+        App::MeasureSelectionItem item = {sub, Base::Vector3d(s.x, s.y, s.z)};
         selection.push_back(item);
     }
 
@@ -304,12 +317,14 @@ void TaskMeasure::update() {
     createViewObject(_mMeasureObject);
 }
 
-void TaskMeasure::close() {
+void TaskMeasure::close()
+{
     Control().closeDialog();
 }
 
 
-void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement) {
+void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
+{
     // Ensure measurement object is part of the measurements group
 
     const char* measurementGroupName = "Measurements";
@@ -320,7 +335,10 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement) {
     App::Document* doc = measurement->getDocument();
     App::DocumentObject* obj = doc->getObject(measurementGroupName);
     if (!obj || !obj->isValid()) {
-        obj = doc->addObject("App::DocumentObjectGroup", measurementGroupName, true, "MeasureGui::ViewProviderMeasureGroup");
+        obj = doc->addObject("App::DocumentObjectGroup",
+                             measurementGroupName,
+                             true,
+                             "MeasureGui::ViewProviderMeasureGroup");
     }
 
     auto group = static_cast<App::DocumentObjectGroup*>(obj);
@@ -329,11 +347,13 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement) {
 
 
 // Runs after the dialog is created
-void TaskMeasure::invoke() {
+void TaskMeasure::invoke()
+{
     update();
 }
 
-bool TaskMeasure::apply(){
+bool TaskMeasure::apply()
+{
     saveObject();
     ensureGroup(_mMeasureObject);
     _mMeasureType = nullptr;
@@ -346,7 +366,8 @@ bool TaskMeasure::apply(){
     return false;
 }
 
-bool TaskMeasure::reject() {
+bool TaskMeasure::reject()
+{
     removeObject();
     close();
 
@@ -355,7 +376,8 @@ bool TaskMeasure::reject() {
     return false;
 }
 
-void TaskMeasure::reset() {
+void TaskMeasure::reset()
+{
     // Reset tool state
     _mMeasureType = nullptr;
     this->clearSelection();
@@ -368,11 +390,12 @@ void TaskMeasure::reset() {
 }
 
 
-void TaskMeasure::removeObject() {
+void TaskMeasure::removeObject()
+{
     if (_mMeasureObject == nullptr) {
         return;
     }
-    if (_mMeasureObject->isRemoving() ) {
+    if (_mMeasureObject->isRemoving()) {
         return;
     }
 
@@ -385,11 +408,13 @@ void TaskMeasure::removeObject() {
     setMeasureObject(nullptr);
 }
 
-bool TaskMeasure::hasSelection() {
+bool TaskMeasure::hasSelection()
+{
     return !Gui::Selection().getSelection().empty();
 }
 
-void TaskMeasure::clearSelection() {
+void TaskMeasure::clearSelection()
+{
     Gui::Selection().clearSelection();
 }
 
@@ -397,7 +422,8 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // Skip non-relevant events
     if (msg.Type != SelectionChanges::AddSelection && msg.Type != SelectionChanges::RmvSelection
-        && msg.Type != SelectionChanges::SetSelection && msg.Type != SelectionChanges::ClrSelection) {
+        && msg.Type != SelectionChanges::SetSelection
+        && msg.Type != SelectionChanges::ClrSelection) {
 
         return;
     }
@@ -405,7 +431,8 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
     update();
 }
 
-bool TaskMeasure::eventFilter(QObject* obj, QEvent* event) {
+bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
+{
 
     if (event->type() == QEvent::KeyPress) {
         auto keyEvent = static_cast<QKeyEvent*>(event);
@@ -414,7 +441,8 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event) {
 
             if (this->hasSelection()) {
                 this->reset();
-            } else {
+            }
+            else {
                 this->reject();
             }
 
@@ -430,12 +458,14 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event) {
     return TaskDialog::eventFilter(obj, event);
 }
 
-void TaskMeasure::onModeChanged(int index) {
+void TaskMeasure::onModeChanged(int index)
+{
     explicitMode = (index != 0);
     this->update();
 }
 
-void TaskMeasure::setModeSilent(App::MeasureType* mode) {
+void TaskMeasure::setModeSilent(App::MeasureType* mode)
+{
     modeSwitch->blockSignals(true);
 
     if (mode == nullptr) {
@@ -448,7 +478,8 @@ void TaskMeasure::setModeSilent(App::MeasureType* mode) {
 }
 
 // Get explicitly set measure type from the mode switch
-App::MeasureType* TaskMeasure::getMeasureType() {
+App::MeasureType* TaskMeasure::getMeasureType()
+{
     for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
         if (mType->label.c_str() == modeSwitch->currentText().toLatin1()) {
             return mType;

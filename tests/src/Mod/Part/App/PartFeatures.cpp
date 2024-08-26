@@ -49,7 +49,7 @@ TEST_F(PartFeaturesTest, testRuledSurface)
     _ruled->Curve2.setValue(_edge2);
     // Act
     _ruled->execute();
-    TopoShape ts = _ruled->Shape.getValue();
+    TopoShape ts = _ruled->Shape.getShape();
     double volume = getVolume(ts.getShape());
     double area = getArea(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
@@ -59,7 +59,7 @@ TEST_F(PartFeaturesTest, testRuledSurface)
     EXPECT_DOUBLE_EQ(area, 4.0);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 2, 2, 0)));
     // Assert element map is correct
-    EXPECT_EQ(0, elementMap.size());  // TODO: Expect this to be non-zero when TNP on
+    EXPECT_EQ(9, elementMap.size());
 }
 
 TEST_F(PartFeaturesTest, testLoft)
@@ -77,7 +77,7 @@ TEST_F(PartFeaturesTest, testLoft)
     _loft->Solid.setValue((true));
     // Act
     _loft->execute();
-    TopoShape ts = _loft->Shape.getValue();
+    TopoShape ts = _loft->Shape.getShape();
     double volume = getVolume(ts.getShape());
     double area = getArea(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
@@ -87,7 +87,7 @@ TEST_F(PartFeaturesTest, testLoft)
     EXPECT_DOUBLE_EQ(area, 64.0);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 4, 4, 2)));
     // Assert element map is correct
-    EXPECT_EQ(0, elementMap.size());  // TODO: Expect this to be non-zero when TNP on
+    EXPECT_EQ(26, elementMap.size());
 }
 
 TEST_F(PartFeaturesTest, testSweep)
@@ -108,7 +108,7 @@ TEST_F(PartFeaturesTest, testSweep)
     _sweep->Spine.setValue(_edge1);
     // Act
     _sweep->execute();
-    TopoShape ts = _sweep->Shape.getValue();
+    TopoShape ts = _sweep->Shape.getShape();
     double volume = getVolume(ts.getShape());
     double area = getArea(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
@@ -118,7 +118,7 @@ TEST_F(PartFeaturesTest, testSweep)
     EXPECT_DOUBLE_EQ(area, 48.0);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(0, 0, 0, 4, 4, 3)));
     // Assert element map is correct
-    EXPECT_EQ(0, elementMap.size());  // TODO: Expect this to be non-zero when TNP on
+    EXPECT_EQ(24, elementMap.size());
 }
 
 TEST_F(PartFeaturesTest, testThickness)
@@ -130,7 +130,7 @@ TEST_F(PartFeaturesTest, testThickness)
     _thickness->Join.setValue("Intersection");
     // Act
     _thickness->execute();
-    TopoShape ts = _thickness->Shape.getValue();
+    TopoShape ts = _thickness->Shape.getShape();
     double volume = getVolume(ts.getShape());
     double area = getArea(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
@@ -140,7 +140,7 @@ TEST_F(PartFeaturesTest, testThickness)
     EXPECT_DOUBLE_EQ(area, 42.5);
     EXPECT_TRUE(boxesMatch(bb, Base::BoundBox3d(0, -0.25, -0.25, 1.25, 2.25, 3.25)));
     // Assert element map is correct
-    EXPECT_EQ(0, elementMap.size());  // TODO: Expect this to be non-zero when TNP on
+    EXPECT_EQ(51, elementMap.size());
 }
 
 TEST_F(PartFeaturesTest, testRefine)
@@ -150,12 +150,12 @@ TEST_F(PartFeaturesTest, testRefine)
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[3]);
     _fuse->execute();
-    Part::TopoShape fusedts = _fuse->Shape.getValue();
+    Part::TopoShape fusedts = _fuse->Shape.getShape();
     auto _refine = dynamic_cast<Refine*>(_doc->addObject("Part::Refine"));
     _refine->Source.setValue(_fuse);
     // Act
     _refine->execute();
-    TopoShape ts = _refine->Shape.getValue();
+    TopoShape ts = _refine->Shape.getShape();
     double volume = getVolume(ts.getShape());
     double area = getArea(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
@@ -179,7 +179,7 @@ TEST_F(PartFeaturesTest, testReverse)
     _reverse->Source.setValue(_boxes[0]);
     // Act
     _reverse->execute();
-    TopoShape ts = _reverse->Shape.getValue();
+    TopoShape ts = _reverse->Shape.getShape();
     double volume = getVolume(ts.getShape());
     double area = getArea(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();

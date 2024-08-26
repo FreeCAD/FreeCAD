@@ -32,13 +32,15 @@
 
 class QTimer;
 
-namespace Measure {
-    class Measurement;
+namespace Measure
+{
+class Measurement;
 }
 
-namespace MeasureGui {
+namespace MeasureGui
+{
 
-class QuickMeasure : public QObject, Gui::SelectionObserver
+class QuickMeasure: public QObject, Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -63,6 +65,6 @@ private:
     bool pendingProcessing;
 };
 
-} //namespace MeasureGui
+}  // namespace MeasureGui
 
-#endif // MEASUREGUI_QUICKMEASURE_H
+#endif  // MEASUREGUI_QUICKMEASURE_H

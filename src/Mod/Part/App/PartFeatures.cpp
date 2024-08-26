@@ -898,7 +898,7 @@ Reverse::Reverse()
 App::DocumentObjectExecReturn* Reverse::execute()
 {
     App::DocumentObject* source = Source.getValue<App::DocumentObject*>();
-    Part::TopoShape topoShape = Part::Feature::getShape(source);
+    Part::TopoShape topoShape = Part::Feature::getTopoShape(source);
     if (topoShape.isNull()) {
         return new App::DocumentObjectExecReturn("No part object linked.");
     }

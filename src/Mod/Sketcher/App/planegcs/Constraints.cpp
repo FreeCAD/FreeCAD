@@ -1588,10 +1588,10 @@ double ConstraintTangentCircumf::error()
     double dx = (*c1x() - *c2x());
     double dy = (*c1y() - *c2y());
     if (internal) {
-        return scale * (sqrt(dx * dx + dy * dy) - std::abs(*r1() - *r2()));
+        return scale * ((dx * dx + dy * dy) - (*r1() - *r2()) * (*r1() - *r2()));
     }
     else {
-        return scale * (sqrt(dx * dx + dy * dy) - (*r1() + *r2()));
+        return scale * ((dx * dx + dy * dy) - (*r1() + *r2()) * (*r1() + *r2()));
     }
 }
 
@@ -1602,33 +1602,32 @@ double ConstraintTangentCircumf::grad(double* param)
         || param == r2()) {
         double dx = (*c1x() - *c2x());
         double dy = (*c1y() - *c2y());
-        double d = sqrt(dx * dx + dy * dy);
         if (param == c1x()) {
-            deriv += dx / d;
+            deriv += 2 * dx;
         }
         if (param == c1y()) {
-            deriv += dy / d;
+            deriv += 2 * dy;
         }
         if (param == c2x()) {
-            deriv += -dx / d;
+            deriv += 2 * -dx;
         }
         if (param == c2y()) {
-            deriv += -dy / d;
+            deriv += 2 * -dy;
         }
         if (internal) {
             if (param == r1()) {
-                deriv += (*r1() > *r2()) ? -1 : 1;
+                deriv += 2 * (*r2() - *r1());
             }
             if (param == r2()) {
-                deriv += (*r1() > *r2()) ? 1 : -1;
+                deriv += 2 * (*r1() - *r2());
             }
         }
         else {
             if (param == r1()) {
-                deriv += -1;
+                deriv += 2 * (*r1() + *r2());
             }
             if (param == r2()) {
-                deriv += -1;
+                deriv += 2 * (*r1() + *r2());
             }
         }
     }
