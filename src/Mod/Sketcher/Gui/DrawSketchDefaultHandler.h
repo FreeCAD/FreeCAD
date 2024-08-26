@@ -863,6 +863,21 @@ protected:
                             // endpoint-to-edge tangency
                             (*resultpointonobject)->Type = Sketcher::Tangent;
                         }
+                        else if (resultcoincident != AutoConstraints.end()
+                                 && (*resultcoincident)->FirstPos == Sketcher::PointPos::mid
+                                 && (*resultcoincident)->SecondPos == Sketcher::PointPos::mid
+                                 && geom1 && geom2
+                                 && (geom1->is<Part::GeomCircle>()
+                                     || geom1->is<Part::GeomArcOfCircle>())
+                                 && (geom2->is<Part::GeomCircle>()
+                                     || geom2->is<Part::GeomArcOfCircle>())) {
+                            // equality
+                            auto c = std::make_unique<Sketcher::Constraint>();
+                            c->Type = Sketcher::Equal;
+                            c->First = geoId1;
+                            c->Second = ac.GeoId;
+                            AutoConstraints.push_back(std::move(c));
+                        }
                         else {  // regular edge to edge tangency
                             auto c = std::make_unique<Sketcher::Constraint>();
                             c->Type = Sketcher::Tangent;
