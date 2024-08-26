@@ -37,21 +37,20 @@ class AppExport Placement: public App::GeoFeature
     PROPERTY_HEADER_WITH_OVERRIDE(App::Placement);
 
 public:
-  /// Constructor
-  Placement();
-  ~Placement() override;
+    /// Constructor
+    Placement();
+    ~Placement() override;
 
-  /// returns the type name of the ViewProvider
-  const char* getViewProviderName() const override {
-      return "Gui::ViewProviderPlacement";
-  }
-
-
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "Gui::ViewProviderPlacement";
+    }
 };
 using PlacementPython = App::FeaturePythonT<App::Placement>;
 
 
-} //namespace App
+}  // namespace App
 
 
 #endif

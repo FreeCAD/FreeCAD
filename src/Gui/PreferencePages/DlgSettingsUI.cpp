@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QPushButton>
+#include <QPushButton>
 #endif
 
 #include <Gui/Application.h>
@@ -114,13 +114,14 @@ void DlgSettingsUI::loadStyleSheet()
     populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
 }
 
-void DlgSettingsUI::populateStylesheets(const char *key,
-                                        const char *path,
-                                        PrefComboBox *combo,
-                                        const char *def,
+void DlgSettingsUI::populateStylesheets(const char* key,
+                                        const char* path,
+                                        PrefComboBox* combo,
+                                        const char* def,
                                         QStringList filter)
 {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow");
     // List all .qss/.css files
     QMap<QString, QString> cssFiles;
     QDir dir;
@@ -175,7 +176,7 @@ void DlgSettingsUI::populateStylesheets(const char *key,
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsUI::changeEvent(QEvent *e)
+void DlgSettingsUI::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -186,28 +187,28 @@ void DlgSettingsUI::changeEvent(QEvent *e)
     }
 }
 
-namespace {
+namespace
+{
 
-void applyStyleSheet(ParameterGrp *hGrp)
+void applyStyleSheet(ParameterGrp* hGrp)
 {
     auto sheet = hGrp->GetASCII("StyleSheet");
     bool tiledBG = hGrp->GetBool("TiledBackground", false);
     Gui::Application::Instance->setStyleSheet(QString::fromUtf8(sheet.c_str()), tiledBG);
 }
 
-} // anonymous namespace
+}  // anonymous namespace
 
 void DlgSettingsUI::attachObserver()
 {
     static ParamHandlers handlers;
 
     auto handler = handlers.addDelayedHandler("BaseApp/Preferences/MainWindow",
-                               {"StyleSheet", "TiledBackground"},
-                               applyStyleSheet);
+                                              {"StyleSheet", "TiledBackground"},
+                                              applyStyleSheet);
     handlers.addHandler("BaseApp/Preferences/Themes",
                         {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
                         handler);
 }
 
 #include "moc_DlgSettingsUI.cpp"
-

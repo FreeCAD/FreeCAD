@@ -26,32 +26,38 @@
 #include <QLabel>
 #include <QMouseEvent>
 
-class ExpressionLabel : public QLabel
+class ExpressionLabel: public QLabel
 {
     Q_OBJECT
 public:
-    ExpressionLabel(QWidget * parent) : QLabel(parent) { }
+    ExpressionLabel(QWidget* parent)
+        : QLabel(parent)
+    {}
 
-    void setExpressionText(const QString& text) {
-        if (text.isEmpty())
+    void setExpressionText(const QString& text)
+    {
+        if (text.isEmpty()) {
             this->setToolTip(genericExpressionEditorTooltip);
-        else
+        }
+        else {
             this->setToolTip(expressionEditorTooltipPrefix + text);
+        }
     }
 
 protected:
-    void mouseReleaseEvent(QMouseEvent * event) override {
-        if (rect().contains(event->pos()))
-                Q_EMIT clicked();
+    void mouseReleaseEvent(QMouseEvent* event) override
+    {
+        if (rect().contains(event->pos())) {
+            Q_EMIT clicked();
+        }
     }
 
 Q_SIGNALS:
     void clicked();
 
 private:
-
     const QString genericExpressionEditorTooltip = tr("Enter an expression... (=)");
     const QString expressionEditorTooltipPrefix = tr("Expression:") + QLatin1String(" ");
 };
 
-#endif // QUANTITYSPINBOX_P_H
+#endif  // QUANTITYSPINBOX_P_H

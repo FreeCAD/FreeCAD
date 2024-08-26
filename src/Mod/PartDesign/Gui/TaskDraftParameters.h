@@ -30,14 +30,15 @@
 
 class Ui_TaskDraftParameters;
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class TaskDraftParameters : public TaskDressUpParameters
+class TaskDraftParameters: public TaskDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
+    explicit TaskDraftParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskDraftParameters() override;
 
     void apply() override;
@@ -57,8 +58,8 @@ private Q_SLOTS:
 
 protected:
     void setButtons(const selectionModes mode) override;
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
@@ -66,12 +67,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgDraftParameters : public TaskDlgDressUpParameters
+class TaskDlgDraftParameters: public TaskDlgDressUpParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgDraftParameters(ViewProviderDraft *DraftView);
+    explicit TaskDlgDraftParameters(ViewProviderDraft* DraftView);
     ~TaskDlgDraftParameters() override;
 
 public:
@@ -79,6 +80,6 @@ public:
     bool accept() override;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TASKAPPERANCE_H
+#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

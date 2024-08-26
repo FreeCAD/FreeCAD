@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMenu>
+#include <QMenu>
 #endif
 
 #include "ViewProviderHelixParametric.h"
@@ -53,7 +53,9 @@ std::vector<std::string> ViewProviderHelixParametric::getDisplayModes() const
     return StrList;
 }
 
-void ViewProviderHelixParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderHelixParametric::setupContextMenu(QMenu* menu,
+                                                   QObject* receiver,
+                                                   const char* member)
 {
     ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
 }
@@ -81,7 +83,9 @@ std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes() const
     return StrList;
 }
 
-void ViewProviderSpiralParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderSpiralParametric::setupContextMenu(QMenu* menu,
+                                                    QObject* receiver,
+                                                    const char* member)
 {
     ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
 }

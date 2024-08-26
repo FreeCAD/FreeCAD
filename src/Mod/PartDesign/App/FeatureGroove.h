@@ -30,7 +30,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport Groove : public ProfileBased
+class PartDesignExport Groove: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Groove);
 
@@ -40,27 +40,28 @@ public:
     App::PropertyEnumeration Type;
     App::PropertyVector Base;
     App::PropertyVector Axis;
-    App::PropertyAngle  Angle;
-    App::PropertyAngle  Angle2;
+    App::PropertyAngle Angle;
+    App::PropertyAngle Angle2;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
-    */
+     */
     App::PropertyLinkSub ReferenceAxis;
 
     /** @name methods override feature */
     //@{
     /** Recalculate the feature
-      * Revolves the Sketch around the given Axis (with basepoint Base)
-      * The angle of the revolution is given by Angle.
-      * If Midplane is true, then the revolution will extend for half of Angle on both sides of the sketch plane.
-      * If Reversed is true then the direction of revolution will be reversed.
-      * The created material will be cut out of the sketch support
-      */
-    App::DocumentObjectExecReturn *execute() override;
+     * Revolves the Sketch around the given Axis (with basepoint Base)
+     * The angle of the revolution is given by Angle.
+     * If Midplane is true, then the revolution will extend for half of Angle on both sides of the
+     * sketch plane. If Reversed is true then the direction of revolution will be reversed. The
+     * created material will be cut out of the sketch support
+     */
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderGroove";
     }
     //@}
@@ -68,7 +69,8 @@ public:
     /// suggests a value for Reversed flag so that material is always removed from the support
     bool suggestReversed();
 
-    enum class RevolMethod {
+    enum class RevolMethod
+    {
         Dimension,
         ThroughAll,
         ToLast = ThroughAll,
@@ -84,7 +86,8 @@ protected:
     static const App::PropertyAngle::Constraints floatAngle;
 
     // See BRepFeat_MakeRevol
-    enum RevolMode {
+    enum RevolMode
+    {
         CutFromBase = 0,
         FuseWithBase = 1,
         None = 2
@@ -127,7 +130,7 @@ private:
     static const char* TypeEnums[];
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PART_Groove_H
+#endif  // PART_Groove_H

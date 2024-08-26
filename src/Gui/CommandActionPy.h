@@ -30,7 +30,7 @@
 namespace Gui
 {
 
-class CommandActionPy : public Py::PythonClass<CommandActionPy>
+class CommandActionPy: public Py::PythonClass<CommandActionPy>
 {
 public:
     static void init_type();
@@ -54,6 +54,6 @@ private:
     Command* cmd = nullptr;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_COMMANDACTIONPY_H
+#endif  // GUI_COMMANDACTIONPY_H

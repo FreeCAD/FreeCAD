@@ -30,23 +30,28 @@
 #include <Base/Unit.h>
 #include <memory>
 
-namespace Ui {
+namespace Ui
+{
 class DlgExpressionInput;
 }
 
-namespace Base {
+namespace Base
+{
 class Quantity;
 }
 
-namespace App {
+namespace App
+{
 class Path;
 class Expression;
 class DocumentObject;
-}
+}  // namespace App
 
-namespace Gui {
+namespace Gui
+{
 
-namespace Dialog {
+namespace Dialog
+{
 
 class GuiExport NumberRange
 {
@@ -56,27 +61,36 @@ public:
     void throwIfOutOfRange(const Base::Quantity&) const;
 
 private:
-    double minimum{};
-    double maximum{};
-    bool defined{false};
+    double minimum {};
+    double maximum {};
+    bool defined {false};
 };
 
-class GuiExport DlgExpressionInput : public QDialog
+class GuiExport DlgExpressionInput: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = nullptr);
+    explicit DlgExpressionInput(const App::ObjectIdentifier& _path,
+                                std::shared_ptr<const App::Expression> _expression,
+                                const Base::Unit& _impliedUnit,
+                                QWidget* parent = nullptr);
     ~DlgExpressionInput() override;
 
     void setRange(double minimum, double maximum);
     void clearRange();
-    std::shared_ptr<App::Expression> getExpression() const { return expression; }
+    std::shared_ptr<App::Expression> getExpression() const
+    {
+        return expression;
+    }
 
-    bool discardedFormula() const { return discarded; }
+    bool discardedFormula() const
+    {
+        return discarded;
+    }
 
     QPoint expressionPosition() const;
-    void   setExpressionInputSize(int width, int height);
+    void setExpressionInputSize(int width, int height);
 
 public Q_SLOTS:
     void show();
@@ -101,7 +115,7 @@ private:
     void acceptWithVarSet();
 
 private Q_SLOTS:
-    void textChanged(const QString & text);
+    void textChanged(const QString& text);
     void setDiscarded();
     void onCheckVarSets(int state);
     void onVarSetSelected(int);
@@ -109,7 +123,7 @@ private Q_SLOTS:
     void namePropChanged(const QString&);
 
 private:
-    ::Ui::DlgExpressionInput *ui;
+    ::Ui::DlgExpressionInput* ui;
     std::shared_ptr<App::Expression> expression;
     App::ObjectIdentifier path;
     bool discarded;
@@ -122,7 +136,7 @@ private:
     std::unique_ptr<QTreeWidget> treeWidget;
 };
 
-}
-}
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_EXPRESSIONINPUT_H
+#endif  // GUI_DIALOG_EXPRESSIONINPUT_H

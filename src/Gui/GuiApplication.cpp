@@ -24,24 +24,24 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QAbstractSpinBox>
-# include <QByteArray>
-# include <QComboBox>
-# include <QTextStream>
-# include <QFileInfo>
-# include <QFileOpenEvent>
-# include <QSessionManager>
-# include <QTimer>
+#include <sstream>
+#include <QAbstractSpinBox>
+#include <QByteArray>
+#include <QComboBox>
+#include <QTextStream>
+#include <QFileInfo>
+#include <QFileOpenEvent>
+#include <QSessionManager>
+#include <QTimer>
 #endif
 
 #include <QLocalServer>
 #include <QLocalSocket>
 
 #if defined(Q_OS_UNIX)
-# include <sys/types.h>
-# include <ctime>
-# include <unistd.h>
+#include <sys/types.h>
+#include <ctime>
+#include <unistd.h>
 #endif
 
 #include <App/Application.h>
@@ -56,44 +56,51 @@
 
 using namespace Gui;
 
-GUIApplication::GUIApplication(int & argc, char ** argv)
+GUIApplication::GUIApplication(int& argc, char** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
-    connect(this, &GUIApplication::commitDataRequest,
-            this, &GUIApplication::commitData, Qt::DirectConnection);
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    connect(this,
+            &GUIApplication::commitDataRequest,
+            this,
+            &GUIApplication::commitData,
+            Qt::DirectConnection);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     setFallbackSessionManagementEnabled(false);
 #endif
 }
 
 GUIApplication::~GUIApplication() = default;
 
-bool GUIApplication::notify (QObject * receiver, QEvent * event)
+bool GUIApplication::notify(QObject* receiver, QEvent* event)
 {
     if (!receiver) {
         Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
-            (int)event->type());
+                            (int)event->type());
         return false;
     }
     try {
-        if (event->type() == Spaceball::ButtonEvent::ButtonEventType ||
-            event->type() == Spaceball::MotionEvent::MotionEventType)
+        if (event->type() == Spaceball::ButtonEvent::ButtonEventType
+            || event->type() == Spaceball::MotionEvent::MotionEventType) {
             return processSpaceballEvent(receiver, event);
-        else
+        }
+        else {
             return QApplication::notify(receiver, event);
+        }
     }
-    catch (const Base::SystemExitException &e) {
+    catch (const Base::SystemExitException& e) {
         caughtException.reset(new Base::SystemExitException(e));
         qApp->exit(e.getExitCode());
         return true;
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n",
+                              e.what());
     }
     catch (const std::exception& e) {
         Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n",
+                              e.what());
     }
     catch (...) {
         Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n");
@@ -111,14 +118,16 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
                 dump << "\t";
                 dump << w->metaObject()->className();
                 QString name = w->objectName();
-                if (!name.isEmpty())
+                if (!name.isEmpty()) {
                     dump << " (" << (const char*)name.toUtf8() << ")";
+                }
                 w = w->parentWidget();
-                if (w)
+                if (w) {
                     dump << " is child of\n";
+                }
             }
             std::string str = dump.str();
-            Base::Console().Log("%s",str.c_str());
+            Base::Console().Log("%s", str.c_str());
         }
     }
     catch (...) {
@@ -128,7 +137,7 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
     return true;
 }
 
-void GUIApplication::commitData(QSessionManager &manager)
+void GUIApplication::commitData(QSessionManager& manager)
 {
     if (manager.allowsInteraction()) {
         if (!Gui::getMainWindow()->close()) {
@@ -145,7 +154,7 @@ void GUIApplication::commitData(QSessionManager &manager)
     }
 }
 
-bool GUIApplication::event(QEvent * ev)
+bool GUIApplication::event(QEvent* ev)
 {
     if (ev->type() == QEvent::FileOpen) {
         QString file = static_cast<QFileOpenEvent*>(ev)->file();
@@ -162,11 +171,12 @@ bool GUIApplication::event(QEvent * ev)
 
 // ----------------------------------------------------------------------------
 
-class GUISingleApplication::Private {
+class GUISingleApplication::Private
+{
 public:
-    explicit Private(GUISingleApplication *q_ptr)
-      : q_ptr(q_ptr)
-      , timer(new QTimer(q_ptr))
+    explicit Private(GUISingleApplication* q_ptr)
+        : q_ptr(q_ptr)
+        , timer(new QTimer(q_ptr))
     {
         timer->setSingleShot(true);
         std::string exeName = App::Application::getExecutableName();
@@ -175,8 +185,9 @@ public:
 
     ~Private()
     {
-        if (server)
+        if (server) {
             server->close();
+        }
         delete server;
     }
 
@@ -196,8 +207,10 @@ public:
     {
         // Start a QLocalServer to listen for connections
         server = new QLocalServer();
-        QObject::connect(server, &QLocalServer::newConnection,
-                         q_ptr, &GUISingleApplication::receiveConnection);
+        QObject::connect(server,
+                         &QLocalServer::newConnection,
+                         q_ptr,
+                         &GUISingleApplication::receiveConnection);
         // first attempt
         if (!server->listen(serverName)) {
             if (server->serverError() == QAbstractSocket::AddressInUseError) {
@@ -214,17 +227,17 @@ public:
         }
     }
 
-    GUISingleApplication *q_ptr;
-    QTimer *timer;
-    QLocalServer *server{nullptr};
+    GUISingleApplication* q_ptr;
+    QTimer* timer;
+    QLocalServer* server {nullptr};
     QString serverName;
     QList<QString> messages;
-    bool running{false};
+    bool running {false};
 };
 
-GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
-    : GUIApplication(argc, argv),
-      d_ptr(new Private(this))
+GUISingleApplication::GUISingleApplication(int& argc, char** argv)
+    : GUIApplication(argc, argv)
+    , d_ptr(new Private(this))
 {
     d_ptr->setupConnection();
     connect(d_ptr->timer, &QTimer::timeout, this, &GUISingleApplication::processMessages);
@@ -237,13 +250,13 @@ bool GUISingleApplication::isRunning() const
     return d_ptr->running;
 }
 
-bool GUISingleApplication::sendMessage(const QString &message, int timeout)
+bool GUISingleApplication::sendMessage(const QString& message, int timeout)
 {
     QLocalSocket socket;
     bool connected = false;
-    for(int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         socket.connectToServer(d_ptr->serverName);
-        connected = socket.waitForConnected(timeout/2);
+        connected = socket.waitForConnected(timeout / 2);
         if (connected || i > 0) {
             break;
         }
@@ -251,7 +264,7 @@ bool GUISingleApplication::sendMessage(const QString &message, int timeout)
 #if defined(Q_OS_WIN)
         Sleep(DWORD(ms));
 #else
-        usleep(ms*1000);
+        usleep(ms * 1000);
 #endif
     }
     if (!connected) {
@@ -295,13 +308,12 @@ void GUISingleApplication::readFromSocket()
 
 void GUISingleApplication::receiveConnection()
 {
-    QLocalSocket *socket = d_ptr->server->nextPendingConnection();
+    QLocalSocket* socket = d_ptr->server->nextPendingConnection();
     if (!socket) {
         return;
     }
 
-    connect(socket, &QLocalSocket::disconnected,
-            socket, &QLocalSocket::deleteLater);
+    connect(socket, &QLocalSocket::disconnected, socket, &QLocalSocket::deleteLater);
     connect(socket, &QLocalSocket::readyRead, this, &GUISingleApplication::readFromSocket);
 }
 
@@ -315,14 +327,14 @@ void GUISingleApplication::processMessages()
 // ----------------------------------------------------------------------------
 
 WheelEventFilter::WheelEventFilter(QObject* parent)
-  : QObject(parent)
-{
-}
+    : QObject(parent)
+{}
 
 bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
 {
-    if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
+    if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel) {
         return true;
+    }
     auto sb = qobject_cast<QAbstractSpinBox*>(obj);
     if (sb) {
         if (ev->type() == QEvent::Show) {

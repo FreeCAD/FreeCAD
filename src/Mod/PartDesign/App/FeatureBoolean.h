@@ -36,7 +36,7 @@ namespace PartDesign
  * Abstract superclass of all features that are created by transformation of another feature
  * Transformations are translation, rotation and mirroring
  */
-class PartDesignExport Boolean : public PartDesign::Feature, public App::GeoFeatureGroupExtension
+class PartDesignExport Boolean: public PartDesign::Feature, public App::GeoFeatureGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesign::Boolean);
 
@@ -44,34 +44,36 @@ public:
     Boolean();
 
     /// The type of the boolean operation
-    App::PropertyEnumeration    Type;
+    App::PropertyEnumeration Type;
 
     App::PropertyBool Refine;
     App::PropertyBool UsePlacement;
 
-   /** @name methods override feature */
+    /** @name methods override feature */
     //@{
     /// Recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the view provider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartDesignGui::ViewProviderBoolean";
     }
     void onChanged(const App::Property* prop) override;
     //@}
 
 protected:
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
     TopoShape refineShapeIfActive(const TopoShape&) const;
 
 
 private:
     static const char* TypeEnums[];
-
 };
 
-} //namespace PartDesign
+}  // namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureBoolean_H
+#endif  // PARTDESIGN_FeatureBoolean_H

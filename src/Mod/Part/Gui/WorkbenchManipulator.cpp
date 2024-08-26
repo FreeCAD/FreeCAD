@@ -40,8 +40,7 @@ void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
 }
 
 void WorkbenchManipulator::modifyDockWindows([[maybe_unused]] Gui::DockWindowItems* dockWindow)
-{
-}
+{}
 
 void WorkbenchManipulator::addSectionCut(Gui::MenuItem* menuBar)
 {
@@ -51,7 +50,7 @@ void WorkbenchManipulator::addSectionCut(Gui::MenuItem* menuBar)
         auto item = par->findItem(toggleClipPlane);
         item = par->afterItem(item);
 
-        auto add = new Gui::MenuItem(); // NOLINT
+        auto add = new Gui::MenuItem();  // NOLINT
         add->setCommand("Part_SectionCut");
         par->insertItem(item, add);
     }
@@ -60,7 +59,7 @@ void WorkbenchManipulator::addSectionCut(Gui::MenuItem* menuBar)
 void WorkbenchManipulator::addSelectionFilter(Gui::ToolBarItem* toolBar)
 {
     if (auto view = toolBar->findItem("View")) {
-        auto add = new Gui::ToolBarItem(); // NOLINT
+        auto add = new Gui::ToolBarItem();  // NOLINT
         add->setCommand("Part_SelectFilter");
         auto item = view->findItem("Std_TreeViewActions");
         if (item) {

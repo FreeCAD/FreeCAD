@@ -40,11 +40,17 @@ PROPERTY_SOURCE(App::VRMLObject, App::GeoFeature)
 
 VRMLObject::VRMLObject()
 {
-    ADD_PROPERTY_TYPE(VrmlFile,(nullptr),"",Prop_None,"Included file with the VRML definition");
-    ADD_PROPERTY_TYPE(Urls,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output|Prop_Transient),
-        "Resource files loaded by the VRML file");
-    ADD_PROPERTY_TYPE(Resources,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output),
-        "Resource files loaded by the VRML file");
+    ADD_PROPERTY_TYPE(VrmlFile, (nullptr), "", Prop_None, "Included file with the VRML definition");
+    ADD_PROPERTY_TYPE(Urls,
+                      (""),
+                      "",
+                      static_cast<PropertyType>(Prop_ReadOnly | Prop_Output | Prop_Transient),
+                      "Resource files loaded by the VRML file");
+    ADD_PROPERTY_TYPE(Resources,
+                      (""),
+                      "",
+                      static_cast<PropertyType>(Prop_ReadOnly | Prop_Output),
+                      "Resource files loaded by the VRML file");
     Urls.setSize(0);
     Resources.setSize(0);
 }
@@ -82,16 +88,17 @@ void VRMLObject::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
-PyObject *VRMLObject::getPyObject()
+PyObject* VRMLObject::getPyObject()
 {
-    if (PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new DocumentObjectPy(this),true);
+        PythonObject = Py::Object(new DocumentObjectPy(this), true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
-std::string VRMLObject::getRelativePath(const std::string& prefix, const std::string& resource) const
+std::string VRMLObject::getRelativePath(const std::string& prefix,
+                                        const std::string& resource) const
 {
     std::string str;
     std::string intname = this->getNameInDocument();
@@ -136,38 +143,38 @@ void VRMLObject::makeDirectories(const std::string& path, const std::string& sub
         if (!fi.createDirectory()) {
             break;
         }
-        pos = subdir.find('/', pos+1);
+        pos = subdir.find('/', pos + 1);
     }
 }
 
-void VRMLObject::Save (Base::Writer &writer) const
+void VRMLObject::Save(Base::Writer& writer) const
 {
     App::GeoFeature::Save(writer);
 
     // save also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for (const auto & url : urls) {
+    for (const auto& url : urls) {
         writer.addFile(url.c_str(), this);
     }
 
     this->indexSave = 0;
 }
 
-void VRMLObject::Restore(Base::XMLReader &reader)
+void VRMLObject::Restore(Base::XMLReader& reader)
 {
     App::GeoFeature::Restore(reader);
     Urls.setSize(Resources.getSize());
 
     // restore also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
-    for(const auto & url : urls) {
+    for (const auto& url : urls) {
         reader.addFile(url.c_str(), this);
     }
 
     this->indexRestore = 0;
 }
 
-void VRMLObject::SaveDocFile (Base::Writer &writer) const
+void VRMLObject::SaveDocFile(Base::Writer& writer) const
 {
     // store the inline files of the VRML file
     if (this->indexSave < Urls.getSize()) {
@@ -192,7 +199,7 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-bool VRMLObject::restoreTextureFinished(Base::Reader &reader)
+bool VRMLObject::restoreTextureFinished(Base::Reader& reader)
 {
     Base::StateLocker locker(restoreData, true);
     if (this->indexRestore < Resources.getSize()) {
@@ -228,7 +235,7 @@ void VRMLObject::reloadFile()
     this->vrmlPath = fi.dirPath();
 }
 
-void VRMLObject::RestoreDocFile(Base::Reader &reader)
+void VRMLObject::RestoreDocFile(Base::Reader& reader)
 {
     if (restoreTextureFinished(reader)) {
         reloadFile();

@@ -1,22 +1,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -49,10 +49,10 @@ using namespace SIM::Coin3D::Quarter;
   keyboard and mouse. It can be subclassed to support other devices.
 */
 
-InputDevice::InputDevice(QuarterWidget* quarter) :
-    quarter(quarter)
+InputDevice::InputDevice(QuarterWidget* quarter)
+    : quarter(quarter)
 {
-  this->mousepos = SbVec2s(0, 0);
+    this->mousepos = SbVec2s(0, 0);
 }
 
 /*!
@@ -60,10 +60,9 @@ InputDevice::InputDevice(QuarterWidget* quarter) :
 
   \param[in] pos position of mouse in pixel coordinates
 */
-void
-InputDevice::setMousePosition(const SbVec2s & pos)
+void InputDevice::setMousePosition(const SbVec2s& pos)
 {
-  this->mousepos = pos;
+    this->mousepos = pos;
 }
 
 /*!
@@ -71,10 +70,9 @@ InputDevice::setMousePosition(const SbVec2s & pos)
 
   \param[in] size in pixels
 */
-void
-InputDevice::setWindowSize(const SbVec2s & size)
+void InputDevice::setWindowSize(const SbVec2s& size)
 {
-  this->windowsize = size;
+    this->windowsize = size;
 }
 
 /*!
@@ -83,18 +81,17 @@ InputDevice::setWindowSize(const SbVec2s & size)
   \param[in,out] SoEvent the transformed event
   \param[in] QEvent incoming QEvent
 */
-void
-InputDevice::setModifiers(SoEvent * soevent, const QInputEvent * qevent)
+void InputDevice::setModifiers(SoEvent* soevent, const QInputEvent* qevent)
 {
-  // FIXME: How do we get the time from the qevent? (20070306 frodo)
-  soevent->setTime(SbTime::getTimeOfDay());
+    // FIXME: How do we get the time from the qevent? (20070306 frodo)
+    soevent->setTime(SbTime::getTimeOfDay());
 
-  // Note: On Mac OS X, the ControlModifier value corresponds to the
-  // Command keys on the Macintosh keyboard, and the MetaModifier
-  // value corresponds to the Control keys.
-  soevent->setShiftDown(qevent->modifiers() & Qt::ShiftModifier);
-  soevent->setAltDown(qevent->modifiers() & Qt::AltModifier);
-  soevent->setCtrlDown(qevent->modifiers() & Qt::ControlModifier);
+    // Note: On Mac OS X, the ControlModifier value corresponds to the
+    // Command keys on the Macintosh keyboard, and the MetaModifier
+    // value corresponds to the Control keys.
+    soevent->setShiftDown(qevent->modifiers() & Qt::ShiftModifier);
+    soevent->setAltDown(qevent->modifiers() & Qt::AltModifier);
+    soevent->setCtrlDown(qevent->modifiers() & Qt::ControlModifier);
 }
 
 /*!

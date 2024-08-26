@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <unordered_set>
+#include <unordered_set>
 #endif
 
 #include "MappedName.h"
@@ -34,13 +34,15 @@
 #include <boost/iostreams/stream.hpp>
 
 
-FC_LOG_LEVEL_INIT("MappedName", true, 2);// NOLINT
+FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
 
-namespace Data {
+namespace Data
+{
 
 void MappedName::compact() const
 {
-    auto self = const_cast<MappedName*>(this); //FIXME this is a workaround for a single call in ElementMap::addName()
+    auto self = const_cast<MappedName*>(
+        this);  // FIXME this is a workaround for a single call in ElementMap::addName()
 
     if (this->raw) {
         self->data = QByteArray(self->data.constData(), self->data.size());
@@ -49,8 +51,12 @@ void MappedName::compact() const
 }
 
 
-int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* postfixOut,
-                                     char* typeOut, bool negative, bool recursive) const
+int MappedName::findTagInElementName(long* tagOut,
+                                     int* lenOut,
+                                     std::string* postfixOut,
+                                     char* typeOut,
+                                     bool negative,
+                                     bool recursive) const
 {
     bool hex = true;
     int pos = this->rfind(POSTFIX_TAG);
@@ -61,7 +67,7 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
     //                                     |
     //                                    pos
 
-    if(pos < 0) {
+    if (pos < 0) {
         pos = this->rfind(POSTFIX_DECIMAL_TAG);
         if (pos < 0) {
             return -1;
@@ -77,7 +83,7 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
     char eof = 0;
 
     int size {0};
-    const char * nameAsChars = this->toConstString(offset, size);
+    const char* nameAsChars = this->toConstString(offset, size);
 
     // check if the number followed by the tagPosfix is negative
     bool isNegative = (nameAsChars[0] == '-');
@@ -89,7 +95,8 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
     if (!hex) {
         // no hex is an older version of the encoding scheme
         iss >> _tag >> sep;
-    } else {
+    }
+    else {
         // The purpose of tagOut postfixOut is to encode one model operation. The
         // 'tagOut' field is used to record the own object ID of that model shape,
         // and the 'lenOut' field indicates the length of the operation codes
@@ -148,13 +155,13 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
     }
 
     if (hex) {
-        if (pos-_len < 0) {
+        if (pos - _len < 0) {
             return -1;
         }
         if ((_len != 0) && recursive && (tagOut || lenOut)) {
             // in case of recursive tagOut postfixOut (used by hierarchy element
             // map), look for any embedded tagOut postfixOut
-            int next = MappedName::fromRawData(*this, pos-_len, _len).rfind(POSTFIX_TAG);
+            int next = MappedName::fromRawData(*this, pos - _len, _len).rfind(POSTFIX_TAG);
             if (next >= 0) {
                 next += pos - _len;
                 // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
@@ -174,7 +181,7 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
                               .find(ELEMENT_MAP_PREFIX);
                 }
                 if (end >= 0) {
-                    end += next+1;
+                    end += next + 1;
                     // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
                     //                            ^
                     //                            |
@@ -183,7 +190,8 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
                     // #94;:G0;XTR;:H19:8,F;:H1a,F;BND:-1:0;:H1b:10,F
                     //                            |       |
                     //                            -- lenOut --
-                } else {
+                }
+                else {
                     _len = 0;
                 }
             }
@@ -196,28 +204,28 @@ int MappedName::findTagInElementName(long* tagOut, int* lenOut, std::string* pos
         // ----------- lenOut -----------
         _len = pos - _len;
     }
-    if(typeOut) {
+    if (typeOut) {
         *typeOut = tp;
     }
-    if(tagOut) {
+    if (tagOut) {
         if (_tag == 0 && recursive) {
             return MappedName(*this, 0, _len)
                 .findTagInElementName(tagOut, lenOut, postfixOut, typeOut, negative);
         }
-        if(_tag>0 || negative) {
+        if (_tag > 0 || negative) {
             *tagOut = _tag;
         }
         else {
             *tagOut = -_tag;
         }
     }
-    if(lenOut) {
+    if (lenOut) {
         *lenOut = _len;
     }
-    if(postfixOut) {
+    if (postfixOut) {
         *postfixOut = this->toString(pos);
     }
     return pos;
 }
 
-}
+}  // namespace Data

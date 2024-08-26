@@ -35,7 +35,7 @@ std::string PartPy::representation() const
     return {"<Part object>"};
 }
 
-PyObject *PartPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* PartPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -44,4 +44,3 @@ int PartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-

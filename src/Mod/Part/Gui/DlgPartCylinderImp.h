@@ -25,11 +25,12 @@
 
 #include <Gui/InputVector.h>
 
-namespace PartGui {
+namespace PartGui
+{
 class Ui_DlgPartCylinder;
 using Ui_DlgPartCylinderPtr = std::shared_ptr<Ui_DlgPartCylinder>;
 
-class DlgPartCylinderImp : public Gui::LocationDialogUiImp
+class DlgPartCylinderImp: public Gui::LocationDialogUiImp
 {
     Q_OBJECT
 
@@ -44,6 +45,6 @@ private:
     Ui_DlgPartCylinderPtr getUi() const;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGPARTCYLINDERIMP_H
+#endif  // PARTGUI_DLGPARTCYLINDERIMP_H

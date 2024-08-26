@@ -65,19 +65,19 @@ namespace QSint
 
     \endcode
 */
-class QSINT_EXPORT ActionLabel : public QToolButton
+class QSINT_EXPORT ActionLabel: public QToolButton
 {
     Q_OBJECT
 
 public:
     /** Constructor.
-      */
-    explicit ActionLabel(QWidget *parent = nullptr);
+     */
+    explicit ActionLabel(QWidget* parent = nullptr);
 
     /** Constructor. Creates ActionLabel from the \a action.
       \since 0.2
       */
-    explicit ActionLabel(QAction *action, QWidget *parent = nullptr);
+    explicit ActionLabel(QAction* action, QWidget* parent = nullptr);
 
     ~ActionLabel() override = default;
 
@@ -89,6 +89,6 @@ protected:
 };
 
 
-} // namespace
+}  // namespace QSint
 
-#endif // ACTIONLABEL_H
+#endif  // ACTIONLABEL_H

@@ -27,9 +27,10 @@
 #include "ViewProviderSketchBased.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderRevolution : public ViewProviderSketchBased
+class PartDesignGuiExport ViewProviderRevolution: public ViewProviderSketchBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderRevolution);
 
@@ -43,13 +44,11 @@ public:
 
 protected:
     /// Returns a newly created TaskDlgRevolutionParameters
-    TaskDlgFeatureParameters *getEditDialog() override;
-
-
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderRevolution_H
+#endif  // PARTGUI_ViewProviderRevolution_H

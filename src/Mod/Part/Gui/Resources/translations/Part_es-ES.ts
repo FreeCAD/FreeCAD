@@ -2846,10 +2846,10 @@ Si ambas longitudes son cero, se utiliza la magnitud de la dirección.</translat
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="681"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <source>Can't determine normal vector of shape to be extruded. Please use other mode.
 
 (%1)</source>
-      <translation>No se puede determinar el vector normal de la forma para ser extruido. Por favor utilice otro modo. 
+      <translation>No se puede determinar el vector normal de la forma para ser extruido. Por favor utilice otro modo.
 
  (%1)</translation>
     </message>
@@ -3979,7 +3979,7 @@ during file reading (slower but higher details).</source>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Creación de revolución fallida. 
+      <translation>Creación de revolución fallida.
 
 %1</translation>
     </message>
@@ -5055,9 +5055,9 @@ but more stable.  Default: false</source>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1054"/>
-      <source>Expand shape content.  Changes will take effect next time you use 
+      <source>Expand shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Expandir contenido de forma. Los cambios tendrán efecto la próxima vez que utilices 
+      <translation>Expandir contenido de forma. Los cambios tendrán efecto la próxima vez que utilices
 la herramienta de verificación de geometría. Por defecto: false</translation>
     </message>
     <message>
@@ -5067,9 +5067,9 @@ la herramienta de verificación de geometría. Por defecto: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1064"/>
-      <source>Show advanced shape content.  Changes will take effect next time you use 
+      <source>Show advanced shape content.  Changes will take effect next time you use
 the check geometry tool.  Default: false</source>
-      <translation>Muestra el contenido avanzado de la forma. Los cambios tendrán efecto la próxima vez que utilices 
+      <translation>Muestra el contenido avanzado de la forma. Los cambios tendrán efecto la próxima vez que utilices
 la herramienta de verificación de geometría. Por defecto: false</translation>
     </message>
     <message>
@@ -6591,7 +6591,7 @@ Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</tran
       <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
-      <translation>Creación de escala fallida. 
+      <translation>Creación de escala fallida.
 %1</translation>
     </message>
   </context>

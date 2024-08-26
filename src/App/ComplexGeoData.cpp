@@ -184,20 +184,20 @@ bool ComplexGeoData::getCenterOfGravity(Base::Vector3d& unused) const
     return false;
 }
 
-const std::string &ComplexGeoData::elementMapPrefix() {
+const std::string& ComplexGeoData::elementMapPrefix()
+{
     static std::string prefix(ELEMENT_MAP_PREFIX);
     return prefix;
 }
 
-std::string ComplexGeoData::getElementMapVersion() const {
+std::string ComplexGeoData::getElementMapVersion() const
+{
     return "4";
 }
 
-bool ComplexGeoData::checkElementMapVersion(const char * ver) const
+bool ComplexGeoData::checkElementMapVersion(const char* ver) const
 {
-    return !boost::equals(ver, "3")
-        && !boost::equals(ver, "4")
-        && !boost::starts_with(ver, "3.");
+    return !boost::equals(ver, "3") && !boost::equals(ver, "4") && !boost::starts_with(ver, "3.");
 }
 
 size_t ComplexGeoData::getElementMapSize(bool flush) const
@@ -301,8 +301,9 @@ ElementMapPtr ComplexGeoData::resetElementMap(ElementMapPtr elementMap)
     _elementMap.swap(elementMap);
     // We expect that if the ComplexGeoData ( TopoShape ) has a hasher, then its elementMap will
     // have the same one.  Make sure that happens.
-    if ( _elementMap && ! _elementMap->hasher )
+    if (_elementMap && !_elementMap->hasher) {
         _elementMap->hasher = Hasher;
+    }
     return elementMap;
 }
 
@@ -329,7 +330,6 @@ ElementMapPtr ComplexGeoData::ensureElementMap(bool flush)
         resetElementMap(std::make_shared<Data::ElementMap>());
     }
     return elementMap(flush);
-
 }
 
 void ComplexGeoData::flushElementMap() const
@@ -656,12 +656,13 @@ unsigned int ComplexGeoData::getMemSize() const
     return 0;
 }
 
-std::vector<IndexedName> ComplexGeoData::getHigherElements(const char *, bool) const
+std::vector<IndexedName> ComplexGeoData::getHigherElements(const char*, bool) const
 {
     return {};
 }
 
-void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children)
+void ComplexGeoData::setMappedChildElements(
+    const std::vector<Data::ElementMap::MappedChildElements>& children)
 {
     // DO NOT reset element map if there is one. Because we allow mixing child
     // mapping and normal mapping
@@ -690,8 +691,9 @@ void ComplexGeoData::beforeSave() const
 void ComplexGeoData::hashChildMaps()
 {
     flushElementMap();
-    if (_elementMap)
+    if (_elementMap) {
         _elementMap->hashChildMaps(Tag);
+    }
 }
 
 bool ComplexGeoData::hasChildElementMap() const
@@ -704,7 +706,7 @@ void ComplexGeoData::dumpElementMap(std::ostream& stream) const
 {
     auto map = getElementMap();
     std::sort(map.begin(), map.end());
-    for ( auto& element : map ) {
+    for (auto& element : map) {
         stream << element.index << " : " << element.name << std::endl;
     }
 }

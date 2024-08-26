@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
-# include <QMenu>
+#include <QAction>
+#include <QMenu>
 #endif
 
 #include <Gui/ActionFunction.h>
@@ -50,9 +50,10 @@ ViewProviderPrimitive::~ViewProviderPrimitive() = default;
 void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    QAction* act = menu->addAction(
+        QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
     act->setData(QVariant((int)ViewProvider::Default));
-    func->trigger(act, [this](){
+    func->trigger(act, [this]() {
         this->startDefaultEditMode();
     });
 
@@ -62,10 +63,11 @@ void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, con
 bool ViewProviderPrimitive::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        if (Gui::Control().activeDialog())
+        if (Gui::Control().activeDialog()) {
             return false;
-        PartGui::TaskPrimitivesEdit* dlg
-            = new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
+        }
+        PartGui::TaskPrimitivesEdit* dlg =
+            new PartGui::TaskPrimitivesEdit(dynamic_cast<Part::Primitive*>(getObject()));
         Gui::Control().showDialog(dlg);
         return true;
     }

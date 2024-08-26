@@ -1908,7 +1908,7 @@ Note: your changes will be applied when you next switch workbenches
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Toegang geweier vir '%1' 
+      <translation>Toegang geweier vir '%1'
 Spesifiseer asseblief 'n ander gids.</translation>
     </message>
     <message>
@@ -2510,7 +2510,7 @@ A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+can be rendered directly by GPU.
 
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
@@ -2520,7 +2520,7 @@ A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+can be rendered directly by GPU.
 
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
@@ -2536,14 +2536,14 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
+There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
       <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this: 
+There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
@@ -3916,9 +3916,9 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
       <translation type="unfinished">Result</translation>
     </message>
     <message>
-      <source>List of last used calculations 
+      <source>List of last used calculations
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
+      <translation type="unfinished">List of last used calculations
 To add a calculation press Return in the value input field</translation>
     </message>
     <message>
@@ -4891,7 +4891,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <source>%1.
 
 This has been modified outside of the source editor. Do you want to reload it?</source>
-      <translation>'%1'. 
+      <translation>'%1'.
 Dit is verander buite die bronwysiger. Wil jy dit herlaai?</translation>
     </message>
     <message>
@@ -5277,7 +5277,7 @@ in die regteraansig is %2 punte gekies.</translation>
     <message>
       <source>The alignment failed.
 How do you want to proceed?</source>
-      <translation>Die belyning het misluk. 
+      <translation>Die belyning het misluk.
 Hoe wil jy voortgaan?</translation>
     </message>
     <message>
@@ -5480,7 +5480,7 @@ In die linkeraansig is %1 punte gekies, in die regteraansig is %2 punte gekies.<
     <message>
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
-      <translation>Die program loop nog. 
+      <translation>Die program loop nog.
 Wil jy afsluit sonder om jou data te stoor?</translation>
     </message>
     <message>
@@ -5676,7 +5676,7 @@ Wil jy afsluit sonder om jou data te stoor?</translation>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>Die gids '%1' bestaan nie. 
+      <translation>Die gids '%1' bestaan nie.
 Wil jy 'n bestaande gids spesifiseer?</translation>
     </message>
     <message>
@@ -6665,7 +6665,7 @@ Maak asb. 'n leservenster oop en tik in http://localhost:%1</translation>
     <message>
       <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Kan nie dokumentasie laai nie. 
+      <translation>Kan nie dokumentasie laai nie.
 Om dit te laai word Qt 4.4 of hoër benodig.</translation>
     </message>
     <message>
@@ -6685,7 +6685,7 @@ Wees bewus dat die plek waar jy kliek belangrik is.</translation>
     <message>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Kies asseblief twee voorwerpe. 
+      <translation>Kies asseblief twee voorwerpe.
 Wees bewus dat die punt waar jy kliek belangrik is.</translation>
     </message>
     <message>

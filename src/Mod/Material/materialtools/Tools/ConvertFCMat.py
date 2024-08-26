@@ -31,17 +31,19 @@ import uuid
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
+
 def decode(name):
     "decodes encoded strings"
     try:
-        decodedName = (name.decode("utf8"))
+        decodedName = name.decode("utf8")
     except UnicodeDecodeError:
         try:
-            decodedName = (name.decode("latin1"))
+            decodedName = name.decode("latin1")
         except UnicodeDecodeError:
             print("Error: Couldn't determine character encoding")
             decodedName = name
     return decodedName
+
 
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
@@ -75,38 +77,38 @@ def read(filename):
     d["Cost"] = {}
     d["UserDefined"] = {}
     d["Meta"]["CardName"] = card_name_file  # CardName is the MatCard file name
-    section = ''
+    section = ""
     for ln, line in enumerate(content):
         # line numbers are used for CardName and AuthorAndLicense
         # the use of line number is not smart for a data model
         # a wrong user edit could break the file
 
         # comment
-        if line.startswith('#'):
+        if line.startswith("#"):
             # a '#' is assumed to be a comment which is ignored
             continue
         # CardName
-        if line.startswith(';') and ln == 0:
+        if line.startswith(";") and ln == 0:
             pass
 
         # AuthorAndLicense
-        elif line.startswith(';') and ln == 1:
+        elif line.startswith(";") and ln == 1:
             v = line.split(";")[1].strip()  # Line 2
             if hasattr(v, "decode"):
-                v = v.decode('utf-8')
-            d["General"]["AuthorAndLicense"] = v # Move the field to the general group
+                v = v.decode("utf-8")
+            d["General"]["AuthorAndLicense"] = v  # Move the field to the general group
 
         # rest
         else:
             # ; is a Comment
             # [ is a Section
-            if line[0] == '[':
+            if line[0] == "[":
                 line = line[1:]
                 k = line.split("]", 1)
                 if len(k) >= 2:
                     v = k[0].strip()
                     if hasattr(v, "decode"):
-                        v = v.decode('utf-8')
+                        v = v.decode("utf-8")
                     section = v
             elif line[0] not in ";":
                 # split once on first occurrence
@@ -115,9 +117,10 @@ def read(filename):
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
-                        v = v.decode('utf-8')
+                        v = v.decode("utf-8")
                     d[section][k[0].strip()] = v
     return d
+
 
 def yamGeneral(card):
     father = ""
@@ -131,24 +134,25 @@ def yamGeneral(card):
     for param in card:
         if param in ["Name", "AuthorAndLicense", "Description", "ReferenceSource", "SourceURL"]:
             yam += '  {0}: "{1}"\n'.format(param, card[param])
-        elif param  in ["Father"]:
+        elif param in ["Father"]:
             father += '    {0}: "{1}"\n'.format(param, card[param])
-        elif param  in ["KindOfMaterial", "MaterialNumber", "Norm", "StandardCode"]:
-            if param == "Norm": # Handle the name change
+        elif param in ["KindOfMaterial", "MaterialNumber", "Norm", "StandardCode"]:
+            if param == "Norm":  # Handle the name change
                 materialStandard += '    {0}: "{1}"\n'.format("StandardCode", card[param])
             else:
                 materialStandard += '    {0}: "{1}"\n'.format(param, card[param])
 
     if len(father) > 0:
-        yamModels += "  {0}:\n".format('Father')
-        yamModels += "    UUID: '{0}'\n".format('9cdda8b6-b606-4778-8f13-3934d8668e67')
+        yamModels += "  {0}:\n".format("Father")
+        yamModels += "    UUID: '{0}'\n".format("9cdda8b6-b606-4778-8f13-3934d8668e67")
         yamModels += father
     if len(materialStandard) > 0:
-        yamModels += "  {0}:\n".format('MaterialStandard')
-        yamModels += "    UUID: '{0}'\n".format('1e2c0088-904a-4537-925f-64064c07d700')
+        yamModels += "  {0}:\n".format("MaterialStandard")
+        yamModels += "    UUID: '{0}'\n".format("1e2c0088-904a-4537-925f-64064c07d700")
         yamModels += materialStandard
 
     return yam, yamModels
+
 
 def yamSection(card, header, uuid):
     if len(card) > 0:
@@ -161,6 +165,7 @@ def yamSection(card, header, uuid):
 
     return yam
 
+
 def yamMechanical(card):
     # Check which model we need
     useDensity = False
@@ -171,40 +176,54 @@ def yamMechanical(card):
             useDensity = True
         elif param in ["BulkModulus", "PoissonRatio", "ShearModulus", "YoungsModulus"]:
             useIso = True
-        elif param in ["AngleOfFriction", "CompressiveStrength", "FractureToughness",
-                       "UltimateStrain", "UltimateTensileStrength", "YieldStrength", "Stiffness", "Hardness"]:
+        elif param in [
+            "AngleOfFriction",
+            "CompressiveStrength",
+            "FractureToughness",
+            "UltimateStrain",
+            "UltimateTensileStrength",
+            "YieldStrength",
+            "Stiffness",
+            "Hardness",
+        ]:
             useLinearElastic = True
 
     yam = ""
     if useLinearElastic:
-        return yamSection(card, 'LinearElastic', '7b561d1d-fb9b-44f6-9da9-56a4f74d7536')
+        return yamSection(card, "LinearElastic", "7b561d1d-fb9b-44f6-9da9-56a4f74d7536")
     if useIso:
-        yam = yamSection(card, 'IsotropicLinearElastic', 'f6f9e48c-b116-4e82-ad7f-3659a9219c50')
+        yam = yamSection(card, "IsotropicLinearElastic", "f6f9e48c-b116-4e82-ad7f-3659a9219c50")
     if useDensity:
-        return yam + yamSection(card, 'Density', '454661e5-265b-4320-8e6f-fcf6223ac3af')
+        return yam + yamSection(card, "Density", "454661e5-265b-4320-8e6f-fcf6223ac3af")
 
     # default mechanical model
     return ""
+
 
 def yamFluid(card):
     # Split out density
     for param in card:
         if param not in ["Density"]:
-            return yamSection(card, 'Fluid', '1ae66d8c-1ba1-4211-ad12-b9917573b202')
+            return yamSection(card, "Fluid", "1ae66d8c-1ba1-4211-ad12-b9917573b202")
 
-    return yamSection(card, 'Density', '454661e5-265b-4320-8e6f-fcf6223ac3af')
+    return yamSection(card, "Density", "454661e5-265b-4320-8e6f-fcf6223ac3af")
+
 
 def yamThermal(card):
-    return yamSection(card, 'Thermal', '9959d007-a970-4ea7-bae4-3eb1b8b883c7')
+    return yamSection(card, "Thermal", "9959d007-a970-4ea7-bae4-3eb1b8b883c7")
+
 
 def yamElectromagnetic(card):
-    return yamSection(card, 'Electromagnetic', 'b2eb5f48-74b3-4193-9fbb-948674f427f3')
+    return yamSection(card, "Electromagnetic", "b2eb5f48-74b3-4193-9fbb-948674f427f3")
+
 
 def yamArchitectural(card):
-    return yamSection(card, 'Architectural', '32439c3b-262f-4b7b-99a8-f7f44e5894c8')
+    return yamSection(card, "Architectural", "32439c3b-262f-4b7b-99a8-f7f44e5894c8")
+
 
 def yamCost(card):
-    return yamSection(card, 'Costs', '881df808-8726-4c2e-be38-688bb6cce466')
+    return yamSection(card, "Costs", "881df808-8726-4c2e-be38-688bb6cce466")
+
 
 def yamRendering(card):
     # Check which model we need
@@ -217,25 +236,29 @@ def yamRendering(card):
             useAdvanced = True
 
     if useAdvanced:
-        return yamSection(card, 'AdvancedRendering', 'c880f092-cdae-43d6-a24b-55e884aacbbf')
+        return yamSection(card, "AdvancedRendering", "c880f092-cdae-43d6-a24b-55e884aacbbf")
     if useTexture:
-        return yamSection(card, 'TextureRendering', 'bbdcc65b-67ca-489c-bd5c-a36e33d1c160')
+        return yamSection(card, "TextureRendering", "bbdcc65b-67ca-489c-bd5c-a36e33d1c160")
 
     # default rendering model
-    return yamSection(card, 'BasicRendering', 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e')
+    return yamSection(card, "BasicRendering", "f006c7e4-35b7-43d5-bbf9-c5d572309e6e")
+
 
 def yamVectorRendering(card):
-    return yamSection(card, 'VectorRendering', 'fdf5a80e-de50-4157-b2e5-b6e5f88b680e')
+    return yamSection(card, "VectorRendering", "fdf5a80e-de50-4157-b2e5-b6e5f88b680e")
+
 
 def saveYaml(card, output):
     yam, yamModels = yamGeneral(card["General"])
-    if len(card["Mechanical"]) > 0 or \
-        len(card["Fluidic"]) > 0 or \
-        len(card["Thermal"]) > 0 or \
-        len(card["Electromagnetic"]) > 0 or \
-        len(card["Architectural"]) > 0 or \
-        len(card["Cost"]) > 0 or \
-        len(yamModels) > 0:
+    if (
+        len(card["Mechanical"]) > 0
+        or len(card["Fluidic"]) > 0
+        or len(card["Thermal"]) > 0
+        or len(card["Electromagnetic"]) > 0
+        or len(card["Architectural"]) > 0
+        or len(card["Cost"]) > 0
+        or len(yamModels) > 0
+    ):
         yam += "Models:\n"
         yam += yamModels
         if "Mechanical" in card:
@@ -261,8 +284,9 @@ def saveYaml(card, output):
     file.write(yam)
     file.close()
 
+
 def convert(infolder, outfolder):
-    a_path = infolder + '/**/*.FCMat'
+    a_path = infolder + "/**/*.FCMat"
     dir_path_list = glob.glob(a_path, recursive=True)
 
     for a_path in dir_path_list:
@@ -280,7 +304,9 @@ def convert(infolder, outfolder):
         out.parent.mkdir(parents=True, exist_ok=True)
         saveYaml(card, out)
 
+
 import argparse
+
 parser = argparse.ArgumentParser()
 parser.add_argument("infolder", help="Input folder containing older material cards")
 parser.add_argument("outfolder", help="Output folder to place the converted material cards")

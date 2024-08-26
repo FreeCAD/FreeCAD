@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 /**
-  * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
-  * them attachable.
-  */
+ * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
+ * them attachable.
+ */
 
 #ifndef PARTATTACHABLEOBJECT_H
 #define PARTATTACHABLEOBJECT_H
@@ -162,6 +162,6 @@ private:
 
 using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
-} // namespace Part
+}  // namespace Part
 
-#endif // PARTATTACHABLEOBJECT_H
+#endif  // PARTATTACHABLEOBJECT_H

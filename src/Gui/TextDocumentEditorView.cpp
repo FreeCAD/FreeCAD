@@ -22,11 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QApplication>
-# include <QClipboard>
-# include <QMessageBox>
-# include <QPushButton>
-# include <QString>
+#include <QApplication>
+#include <QClipboard>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QString>
 #endif
 
 #include "TextDocumentEditorView.h"
@@ -39,13 +39,12 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::TextDocumentEditorView, Gui::MDIView)
 
-TextDocumentEditorView::TextDocumentEditorView(
-        App::TextDocument* txtDoc, QPlainTextEdit* e,
-        QWidget* parent)
-    : MDIView(
-            Application::Instance->getDocument(txtDoc->getDocument()),
-            parent),
-    editor {e}, textDocument {txtDoc}
+TextDocumentEditorView::TextDocumentEditorView(App::TextDocument* txtDoc,
+                                               QPlainTextEdit* e,
+                                               QWidget* parent)
+    : MDIView(Application::Instance->getDocument(txtDoc->getDocument()), parent)
+    , editor {e}
+    , textDocument {txtDoc}
 {
     setupEditor();
     setupConnection();
@@ -86,7 +85,7 @@ void TextDocumentEditorView::closeEvent(QCloseEvent* event)
     }
 }
 
-bool TextDocumentEditorView::event(QEvent *event)
+bool TextDocumentEditorView::event(QEvent* event)
 {
     if (event->type() == QEvent::Show && sourceModified) {
         refresh();
@@ -97,22 +96,22 @@ bool TextDocumentEditorView::event(QEvent *event)
 
 void TextDocumentEditorView::setupEditor()
 {
-    connect(getEditor()->document(), &QTextDocument::modificationChanged,
-            this, &TextDocumentEditorView::setWindowModified);
-    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
-            + QString::fromLatin1("[*]"));
-    getEditor()->setPlainText(
-            QString::fromUtf8(textDocument->Text.getValue()));
+    connect(getEditor()->document(),
+            &QTextDocument::modificationChanged,
+            this,
+            &TextDocumentEditorView::setWindowModified);
+    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue()) + QString::fromLatin1("[*]"));
+    getEditor()->setPlainText(QString::fromUtf8(textDocument->Text.getValue()));
 }
 
 void TextDocumentEditorView::setupConnection()
 {
-    //NOLINTBEGIN
-    textConnection = textDocument->connectText(
-            std::bind(&TextDocumentEditorView::sourceChanged, this));
-    labelConnection = textDocument->connectLabel(
-            std::bind(&TextDocumentEditorView::labelChanged, this));
-    //NOLINTEND
+    // NOLINTBEGIN
+    textConnection =
+        textDocument->connectText(std::bind(&TextDocumentEditorView::sourceChanged, this));
+    labelConnection =
+        textDocument->connectLabel(std::bind(&TextDocumentEditorView::labelChanged, this));
+    // NOLINTEND
 }
 
 void TextDocumentEditorView::sourceChanged()
@@ -120,34 +119,32 @@ void TextDocumentEditorView::sourceChanged()
     if (getMainWindow()->activeWindow() == this) {
         refresh();
         sourceModified = false;
-    } else {
+    }
+    else {
         sourceModified = true;
     }
 }
 
 void TextDocumentEditorView::labelChanged()
 {
-    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
-            + QString::fromLatin1("[*]"));
+    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue()) + QString::fromLatin1("[*]"));
 }
 
 void TextDocumentEditorView::refresh()
 {
-    QString text = QString::fromUtf8(
-            textDocument->Text.getValue());
+    QString text = QString::fromUtf8(textDocument->Text.getValue());
     if (isEditorModified()) {
         QMessageBox msgBox {this};
         msgBox.setWindowTitle(tr("Text updated"));
         msgBox.setIcon(QMessageBox::Question);
-        msgBox.setText(tr(
-                    "The text of the underlying object has changed. "
-                    "Discard changes and reload the text from the object?"));
-        msgBox.addButton(
-                tr("Yes, reload."), QMessageBox::YesRole);
+        msgBox.setText(tr("The text of the underlying object has changed. "
+                          "Discard changes and reload the text from the object?"));
+        msgBox.addButton(tr("Yes, reload."), QMessageBox::YesRole);
         QPushButton* noBtt = msgBox.addButton(QMessageBox::No);
         msgBox.exec();
-        if (msgBox.clickedButton() == noBtt)
+        if (msgBox.clickedButton() == noBtt) {
             return;
+        }
     }
     getEditor()->setPlainText(text);
 }
@@ -155,30 +152,31 @@ void TextDocumentEditorView::refresh()
 bool TextDocumentEditorView::onMsg(const char* msg, const char**)
 {
     // don't allow any actions if the editor is being closed
-    if (aboutToClose)
+    if (aboutToClose) {
         return false;
+    }
 
-    if (strcmp(msg,"Save") == 0) {
+    if (strcmp(msg, "Save") == 0) {
         saveToObject();
         return getGuiDocument()->save();
     }
-    if (strcmp(msg,"Cut") == 0) {
+    if (strcmp(msg, "Cut") == 0) {
         getEditor()->cut();
         return true;
     }
-    if (strcmp(msg,"Copy") == 0) {
+    if (strcmp(msg, "Copy") == 0) {
         getEditor()->copy();
         return true;
     }
-    if (strcmp(msg,"Paste") == 0) {
+    if (strcmp(msg, "Paste") == 0) {
         getEditor()->paste();
         return true;
     }
-    if (strcmp(msg,"Undo") == 0) {
+    if (strcmp(msg, "Undo") == 0) {
         getEditor()->undo();
         return true;
     }
-    if (strcmp(msg,"Redo") == 0) {
+    if (strcmp(msg, "Redo") == 0) {
         getEditor()->redo();
         return true;
     }
@@ -193,30 +191,31 @@ bool TextDocumentEditorView::isEditorModified() const
 bool TextDocumentEditorView::onHasMsg(const char* msg) const
 {
     // don't allow any actions if the editor is being closed
-    if (aboutToClose)
+    if (aboutToClose) {
         return false;
+    }
 
-    if (strcmp(msg,"Save") == 0) {
+    if (strcmp(msg, "Save") == 0) {
         return true;
     }
-    if (strcmp(msg,"Cut") == 0) {
-        return (!getEditor()->isReadOnly() &&
-                getEditor()->textCursor().hasSelection());
+    if (strcmp(msg, "Cut") == 0) {
+        return (!getEditor()->isReadOnly() && getEditor()->textCursor().hasSelection());
     }
-    if (strcmp(msg,"Copy") == 0) {
+    if (strcmp(msg, "Copy") == 0) {
         return (getEditor()->textCursor().hasSelection());
     }
-    if (strcmp(msg,"Paste") == 0) {
-        if (getEditor()->isReadOnly())
+    if (strcmp(msg, "Paste") == 0) {
+        if (getEditor()->isReadOnly()) {
             return false;
-        QClipboard *cb = QApplication::clipboard();
+        }
+        QClipboard* cb = QApplication::clipboard();
         QString text = cb->text();
         return !text.isEmpty();
     }
-    if (strcmp(msg,"Undo") == 0) {
+    if (strcmp(msg, "Undo") == 0) {
         return (getEditor()->document()->isUndoAvailable());
     }
-    if (strcmp(msg,"Redo") == 0) {
+    if (strcmp(msg, "Redo") == 0) {
         return (getEditor()->document()->isRedoAvailable());
     }
     return false;
@@ -252,18 +251,18 @@ bool TextDocumentEditorView::canClose()
         }
 
         box.adjustSize();
-        switch (box.exec())
-        {
-        case QMessageBox::Save:
-            saveToObject();
-            if (getGuiDocument()->isLastView())
-                return getGuiDocument()->save();
-            return true;
-        case QMessageBox::Discard:
-            return true;
-        case QMessageBox::Cancel:
-        default:
-            return false;
+        switch (box.exec()) {
+            case QMessageBox::Save:
+                saveToObject();
+                if (getGuiDocument()->isLastView()) {
+                    return getGuiDocument()->save();
+                }
+                return true;
+            case QMessageBox::Discard:
+                return true;
+            case QMessageBox::Cancel:
+            default:
+                return false;
         }
     }
     else {
@@ -276,8 +275,7 @@ bool TextDocumentEditorView::canClose()
 void TextDocumentEditorView::saveToObject()
 {
     boost::signals2::shared_connection_block textBlock {textConnection};
-    textDocument->Text.setValue(
-            getEditor()->document()->toPlainText().toUtf8());
+    textDocument->Text.setValue(getEditor()->document()->toPlainText().toUtf8());
     textDocument->purgeTouched();
     getEditor()->document()->setModified(false);
 }

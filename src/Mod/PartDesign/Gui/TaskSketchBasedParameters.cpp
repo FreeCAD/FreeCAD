@@ -25,9 +25,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QRegularExpression>
-# include <QRegularExpressionMatch>
-# include <QTextStream>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QTextStream>
 #endif
 
 #include <App/Document.h>
@@ -50,8 +50,10 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskSketchBasedParameters */
 
-TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
-                                                     const std::string& pixmapname, const QString& parname)
+TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider* vp,
+                                                     QWidget* parent,
+                                                     const std::string& pixmapname,
+                                                     const QString& parname)
     : TaskFeatureParameters(vp, parent, pixmapname, parname)
 {
     // disable selection
@@ -77,10 +79,11 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     }
     else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
+        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":")
+            + QObject::tr("Face") + QString::number(faceId);
     }
 
-    std::vector<std::string> upToFaces(1,subname);
+    std::vector<std::string> upToFaces(1, subname);
     sketchBased->UpToFace.setValue(selObj, upToFaces);
     recomputeFeature();
 
@@ -114,7 +117,7 @@ void TaskSketchBasedParameters::onSelectReference(AllowSelectionFlags allow)
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
     if (auto sketchBased = getObject<PartDesign::ProfileBased>()) {
         // The solid this feature will be fused to
-        App::DocumentObject* prevSolid = sketchBased->getBaseObject( /* silent =*/ true );
+        App::DocumentObject* prevSolid = sketchBased->getBaseObject(/* silent =*/true);
 
         if (AllowSelectionFlags::Int(allow) != int(AllowSelection::NONE)) {
             startReferenceSelection(sketchBased, prevSolid);
@@ -138,8 +141,9 @@ void TaskSketchBasedParameters::exitSelectionMode()
 
 QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
 {
-    if (text.isEmpty())
+    if (text.isEmpty()) {
         return {};
+    }
 
     QStringList parts = text.split(QChar::fromLatin1(':'));
     if (parts.length() < 2) {
@@ -216,7 +220,7 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
         }
     }
 
-    return {}; // no such feature found
+    return {};  // no such feature found
 }
 
 QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub) const
@@ -232,7 +236,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
     }
 
     return QString::fromLatin1(R"((App.getDocument("%1").%2, ["%3"]))")
-            .arg(QString::fromLatin1(doc->getName()), o, sub);
+        .arg(QString::fromLatin1(doc->getName()), o, sub);
 }
 
 QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* section,
@@ -246,7 +250,8 @@ QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* sectio
         return {};
     }
     else {
-        return QString::fromStdString((std::string(section->getNameInDocument()) + ":" + subValues[0]));
+        return QString::fromStdString(
+            (std::string(section->getNameInDocument()) + ":" + subValues[0]));
     }
 }
 
@@ -261,10 +266,9 @@ TaskSketchBasedParameters::~TaskSketchBasedParameters()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp)
+TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider* vp)
     : TaskDlgFeatureParameters(vp)
-{
-}
+{}
 
 TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters() = default;
 

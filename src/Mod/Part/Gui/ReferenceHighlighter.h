@@ -32,7 +32,8 @@
 #include <Mod/Part/PartGlobal.h>
 
 
-namespace PartGui {
+namespace PartGui
+{
 
 /*!
  * \brief The ReferenceHighlighter class
@@ -48,34 +49,40 @@ public:
      */
     ReferenceHighlighter(const TopoDS_Shape& shape, const App::Color& color);
 
-    void setDefaultColor(const App::Color& c) {
+    void setDefaultColor(const App::Color& c)
+    {
         defaultColor = c;
     }
-    void setElementColor(const App::Color& c) {
+    void setElementColor(const App::Color& c)
+    {
         elementColor = c;
     }
-    void setObjectColor(const App::Color& c) {
+    void setObjectColor(const App::Color& c)
+    {
         objectColor = c;
     }
 
     /*!
      * \brief getVertexColors
-     * \param elements The sub-element names. If this list is empty \a colors will be filled with the default color.
-     * \param colors The size of the \a colors array is equal to the number of vertexes of the shape
+     * \param elements The sub-element names. If this list is empty \a colors will be filled with
+     * the default color. \param colors The size of the \a colors array is equal to the number of
+     * vertexes of the shape
      */
     void getVertexColors(const std::vector<std::string>& elements,
                          std::vector<App::Color>& colors) const;
     /*!
      * \brief getEdgeColors
-     * \param elements The sub-element names. If this list is empty \a colors will be filled with the default color.
-     * \param colors The size of the \a colors array is equal to the number of edges of the shape
+     * \param elements The sub-element names. If this list is empty \a colors will be filled with
+     * the default color. \param colors The size of the \a colors array is equal to the number of
+     * edges of the shape
      */
     void getEdgeColors(const std::vector<std::string>& elements,
                        std::vector<App::Color>& colors) const;
     /*!
      * \brief getFaceColors
-     * \param elements The sub-element names. If this list is empty \a colors will be filled with the default color.
-     * \param colors The size of the \a colors array is equal to the number of faces of the shape
+     * \param elements The sub-element names. If this list is empty \a colors will be filled with
+     * the default color. \param colors The size of the \a colors array is equal to the number of
+     * faces of the shape
      */
     void getFaceColors(const std::vector<std::string>& elements,
                        std::vector<App::Color>& colors) const;
@@ -110,7 +117,7 @@ private:
 };
 
 
-} // namespace PartGui
+}  // namespace PartGui
 
 
-#endif // PARTGUI_REFERENCEHIGHLIGHTER_H
+#endif  // PARTGUI_REFERENCEHIGHLIGHTER_H

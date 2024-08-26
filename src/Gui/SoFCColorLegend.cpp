@@ -23,15 +23,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QCoreApplication>
-# include <Inventor/fields/SoMFString.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTransform.h>
+#include <sstream>
+#include <QCoreApplication>
+#include <Inventor/fields/SoMFString.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTransform.h>
 #endif
 
 #include "SoFCColorLegend.h"
@@ -45,7 +45,8 @@ SO_NODE_SOURCE(SoFCColorLegend)
 /*!
   Constructor.
 */
-SoFCColorLegend::SoFCColorLegend() : _bbox(4.0f, -4.0f, 4.5f, 4.0f)
+SoFCColorLegend::SoFCColorLegend()
+    : _bbox(4.0f, -4.0f, 4.5f, 4.0f)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorLegend);
     coords = new SoCoordinate3;
@@ -65,7 +66,7 @@ SoFCColorLegend::SoFCColorLegend() : _bbox(4.0f, -4.0f, 4.5f, 4.0f)
 */
 SoFCColorLegend::~SoFCColorLegend()
 {
-    //delete THIS;
+    // delete THIS;
     coords->unref();
     labelGroup->unref();
     valueGroup->unref();
@@ -74,7 +75,7 @@ SoFCColorLegend::~SoFCColorLegend()
 // doc from parent
 void SoFCColorLegend::initClass()
 {
-    SO_NODE_INIT_CLASS(SoFCColorLegend,SoFCColorBarBase,"Separator");
+    SO_NODE_INIT_CLASS(SoFCColorLegend, SoFCColorBarBase, "Separator");
 }
 
 void SoFCColorLegend::finish()
@@ -87,7 +88,8 @@ const char* SoFCColorLegend::getColorBarName() const
     return QT_TRANSLATE_NOOP("QObject", "Color Legend");
 }
 
-namespace {
+namespace
+{
 std::vector<SbVec3f> getLabelPositions(int num, const SbBox2f& bbox)
 {
     std::vector<SbVec3f> pos;
@@ -96,9 +98,9 @@ std::vector<SbVec3f> getLabelPositions(int num, const SbBox2f& bbox)
     float fMaxY = bbox.getMax()[1] - 0.5f;
 
     if (num > 1) {
-        float fStep = (fMaxY-fMinY) / static_cast<float>(num - 1);
+        float fStep = (fMaxY - fMinY) / static_cast<float>(num - 1);
         pos.emplace_back(fMaxX + 0.1f, fMaxY + 0.20f + fStep, 0.0f);
-        for (int i=0; i<num; i++) {
+        for (int i = 0; i < num; i++) {
             pos.emplace_back(0.0f, -fStep, 0.0f);
         }
     }
@@ -114,11 +116,11 @@ std::vector<SbVec3f> getValuePositions(int num, const SbBox2f& bbox)
     float fMaxY = bbox.getMax()[1] - 0.5f;
 
     if (num > 2) {
-        float fStep = (fMaxY-fMinY) / static_cast<float>(num - 2);
+        float fStep = (fMaxY - fMinY) / static_cast<float>(num - 2);
         float eps = fStep / 4.0f;
 
         pos.emplace_back(fMaxX + 0.1f, fMaxY + 0.25f + 1.5f * fStep, 0.0f);
-        for (int i=0; i<num; i++) {
+        for (int i = 0; i < num; i++) {
             pos.emplace_back(0.0f, -fStep, 0.0f);
         }
 
@@ -138,7 +140,7 @@ std::vector<SbVec3f> getValuePositions(int num, const SbBox2f& bbox)
 
     return pos;
 }
-}
+}  // namespace
 
 void SoFCColorLegend::setMarkerLabel(const SoMFString& label)
 {
@@ -152,12 +154,12 @@ void SoFCColorLegend::setMarkerLabel(const SoMFString& label)
         trans->translation.setValue(pos[0]);
         labelGroup->addChild(trans);
 
-        for (int i=0; i<num; i++) {
+        for (int i = 0; i < num; i++) {
             auto trans = new SoTransform;
             auto color = new SoBaseColor;
             auto text2 = new SoText2;
 
-            trans->translation.setValue(pos[i+1]);
+            trans->translation.setValue(pos[i + 1]);
             color->rgb.setValue(0, 0, 0);
             text2->string.setValue(label[i]);
             labelGroup->addChild(trans);
@@ -179,12 +181,12 @@ void SoFCColorLegend::setMarkerValue(const SoMFString& value)
         trans->translation.setValue(pos[0]);
         valueGroup->addChild(trans);
 
-        for (int i=0; i<num; i++) {
+        for (int i = 0; i < num; i++) {
             auto trans = new SoTransform;
             auto color = new SoBaseColor;
             auto text2 = new SoText2;
 
-            trans->translation.setValue(pos[i+1]);
+            trans->translation.setValue(pos[i + 1]);
             color->rgb.setValue(0, 0, 0);
             text2->string.setValue(value[i]);
             valueGroup->addChild(trans);
@@ -199,7 +201,8 @@ void SoFCColorLegend::setViewportSize(const SbVec2s& size)
     float fMinX, fMinY, fMaxX, fMaxY;
     float boxWidth = getBounds(size, fMinX, fMinY, fMaxX, fMaxY);
 
-    // legend bar is shifted to the left by width of the labels to assure that labels are fully visible
+    // legend bar is shifted to the left by width of the labels to assure that labels are fully
+    // visible
     _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);
 
     arrangeLabels(_bbox);
@@ -231,16 +234,17 @@ void SoFCColorLegend::setLegendLabels(const App::ColorLegend& legend, int prec)
 
     float eps = std::pow(10.0f, static_cast<float>(-prec));
     float value = std::min<float>(fabs(fMin), fabs(fMax));
-    std::ios::fmtflags flags = value < eps ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
-                                           : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
+    std::ios::fmtflags flags = value < eps
+        ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
+        : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
 
-    for (std::size_t i=0; i < numFields; i++) {
+    for (std::size_t i = 0; i < numFields; i++) {
         std::stringstream s;
         s << legend.getText(numFields - 1 - i);
         labels.set1Value(i, s.str().c_str());
     }
 
-    for (std::size_t i=0; i <= numFields; i++) {
+    for (std::size_t i = 0; i <= numFields; i++) {
         std::stringstream s;
         s.precision(prec);
         s.setf(flags);
@@ -268,7 +272,7 @@ void SoFCColorLegend::modifyPoints(const SbBox2f& box)
         float w = static_cast<float>(i) / (intFields - 1);
         float fPosY1 = w * fMaxY + (1.0f - w) * fMinY;
         float fPosY2 = fPosY1 + 0.5f;
-        coords->point.set1Value(4 * i,     fMinX, fPosY1, 0.0f);
+        coords->point.set1Value(4 * i, fMinX, fPosY1, 0.0f);
         coords->point.set1Value(4 * i + 1, fMaxX, fPosY1, 0.0f);
         coords->point.set1Value(4 * i + 2, fMaxX, fPosY2, 0.0f);
         coords->point.set1Value(4 * i + 3, fMinX, fPosY2, 0.0f);
@@ -278,19 +282,21 @@ void SoFCColorLegend::modifyPoints(const SbBox2f& box)
 void SoFCColorLegend::arrangeLabels(const SbBox2f& box)
 {
     // search for the labels
-    int num=0;
-    for (int i=0; i<labelGroup->getNumChildren(); i++) {
-        if (labelGroup->getChild(i)->getTypeId() == SoTransform::getClassTypeId())
+    int num = 0;
+    for (int i = 0; i < labelGroup->getNumChildren(); i++) {
+        if (labelGroup->getChild(i)->getTypeId() == SoTransform::getClassTypeId()) {
             num++;
+        }
     }
 
     if (num > 2) {
-        std::vector<SbVec3f> pos = getLabelPositions(num-1, box);
+        std::vector<SbVec3f> pos = getLabelPositions(num - 1, box);
 
         int index = 0;
-        for (int j=0; j<labelGroup->getNumChildren(); j++) {
+        for (int j = 0; j < labelGroup->getNumChildren(); j++) {
             if (labelGroup->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
-                static_cast<SoTransform*>(labelGroup->getChild(j))->translation.setValue(pos[index++]);
+                static_cast<SoTransform*>(labelGroup->getChild(j))
+                    ->translation.setValue(pos[index++]);
             }
         }
     }
@@ -299,19 +305,21 @@ void SoFCColorLegend::arrangeLabels(const SbBox2f& box)
 void SoFCColorLegend::arrangeValues(const SbBox2f& box)
 {
     // search for the labels
-    int num=0;
-    for (int i=0; i<valueGroup->getNumChildren(); i++) {
-        if (valueGroup->getChild(i)->getTypeId() == SoTransform::getClassTypeId())
+    int num = 0;
+    for (int i = 0; i < valueGroup->getNumChildren(); i++) {
+        if (valueGroup->getChild(i)->getTypeId() == SoTransform::getClassTypeId()) {
             num++;
+        }
     }
 
     if (num > 3) {
-        std::vector<SbVec3f> pos = getValuePositions(num-1, box);
+        std::vector<SbVec3f> pos = getValuePositions(num - 1, box);
 
         int index = 0;
-        for (int j=0; j<valueGroup->getNumChildren(); j++) {
+        for (int j = 0; j < valueGroup->getNumChildren(); j++) {
             if (valueGroup->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
-                static_cast<SoTransform*>(valueGroup->getChild(j))->translation.setValue(pos[index++]);
+                static_cast<SoTransform*>(valueGroup->getChild(j))
+                    ->translation.setValue(pos[index++]);
             }
         }
     }
@@ -329,11 +337,11 @@ void SoFCColorLegend::setColorLegend(const App::ColorLegend& legend)
     auto faceset = new SoIndexedFaceSet;
     faceset->coordIndex.setNum(5 * intFields);
     for (int j = 0; j < intFields; j++) {
-        faceset->coordIndex.set1Value(5*j,   4*j);
-        faceset->coordIndex.set1Value(5*j+1, 4*j+1);
-        faceset->coordIndex.set1Value(5*j+2, 4*j+2);
-        faceset->coordIndex.set1Value(5*j+3, 4*j+3);
-        faceset->coordIndex.set1Value(5*j+4, SO_END_FACE_INDEX);
+        faceset->coordIndex.set1Value(5 * j, 4 * j);
+        faceset->coordIndex.set1Value(5 * j + 1, 4 * j + 1);
+        faceset->coordIndex.set1Value(5 * j + 2, 4 * j + 2);
+        faceset->coordIndex.set1Value(5 * j + 3, 4 * j + 3);
+        faceset->coordIndex.set1Value(5 * j + 4, SO_END_FACE_INDEX);
     }
 
     auto mat = new SoMaterial;
@@ -347,8 +355,9 @@ void SoFCColorLegend::setColorLegend(const App::ColorLegend& legend)
     matBinding->value = SoMaterialBinding::PER_FACE;
 
     // first clear the children
-    if (getNumChildren() > 0)
+    if (getNumChildren() > 0) {
         coinRemoveAllChildren(this);
+    }
     addChild(labelGroup);
     addChild(valueGroup);
     addChild(coords);

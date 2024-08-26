@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_Failure.hxx>
+#include <Standard_Failure.hxx>
 #endif
 
 #include <App/Application.h>
@@ -37,18 +37,26 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 
 PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::Feature)
 
 FeatureAddSub::FeatureAddSub()
 {
-    ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Part Design",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after adding/subtracting");
+    // init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", true));
 }
 
@@ -59,8 +67,9 @@ FeatureAddSub::Type FeatureAddSub::getAddSubType()
 
 short FeatureAddSub::mustExecute() const
 {
-    if (Refine.isTouched())
+    if (Refine.isTouched()) {
         return 1;
+    }
     return PartDesign::Feature::mustExecute();
 }
 
@@ -96,26 +105,33 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
     return oldShape;
 }
 
-void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
-    if (addSubType == Additive)
+    if (addSubType == Additive) {
         addShape = AddSubShape.getShape();
-    else if (addSubType == Subtractive)
+    }
+    else if (addSubType == Subtractive) {
         subShape = AddSubShape.getShape();
+    }
 }
 
-}
+}  // namespace PartDesign
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartDesign::FeatureAddSubPython, PartDesign::FeatureAddSub)
-template<> const char* PartDesign::FeatureAddSubPython::getViewProviderName() const {
+template<>
+const char* PartDesign::FeatureAddSubPython::getViewProviderName() const
+{
     return "PartDesignGui::ViewProviderPython";
 }
-template<> PyObject* PartDesign::FeatureAddSubPython::getPyObject() {
+template<>
+PyObject* PartDesign::FeatureAddSubPython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this),true);
+        PythonObject = Py::Object(new FeaturePythonPyT<PartDesign::FeaturePy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -123,10 +139,11 @@ template<> PyObject* PartDesign::FeatureAddSubPython::getPyObject() {
 
 // explicit template instantiation
 template class PartDesignExport FeaturePythonT<PartDesign::FeatureAddSub>;
-}
+}  // namespace App
 
 
-namespace PartDesign {
+namespace PartDesign
+{
 
 PROPERTY_SOURCE(PartDesign::FeatureAdditivePython, PartDesign::FeatureAddSubPython)
 
@@ -147,4 +164,4 @@ FeatureSubtractivePython::FeatureSubtractivePython()
 
 FeatureSubtractivePython::~FeatureSubtractivePython() = default;
 
-}
+}  // namespace PartDesign

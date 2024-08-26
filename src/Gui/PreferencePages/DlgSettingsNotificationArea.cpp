@@ -35,8 +35,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsNotificationArea */
 
 DlgSettingsNotificationArea::DlgSettingsNotificationArea(QWidget* parent)
-    : PreferencePage(parent),
-      ui(new Ui_DlgSettingsNotificationArea)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsNotificationArea)
 {
     ui->setupUi(this);
 

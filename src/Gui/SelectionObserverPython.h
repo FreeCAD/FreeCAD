@@ -37,15 +37,17 @@ namespace Gui
  *
  * @author Werner Mayer
  */
-class GuiExport SelectionObserverPython : public SelectionObserver
+class GuiExport SelectionObserverPython: public SelectionObserver
 {
 
 public:
     /// Constructor
-    explicit SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
+    explicit SelectionObserverPython(const Py::Object& obj,
+                                     ResolveMode resolve = ResolveMode::OldStyleElement);
     ~SelectionObserverPython() override;
 
-    static void addObserver(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
+    static void addObserver(const Py::Object& obj,
+                            ResolveMode resolve = ResolveMode::OldStyleElement);
     static void removeObserver(const Py::Object& obj);
 
 private:
@@ -61,14 +63,14 @@ private:
 private:
     Py::Object inst;
 
-#define FC_PY_SEL_OBSERVER \
-    FC_PY_ELEMENT(onSelectionChanged) \
-    FC_PY_ELEMENT(addSelection) \
-    FC_PY_ELEMENT(removeSelection) \
-    FC_PY_ELEMENT(setSelection) \
-    FC_PY_ELEMENT(clearSelection) \
-    FC_PY_ELEMENT(setPreselection) \
-    FC_PY_ELEMENT(removePreselection) \
+#define FC_PY_SEL_OBSERVER                                                                         \
+    FC_PY_ELEMENT(onSelectionChanged)                                                              \
+    FC_PY_ELEMENT(addSelection)                                                                    \
+    FC_PY_ELEMENT(removeSelection)                                                                 \
+    FC_PY_ELEMENT(setSelection)                                                                    \
+    FC_PY_ELEMENT(clearSelection)                                                                  \
+    FC_PY_ELEMENT(setPreselection)                                                                 \
+    FC_PY_ELEMENT(removePreselection)                                                              \
     FC_PY_ELEMENT(pickedListChanged)
 
 #undef FC_PY_ELEMENT
@@ -79,6 +81,6 @@ private:
     static std::vector<SelectionObserverPython*> _instances;
 };
 
-} //namespace Gui
+}  // namespace Gui
 
-#endif // GUI_SELECTIONOBSERVERPYTHON_H
+#endif  // GUI_SELECTIONOBSERVERPYTHON_H

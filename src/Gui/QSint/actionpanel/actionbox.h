@@ -116,8 +116,8 @@ namespace QSint
         "}"
 
         "QSint--ActionBox:hover {"
-            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-            "border: 1px solid #DAF2FC;"
+            "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1
+   #EAF7FF);" "border: 1px solid #DAF2FC;"
         "}"
 
         // customization of ActionBox's header
@@ -159,34 +159,37 @@ namespace QSint
     \endcode
 
 */
-class QSINT_EXPORT ActionBox : public QFrame
+class QSINT_EXPORT ActionBox: public QFrame
 {
     Q_OBJECT
 
-    Q_PROPERTY(QPixmap icon READ icon WRITE setIcon) // clazy:exclude=qproperty-without-notify
-    Q_PROPERTY(ActionLabel header READ header) // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(QPixmap icon READ icon WRITE setIcon)  // clazy:exclude=qproperty-without-notify
+    Q_PROPERTY(ActionLabel header READ header)        // clazy:exclude=qproperty-without-notify
 
 public:
     /** Constructor.
-      */
-    explicit ActionBox(QWidget *parent = nullptr);
+     */
+    explicit ActionBox(QWidget* parent = nullptr);
     /** Constructor.
-      */
-    explicit ActionBox(const QString & headerText, QWidget *parent = nullptr);
+     */
+    explicit ActionBox(const QString& headerText, QWidget* parent = nullptr);
     /** Constructor.
-      */
-    explicit ActionBox(const QPixmap & icon, const QString & headerText, QWidget *parent = nullptr);
+     */
+    explicit ActionBox(const QPixmap& icon, const QString& headerText, QWidget* parent = nullptr);
 
     /** Sets icon of the ActionBox to \a icon.
-      */
-    void setIcon(const QPixmap & icon);
+     */
+    void setIcon(const QPixmap& icon);
     /** Returns icon of the ActionBox.
-      */
-    QPixmap icon() const;// { return iconLabel->pixmap(); }
+     */
+    QPixmap icon() const;  // { return iconLabel->pixmap(); }
 
     /** Returns header item of the ActionBox.
-      */
-    inline ActionLabel* header() const { return headerLabel; }
+     */
+    inline ActionLabel* header() const
+    {
+        return headerLabel;
+    }
 
     /** Creates action item from the \a action and returns it.
 
@@ -199,7 +202,7 @@ public:
 
       \since 0.2
       */
-    ActionLabel* createItem(QAction * action, QLayout * l = nullptr);
+    ActionLabel* createItem(QAction* action, QLayout* l = nullptr);
 
     /** Creates action items from the \a actions list and returns the list of action items.
       \since 0.2
@@ -207,20 +210,20 @@ public:
     QList<ActionLabel*> createItems(QList<QAction*> actions);
 
     /** Adds an action with \a text to the ActionBox and returns action item.
-      */
-    ActionLabel* createItem(const QString & text = QString(), QLayout * l = nullptr);
+     */
+    ActionLabel* createItem(const QString& text = QString(), QLayout* l = nullptr);
     /** Adds an action with \a icon and \a text to the ActionBox and returns action item.
 
       This function acts just like previous one. See the description above.
       */
-    ActionLabel* createItem(const QPixmap & icon, const QString & text, QLayout * l = nullptr);
+    ActionLabel* createItem(const QPixmap& icon, const QString& text, QLayout* l = nullptr);
 
     /** Adds a spacer and returns spacer item.
 
       By default, a spacer is added to the default vertical layout.
       You can add a spacer to the specified layout passing it as \a l parameter.
       */
-    QSpacerItem* createSpacer(QLayout * l = nullptr);
+    QSpacerItem* createSpacer(QLayout* l = nullptr);
 
     /** Creates empty horizontal layout.
 
@@ -229,30 +232,33 @@ public:
     QLayout* createHBoxLayout();
 
     /** Returns default layout used for actions (typically it's QVBoxLayout).
-      */
-    inline QLayout* itemLayout() const { return dataLayout; }
+     */
+    inline QLayout* itemLayout() const
+    {
+        return dataLayout;
+    }
 
     /** Adds layout \a l to the default layout.
-      */
-    void addLayout(QLayout * l);
+     */
+    void addLayout(QLayout* l);
     /** Adds widget \a w to the layout.
 
       By default, widget is added to the default vertical layout.
       You can add widget to the specified layout passing it as \a l parameter.
       */
-    void addWidget(QWidget * w, QLayout * l = nullptr);
+    void addWidget(QWidget* w, QLayout* l = nullptr);
 
     QSize minimumSizeHint() const override;
 
 protected:
     void init();
 
-    QVBoxLayout *dataLayout;
-    QLabel *iconLabel;
-    ActionLabel *headerLabel;
+    QVBoxLayout* dataLayout;
+    QLabel* iconLabel;
+    ActionLabel* headerLabel;
 };
 
 
-} // namespace
+}  // namespace QSint
 
-#endif // ACTIONBOX_H
+#endif  // ACTIONBOX_H

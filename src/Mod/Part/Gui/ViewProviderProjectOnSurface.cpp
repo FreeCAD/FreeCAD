@@ -49,7 +49,9 @@ ViewProviderProjectOnSurface::ViewProviderProjectOnSurface()
 
 ViewProviderProjectOnSurface::~ViewProviderProjectOnSurface() = default;
 
-void ViewProviderProjectOnSurface::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderProjectOnSurface::setupContextMenu(QMenu* menu,
+                                                    QObject* receiver,
+                                                    const char* member)
 {
     QAction* act = menu->addAction(QObject::tr("Edit projection"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));

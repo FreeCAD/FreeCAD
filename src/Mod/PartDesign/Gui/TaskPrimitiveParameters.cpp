@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include <App/Document.h>
@@ -46,9 +46,9 @@
 using namespace PartDesignGui;
 
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
-  , ui(new Ui_DlgPrimitives)
-  , vp(vp)
+    : TaskBox(QPixmap(), tr("Primitive parameters"), true, parent)
+    , ui(new Ui_DlgPrimitives)
+    , vp(vp)
 {
     proxy = new QWidget(this);
     ui->setupUi(proxy);
@@ -56,7 +56,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     this->groupLayout()->addWidget(proxy);
 
     int index = 0;
-    switch(getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
+    switch (getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
 
         case PartDesign::FeaturePrimitive::Box:
             index = 1;
@@ -102,7 +102,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->sphereAngle3->bind(getObject<PartDesign::Sphere>()->Angle3);
             ui->sphereRadius->setValue(getObject<PartDesign::Sphere>()->Radius.getValue());
             ui->sphereRadius->bind(getObject<PartDesign::Sphere>()->Radius);
-            ui->sphereAngle1->setMaximum(ui->sphereAngle2->rawValue()); // must geometrically be <= than sphereAngle2
+            ui->sphereAngle1->setMaximum(
+                ui->sphereAngle2->rawValue());  // must geometrically be <= than sphereAngle2
             ui->sphereAngle1->setMinimum(getObject<PartDesign::Sphere>()->Angle1.getMinimum());
             ui->sphereAngle2->setMaximum(getObject<PartDesign::Sphere>()->Angle2.getMaximum());
             ui->sphereAngle2->setMinimum(ui->sphereAngle1->rawValue());
@@ -144,18 +145,29 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->ellipsoidRadius2->bind(getObject<PartDesign::Ellipsoid>()->Radius2);
             ui->ellipsoidRadius3->setValue(getObject<PartDesign::Ellipsoid>()->Radius3.getValue());
             ui->ellipsoidRadius3->bind(getObject<PartDesign::Ellipsoid>()->Radius3);
-            ui->ellipsoidAngle1->setMaximum(ui->ellipsoidAngle2->rawValue()); // must geometrically be <= than sphereAngle2
-            ui->ellipsoidAngle1->setMinimum(getObject<PartDesign::Ellipsoid>()->Angle1.getMinimum());
-            ui->ellipsoidAngle2->setMaximum(getObject<PartDesign::Ellipsoid>()->Angle2.getMaximum());
+            ui->ellipsoidAngle1->setMaximum(
+                ui->ellipsoidAngle2->rawValue());  // must geometrically be <= than sphereAngle2
+            ui->ellipsoidAngle1->setMinimum(
+                getObject<PartDesign::Ellipsoid>()->Angle1.getMinimum());
+            ui->ellipsoidAngle2->setMaximum(
+                getObject<PartDesign::Ellipsoid>()->Angle2.getMaximum());
             ui->ellipsoidAngle2->setMinimum(ui->ellipsoidAngle1->rawValue());
-            ui->ellipsoidAngle3->setMaximum(getObject<PartDesign::Ellipsoid>()->Angle3.getMaximum());
-            ui->ellipsoidAngle3->setMinimum(getObject<PartDesign::Ellipsoid>()->Angle3.getMinimum());
-            ui->ellipsoidRadius1->setMinimum(getObject<PartDesign::Ellipsoid>()->Radius1.getMinimum());
-            ui->ellipsoidRadius1->setMaximum(getObject<PartDesign::Ellipsoid>()->Radius1.getMaximum());
-            ui->ellipsoidRadius2->setMinimum(getObject<PartDesign::Ellipsoid>()->Radius2.getMinimum());
-            ui->ellipsoidRadius2->setMaximum(getObject<PartDesign::Ellipsoid>()->Radius2.getMaximum());
-            ui->ellipsoidRadius3->setMinimum(getObject<PartDesign::Ellipsoid>()->Radius3.getMinimum());
-            ui->ellipsoidRadius3->setMaximum(getObject<PartDesign::Ellipsoid>()->Radius3.getMaximum());
+            ui->ellipsoidAngle3->setMaximum(
+                getObject<PartDesign::Ellipsoid>()->Angle3.getMaximum());
+            ui->ellipsoidAngle3->setMinimum(
+                getObject<PartDesign::Ellipsoid>()->Angle3.getMinimum());
+            ui->ellipsoidRadius1->setMinimum(
+                getObject<PartDesign::Ellipsoid>()->Radius1.getMinimum());
+            ui->ellipsoidRadius1->setMaximum(
+                getObject<PartDesign::Ellipsoid>()->Radius1.getMaximum());
+            ui->ellipsoidRadius2->setMinimum(
+                getObject<PartDesign::Ellipsoid>()->Radius2.getMinimum());
+            ui->ellipsoidRadius2->setMaximum(
+                getObject<PartDesign::Ellipsoid>()->Radius2.getMaximum());
+            ui->ellipsoidRadius3->setMinimum(
+                getObject<PartDesign::Ellipsoid>()->Radius3.getMinimum());
+            ui->ellipsoidRadius3->setMaximum(
+                getObject<PartDesign::Ellipsoid>()->Radius3.getMaximum());
             break;
         case PartDesign::FeaturePrimitive::Torus:
             index = 6;
@@ -169,7 +181,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->torusRadius1->bind(getObject<PartDesign::Torus>()->Radius1);
             ui->torusRadius2->setValue(getObject<PartDesign::Torus>()->Radius2.getValue());
             ui->torusRadius2->bind(getObject<PartDesign::Torus>()->Radius2);
-            ui->torusAngle1->setMaximum(ui->torusAngle2->rawValue()); // must geometrically be <= than sphereAngle2
+            ui->torusAngle1->setMaximum(
+                ui->torusAngle2->rawValue());  // must geometrically be <= than sphereAngle2
             ui->torusAngle1->setMinimum(getObject<PartDesign::Torus>()->Angle1.getMinimum());
             ui->torusAngle2->setMaximum(getObject<PartDesign::Torus>()->Angle2.getMaximum());
             ui->torusAngle2->setMinimum(ui->torusAngle1->rawValue());
@@ -186,7 +199,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
         case PartDesign::FeaturePrimitive::Prism:
             index = 7;
             ui->prismPolygon->setValue(getObject<PartDesign::Prism>()->Polygon.getValue());
-            ui->prismCircumradius->setValue(getObject<PartDesign::Prism>()->Circumradius.getValue());
+            ui->prismCircumradius->setValue(
+                getObject<PartDesign::Prism>()->Circumradius.getValue());
             ui->prismCircumradius->bind(getObject<PartDesign::Prism>()->Circumradius);
             ui->prismHeight->setValue(getObject<PartDesign::Prism>()->Height.getValue());
             ui->prismHeight->bind(getObject<PartDesign::Prism>()->Height);
@@ -194,8 +208,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->prismXSkew->bind(getObject<PartDesign::Prism>()->FirstAngle);
             ui->prismYSkew->setValue(getObject<PartDesign::Prism>()->SecondAngle.getValue());
             ui->prismYSkew->bind(getObject<PartDesign::Prism>()->SecondAngle);
-            ui->prismCircumradius->setMaximum(getObject<PartDesign::Prism>()->Circumradius.getMaximum());
-            ui->prismCircumradius->setMinimum(getObject<PartDesign::Prism>()->Circumradius.getMinimum());
+            ui->prismCircumradius->setMaximum(
+                getObject<PartDesign::Prism>()->Circumradius.getMaximum());
+            ui->prismCircumradius->setMinimum(
+                getObject<PartDesign::Prism>()->Circumradius.getMinimum());
             ui->prismHeight->setMaximum(getObject<PartDesign::Prism>()->Height.getMaximum());
             ui->prismHeight->setMinimum(getObject<PartDesign::Prism>()->Height.getMinimum());
             break;
@@ -222,15 +238,15 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->wedgeZ2min->setValue(getObject<PartDesign::Wedge>()->Z2min.getValue());
             ui->wedgeZ2min->bind(getObject<PartDesign::Wedge>()->Z2min);
             ui->wedgeXmin->setMinimum(INT_MIN);
-            ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue()); // must be < than wedgeXmax
+            ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue());  // must be < than wedgeXmax
             ui->wedgeYmin->setMinimum(INT_MIN);
-            ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue()); // must be < than wedgeYmax
+            ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue());  // must be < than wedgeYmax
             ui->wedgeZmin->setMinimum(INT_MIN);
-            ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue()); // must be < than wedgeZmax
+            ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue());  // must be < than wedgeZmax
             ui->wedgeX2min->setMinimum(INT_MIN);
-            ui->wedgeX2min->setMaximum(ui->wedgeX2max->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeX2min->setMaximum(ui->wedgeX2max->rawValue());  // must be <= than wedgeXmax
             ui->wedgeZ2min->setMinimum(INT_MIN);
-            ui->wedgeZ2min->setMaximum(ui->wedgeZ2max->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeZ2min->setMaximum(ui->wedgeZ2max->rawValue());  // must be <= than wedgeXmax
             ui->wedgeXmax->setMinimum(ui->wedgeXmin->rawValue());
             ui->wedgeXmax->setMaximum(INT_MAX);
             ui->wedgeYmax->setMinimum(ui->wedgeYmin->rawValue());
@@ -246,126 +262,214 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 
     ui->widgetStack->setCurrentIndex(index);
     ui->widgetStack->setMinimumSize(ui->widgetStack->widget(index)->minimumSize());
-    for(int i=0; i<ui->widgetStack->count(); ++i) {
+    for (int i = 0; i < ui->widgetStack->count(); ++i) {
 
-        if(i != index)
-            ui->widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+        if (i != index) {
+            ui->widgetStack->widget(i)->setSizePolicy(
+                QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+        }
     }
 
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
 
-    //show the parts coordinate system axis for selection
-    if(PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject())) {
+    // show the parts coordinate system axis for selection
+    if (PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject())) {
         try {
-            App::Origin *origin = body->getOrigin();
+            App::Origin* origin = body->getOrigin();
             Gui::ViewProviderOrigin* vpOrigin {};
-            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(
+                Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(true, true);
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
+        }
+        catch (const Base::Exception& ex) {
+            Base::Console().Error("%s\n", ex.what());
         }
     }
 
     // box
-    connect(ui->boxLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onBoxLengthChanged);
-    connect(ui->boxWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onBoxWidthChanged);
-    connect(ui->boxHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onBoxHeightChanged);
+    connect(ui->boxLength,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onBoxLengthChanged);
+    connect(ui->boxWidth,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onBoxWidthChanged);
+    connect(ui->boxHeight,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onBoxHeightChanged);
 
     // cylinder
-    connect(ui->cylinderRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onCylinderRadiusChanged);
-    connect(ui->cylinderHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onCylinderHeightChanged);
-    connect(ui->cylinderXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onCylinderXSkewChanged);
-    connect(ui->cylinderYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onCylinderYSkewChanged);
-    connect(ui->cylinderAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onCylinderAngleChanged);
+    connect(ui->cylinderRadius,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onCylinderRadiusChanged);
+    connect(ui->cylinderHeight,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onCylinderHeightChanged);
+    connect(ui->cylinderXSkew,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onCylinderXSkewChanged);
+    connect(ui->cylinderYSkew,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onCylinderYSkewChanged);
+    connect(ui->cylinderAngle,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onCylinderAngleChanged);
 
     // cone
-    connect(ui->coneRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onConeRadius1Changed);
-    connect(ui->coneRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onConeRadius2Changed);
-    connect(ui->coneAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onConeAngleChanged);
-    connect(ui->coneHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onConeHeightChanged);
+    connect(ui->coneRadius1,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onConeRadius1Changed);
+    connect(ui->coneRadius2,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onConeRadius2Changed);
+    connect(ui->coneAngle,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onConeAngleChanged);
+    connect(ui->coneHeight,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onConeHeightChanged);
 
     // sphere
-    connect(ui->sphereRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onSphereRadiusChanged);
-    connect(ui->sphereAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onSphereAngle1Changed);
-    connect(ui->sphereAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onSphereAngle2Changed);
-    connect(ui->sphereAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onSphereAngle3Changed);
+    connect(ui->sphereRadius,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onSphereRadiusChanged);
+    connect(ui->sphereAngle1,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onSphereAngle1Changed);
+    connect(ui->sphereAngle2,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onSphereAngle2Changed);
+    connect(ui->sphereAngle3,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onSphereAngle3Changed);
 
     // ellipsoid
-    connect(ui->ellipsoidRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onEllipsoidRadius1Changed);
-    connect(ui->ellipsoidRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onEllipsoidRadius2Changed);
-    connect(ui->ellipsoidRadius3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onEllipsoidRadius3Changed);
-    connect(ui->ellipsoidAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onEllipsoidAngle1Changed);
-    connect(ui->ellipsoidAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onEllipsoidAngle2Changed);
-    connect(ui->ellipsoidAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onEllipsoidAngle3Changed);
+    connect(ui->ellipsoidRadius1,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onEllipsoidRadius1Changed);
+    connect(ui->ellipsoidRadius2,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onEllipsoidRadius2Changed);
+    connect(ui->ellipsoidRadius3,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onEllipsoidRadius3Changed);
+    connect(ui->ellipsoidAngle1,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onEllipsoidAngle1Changed);
+    connect(ui->ellipsoidAngle2,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onEllipsoidAngle2Changed);
+    connect(ui->ellipsoidAngle3,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onEllipsoidAngle3Changed);
 
     // torus
-    connect(ui->torusRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onTorusRadius1Changed);
-    connect(ui->torusRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onTorusRadius2Changed);
-    connect(ui->torusAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onTorusAngle1Changed);
-    connect(ui->torusAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onTorusAngle2Changed);
-    connect(ui->torusAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onTorusAngle3Changed);
+    connect(ui->torusRadius1,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onTorusRadius1Changed);
+    connect(ui->torusRadius2,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onTorusRadius2Changed);
+    connect(ui->torusAngle1,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onTorusAngle1Changed);
+    connect(ui->torusAngle2,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onTorusAngle2Changed);
+    connect(ui->torusAngle3,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onTorusAngle3Changed);
 
-    //prism
-    connect(ui->prismCircumradius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onPrismCircumradiusChanged);
-    connect(ui->prismHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onPrismHeightChanged);
-    connect(ui->prismXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onPrismXSkewChanged);
-    connect(ui->prismYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onPrismYSkewChanged);
-    connect(ui->prismPolygon, qOverload<int>(&QSpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onPrismPolygonChanged);
+    // prism
+    connect(ui->prismCircumradius,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onPrismCircumradiusChanged);
+    connect(ui->prismHeight,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onPrismHeightChanged);
+    connect(ui->prismXSkew,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onPrismXSkewChanged);
+    connect(ui->prismYSkew,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onPrismYSkewChanged);
+    connect(ui->prismPolygon,
+            qOverload<int>(&QSpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onPrismPolygonChanged);
 
     // wedge
-    connect(ui->wedgeXmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeXmaxChanged);
-    connect(ui->wedgeXmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeXminChanged);
-    connect(ui->wedgeYmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeYmaxChanged);
-    connect(ui->wedgeYmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeYminChanged);
-    connect(ui->wedgeZmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeZmaxChanged);
-    connect(ui->wedgeZmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeZminChanged);
-    connect(ui->wedgeX2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeX2maxChanged);
-    connect(ui->wedgeX2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeX2minChanged);
-    connect(ui->wedgeZ2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeZ2maxChanged);
-    connect(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskBoxPrimitives::onWedgeZ2minChanged);
+    connect(ui->wedgeXmax,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeXmaxChanged);
+    connect(ui->wedgeXmin,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeXminChanged);
+    connect(ui->wedgeYmax,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeYmaxChanged);
+    connect(ui->wedgeYmin,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeYminChanged);
+    connect(ui->wedgeZmax,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeZmaxChanged);
+    connect(ui->wedgeZmin,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeZminChanged);
+    connect(ui->wedgeX2max,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeX2maxChanged);
+    connect(ui->wedgeX2min,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeX2minChanged);
+    connect(ui->wedgeZ2max,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeZ2maxChanged);
+    connect(ui->wedgeZ2min,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskBoxPrimitives::onWedgeZ2minChanged);
 }
 
 /*
@@ -373,18 +477,19 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
-    //hide the parts coordinate system axis for selection
+    // hide the parts coordinate system axis for selection
     try {
         auto obj = getObject();
-        if (PartDesign::Body * body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr) {
-            App::Origin *origin = body->getOrigin();
+        if (PartDesign::Body* body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr) {
+            App::Origin* origin = body->getOrigin();
             Gui::ViewProviderOrigin* vpOrigin;
-            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(
+                Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->resetTemporaryVisibility();
         }
     }
-    catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what () );
+    catch (const Base::Exception& ex) {
+        Base::Console().Error("%s\n", ex.what());
     }
 }
 
@@ -452,10 +557,12 @@ void TaskBoxPrimitives::onCylinderXSkewChanged(double v)
             cyl->FirstAngle.setValue(v);
         }
         else {
-            if (v == 90.0)
+            if (v == 90.0) {
                 cyl->FirstAngle.setValue(cyl->FirstAngle.getMaximum());
-            else if (v == -90.0)
+            }
+            else if (v == -90.0) {
                 cyl->FirstAngle.setValue(cyl->FirstAngle.getMinimum());
+            }
             ui->cylinderXSkew->setValue(cyl->FirstAngle.getQuantityValue());
         }
         cyl->recomputeFeature();
@@ -471,10 +578,12 @@ void TaskBoxPrimitives::onCylinderYSkewChanged(double v)
             cyl->SecondAngle.setValue(v);
         }
         else {
-            if (v == 90.0)
+            if (v == 90.0) {
                 cyl->SecondAngle.setValue(cyl->SecondAngle.getMaximum());
-            else if (v == -90.0)
+            }
+            else if (v == -90.0) {
                 cyl->SecondAngle.setValue(cyl->SecondAngle.getMinimum());
+            }
             ui->cylinderYSkew->setValue(cyl->SecondAngle.getQuantityValue());
         }
         cyl->recomputeFeature();
@@ -484,7 +593,7 @@ void TaskBoxPrimitives::onCylinderYSkewChanged(double v)
 void TaskBoxPrimitives::onSphereAngle1Changed(double v)
 {
     if (auto sph = getObject<PartDesign::Sphere>()) {
-        ui->sphereAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
+        ui->sphereAngle2->setMinimum(v);  // Angle1 must geometrically be <= than Angle2
         sph->Angle1.setValue(v);
         sph->recomputeFeature();
     }
@@ -493,7 +602,7 @@ void TaskBoxPrimitives::onSphereAngle1Changed(double v)
 void TaskBoxPrimitives::onSphereAngle2Changed(double v)
 {
     if (auto sph = getObject<PartDesign::Sphere>()) {
-        ui->sphereAngle1->setMaximum(v); // Angle1 must geometrically be <= than Angle2
+        ui->sphereAngle1->setMaximum(v);  // Angle1 must geometrically be <= than Angle2
         sph->Angle2.setValue(v);
         sph->recomputeFeature();
     }
@@ -507,7 +616,7 @@ void TaskBoxPrimitives::onSphereAngle3Changed(double v)
     }
 }
 
-void TaskBoxPrimitives::onSphereRadiusChanged(double  v)
+void TaskBoxPrimitives::onSphereRadiusChanged(double v)
 {
     if (auto sph = getObject<PartDesign::Sphere>()) {
         sph->Radius.setValue(v);
@@ -550,7 +659,7 @@ void TaskBoxPrimitives::onConeRadius2Changed(double v)
 void TaskBoxPrimitives::onEllipsoidAngle1Changed(double v)
 {
     if (auto ell = getObject<PartDesign::Ellipsoid>()) {
-        ui->ellipsoidAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
+        ui->ellipsoidAngle2->setMinimum(v);  // Angle1 must geometrically be <= than Angle2
         ell->Angle1.setValue(v);
         ell->recomputeFeature();
     }
@@ -559,7 +668,7 @@ void TaskBoxPrimitives::onEllipsoidAngle1Changed(double v)
 void TaskBoxPrimitives::onEllipsoidAngle2Changed(double v)
 {
     if (auto ell = getObject<PartDesign::Ellipsoid>()) {
-        ui->ellipsoidAngle1->setMaximum(v); // Angle1 must geometrically be <= than Angle22
+        ui->ellipsoidAngle1->setMaximum(v);  // Angle1 must geometrically be <= than Angle22
         ell->Angle2.setValue(v);
         ell->recomputeFeature();
     }
@@ -600,7 +709,7 @@ void TaskBoxPrimitives::onEllipsoidRadius3Changed(double v)
 void TaskBoxPrimitives::onTorusAngle1Changed(double v)
 {
     if (auto tor = getObject<PartDesign::Torus>()) {
-        ui->torusAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
+        ui->torusAngle2->setMinimum(v);  // Angle1 must geometrically be <= than Angle2
         tor->Angle1.setValue(v);
         tor->recomputeFeature();
     }
@@ -609,7 +718,7 @@ void TaskBoxPrimitives::onTorusAngle1Changed(double v)
 void TaskBoxPrimitives::onTorusAngle2Changed(double v)
 {
     if (auto tor = getObject<PartDesign::Torus>()) {
-        ui->torusAngle1->setMaximum(v); // Angle1 must geometrically be <= than Angle2
+        ui->torusAngle1->setMaximum(v);  // Angle1 must geometrically be <= than Angle2
         tor->Angle2.setValue(v);
         tor->recomputeFeature();
     }
@@ -669,10 +778,12 @@ void TaskBoxPrimitives::onPrismXSkewChanged(double v)
             prim->FirstAngle.setValue(v);
         }
         else {
-            if (v == 90.0)
+            if (v == 90.0) {
                 prim->FirstAngle.setValue(89.99999);
-            else if (v == -90.0)
+            }
+            else if (v == -90.0) {
                 prim->FirstAngle.setValue(-89.99999);
+            }
             ui->prismXSkew->setValue(prim->FirstAngle.getQuantityValue());
         }
         prim->recomputeFeature();
@@ -688,10 +799,12 @@ void TaskBoxPrimitives::onPrismYSkewChanged(double v)
             prim->SecondAngle.setValue(v);
         }
         else {
-            if (v == 90.0)
+            if (v == 90.0) {
                 prim->SecondAngle.setValue(89.99999);
-            else if (v == -90.0)
+            }
+            else if (v == -90.0) {
                 prim->SecondAngle.setValue(-89.99999);
+            }
             ui->prismYSkew->setValue(prim->SecondAngle.getQuantityValue());
         }
         prim->recomputeFeature();
@@ -709,7 +822,7 @@ void TaskBoxPrimitives::onPrismPolygonChanged(int v)
 void TaskBoxPrimitives::onWedgeX2minChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeX2max->setMinimum(v); // wedgeX2min must be <= than wedgeX2max
+        ui->wedgeX2max->setMinimum(v);  // wedgeX2min must be <= than wedgeX2max
         wedge->X2min.setValue(v);
         wedge->recomputeFeature();
     }
@@ -718,7 +831,7 @@ void TaskBoxPrimitives::onWedgeX2minChanged(double v)
 void TaskBoxPrimitives::onWedgeX2maxChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeX2min->setMaximum(v); // wedgeX2min must be <= than wedgeX2max
+        ui->wedgeX2min->setMaximum(v);  // wedgeX2min must be <= than wedgeX2max
         wedge->X2max.setValue(v);
         wedge->recomputeFeature();
     }
@@ -736,7 +849,7 @@ void TaskBoxPrimitives::onWedgeXminChanged(double v)
 void TaskBoxPrimitives::onWedgeXmaxChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeXmin->setMaximum(v); // must be < than wedgeXmax
+        ui->wedgeXmin->setMaximum(v);  // must be < than wedgeXmax
         wedge->Xmax.setValue(v);
         wedge->recomputeFeature();
     }
@@ -745,7 +858,7 @@ void TaskBoxPrimitives::onWedgeXmaxChanged(double v)
 void TaskBoxPrimitives::onWedgeYminChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeYmax->setMinimum(v); // must be > than wedgeYmin
+        ui->wedgeYmax->setMinimum(v);  // must be > than wedgeYmin
         wedge->Ymin.setValue(v);
         wedge->recomputeFeature();
     }
@@ -754,7 +867,7 @@ void TaskBoxPrimitives::onWedgeYminChanged(double v)
 void TaskBoxPrimitives::onWedgeYmaxChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeYmin->setMaximum(v); // must be < than wedgeYmax
+        ui->wedgeYmin->setMaximum(v);  // must be < than wedgeYmax
         wedge->Ymax.setValue(v);
         wedge->recomputeFeature();
     }
@@ -763,7 +876,7 @@ void TaskBoxPrimitives::onWedgeYmaxChanged(double v)
 void TaskBoxPrimitives::onWedgeZ2minChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeZ2max->setMinimum(v); // must be >= than wedgeZ2min
+        ui->wedgeZ2max->setMinimum(v);  // must be >= than wedgeZ2min
         wedge->Z2min.setValue(v);
         wedge->recomputeFeature();
     }
@@ -772,7 +885,7 @@ void TaskBoxPrimitives::onWedgeZ2minChanged(double v)
 void TaskBoxPrimitives::onWedgeZ2maxChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeZ2min->setMaximum(v); // must be <= than wedgeZ2max
+        ui->wedgeZ2min->setMaximum(v);  // must be <= than wedgeZ2max
         wedge->Z2max.setValue(v);
         wedge->recomputeFeature();
     }
@@ -781,7 +894,7 @@ void TaskBoxPrimitives::onWedgeZ2maxChanged(double v)
 void TaskBoxPrimitives::onWedgeZminChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeZmax->setMinimum(v); // must be > than wedgeZmin
+        ui->wedgeZmax->setMinimum(v);  // must be > than wedgeZmin
         wedge->Zmin.setValue(v);
         wedge->recomputeFeature();
     }
@@ -790,14 +903,14 @@ void TaskBoxPrimitives::onWedgeZminChanged(double v)
 void TaskBoxPrimitives::onWedgeZmaxChanged(double v)
 {
     if (auto wedge = getObject<PartDesign::Wedge>()) {
-        ui->wedgeZmin->setMaximum(v); // must be < than wedgeZmax
+        ui->wedgeZmin->setMaximum(v);  // must be < than wedgeZmax
         wedge->Zmax.setValue(v);
         wedge->recomputeFeature();
     }
 }
 
 
-bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
+bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
 {
     try {
         QString name(QString::fromLatin1(Gui::Command::getObjectCmd(obj).c_str()));
@@ -808,142 +921,137 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
         }
 
         Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
-        switch(ui->widgetStack->currentIndex()) {
-            case 1:         // box
-                cmd = QString::fromLatin1(
-                    "%1.Length='%2'\n"
-                    "%1.Width='%3'\n"
-                    "%1.Height='%4'\n")
-                    .arg(name,
-                         ui->boxLength->value().getSafeUserString(),
-                         ui->boxWidth->value().getSafeUserString(),
-                         ui->boxHeight->value().getSafeUserString());
+        switch (ui->widgetStack->currentIndex()) {
+            case 1:  // box
+                cmd = QString::fromLatin1("%1.Length='%2'\n"
+                                          "%1.Width='%3'\n"
+                                          "%1.Height='%4'\n")
+                          .arg(name,
+                               ui->boxLength->value().getSafeUserString(),
+                               ui->boxWidth->value().getSafeUserString(),
+                               ui->boxHeight->value().getSafeUserString());
                 break;
 
             case 2:  // cylinder
-                cmd = QString::fromLatin1(
-                    "%1.Radius='%2'\n"
-                    "%1.Height='%3'\n"
-                    "%1.Angle='%4'\n"
-                    "%1.FirstAngle='%5'\n"
-                    "%1.SecondAngle='%6'\n")
-                    .arg(name,
-                         ui->cylinderRadius->value().getSafeUserString(),
-                         ui->cylinderHeight->value().getSafeUserString(),
-                         ui->cylinderAngle->value().getSafeUserString(),
-                         ui->cylinderXSkew->value().getSafeUserString(),
-                         ui->cylinderYSkew->value().getSafeUserString());
+                cmd = QString::fromLatin1("%1.Radius='%2'\n"
+                                          "%1.Height='%3'\n"
+                                          "%1.Angle='%4'\n"
+                                          "%1.FirstAngle='%5'\n"
+                                          "%1.SecondAngle='%6'\n")
+                          .arg(name,
+                               ui->cylinderRadius->value().getSafeUserString(),
+                               ui->cylinderHeight->value().getSafeUserString(),
+                               ui->cylinderAngle->value().getSafeUserString(),
+                               ui->cylinderXSkew->value().getSafeUserString(),
+                               ui->cylinderYSkew->value().getSafeUserString());
                 break;
 
             case 3:  // cone
-                cmd = QString::fromLatin1(
-                    "%1.Radius1='%2'\n"
-                    "%1.Radius2='%3'\n"
-                    "%1.Height='%4'\n"
-                    "%1.Angle='%5'\n")
-                    .arg(name,
-                         ui->coneRadius1->value().getSafeUserString(),
-                         ui->coneRadius2->value().getSafeUserString(),
-                         ui->coneHeight->value().getSafeUserString(),
-                         ui->coneAngle->value().getSafeUserString());
-                 break;
+                cmd = QString::fromLatin1("%1.Radius1='%2'\n"
+                                          "%1.Radius2='%3'\n"
+                                          "%1.Height='%4'\n"
+                                          "%1.Angle='%5'\n")
+                          .arg(name,
+                               ui->coneRadius1->value().getSafeUserString(),
+                               ui->coneRadius2->value().getSafeUserString(),
+                               ui->coneHeight->value().getSafeUserString(),
+                               ui->coneAngle->value().getSafeUserString());
+                break;
 
             case 4:  // sphere
-                cmd = QString::fromLatin1(
-                    "%1.Radius='%2'\n"
-                    "%1.Angle1='%3'\n"
-                    "%1.Angle2='%4'\n"
-                    "%1.Angle3='%5'\n")
-                    .arg(name,
-                         ui->sphereRadius->value().getSafeUserString(),
-                         ui->sphereAngle1->value().getSafeUserString(),
-                         ui->sphereAngle2->value().getSafeUserString(),
-                         ui->sphereAngle3->value().getSafeUserString());
+                cmd = QString::fromLatin1("%1.Radius='%2'\n"
+                                          "%1.Angle1='%3'\n"
+                                          "%1.Angle2='%4'\n"
+                                          "%1.Angle3='%5'\n")
+                          .arg(name,
+                               ui->sphereRadius->value().getSafeUserString(),
+                               ui->sphereAngle1->value().getSafeUserString(),
+                               ui->sphereAngle2->value().getSafeUserString(),
+                               ui->sphereAngle3->value().getSafeUserString());
                 break;
             case 5:  // ellipsoid
-                cmd = QString::fromLatin1(
-                    "%1.Radius1='%2'\n"
-                    "%1.Radius2='%3'\n"
-                    "%1.Radius3='%4'\n"
-                    "%1.Angle1='%5'\n"
-                    "%1.Angle2='%6'\n"
-                    "%1.Angle3='%7'\n")
-                    .arg(name,
-                         ui->ellipsoidRadius1->value().getSafeUserString(),
-                         ui->ellipsoidRadius2->value().getSafeUserString(),
-                         ui->ellipsoidRadius3->value().getSafeUserString(),
-                         ui->ellipsoidAngle1->value().getSafeUserString(),
-                         ui->ellipsoidAngle2->value().getSafeUserString(),
-                         ui->ellipsoidAngle3->value().getSafeUserString());
+                cmd = QString::fromLatin1("%1.Radius1='%2'\n"
+                                          "%1.Radius2='%3'\n"
+                                          "%1.Radius3='%4'\n"
+                                          "%1.Angle1='%5'\n"
+                                          "%1.Angle2='%6'\n"
+                                          "%1.Angle3='%7'\n")
+                          .arg(name,
+                               ui->ellipsoidRadius1->value().getSafeUserString(),
+                               ui->ellipsoidRadius2->value().getSafeUserString(),
+                               ui->ellipsoidRadius3->value().getSafeUserString(),
+                               ui->ellipsoidAngle1->value().getSafeUserString(),
+                               ui->ellipsoidAngle2->value().getSafeUserString(),
+                               ui->ellipsoidAngle3->value().getSafeUserString());
                 break;
 
             case 6:  // torus
-                cmd = QString::fromLatin1(
-                    "%1.Radius1='%2'\n"
-                    "%1.Radius2='%3'\n"
-                    "%1.Angle1='%4'\n"
-                    "%1.Angle2='%5'\n"
-                    "%1.Angle3='%6'\n")
-                    .arg(name,
-                         ui->torusRadius1->value().getSafeUserString(),
-                         ui->torusRadius2->value().getSafeUserString(),
-                         ui->torusAngle1->value().getSafeUserString(),
-                         ui->torusAngle2->value().getSafeUserString(),
-                         ui->torusAngle3->value().getSafeUserString());
+                cmd = QString::fromLatin1("%1.Radius1='%2'\n"
+                                          "%1.Radius2='%3'\n"
+                                          "%1.Angle1='%4'\n"
+                                          "%1.Angle2='%5'\n"
+                                          "%1.Angle3='%6'\n")
+                          .arg(name,
+                               ui->torusRadius1->value().getSafeUserString(),
+                               ui->torusRadius2->value().getSafeUserString(),
+                               ui->torusAngle1->value().getSafeUserString(),
+                               ui->torusAngle2->value().getSafeUserString(),
+                               ui->torusAngle3->value().getSafeUserString());
                 break;
             case 7:  // prism
-                cmd = QString::fromLatin1(
-                    "%1.Polygon=%2\n"
-                    "%1.Circumradius='%3'\n"
-                    "%1.Height='%4'\n"
-                    "%1.FirstAngle='%5'\n"
-                    "%1.SecondAngle='%6'\n")
-                    .arg(name,
-                         QString::number(ui->prismPolygon->value()),
-                         ui->prismCircumradius->value().getSafeUserString(),
-                         ui->prismHeight->value().getSafeUserString(),
-                         ui->prismXSkew->value().getSafeUserString(),
-                         ui->prismYSkew->value().getSafeUserString());
+                cmd = QString::fromLatin1("%1.Polygon=%2\n"
+                                          "%1.Circumradius='%3'\n"
+                                          "%1.Height='%4'\n"
+                                          "%1.FirstAngle='%5'\n"
+                                          "%1.SecondAngle='%6'\n")
+                          .arg(name,
+                               QString::number(ui->prismPolygon->value()),
+                               ui->prismCircumradius->value().getSafeUserString(),
+                               ui->prismHeight->value().getSafeUserString(),
+                               ui->prismXSkew->value().getSafeUserString(),
+                               ui->prismYSkew->value().getSafeUserString());
                 break;
             case 8:  // wedge
                 // Xmin/max, Ymin/max and Zmin/max must each not be equal
                 if (ui->wedgeXmin->value().getValue() == ui->wedgeXmax->value().getValue()) {
-                    QMessageBox::warning(Gui::getMainWindow(), tr("Invalid wedge parameters"),
-                        tr("X min must not be equal to X max!"));
+                    QMessageBox::warning(Gui::getMainWindow(),
+                                         tr("Invalid wedge parameters"),
+                                         tr("X min must not be equal to X max!"));
                     return false;
                 }
                 else if (ui->wedgeYmin->value().getValue() == ui->wedgeYmax->value().getValue()) {
-                    QMessageBox::warning(Gui::getMainWindow(), tr("Invalid wedge parameters"),
-                        tr("Y min must not be equal to Y max!"));
+                    QMessageBox::warning(Gui::getMainWindow(),
+                                         tr("Invalid wedge parameters"),
+                                         tr("Y min must not be equal to Y max!"));
                     return false;
                 }
                 else if (ui->wedgeZmin->value().getValue() == ui->wedgeZmax->value().getValue()) {
-                    QMessageBox::warning(Gui::getMainWindow(), tr("Invalid wedge parameters"),
-                        tr("Z min must not be equal to Z max!"));
+                    QMessageBox::warning(Gui::getMainWindow(),
+                                         tr("Invalid wedge parameters"),
+                                         tr("Z min must not be equal to Z max!"));
                     return false;
                 }
-                cmd = QString::fromLatin1(
-                    "%1.Xmin='%2'\n"
-                    "%1.Ymin='%3'\n"
-                    "%1.Zmin='%4'\n"
-                    "%1.X2min='%5'\n"
-                    "%1.Z2min='%6'\n"
-                    "%1.Xmax='%7'\n"
-                    "%1.Ymax='%8'\n"
-                    "%1.Zmax='%9'\n"
-                    "%1.X2max='%10'\n"
-                    "%1.Z2max='%11'\n")
-                    .arg(name,
-                         ui->wedgeXmin->value().getSafeUserString(),
-                         ui->wedgeYmin->value().getSafeUserString(),
-                         ui->wedgeZmin->value().getSafeUserString(),
-                         ui->wedgeX2min->value().getSafeUserString(),
-                         ui->wedgeZ2min->value().getSafeUserString(),
-                         ui->wedgeXmax->value().getSafeUserString(),
-                         ui->wedgeYmax->value().getSafeUserString(),
-                         ui->wedgeZmax->value().getSafeUserString())
-                    .arg(ui->wedgeX2max->value().getSafeUserString(),
-                         ui->wedgeZ2max->value().getSafeUserString());
+                cmd = QString::fromLatin1("%1.Xmin='%2'\n"
+                                          "%1.Ymin='%3'\n"
+                                          "%1.Zmin='%4'\n"
+                                          "%1.X2min='%5'\n"
+                                          "%1.Z2min='%6'\n"
+                                          "%1.Xmax='%7'\n"
+                                          "%1.Ymax='%8'\n"
+                                          "%1.Zmax='%9'\n"
+                                          "%1.X2max='%10'\n"
+                                          "%1.Z2max='%11'\n")
+                          .arg(name,
+                               ui->wedgeXmin->value().getSafeUserString(),
+                               ui->wedgeYmin->value().getSafeUserString(),
+                               ui->wedgeZmin->value().getSafeUserString(),
+                               ui->wedgeX2min->value().getSafeUserString(),
+                               ui->wedgeZ2min->value().getSafeUserString(),
+                               ui->wedgeXmax->value().getSafeUserString(),
+                               ui->wedgeYmax->value().getSafeUserString(),
+                               ui->wedgeZmax->value().getSafeUserString())
+                          .arg(ui->wedgeX2max->value().getSafeUserString(),
+                               ui->wedgeZ2max->value().getSafeUserString());
                 break;
 
             default:
@@ -957,13 +1065,16 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {
-        QMessageBox::warning(this, tr("Create primitive"), QApplication::translate("Exception", e.what()));
+        QMessageBox::warning(this,
+                             tr("Create primitive"),
+                             QApplication::translate("Exception", e.what()));
         return false;
     }
     return true;
 }
 
-TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView) : vp_prm(PrimitiveView)
+TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
+    : vp_prm(PrimitiveView)
 {
     assert(PrimitiveView);
 
@@ -978,10 +1089,11 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters() = default;
 bool TaskPrimitiveParameters::accept()
 {
     bool primitiveOK = primitive->setPrimitive(vp_prm->getObject());
-    if (!primitiveOK)
+    if (!primitiveOK) {
         return primitiveOK;
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    }
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;
 }
@@ -990,7 +1102,7 @@ bool TaskPrimitiveParameters::reject()
 {
     // roll back the done things
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;
 }

@@ -44,16 +44,16 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         std::vector<std::tuple<int, int, std::string>> result =
             ExpressionParser::tokenize(expr.toStdString());
         std::vector<std::tuple<int, int, QString>> tokens;
-        std::transform(result.cbegin(),
-                       result.cend(),
-                       std::back_inserter(tokens),
-                       [&](const std::tuple<int, int, std::string>& item) {
-                           return std::make_tuple(
-                               std::get<0>(item),
-                               QString::fromStdString(expr.toStdString().substr(0, std::get<1>(item))).size(),
-                               QString::fromStdString(std::get<2>(item))
-                           );
-                       });
+        std::transform(
+            result.cbegin(),
+            result.cend(),
+            std::back_inserter(tokens),
+            [&](const std::tuple<int, int, std::string>& item) {
+                return std::make_tuple(
+                    std::get<0>(item),
+                    QString::fromStdString(expr.toStdString().substr(0, std::get<1>(item))).size(),
+                    QString::fromStdString(std::get<2>(item)));
+            });
         return tokens;
     };
 
@@ -63,7 +63,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
 
     // Tokenize prefix
-    std::vector<std::tuple<int, int, QString> > tokens = tokenizeExpression(prefix.mid(start));
+    std::vector<std::tuple<int, int, QString>> tokens = tokenizeExpression(prefix.mid(start));
 
     // No tokens
     if (tokens.empty()) {
@@ -78,8 +78,9 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         if (std::get<1>(*it) >= pos) {
             // Include the immediately followed '.' or '#', because we'll be
             // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
-            if (it != tokens.begin() && std::get<0>(*it) != '.' && std::get<0>(*it) != '#')
+            if (it != tokens.begin() && std::get<0>(*it) != '.' && std::get<0>(*it) != '#') {
                 it = it - 1;
+            }
             tokens.resize(it - tokens.begin() + 1);
             prefixEnd = start + std::get<1>(*it) + (int)std::get<2>(*it).size();
             break;
@@ -87,8 +88,9 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     }
 
     int trim = 0;
-    if (prefixEnd > pos)
+    if (prefixEnd > pos) {
         trim = prefixEnd - pos;
+    }
 
     // Extract last tokens that can be rebuilt to a variable
     long i = static_cast<long>(tokens.size()) - 1;
@@ -111,9 +113,8 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     }
 
     // Not an unclosed string and the last character is a space
-    if (!stringing && !prefix.isEmpty() &&
-            prefixEnd > 0 && prefixEnd <= prefix.size() &&
-            prefix[prefixEnd-1] == QChar(32)) {
+    if (!stringing && !prefix.isEmpty() && prefixEnd > 0 && prefixEnd <= prefix.size()
+        && prefix[prefixEnd - 1] == QChar(32)) {
         return {};
     }
 
@@ -121,23 +122,22 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         i = static_cast<long>(tokens.size()) - 1;
         for (; i >= 0; --i) {
             int token = std::get<0>(tokens[i]);
-            if (token != '.' &&
-                token != '#' &&
-                token != ExpressionParser::IDENTIFIER &&
-                token != ExpressionParser::INTEGER &&
-                token != ExpressionParser::STRING &&
-                token != ExpressionParser::UNIT &&
-                token != ExpressionParser::ONE)
+            if (token != '.' && token != '#' && token != ExpressionParser::IDENTIFIER
+                && token != ExpressionParser::INTEGER && token != ExpressionParser::STRING
+                && token != ExpressionParser::UNIT && token != ExpressionParser::ONE) {
                 break;
+            }
         }
         ++i;
     }
 
     // Set prefix start for use when replacing later
-    if (i == static_cast<long>(tokens.size()))
+    if (i == static_cast<long>(tokens.size())) {
         prefixStart = prefixEnd;
-    else
+    }
+    else {
         prefixStart = start + std::get<1>(tokens[i]);
+    }
 
     // Build prefix from tokens
     while (i < static_cast<long>(tokens.size())) {
@@ -145,8 +145,9 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         ++i;
     }
 
-    if (trim && trim < int(completionPrefix.size()))
+    if (trim && trim < int(completionPrefix.size())) {
         completionPrefix.resize(completionPrefix.size() - trim);
+    }
 
     return completionPrefix;
 }

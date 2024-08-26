@@ -1,4 +1,4 @@
-#**************************************************************************
+# **************************************************************************
 #   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -18,7 +18,7 @@
 #   License along with FreeCAD; if not, write to the Free Software        *
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #   USA                                                                   *
-#**************************************************************************
+# **************************************************************************
 
 """
 Test module for FreeCAD material models
@@ -30,22 +30,24 @@ import Materials
 
 parseQuantity = FreeCAD.Units.parseQuantity
 
+
 class ModelTestCases(unittest.TestCase):
     """
     Test class for FreeCAD material models
     """
+
     def setUp(self):
-        """ Setup function to initialize test data """
+        """Setup function to initialize test data"""
         self.ModelManager = Materials.ModelManager()
         self.uuids = Materials.UUIDs()
 
     def testModelManager(self):
-        """ Ensure we can access ModelManager member functions """
+        """Ensure we can access ModelManager member functions"""
         self.assertIn("ModelLibraries", dir(self.ModelManager))
         self.assertIn("Models", dir(self.ModelManager))
 
     def testUUIDs(self):
-        """ Verify the common UUIDs are defined and correct """
+        """Verify the common UUIDs are defined and correct"""
         self.assertTrue(self.uuids.Father, "9cdda8b6-b606-4778-8f13-3934d8668e67")
         self.assertTrue(self.uuids.MaterialStandard, "1e2c0088-904a-4537-925f-64064c07d700")
 
@@ -53,7 +55,7 @@ class ModelTestCases(unittest.TestCase):
         self.assertTrue(self.uuids.Density, "454661e5-265b-4320-8e6f-fcf6223ac3af")
         self.assertTrue(self.uuids.Hardness, "3d1a6141-d032-4d82-8bb5-a8f339fff8ad")
         self.assertTrue(self.uuids.IsotropicLinearElastic, "f6f9e48c-b116-4e82-ad7f-3659a9219c50")
-        self.assertTrue(self.uuids.LinearElastic,"7b561d1d-fb9b-44f6-9da9-56a4f74d7536")
+        self.assertTrue(self.uuids.LinearElastic, "7b561d1d-fb9b-44f6-9da9-56a4f74d7536")
         self.assertTrue(self.uuids.MooneyRivlin, "beeed169-7770-4da0-ab67-c9172cf7d23d")
         self.assertTrue(self.uuids.NeoHooke, "569ebc58-ef29-434a-83be-555a0980d505")
         self.assertTrue(self.uuids.OgdenN1, "a2634a2c-412f-468d-9bec-74ae5d87a9c0")
@@ -105,7 +107,7 @@ class ModelTestCases(unittest.TestCase):
         self.assertTrue(self.uuids.TestModel, "34d0583d-f999-49ba-99e6-aa40bd5c3a6b")
 
     def testModelLoad(self):
-        """ Test that the Density model has been loaded correctly """
+        """Test that the Density model has been loaded correctly"""
         density = self.ModelManager.getModel(self.uuids.Density)
         self.assertIsNotNone(density)
         self.assertEqual(density.Name, "Density")

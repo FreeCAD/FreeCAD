@@ -73,8 +73,9 @@ long NavlibInterface::GetPivotPosition(navlib::point_t& position) const
 
 long NavlibInterface::SetPivotPosition(const navlib::point_t& position)
 {
-    if (pivot.pTransform == nullptr)
+    if (pivot.pTransform == nullptr) {
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+    }
 
     pivot.pTransform->translation.setValue(position.x, position.y, position.z);
     return 0;
@@ -88,8 +89,9 @@ long NavlibInterface::IsUserPivot(navlib::bool_t& userPivot) const
 
 long NavlibInterface::GetPivotVisible(navlib::bool_t& visible) const
 {
-    if (pivot.pVisibility == nullptr)
+    if (pivot.pVisibility == nullptr) {
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+    }
 
     visible = pivot.pVisibility->whichChild.getValue() == SO_SWITCH_ALL;
 
@@ -98,29 +100,35 @@ long NavlibInterface::GetPivotVisible(navlib::bool_t& visible) const
 
 long NavlibInterface::SetPivotVisible(bool visible)
 {
-    if (pivot.pVisibility == nullptr)
+    if (pivot.pVisibility == nullptr) {
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+    }
 
-    if (visible)
+    if (visible) {
         pivot.pVisibility->whichChild = SO_SWITCH_ALL;
-    else
+    }
+    else {
         pivot.pVisibility->whichChild = SO_SWITCH_NONE;
+    }
 
     return 0;
 }
 
 long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 {
-    if (is2DView())
+    if (is2DView()) {
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+    }
 
     const Gui::View3DInventorViewer* const inventorViewer = currentView.pView3d->getViewer();
-    if (inventorViewer == nullptr)
+    if (inventorViewer == nullptr) {
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+    }
 
     SoNode* pSceneGraph = inventorViewer->getSceneGraph();
-    if (pSceneGraph == nullptr)
+    if (pSceneGraph == nullptr) {
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+    }
 
     // Prepare the ray-picking object
     SoRayPickAction rayPickAction(inventorViewer->getSoRenderManager()->getViewportRegion());
@@ -131,8 +139,9 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
     // Get the camera rotation
     SoCamera* pCamera = getCamera<SoCamera*>();
 
-    if (pCamera == nullptr)
+    if (pCamera == nullptr) {
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+    }
 
     pCamera->orientation.getValue().getValue(cameraMatrix);
 
@@ -141,8 +150,9 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
 
     for (uint32_t i = 0; i < hitTestingResolution; i++) {
         // Scale the sample like it was defined in camera space (placed on XY plane)
-        SbVec3f transform(
-            hitTestPattern[i][0] * ray.radius, hitTestPattern[i][1] * ray.radius, 0.0f);
+        SbVec3f transform(hitTestPattern[i][0] * ray.radius,
+                          hitTestPattern[i][1] * ray.radius,
+                          0.0f);
 
         // Apply the model-view transform to a sample (only the rotation)
         cameraMatrix.multVecMatrix(transform, transform);
@@ -187,8 +197,9 @@ long NavlibInterface::GetSelectionExtents(navlib::box_t& extents) const
                       Gui::ViewProvider* pViewProvider =
                           Gui::Application::Instance->getViewProvider(selection.pObject);
 
-                      if (pViewProvider == nullptr)
+                      if (pViewProvider == nullptr) {
                           return navlib::make_result_code(navlib::navlib_errc::no_data_available);
+                      }
 
                       boundingBox.Add(pViewProvider->getBoundingBox(selection.SubName, true));
 

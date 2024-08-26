@@ -29,10 +29,10 @@
 
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#	pragma warning( disable : 4251 )
-#	pragma warning( disable : 4275 )
-#	pragma warning( disable : 4503 )
-#	pragma warning( disable : 4786 )  // specifier longer then 255 chars
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4275)
+#pragma warning(disable : 4503)
+#pragma warning(disable : 4786)  // specifier longer then 255 chars
 #endif
 
 #ifdef _PreComp_
@@ -75,14 +75,14 @@
 #elif defined(FC_OS_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
-# define NOMINMAX
+#define NOMINMAX
 #endif
 #include <Windows.h>
 #include <io.h>
-#endif //_PreComp_
+#endif  //_PreComp_
 
 #ifndef _Standard_Version_HeaderFile
-# include <Standard_Version.hxx>
+#include <Standard_Version.hxx>
 #endif
 
 #endif

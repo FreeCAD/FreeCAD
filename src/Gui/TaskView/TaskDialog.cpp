@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include "TaskDialog.h"
@@ -39,12 +39,11 @@ using namespace Gui::TaskView;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDialog::TaskDialog()
-    : QObject(nullptr), pos(North)
+    : QObject(nullptr)
+    , pos(North)
     , escapeButton(true)
     , autoCloseTransaction(false)
-{
-
-}
+{}
 
 TaskDialog::~TaskDialog()
 {
@@ -61,10 +60,8 @@ QWidget* TaskDialog::addTaskBox(QWidget* widget, bool expandable, QWidget* paren
     return addTaskBox(QPixmap(), widget, expandable, parent);
 }
 
-QWidget* TaskDialog::addTaskBox(const QPixmap& icon,
-                                QWidget* widget,
-                                bool expandable,
-                                QWidget* parent)
+QWidget*
+TaskDialog::addTaskBox(const QPixmap& icon, QWidget* widget, bool expandable, QWidget* parent)
 {
     auto taskbox = new Gui::TaskView::TaskBox(icon, widget->windowTitle(), expandable, parent);
     taskbox->groupLayout()->addWidget(widget);
@@ -80,7 +77,7 @@ QWidget* TaskDialog::addTaskBoxWithoutHeader(QWidget* widget)
     return taskbox;
 }
 
-const std::vector<QWidget*> &TaskDialog::getDialogContent() const
+const std::vector<QWidget*>& TaskDialog::getDialogContent() const
 {
     return Content;
 }
@@ -99,29 +96,19 @@ bool TaskDialog::canClose() const
 //==== calls from the TaskView ===============================================================
 
 void TaskDialog::open()
-{
-
-}
+{}
 
 void TaskDialog::closed()
-{
-
-}
+{}
 
 void TaskDialog::autoClosedOnTransactionChange()
-{
-
-}
+{}
 
 void TaskDialog::autoClosedOnDeletedDocument()
-{
-
-}
+{}
 
 void TaskDialog::clicked(int)
-{
-
-}
+{}
 
 bool TaskDialog::accept()
 {
@@ -134,11 +121,7 @@ bool TaskDialog::reject()
 }
 
 void TaskDialog::helpRequested()
-{
-
-}
-
-
+{}
 
 
 #include "moc_TaskDialog.cpp"

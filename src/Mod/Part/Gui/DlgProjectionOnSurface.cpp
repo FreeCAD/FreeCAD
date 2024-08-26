@@ -60,7 +60,8 @@
 
 using namespace PartGui;
 
-namespace {
+namespace
+{
 //////////////////////////////////////////////////////////////////////////
 class EdgeSelection: public Gui::SelectionFilterGate
 {
@@ -127,7 +128,7 @@ public:
     }
 };
 //////////////////////////////////////////////////////////////////////////
-}
+}  // namespace
 
 DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
     : QWidget(parent)
@@ -1451,7 +1452,7 @@ void DlgProjectOnSurface::addWire(const Gui::SelectionChanges& msg)
     const TopoDS_Shape& shape = part.getShape();
     for (TopExp_Explorer xp(shape, TopAbs_WIRE); xp.More(); xp.Next()) {
         if (isEdgePartOf(xp.Current(), edge)) {
-            std::string name{"Wire"};
+            std::string name {"Wire"};
             name += std::to_string(index);
             addSelection(msg, name);
             break;
@@ -1460,8 +1461,7 @@ void DlgProjectOnSurface::addWire(const Gui::SelectionChanges& msg)
     }
 }
 
-void DlgProjectOnSurface::addSelection(const Gui::SelectionChanges& msg,
-                                       const std::string& subName)
+void DlgProjectOnSurface::addSelection(const Gui::SelectionChanges& msg, const std::string& subName)
 {
     if (!feature.expired()) {
         Gui::SelectionObject selObj(msg);
@@ -1561,7 +1561,9 @@ TaskProjectOnSurface::TaskProjectOnSurface(App::Document* doc)
     auto feature = dynamic_cast<Part::ProjectOnSurface*>(obj);
     widget = new DlgProjectOnSurface(feature);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
-                                         widget->windowTitle(), true, nullptr);
+                                         widget->windowTitle(),
+                                         true,
+                                         nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

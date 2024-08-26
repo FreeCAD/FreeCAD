@@ -29,7 +29,7 @@
 
 using namespace PartGui;
 
-PROPERTY_SOURCE(PartGui::ViewProviderScale,PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderScale, PartGui::ViewProviderPart)
 
 ViewProviderScale::ViewProviderScale()
 {
@@ -38,7 +38,7 @@ ViewProviderScale::ViewProviderScale()
 
 ViewProviderScale::~ViewProviderScale() = default;
 
-std::vector<App::DocumentObject*> ViewProviderScale::claimChildren()const
+std::vector<App::DocumentObject*> ViewProviderScale::claimChildren() const
 {
     std::vector<App::DocumentObject*> temp;
     temp.push_back(static_cast<Part::Scale*>(getObject())->Base.getValue());

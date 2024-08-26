@@ -31,33 +31,36 @@ class SoDragger;
 
 namespace Gui
 {
-  class QuantitySpinBox;
-  class SoFCCSysDragger;
-  class ViewProviderDragger;
+class QuantitySpinBox;
+class SoFCCSysDragger;
+class ViewProviderDragger;
 
-  class TaskCSysDragger : public Gui::TaskView::TaskDialog
-  {
-      Q_OBJECT
-    public:
-      TaskCSysDragger(ViewProviderDocumentObject *vpObjectIn, SoFCCSysDragger *draggerIn);
-      ~TaskCSysDragger() override;
-      QDialogButtonBox::StandardButtons getStandardButtons() const override
-        { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;}
-      void open() override;
-      bool accept() override;
-      bool reject() override;
-    private Q_SLOTS:
-      void onTIncrementSlot(double freshValue);
-      void onRIncrementSlot(double freshValue);
-    private:
-      static inline bool firstDrag = true;
-      static void dragStartCallback(void * data, SoDragger * d);
-      void setupGui();
-      App::DocumentObjectT vpObject;
-      SoFCCSysDragger *dragger;
-      QuantitySpinBox *tSpinBox;
-      QuantitySpinBox *rSpinBox;
-  };
-}
+class TaskCSysDragger: public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+public:
+    TaskCSysDragger(ViewProviderDocumentObject* vpObjectIn, SoFCCSysDragger* draggerIn);
+    ~TaskCSysDragger() override;
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
+    void open() override;
+    bool accept() override;
+    bool reject() override;
+private Q_SLOTS:
+    void onTIncrementSlot(double freshValue);
+    void onRIncrementSlot(double freshValue);
 
-#endif // TASKCSYSDRAGGER_H
+private:
+    static inline bool firstDrag = true;
+    static void dragStartCallback(void* data, SoDragger* d);
+    void setupGui();
+    App::DocumentObjectT vpObject;
+    SoFCCSysDragger* dragger;
+    QuantitySpinBox* tSpinBox;
+    QuantitySpinBox* rSpinBox;
+};
+}  // namespace Gui
+
+#endif  // TASKCSYSDRAGGER_H

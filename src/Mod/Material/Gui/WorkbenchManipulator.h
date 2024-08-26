@@ -27,7 +27,8 @@
 
 #include <Gui/WorkbenchManipulator.h>
 
-namespace MatGui {
+namespace MatGui
+{
 
 class WorkbenchManipulator: public Gui::WorkbenchManipulator
 {
@@ -48,7 +49,7 @@ private:
     static void addCommandsToTree(Gui::MenuItem* menuBar);
 };
 
-} // namespace MatGui
+}  // namespace MatGui
 
 
-#endif // MATGUI_WORKBENCHMANIPULATOR_H
+#endif  // MATGUI_WORKBENCHMANIPULATOR_H

@@ -23,10 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Interface_Static.hxx>
-# include <IGESControl_Controller.hxx>
-# include <STEPControl_Controller.hxx>
-# include <Standard_Version.hxx>
+#include <Interface_Static.hxx>
+#include <IGESControl_Controller.hxx>
+#include <STEPControl_Controller.hxx>
+#include <Standard_Version.hxx>
 #endif
 
 #include <App/Application.h>
@@ -188,7 +188,8 @@
 #include "MeasureClient.h"
 
 
-namespace Part {
+namespace Part
+{
 extern PyObject* initModule();
 }
 
@@ -562,7 +563,7 @@ PyMOD_INIT_FUNC(Part)
 
     OCAF::ImportExportSettings::initialize();
     Part::MeasureClient::initialize();
-    
+
     PyMOD_Return(partModule);
 }
 // clang-format on

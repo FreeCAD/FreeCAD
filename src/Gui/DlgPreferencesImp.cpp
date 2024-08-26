@@ -1,45 +1,45 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
- /****************************************************************************
-  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
-  *   Copyright (c) 2023 FreeCAD Project Association                         *
-  *                                                                          *
-  *   This file is part of FreeCAD.                                          *
-  *                                                                          *
-  *   FreeCAD is free software: you can redistribute it and/or modify it     *
-  *   under the terms of the GNU Lesser General Public License as            *
-  *   published by the Free Software Foundation, either version 2.1 of the   *
-  *   License, or (at your option) any later version.                        *
-  *                                                                          *
-  *   FreeCAD is distributed in the hope that it will be useful, but         *
-  *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
-  *   Lesser General Public License for more details.                        *
-  *                                                                          *
-  *   You should have received a copy of the GNU Lesser General Public       *
-  *   License along with FreeCAD. If not, see                                *
-  *   <https://www.gnu.org/licenses/>.                                       *
-  *                                                                          *
-  ***************************************************************************/
+/****************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
+ *   Copyright (c) 2023 FreeCAD Project Association                         *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <cstring>
-# include <QAbstractButton>
-# include <QApplication>
-# include <QCursor>
-# include <QDebug>
-# include <QMenu>
-# include <QMessageBox>
-# include <QScreen>
-# include <QScrollArea>
-# include <QScrollBar>
-# include <QTimer>
-# include <QToolTip>
-# include <QProcess>
-# include <QPushButton>
-# include <QWindow>
+#include <algorithm>
+#include <cstring>
+#include <QAbstractButton>
+#include <QApplication>
+#include <QCursor>
+#include <QDebug>
+#include <QMenu>
+#include <QMessageBox>
+#include <QScreen>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QTimer>
+#include <QToolTip>
+#include <QProcess>
+#include <QPushButton>
+#include <QWindow>
 #endif
 
 #include <App/Application.h>
@@ -88,7 +88,7 @@ void PreferencesPageItem::setWidget(QWidget* widget)
     if (_widget) {
         _widget->setProperty(PropertyName, QVariant::fromValue<PreferencesPageItem*>(nullptr));
     }
-    
+
     _widget = widget;
     _widget->setProperty(PropertyName, QVariant::fromValue(this));
 }
@@ -125,8 +125,11 @@ DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
  *  true to construct a modal dialog.
  */
 DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
-    : QDialog(parent, fl), ui(new Ui_DlgPreferences),
-      invalidParameter(false), canEmbedScrollArea(true), restartRequired(false)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgPreferences)
+    , invalidParameter(false)
+    , canEmbedScrollArea(true)
+    , restartRequired(false)
 {
     ui->setupUi(this);
 
@@ -165,22 +168,10 @@ void DlgPreferencesImp::setupConnections()
             &QDialogButtonBox::helpRequested,
             getMainWindow(),
             &MainWindow::whatsThis);
-    connect(ui->groupsTreeView,
-            &QTreeView::clicked,
-            this,
-            &DlgPreferencesImp::onPageSelected);
-    connect(ui->groupsTreeView,
-            &QTreeView::expanded,
-            this,
-            &DlgPreferencesImp::onGroupExpanded);
-    connect(ui->groupsTreeView,
-            &QTreeView::collapsed,
-            this,
-            &DlgPreferencesImp::onGroupCollapsed);
-    connect(ui->buttonReset,
-            &QPushButton::clicked,
-            this,
-            &DlgPreferencesImp::showResetOptions);
+    connect(ui->groupsTreeView, &QTreeView::clicked, this, &DlgPreferencesImp::onPageSelected);
+    connect(ui->groupsTreeView, &QTreeView::expanded, this, &DlgPreferencesImp::onGroupExpanded);
+    connect(ui->groupsTreeView, &QTreeView::collapsed, this, &DlgPreferencesImp::onGroupCollapsed);
+    connect(ui->buttonReset, &QPushButton::clicked, this, &DlgPreferencesImp::showResetOptions);
     connect(ui->groupWidgetStack,
             &QStackedWidget::currentChanged,
             this,
@@ -192,10 +183,10 @@ void DlgPreferencesImp::setupPages()
     // make sure that pages are ready to create
     GetWidgetFactorySupplier();
 
-    for (const auto &[name, pages] : _pages) {
+    for (const auto& [name, pages] : _pages) {
         auto* group = createGroup(name);
 
-        for (const auto &page : pages) {
+        for (const auto& page : pages) {
             createPageInGroup(group, page);
         }
     }
@@ -203,12 +194,11 @@ void DlgPreferencesImp::setupPages()
     updatePageDependentWidgets();
 }
 
-QPixmap DlgPreferencesImp::loadIconForGroup(const std::string &name) const
+QPixmap DlgPreferencesImp::loadIconForGroup(const std::string& name) const
 {
     // normalize file name
     auto normalizeName = [](std::string str) {
-        std::transform(str.begin(), str.end(), str.begin(),
-                       [](unsigned char ch) {
+        std::transform(str.begin(), str.end(), str.begin(), [](unsigned char ch) {
             return ch == ' ' ? '_' : std::tolower(ch);
         });
         return str;
@@ -235,16 +225,16 @@ QPixmap DlgPreferencesImp::loadIconForGroup(const std::string &name) const
 }
 
 /**
- * Create the necessary widgets for a new group named \a groupName. Returns a 
- * pointer to the group's SettingsPageItem: that widget's lifetime is managed by the 
+ * Create the necessary widgets for a new group named \a groupName. Returns a
+ * pointer to the group's SettingsPageItem: that widget's lifetime is managed by the
  * QStandardItemModel, do not manually deallocate.
  */
-PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string &groupName)
+PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string& groupName)
 {
     QString groupNameQString = QString::fromStdString(groupName);
 
     std::string iconName;
-    
+
     QString tooltip;
     getGroupData(groupName, iconName, tooltip);
 
@@ -279,7 +269,8 @@ PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string &groupName
 }
 
 
-PreferencePage* DlgPreferencesImp::createPreferencePage(const std::string& pageName, const std::string& groupName)
+PreferencePage* DlgPreferencesImp::createPreferencePage(const std::string& pageName,
+                                                        const std::string& groupName)
 {
     PreferencePage* page = WidgetFactory().createPreferencePage(pageName.c_str());
 
@@ -309,10 +300,12 @@ PreferencePage* DlgPreferencesImp::createPreferencePage(const std::string& pageN
 /**
  * Create a new preference page called \a pageName in the group \a groupItem.
  */
-void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const std::string &pageName)
+void DlgPreferencesImp::createPageInGroup(PreferencesPageItem* groupItem,
+                                          const std::string& pageName)
 {
     try {
-        PreferencePage* page = createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
+        PreferencePage* page =
+            createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
 
         if (!page) {
             Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
@@ -364,7 +357,7 @@ int DlgPreferencesImp::minimumDialogWidth(int pageWidth) const
 {
     // this is additional safety spacing to ensure that everything fits with scrollbar etc.
     const auto additionalMargin = style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 8;
-    
+
     QSize size = ui->groupWidgetStack->sizeHint();
 
     int diff = pageWidth - size.width();
@@ -450,7 +443,9 @@ void DlgPreferencesImp::removePage(const std::string& className, const std::stri
 /**
  * Sets a custom icon name or tool tip for a given group.
  */
-void DlgPreferencesImp::setGroupData(const std::string& name, const std::string& icon, const QString& tip)
+void DlgPreferencesImp::setGroupData(const std::string& name,
+                                     const std::string& icon,
+                                     const QString& tip)
 {
     Group group;
     group.iconName = icon;
@@ -497,7 +492,7 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
             pageStackWidget->setCurrentIndex(index);
 
             updatePageDependentWidgets();
-            
+
             return;
         }
     }
@@ -521,7 +516,7 @@ void DlgPreferencesImp::accept()
     this->invalidParameter = false;
 
     applyChanges();
-    
+
     if (!this->invalidParameter) {
         QDialog::accept();
         restartIfRequired();
@@ -534,7 +529,7 @@ void DlgPreferencesImp::reject()
     restartIfRequired();
 }
 
-void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn) 
+void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn)
 {
     if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply) {
         applyChanges();
@@ -552,21 +547,20 @@ void DlgPreferencesImp::showResetOptions()
     auto groupText = currentGroupItem->text();
 
     // Reset per page
-    QAction* pageAction = menu.addAction(tr("Reset page '%1'...").arg(pageText),
-                                         this,
-                                         [&] { restorePageDefaults(currentPageItem); });
+    QAction* pageAction = menu.addAction(tr("Reset page '%1'...").arg(pageText), this, [&] {
+        restorePageDefaults(currentPageItem);
+    });
     pageAction->setToolTip(tr("Resets the user settings for the page '%1'").arg(pageText));
 
     // Reset per group
-    QAction* groupAction = menu.addAction(tr("Reset group '%1'...").arg(groupText),
-                                          this,
-                                          [&] { restorePageDefaults(static_cast<PreferencesPageItem*>(currentPageItem->parent())); });
+    QAction* groupAction = menu.addAction(tr("Reset group '%1'...").arg(groupText), this, [&] {
+        restorePageDefaults(static_cast<PreferencesPageItem*>(currentPageItem->parent()));
+    });
     groupAction->setToolTip(tr("Resets the user settings for the group '%1'").arg(groupText));
 
     // Reset all
-    QAction* allAction = menu.addAction(tr("Reset all..."),
-                                        this,
-                                        &DlgPreferencesImp::restoreDefaults);
+    QAction* allAction =
+        menu.addAction(tr("Reset all..."), this, &DlgPreferencesImp::restoreDefaults);
     allAction->setToolTip(tr("Resets the user settings entirely"));
 
     connect(&menu, &QMenu::hovered, [&menu](QAction* hover) {
@@ -591,20 +585,23 @@ void DlgPreferencesImp::restoreDefaults()
 
     if (box.exec() == QMessageBox::Yes) {
         // keep this parameter
-        bool saveParameter = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                              GetBool("SaveUserParameter", true);
+        bool saveParameter =
+            App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                ->GetBool("SaveUserParameter", true);
 
         ParameterManager* mgr = App::GetApplication().GetParameterSet("User parameter");
         mgr->Clear();
 
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                              SetBool("SaveUserParameter", saveParameter);
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+            ->SetBool("SaveUserParameter", saveParameter);
 
         reject();
     }
 }
 /**
- * If the dialog is currently showing and the static variable _pages changed, this function 
+ * If the dialog is currently showing and the static variable _pages changed, this function
  * will rescan that list of pages and add any that are new to the current dialog. It will not
  * remove any pages that are no longer in the list, and will not change the user's current
  * active page.
@@ -614,7 +611,7 @@ void DlgPreferencesImp::reloadPages()
     // Make sure that pages are ready to create
     GetWidgetFactorySupplier();
 
-    for (const auto &[ group, pages ] : _pages) {
+    for (const auto& [group, pages] : _pages) {
         QString groupName = QString::fromStdString(group);
 
         // First, does this group already exist?
@@ -631,7 +628,7 @@ void DlgPreferencesImp::reloadPages()
             }
         }
 
-        // This is a new group that wasn't there when we started this instance of the dialog: 
+        // This is a new group that wasn't there when we started this instance of the dialog:
         if (!groupItem) {
             groupItem = createGroup(group);
         }
@@ -685,8 +682,8 @@ void DlgPreferencesImp::applyChanges()
                     pagesStackWidget->setCurrentIndex(j);
 
                     QMessageBox::warning(this,
-                                            tr("Wrong parameter"),
-                                            QString::fromLatin1(e.what()));
+                                         tr("Wrong parameter"),
+                                         QString::fromLatin1(e.what()));
 
                     this->invalidParameter = true;
 
@@ -704,7 +701,7 @@ void DlgPreferencesImp::applyChanges()
 
         for (int j = 0; j < pageStackWidget->count(); j++) {
             auto page = qobject_cast<PreferencePage*>(pageStackWidget->widget(j));
-            
+
             if (page) {
                 page->saveSettings();
                 restartRequired = restartRequired || page->isRestartRequired();
@@ -715,7 +712,7 @@ void DlgPreferencesImp::applyChanges()
     bool saveParameter = App::GetApplication()
                              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
                              ->GetBool("SaveUserParameter", true);
-    
+
     if (saveParameter) {
         ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
         parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
@@ -740,10 +737,9 @@ void DlgPreferencesImp::restartIfRequired()
         int exec = restartBox.exec();
 
         if (exec == QMessageBox::Ok) {
-            //restart FreeCAD after a delay to give time to this dialog to close
+            // restart FreeCAD after a delay to give time to this dialog to close
             const int ms = 1000;
-            QTimer::singleShot(ms, []()
-            {
+            QTimer::singleShot(ms, []() {
                 QStringList args = QApplication::arguments();
                 args.pop_front();
                 if (getMainWindow()->close()) {
@@ -794,7 +790,8 @@ void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
     if (currentItem->hasChildren()) {
         auto pageIndex = currentItem->child(0)->index();
 
-        ui->groupsTreeView->selectionModel()->select(pageIndex, QItemSelectionModel::ClearAndSelect);
+        ui->groupsTreeView->selectionModel()->select(pageIndex,
+                                                     QItemSelectionModel::ClearAndSelect);
 
         onPageSelected(pageIndex);
 
@@ -875,11 +872,11 @@ void DlgPreferencesImp::onStackWidgetChange(int index)
         ui->groupsTreeView->expand(parentItem->index());
         parentItem->setExpanded(wasExpanded);
     }
-    
+
     ui->groupsTreeView->selectionModel()->select(currentIndex, QItemSelectionModel::ClearAndSelect);
 }
 
-void DlgPreferencesImp::changeEvent(QEvent *e)
+void DlgPreferencesImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -943,7 +940,7 @@ void DlgPreferencesImp::restorePageDefaults(PreferencesPageItem* item)
          * the newPage object (which has restartRequired initialized to false)
          */
         restartRequired = restartRequired || page->isRestartRequired();
-        
+
         std::string pageName = page->property(PageNameProperty).toString().toStdString();
         std::string groupName = page->property(GroupNameProperty).toString().toStdString();
 

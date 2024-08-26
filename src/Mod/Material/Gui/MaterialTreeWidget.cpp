@@ -183,10 +183,7 @@ void MaterialTreeWidget::createLayout()
 
     connect(m_expand, &QPushButton::clicked, this, &MaterialTreeWidget::expandClicked);
     connect(m_editor, &QPushButton::clicked, this, &MaterialTreeWidget::editorClicked);
-    connect(m_filterCombo,
-            &QComboBox::currentTextChanged,
-            this,
-            &MaterialTreeWidget::onFilter);
+    connect(m_filterCombo, &QComboBox::currentTextChanged, this, &MaterialTreeWidget::onFilter);
 }
 
 void MaterialTreeWidget::setExpanded(bool open)

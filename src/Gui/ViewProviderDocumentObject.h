@@ -36,17 +36,18 @@ class SoType;
 
 namespace App
 {
-  class DocumentObject;
-  class Material;
-}
+class DocumentObject;
+class Material;
+}  // namespace App
 
 
-namespace Gui {
+namespace Gui
+{
 
 class MDIView;
 class Document;
 
-class GuiExport ViewProviderDocumentObject : public ViewProvider
+class GuiExport ViewProviderDocumentObject: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDocumentObject);
 
@@ -64,8 +65,8 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
 
-    virtual void attach(App::DocumentObject *pcObject);
-    virtual void reattach(App::DocumentObject *);
+    virtual void attach(App::DocumentObject* pcObject);
+    virtual void reattach(App::DocumentObject*);
     void update(const App::Property*) override;
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
@@ -78,8 +79,10 @@ public:
     /// If null is returned then no transaction will be opened.
     const char* getTransactionText() const override;
 
-    bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *,
-            const char *, const std::vector<std::string> &) const override;
+    bool canDropObjectEx(App::DocumentObject*,
+                         App::DocumentObject*,
+                         const char*,
+                         const std::vector<std::string>&) const override;
 
     int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
 
@@ -91,20 +94,29 @@ public:
     /// Run a redraw
     void updateView();
     /// Get the object of this ViewProvider object
-    App::DocumentObject *getObject() const {return pcObject;}
+    App::DocumentObject* getObject() const
+    {
+        return pcObject;
+    }
     /// Asks the view provider if the given object can be deleted.
     bool canDelete(App::DocumentObject* obj) const override;
     /// Ask the view provider if it accepts object deletions while in edit
-    virtual bool acceptDeletionsInEdit() { return false; }
+    virtual bool acceptDeletionsInEdit()
+    {
+        return false;
+    }
     /// Get the GUI document to this ViewProvider object
     Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
     /// return a hit element given the picked point which contains the full node path
-    bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
+    bool getElementPicked(const SoPickedPoint*, std::string& subname) const override;
     /// return the coin node detail and path to the node of the subname
-    bool getDetailPath(const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const override;
+    bool getDetailPath(const char* subname,
+                       SoFullPath* pPath,
+                       bool append,
+                       SoDetail*& det) const override;
 
     /* Force update visual
      *
@@ -113,8 +125,14 @@ public:
      * visual update.
      */
     //@{
-    virtual void forceUpdate(bool enable = true) {(void)enable;}
-    virtual bool isUpdateForced() const {return false;}
+    virtual void forceUpdate(bool enable = true)
+    {
+        (void)enable;
+    }
+    virtual bool isUpdateForced() const
+    {
+        return false;
+    }
     //@}
 
     /** @name Restoring view provider from document load */
@@ -137,10 +155,13 @@ public:
 
     bool removeDynamicProperty(const char* prop) override;
 
-    App::Property* addDynamicProperty(
-            const char* type, const char* name=nullptr,
-            const char* group=nullptr, const char* doc=nullptr,
-            short attr=0, bool ro=false, bool hidden=false) override;
+    App::Property* addDynamicProperty(const char* type,
+                                      const char* name = nullptr,
+                                      const char* group = nullptr,
+                                      const char* doc = nullptr,
+                                      short attr = 0,
+                                      bool ro = false,
+                                      bool hidden = false) override;
 
     /** Return the linked view object
      *
@@ -153,16 +174,18 @@ public:
      * @return Returns the linked view provider. If none, it shall return
      * itself.
      */
-    virtual ViewProviderDocumentObject *getLinkedViewProvider(
-            std::string *subname=nullptr, bool recursive=false) const;
+    virtual ViewProviderDocumentObject* getLinkedViewProvider(std::string* subname = nullptr,
+                                                              bool recursive = false) const;
 
     std::string getFullName() const override;
 
-    /** Allow this class to be used as an override for the original view provider of the given object
+    /** Allow this class to be used as an override for the original view provider of the given
+     * object
      *
      * @sa App::DocumentObject::getViewProviderNameOverride()
      */
-    virtual bool allowOverride(const App::DocumentObject &) const {
+    virtual bool allowOverride(const App::DocumentObject&) const
+    {
         return false;
     }
 
@@ -214,7 +237,7 @@ protected:
     const char* detachFromDocument() override;
 
     /// get called when a property status has changed
-    void onPropertyStatusChanged(const App::Property &prop, unsigned long oldStatus) override;
+    void onPropertyStatusChanged(const App::Property& prop, unsigned long oldStatus) override;
 
     //@}
 
@@ -224,8 +247,8 @@ protected:
     void addDefaultAction(QMenu*, const QString&);
 
 protected:
-    App::DocumentObject *pcObject{nullptr};
-    Gui::Document* pcDocument{nullptr};
+    App::DocumentObject* pcObject {nullptr};
+    Gui::Document* pcDocument {nullptr};
 
 private:
     bool _Showable = true;
@@ -238,7 +261,6 @@ private:
 };
 
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
-
+#endif  // GUI_VIEWPROVIDER_DOCUMENTOBJECT_H

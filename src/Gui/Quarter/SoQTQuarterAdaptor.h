@@ -35,14 +35,18 @@ class SoCamera;
 class SoOrthographicCamera;
 class SoPerspectiveCamera;
 
-namespace SIM {
-namespace Coin3D {
-namespace Quarter {
+namespace SIM
+{
+namespace Coin3D
+{
+namespace Quarter
+{
 
 class SoQTQuarterAdaptor;
-using SoQTQuarterAdaptorCB = void (void* data, SoQTQuarterAdaptor* viewer);
+using SoQTQuarterAdaptorCB = void(void* data, SoQTQuarterAdaptor* viewer);
 
-class QUARTER_DLL_API SoQTQuarterAdaptor :  public QuarterWidget {
+class QUARTER_DLL_API SoQTQuarterAdaptor: public QuarterWidget
+{
 
     Q_OBJECT
 
@@ -60,23 +64,23 @@ public:
                                 Qt::WindowFlags flags = Qt::WindowFlags());
     ~SoQTQuarterAdaptor() override;
 
-    //the functions available in soqtviewer but missing in quarter
+    // the functions available in soqtviewer but missing in quarter
     QWidget* getWidget();
     QWidget* getGLWidget();
     QWidget* getWidget() const;
     QWidget* getGLWidget() const;
 
     virtual void setCameraType(SoType type);
-    SoCamera * getCamera() const;
+    SoCamera* getCamera() const;
 
-    const SbViewportRegion & getViewportRegion() const;
+    const SbViewportRegion& getViewportRegion() const;
 
     virtual void setViewing(bool enable);
     bool isViewing() const;
 
     void interactiveCountInc();
     void interactiveCountDec();
-    int  getInteractiveCount() const;
+    int getInteractiveCount() const;
 
     void addStartCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
     void addFinishCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
@@ -94,7 +98,10 @@ public:
     void setSeekValueAsPercentage(bool on);
     bool isSeekValuePercentage() const;
 
-    virtual float getPickRadius() const {return this->pickRadius;}
+    virtual float getPickRadius() const
+    {
+        return this->pickRadius;
+    }
     virtual void setPickRadius(float pickRadius);
 
     virtual void saveHomePosition();
@@ -108,25 +115,27 @@ public:
     {
         QuarterWidget::setSceneGraph(root);
     }
-    
+
     bool processSoEvent(const SoEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
 
-    //this functions still need to be ported
-    virtual void afterRealizeHook() {} //enables spacenav and joystick in soqt, dunno if this is needed
+    // this functions still need to be ported
+    virtual void afterRealizeHook()
+    {}  // enables spacenav and joystick in soqt, dunno if this is needed
 
 private:
     void init();
-    static void convertPerspective2Ortho(const SoPerspectiveCamera* in,  SoOrthographicCamera* out);
+    static void convertPerspective2Ortho(const SoPerspectiveCamera* in, SoOrthographicCamera* out);
     static void convertOrtho2Perspective(const SoOrthographicCamera* in, SoPerspectiveCamera* out);
-    void getCameraCoordinateSystem(SoCamera * camera, SoNode * root, SbMatrix & matrix, SbMatrix & inverse);
-    static void seeksensorCB(void * data, SoSensor * sensor);
-    void moveCameraScreen(const SbVec2f & screenpos);
+    void
+    getCameraCoordinateSystem(SoCamera* camera, SoNode* root, SbMatrix& matrix, SbMatrix& inverse);
+    static void seeksensorCB(void* data, SoSensor* sensor);
+    void moveCameraScreen(const SbVec2f& screenpos);
     void resetFrameCounter();
     SbVec2f addFrametime(double ft);
 
     bool m_viewingflag = false;
-    int  m_interactionnesting = 0;
+    int m_interactionnesting = 0;
     SoCallbackList m_interactionStartCallback;
     SoCallbackList m_interactionEndCallback;
 
@@ -147,16 +156,16 @@ private:
     SoGetMatrixAction matrixaction;
     float pickRadius = 0.0F;
     // Home position storage.
-    SoNode * m_storedcamera = nullptr;
+    SoNode* m_storedcamera = nullptr;
 
 protected:
-    static void draw2DString(const char * str, SbVec2s glsize, SbVec2f position);
-    static void printString(const char * str);
+    static void draw2DString(const char* str, SbVec2s glsize, SbVec2f position);
+    static void printString(const char* str);
     SbVec2f framesPerSecond;  // NOLINT
 };
 
-} //Quarter
-} //Coin3D
-} //
+}  // namespace Quarter
+}  // namespace Coin3D
+}  // namespace SIM
 
-#endif // SIM_COIN3D_SOQTQUARTERADAPTOR_H
+#endif  // SIM_COIN3D_SOQTQUARTERADAPTOR_H

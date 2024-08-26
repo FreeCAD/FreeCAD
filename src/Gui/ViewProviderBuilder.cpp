@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterial.h>
 #endif
 
 #include <App/PropertyStandard.h>
@@ -49,8 +49,9 @@ void ViewProviderBuilder::add(const Base::Type& prop, const Base::Type& view)
 ViewProvider* ViewProviderBuilder::create(const Base::Type& type)
 {
     std::map<Base::Type, Base::Type>::iterator it = _prop_to_view.find(type);
-    if (it != _prop_to_view.end())
+    if (it != _prop_to_view.end()) {
         return static_cast<ViewProvider*>(it->second.createInstance());
+    }
     return nullptr;
 }
 
@@ -94,17 +95,18 @@ ViewProviderColorBuilder::ViewProviderColorBuilder() = default;
 
 ViewProviderColorBuilder::~ViewProviderColorBuilder() = default;
 
-void ViewProviderColorBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& node) const
+void ViewProviderColorBuilder::buildNodes(const App::Property* prop,
+                                          std::vector<SoNode*>& node) const
 {
     const auto color = static_cast<const App::PropertyColorList*>(prop);
     const std::vector<App::Color>& val = color->getValues();
-    unsigned long i=0;
+    unsigned long i = 0;
 
     auto material = new SoMaterial();
     material->diffuseColor.setNum(val.size());
 
     SbColor* colors = material->diffuseColor.startEditing();
-    for (const auto & it : val) {
+    for (const auto& it : val) {
         colors[i].setValue(it.r, it.g, it.b);
         i++;
     }

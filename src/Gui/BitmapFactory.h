@@ -32,30 +32,31 @@
 class SoSFImage;
 class QImage;
 
-namespace Gui {
+namespace Gui
+{
 
 using ColorMap = std::map<unsigned long, unsigned long>;
 
 /** The Bitmap Factory
-  * the main purpose is to collect all build in Bitmaps and
-  * hold all paths for the extern bitmaps (files) to serve
-  * as a single point of accessing bitmaps in FreeCAD
-  * \author Werner Mayer, Jürgen Riegel
-  */
+ * the main purpose is to collect all build in Bitmaps and
+ * hold all paths for the extern bitmaps (files) to serve
+ * as a single point of accessing bitmaps in FreeCAD
+ * \author Werner Mayer, Jürgen Riegel
+ */
 class BitmapFactoryInstP;
-class GuiExport BitmapFactoryInst : public Base::Factory
+class GuiExport BitmapFactoryInst: public Base::Factory
 {
 public:
     enum Position
     {
-        TopLeft,  /**< Place to the top left corner */
-        TopRight, /**< Place to the top right corner */
+        TopLeft,    /**< Place to the top left corner */
+        TopRight,   /**< Place to the top right corner */
         BottomLeft, /**< Place to the bottom left corner */
         BottomRight /**< Place to the bottom right corner */
     };
 
     static BitmapFactoryInst& instance();
-    static void destruct ();
+    static void destruct();
 
     /// Adds a path where pixmaps can be found
     void addPath(const QString& path);
@@ -83,7 +84,8 @@ public:
      * @param colorMapping - a dictionary of substitute colors.
      * Can be used to customize icon color scheme, e.g. crosshair color
      */
-    QPixmap pixmapFromSvg(const char* name, const QSizeF& size,
+    QPixmap pixmapFromSvg(const char* name,
+                          const QSizeF& size,
                           const ColorMap& colorMapping = ColorMap()) const;
     /** Retrieves a pixmap by name and size created by an
      * scalable vector graphics (SVG) and a device pixel ratio
@@ -91,18 +93,21 @@ public:
      * @param colorMapping - a dictionary of substitute colors.
      * Can be used to customize icon color scheme, e.g. crosshair color
      */
-    QPixmap pixmapFromSvg(const char* name, const QSizeF& size, qreal dpr,
+    QPixmap pixmapFromSvg(const char* name,
+                          const QSizeF& size,
+                          qreal dpr,
                           const ColorMap& colorMapping = ColorMap()) const;
     /** This method is provided for convenience and does the same
      * as the method above except that it creates the pixmap from
      * a byte array.
      * @param colorMapping - see above.
      */
-    QPixmap pixmapFromSvg(const QByteArray& contents, const QSizeF& size,
+    QPixmap pixmapFromSvg(const QByteArray& contents,
+                          const QSizeF& size,
                           const ColorMap& colorMapping = ColorMap()) const;
     /** Returns the names of all registered pixmaps.
-    * To get the appropriate pixmaps call pixmap() for each name.
-    */
+     * To get the appropriate pixmaps call pixmap() for each name.
+     */
     QStringList pixmapNames() const;
     /** Resizes the area of a pixmap
      * If the new size is greater than the old one the pixmap
@@ -132,7 +137,8 @@ public:
      * position \a pos of the bigger pixmap \a p1. This method does not
      * resize the resulting pixmap.
      */
-    QPixmap merge(const QPixmap& p1, const QPixmap& p2, Position pos = BitmapFactoryInst::BottomLeft) const;
+    QPixmap
+    merge(const QPixmap& p1, const QPixmap& p2, Position pos = BitmapFactoryInst::BottomLeft) const;
     /** Creates a disabled pixmap of the given pixmap \a p by changing the brightness
      * of all opaque pixels to a higher value.
      */
@@ -145,7 +151,8 @@ public:
     void convert(const SoSFImage& img, QImage& out) const;
 
     /// Helper method to merge a pixmap into one corner of a QIcon
-    static QIcon mergePixmap (const QIcon &base, const QPixmap &px, Gui::BitmapFactoryInst::Position position);
+    static QIcon
+    mergePixmap(const QIcon& base, const QPixmap& px, Gui::BitmapFactoryInst::Position position);
 
 private:
     bool loadPixmap(const QString& path, QPixmap&) const;
@@ -164,6 +171,6 @@ inline BitmapFactoryInst& BitmapFactory()
     return BitmapFactoryInst::instance();
 }
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_BITMAPFACTORY_H
+#endif  // GUI_BITMAPFACTORY_H

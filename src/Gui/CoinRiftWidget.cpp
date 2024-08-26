@@ -40,13 +40,11 @@
 #if BUILD_VR
 
 
-
 #undef max
 
 
-
-
-CoinRiftWidget::CoinRiftWidget() : QGLWidget()
+CoinRiftWidget::CoinRiftWidget()
+    : QGLWidget()
 {
     for (int eye = 0; eye < 2; eye++) {
         reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye])->TexId = 0;
@@ -65,13 +63,11 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
         throw;
     }
 
-    if (!ovrHmd_ConfigureTracking (hmd, ovrTrackingCap_Orientation |
-                                        ovrTrackingCap_MagYawCorrection |
-                                        ovrTrackingCap_Position,
-                                        ovrTrackingCap_Orientation |
-                                        ovrTrackingCap_MagYawCorrection |
-                                        ovrTrackingCap_Position
-                                        )) { // Capabilities we require.
+    if (!ovrHmd_ConfigureTracking(hmd,
+                                  ovrTrackingCap_Orientation | ovrTrackingCap_MagYawCorrection
+                                      | ovrTrackingCap_Position,
+                                  ovrTrackingCap_Orientation | ovrTrackingCap_MagYawCorrection
+                                      | ovrTrackingCap_Position)) {  // Capabilities we require.
         qDebug() << "Could not start Rift motion sensor.";
         throw;
     }
@@ -79,37 +75,39 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     resize(hmd->Resolution.w, hmd->Resolution.h);
 
     // Configure stereo settings.
-    ovrSizei recommenedTex0Size = ovrHmd_GetFovTextureSize(hmd, ovrEye_Left,
-                                                           hmd->DefaultEyeFov[0], 1.0f);
-    ovrSizei recommenedTex1Size = ovrHmd_GetFovTextureSize(hmd, ovrEye_Right,
-                                                           hmd->DefaultEyeFov[1], 1.0f);
+    ovrSizei recommenedTex0Size =
+        ovrHmd_GetFovTextureSize(hmd, ovrEye_Left, hmd->DefaultEyeFov[0], 1.0f);
+    ovrSizei recommenedTex1Size =
+        ovrHmd_GetFovTextureSize(hmd, ovrEye_Right, hmd->DefaultEyeFov[1], 1.0f);
 
 #ifdef USE_SO_OFFSCREEN_RENDERER
-    renderer = new SoOffscreenRenderer(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
-                                                        std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
+    renderer = new SoOffscreenRenderer(
+        SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
+                         std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     renderer->setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY);
     BackgroundColor = SbColor(.0f, .0f, .8f);
     renderer->setBackgroundColor(BackgroundColor);
 #endif
 #ifdef USE_FRAMEBUFFER
     m_sceneManager = new SoSceneManager();
-    m_sceneManager->setViewportRegion(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
-                                                       std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
+    m_sceneManager->setViewportRegion(
+        SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
+                         std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     m_sceneManager->setBackgroundColor(SbColor(.0f, .0f, .8f));
 #endif
     basePosition = SbVec3f(0.0f, 0.0f, -2.0f);
 
     // light handling
-     SoDirectionalLight *light = new SoDirectionalLight();
-    light->direction.setValue(1,-1,-1);
+    SoDirectionalLight* light = new SoDirectionalLight();
+    light->direction.setValue(1, -1, -1);
 
-    SoDirectionalLight *light2 = new SoDirectionalLight();
-    light2->direction.setValue(-1,-1,-1);
+    SoDirectionalLight* light2 = new SoDirectionalLight();
+    light2->direction.setValue(-1, -1, -1);
     light2->intensity.setValue(0.6);
-    light2->color.setValue(0.8,0.8,1);
+    light2->color.setValue(0.8, 0.8, 1);
 
 
-    scene = new SoSeparator(0); // Placeholder.
+    scene = new SoSeparator(0);  // Placeholder.
     for (int eye = 0; eye < 2; eye++) {
         rootScene[eye] = new SoSeparator();
         rootScene[eye]->ref();
@@ -129,8 +127,10 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     eyeRenderDesc[0].Fov = hmd->DefaultEyeFov[0];
     eyeRenderDesc[1].Fov = hmd->DefaultEyeFov[1];
 #ifdef USE_SO_OFFSCREEN_RENDERER
-    eyeTexture[0].Header.TextureSize.w = renderer->getViewportRegion().getViewportSizePixels().getValue()[0];
-    eyeTexture[0].Header.TextureSize.h = renderer->getViewportRegion().getViewportSizePixels().getValue()[1];
+    eyeTexture[0].Header.TextureSize.w =
+        renderer->getViewportRegion().getViewportSizePixels().getValue()[0];
+    eyeTexture[0].Header.TextureSize.h =
+        renderer->getViewportRegion().getViewportSizePixels().getValue()[1];
     eyeTexture[1].Header.TextureSize = eyeTexture[0].Header.TextureSize;
 #endif
 #ifdef USE_FRAMEBUFFER
@@ -143,40 +143,42 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     eyeTexture[1].Header.RenderViewport.Pos = eyeTexture[0].Header.RenderViewport.Pos;
     eyeTexture[1].Header.RenderViewport.Size = eyeTexture[1].Header.TextureSize;
 
-    const int backBufferMultisample = 0; // TODO This is a guess?
+    const int backBufferMultisample = 0;  // TODO This is a guess?
     ovrGLConfig cfg;
     cfg.OGL.Header.API = ovrRenderAPI_OpenGL;
     cfg.OGL.Header.RTSize = hmd->Resolution;
     cfg.OGL.Header.Multisample = backBufferMultisample;
     cfg.OGL.Window = reinterpret_cast<HWND>(winId());
     makeCurrent();
-    //cfg.OGL.WglContext = wglGetCurrentContext(); // http://stackoverflow.com/questions/17532033/qglwidget-get-gl-contextes-for-windows
+    // cfg.OGL.WglContext = wglGetCurrentContext(); //
+    // http://stackoverflow.com/questions/17532033/qglwidget-get-gl-contextes-for-windows
     cfg.OGL.DC = wglGetCurrentDC();
     qDebug() << "Window:" << cfg.OGL.Window;
-    //qDebug() << "Context:" << cfg.OGL.WglContext;
+    // qDebug() << "Context:" << cfg.OGL.WglContext;
     qDebug() << "DC:" << cfg.OGL.DC;
 
     int DistortionCaps = 0;
     DistortionCaps |= ovrDistortionCap_Chromatic;
-// DistortionCaps |= ovrDistortionCap_TimeWarp; // Produces black screen...
+    // DistortionCaps |= ovrDistortionCap_TimeWarp; // Produces black screen...
     DistortionCaps |= ovrDistortionCap_Vignette;
     DistortionCaps |= ovrDistortionCap_HqDistortion;
 
-    bool VSyncEnabled(false); // TODO This is a guess.
-    if (!ovrHmd_ConfigureRendering( hmd,
-                                    &cfg.Config,
-                                    /*(VSyncEnabled ? 0 : ovrHmdCap_NoVSync),*/
-                                    DistortionCaps,
-                                    hmd->DefaultEyeFov,//eyes,
-                                    eyeRenderDesc)) {
+    bool VSyncEnabled(false);  // TODO This is a guess.
+    if (!ovrHmd_ConfigureRendering(hmd,
+                                   &cfg.Config,
+                                   /*(VSyncEnabled ? 0 : ovrHmdCap_NoVSync),*/
+                                   DistortionCaps,
+                                   hmd->DefaultEyeFov,  // eyes,
+                                   eyeRenderDesc)) {
         qDebug() << "Could not configure OVR rendering.";
         throw;
     }
     static const float nearPlane = 0.01;
 
     for (int eye = 0; eye < 2; eye++) {
-        camera[eye]->aspectRatio.setValue((eyeRenderDesc[eye].Fov.LeftTan + eyeRenderDesc[eye].Fov.RightTan) /
-                (eyeRenderDesc[eye].Fov.UpTan + eyeRenderDesc[eye].Fov.DownTan));
+        camera[eye]->aspectRatio.setValue(
+            (eyeRenderDesc[eye].Fov.LeftTan + eyeRenderDesc[eye].Fov.RightTan)
+            / (eyeRenderDesc[eye].Fov.UpTan + eyeRenderDesc[eye].Fov.DownTan));
         camera[eye]->nearDistance.setValue(nearPlane);
         camera[eye]->farDistance.setValue(10000.0f);
         camera[eye]->left.setValue(-eyeRenderDesc[eye].Fov.LeftTan * nearPlane);
@@ -194,36 +196,36 @@ CoinRiftWidget::~CoinRiftWidget()
 #endif
     for (int eye = 0; eye < 2; eye++) {
         rootScene[eye]->unref();
-        ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
+        ovrGLTextureData* texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
         if (texData->TexId) {
             glDeleteTextures(1, &texData->TexId);
             texData->TexId = 0;
         }
 #ifdef USE_FRAMEBUFFER
         if (frameBufferID[eye] != 0) {
-// OVR::CAPI::GL::glDeleteFramebuffersExt(1, &frameBufferID[eye]); // TODO
+            // OVR::CAPI::GL::glDeleteFramebuffersExt(1, &frameBufferID[eye]); // TODO
             frameBufferID[eye] = 0;
         }
         if (depthBufferID[eye] != 0) {
-// OVR::CAPI::GL::glDeleteRenderbuffersExt(1, &depthBufferID[eye]); // TODO
+            // OVR::CAPI::GL::glDeleteRenderbuffersExt(1, &depthBufferID[eye]); // TODO
             depthBufferID[eye] = 0;
         }
 #endif
     }
     scene = 0;
-    //ovrHmd_StopSensor(hmd);
+    // ovrHmd_StopSensor(hmd);
     ovrHmd_Destroy(hmd);
 }
 
 
-void CoinRiftWidget::setBackgroundColor(const SbColor &Col)
+void CoinRiftWidget::setBackgroundColor(const SbColor& Col)
 {
     BackgroundColor = Col;
     renderer->setBackgroundColor(BackgroundColor);
 }
 
 
-void CoinRiftWidget::setSceneGraph(SoNode *sceneGraph)
+void CoinRiftWidget::setSceneGraph(SoNode* sceneGraph)
 {
     rootScene[0]->replaceChild(scene, sceneGraph);
     rootScene[1]->replaceChild(scene, sceneGraph);
@@ -231,7 +233,8 @@ void CoinRiftWidget::setSceneGraph(SoNode *sceneGraph)
 }
 
 
-void CoinRiftWidget::resizeGL(int width, int height) {
+void CoinRiftWidget::resizeGL(int width, int height)
+{
     int side = qMin(width, height);
     glViewport((width - side) / 2, (height - side) / 2, side, side);
 
@@ -265,19 +268,19 @@ void CoinRiftWidget::initializeGL()
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
         // Create the render buffer.
         // TODO: need to check for OpenGl 3 or higher and load the functions JR 2014
-        /*OVR::CAPI::GL::*/glGenRenderbuffers(1, &depthBufferID[eye]);
-        /*OVR::CAPI::GL::*/glBindRenderbuffer(GL_RENDERBUFFER_EXT, depthBufferID[eye]);
-        /*OVR::CAPI::GL::*/glRenderbufferStorage(GL_RENDERBUFFER_EXT,
-                                                GL_DEPTH_COMPONENT16,
-                                                eyeTexture[eye].Header.TextureSize.w,
-                                                eyeTexture[eye].Header.TextureSize.h);
+        /*OVR::CAPI::GL::*/ glGenRenderbuffers(1, &depthBufferID[eye]);
+        /*OVR::CAPI::GL::*/ glBindRenderbuffer(GL_RENDERBUFFER_EXT, depthBufferID[eye]);
+        /*OVR::CAPI::GL::*/ glRenderbufferStorage(GL_RENDERBUFFER_EXT,
+                                                  GL_DEPTH_COMPONENT16,
+                                                  eyeTexture[eye].Header.TextureSize.w,
+                                                  eyeTexture[eye].Header.TextureSize.h);
         // Attach renderbuffer to framebuffer.
         OVR::CAPI::GL::glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT,
-                                                    GL_DEPTH_ATTACHMENT_EXT,
-                                                    GL_RENDERBUFFER_EXT,
-                                                    depthBufferID[eye]);
+                                                 GL_DEPTH_ATTACHMENT_EXT,
+                                                 GL_RENDERBUFFER_EXT,
+                                                 depthBufferID[eye]);
 #endif
-        ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
+        ovrGLTextureData* texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
         texData->Header.API = ovrRenderAPI_OpenGL;
         texData->Header.TextureSize = eyeTexture[eye].Header.TextureSize;
         texData->Header.RenderViewport = eyeTexture[eye].Header.RenderViewport;
@@ -285,22 +288,32 @@ void CoinRiftWidget::initializeGL()
         glBindTexture(GL_TEXTURE_2D, texData->TexId);
         Q_ASSERT(!glGetError());
         // Allocate storage for the texture.
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, eyeTexture[eye].Header.TextureSize.w, eyeTexture[eye].Header.TextureSize.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
-// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     GL_RGBA,
+                     eyeTexture[eye].Header.TextureSize.w,
+                     eyeTexture[eye].Header.TextureSize.h,
+                     0,
+                     GL_BGRA,
+                     GL_UNSIGNED_BYTE,
+                     NULL);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
         Q_ASSERT(!glGetError());
 #ifdef USE_FRAMEBUFFER
         // Attach texture to framebuffer color object.
         OVR::CAPI::GL::glFramebufferTexture2D(GL_FRAMEBUFFER_EXT,
-                                                 GL_COLOR_ATTACHMENT0_EXT,
-                                                 GL_TEXTURE_2D, texData->TexId, 0);
-        if (OVR::CAPI::GL::glCheckFramebufferStatus(GL_FRAMEBUFFER) !=
-                GL_FRAMEBUFFER_COMPLETE)
+                                              GL_COLOR_ATTACHMENT0_EXT,
+                                              GL_TEXTURE_2D,
+                                              texData->TexId,
+                                              0);
+        if (OVR::CAPI::GL::glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
             qDebug() << "ERROR: FrameBuffer is not operational!";
+        }
 #endif
     }
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -334,50 +347,57 @@ void CoinRiftWidget::paintGL()
         eyePose[eye] = ovrHmd_GetEyePose(hmd, eye);
 
 
-        SbRotation    riftOrientation(  eyePose[eye].Orientation.x,
-                                        eyePose[eye].Orientation.y,
-                                        eyePose[eye].Orientation.z,
-                                        eyePose[eye].Orientation.w);
+        SbRotation riftOrientation(eyePose[eye].Orientation.x,
+                                   eyePose[eye].Orientation.y,
+                                   eyePose[eye].Orientation.z,
+                                   eyePose[eye].Orientation.w);
 
         camera[eye]->orientation.setValue(riftOrientation);
 
-        SbVec3f riftPosition =   SbVec3f(eyePose[eye].Position.x,
-                                         eyePose[eye].Position.y,
-                                         eyePose[eye].Position.z);
+        SbVec3f riftPosition =
+            SbVec3f(eyePose[eye].Position.x, eyePose[eye].Position.y, eyePose[eye].Position.z);
 
 
-        //SbVec3f originalPosition(camera[eye]->position.getValue());
+        // SbVec3f originalPosition(camera[eye]->position.getValue());
         SbVec3f viewAdjust(eyeRenderDesc[eye].ViewAdjust.x,
-                                                              eyeRenderDesc[eye].ViewAdjust.y,
-                                                              eyeRenderDesc[eye].ViewAdjust.z);
+                           eyeRenderDesc[eye].ViewAdjust.y,
+                           eyeRenderDesc[eye].ViewAdjust.z);
 
-        riftOrientation.multVec(viewAdjust,viewAdjust);
+        riftOrientation.multVec(viewAdjust, viewAdjust);
 
         camera[eye]->position.setValue(basePosition - viewAdjust + riftPosition);
 
-        //Base::Console().Log("Eye(%d) Pos: %f, %f, %f  ViewAdjust:  %f, %f, %f \n",eye, eyePose[eye].Position.x,
-        //                                                eyePose[eye].Position.y,
-        //                                 eyePose[eye].Position.z,
-        //                                 eyeRenderDesc[eye].ViewAdjust.x,
-        //                                                      eyeRenderDesc[eye].ViewAdjust.y,
-        //                                                      eyeRenderDesc[eye].ViewAdjust.z);
+        // Base::Console().Log("Eye(%d) Pos: %f, %f, %f  ViewAdjust:  %f, %f, %f \n",eye,
+        // eyePose[eye].Position.x,
+        //                                                 eyePose[eye].Position.y,
+        //                                  eyePose[eye].Position.z,
+        //                                  eyeRenderDesc[eye].ViewAdjust.x,
+        //                                                       eyeRenderDesc[eye].ViewAdjust.y,
+        //                                                       eyeRenderDesc[eye].ViewAdjust.z);
 
 #ifdef USE_SO_OFFSCREEN_RENDERER
-        ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
+        ovrGLTextureData* texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
         glBindTexture(GL_TEXTURE_2D, texData->TexId);
         renderer->render(rootScene[eye]);
         Q_ASSERT(!glGetError());
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     GL_RGBA,
                      eyeTexture[eye].Header.TextureSize.w,
                      eyeTexture[eye].Header.TextureSize.h,
-                     0, GL_RGBA /*GL_BGRA*/, GL_UNSIGNED_BYTE, renderer->getBuffer());
+                     0,
+                     GL_RGBA /*GL_BGRA*/,
+                     GL_UNSIGNED_BYTE,
+                     renderer->getBuffer());
         Q_ASSERT(!glGetError());
         glBindTexture(GL_TEXTURE_2D, 0);
 #endif
 #ifdef USE_FRAMEBUFFER
         // Clear state pollution from OVR SDK.
-        glBindTexture(GL_TEXTURE_2D, 0); // You need this, at least if (hmdDesc.DistortionCaps & ovrDistortion_Chromatic).
-        OVR::CAPI::GL::glUseProgram(0); // You need this even more.
+        glBindTexture(
+            GL_TEXTURE_2D,
+            0);  // You need this, at least if (hmdDesc.DistortionCaps & ovrDistortion_Chromatic).
+        OVR::CAPI::GL::glUseProgram(0);  // You need this even more.
 
         GLint oldfb;
         glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldfb);
@@ -385,7 +405,7 @@ void CoinRiftWidget::paintGL()
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
 
         m_sceneManager->setSceneGraph(rootScene[eye]);
-// m_sceneManager->setCamera(camera[eye]); // SoSceneManager does this implicitly.
+        // m_sceneManager->setCamera(camera[eye]); // SoSceneManager does this implicitly.
         m_sceneManager->render();
 
         // Continue rendering to the original frame buffer (likely 0, the onscreen buffer).
@@ -393,8 +413,7 @@ void CoinRiftWidget::paintGL()
         Q_ASSERT(!glGetError());
 #endif
 
-        //camera[eye]->position.setValue(originalPosition);
-
+        // camera[eye]->position.setValue(originalPosition);
     }
 
     // Submit the texture for distortion.
@@ -403,7 +422,7 @@ void CoinRiftWidget::paintGL()
     // Swap buffers.
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    //ovrHmd_EndFrame(hmd);
+    // ovrHmd_EndFrame(hmd);
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glClearDepth(1.0);
@@ -416,43 +435,41 @@ void CoinRiftWidget::handlingSafetyWarning(void)
     // Health and Safety Warning display state.
     ovrHSWDisplayState hswDisplayState;
     ovrHmd_GetHSWDisplayState(hmd, &hswDisplayState);
-    if (hswDisplayState.Displayed)
-    {
+    if (hswDisplayState.Displayed) {
         // Dismiss the warning if the user pressed the appropriate key or if the user
         // is tapping the side of the HMD.
         // If the user has requested to dismiss the warning via keyboard or controller input...
-        //if (Util_GetAndResetHSWDismissedState())
-            ovrHmd_DismissHSWDisplay(hmd);
-        //else
+        // if (Util_GetAndResetHSWDismissedState())
+        ovrHmd_DismissHSWDisplay(hmd);
+        // else
         //{
-        //    // Detect a moderate tap on the side of the HMD.
-        //    ovrTrackingState ts = ovrHmd_GetTrackingState(hmd, ovr_GetTimeInSeconds());
-        //    if (ts.StatusFlags & ovrStatus_OrientationTracked)
-        //    {
-        //        const OVR::Vector3f v(ts.RawSensorData.Accelerometer.x,
-        //                              ts.RawSensorData.Accelerometer.y,
-        //                              ts.RawSensorData.Accelerometer.z);
-        //        // Arbitrary value and representing moderate tap on the side of the DK2 Rift.
-        //        if (v.LengthSq() > 250.f)
-        //            ovrHmd_DismissHSWDisplay(hmd);
-        //    }
-        //}
+        //     // Detect a moderate tap on the side of the HMD.
+        //     ovrTrackingState ts = ovrHmd_GetTrackingState(hmd, ovr_GetTimeInSeconds());
+        //     if (ts.StatusFlags & ovrStatus_OrientationTracked)
+        //     {
+        //         const OVR::Vector3f v(ts.RawSensorData.Accelerometer.x,
+        //                               ts.RawSensorData.Accelerometer.y,
+        //                               ts.RawSensorData.Accelerometer.z);
+        //         // Arbitrary value and representing moderate tap on the side of the DK2 Rift.
+        //         if (v.LengthSq() > 250.f)
+        //             ovrHmd_DismissHSWDisplay(hmd);
+        //     }
+        // }
     }
-
 }
 
 
 #ifdef BUILD_RIFT_TEST_MAIN
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     SoDB::init();
 
     QApplication app(argc, argv);
     qAddPostRoutine(cleanup);
 
-    // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503#p108503
-    // Init libovr.
+    // Moved here because of
+    // https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503#p108503 Init libovr.
     if (!ovr_Initialize()) {
         qDebug() << "Could not initialize Oculus SDK.";
         exit(1);
@@ -462,7 +479,7 @@ int main(int argc, char *argv[])
     window.show();
 
     // An example scene.
-    static const char * inlineSceneGraph[] = {
+    static const char* inlineSceneGraph[] = {
         "#Inventor V2.1 ascii\n",
         "\n",
         "Separator {\n",
@@ -491,8 +508,7 @@ int main(int argc, char *argv[])
         "     vKnotVector [ 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0 ]\n",
         "  }\n",
         "}\n",
-        NULL
-    };
+        NULL};
 
     SoInput in;
     in.setStringArray(inlineSceneGraph);
@@ -502,6 +518,6 @@ int main(int argc, char *argv[])
     return app.exec();
 }
 
-#endif //BUILD_RIFT_TEST_MAIN
+#endif  // BUILD_RIFT_TEST_MAIN
 
-#endif //BUILD_VR
+#endif  // BUILD_VR

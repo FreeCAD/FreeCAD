@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <BRepCheck_Analyzer.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS_Iterator.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <App/Application.h>
@@ -39,7 +39,7 @@
 #include "modelRefine.h"
 #include "TopoShapeOpCode.h"
 
-FC_LOG_LEVEL_INIT("Part",true,true);
+FC_LOG_LEVEL_INIT("Part", true, true);
 
 using namespace Part;
 
@@ -48,13 +48,14 @@ PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
 
 Fuse::Fuse() = default;
 
-BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
+BRepAlgoAPI_BooleanOperation* Fuse::makeOperation(const TopoDS_Shape& base,
+                                                  const TopoDS_Shape& tool) const
 {
     // Let's call algorithm computing a fuse operation:
     return new BRepAlgoAPI_Fuse(base, tool);
 }
 
-const char *Fuse::opCode() const
+const char* Fuse::opCode() const
 {
     return Part::OpCodes::Fuse;
 }
@@ -66,29 +67,40 @@ PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
 
 MultiFuse::MultiFuse()
 {
-    ADD_PROPERTY(Shapes,(nullptr));
+    ADD_PROPERTY(Shapes, (nullptr));
     Shapes.setSize(0);
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY_TYPE(
+        History,
+        (ShapeHistory()),
+        "Boolean",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Transient | App::Prop_Hidden),
+        "Shape history");
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(Refine,
+                      (0),
+                      "Boolean",
+                      (App::PropertyType)(App::Prop_None),
+                      "Refine shape (clean up redundant edges) after this boolean operation");
 
-    //init Refine property
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    // init Refine property
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/Part/Boolean");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
-
 }
 
 short MultiFuse::mustExecute() const
 {
-    if (Shapes.isTouched())
+    if (Shapes.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
-App::DocumentObjectExecReturn *MultiFuse::execute()
+App::DocumentObjectExecReturn* MultiFuse::execute()
 {
     std::vector<TopoShape> shapes;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
@@ -138,7 +150,10 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
             }
 
             TopoShape res(0);
-            res = res.makeShapeWithElementMap(mkFuse.Shape(), MapperMaker(mkFuse), shapes, OpCodes::Fuse);
+            res = res.makeShapeWithElementMap(mkFuse.Shape(),
+                                              MapperMaker(mkFuse),
+                                              shapes,
+                                              OpCodes::Fuse);
             for (const auto& it2 : shapes) {
                 history.push_back(
                     buildHistory(mkFuse, TopAbs_FACE, res.getShape(), it2.getShape()));
@@ -165,7 +180,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute()
                     // We just built an element map above for the fuse, don't erase it for a refine.
                     res.setShape(mkRefine.Shape(), false);
                     ShapeHistory hist =
-                            buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
+                        buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
                     for (auto& jt : history) {
                         jt = joinHistory(jt, hist);
                     }

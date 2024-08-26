@@ -29,7 +29,7 @@
 
 using namespace PartGui;
 
-#if 0 // needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "&Part");
     qApp->translate("Workbench", "&Simple");
     qApp->translate("Workbench", "&Parametric");
@@ -106,22 +106,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << "Part_BoxSelection"
           << "Separator";
-    *part << prim
-          << "Part_Primitives"
+    *part << prim << "Part_Primitives"
           << "Part_Builder"
           << "Separator"
           << "Part_ShapeFromMesh"
           << "Part_PointsFromMesh"
           << "Part_MakeSolid"
-          << "Part_ReverseShape"
-          << copy
-          << "Part_CheckGeometry"
+          << "Part_ReverseShape" << copy << "Part_CheckGeometry"
           << "Part_Defeaturing"
           << "Materials_InspectAppearance"
           << "Materials_InspectMaterial"
-          << "Separator"
-          << bop << join << split << compound
-          << "Separator"
+          << "Separator" << bop << join << split << compound << "Separator"
           << "Sketcher_NewSketch"
           << "Part_Extrude"
           << "Part_Revolve"

@@ -144,7 +144,6 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
         res.makeElementRuledSurface(shapes, Orientation.getValue());
         this->Shape.setValue(res);
         return Part::Feature::execute();
-
     }
     catch (Standard_Failure& e) {
 
@@ -171,8 +170,12 @@ Loft::Loft()
     ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Ruled surface");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum Degree");
-    ADD_PROPERTY_TYPE(Linearize,(false), "Loft", App::Prop_None,
-                      "Linearize the result shape by simplifying linear edge and planar face into line and plane");
+    ADD_PROPERTY_TYPE(Linearize,
+                      (false),
+                      "Loft",
+                      App::Prop_None,
+                      "Linearize the result shape by simplifying linear edge and planar face into "
+                      "line and plane");
     MaxDegree.setConstraints(&Degrees);
 }
 
@@ -222,7 +225,7 @@ App::DocumentObjectExecReturn* Loft::execute()
         TopoShape result(0);
         result.makeElementLoft(shapes, isSolid, isRuled, isClosed, degMax);
         if (Linearize.getValue()) {
-            result.linearize( LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
+            result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
         }
         this->Shape.setValue(result);
         return Part::Feature::execute();
@@ -236,7 +239,8 @@ App::DocumentObjectExecReturn* Loft::execute()
 void Part::Loft::setupObject()
 {
     Feature::setupObject();
-//    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after PartParams
+    //    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after
+    //    PartParams
 }
 
 // ----------------------------------------------------------------------------
@@ -256,8 +260,12 @@ Sweep::Sweep()
     ADD_PROPERTY_TYPE(Solid, (false), "Sweep", App::Prop_None, "Create solid");
     ADD_PROPERTY_TYPE(Frenet, (true), "Sweep", App::Prop_None, "Frenet");
     ADD_PROPERTY_TYPE(Transition, (long(1)), "Sweep", App::Prop_None, "Transition mode");
-    ADD_PROPERTY_TYPE(Linearize,(false), "Sweep", App::Prop_None,
-                      "Linearize the result shape by simplifying linear edge and planar face into line and plane");
+    ADD_PROPERTY_TYPE(Linearize,
+                      (false),
+                      "Sweep",
+                      App::Prop_None,
+                      "Linearize the result shape by simplifying linear edge and planar face into "
+                      "line and plane");
     Transition.setEnums(TransitionEnums);
 }
 
@@ -308,7 +316,10 @@ App::DocumentObjectExecReturn* Sweep::execute()
             }
             spineShapes.push_back(shape);
         }
-        spine = TopoShape().makeElementCompound(spineShapes, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
+        spine = TopoShape().makeElementCompound(
+            spineShapes,
+            0,
+            TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
     }
     std::vector<TopoShape> shapes;
     shapes.push_back(spine);
@@ -342,7 +353,8 @@ App::DocumentObjectExecReturn* Sweep::execute()
 void Part::Sweep::setupObject()
 {
     Feature::setupObject();
-//    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after PartParams
+    //    Linearize.setValue(PartParams::getLinearizeExtrusionDraft()); // TODO: Resolve after
+    //    PartParams
 }
 
 // ----------------------------------------------------------------------------
@@ -429,7 +441,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
 
-    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher())
+    this->Shape.setValue(TopoShape(0, getDocument()->getStringHasher())
                              .makeElementThickSolid(base,
                                                     shapes,
                                                     thickness,

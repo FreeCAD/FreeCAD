@@ -31,7 +31,7 @@
 namespace Part
 {
 
-class Mirroring : public Part::Feature
+class Mirroring: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Mirroring);
 
@@ -46,22 +46,24 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PartGui::ViewProviderMirror";
     }
     //@}
 
 protected:
-    void onChanged (const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
 
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
 };
 
-} //namespace Part
+}  // namespace Part
 
 
-#endif // PART_FEATUREMIRRORING_H
+#endif  // PART_FEATUREMIRRORING_H

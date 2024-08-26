@@ -23,12 +23,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <string>
-# include <QAction>
-# include <QMenu>
-# include <Inventor/draggers/SoDragger.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoTransform.h>
+#include <string>
+#include <QAction>
+#include <QMenu>
+#include <Inventor/draggers/SoDragger.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoTransform.h>
 #endif
 
 #include <App/GeoFeature.h>
@@ -56,8 +56,8 @@ ViewProviderDragger::~ViewProviderDragger() = default;
 
 void ViewProviderDragger::updateData(const App::Property* prop)
 {
-    if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
-             strcmp(prop->getName(), "Placement") == 0) {
+    if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())
+        && strcmp(prop->getName(), "Placement") == 0) {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t
         // In FreeCAD a placement only has a rotation and a translation part but
@@ -81,236 +81,256 @@ bool ViewProviderDragger::doubleClicked()
 
 void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
+    QIcon iconObject =
+        mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
     QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Transform));
     ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
 
-ViewProvider *ViewProviderDragger::startEditing(int mode) {
+ViewProvider* ViewProviderDragger::startEditing(int mode)
+{
     _linkDragger = nullptr;
     auto ret = ViewProviderDocumentObject::startEditing(mode);
-    if(!ret)
+    if (!ret) {
         return ret;
-    return _linkDragger?_linkDragger:ret;
+    }
+    return _linkDragger ? _linkDragger : ret;
 }
 
-bool ViewProviderDragger::checkLink() {
+bool ViewProviderDragger::checkLink()
+{
     // Trying to detect if the editing request is forwarded by a link object,
     // usually by doubleClicked(). If so, we route the request back. There shall
     // be no risk of infinite recursion, as ViewProviderLink handles
     // ViewProvider::Transform request by itself.
-    ViewProviderDocumentObject *vpParent = nullptr;
+    ViewProviderDocumentObject* vpParent = nullptr;
     std::string subname;
     auto doc = Application::Instance->editDocument();
-    if(!doc)
+    if (!doc) {
         return false;
-    doc->getInEdit(&vpParent,&subname);
-    if(!vpParent)
+    }
+    doc->getInEdit(&vpParent, &subname);
+    if (!vpParent) {
         return false;
+    }
     auto sobj = vpParent->getObject()->getSubObject(subname.c_str());
-    if(!sobj || sobj==getObject() || sobj->getLinkedObject(true)!=getObject())
+    if (!sobj || sobj == getObject() || sobj->getLinkedObject(true) != getObject()) {
         return false;
+    }
     auto vp = Application::Instance->getViewProvider(sobj);
-    if(!vp)
+    if (!vp) {
         return false;
+    }
     _linkDragger = vp->startEditing(ViewProvider::Transform);
-    if(_linkDragger)
+    if (_linkDragger) {
         return true;
+    }
     return false;
 }
 
 bool ViewProviderDragger::setEdit(int ModNum)
 {
-  Q_UNUSED(ModNum);
+    Q_UNUSED(ModNum);
 
-  if (checkLink()) {
-      return true;
-  }
+    if (checkLink()) {
+        return true;
+    }
 
-  App::DocumentObject *genericObject = this->getObject();
+    App::DocumentObject* genericObject = this->getObject();
 
-  if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-    auto geoFeature = static_cast<App::GeoFeature *>(genericObject);
-    const Base::Placement &placement = geoFeature->Placement.getValue();
-    auto tempTransform = new SoTransform();
-    tempTransform->ref();
-    updateTransform(placement, tempTransform);
+    if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        auto geoFeature = static_cast<App::GeoFeature*>(genericObject);
+        const Base::Placement& placement = geoFeature->Placement.getValue();
+        auto tempTransform = new SoTransform();
+        tempTransform->ref();
+        updateTransform(placement, tempTransform);
 
-    assert(!csysDragger);
-    csysDragger = new SoFCCSysDragger();
-    csysDragger->setAxisColors(
-      Gui::ViewParams::instance()->getAxisXColor(),
-      Gui::ViewParams::instance()->getAxisYColor(),
-      Gui::ViewParams::instance()->getAxisZColor()
-    );
-    csysDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
-    csysDragger->translation.setValue(tempTransform->translation.getValue());
-    csysDragger->rotation.setValue(tempTransform->rotation.getValue());
+        assert(!csysDragger);
+        csysDragger = new SoFCCSysDragger();
+        csysDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
+                                   Gui::ViewParams::instance()->getAxisYColor(),
+                                   Gui::ViewParams::instance()->getAxisZColor());
+        csysDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
+        csysDragger->translation.setValue(tempTransform->translation.getValue());
+        csysDragger->rotation.setValue(tempTransform->rotation.getValue());
 
-    tempTransform->unref();
+        tempTransform->unref();
 
-    pcTransform->translation.connectFrom(&csysDragger->translation);
-    pcTransform->rotation.connectFrom(&csysDragger->rotation);
+        pcTransform->translation.connectFrom(&csysDragger->translation);
+        pcTransform->rotation.connectFrom(&csysDragger->rotation);
 
-    csysDragger->addFinishCallback(dragFinishCallback, this);
+        csysDragger->addFinishCallback(dragFinishCallback, this);
 
-    // dragger node is added to viewer's editing root in setEditViewer
-    // pcRoot->insertChild(csysDragger, 0);
-    csysDragger->ref();
+        // dragger node is added to viewer's editing root in setEditViewer
+        // pcRoot->insertChild(csysDragger, 0);
+        csysDragger->ref();
 
-    auto task = new TaskCSysDragger(this, csysDragger);
-    Gui::Control().showDialog(task);
-  }
+        auto task = new TaskCSysDragger(this, csysDragger);
+        Gui::Control().showDialog(task);
+    }
 
-  return true;
+    return true;
 }
 
 void ViewProviderDragger::unsetEdit(int ModNum)
 {
-  Q_UNUSED(ModNum);
+    Q_UNUSED(ModNum);
 
-  if(csysDragger)
-  {
-    pcTransform->translation.disconnect(&csysDragger->translation);
-    pcTransform->rotation.disconnect(&csysDragger->rotation);
+    if (csysDragger) {
+        pcTransform->translation.disconnect(&csysDragger->translation);
+        pcTransform->rotation.disconnect(&csysDragger->rotation);
 
-    // dragger node is added to viewer's editing root in setEditViewer
-    // pcRoot->removeChild(csysDragger); //should delete csysDragger
-    csysDragger->unref();
-    csysDragger = nullptr;
-  }
-  Gui::Control().closeDialog();
+        // dragger node is added to viewer's editing root in setEditViewer
+        // pcRoot->removeChild(csysDragger); //should delete csysDragger
+        csysDragger->unref();
+        csysDragger = nullptr;
+    }
+    Gui::Control().closeDialog();
 }
 
 void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     Q_UNUSED(ModNum);
 
-    if (csysDragger && viewer)
-    {
-      auto rootPickStyle = new SoPickStyle();
-      rootPickStyle->style = SoPickStyle::UNPICKABLE;
-      auto selection = static_cast<SoGroup*>(viewer->getSceneGraph());
-      selection->insertChild(rootPickStyle, 0);
-      viewer->setSelectionEnabled(false);
-      csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+    if (csysDragger && viewer) {
+        auto rootPickStyle = new SoPickStyle();
+        rootPickStyle->style = SoPickStyle::UNPICKABLE;
+        auto selection = static_cast<SoGroup*>(viewer->getSceneGraph());
+        selection->insertChild(rootPickStyle, 0);
+        viewer->setSelectionEnabled(false);
+        csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
-      auto mat = viewer->getDocument()->getEditingTransform();
-      viewer->getDocument()->setEditingTransform(mat);
-      auto feat = dynamic_cast<App::GeoFeature *>(getObject());
-      if(feat) {
-          auto matInverse = feat->Placement.getValue().toMatrix();
-          matInverse.inverse();
-          mat *= matInverse;
-      }
-      viewer->setupEditingRoot(csysDragger,&mat);
+        auto mat = viewer->getDocument()->getEditingTransform();
+        viewer->getDocument()->setEditingTransform(mat);
+        auto feat = dynamic_cast<App::GeoFeature*>(getObject());
+        if (feat) {
+            auto matInverse = feat->Placement.getValue().toMatrix();
+            matInverse.inverse();
+            mat *= matInverse;
+        }
+        viewer->setupEditingRoot(csysDragger, &mat);
     }
 }
 
 void ViewProviderDragger::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
     auto selection = static_cast<SoGroup*>(viewer->getSceneGraph());
-    SoNode *child = selection->getChild(0);
+    SoNode* child = selection->getChild(0);
     if (child && child->isOfType(SoPickStyle::getClassTypeId())) {
         selection->removeChild(child);
         viewer->setSelectionEnabled(true);
     }
 }
 
-void ViewProviderDragger::dragFinishCallback(void *data, SoDragger *d)
+void ViewProviderDragger::dragFinishCallback(void* data, SoDragger* d)
 {
     // This is called when a manipulator has done manipulating
 
-    auto sudoThis = static_cast<ViewProviderDragger *>(data);
-    auto dragger = static_cast<SoFCCSysDragger *>(d);
+    auto sudoThis = static_cast<ViewProviderDragger*>(data);
+    auto dragger = static_cast<SoFCCSysDragger*>(d);
     updatePlacementFromDragger(sudoThis, dragger);
 
-    //Gui::Application::Instance->activeDocument()->commitCommand();
+    // Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
-void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoThis, SoFCCSysDragger* draggerIn)
+void ViewProviderDragger::updatePlacementFromDragger(ViewProviderDragger* sudoThis,
+                                                     SoFCCSysDragger* draggerIn)
 {
-  App::DocumentObject *genericObject = sudoThis->getObject();
-  if (!genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
-    return;
-  auto geoFeature = static_cast<App::GeoFeature *>(genericObject);
-  Base::Placement originalPlacement = geoFeature->Placement.getValue();
-  double pMatrix[16];
-  originalPlacement.toMatrix().getMatrix(pMatrix);
-  Base::Placement freshPlacement = originalPlacement;
+    App::DocumentObject* genericObject = sudoThis->getObject();
+    if (!genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        return;
+    }
+    auto geoFeature = static_cast<App::GeoFeature*>(genericObject);
+    Base::Placement originalPlacement = geoFeature->Placement.getValue();
+    double pMatrix[16];
+    originalPlacement.toMatrix().getMatrix(pMatrix);
+    Base::Placement freshPlacement = originalPlacement;
 
-  //local cache for brevity.
-  double translationIncrement = draggerIn->translationIncrement.getValue();
-  double rotationIncrement = draggerIn->rotationIncrement.getValue();
-  int tCountX = draggerIn->translationIncrementCountX.getValue();
-  int tCountY = draggerIn->translationIncrementCountY.getValue();
-  int tCountZ = draggerIn->translationIncrementCountZ.getValue();
-  int rCountX = draggerIn->rotationIncrementCountX.getValue();
-  int rCountY = draggerIn->rotationIncrementCountY.getValue();
-  int rCountZ = draggerIn->rotationIncrementCountZ.getValue();
+    // local cache for brevity.
+    double translationIncrement = draggerIn->translationIncrement.getValue();
+    double rotationIncrement = draggerIn->rotationIncrement.getValue();
+    int tCountX = draggerIn->translationIncrementCountX.getValue();
+    int tCountY = draggerIn->translationIncrementCountY.getValue();
+    int tCountZ = draggerIn->translationIncrementCountZ.getValue();
+    int rCountX = draggerIn->rotationIncrementCountX.getValue();
+    int rCountY = draggerIn->rotationIncrementCountY.getValue();
+    int rCountZ = draggerIn->rotationIncrementCountZ.getValue();
 
-  //just as a little sanity check make sure only 1 or 2 fields has changed.
-  int numberOfFieldChanged = 0;
-  if (tCountX) numberOfFieldChanged++;
-  if (tCountY) numberOfFieldChanged++;
-  if (tCountZ) numberOfFieldChanged++;
-  if (rCountX) numberOfFieldChanged++;
-  if (rCountY) numberOfFieldChanged++;
-  if (rCountZ) numberOfFieldChanged++;
-  if (numberOfFieldChanged == 0)
-    return;
-  assert(numberOfFieldChanged == 1 || numberOfFieldChanged == 2);
+    // just as a little sanity check make sure only 1 or 2 fields has changed.
+    int numberOfFieldChanged = 0;
+    if (tCountX) {
+        numberOfFieldChanged++;
+    }
+    if (tCountY) {
+        numberOfFieldChanged++;
+    }
+    if (tCountZ) {
+        numberOfFieldChanged++;
+    }
+    if (rCountX) {
+        numberOfFieldChanged++;
+    }
+    if (rCountY) {
+        numberOfFieldChanged++;
+    }
+    if (rCountZ) {
+        numberOfFieldChanged++;
+    }
+    if (numberOfFieldChanged == 0) {
+        return;
+    }
+    assert(numberOfFieldChanged == 1 || numberOfFieldChanged == 2);
 
-  //helper lambdas.
-  auto getVectorX = [&pMatrix]() {return Base::Vector3d(pMatrix[0], pMatrix[4], pMatrix[8]);};
-  auto getVectorY = [&pMatrix]() {return Base::Vector3d(pMatrix[1], pMatrix[5], pMatrix[9]);};
-  auto getVectorZ = [&pMatrix]() {return Base::Vector3d(pMatrix[2], pMatrix[6], pMatrix[10]);};
+    // helper lambdas.
+    auto getVectorX = [&pMatrix]() {
+        return Base::Vector3d(pMatrix[0], pMatrix[4], pMatrix[8]);
+    };
+    auto getVectorY = [&pMatrix]() {
+        return Base::Vector3d(pMatrix[1], pMatrix[5], pMatrix[9]);
+    };
+    auto getVectorZ = [&pMatrix]() {
+        return Base::Vector3d(pMatrix[2], pMatrix[6], pMatrix[10]);
+    };
 
-  if (tCountX)
-  {
-    Base::Vector3d movementVector(getVectorX());
-    movementVector *= (tCountX * translationIncrement);
-    freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  if (tCountY)
-  {
-    Base::Vector3d movementVector(getVectorY());
-    movementVector *= (tCountY * translationIncrement);
-    freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  if (tCountZ)
-  {
-    Base::Vector3d movementVector(getVectorZ());
-    movementVector *= (tCountZ * translationIncrement);
-    freshPlacement.move(movementVector);
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  if (rCountX)
-  {
-    Base::Vector3d rotationVector(getVectorX());
-    Base::Rotation rotation(rotationVector, rCountX * rotationIncrement);
-    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  if (rCountY)
-  {
-    Base::Vector3d rotationVector(getVectorY());
-    Base::Rotation rotation(rotationVector, rCountY * rotationIncrement);
-    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
-  }
-  if (rCountZ)
-  {
-    Base::Vector3d rotationVector(getVectorZ());
-    Base::Rotation rotation(rotationVector, rCountZ * rotationIncrement);
-    freshPlacement.setRotation(rotation * freshPlacement.getRotation());
-    geoFeature->Placement.setValue(freshPlacement);
-  }
+    if (tCountX) {
+        Base::Vector3d movementVector(getVectorX());
+        movementVector *= (tCountX * translationIncrement);
+        freshPlacement.move(movementVector);
+        geoFeature->Placement.setValue(freshPlacement);
+    }
+    if (tCountY) {
+        Base::Vector3d movementVector(getVectorY());
+        movementVector *= (tCountY * translationIncrement);
+        freshPlacement.move(movementVector);
+        geoFeature->Placement.setValue(freshPlacement);
+    }
+    if (tCountZ) {
+        Base::Vector3d movementVector(getVectorZ());
+        movementVector *= (tCountZ * translationIncrement);
+        freshPlacement.move(movementVector);
+        geoFeature->Placement.setValue(freshPlacement);
+    }
+    if (rCountX) {
+        Base::Vector3d rotationVector(getVectorX());
+        Base::Rotation rotation(rotationVector, rCountX * rotationIncrement);
+        freshPlacement.setRotation(rotation * freshPlacement.getRotation());
+        geoFeature->Placement.setValue(freshPlacement);
+    }
+    if (rCountY) {
+        Base::Vector3d rotationVector(getVectorY());
+        Base::Rotation rotation(rotationVector, rCountY * rotationIncrement);
+        freshPlacement.setRotation(rotation * freshPlacement.getRotation());
+        geoFeature->Placement.setValue(freshPlacement);
+    }
+    if (rCountZ) {
+        Base::Vector3d rotationVector(getVectorZ());
+        Base::Rotation rotation(rotationVector, rCountZ * rotationIncrement);
+        freshPlacement.setRotation(rotation * freshPlacement.getRotation());
+        geoFeature->Placement.setValue(freshPlacement);
+    }
 
-  draggerIn->clearIncrementCounts();
+    draggerIn->clearIncrementCounts();
 }
 
 void ViewProviderDragger::updateTransform(const Base::Placement& from, SoTransform* to)
@@ -322,8 +342,8 @@ void ViewProviderDragger::updateTransform(const Base::Placement& from, SoTransfo
     auto px = (float)from.getPosition().x;
     auto py = (float)from.getPosition().y;
     auto pz = (float)from.getPosition().z;
-  to->rotation.setValue(q0,q1,q2,q3);
-  to->translation.setValue(px,py,pz);
-  to->center.setValue(0.0f,0.0f,0.0f);
-  to->scaleFactor.setValue(1.0f,1.0f,1.0f);
+    to->rotation.setValue(q0, q1, q2, q3);
+    to->translation.setValue(px, py, pz);
+    to->center.setValue(0.0f, 0.0f, 0.0f);
+    to->scaleFactor.setValue(1.0f, 1.0f, 1.0f);
 }

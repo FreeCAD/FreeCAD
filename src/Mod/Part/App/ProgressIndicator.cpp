@@ -53,27 +53,27 @@ using namespace Part;
  */
 
 #if OCC_VERSION_HEX < 0x070500
-ProgressIndicator::ProgressIndicator (int theMaxVal)
-  : myProgress(new Base::SequencerLauncher("", theMaxVal))
+ProgressIndicator::ProgressIndicator(int theMaxVal)
+    : myProgress(new Base::SequencerLauncher("", theMaxVal))
 {
-    SetScale (0, theMaxVal, 1);
+    SetScale(0, theMaxVal, 1);
 }
 
-ProgressIndicator::~ProgressIndicator ()
-{
-}
+ProgressIndicator::~ProgressIndicator()
+{}
 
-Standard_Boolean ProgressIndicator::Show (const Standard_Boolean theForce)
+Standard_Boolean ProgressIndicator::Show(const Standard_Boolean theForce)
 {
     if (theForce) {
-        Handle(TCollection_HAsciiString) aName = GetScope(1).GetName(); //current step
-        if (!aName.IsNull())
-            myProgress->setText (aName->ToCString());
+        Handle(TCollection_HAsciiString) aName = GetScope(1).GetName();  // current step
+        if (!aName.IsNull()) {
+            myProgress->setText(aName->ToCString());
+        }
     }
 
-    Standard_Real aPc = GetPosition(); //always within [0,1]
+    Standard_Real aPc = GetPosition();  // always within [0,1]
     int aVal = (int)(aPc * myProgress->numberOfSteps());
-    myProgress->setProgress (aVal);
+    myProgress->setProgress(aVal);
 
     return Standard_True;
 }

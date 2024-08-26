@@ -41,43 +41,43 @@ public:
     };
 
 
-  ActionPanelScheme();
+    ActionPanelScheme();
 
-  /** Returns a pointer to the default scheme object.
-    Must be reimplemented in the own schemes.
-    */
-  static ActionPanelScheme* defaultScheme();
+    /** Returns a pointer to the default scheme object.
+      Must be reimplemented in the own schemes.
+      */
+    static ActionPanelScheme* defaultScheme();
 
-  /// Height of the header in pixels.
-  int headerSize;
-  /// If set to \a true, moving mouse over the header results in changing its opacity slowly.
-  bool headerAnimation;
+    /// Height of the header in pixels.
+    int headerSize;
+    /// If set to \a true, moving mouse over the header results in changing its opacity slowly.
+    bool headerAnimation;
 
-  /// Image of folding button when the group is expanded.
-  QPixmap headerButtonFold;
-  /// Image of folding button when the group is expanded and mouse cursor is over the button.
-  QPixmap headerButtonFoldOver;
-  /// Image of folding button when the group is collapsed.
-  QPixmap headerButtonUnfold;
-  /// Image of folding button when the group is collapsed and mouse cursor is over the button.
-  QPixmap headerButtonUnfoldOver;
+    /// Image of folding button when the group is expanded.
+    QPixmap headerButtonFold;
+    /// Image of folding button when the group is expanded and mouse cursor is over the button.
+    QPixmap headerButtonFoldOver;
+    /// Image of folding button when the group is collapsed.
+    QPixmap headerButtonUnfold;
+    /// Image of folding button when the group is collapsed and mouse cursor is over the button.
+    QPixmap headerButtonUnfoldOver;
 
-  QSize headerButtonSize;
+    QSize headerButtonSize;
 
-  /// Number of steps made for expanding/collapsing animation (default 20).
-  int groupFoldSteps;
-  /// Delay in ms between steps made for expanding/collapsing animation (default 15).
-  int groupFoldDelay;
-  /// Sets folding effect during expanding/collapsing.
-  TaskPanelFoldEffect groupFoldEffect;
-  /// If set to \a true, changes group's opacity slowly during expanding/collapsing.
-  bool groupFoldThaw;
+    /// Number of steps made for expanding/collapsing animation (default 20).
+    int groupFoldSteps;
+    /// Delay in ms between steps made for expanding/collapsing animation (default 15).
+    int groupFoldDelay;
+    /// Sets folding effect during expanding/collapsing.
+    TaskPanelFoldEffect groupFoldEffect;
+    /// If set to \a true, changes group's opacity slowly during expanding/collapsing.
+    bool groupFoldThaw;
 
-  /// The CSS for the ActionPanel/ActionGroup elements.
-  QString actionStyle;
+    /// The CSS for the ActionPanel/ActionGroup elements.
+    QString actionStyle;
 };
 
 
-}
+}  // namespace QSint
 
-#endif // TASKPANELSCHEME_H
+#endif  // TASKPANELSCHEME_H

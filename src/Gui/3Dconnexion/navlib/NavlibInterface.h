@@ -56,7 +56,7 @@ class View3DInventorViewer;
 class Document;
 class Command;
 class ActionGroup;
-}// namespace Gui
+}  // namespace Gui
 
 class NavlibInterface: public CNav3D
 {
@@ -136,12 +136,11 @@ private:
     ParsedData parseCommandId(const std::string& commandId) const;
     std::string getId(const Gui::Command& command, const int32_t parameter) const;
     TDxImage getImage(const QAction& qaction, const std::string& id) const;
-    TDxCommand getCCommand(const Gui::Command& command,
-                           const QAction& qAction,
-                           const int32_t parameter) const;
-	// This method removes markups from text (markup is a
-	// string enclosed with '<' and '>' characters). Paragraph
-	// ending markups "</p>" are being replaced with "\n\n".
+    TDxCommand
+    getCCommand(const Gui::Command& command, const QAction& qAction, const int32_t parameter) const;
+    // This method removes markups from text (markup is a
+    // string enclosed with '<' and '>' characters). Paragraph
+    // ending markups "</p>" are being replaced with "\n\n".
     void removeMarkups(std::string& text) const;
     void initializePivot();
     void initializePattern() const;
@@ -152,9 +151,8 @@ private:
     bool is3DView() const;
     bool is2DView() const;
     void exportCommands(const std::string& workbench);
-    void unpackCommands(Gui::Command& command,
-                        TDxCategory& category,
-                        std::vector<TDxImage>& images);
+    void
+    unpackCommands(Gui::Command& command, TDxCategory& category, std::vector<TDxImage>& images);
 
     std::error_code errorCode;
     std::pair<int, std::string> activeTab;

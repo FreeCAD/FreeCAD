@@ -29,7 +29,8 @@
 #include "Command.h"
 
 
-namespace Gui {
+namespace Gui
+{
 
 /**
  * The NetworkRetriever class encapsulates the GNU tool \a wget.
@@ -37,27 +38,27 @@ namespace Gui {
  * file structure from a server.
  * \author Werner Mayer
  */
-class NetworkRetriever : public QObject
+class NetworkRetriever: public QObject
 {
     Q_OBJECT
 
 public:
-    NetworkRetriever( QObject * parent = nullptr );
+    NetworkRetriever(QObject* parent = nullptr);
     ~NetworkRetriever() override;
 
-    void setNumberOfTries( int );
-    void setOutputFile( const QString& );
+    void setNumberOfTries(int);
+    void setOutputFile(const QString&);
     void setEnableTimestamp(bool);
-    void setProxy( const QString&, const QString& = QString(), const QString& = QString() );
-    void setEnableRecursive( bool, int = 0 );
-    void setFollowRelative( bool );
-    void setEnableConvert( bool );
-    void setFetchImages( bool );
-    void setEnableHTMLExtension( bool );
-    void setNoParent( bool );
+    void setProxy(const QString&, const QString& = QString(), const QString& = QString());
+    void setEnableRecursive(bool, int = 0);
+    void setFollowRelative(bool);
+    void setEnableConvert(bool);
+    void setFetchImages(bool);
+    void setEnableHTMLExtension(bool);
+    void setNoParent(bool);
 
-    void setOutputDirectory( const QString& );
-    bool startDownload( const QString& );
+    void setOutputDirectory(const QString&);
+    bool startDownload(const QString&);
     bool isDownloading() const;
     void abort();
 
@@ -77,12 +78,12 @@ private:
 
 // --------------------------------------------------------------------
 
-class StdCmdDownloadOnlineHelp : public QObject, public Command
+class StdCmdDownloadOnlineHelp: public QObject, public Command
 {
     Q_OBJECT
 
 public:
-    StdCmdDownloadOnlineHelp(QObject * parent = nullptr);
+    StdCmdDownloadOnlineHelp(QObject* parent = nullptr);
     ~StdCmdDownloadOnlineHelp() override;
     /** i18n stuff of the command. */
     void languageChange() override;
@@ -100,6 +101,6 @@ private:
     NetworkRetriever* wget;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_NETWORKRETRIEVER_H
+#endif  // GUI_NETWORKRETRIEVER_H

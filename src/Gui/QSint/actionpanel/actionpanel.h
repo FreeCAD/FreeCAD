@@ -36,7 +36,7 @@ class ActionGroup;
     WinVistaPanelScheme (Windows Vista variation), MacPanelScheme (MacOS variation),
     AndroidPanelScheme (Android variation).
 */
-class QSINT_EXPORT ActionPanel : public QFrame
+class QSINT_EXPORT ActionPanel: public QFrame
 {
     typedef QFrame BaseClass;
 
@@ -44,16 +44,16 @@ class QSINT_EXPORT ActionPanel : public QFrame
 
 public:
     /** Constructor.
-      */
-    explicit ActionPanel(QWidget *parent = nullptr);
+     */
+    explicit ActionPanel(QWidget* parent = nullptr);
 
     /** Adds a widget \a w to the ActionPanel's vertical layout.
-      */
-    void addWidget(QWidget *w);
+     */
+    void addWidget(QWidget* w);
 
     /** Removes the widget \a w from the ActionPanel's vertical layout.
-      */
-    void removeWidget(QWidget *w);
+     */
+    void removeWidget(QWidget* w);
 
     /** Adds a spacer with width \a s to the ActionPanel's vertical layout.
         Normally you should do this after all the ActionGroups were added, in order to
@@ -62,11 +62,11 @@ public:
     void addStretch(int s = 0);
 
     /** Removes the spacer -- if added -- from the ActionPanel's vertical layout.
-      */
+     */
     void removeStretch();
 
     /** Creates and adds to the ActionPanel's vertical layout an empty ActionGroup without header.
-      */
+     */
     ActionGroup* createGroup();
 
     /** Creates and adds to the ActionPanel's vertical layout an empty ActionGroup with header's
@@ -74,31 +74,31 @@ public:
 
         If \a expandable set to \a true (default), the group can be expanded/collapsed by the user.
       */
-    ActionGroup* createGroup(const QString &title, bool expandable = true);
+    ActionGroup* createGroup(const QString& title, bool expandable = true);
 
     /** Creates and adds to the ActionPanel's vertical layout an empty ActionGroup with header's
         text set to \a title and icon set to \a icon.
 
         If \a expandable set to \a true (default), the group can be expanded/collapsed by the user.
       */
-    ActionGroup* createGroup(const QPixmap &icon, const QString &title, bool expandable = true);
+    ActionGroup* createGroup(const QPixmap& icon, const QString& title, bool expandable = true);
 
     /** Sets the scheme of the panel and all the child groups to \a scheme.
 
         By default, ActionPanelScheme::defaultScheme() is used.
       */
-    void setScheme(ActionPanelScheme *scheme);
+    void setScheme(ActionPanelScheme* scheme);
 
     QSize minimumSizeHint() const override;
 
 protected:
-    //virtual void paintEvent ( QPaintEvent * event );
+    // virtual void paintEvent ( QPaintEvent * event );
 
-    ActionPanelScheme *myScheme;
-    QSpacerItem *mySpacer;
+    ActionPanelScheme* myScheme;
+    QSpacerItem* mySpacer;
 };
 
 
-} // namespace
+}  // namespace QSint
 
-#endif // ACTIONPANEL_H
+#endif  // ACTIONPANEL_H

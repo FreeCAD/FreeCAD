@@ -389,7 +389,7 @@ double Measurement::length() const
                             "Measurement - length - Curve type not currently handled");
                     }
                 }  // end switch
-            }      // end for
+            }  // end for
         }
     }
     return result;

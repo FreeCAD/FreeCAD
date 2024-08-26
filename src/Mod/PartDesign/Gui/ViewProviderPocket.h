@@ -27,9 +27,10 @@
 #include "ViewProviderExtrude.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderPocket : public ViewProviderExtrude
+class PartDesignGuiExport ViewProviderPocket: public ViewProviderExtrude
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPocket);
 
@@ -43,13 +44,11 @@ public:
 
 protected:
     /// Returns a newly created TaskDlgPocketParameters
-    TaskDlgFeatureParameters *getEditDialog() override;
-
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
+}  // namespace PartDesignGui
 
-} // namespace PartDesignGui
 
-
-#endif // PARTGUI_ViewProviderPocket_H
+#endif  // PARTGUI_ViewProviderPocket_H

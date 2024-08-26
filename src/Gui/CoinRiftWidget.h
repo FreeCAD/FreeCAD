@@ -40,9 +40,9 @@
 #define USE_SO_OFFSCREEN_RENDERER
 
 #ifdef USE_SO_OFFSCREEN_RENDERER
-# ifdef USE_FRAMEBUFFER
-# error "Mutually exclusive options defined."
-# endif
+#ifdef USE_FRAMEBUFFER
+#error "Mutually exclusive options defined."
+#endif
 #endif
 
 #include <algorithm>
@@ -53,10 +53,10 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #ifdef USE_SO_OFFSCREEN_RENDERER
-# include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/SoOffscreenRenderer.h>
 #endif
 #ifdef USE_FRAMEBUFFER
-# include <Inventor/SoSceneManager.h>
+#include <Inventor/SoSceneManager.h>
 #endif
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoFrustumCamera.h>
@@ -66,11 +66,10 @@
 #include <OVR_Kernel.h>
 #include <OVR_Version.h>
 #include <../Src/OVR_CAPI_GL.h>
-#include <../Src/CAPI/GL/CAPI_GL_Util.h> // For framebuffer functions.
+#include <../Src/CAPI/GL/CAPI_GL_Util.h>  // For framebuffer functions.
 
 
-
-class CoinRiftWidget : public QGLWidget
+class CoinRiftWidget: public QGLWidget
 {
     ovrHmd hmd;
     ovrEyeRenderDesc eyeRenderDesc[2];
@@ -78,26 +77,31 @@ class CoinRiftWidget : public QGLWidget
 
 #ifdef USE_FRAMEBUFFER
     GLuint frameBufferID[2], depthBufferID[2];
-    // A SoSceneManager has a SoRenderManager to do the rendering -- should we not use SoRenderManager instead?
-    // We are probably not that interested in events. SoSceneManager::setSceneGraph() searches for the camera
-    // and sets it in SoRenderManager, but its is actually only used for built-in stereo rendering.
+    // A SoSceneManager has a SoRenderManager to do the rendering -- should we not use
+    // SoRenderManager instead? We are probably not that interested in events.
+    // SoSceneManager::setSceneGraph() searches for the camera and sets it in SoRenderManager, but
+    // its is actually only used for built-in stereo rendering.
     // FIXME: We should probably eliminate that search...
-    SoSceneManager *m_sceneManager;
+    SoSceneManager* m_sceneManager;
 #endif
 #ifdef USE_SO_OFFSCREEN_RENDERER
-    SoOffscreenRenderer *renderer;
+    SoOffscreenRenderer* renderer;
 #endif
-    SoSeparator *rootScene[2];
-    SoFrustumCamera *camera[2];
-    SoNode *scene;
+    SoSeparator* rootScene[2];
+    SoFrustumCamera* camera[2];
+    SoNode* scene;
+
 public:
     explicit CoinRiftWidget();
     ~CoinRiftWidget();
-    virtual void setSceneGraph(SoNode *sceneGraph);
-    void setBase(const SbVec3f &pos){basePosition=pos;}
-    void setBackgroundColor(const SbColor &Col);
+    virtual void setSceneGraph(SoNode* sceneGraph);
+    void setBase(const SbVec3f& pos)
+    {
+        basePosition = pos;
+    }
+    void setBackgroundColor(const SbColor& Col);
 
-    SbVec3f    basePosition;
+    SbVec3f basePosition;
     SbRotation baseOrientation;
 
 protected:
@@ -107,10 +111,10 @@ protected:
     void resizeGL(int width, int height);
 
     SbColor BackgroundColor;
-    SoTranslation *lightTranslation;
+    SoTranslation* lightTranslation;
 };
 
 
-#endif //BUILD_VR
+#endif  // BUILD_VR
 
-#endif // GUI_CoinRiftWidget
+#endif  // GUI_CoinRiftWidget

@@ -26,9 +26,10 @@
 
 #include "ViewProvider.h"
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderBase : public ViewProvider
+class PartDesignGuiExport ViewProviderBase: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderBase);
 
@@ -46,7 +47,7 @@ protected:
     void unsetEdit(int ModNum) override;
 };
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderBase_H
+#endif  // PARTGUI_ViewProviderBase_H

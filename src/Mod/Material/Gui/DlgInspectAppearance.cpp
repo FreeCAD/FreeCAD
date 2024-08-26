@@ -63,7 +63,11 @@ void ColorWidget::paintEvent(QPaintEvent* event)
         left += (event->rect().width() - 75) / 2;
         width = 71;
     }
-    painter.fillRect(left, event->rect().top() + 2, width, event->rect().height() - 4, QBrush(color));
+    painter.fillRect(left,
+                     event->rect().top() + 2,
+                     width,
+                     event->rect().height() - 4,
+                     QBrush(color));
 
     // Draw the color
     left = event->rect().left() + 5;
@@ -72,7 +76,11 @@ void ColorWidget::paintEvent(QPaintEvent* event)
         left += (event->rect().width() - 75) / 2;
         width = 65;
     }
-    painter.fillRect(left, event->rect().top() + 5, width, event->rect().height() - 10, QBrush(_color));
+    painter.fillRect(left,
+                     event->rect().top() + 5,
+                     width,
+                     event->rect().height() - 10,
+                     QBrush(_color));
 }
 
 /* TRANSLATOR MatGui::DlgInspectAppearance */
@@ -176,8 +184,8 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
 
             ui->tabAppearance->clear();
             if (labelProp && QString::fromUtf8(labelProp->getValue()).size() > 0) {
-                auto* prop =
-                    dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"));
+                auto* prop = dynamic_cast<App::PropertyMaterialList*>(
+                    view->getPropertyByName("ShapeAppearance"));
                 if (prop) {
                     for (int index = 0; index < prop->getSize(); index++) {
                         auto& material = (prop->getValues())[index];

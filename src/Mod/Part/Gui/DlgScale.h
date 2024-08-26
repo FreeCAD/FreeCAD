@@ -32,10 +32,11 @@
 
 class TopoDS_Shape;
 
-namespace PartGui {
+namespace PartGui
+{
 
 class Ui_DlgScale;
-class DlgScale : public QDialog
+class DlgScale: public QDialog
 {
     Q_OBJECT
 
@@ -55,21 +56,21 @@ public:
 protected:
     void findShapes();
     bool canScale(const TopoDS_Shape&) const;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     void setupConnections();
     void onUniformScaleToggled(bool on);
 
 private:
-    ///returns link to any of selected source shapes. Throws if nothing is selected for scaling.
+    /// returns link to any of selected source shapes. Throws if nothing is selected for scaling.
     App::DocumentObject& getShapeToScale() const;
 
     std::unique_ptr<Ui_DlgScale> ui;
     std::string m_document, m_label;
 };
 
-class TaskScale : public Gui::TaskView::TaskDialog
+class TaskScale: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -82,12 +83,14 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close;
+    }
 
 private:
     DlgScale* widget;
 };
 
-} // namespace PartGui
+}  // namespace PartGui
 
-#endif // PARTGUI_DLGSCALE_H
+#endif  // PARTGUI_DLGSCALE_H

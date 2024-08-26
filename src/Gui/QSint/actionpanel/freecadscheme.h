@@ -31,7 +31,7 @@ namespace QSint
 {
 
 
-class QSINT_EXPORT FreeCADPanelScheme : public ActionPanelScheme
+class QSINT_EXPORT FreeCADPanelScheme: public ActionPanelScheme
 {
 public:
     explicit FreeCADPanelScheme();
@@ -54,7 +54,7 @@ private:
     QPixmap builtinUnfoldOver;
 };
 
-class QSINT_EXPORT SystemPanelScheme : public ActionPanelScheme
+class QSINT_EXPORT SystemPanelScheme: public ActionPanelScheme
 {
 public:
     explicit SystemPanelScheme();
@@ -70,6 +70,6 @@ private:
     QString systemStyle(const QPalette& p) const;
 };
 
-}
+}  // namespace QSint
 
-#endif // IISFREECADTASKPANELSCHEME_H
+#endif  // IISFREECADTASKPANELSCHEME_H

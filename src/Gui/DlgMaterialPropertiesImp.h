@@ -33,7 +33,7 @@ namespace App
 {
 class Color;
 class Material;
-}
+}  // namespace App
 
 namespace Gui
 {

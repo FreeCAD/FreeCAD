@@ -31,7 +31,8 @@
 #include <string>
 #include <FCGlobal.h>
 
-namespace Gui {
+namespace Gui
+{
 
 class DockWindowItems;
 class MenuItem;
@@ -117,17 +118,17 @@ protected:
 public:
     WorkbenchManipulator(const WorkbenchManipulator&) = delete;
     WorkbenchManipulator(WorkbenchManipulator&&) = delete;
-    WorkbenchManipulator& operator = (const WorkbenchManipulator&) = delete;
-    WorkbenchManipulator& operator = (WorkbenchManipulator&&) = delete;
+    WorkbenchManipulator& operator=(const WorkbenchManipulator&) = delete;
+    WorkbenchManipulator& operator=(WorkbenchManipulator&&) = delete;
 
 protected:
     static std::set<WorkbenchManipulator::Ptr> getManipulators();
 
 private:
-    static std::set<WorkbenchManipulator::Ptr> manipulators; // NOLINT
+    static std::set<WorkbenchManipulator::Ptr> manipulators;  // NOLINT
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_WORKBENCHMANIPULATOR_H
+#endif  // GUI_WORKBENCHMANIPULATOR_H

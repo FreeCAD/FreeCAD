@@ -4,22 +4,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -37,34 +37,43 @@
 
 class QTimer;
 
-namespace SIM { namespace Coin3D { namespace Quarter {
+namespace SIM
+{
+namespace Coin3D
+{
+namespace Quarter
+{
 
 class SignalThread;
 
-class SensorManager : public QObject {
-  Q_OBJECT
-  typedef QObject inherited;
+class SensorManager: public QObject
+{
+    Q_OBJECT
+    typedef QObject inherited;
+
 public:
-  SensorManager();
-  ~SensorManager() override;
+    SensorManager();
+    ~SensorManager() override;
 
 public Q_SLOTS:
-  void idleTimeout();
-  void delayTimeout();
-  void timerQueueTimeout();
-  void sensorQueueChanged();
-  void setTimerEpsilon(double sec);
+    void idleTimeout();
+    void delayTimeout();
+    void timerQueueTimeout();
+    void sensorQueueChanged();
+    void setTimerEpsilon(double sec);
 
 private:
-  static void sensorQueueChangedCB(void * closure);
-  QTimer * idletimer;
-  QTimer * delaytimer;
-  QTimer * timerqueuetimer;
-  unsigned long mainthreadid;
-  SignalThread * signalthread;
-  double timerEpsilon;
+    static void sensorQueueChangedCB(void* closure);
+    QTimer* idletimer;
+    QTimer* delaytimer;
+    QTimer* timerqueuetimer;
+    unsigned long mainthreadid;
+    SignalThread* signalthread;
+    double timerEpsilon;
 };
 
-}}} // namespace
+}  // namespace Quarter
+}  // namespace Coin3D
+}  // namespace SIM
 
-#endif // QUARTER_SENSORMANAGER_H
+#endif  // QUARTER_SENSORMANAGER_H

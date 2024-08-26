@@ -20,7 +20,7 @@ namespace QSint
 
     \image html ActionPanel2.png Example of the scheme
 */
-class QSINT_EXPORT WinXPPanelScheme : public ActionPanelScheme
+class QSINT_EXPORT WinXPPanelScheme: public ActionPanelScheme
 {
 public:
     WinXPPanelScheme();
@@ -39,7 +39,7 @@ public:
 
     \image html ActionPanel3.png Example of the scheme
 */
-class QSINT_EXPORT WinXPPanelScheme2 : public ActionPanelScheme
+class QSINT_EXPORT WinXPPanelScheme2: public ActionPanelScheme
 {
 public:
     WinXPPanelScheme2();
@@ -52,6 +52,6 @@ public:
 };
 
 
-}
+}  // namespace QSint
 
-#endif // WinXPPanelScheme_H
+#endif  // WinXPPanelScheme_H

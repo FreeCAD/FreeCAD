@@ -81,7 +81,7 @@ bool MaterialConfigLoader::readFile(const QString& path, QMap<QString, QString>&
     QFile infile(path);
     if (infile.open(QIODevice::ReadOnly)) {
         QTextStream in(&infile);
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         in.setCodec("UTF-8");
 #endif
         QString line;

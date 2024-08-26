@@ -257,8 +257,10 @@ void TaskMultiTransformParameters::onTransformActivated(const QModelIndex& index
 void TaskMultiTransformParameters::onTransformAddMirrored()
 {
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirrored");
-    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    std::string newFeatName =
+        TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirrored");
+    auto pcBody =
+        dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
@@ -267,7 +269,7 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
     }
 
-    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Mirrored','" << newFeatName << "')");
     auto Feat = pcBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat) {
         return;
@@ -280,7 +282,8 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     }
     else {
         App::Origin* orig = pcBody->getOrigin();
-        FCMD_OBJ_CMD(Feat, "MirrorPlane = ("<<Gui::Command::getObjectCmd(orig->getXY())<<",[''])");
+        FCMD_OBJ_CMD(Feat,
+                     "MirrorPlane = (" << Gui::Command::getObjectCmd(orig->getXY()) << ",[''])");
     }
     finishAdd(newFeatName);
     // show the new view when no error
@@ -294,8 +297,10 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     // See CmdPartDesignLinearPattern
     //
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
-    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    std::string newFeatName =
+        TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
+    auto pcBody =
+        dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
@@ -304,7 +309,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
     }
 
-    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::LinearPattern','" << newFeatName << "')");
     auto Feat = pcBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat) {
         return;
@@ -338,8 +343,10 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
 void TaskMultiTransformParameters::onTransformAddPolarPattern()
 {
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("PolarPattern");
-    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    std::string newFeatName =
+        TransformedView->getObject()->getDocument()->getUniqueObjectName("PolarPattern");
+    auto pcBody =
+        dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
@@ -348,7 +355,7 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
     }
 
-    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::PolarPattern','" << newFeatName << "')");
     auto Feat = pcBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat) {
         return;
@@ -360,7 +367,7 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     }
     else {
         App::Origin* orig = pcBody->getOrigin();
-        FCMD_OBJ_CMD(Feat, "Axis = ("<<Gui::Command::getObjectCmd(orig->getX())<<",[''])");
+        FCMD_OBJ_CMD(Feat, "Axis = (" << Gui::Command::getObjectCmd(orig->getX()) << ",[''])");
     }
     FCMD_OBJ_CMD(Feat, "Angle = 360");
     FCMD_OBJ_CMD(Feat, "Occurrences = 2");
@@ -375,8 +382,10 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
 void TaskMultiTransformParameters::onTransformAddScaled()
 {
     closeSubTask();
-    std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Scaled");
-    auto pcBody = dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
+    std::string newFeatName =
+        TransformedView->getObject()->getDocument()->getUniqueObjectName("Scaled");
+    auto pcBody =
+        dynamic_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getTopTransformedObject()));
     if (!pcBody) {
         return;
     }
@@ -385,7 +394,7 @@ void TaskMultiTransformParameters::onTransformAddScaled()
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
     }
 
-    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Scaled','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::Scaled','" << newFeatName << "')");
     auto Feat = pcBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat) {
         return;

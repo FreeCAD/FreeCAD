@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef _MSC_VER
-#  define _USE_MATH_DEFINES
-#  include <cmath>
-# endif //_MSC_VER
-#endif // _PreComp_
+#ifdef _MSC_VER
+#define _USE_MATH_DEFINES
+#include <cmath>
+#endif  //_MSC_VER
+#endif  // _PreComp_
 
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -47,18 +47,21 @@ QWidget* PropertyEnumAttacherItem::createEditor(QWidget* parent,
 {
     Gui::LabelButton* modeEditor = new Gui::LabelButton(parent);
     QObject::connect(modeEditor, &Gui::LabelButton::valueChanged, method);
-    QObject::connect(modeEditor, &Gui::LabelButton::buttonClicked, this, &PropertyEnumAttacherItem::openTask);
+    QObject::connect(modeEditor,
+                     &Gui::LabelButton::buttonClicked,
+                     this,
+                     &PropertyEnumAttacherItem::openTask);
     modeEditor->setDisabled(isReadOnly());
     return modeEditor;
 }
 
-void PropertyEnumAttacherItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyEnumAttacherItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     Gui::LabelButton* modeEditor = qobject_cast<Gui::LabelButton*>(editor);
     modeEditor->setValue(data);
 }
 
-QVariant PropertyEnumAttacherItem::editorData(QWidget *editor) const
+QVariant PropertyEnumAttacherItem::editorData(QWidget* editor) const
 {
     Gui::LabelButton* modeEditor = qobject_cast<Gui::LabelButton*>(editor);
     return modeEditor->value();

@@ -147,7 +147,7 @@ std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
         uint32_t packed = color.getPackedRGB();
         packed = hGrp->GetUnsigned(parameter, packed);
         color.setPackedRGB(packed);
-        color.a = 1.0; // The default color sets fully transparent, not opaque
+        color.a = 1.0;  // The default color sets fully transparent, not opaque
     };
     auto intRandom = [](int min, int max) -> int {
         static std::mt19937 generator;
@@ -200,8 +200,7 @@ std::shared_ptr<Material> MaterialManager::defaultMaterial()
             ->setColor(mat->specularColor);
         material->getAppearanceProperty(QString::fromLatin1("Transparency"))
             ->setFloat(mat->transparency);
-        material->getAppearanceProperty(QString::fromLatin1("Shininess"))
-            ->setFloat(mat->shininess);
+        material->getAppearanceProperty(QString::fromLatin1("Shininess"))->setFloat(mat->shininess);
     }
 
     return material;

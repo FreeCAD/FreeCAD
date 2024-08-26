@@ -47,14 +47,16 @@ constexpr uint8_t LCD_ICON_SIZE = 24u;
 
 NavlibInterface::ParsedData NavlibInterface::parseCommandId(const std::string& commandId) const
 {
-    ParsedData result{"", "", 0};
+    ParsedData result {"", "", 0};
 
-    if (commandId.empty())
+    if (commandId.empty()) {
         return result;
+    }
 
     auto groupDelimiter = std::find(commandId.cbegin(), commandId.cend(), '|');
-    if (groupDelimiter == commandId.cend())
+    if (groupDelimiter == commandId.cend()) {
         return result;
+    }
 
     result.groupName = std::string(commandId.cbegin(), groupDelimiter);
     groupDelimiter++;
@@ -85,8 +87,9 @@ std::string NavlibInterface::getId(const Gui::Command& command, const int32_t pa
 
     std::string groupName = command.getGroupName();
 
-    if (groupName.compare("<string>") == 0 || groupName.empty())
+    if (groupName.compare("<string>") == 0 || groupName.empty()) {
         groupName = "Others";
+    }
 
     return groupName + "|" + name;
 }
@@ -106,30 +109,34 @@ void NavlibInterface::removeMarkups(std::string& text) const
 {
     for (auto textBegin = text.cbegin(); textBegin != text.cend();) {
         auto markupBegin = std::find(textBegin, text.cend(), '<');
-        if (markupBegin == text.cend())
+        if (markupBegin == text.cend()) {
             return;
+        }
 
         auto markupEnd = std::find(markupBegin, text.cend(), '>');
-        if (markupEnd == text.cend())
+        if (markupEnd == text.cend()) {
             return;
+        }
 
         const char enclosingChar = *std::prev(markupEnd);
         textBegin = text.erase(markupBegin, ++markupEnd);
 
-        if(enclosingChar == 'p')
+        if (enclosingChar == 'p') {
             textBegin = text.insert(textBegin, 2, '\n');
+        }
     }
 }
 
 TDxCommand NavlibInterface::getCCommand(const Gui::Command& command,
-                                      const QAction& qAction,
-                                      const int32_t parameter) const
+                                        const QAction& qAction,
+                                        const int32_t parameter) const
 {
     std::string commandName = qAction.text().toStdString();
     std::string commandId = getId(command, parameter);
 
-    if (commandName.empty() || commandId.empty())
+    if (commandName.empty() || commandId.empty()) {
         return TDxCommand();
+    }
 
     std::string commandDescription =
         parameter == -1 ? command.getToolTipText() : qAction.toolTip().toStdString();
@@ -155,14 +162,16 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
                     Gui::Action* pAction = command->getAction();
                     pAction->action()->trigger();
                 }
-                else
+                else {
                     command->invoke(parsedData.actionIndex);
+                }
                 return 0;
             }
         }
     }
-    else
+    else {
         commandManager.runCommandByName(parsedData.commandName.c_str());
+    }
 
     return 0;
 }
@@ -171,8 +180,9 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
                                      TDxCategory& category,
                                      std::vector<TDx::CImage>& images)
 {
-    if (command.getAction() == nullptr)
+    if (command.getAction() == nullptr) {
         return;
+    }
 
     QList<QAction*> pQActions;
     TDxCategory subCategory;
@@ -185,25 +195,29 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
         subCategory = TDxCategory(subCategoryName, subCategoryName);
         index = 0;
     }
-    else
+    else {
         pQActions.push_back(command.getAction()->action());
+    }
 
     for (QAction* pQAction : pQActions) {
-        if (pQAction->isSeparator())
+        if (pQAction->isSeparator()) {
             continue;
+        }
 
         TDxCommand ccommand = getCCommand(command, *pQAction, index);
 
-        if (ccommand.GetId().empty())
+        if (ccommand.GetId().empty()) {
             continue;
+        }
 
         if (!pQAction->icon().isNull()) {
             TDxImage commandImage = getImage(*pQAction, ccommand.GetId());
             images.push_back(commandImage);
         }
 
-        if (pQActions.size() > 1)
+        if (pQActions.size() > 1) {
             subCategory.push_back(std::move(ccommand));
+        }
         else {
             category.push_back(std::move(ccommand));
             return;
@@ -215,8 +229,9 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
 
 void NavlibInterface::exportCommands(const std::string& workbench)
 {
-    if (errorCode || (workbench.compare(noneWorkbenchStr) == 0))
+    if (errorCode || (workbench.compare(noneWorkbenchStr) == 0)) {
         return;
+    }
 
     auto exportedSetItr =
         std::find(exportedCommandSets.cbegin(), exportedCommandSets.cend(), workbench);
@@ -228,8 +243,9 @@ void NavlibInterface::exportCommands(const std::string& workbench)
     std::string shortName(workbench);
     size_t index = shortName.find(workbenchStr);
 
-    if (index != std::string::npos)
+    if (index != std::string::npos) {
         shortName.erase(index, workbenchStr.size());
+    }
 
     auto guiCommands = Gui::Application::Instance->commandManager().getAllCommands();
 
@@ -251,8 +267,9 @@ void NavlibInterface::exportCommands(const std::string& workbench)
 
     TDxCommandSet commandsSet(workbench, shortName);
 
-    for (auto& itr : categories)
+    for (auto& itr : categories) {
         commandsSet.push_back(std::move(itr.second));
+    }
 
     CNav3D::AddCommandSet(commandsSet);
     CNav3D::PutActiveCommands(workbench);

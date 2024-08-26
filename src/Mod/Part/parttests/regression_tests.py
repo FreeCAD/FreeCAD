@@ -3,6 +3,7 @@ import Part
 
 import unittest
 
+
 class RegressionTests(unittest.TestCase):
 
     def test_issue_4456(self):
@@ -28,22 +29,21 @@ class RegressionTests(unittest.TestCase):
         # put me in def setup(self): ?
         self.Doc = newDocument("TestSketchExpr")
 
-        cube = self.Doc.addObject("Part::Box","Cube")
-        cube.setExpression('Length', 'Width + 10mm')
+        cube = self.Doc.addObject("Part::Box", "Cube")
+        cube.setExpression("Length", "Width + 10mm")
         with self.assertRaises(RuntimeError) as context:
-            cube.setExpression('Width', 'Length + 10mm')
+            cube.setExpression("Width", "Length + 10mm")
         assert "Width reference creates a cyclic dependency." in str(context.exception)
 
-        cube.setExpression('.Placement.Base.x', '.Placement.Base.y + 10mm')
+        cube.setExpression(".Placement.Base.x", ".Placement.Base.y + 10mm")
         with self.assertRaises(RuntimeError) as context:
-            cube.setExpression('.Placement.Base.y', '.Placement.Base.x + 10mm')
+            cube.setExpression(".Placement.Base.y", ".Placement.Base.x + 10mm")
         assert ".Placement.Base.y reference creates a cyclic dependency." in str(context.exception)
 
         cube.recompute()
         v1 = cube.Placement.Base
         cube.recompute()
-        assert cube.Placement.Base.isEqual(v1,1e-6)
+        assert cube.Placement.Base.isEqual(v1, 1e-6)
 
         # Put me in def tearDown(self): ?
         closeDocument(self.Doc.Name)
-

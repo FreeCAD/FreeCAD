@@ -27,7 +27,8 @@
 #include <Base/Parameter.h>
 #include <set>
 
-namespace Gui {
+namespace Gui
+{
 
 class SoFCColorBarBase;
 
@@ -50,7 +51,7 @@ private:
     ParameterGrp::handle group;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 
-#endif // GUI_SOFCCOLORBARNOTIFIER_H
+#endif  // GUI_SOFCCOLORBARNOTIFIER_H

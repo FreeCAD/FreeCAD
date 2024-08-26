@@ -37,4 +37,3 @@ const char* VarSet::getViewProviderName() const
 {
     return "Gui::ViewProviderVarSet";
 }
-

@@ -88,7 +88,7 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Co
         for (auto& j : colors) {
             // transparency hasn't been set for this face
             if (j.a == 0.0) {
-                j.a = transparency/100.0F;  // transparency comes in percent
+                j.a = transparency / 100.0F;  // transparency comes in percent
             }
         }
     }
@@ -109,7 +109,8 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Ma
 
 // ----------------------------------------------------------------------------
 
-void ViewProviderShapeBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
+void ViewProviderShapeBuilder::buildNodes(const App::Property* prop,
+                                          std::vector<SoNode*>& nodes) const
 {
     Q_UNUSED(prop)
     Q_UNUSED(nodes)

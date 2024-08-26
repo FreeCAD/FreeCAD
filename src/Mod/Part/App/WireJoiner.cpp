@@ -26,31 +26,31 @@
 #include <boost/graph/graph_concepts.hpp>
 
 #ifndef _PreComp_
-# include <BRepLib.hxx>
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepClass_FaceClassifier.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepGProp.hxx>
-# include <BRepTools.hxx>
-# include <BRepTools_WireExplorer.hxx>
-# include <gp_Pln.hxx>
-# include <GeomAdaptor_Curve.hxx>
-# include <GeomLProp_CLProps.hxx>
-# include <GProp_GProps.hxx>
-# include <ShapeAnalysis_Wire.hxx>
-# include <ShapeFix_ShapeTolerance.hxx>
-# include <ShapeExtend_WireData.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <ShapeFix_Shape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
+#include <BRepLib.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepClass_FaceClassifier.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepGProp.hxx>
+#include <BRepTools.hxx>
+#include <BRepTools_WireExplorer.hxx>
+#include <gp_Pln.hxx>
+#include <GeomAdaptor_Curve.hxx>
+#include <GeomLProp_CLProps.hxx>
+#include <GProp_GProps.hxx>
+#include <ShapeAnalysis_Wire.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
+#include <ShapeExtend_WireData.hxx>
+#include <ShapeFix_Wire.hxx>
+#include <ShapeFix_Shape.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 #endif
 
 #include <BRepTools_History.hxx>
@@ -82,22 +82,31 @@ namespace bgi = boost::geometry::index;
 const size_t RParametersNumber = 16UL;
 using RParameters = bgi::linear<RParametersNumber>;
 
-BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(
-        gp_Pnt,double,bg::cs::cartesian,X,Y,Z,SetX,SetY,SetZ)
+BOOST_GEOMETRY_REGISTER_POINT_3D_GET_SET(gp_Pnt,
+                                         double,
+                                         bg::cs::cartesian,
+                                         X,
+                                         Y,
+                                         Z,
+                                         SetX,
+                                         SetY,
+                                         SetZ)
 
-FC_LOG_LEVEL_INIT("WireJoiner",true, true)
+FC_LOG_LEVEL_INIT("WireJoiner", true, true)
 
 using namespace Part;
 
-static inline void getEndPoints(const TopoDS_Edge &eForEndPoints, gp_Pnt &p1, gp_Pnt &p2) {
+static inline void getEndPoints(const TopoDS_Edge& eForEndPoints, gp_Pnt& p1, gp_Pnt& p2)
+{
     p1 = BRep_Tool::Pnt(TopExp::FirstVertex(eForEndPoints));
     p2 = BRep_Tool::Pnt(TopExp::LastVertex(eForEndPoints));
 }
 
-static inline void getEndPoints(const TopoDS_Wire &wire, gp_Pnt &p1, gp_Pnt &p2) {
+static inline void getEndPoints(const TopoDS_Wire& wire, gp_Pnt& p1, gp_Pnt& p2)
+{
     BRepTools_WireExplorer xp(wire);
     p1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.CurrentVertex()));
-    for(;xp.More();xp.Next()) {};
+    for (; xp.More(); xp.Next()) {};
     p2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.CurrentVertex()));
 }
 
@@ -108,7 +117,8 @@ static inline void getEndPoints(const TopoDS_Wire &wire, gp_Pnt &p1, gp_Pnt &p2)
 // for reference and https://github.com/FreeCAD/FreeCAD/pull/12535/files#r1526647457 for the
 // discussion about replacing it
 
-class WireJoiner::WireJoinerP {
+class WireJoiner::WireJoinerP
+{
 public:
     double myTol = Precision::Confusion();
     double myTol2 = myTol * myTol;
@@ -124,7 +134,7 @@ public:
 
     using Box = bg::model::box<gp_Pnt>;
 
-    bool checkBBox(const Bnd_Box &box) const
+    bool checkBBox(const Bnd_Box& box) const
     {
         if (box.IsVoid()) {
             return false;
@@ -149,8 +159,9 @@ public:
                   ->GetInt("Iteration", 0)))
     {}
 
-    bool getBBox(const TopoDS_Shape &eForBBox, Bnd_Box &bound) {
-        BRepBndLib::AddOptimal(eForBBox,bound,Standard_False);
+    bool getBBox(const TopoDS_Shape& eForBBox, Bnd_Box& bound)
+    {
+        BRepBndLib::AddOptimal(eForBBox, bound, Standard_False);
         if (bound.IsVoid()) {
             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                 FC_WARN("failed to get bound of edge");
@@ -167,7 +178,8 @@ public:
         return true;
     }
 
-    bool getBBox(const TopoDS_Shape &eForBBox, Box &box) {
+    bool getBBox(const TopoDS_Shape& eForBBox, Box& box)
+    {
         Bnd_Box bound;
         if (!getBBox(eForBBox, bound)) {
             return false;
@@ -179,14 +191,15 @@ public:
         Standard_Real yMax = Standard_Real();
         Standard_Real zMax = Standard_Real();
         bound.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        box = Box(gp_Pnt(xMin,yMin,zMin), gp_Pnt(xMax,yMax,zMax));
+        box = Box(gp_Pnt(xMin, yMin, zMin), gp_Pnt(xMax, yMax, zMax));
         return true;
     }
 
     struct WireInfo;
     struct EdgeSet;
 
-    struct EdgeInfo {
+    struct EdgeInfo
+    {
         TopoDS_Edge edge;
         TopoDS_Wire superEdge;
         mutable TopoDS_Shape edgeReversed;
@@ -201,7 +214,8 @@ public:
         int iteration2 {};
         bool queryBBox;
         std::shared_ptr<WireInfo> wireInfo {};
-        std::shared_ptr<WireInfo> wireInfo2 {}; // an edge can be shared by at most two tight bound wires.
+        std::shared_ptr<WireInfo>
+            wireInfo2 {};  // an edge can be shared by at most two tight bound wires.
         std::unique_ptr<Geometry> geo {};
         Standard_Real firstParam {};
         Standard_Real lastParam {};
@@ -230,18 +244,23 @@ public:
 
             assert(!curve.IsNull());
             const double halving {0.5};
-            GeomLProp_CLProps prop(curve,(firstParam+lastParam)*halving,0,Precision::Confusion());
+            GeomLProp_CLProps prop(curve,
+                                   (firstParam + lastParam) * halving,
+                                   0,
+                                   Precision::Confusion());
             mid = prop.Value();
 
             reset();
         }
-        Geometry *geometry() {
+        Geometry* geometry()
+        {
             if (!geo) {
                 geo = Geometry::fromShape(edge, /*silent*/ true);
             }
             return geo.get();
         }
-        void reset() {
+        void reset()
+        {
             wireInfo.reset();
             wireInfo2.reset();
             if (iteration >= 0) {
@@ -250,7 +269,7 @@ public:
             iteration2 = 0;
             iStart[0] = iStart[1] = iEnd[0] = iEnd[1] = -1;
         }
-        const TopoDS_Shape &shape(bool forward=true) const
+        const TopoDS_Shape& shape(bool forward = true) const
         {
             if (superEdge.IsNull()) {
                 if (forward) {
@@ -280,7 +299,8 @@ public:
     };
 
     template<class T>
-    struct VectorSet {
+    struct VectorSet
+    {
         void sort()
         {
             if (!sorted) {
@@ -288,7 +308,7 @@ public:
                 std::sort(data.begin(), data.end());
             }
         }
-        bool contains(const T &vForContains)
+        bool contains(const T& vForContains)
         {
             if (!sorted) {
                 const size_t dataSizeMax = 30;
@@ -298,15 +318,15 @@ public:
                 sort();
             }
             auto it = std::lower_bound(data.begin(), data.end(), vForContains);
-            return it!=data.end() && *it == vForContains;
+            return it != data.end() && *it == vForContains;
         }
-        bool intersects(const VectorSet<T> &other)
+        bool intersects(const VectorSet<T>& other)
         {
             if (other.size() < size()) {
                 return other.intersects(*this);
             }
             if (!sorted) {
-                for (const auto &vector : data) {
+                for (const auto& vector : data) {
                     if (other.contains(vector)) {
                         return true;
                     }
@@ -315,7 +335,7 @@ public:
             else {
                 other.sort();
                 auto it = other.data.begin();
-                for (const auto &vertex : data) {
+                for (const auto& vertex : data) {
                     it = std::lower_bound(it, other.data.end(), vertex);
                     if (it == other.data.end()) {
                         return false;
@@ -327,7 +347,7 @@ public:
             }
             return false;
         }
-        void insert(const T &vToInsert)
+        void insert(const T& vToInsert)
         {
             if (sorted) {
                 data.insert(std::upper_bound(data.begin(), data.end(), vToInsert), vToInsert);
@@ -336,7 +356,7 @@ public:
                 data.push_back(vToInsert);
             }
         }
-        bool insertUnique(const T &vToInsertUnique)
+        bool insertUnique(const T& vToInsertUnique)
         {
             if (sorted) {
                 auto it = std::lower_bound(data.begin(), data.end(), vToInsertUnique);
@@ -353,7 +373,7 @@ public:
             data.push_back(vToInsertUnique);
             return true;
         }
-        void erase(const T &vToErase)
+        void erase(const T& vToErase)
         {
             if (!sorted) {
                 data.erase(std::remove(data.begin(), data.end(), vToErase), data.end());
@@ -384,6 +404,7 @@ public:
         {
             return data.empty();
         }
+
     private:
         bool sorted = false;
         std::vector<T> data {};
@@ -396,20 +417,25 @@ public:
 
     std::map<EdgeInfo*, Edges::iterator> edgesTable {};
 
-    struct VertexInfo {
+    struct VertexInfo
+    {
         Edges::iterator it {};
         bool start {};
         VertexInfo() = default;
         VertexInfo(Edges::iterator it, bool start)
-            :it(it),start(start)
+            : it(it)
+            , start(start)
         {}
-        VertexInfo reversed() const {
+        VertexInfo reversed() const
+        {
             return {it, !start};
         }
-        bool operator==(const VertexInfo &other) const {
-            return it==other.it && start==other.start;
+        bool operator==(const VertexInfo& other) const
+        {
+            return it == other.it && start == other.start;
         }
-        bool operator<(const VertexInfo &other) const {
+        bool operator<(const VertexInfo& other) const
+        {
             auto thisInfo = edgeInfo();
             auto otherInfo = other.edgeInfo();
             if (thisInfo < otherInfo) {
@@ -420,33 +446,42 @@ public:
             }
             return static_cast<int>(start) < static_cast<int>(other.start);
         }
-        const gp_Pnt &pt() const {
-            return start?it->p1:it->p2;
+        const gp_Pnt& pt() const
+        {
+            return start ? it->p1 : it->p2;
         }
-        gp_Pnt &pt() {
-            return start?it->p1:it->p2;
+        gp_Pnt& pt()
+        {
+            return start ? it->p1 : it->p2;
         }
-        const gp_Pnt &ptOther() const {
-            return start?it->p2:it->p1;
+        const gp_Pnt& ptOther() const
+        {
+            return start ? it->p2 : it->p1;
         }
-        gp_Pnt &ptOther() {
-            return start?it->p2:it->p1;
+        gp_Pnt& ptOther()
+        {
+            return start ? it->p2 : it->p1;
         }
-        TopoDS_Vertex vertex() const {
+        TopoDS_Vertex vertex() const
+        {
             return start ? TopExp::FirstVertex(edge()) : TopExp::LastVertex(edge());
         }
-        TopoDS_Vertex otherVertex() const {
+        TopoDS_Vertex otherVertex() const
+        {
             return start ? TopExp::LastVertex(edge()) : TopExp::FirstVertex(edge());
         }
-        EdgeInfo *edgeInfo() const {
+        EdgeInfo* edgeInfo() const
+        {
             return &(*it);
         }
-        const TopoDS_Edge &edge() const {
+        const TopoDS_Edge& edge() const
+        {
             return it->edge;
         }
     };
 
-    struct StackInfo {
+    struct StackInfo
+    {
         size_t iStart;
         size_t iEnd;
         size_t iCurrent;
@@ -462,7 +497,8 @@ public:
     std::vector<VertexInfo> tmpVertices {};
     std::vector<VertexInfo> adjacentList {};
 
-    struct WireInfo {
+    struct WireInfo
+    {
         std::vector<VertexInfo> vertices {};
         mutable std::vector<int> sorted {};
         TopoDS_Wire wire;
@@ -489,7 +525,7 @@ public:
                 return vertices[vA] < vertices[vB];
             });
         }
-        int find(const VertexInfo &info) const
+        int find(const VertexInfo& info) const
         {
             const size_t verticesSizeMax = 20;
             if (vertices.size() < verticesSizeMax) {
@@ -500,19 +536,23 @@ public:
                 return (static_cast<int>(it - vertices.begin()) + 1);
             }
             sort();
-            auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
-                    [&](int idx, const VertexInfo &vertex) {return vertices[idx]<vertex;});
+            auto it = std::lower_bound(sorted.begin(),
+                                       sorted.end(),
+                                       info,
+                                       [&](int idx, const VertexInfo& vertex) {
+                                           return vertices[idx] < vertex;
+                                       });
             int res = 0;
             if (it != sorted.end() && vertices[*it] == info) {
                 res = *it + 1;
             }
             return res;
         }
-        int find(const EdgeInfo *info) const
+        int find(const EdgeInfo* info) const
         {
             const size_t verticesSizeMax = 20;
             if (vertices.size() < verticesSizeMax) {
-                for (auto it=vertices.begin(); it!=vertices.end(); ++it) {
+                for (auto it = vertices.begin(); it != vertices.end(); ++it) {
                     if (it->edgeInfo() == info) {
                         return (static_cast<int>(it - vertices.begin()) + 1);
                     }
@@ -520,15 +560,19 @@ public:
                 return 0;
             }
             sort();
-            auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
-                    [&](int idx, const EdgeInfo *vertex) {return vertices[idx].edgeInfo()<vertex;});
+            auto it = std::lower_bound(sorted.begin(),
+                                       sorted.end(),
+                                       info,
+                                       [&](int idx, const EdgeInfo* vertex) {
+                                           return vertices[idx].edgeInfo() < vertex;
+                                       });
             int res = 0;
             if (it != sorted.end() && vertices[*it].edgeInfo() == info) {
                 res = *it + 1;
             }
             return res;
         }
-        bool isSame(const WireInfo &other) const
+        bool isSame(const WireInfo& other) const
         {
             if (this == &other) {
                 return true;
@@ -539,11 +583,11 @@ public:
             if (vertices.empty()) {
                 return true;
             }
-            int idx=find(other.vertices.front().edgeInfo()) - 1;
+            int idx = find(other.vertices.front().edgeInfo()) - 1;
             if (idx < 0) {
                 return false;
             }
-            for (auto &vertex : other.vertices) {
+            for (auto& vertex : other.vertices) {
                 if (vertex.edgeInfo() != vertices[idx].edgeInfo()) {
                     return false;
                 }
@@ -555,15 +599,17 @@ public:
         }
     };
 
-    struct EdgeSet: VectorSet<EdgeInfo*> {
+    struct EdgeSet: VectorSet<EdgeInfo*>
+    {
     };
     EdgeSet edgeSet;
 
-    struct WireSet: VectorSet<WireInfo*> {
+    struct WireSet: VectorSet<WireInfo*>
+    {
     };
     WireSet wireSet;
 
-    const Bnd_Box &getWireBound(const WireInfo &wireInfo) const
+    const Bnd_Box& getWireBound(const WireInfo& wireInfo) const
     {
         if (wireInfo.box.IsVoid()) {
             for (auto& vertex : wireInfo.vertices) {
@@ -603,7 +649,7 @@ public:
         return true;
     }
 
-    bool initWireInfo(WireInfo &wireInfo)
+    bool initWireInfo(WireInfo& wireInfo)
     {
         if (!wireInfo.face.IsNull()) {
             return true;
@@ -628,7 +674,7 @@ public:
         return true;
     }
 
-    bool isInside(const WireInfo &wireInfo, gp_Pnt &pt) const
+    bool isInside(const WireInfo& wireInfo, gp_Pnt& pt) const
     {
         if (getWireBound(wireInfo).IsOut(pt)) {
             return false;
@@ -637,7 +683,7 @@ public:
         return fc.State() == TopAbs_IN;
     }
 
-    bool isOutside(const WireInfo &wireInfo, gp_Pnt &pt) const
+    bool isOutside(const WireInfo& wireInfo, gp_Pnt& pt) const
     {
         if (getWireBound(wireInfo).IsOut(pt)) {
             return false;
@@ -649,7 +695,8 @@ public:
     struct PntGetter
     {
         using result_type = const gp_Pnt&;
-        result_type operator()(const VertexInfo &vInfo) const {
+        result_type operator()(const VertexInfo& vInfo) const
+        {
             return vInfo.pt();
         }
     };
@@ -659,7 +706,8 @@ public:
     struct BoxGetter
     {
         using result_type = const Box&;
-        result_type operator()(Edges::iterator it) const {
+        result_type operator()(Edges::iterator it) const
+        {
             return it->box;
         }
     };
@@ -696,12 +744,12 @@ public:
         if (it->queryBBox) {
             boxMap.remove(it);
         }
-        vmap.remove(VertexInfo(it,true));
-        vmap.remove(VertexInfo(it,false));
+        vmap.remove(VertexInfo(it, true));
+        vmap.remove(VertexInfo(it, false));
         return edges.erase(it);
     }
 
-    void remove(EdgeInfo *info)
+    void remove(EdgeInfo* info)
     {
         if (edgesTable.empty()) {
             for (auto it = edges.begin(); it != edges.end(); ++it) {
@@ -717,21 +765,21 @@ public:
 
     void add(Edges::iterator it)
     {
-        vmap.insert(VertexInfo(it,true));
-        vmap.insert(VertexInfo(it,false));
+        vmap.insert(VertexInfo(it, true));
+        vmap.insert(VertexInfo(it, false));
         if (it->queryBBox) {
             boxMap.insert(it);
         }
         showShape(it->edge, "add");
     }
 
-    int add(const TopoDS_Edge &eToAdd, bool queryBBox=false)
+    int add(const TopoDS_Edge& eToAdd, bool queryBBox = false)
     {
         auto it = edges.begin();
         return add(eToAdd, queryBBox, it);
     }
 
-    int add(const TopoDS_Edge &eToAdd, bool queryBBox, Edges::iterator &it)
+    int add(const TopoDS_Edge& eToAdd, bool queryBBox, Edges::iterator& it)
     {
         Box bbox;
         if (!getBBox(eToAdd, bbox)) {
@@ -803,7 +851,7 @@ public:
             }
             double d2 = vinfo.ptOther().SquareDistance(p2);
             if (d2 < tol) {
-                if (!addNoDuplicates(eToAdd, v2, ev2, isLinear, vinfo, geo)){
+                if (!addNoDuplicates(eToAdd, v2, ev2, isLinear, vinfo, geo)) {
                     return false;
                 }
             }
@@ -811,11 +859,11 @@ public:
         return true;
     }
 
-    bool add(const TopoDS_Edge &eToAdd, bool queryBBox, const Box &bbox, Edges::iterator &it)
+    bool add(const TopoDS_Edge& eToAdd, bool queryBBox, const Box& bbox, Edges::iterator& it)
     {
         gp_Pnt p1 = gp_Pnt();
         gp_Pnt p2 = gp_Pnt();
-        getEndPoints(eToAdd,p1,p2);
+        getEndPoints(eToAdd, p1, p2);
         TopoDS_Vertex v1 = TopoDS_Vertex();
         TopoDS_Vertex v2 = TopoDS_Vertex();
         TopoDS_Edge ev1 = TopoDS_Edge();
@@ -825,13 +873,13 @@ public:
         showShape(eToAdd, "addcheck");
         bool isLinear = TopoShape(eToAdd).isLinearEdge();
 
-        if (!addValidEdges(eToAdd, p1, tol, v1, ev1, p2, v2, ev2, isLinear)){
+        if (!addValidEdges(eToAdd, p1, tol, v1, ev1, p2, v2, ev2, isLinear)) {
             return false;
         }
 
         if (v2.IsNull()) {
-            for (auto vit=vmap.qbegin(bgi::nearest(p2,1));vit!=vmap.qend();++vit) {
-                auto &vinfo = *vit;
+            for (auto vit = vmap.qbegin(bgi::nearest(p2, 1)); vit != vmap.qend(); ++vit) {
+                auto& vinfo = *vit;
                 double d1 = vinfo.pt().SquareDistance(p2);
                 if (d1 < tol) {
                     v2 = vit->vertex();
@@ -859,7 +907,7 @@ public:
             if (tol >= BRep_Tool::Tolerance(vCurrent)) {
                 ShapeFix_ShapeTolerance fix;
                 const double halving {0.5};
-                fix.SetTolerance(vCurrent, std::max(tol*halving, myTol), TopAbs_VERTEX);
+                fix.SetTolerance(vCurrent, std::max(tol * halving, myTol), TopAbs_VERTEX);
             }
             BRepBuilderAPI_MakeWire mkWire(eOther);
             mkWire.Add(eCurrent);
@@ -887,15 +935,15 @@ public:
                 sourceEdges.erase(itSource);
                 sourceEdges.insert(newEdge);
             }
-            getEndPoints(edge,p1,p2);
+            getEndPoints(edge, p1, p2);
             // Shall we also update bbox?
         }
-        it = edges.emplace(it,edge,p1,p2,bbox,queryBBox,isLinear);
+        it = edges.emplace(it, edge, p1, p2, bbox, queryBBox, isLinear);
         add(it);
         return true;
     }
 
-    void add(const TopoDS_Shape &shape, bool queryBBox=false)
+    void add(const TopoDS_Shape& shape, bool queryBBox = false)
     {
         for (TopExp_Explorer xp(shape, TopAbs_EDGE); xp.More(); xp.Next()) {
             add(TopoDS::Edge(xp.Current()), queryBBox);
@@ -963,11 +1011,11 @@ public:
         }
     }
 
-    //This algorithm tries to join connected edges into wires
+    // This algorithm tries to join connected edges into wires
     //
-    //tol*tol>Precision::SquareConfusion() can be used to join points that are
-    //close but do not coincide with a line segment. The close points may be
-    //the results of rounding issue.
+    // tol*tol>Precision::SquareConfusion() can be used to join points that are
+    // close but do not coincide with a line segment. The close points may be
+    // the results of rounding issue.
     //
     void join()
     {
@@ -978,15 +1026,16 @@ public:
             remove(it);
 
             bool done = false;
-            for (int idx=0;!done&&idx<2;++idx) {
+            for (int idx = 0; !done && idx < 2; ++idx) {
                 joinMakeWire(idx, mkWire, it, done);
             }
 
-            builder.Add(compound,mkWire.Wire());
+            builder.Add(compound, mkWire.Wire());
         }
     }
 
-    struct IntersectInfo {
+    struct IntersectInfo
+    {
         double param;
         TopoDS_Shape intersectShape;
         gp_Pnt point;
@@ -995,12 +1044,13 @@ public:
             , intersectShape(std::move(sToIntersect))
             , point(pt)
         {}
-        bool operator<(const IntersectInfo &other) const {
+        bool operator<(const IntersectInfo& other) const
+        {
             return param < other.param;
         }
     };
 
-    void checkSelfIntersection(const EdgeInfo &info, std::set<IntersectInfo> &params) const
+    void checkSelfIntersection(const EdgeInfo& info, std::set<IntersectInfo>& params) const
     {
         // Early return if checking for self intersection (only for non linear spline curves)
         if (info.type <= GeomAbs_Parabola || info.isLinear) {
@@ -1034,7 +1084,7 @@ public:
         // replaced with the precompiler macro assert()
 
         assert(points2d.Length() == points3d.Length());
-        for (int i=1; i<=points2d.Length(); ++i) {
+        for (int i = 1; i <= points2d.Length(); ++i) {
             params.emplace(points2d(i).ParamOnFirst(), points3d(i), info.edge);
             params.emplace(points2d(i).ParamOnSecond(), points3d(i), info.edge);
         }
@@ -1166,12 +1216,12 @@ public:
         return true;
     }
 
-    void checkIntersection(const EdgeInfo &info,
-                           const EdgeInfo &other,
-                           std::set<IntersectInfo> &params1,
-                           std::set<IntersectInfo> &params2)
+    void checkIntersection(const EdgeInfo& info,
+                           const EdgeInfo& other,
+                           std::set<IntersectInfo>& params1,
+                           std::set<IntersectInfo>& params2)
     {
-        if(!checkIntersectionPlanar(info, other, params1, params2)){
+        if (!checkIntersectionPlanar(info, other, params1, params2)) {
             return;
         }
 
@@ -1187,7 +1237,7 @@ public:
         TopoDS_Wire wire;
         int idx = 0;
 
-        if (!checkIntersectionMakeWire(info, other, idx, wire)){
+        if (!checkIntersectionMakeWire(info, other, idx, wire)) {
             return;
         }
 
@@ -1204,7 +1254,7 @@ public:
         // replaced with the precompiler macro assert()
 
         assert(points2d.Length() == points3d.Length());
-        for (int i=1; i<=points2d.Length(); ++i) {
+        for (int i = 1; i <= points2d.Length(); ++i) {
             pushIntersection(params1, points2d(i).ParamOnFirst(), points3d(i), other.edge);
             pushIntersection(params2, points2d(i).ParamOnSecond(), points3d(i), info.edge);
         }
@@ -1232,7 +1282,8 @@ public:
         params.insert(it, info);
     }
 
-    struct SplitInfo {
+    struct SplitInfo
+    {
         TopoDS_Edge edge;
         TopoDS_Shape intersectShape;
         Box bbox;
@@ -1297,23 +1348,23 @@ public:
     {
         std::unordered_map<const EdgeInfo*, std::set<IntersectInfo>> intersects;
 
-        int idx=0;
+        int idx = 0;
         for (auto& info : edges) {
             info.iteration = ++idx;
         }
 
         std::unique_ptr<Base::SequencerLauncher> seq(
-                new Base::SequencerLauncher("Splitting edges", edges.size()));
+            new Base::SequencerLauncher("Splitting edges", edges.size()));
 
         idx = 0;
         for (auto& info : edges) {
             seq->next(true);
             ++idx;
-            auto &params = intersects[&info];
+            auto& params = intersects[&info];
             checkSelfIntersection(info, params);
 
-            for (auto vit=boxMap.qbegin(bgi::intersects(info.box)); vit!=boxMap.qend(); ++vit) {
-                const auto &other = *(*vit);
+            for (auto vit = boxMap.qbegin(bgi::intersects(info.box)); vit != boxMap.qend(); ++vit) {
+                const auto& other = *(*vit);
                 if (other.iteration <= idx) {
                     // means the edge is before us, and we've already checked intersection
                     continue;
@@ -1322,17 +1373,17 @@ public:
             }
         }
 
-        idx=0;
+        idx = 0;
         std::vector<SplitInfo> splits;
-        for (auto it=edges.begin(); it!=edges.end(); ) {
+        for (auto it = edges.begin(); it != edges.end();) {
             ++idx;
             auto iter = intersects.find(&(*it));
             if (iter == intersects.end()) {
                 ++it;
                 continue;
             }
-            auto &info = *it;
-            auto &params = iter->second;
+            auto& info = *it;
+            auto& params = iter->second;
             if (params.empty()) {
                 ++it;
                 continue;
@@ -1372,7 +1423,7 @@ public:
                 if (!add(split.edge, false, split.bbox, it)) {
                     continue;
                 }
-                auto &newInfo = *it++;
+                auto& newInfo = *it++;
                 aHistory->AddModified(split.intersectShape, newInfo.edge);
                 // if (v.intersectShape != removedEdge)
                 //     aHistory->AddModified(removedEdge, newInfo.edge);
@@ -1659,19 +1710,19 @@ public:
     // This algorithm tries to find a set of closed wires that includes as many
     // edges (added by calling add() ) as possible. One edge may be included
     // in more than one closed wires if it connects to more than one edges.
-    void findClosedWires(bool tightBound=false)
+    void findClosedWires(bool tightBound = false)
     {
         std::unique_ptr<Base::SequencerLauncher> seq(
-                new Base::SequencerLauncher("Finding wires", edges.size()));
+            new Base::SequencerLauncher("Finding wires", edges.size()));
 
-        for (auto &info : edges) {
+        for (auto& info : edges) {
             info.wireInfo.reset();
             info.wireInfo2.reset();
         }
 
-        for (auto it=edges.begin(); it!=edges.end(); ++it) {
+        for (auto it = edges.begin(); it != edges.end(); ++it) {
             VertexInfo beginVertex(it, true);
-            auto &beginInfo = *it;
+            auto& beginInfo = *it;
             seq->next(true);
             ++iteration;
             if (beginInfo.iteration < 0 || beginInfo.wireInfo) {
@@ -1679,7 +1730,7 @@ public:
             }
 
             VertexInfo currentVertex(it, true);
-            EdgeInfo *currentInfo = &beginInfo;
+            EdgeInfo* currentInfo = &beginInfo;
             showShape(currentInfo, "begin");
             stack.clear();
             vertexStack.clear();
@@ -1700,9 +1751,9 @@ public:
                 beginInfo.wireInfo->vertices.emplace_back(it, true);
                 beginInfo.wireInfo->wire = wire;
             }
-            for (auto &entry : stack) {
-                const auto &vertex = vertexStack[entry.iCurrent];
-                auto &info = *vertex.it;
+            for (auto& entry : stack) {
+                const auto& vertex = vertexStack[entry.iCurrent];
+                auto& info = *vertex.it;
                 if (tightBound) {
                     beginInfo.wireInfo->vertices.push_back(vertex);
                 }
@@ -1711,7 +1762,7 @@ public:
                     // showShape(&info, "visited");
                 }
             }
-            showShape(wire,"joined");
+            showShape(wire, "joined");
             if (!tightBound) {
                 builder.Add(compound, wire);
             }
@@ -1723,13 +1774,13 @@ public:
     // https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L1366
     // for reference
 
-    void checkWireInfo(const WireInfo &wireInfo)
+    void checkWireInfo(const WireInfo& wireInfo)
     {
         (void)wireInfo;
         if (FC_LOG_INSTANCE.level() <= FC_LOGLEVEL_TRACE) {
             return;
         }
-        for (auto &info : edges) {
+        for (auto& info : edges) {
             if (auto wire = info.wireInfo.get()) {
                 boost::ignore_unused(wire);
 
@@ -1921,7 +1972,8 @@ public:
                 }
                 break;
             }
-            vertexStack.erase(vertexStack.begin() + static_cast<long>(stackBack.iStart), vertexStack.end());
+            vertexStack.erase(vertexStack.begin() + static_cast<long>(stackBack.iStart),
+                              vertexStack.end());
 
             stack.pop_back();
             if (stack.size() == stackEnd) {
@@ -1951,7 +2003,9 @@ public:
             for (auto& entry : stack) {
                 const auto& vertex = vertexStack[entry.iCurrent];
                 auto& info = *vertex.it;
-                showShape(info.shape(vertex.start), vertex.start ? "failed" : "failed_r", iteration);
+                showShape(info.shape(vertex.start),
+                          vertex.start ? "failed" : "failed_r",
+                          iteration);
             }
 
             // Originally here there was a call to the precompiler macro assertCheck(), which
@@ -1963,16 +2017,17 @@ public:
         return true;
     }
 
-    TopoDS_Wire _findClosedWires(VertexInfo beginVertex,
-                                 VertexInfo currentVertex,
-                                 int *idxVertex = nullptr,
-                                 const std::shared_ptr<WireInfo>& wireInfo = std::shared_ptr<WireInfo>(),
-                                 int* stackPos = nullptr)
+    TopoDS_Wire
+    _findClosedWires(VertexInfo beginVertex,
+                     VertexInfo currentVertex,
+                     int* idxVertex = nullptr,
+                     const std::shared_ptr<WireInfo>& wireInfo = std::shared_ptr<WireInfo>(),
+                     int* stackPos = nullptr)
     {
         Base::SequencerBase::Instance().checkAbort();
-        EdgeInfo &beginInfo = *beginVertex.it;
+        EdgeInfo& beginInfo = *beginVertex.it;
 
-        EdgeInfo *currentInfo = currentVertex.edgeInfo();
+        EdgeInfo* currentInfo = currentVertex.edgeInfo();
         int currentIdx = currentVertex.start ? 1 : 0;
         currentInfo->iteration = iteration;
 
@@ -2029,9 +2084,9 @@ public:
 
             wireData->Clear();
             wireData->Add(beginInfo.shape(beginVertex.start));
-            for (auto &entry : stack) {
-                const auto &vertex = vertexStack[entry.iCurrent];
-                auto &info = *vertex.it;
+            for (auto& entry : stack) {
+                const auto& vertex = vertexStack[entry.iCurrent];
+                auto& info = *vertex.it;
                 wireData->Add(info.shape(vertex.start));
             }
             TopoDS_Wire wire = makeCleanWire();
@@ -2322,10 +2377,10 @@ public:
         // adjacent list built earlier), and split the wire whenever possible.
 
         std::unique_ptr<Base::SequencerLauncher> seq(
-                new Base::SequencerLauncher("Finding tight bound", edges.size()));
+            new Base::SequencerLauncher("Finding tight bound", edges.size()));
 
         int iteration2 = iteration;
-        for (auto &info : edges) {
+        for (auto& info : edges) {
             ++iteration;
             seq->next(true);
             if (info.iteration < 0 || !info.wireInfo) {
@@ -2333,12 +2388,12 @@ public:
             }
 
             ++iteration2;
-            while(!info.wireInfo->done) {
+            while (!info.wireInfo->done) {
                 auto wireInfo = info.wireInfo;
                 checkWireInfo(*wireInfo);
-                const auto &wireVertices = wireInfo->vertices;
+                const auto& wireVertices = wireInfo->vertices;
                 auto beginVertex = wireVertices.front();
-                auto &beginInfo = *beginVertex.it;
+                auto& beginInfo = *beginVertex.it;
                 initWireInfo(*wireInfo);
                 showShape(wireInfo->wire, "iwire", iteration);
                 for (auto& vertex : wireVertices) {
@@ -2388,8 +2443,8 @@ public:
         }
     }
 
-    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
-    // complexity
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce
+    // cognitive complexity
     void exhaustTightBoundUpdateVertex(const int iteration2,
                                        const VertexInfo& beginVertex,
                                        const int idxV,
@@ -2465,8 +2520,8 @@ public:
         }
     }
 
-    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
-    // complexity
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce
+    // cognitive complexity
     void exhaustTightBoundUpdateEdge(const int iteration2,
                                      const VertexInfo& beginVertex,
                                      const std::vector<VertexInfo>& wireVertices,
@@ -2512,8 +2567,8 @@ public:
         }
     }
 
-    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
-    // complexity
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce
+    // cognitive complexity
     void exhaustTightBoundWithAdjacent(const EdgeInfo& info,
                                        int& iteration2,
                                        const VertexInfo beginVertex,
@@ -2629,8 +2684,8 @@ public:
         }
     }
 
-    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce cognitive
-    // complexity
+    // This method was originally part of WireJoinerP::exhaustTightBound(), split to reduce
+    // cognitive complexity
     void exhaustTightBoundUpdateWire(const EdgeInfo& info, int& iteration2)
     {
 
@@ -2667,13 +2722,13 @@ public:
         // bound wires.
 
         std::unique_ptr<Base::SequencerLauncher> seq(
-                new Base::SequencerLauncher("Exhaust tight bound", edges.size()));
+            new Base::SequencerLauncher("Exhaust tight bound", edges.size()));
 
-        for (auto &info : edges) {
+        for (auto& info : edges) {
             if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done) {
                 continue;
             }
-            for (auto &vertex : info.wireInfo->vertices) {
+            for (auto& vertex : info.wireInfo->vertices) {
                 auto edgeInfo = vertex.edgeInfo();
                 if (edgeInfo->wireInfo != info.wireInfo) {
                     edgeInfo->wireInfo2 = info.wireInfo;
@@ -2682,13 +2737,10 @@ public:
         }
 
         int iteration2 = iteration;
-        for (auto &info : edges) {
+        for (auto& info : edges) {
             ++iteration;
             seq->next(true);
-            if (info.iteration < 0
-                    || !info.wireInfo
-                    || !info.wireInfo->done)
-            {
+            if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done) {
                 if (info.wireInfo) {
                     showShape(*info.wireInfo, "iskip");
                 }
@@ -2704,7 +2756,6 @@ public:
             }
 
             exhaustTightBoundUpdateWire(info, iteration2);
-
         }
         wireSet.clear();
     }
@@ -2743,7 +2794,7 @@ public:
         }
     }
 
-    TopoDS_Wire makeCleanWire(bool fixGap=true)
+    TopoDS_Wire makeCleanWire(bool fixGap = true)
     {
         // Make a clean wire with sorted, oriented, connected, etc edges
         TopoDS_Wire result;
@@ -2795,7 +2846,7 @@ public:
     // This method was originally part of WireJoinerP::printHistory(), split to reduce cognitive
     // complexity
     template<class T>
-    void printHistoryOfShape(const Handle(BRepTools_History)& hist, const T& shape)
+    void printHistoryOfShape(const Handle(BRepTools_History) & hist, const T& shape)
     {
         for (TopTools_ListIteratorOfListOfShape it(hist->Modified(shape.getShape())); it.More();
              it.Next()) {
@@ -2812,7 +2863,7 @@ public:
     }
 
     template<class T>
-    void printHistory(Handle(BRepTools_History) hist, const T &input)
+    void printHistory(Handle(BRepTools_History) hist, const T& input)
     {
         FC_MSG("\nHistory:\n");
         for (const auto& shape : input) {
@@ -2820,7 +2871,7 @@ public:
         }
     }
 
-    bool canShowShape(int idx=-1, bool forced=false) const
+    bool canShowShape(int idx = -1, bool forced = false) const
     {
         if (idx < 0 || catchIteration == 0 || catchIteration > idx) {
             if (!forced && FC_LOG_INSTANCE.level() <= FC_LOGLEVEL_TRACE) {
@@ -2838,7 +2889,7 @@ public:
         showShape(info->shape(), name, idx, forced);
     }
 
-    void showShape(WireInfo &wireInfo, const char *name, int idx=-1, bool forced=false)
+    void showShape(WireInfo& wireInfo, const char* name, int idx = -1, bool forced = false)
     {
         if (!canShowShape(idx, forced)) {
             return;
@@ -2973,8 +3024,8 @@ public:
         // those entries.
 
         bool hasOpenEdge = false;
-        for (const auto &info : edges) {
-            if (info.iteration == -3 || (!info.wireInfo && info.iteration>=0)) {
+        for (const auto& info : edges) {
+            if (info.iteration == -3 || (!info.wireInfo && info.iteration >= 0)) {
                 if (!hasOpenEdge) {
                     hasOpenEdge = true;
                     builder.MakeCompound(openWireCompound);
@@ -2984,7 +3035,7 @@ public:
         }
     }
 
-    void addWire(std::shared_ptr<WireInfo> &wireInfo)
+    void addWire(std::shared_ptr<WireInfo>& wireInfo)
     {
         if (!wireInfo || !wireInfo->done || !wireSet.insertUnique(wireInfo.get())) {
             return;
@@ -2993,7 +3044,8 @@ public:
         builder.Add(compound, wireInfo->wire);
     }
 
-    bool getOpenWires(TopoShape &shape, const char *op, bool noOriginal) {
+    bool getOpenWires(TopoShape& shape, const char* op, bool noOriginal)
+    {
         if (openWireCompound.IsNull()) {
             shape.setShape(TopoShape());
             return false;
@@ -3004,9 +3056,9 @@ public:
             source.makeElementCompound(sourceEdgeArray);
             auto wires = TopoShape(openWireCompound, -1).getSubTopoShapes(TopAbs_WIRE);
             bool touched = false;
-            for (auto it=wires.begin(); it!=wires.end();) {
+            for (auto it = wires.begin(); it != wires.end();) {
                 bool purge = true;
-                for (const auto &edge : it->getSubShapes(TopAbs_EDGE)) {
+                for (const auto& edge : it->getSubShapes(TopAbs_EDGE)) {
                     if (source.findSubShapesWithSharedVertex(TopoShape(edge, -1)).empty()) {
                         purge = false;
                         break;
@@ -3029,13 +3081,14 @@ public:
             }
         }
         shape.makeShapeWithElementMap(comp,
-                        MapperHistory(aHistory),
-                        {sourceEdges.begin(), sourceEdges.end()},
-                        op);
+                                      MapperHistory(aHistory),
+                                      {sourceEdges.begin(), sourceEdges.end()},
+                                      op);
         return true;
     }
 
-    bool getResultWires(TopoShape &shape, const char *op) {
+    bool getResultWires(TopoShape& shape, const char* op)
+    {
         // As compound is created by various calls to builder.MakeCompound() it looks that the
         // following condition is always false.
         // Probably it may be needed to add something like compound.Nullify() as done for
@@ -3045,22 +3098,21 @@ public:
             return false;
         }
         shape.makeShapeWithElementMap(compound,
-                        MapperHistory(aHistory),
-                        {sourceEdges.begin(), sourceEdges.end()},
-                        op);
+                                      MapperHistory(aHistory),
+                                      {sourceEdges.begin(), sourceEdges.end()},
+                                      op);
         return true;
     }
 };
 
 
 WireJoiner::WireJoiner()
-    :pimpl(new WireJoinerP())
-{
-}
+    : pimpl(new WireJoinerP())
+{}
 
 WireJoiner::~WireJoiner() = default;
 
-void WireJoiner::addShape(const TopoShape &shape)
+void WireJoiner::addShape(const TopoShape& shape)
 {
     NotDone();
     for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
@@ -3068,20 +3120,20 @@ void WireJoiner::addShape(const TopoShape &shape)
     }
 }
 
-void WireJoiner::addShape(const std::vector<TopoShape> &shapes)
+void WireJoiner::addShape(const std::vector<TopoShape>& shapes)
 {
     NotDone();
-    for (const auto &shape : shapes) {
+    for (const auto& shape : shapes) {
         for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
             pimpl->sourceEdgeArray.push_back(edge);
         }
     }
 }
 
-void WireJoiner::addShape(const std::vector<TopoDS_Shape> &shapes)
+void WireJoiner::addShape(const std::vector<TopoDS_Shape>& shapes)
 {
     NotDone();
-    for (const auto &shape : shapes) {
+    for (const auto& shape : shapes) {
         for (TopExp_Explorer xp(shape, TopAbs_EDGE); xp.More(); xp.Next()) {
             pimpl->sourceEdgeArray.emplace_back(TopoDS::Edge(xp.Current()), -1);
         }
@@ -3154,31 +3206,31 @@ void WireJoiner::Build(const Message_ProgressRange& theRange)
     Done();
 }
 
-bool WireJoiner::getOpenWires(TopoShape &shape, const char *op, bool noOriginal)
+bool WireJoiner::getOpenWires(TopoShape& shape, const char* op, bool noOriginal)
 {
     Build();
     return pimpl->getOpenWires(shape, op, noOriginal);
 }
 
-bool WireJoiner::getResultWires(TopoShape &shape, const char *op)
+bool WireJoiner::getResultWires(TopoShape& shape, const char* op)
 {
     Build();
     return pimpl->getResultWires(shape, op);
 }
 
-const TopTools_ListOfShape& WireJoiner::Generated (const TopoDS_Shape& SThatGenerates)
+const TopTools_ListOfShape& WireJoiner::Generated(const TopoDS_Shape& SThatGenerates)
 {
     Build();
     return pimpl->aHistory->Generated(SThatGenerates);
 }
 
-const TopTools_ListOfShape& WireJoiner::Modified (const TopoDS_Shape& SThatModifies)
+const TopTools_ListOfShape& WireJoiner::Modified(const TopoDS_Shape& SThatModifies)
 {
     Build();
     return pimpl->aHistory->Modified(SThatModifies);
 }
 
-Standard_Boolean WireJoiner::IsDeleted (const TopoDS_Shape& SDeleted)
+Standard_Boolean WireJoiner::IsDeleted(const TopoDS_Shape& SDeleted)
 {
     Build();
     return pimpl->aHistory->IsRemoved(SDeleted);

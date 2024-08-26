@@ -37,92 +37,122 @@
 class SbViewVolume;
 class QAbstractItemView;
 
-namespace Base {
+namespace Base
+{
 // Specialization for SbVec3f
-template <>
-struct vec_traits<SbVec3f> {
+template<>
+struct vec_traits<SbVec3f>
+{
     using vec_type = SbVec3f;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v[0], v[1], v[2]);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for SbVec3d
-template <>
-struct vec_traits<SbVec3d> {
+template<>
+struct vec_traits<SbVec3d>
+{
     using vec_type = SbVec3d;
     using float_type = double;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v[0], v[1], v[2]);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for SbRotation
-template <>
-struct vec_traits<SbRotation> {
+template<>
+struct vec_traits<SbRotation>
+{
     using vec_type = SbRotation;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type,float_type> get() const {
-        float_type q1,q2,q3,q4;
-        v.getValue(q1,q2,q3,q4);
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type, float_type> get() const
+    {
+        float_type q1, q2, q3, q4;
+        v.getValue(q1, q2, q3, q4);
         return std::make_tuple(q1, q2, q3, q4);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for SbColor
-template <>
-struct vec_traits<SbColor> {
+template<>
+struct vec_traits<SbColor>
+{
     using vec_type = SbColor;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v[0], v[1], v[2]);
     }
+
 private:
     const vec_type& v;
 };
 
 // Specialization for Color
-template <>
-struct vec_traits<App::Color> {
+template<>
+struct vec_traits<App::Color>
+{
     using vec_type = App::Color;
     using float_type = float;
-    explicit vec_traits(const vec_type& v) : v(v){}
-    inline std::tuple<float_type,float_type,float_type> get() const {
+    explicit vec_traits(const vec_type& v)
+        : v(v)
+    {}
+    inline std::tuple<float_type, float_type, float_type> get() const
+    {
         return std::make_tuple(v.r, v.g, v.b);
     }
+
 private:
     const vec_type& v;
 };
-}
+}  // namespace Base
 
-namespace App{ class DocumentObject; }
-namespace Gui {
+namespace App
+{
+class DocumentObject;
+}
+namespace Gui
+{
 
 /**
  */
-class GuiExport ViewVolumeProjection : public Base::ViewProjMethod
+class GuiExport ViewVolumeProjection: public Base::ViewProjMethod
 {
 public:
-    explicit ViewVolumeProjection (const SbViewVolume &vv);
+    explicit ViewVolumeProjection(const SbViewVolume& vv);
     ~ViewVolumeProjection() override = default;
 
-    Base::Vector3f operator()(const Base::Vector3f &rclPt) const override;
-    Base::Vector3d operator()(const Base::Vector3d &rclPt) const override;
-    Base::Vector3f inverse (const Base::Vector3f &rclPt) const override;
-    Base::Vector3d inverse (const Base::Vector3d &rclPt) const override;
+    Base::Vector3f operator()(const Base::Vector3f& rclPt) const override;
+    Base::Vector3d operator()(const Base::Vector3d& rclPt) const override;
+    Base::Vector3f inverse(const Base::Vector3f& rclPt) const override;
+    Base::Vector3d inverse(const Base::Vector3d& rclPt) const override;
 
-    Base::Matrix4D getProjectionMatrix () const override;
+    Base::Matrix4D getProjectionMatrix() const override;
 
 protected:
     SbViewVolume viewVolume;
@@ -137,7 +167,7 @@ public:
     std::vector<int> tessellate() const;
 
 private:
-    static void tessCB(void * v0, void * v1, void * v2, void * cbdata);
+    static void tessCB(void* v0, void* v1, void* v2, void* cbdata);
 
 private:
     std::vector<SbVec2f> polygon;
@@ -154,6 +184,6 @@ private:
     class MatchName;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_UTILITIES_H
+#endif  // GUI_UTILITIES_H

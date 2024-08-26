@@ -41,8 +41,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgProjectUtility */
 
 DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
-  , ui(new Ui_DlgProjectUtility)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgProjectUtility)
 {
     ui->setupUi(this);
     connect(ui->extractButton, &QPushButton::clicked, this, &DlgProjectUtility::extractButton);
@@ -96,25 +96,29 @@ void DlgProjectUtility::tryExtractArchive(const QString& source, const QString& 
     try {
         std::stringstream str;
         str << "from freecad import project_utility\n";
-        str << "project_utility.extractDocument(\"" << (const char*)source.toUtf8()
-            << "\", \"" << (const char*)target.toUtf8() << "\")";
+        str << "project_utility.extractDocument(\"" << (const char*)source.toUtf8() << "\", \""
+            << (const char*)target.toUtf8() << "\")";
         Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::critical(this, tr("Failed to extract document"), QString::fromLatin1(e.what()));
+        QMessageBox::critical(this,
+                              tr("Failed to extract document"),
+                              QString::fromLatin1(e.what()));
     }
 }
 
-void DlgProjectUtility::tryCreateArchive(const QString& source, const QString& target, bool openFile)
+void DlgProjectUtility::tryCreateArchive(const QString& source,
+                                         const QString& target,
+                                         bool openFile)
 {
     try {
         std::stringstream str;
         str << "from freecad import project_utility\n";
-        str << "project_utility.createDocument(\"" << (const char*)source.toUtf8()
-            << "\", \"" << (const char*)target.toUtf8() << "\")";
+        str << "project_utility.createDocument(\"" << (const char*)source.toUtf8() << "\", \""
+            << (const char*)target.toUtf8() << "\")";
         Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
         if (openFile) {
-            Application::Instance->open((const char*)target.toUtf8(),"FreeCAD");
+            Application::Instance->open((const char*)target.toUtf8(), "FreeCAD");
         }
     }
     catch (const Base::Exception& e) {

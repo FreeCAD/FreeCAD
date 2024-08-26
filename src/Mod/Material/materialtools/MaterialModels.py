@@ -36,6 +36,7 @@ unicode = str
 __models = {}
 __modelsByPath = {}
 
+
 def _dereference(parent, child):
     # Add the child parameters to the parent
     parentModel = parent["model"]
@@ -43,16 +44,19 @@ def _dereference(parent, child):
     childModel = child["model"]
     childBase = child["base"]
     for name, value in childModel[childBase].items():
-        if name not in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"] and \
-            name not in parentModel[parentBase]: # Don't add if it's already there
+        if (
+            name not in ["Name", "UUID", "URL", "Description", "DOI", "Inherits"]
+            and name not in parentModel[parentBase]
+        ):  # Don't add if it's already there
             parentModel[parentBase][name] = value
 
     print("dereferenced:")
     print(parentModel)
 
+
 def _dereferenceInheritance(data):
     if not data["dereferenced"]:
-        data["dereferenced"] = True # Prevent recursion loops
+        data["dereferenced"] = True  # Prevent recursion loops
 
         model = data["model"]
         base = data["base"]
@@ -68,9 +72,11 @@ def _dereferenceInheritance(data):
                 if child is not None:
                     _dereference(data, child)
 
+
 def _dereferenceAll():
     for data in __models.values():
         _dereferenceInheritance(data)
+
 
 def _scanFolder(folder):
     print("Scanning folder '{0}'".format(folder.absolute()))
@@ -88,8 +94,9 @@ def _scanFolder(folder):
             else:
                 print("Extension '{0}'".format(child.suffix.lower()))
 
+
 def _scanModels(libraries):
-    __models = {} # Clear the current library
+    __models = {}  # Clear the current library
     __modelsByPath = {}
     print("_scanModels")
     print(libraries)
@@ -99,8 +106,10 @@ def _scanModels(libraries):
     # Satisfy aany inheritances
     _dereferenceAll()
 
+
 def getPreferredSaveDirectory():
     pass
+
 
 def getModelLibraries():
 
@@ -114,9 +123,10 @@ def getModelLibraries():
 
     return libraries
 
+
 def getModel(uuid):
     """
-        Retrieve the specified model.
+    Retrieve the specified model.
     """
     if len(__models) < 1:
         getModelLibraries()
@@ -125,11 +135,12 @@ def getModel(uuid):
         return None
     return __models[uuid]
 
+
 def getModelFromPath(filePath):
     """
-        Retrieve the model at the specified path.
+    Retrieve the model at the specified path.
 
-        This may not need public exposure?
+    This may not need public exposure?
     """
     try:
         path = Path(filePath)
@@ -157,7 +168,8 @@ def getModelFromPath(filePath):
 
     return None
 
+
 def saveModel(model, path):
     """
-        Write the model to the specified path
+    Write the model to the specified path
     """
