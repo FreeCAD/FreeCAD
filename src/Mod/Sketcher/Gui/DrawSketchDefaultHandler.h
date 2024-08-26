@@ -857,8 +857,9 @@ protected:
                             (*resultcoincident)->Type = Sketcher::Tangent;
                         }
                         else if (resultpointonobject != AutoConstraints.end()
-                                 && ((*resultcoincident)->FirstPos == Sketcher::PointPos::start
-                                     || (*resultcoincident)->FirstPos == Sketcher::PointPos::end)) {
+                                 && ((*resultpointonobject)->FirstPos == Sketcher::PointPos::start
+                                     || (*resultpointonobject)->FirstPos
+                                         == Sketcher::PointPos::end)) {
                             // endpoint-to-edge tangency
                             (*resultpointonobject)->Type = Sketcher::Tangent;
                         }
