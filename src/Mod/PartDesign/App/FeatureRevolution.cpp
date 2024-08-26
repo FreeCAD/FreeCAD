@@ -190,9 +190,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
             if (!Ex.More()) {
                 supportface = TopoDS_Face();
             }
-            RevolMode mode = RevolMode::None;
-            // revolve the face to a solid
-            //            TopoShape result(0);
+
             try {
                 result = base.makeElementRevolution(gp_Ax1(pnt, dir), supportface, upToFace);
             }
