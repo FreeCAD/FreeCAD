@@ -5,6 +5,8 @@
 files: |
     (?x)^(
         src/Base|
+        src/App|
+        src/Gui|
         src/Main|
         src/Tools|
         tests/src|
@@ -18,9 +20,12 @@ files: |
         src/Mod/Import|
         src/Mod/Inspection|
         src/Mod/JtReader|
+        src/Mod/Material|
         src/Mod/Measure|
         src/Mod/Mesh|
         src/Mod/MeshPart|
+        src/Mod/Part|
+        src/Mod/PartDesign|
         src/Mod/Plot|
         src/Mod/Points|
         src/Mod/ReverseEngineering|
