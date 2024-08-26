@@ -450,6 +450,9 @@ class TechDrawExport GeometryUtils
         static bool isLine(TopoDS_Edge occEdge);
         static TopoDS_Edge asLine(TopoDS_Edge occEdge);
 
+        static double edgeLength(TopoDS_Edge occEdge);
+
+
 };
 
 } //end namespace TechDraw

@@ -46,7 +46,7 @@
 namespace Measure
 {
 
-class MeasureExport MeasureBase : public App::DocumentObject
+class MeasureExport MeasureBase: public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureBase);
 
@@ -58,8 +58,8 @@ public:
 
     // boost::signals2::signal<void (const MeasureBase*)> signalGuiInit;
 
-    //return PyObject as MeasureBasePy
-    PyObject *getPyObject() override;
+    // return PyObject as MeasureBasePy
+    PyObject* getPyObject() override;
 
     // Initialize measurement properties from selection
     virtual void parseSelection(const App::MeasureSelection& selection);
@@ -68,7 +68,10 @@ public:
     virtual QString getResultString();
 
     virtual std::vector<std::string> getInputProps();
-    virtual App::Property* getResultProp() {return {};}
+    virtual App::Property* getResultProp()
+    {
+        return {};
+    }
     virtual Base::Placement getPlacement();
 
     // Return the objects that are measured
@@ -84,21 +87,22 @@ protected:
 // Create a scriptable object based on MeasureBase
 using MeasurePython = App::FeaturePythonT<MeasureBase>;
 
-template <typename T>
-class MeasureExport MeasureBaseExtendable : public MeasureBase
+template<typename T>
+class MeasureExport MeasureBaseExtendable: public MeasureBase
 {
 
-    using GeometryHandler = std::function<Part::MeasureInfoPtr (const App::SubObjectT&)>;
+    using GeometryHandler = std::function<Part::MeasureInfoPtr(const App::SubObjectT&)>;
     using HandlerMap = std::map<std::string, GeometryHandler>;
 
 
-public: 
-
-    static void addGeometryHandler(const std::string& module, GeometryHandler callback) {
+public:
+    static void addGeometryHandler(const std::string& module, GeometryHandler callback)
+    {
         _mGeometryHandlers[module] = callback;
     }
 
-    static GeometryHandler getGeometryHandler(const std::string& module) {
+    static GeometryHandler getGeometryHandler(const std::string& module)
+    {
 
         if (!hasGeometryHandler(module)) {
             return {};
@@ -107,7 +111,8 @@ public:
         return _mGeometryHandlers[module];
     }
 
-    static Part::MeasureInfoPtr getMeasureInfo(App::SubObjectT& subObjT) {
+    static Part::MeasureInfoPtr getMeasureInfo(App::SubObjectT& subObjT)
+    {
 
         // Resolve App::Link
         App::DocumentObject* sub = subObjT.getSubObject();
@@ -119,26 +124,30 @@ public:
         // Get the Geometry handler based on the module
         const char* className = sub->getTypeId().getName();
         std::string mod = Base::Type::getModuleName(className);
-                
+
         auto handler = getGeometryHandler(mod);
         if (!handler) {
-            Base::Console().Log("MeasureBaseExtendable::getMeasureInfo: No geometry handler available for submitted element type");
+            Base::Console().Log("MeasureBaseExtendable::getMeasureInfo: No geometry handler "
+                                "available for submitted element type");
             return nullptr;
         }
 
         return handler(subObjT);
     }
 
-    static void addGeometryHandlers(const std::vector<std::string>& modules, GeometryHandler callback){
-        // TODO: this will replace a callback with a later one.  Should we check that there isn't already a
-        // handler defined for this module?
+    static void addGeometryHandlers(const std::vector<std::string>& modules,
+                                    GeometryHandler callback)
+    {
+        // TODO: this will replace a callback with a later one.  Should we check that there isn't
+        // already a handler defined for this module?
         for (auto& mod : modules) {
             _mGeometryHandlers[mod] = callback;
         }
     }
 
 
-    static bool hasGeometryHandler(const std::string& module) {
+    static bool hasGeometryHandler(const std::string& module)
+    {
         return (_mGeometryHandlers.count(module) > 0);
     }
 
@@ -147,8 +156,7 @@ private:
 };
 
 
+}  // namespace Measure
 
-} //namespace Measure
 
-
-#endif // MEASURE_MEASUREBASE_H
+#endif  // MEASURE_MEASUREBASE_H

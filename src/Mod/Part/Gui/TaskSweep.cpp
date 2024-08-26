@@ -132,12 +132,14 @@ SweepWidget::SweepWidget(QWidget* parent)
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
     d->ui.labelPath->clear();
 
+    // clang-format off
     connect(d->ui.buttonPath, &QPushButton::toggled,
             this, &SweepWidget::onButtonPathToggled);
     connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &SweepWidget::onCurrentItemChanged);
     connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &SweepWidget::onCurrentItemChanged);
+    // clang-format on
 
     findShapes();
 }

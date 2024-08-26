@@ -43,16 +43,21 @@ using namespace Measure;
 PROPERTY_SOURCE(Measure::MeasureRadius, Measure::MeasureBase)
 
 
-
 MeasureRadius::MeasureRadius()
 {
-    ADD_PROPERTY_TYPE(Element,(nullptr), "Measurement", App::Prop_None, "Element to get the radius from");
+    ADD_PROPERTY_TYPE(Element,
+                      (nullptr),
+                      "Measurement",
+                      App::Prop_None,
+                      "Element to get the radius from");
     Element.setScope(App::LinkScope::Global);
     Element.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Radius,(0.0)       ,"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                            "Radius of selection");
-
+    ADD_PROPERTY_TYPE(Radius,
+                      (0.0),
+                      "Measurement",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Radius of selection");
 }
 
 MeasureRadius::~MeasureRadius() = default;
@@ -60,7 +65,8 @@ MeasureRadius::~MeasureRadius() = default;
 //! validate all the object+subelement pairs in the selection. Must be circle or arc
 //! and have a geometry handler available.  We only calculate radius if there is a
 //! single valid item in the selection
-bool MeasureRadius::isValidSelection(const App::MeasureSelection& selection){
+bool MeasureRadius::isValidSelection(const App::MeasureSelection& selection)
+{
 
     if (selection.empty() || selection.size() > 1) {
         // too few or too many selections
@@ -74,8 +80,7 @@ bool MeasureRadius::isValidSelection(const App::MeasureSelection& selection){
         return false;
     }
 
-    if (type != App::MeasureElementType::CIRCLE
-        && type != App::MeasureElementType::ARC) {
+    if (type != App::MeasureElementType::CIRCLE && type != App::MeasureElementType::ARC) {
         return false;
     }
 
@@ -84,7 +89,8 @@ bool MeasureRadius::isValidSelection(const App::MeasureSelection& selection){
 
 //! return true if the selection is particularly interesting to MeasureRadius.
 //! In this case we claim circles and arcs.
-bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selection) {
+bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selection)
+{
     if (selection.size() != 1) {
         return false;
     }
@@ -92,8 +98,7 @@ bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selectio
     auto element = selection.front();
     auto type = App::MeasureManager::getMeasureElementType(element);
 
-    if (type == App::MeasureElementType::CIRCLE
-        || type == App::MeasureElementType::ARC) {
+    if (type == App::MeasureElementType::CIRCLE || type == App::MeasureElementType::ARC) {
         return true;
     }
 
@@ -102,16 +107,17 @@ bool MeasureRadius::isPrioritizedSelection(const App::MeasureSelection& selectio
 
 
 //! Set properties from first item in selection. assumes a valid selection.
-void MeasureRadius::parseSelection(const App::MeasureSelection& selection) {
+void MeasureRadius::parseSelection(const App::MeasureSelection& selection)
+{
     auto element = selection.front();
     auto objT = element.object;
 
-    std::vector<std::string> subElementList { objT.getSubName() };
+    std::vector<std::string> subElementList {objT.getSubName()};
     Element.setValue(objT.getObject(), subElementList);
 }
 
 
-App::DocumentObjectExecReturn *MeasureRadius::execute()
+App::DocumentObjectExecReturn* MeasureRadius::execute()
 {
     recalculateRadius();
     return DocumentObject::StdReturn;
@@ -138,7 +144,8 @@ void MeasureRadius::onChanged(const App::Property* prop)
 
 
 //! return a placement (location + orientation) for the first element
-Base::Placement MeasureRadius::getPlacement() {
+Base::Placement MeasureRadius::getPlacement()
+{
     auto loc = getMeasureInfoFirst()->pointOnCurve;
     auto p = Base::Placement();
     p.setPosition(loc);
@@ -159,14 +166,14 @@ Part::MeasureRadiusInfoPtr MeasureRadius::getMeasureInfoFirst() const
     const std::vector<std::string>& subElements = Element.getSubValues();
 
     if (!object || subElements.empty()) {
-// NOLINTNEXTLINE(modernize-return-braced-init-list)
+        // NOLINTNEXTLINE(modernize-return-braced-init-list)
         return std::make_shared<Part::MeasureRadiusInfo>();
     }
 
-    App::SubObjectT subject{object, subElements.front().c_str()};
+    App::SubObjectT subject {object, subElements.front().c_str()};
     auto info = getMeasureInfo(subject);
     if (!info || !info->valid) {
-// NOLINTNEXTLINE(modernize-return-braced-init-list)
+        // NOLINTNEXTLINE(modernize-return-braced-init-list)
         return std::make_shared<Part::MeasureRadiusInfo>();
     }
 

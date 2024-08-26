@@ -1,4 +1,4 @@
- /**************************************************************************
+/**************************************************************************
  *   Copyright (c) 2023 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
@@ -28,28 +28,28 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 
-namespace MeasureGui {
+namespace MeasureGui
+{
 
 class Ui_DlgPrefsMeasureAppearanceImp;
 
-class DlgPrefsMeasureAppearanceImp : public Gui::Dialog::PreferencePage
+class DlgPrefsMeasureAppearanceImp: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgPrefsMeasureAppearanceImp( QWidget* parent = nullptr );
+    explicit DlgPrefsMeasureAppearanceImp(QWidget* parent = nullptr);
     ~DlgPrefsMeasureAppearanceImp() override;
 
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgPrefsMeasureAppearanceImp> ui;
 };
 
-} // namespace MeasureGui
+}  // namespace MeasureGui
 
-#endif // MeasureGui_DlgPrefsAppearanceImp_H
-
+#endif  // MeasureGui_DlgPrefsAppearanceImp_H

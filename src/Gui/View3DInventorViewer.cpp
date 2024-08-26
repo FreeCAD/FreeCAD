@@ -661,14 +661,12 @@ static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, 
         QImage img = bitmap.toImage();
         img.convertTo(QImage::Format_ARGB32);
         pixmap = QPixmap::fromImage(img);
-    } else {
-        pixmap = bitmap;
+        pixmap.setMask(mask);
+        return QCursor(pixmap, hotX, hotY);
     }
-    pixmap.setMask(mask);
-    return QCursor(pixmap, hotX, hotY);
-#else
-    return QCursor(bitmap, mask, hotX, hotY);
 #endif
+
+    return QCursor(bitmap, mask, hotX, hotY);
 }
 
 void View3DInventorViewer::createStandardCursors(double dpr)

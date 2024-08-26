@@ -25,7 +25,7 @@ QFrame {
 
  Gui--OverlayTabWidget {
    qproperty-effectColor: rgba(25, 25, 25, 220);
-   qproperty-effectBlurRadius: 5;
+   qproperty-effectBlurRadius: 0;
    qproperty-effectOffsetX: 0;
    qproperty-effectOffsetY: 0;
    qproperty-effectWidth: 1;
@@ -35,7 +35,7 @@ QFrame {
 
   Gui--OverlayTabWidget#OverlayBottom {
    qproperty-effectColor: rgba(100, 100, 100, 220);
-   qproperty-effectBlurRadius: 5;
+   qproperty-effectBlurRadius: 0;
    qproperty-effectOffsetX: 0.0;
    qproperty-effectOffsetY: 0.0;
    qproperty-effectWidth: 1;

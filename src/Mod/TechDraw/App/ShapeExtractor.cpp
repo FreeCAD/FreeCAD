@@ -225,7 +225,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                     childNeedsTransform = true;
                 }
             }
-            auto shape = Part::Feature::getShape(l);
+            auto shape = Part::Feature::getShape(l);    // TODO:  getTopoShape() ?
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = stripInfiniteShapes(shape);
@@ -506,7 +506,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
 //! get the located and oriented version of docObj shape
 TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 {
-        Part::TopoShape shape = Part::Feature::getShape(docObj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(docObj);
         const Part::Feature* pf = dynamic_cast<const Part::Feature*>(docObj);
         if (pf) {
             shape.setPlacement(pf->globalPlacement());

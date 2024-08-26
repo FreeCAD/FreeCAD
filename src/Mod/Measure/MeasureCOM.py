@@ -25,26 +25,23 @@ from UtilsMeasure import MeasureBasePython
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
-
-__title__="Measure Center of Mass Object"
+__title__ = "Measure Center of Mass Object"
 __author__ = "David Friedli"
 __url__ = "http://www.freecad.org"
 
 
-
-""" 
+"""
     The Measure cpp object defines a result and a placement property. The Python measure type
     adds it's own specific properties. Once the object is recomputed the parent properties are updated
-    based on the specific python properties. 
+    based on the specific python properties.
 
     We'll need some kind of interface for the measure command which exposes "parseSelection", "isValidSelection" etc.
 
 """
 
 
-
 def makeMeasureCOM(name="CenterOfMass"):
-    '''makeMeasureCOM(name): make a CenterofMass measurement'''
+    """makeMeasureCOM(name): make a CenterofMass measurement"""
     obj = FreeCAD.ActiveDocument.addObject("Measure::MeasurePython", name)
     MeasureCOM(obj)
     return obj
@@ -52,12 +49,22 @@ def makeMeasureCOM(name="CenterOfMass"):
 
 class MeasureCOM(MeasureBasePython):
     "The MeasureCOM object"
-    
+
     def __init__(self, obj):
         obj.Proxy = self
 
-        obj.addProperty("App::PropertyLinkSubGlobal", "Element", "", QT_TRANSLATE_NOOP("App::Property", "Element to measure"))
-        obj.addProperty("App::PropertyPosition", "Result", "", QT_TRANSLATE_NOOP("App::PropertyVector", "The result location"))
+        obj.addProperty(
+            "App::PropertyLinkSubGlobal",
+            "Element",
+            "",
+            QT_TRANSLATE_NOOP("App::Property", "Element to measure"),
+        )
+        obj.addProperty(
+            "App::PropertyPosition",
+            "Result",
+            "",
+            QT_TRANSLATE_NOOP("App::PropertyVector", "The result location"),
+        )
 
     @classmethod
     def isValidSelection(cls, selection):
@@ -70,7 +77,7 @@ class MeasureCOM(MeasureBasePython):
 
         if not ob:
             return
-        
+
         sub = ob.getSubObject(subName)
         if not sub:
             return
@@ -101,12 +108,10 @@ class MeasureCOM(MeasureBasePython):
             return ()
         return (ob,)
 
-
     def parseSelection(self, obj, selection):
         item = selection[0]
         o = item["object"]
         obj.Element = (o, item["subName"])
-
 
     def getResultString(self, obj):
         values = [Units.Quantity(v, Units.Length).getUserPreferred()[0] for v in obj.Result]
@@ -144,9 +149,8 @@ class MeasureCOM(MeasureBasePython):
         placement.Base = com
         obj.Placement = placement
 
-
     def onChanged(self, obj, prop):
-        '''Do something when a property has changed'''
+        """Do something when a property has changed"""
 
         if prop == "Element":
             self.execute(obj)
