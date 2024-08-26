@@ -169,5 +169,5 @@ class TestSubShapeBinder(unittest.TestCase):
         revolution.Angle2 = 60.0
         doc.recompute()
         self.assertAlmostEqual(binder.Shape.Area, 100)
-        volume = 100 * math.pi * 2 * 20;
+        volume = 100 * math.pi * 2 * 20
         self.assertAlmostEqual(revolution.Shape.Volume, volume)
