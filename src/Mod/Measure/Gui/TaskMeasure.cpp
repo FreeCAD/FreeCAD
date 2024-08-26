@@ -164,7 +164,8 @@ void TaskMeasure::setMeasureObject(Measure::MeasureBase* obj)
 
 App::DocumentObject* TaskMeasure::createObject(const App::MeasureType* measureType)
 {
-    auto measureClass = measureType->isPython ? "Measure::MeasurePython" : measureType->measureObject;
+    auto measureClass =
+        measureType->isPython ? "Measure::MeasurePython" : measureType->measureObject;
     auto type = Base::Type::getTypeIfDerivedFrom(measureClass.c_str(),
                                                  App::DocumentObject::getClassTypeId(),
                                                  true);
@@ -189,7 +190,8 @@ App::DocumentObject* TaskMeasure::createObject(const App::MeasureType* measureTy
 }
 
 
-Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObject* measureObj) {
+Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObject* measureObj)
+{
     // Add view object
     auto vpName = measureObj->getViewProviderName();
     if ((vpName == nullptr) || (vpName[0] == '\0')) {
@@ -221,7 +223,8 @@ Gui::ViewProviderDocumentObject* TaskMeasure::createViewObject(App::DocumentObje
 }
 
 
-void TaskMeasure::saveObject() {
+void TaskMeasure::saveObject()
+{
     if (_mViewObject && _mGuiDocument) {
         _mGuiDocument->addViewProvider(_mViewObject);
         _mGuiDocument->takeAnnotationViewProvider(_mViewObject->getTypeId().getName());
@@ -234,7 +237,8 @@ void TaskMeasure::saveObject() {
 }
 
 
-void TaskMeasure::update() {
+void TaskMeasure::update()
+{
     App::Document* doc = App::GetApplication().getActiveDocument();
 
     // Reset selection if the selected object is not valid
@@ -298,11 +302,11 @@ void TaskMeasure::update() {
     // Update tool mode display
     setModeSilent(_mMeasureType);
 
-    if (!_mMeasureObject || _mMeasureType->measureObject != _mMeasureObject->getTypeId().getName()) {
+    if (!_mMeasureObject
+        || _mMeasureType->measureObject != _mMeasureObject->getTypeId().getName()) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
         createObject(_mMeasureType);
-        
     }
 
     // we have a valid measure object so we can enable the annotate button
