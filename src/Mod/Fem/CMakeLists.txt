@@ -21,9 +21,20 @@ endif (BUILD_GUI)
 # ****** Python non Gui packages and modules *****************************************************
 # ************************************************************************************************
 
-set (FemBaseModules_SRCS coding_conventions.md Init.py InitGui.py ObjectsFem.py TestFemApp.py)
+# cmake-format: off
 
-set (FemCommands_SRCS femcommands/__init__.py femcommands/commands.py femcommands/manager.py)
+set (
+    FemBaseModules_SRCS
+    coding_conventions.md
+    Init.py InitGui.py
+    ObjectsFem.py
+    TestFemApp.py)
+
+set (
+    FemCommands_SRCS
+    femcommands/__init__.py
+    femcommands/commands.py
+    femcommands/manager.py)
 
 set (
     FemExamples_SRCS
@@ -143,8 +154,13 @@ set (
     feminout/writeFenicsXDMF.py
     feminout/writeFenicsXML.py)
 
-set (FemMesh_SRCS femmesh/__init__.py femmesh/femmesh2mesh.py femmesh/gmshtools.py
-                  femmesh/meshsetsgetter.py femmesh/meshtools.py)
+set (
+    FemMesh_SRCS
+    femmesh/__init__.py
+    femmesh/femmesh2mesh.py
+    femmesh/gmshtools.py
+    femmesh/meshsetsgetter.py
+    femmesh/meshtools.py)
 
 set (
     FemObjects_SRCS
@@ -179,7 +195,10 @@ set (
     femobjects/result_mechanical.py
     femobjects/solver_ccxtools.py)
 
-set (FemResult_SRCS femresult/__init__.py femresult/resulttools.py)
+set (
+    FemResult_SRCS
+    femresult/__init__.py
+    femresult/resulttools.py)
 
 set (
     FemSolver_SRCS
@@ -227,9 +246,13 @@ set (
     femsolver/calculix/write_step_output.py
     femsolver/calculix/writer.py)
 
-set (FemSolverElmer_SRCS
-     femsolver/elmer/__init__.py femsolver/elmer/sifio.py femsolver/elmer/solver.py
-     femsolver/elmer/tasks.py femsolver/elmer/writer.py)
+set (
+    FemSolverElmer_SRCS
+    femsolver/elmer/__init__.py
+    femsolver/elmer/sifio.py
+    femsolver/elmer/solver.py
+    femsolver/elmer/tasks.py
+    femsolver/elmer/writer.py)
 
 set (
     FemSolverElmerEquations_SRCS
@@ -256,7 +279,10 @@ set (
     femsolver/elmer/equations/magnetodynamic2D_writer.py
     femsolver/elmer/equations/nonlinear.py)
 
-set (FemSolverFenics_SRCS femsolver/fenics/__init__.py femsolver/fenics/fenics_tools.py)
+set (
+    FemSolverFenics_SRCS
+    femsolver/fenics/__init__.py
+    femsolver/fenics/fenics_tools.py)
 
 set (
     FemSolverMystran_SRCS
@@ -271,10 +297,18 @@ set (
     femsolver/mystran/tasks.py
     femsolver/mystran/writer.py)
 
-set (FemSolverZ88_SRCS femsolver/z88/__init__.py femsolver/z88/solver.py femsolver/z88/tasks.py
-                       femsolver/z88/writer.py)
+set (
+    FemSolverZ88_SRCS
+    femsolver/z88/__init__.py
+    femsolver/z88/solver.py
+    femsolver/z88/tasks.py
+    femsolver/z88/writer.py)
 
-set (FemTests_SRCS femtest/__init__.py femtest/test_commands.sh femtest/test_information.md)
+set (
+    FemTests_SRCS
+    femtest/__init__.py
+    femtest/test_commands.sh
+    femtest/test_information.md)
 
 set (
     FemTestsApp_SRCS
@@ -292,7 +326,9 @@ set (
     femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py)
 
-set (FemTestsFiles_SRCS femtest/data/__init__.py)
+set (
+    FemTestsFiles_SRCS
+    femtest/data/__init__.py)
 
 set (
     FemTestsCcx_SRCS
@@ -369,9 +405,14 @@ set (
     femtest/data/mystran/ccx_cantilever_nodeload.bdf
     femtest/data/mystran/mystran_plate.bdf)
 
-set (FemTestsOpen_SRCS femtest/data/open/__init__.py femtest/data/open/all_objects_de9b3fb438.FCStd)
+set (
+    FemTestsOpen_SRCS
+    femtest/data/open/__init__.py
+    femtest/data/open/all_objects_de9b3fb438.FCStd)
 
-set (FemTestsZ88Main_SRCS femtest/data/z88/__init__.py)
+set (
+    FemTestsZ88Main_SRCS
+    femtest/data/z88/__init__.py)
 
 set (
     FemTestsZ88CcxcantiEleHex20_SRCS
@@ -466,6 +507,8 @@ set (
     ${FemTestsZ88Ccxcantinl_SRCS}
     ${FemTools_SRCS})
 
+# cmake-format: on
+
 add_custom_target (FemScriptsTarget ALL SOURCES ${FemAllScripts})
 fc_copy_sources (FemScriptsTarget "${CMAKE_BINARY_DIR}/Mod/Fem" ${FemAllScripts})
 
@@ -508,9 +551,16 @@ install (FILES ${FemTools_SRCS} DESTINATION Mod/Fem/femtools)
 # ****** Python Gui packages and modules *********************************************************
 # ************************************************************************************************
 
-set (FemGuiBaseModules_SRCS TestFemGui.py)
+# cmake-format: off
 
-set (FemGuiObjects_SRCS femguiobjects/__init__.py femguiobjects/readme.md)
+set (
+        FemGuiBaseModules_SRCS
+        TestFemGui.py)
+
+set (
+        FemGuiObjects_SRCS
+        femguiobjects/__init__.py
+        femguiobjects/readme.md)
 
 set (
     FemGuiTaskPanels_SRCS
@@ -539,10 +589,16 @@ set (
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_ccxtools.py)
 
-set (FemGuiTests_SRCS femtest/gui/__init__.py femtest/gui/test_open.py)
+set (
+    FemGuiTests_SRCS
+    femtest/gui/__init__.py
+    femtest/gui/test_open.py)
 
-set (FemGuiUtils_SRCS femguiutils/__init__.py femguiutils/migrate_gui.py
-                      femguiutils/selection_widgets.py)
+set (
+    FemGuiUtils_SRCS
+    femguiutils/__init__.py
+    femguiutils/migrate_gui.py
+    femguiutils/selection_widgets.py)
 
 set (
     FemGuiViewProvider_SRCS
@@ -579,8 +635,16 @@ set (
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_ccxtools.py)
 
-set (FemAllGuiScripts ${FemGuiBaseModules_SRCS} ${FemGuiObjects_SRCS} ${FemGuiTaskPanels_SRCS}
-                      ${FemGuiTests_SRCS} ${FemGuiUtils_SRCS} ${FemGuiViewProvider_SRCS})
+set (
+    FemAllGuiScripts
+    ${FemGuiBaseModules_SRCS}
+    ${FemGuiObjects_SRCS}
+    ${FemGuiTaskPanels_SRCS}
+    ${FemGuiTests_SRCS}
+    ${FemGuiUtils_SRCS}
+    ${FemGuiViewProvider_SRCS})
+
+# cmake-format: on
 
 if (BUILD_GUI)
     add_custom_target (FemGuiScriptsTarget ALL SOURCES ${FemAllGuiScripts})
