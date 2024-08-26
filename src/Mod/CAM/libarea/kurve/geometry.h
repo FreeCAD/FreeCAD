@@ -146,23 +146,24 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		MES_INVALIDPLANE
 	};
 
-	// homogeneous 4 x 4 Matrix class
-	class Matrix{
-	protected:
-	public:
-		double e[16];
-		bool m_unit;												// true if unit matrix
-		int m_mirrored;												// 1 if mirrored, 0 if not and -1 if unknown
+    // homogeneous 4 x 4 Matrix class
+    class Matrix
+    {
+    protected:
+    public:
+        double e[16];
+        bool m_unit;     // true if unit matrix
+        int m_mirrored;  // 1 if mirrored, 0 if not and -1 if unknown
 
-	public:
-		// constructors etc...
-		Matrix();													// create a unit matrix
-		Matrix(double m[16]);										// from an array
-		//Matrix(const Matrix& m);									// copy constructor
+    public:
+        // constructors etc...
+        Matrix();                 // create a unit matrix
+        Matrix(double m[16]);     // from an array
+        // Matrix(const Matrix& m);  // copy constructor
 
-		~Matrix(){};
+        ~Matrix() {};
 
-		//operators
+        //operators
 		bool operator==(const Matrix &m)const;
 		bool operator!=(const Matrix &m)const { return !(*this == m);}
 
@@ -195,9 +196,9 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		void	GetRotation(double& ax, double& ay, double& az) const;	// get rotation from matrix
 
 		Matrix	Inverse();											// inverts this matrix
-	};
+    };
 
-	extern Matrix UnitMatrix;		// a Unit Matrix
+    extern Matrix UnitMatrix;		// a Unit Matrix
 
 
 	// 2d Point class
@@ -214,20 +215,30 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	Point( double xord, double yord, bool okay = true) {					// Point p1(10,30);
 			x = xord; y = yord; ok = okay;}
 
-		//inline	Point( const Point& p ) {												// copy constructor  Point p1(p2);
-			//x = p.x; y = p.y; ok = p.ok;}
+        // inline Point(const Point& p)
+        // {  // copy constructor  Point p1(p2);
+        //     x = p.x;
+        //     y = p.y;
+        //     ok = p.ok;
+        // }
 
-		Point( const Point3d& p );												// copy constructor  Point p1(p2);
-		Point(const Vector2d& v);
+        Point(const Point3d& p);  // copy constructor  Point p1(p2);
+        Point(const Vector2d& v);
 
-		// operators
+        // operators
 		bool operator==(const Point &p)const;
 		bool operator!=(const Point &p)const { return !(*this == p);}
-		inline	Point	operator+(const Point &p)const{return Point(x + p.x, y + p.y);}		// p0 = p1 + p2;
-		inline	Point	operator+=(const Point &p){return Point(x += p.x, y += p.y);}		// p0 += p1;
-		Point operator+(const Vector2d &v)const;			// p1 = p0 + v0;
+        inline Point operator+(const Point& p) const
+        {
+            return Point(x + p.x, y + p.y);
+        }  // p0 = p1 + p2;
+        inline Point operator+=(const Point& p)
+        {
+            return Point(x += p.x, y += p.y);
+        }  // p0 += p1;
+        Point operator+(const Vector2d& v) const;  // p1 = p0 + v0;
 
-		// destructor
+        // destructor
 		//~Point(){};
 
 		// methods
@@ -249,21 +260,24 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	class Point3d {
 		friend wostream& operator <<(wostream& op, Point3d& p);
 	public:
-//		bool	ok;																// true if this point is defined correctly
-		double	x;																// x value
-		double	y;																// y value
-		double	z;																// z value
+        // bool ok;   // true if this point is defined correctly
+        double x;  // x value
+        double y;  // y value
+        double z;  // z value
 
-		// constructors
-		inline	Point3d(){x = 0; y = 0; z = 0;}// {z=0; /*ok=false;*/};												// Point p1
+        // constructors
+		inline	Point3d(){x = 0; y = 0; z = 0;}// {z=0; /*ok=false;*/};	// Point p1
 		inline	Point3d(const double* xyz) {x = xyz[0], y = xyz[1]; z = xyz[2];}
 		inline	Point3d( double xord, double yord, double zord = 0/*, bool okay = true*/) {	// Point p1(10,30.5);
 			x = xord; y = yord; z = zord;/* ok = okay;*/}
-		//inline	Point3d( const Point3d& p ) {											// copy constructor  Point p1(p2);
+        // copy constructor  Point p1(p2);
+		//inline	Point3d( const Point3d& p ) {
 			//x = p.x; y = p.y;  z = p.z;[> ok = p.ok;<]}
-		inline	Point3d( const Point& p ) {												// copy constructor  Point p1(p2);
+        // copy constructor  Point p1(p2);
+		inline	Point3d( const Point& p ) {									
 			x = p.x; y = p.y;  z = 0; /*ok = p.ok;*/}
-		inline	Point3d( const Point& p, double zord ) {								// copy constructor  Point p1(p2, z);
+        // copy constructor  Point p1(p2, z);
+		inline	Point3d( const Point& p, double zord ) {
 			x = p.x; y = p.y;  z = zord;/* ok = p.ok;*/}
 		Point3d(const Vector3d& v);
 
@@ -309,12 +323,26 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 		// operators
-		//inline	const	Vector2d& operator=(const Vector2d &v){dx = v.dx; dy = v.dy; return *this;}			// v1 = v2;
-		inline			Vector2d operator+(const Vector2d &v)const{return Vector2d(dx + v.dx, dy + v.dy);}	// v2 = v0 + v1;
-		inline			Point	operator+(const Point &p)const{return Point(this->dx + p.x, this->dy + p.y);}			// p1 = v0 + p0;
-		inline			Vector2d operator+(const double d){ return Vector2d(dx + d, dy + d); };
+        // inline const Vector2d& operator=(const Vector2d& v)
+        // {
+        //     dx = v.dx;
+        //     dy = v.dy;
+        //     return *this;
+        // }  // v1 = v2;
+        inline Vector2d operator+(const Vector2d& v) const
+        {
+            return Vector2d(dx + v.dx, dy + v.dy);
+        }  // v2 = v0 + v1;
+        inline Point operator+(const Point& p) const
+        {
+            return Point(this->dx + p.x, this->dy + p.y);
+        }  // p1 = v0 + p0;
+        inline Vector2d operator+(const double d)
+        {
+            return Vector2d(dx + d, dy + d);
+        };
 
-		inline	const	Vector2d& operator+=(const Vector2d &v){dx += v.dx; dy += v.dy; return *this;}		// v1 += v0;
+        inline	const	Vector2d& operator+=(const Vector2d &v){dx += v.dx; dy += v.dy; return *this;}		// v1 += v0;
 		inline			Vector2d operator-(const Vector2d &v)const{return Vector2d( dx - v.dx, dy - v.dy);}	// v2 = v0 - v1;
 		inline	const	Vector2d& operator-=(const Vector2d &v){dx -= v.dx; dy -= v.dy; return *this;}		// v1 -= v0;
 		inline			Vector2d operator-(const double d){ return Vector2d(dx - d, dy - d); };
@@ -342,8 +370,11 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	void	puty(double y){dy = y;}
 		double	normalise()
 		{double m = magnitude(); if(m < TIGHT_TOLERANCE) {dx=dy=0; return 0;} dx/=m; dy/=m; return m;}				// normalise & returns magnitude
-		inline	double	magnitudesqd(void)const{return(dx * dx + dy * dy);}									// magnitude squared
-		inline	double	magnitude(void)const{return(sqrt(magnitudesqd()));}									// magnitude
+        inline double magnitudesqd(void) const
+        {
+            return (dx * dx + dy * dy);
+        }  // magnitude squared
+        inline	double	magnitude(void)const{return(sqrt(magnitudesqd()));}									// magnitude
 		void	Rotate(double cosa, double sina){															// rotate vector by angle
 			double temp = -dy * sina + dx * cosa;
 			dy = dx * sina + cosa * dy;
@@ -375,16 +406,50 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		Vector3d(const Point3d& p) { dx = p.x; dy = p.y; dz = p.z;} // from 0,0,0 to p
 		Vector3d(const Vector2d& v) {dx = v.getx(); dy = v.gety(); dz = 0;}
 
-		// operators
-		bool operator==(const Vector3d &v)const { return(FEQ(dx, v.dx, UNIT_VECTOR_TOLERANCE) && FEQ(dy, v.dy, UNIT_VECTOR_TOLERANCE) && FEQ(dz, v.dz, UNIT_VECTOR_TOLERANCE)); }		// v1 == v2 (unit only!)
-		bool operator!=(const Vector3d &v)const { return (!(*this == v)); }											// v1 != v2
-		//const	Vector3d& operator=(const Vector3d &v){dx = v.dx; dy = v.dy; dz = v.dz;return *this;}				// v1 = v2;
-		//	const	Vector3d& operator=(const Vector2d &v){dx = v.getx(); dy = v.gety(); dz = 0.0;return *this;}	// v1 = v2;
-		inline		Point3d	operator+(const Point3d &p)const{return Point3d(dx + p.x, dy + p.y, dz + p.z);}			// p1 = v0 + p0;
-		Vector3d operator+(const Vector3d &v)const{return Vector3d(dx + v.dx, dy + v.dy, dz + v.dz);}				// v2 = v0 + v1;
-		const	Vector3d& operator+=(const Vector3d &v){dx += v.dx; dy += v.dy; dz += v.dz; return *this;}			// v1 += v0;
-		Vector3d operator-(const Vector3d &v)const{return Vector3d( dx - v.dx, dy - v.dy, dz - v.dz);}				// v2 = v0 - v1;
-		const	Vector3d& operator-=(const Vector3d &v){
+        // operators
+        bool operator==(const Vector3d& v) const
+        {
+            return (FEQ(dx, v.dx, UNIT_VECTOR_TOLERANCE) && FEQ(dy, v.dy, UNIT_VECTOR_TOLERANCE)
+                    && FEQ(dz, v.dz, UNIT_VECTOR_TOLERANCE));
+        }  // v1 == v2 (unit only!)
+        bool operator!=(const Vector3d& v) const
+        {
+            return (!(*this == v));
+        }  // v1 != v2
+        // const Vector3d& operator=(const Vector3d& v)
+        // {
+        //     dx = v.dx;
+        //     dy = v.dy;
+        //     dz = v.dz;
+        //     return *this;
+        // }  // v1 = v2;
+        // const Vector3d& operator=(const Vector2d& v)
+        // {
+        //     dx = v.getx();
+        //     dy = v.gety();
+        //     dz = 0.0;
+        //     return *this;
+        // }  // v1 = v2;
+        inline Point3d operator+(const Point3d& p) const
+        {
+            return Point3d(dx + p.x, dy + p.y, dz + p.z);
+        }  // p1 = v0 + p0;
+        Vector3d operator+(const Vector3d& v) const
+        {
+            return Vector3d(dx + v.dx, dy + v.dy, dz + v.dz);
+        }  // v2 = v0 + v1;
+        const Vector3d& operator+=(const Vector3d& v)
+        {
+            dx += v.dx;
+            dy += v.dy;
+            dz += v.dz;
+            return *this;
+        }  // v1 += v0;
+        Vector3d operator-(const Vector3d& v) const
+        {
+            return Vector3d(dx - v.dx, dy - v.dy, dz - v.dz);
+        }  // v2 = v0 - v1;
+        const	Vector3d& operator-=(const Vector3d &v){
 			dx -= v.dx; dy -= v.dy; dz -= v.dz; return *this;}			// v1 -= v0;
 
 		const	Vector3d operator-(void)const{return Vector3d(-dx, -dy, -dz);}										// v1 = -v0;  (unary minus)
@@ -411,9 +476,15 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	void putz(double z){dz = z;}
 		double normalise(){double m = magnitude(); if(m < 1.0e-09) {dx=dy=dz=0; return 0;} dx/=m; dy/=m; dz/=m;		// normalise & returns magnitude
 		return m;}
-		inline	double magnitude(void)const{return(sqrt(dx * dx + dy * dy + dz * dz));}								// magnitude
-		inline	double magnitudeSq(void)const{return(dx * dx + dy * dy + dz * dz);}								    // magnitude squared
-		void Transform( const Matrix& m);																					// transform vector
+        inline double magnitude(void) const
+        {
+            return (sqrt(dx * dx + dy * dy + dz * dz));
+        }  // magnitude
+        inline double magnitudeSq(void) const
+        {
+            return (dx * dx + dy * dy + dz * dz);
+        }  // magnitude squared
+        void Transform( const Matrix& m);																					// transform vector
 		void arbitrary_axes(Vector3d& x, Vector3d& y);
 		int setCartesianAxes(Vector3d& b, Vector3d& c);
 		double* getBuffer(){return &this->dx;};																		// returns ptr to data
@@ -442,8 +513,13 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	CLine()	{ok = false;};
 		inline	CLine(const Point& p0, double dx, double dy, bool normalise = true){ p = p0; v = Vector2d(dx, dy); if(normalise) Normalise();};
 		inline	CLine(const Point& p0, const Vector2d& v0, bool normalise = true) {p = p0; v = v0; if(normalise) Normalise();};
-		//inline	CLine(const CLine& s) {p = s.p; v = s.v; ok = s.ok;}				// copy constructor  CLine s1(s2);
-		inline	CLine(const Point& p0, const Point& p1) {p = p0; v = Vector2d(p0, p1); Normalise();};
+        // inline CLine(const CLine& s)
+        // {
+        //     p = s.p;
+        //     v = s.v;
+        //     ok = s.ok;
+        // }  // copy constructor  CLine s1(s2);
+        inline	CLine(const Point& p0, const Point& p1) {p = p0; v = Vector2d(p0, p1); Normalise();};
 		CLine(const Span& sp);
 
 		// operators
@@ -478,14 +554,21 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		Point pc;
 		double	radius;
 
-		// constructors etc...
-		inline	Circle() {ok = false; radius = 0;}
-		Circle( const Point& p, double r);										// Circle  c1(Point(10,30), 20);
-		Circle( const Point& p, const Point& pc);								// Circle  c1(p[222], p[223]);
-		//Circle( const Circle& c ){*this = c;}									// copy constructor  Circle c1(c2);
-		Circle( const Span& sp);														// constructor
+        // constructors etc...
+        inline Circle()
+        {
+            ok = false;
+            radius = 0;
+        }
+        Circle(const Point& p, double r);         // Circle  c1(Point(10,30), 20);
+        Circle(const Point& p, const Point& pc);  // Circle  c1(p[222], p[223]);
+        // Circle(const Circle& c)
+        // {
+        //     *this = c;
+        // }                        // copy constructor  Circle c1(c2);
+        Circle(const Span& sp);  // constructor
 
-		// methods
+        // methods
 #ifdef PEPSDLL
 		void ToPeps(int id, bool draw = true);									// to Peps
 		void DelPeps(int id);													// delete Peps Circle
@@ -497,8 +580,8 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		Point	Intof(int LR, const Circle& c1, Point& otherInters);					// intof 2 circles, (returns the other intersection)
 		int		Intof(const Circle& c1, Point& leftInters, Point& rightInters);		// intof 2 circles (returns number of intersections & left/right inters)
 		CLine	Tanto(int AT,  double angle, const CLine& s0)const;			// a cline tanto this circle at angle
-	//	~Circle();																// destructor
-	};
+        // ~Circle();                                                  // destructor
+    };
 
 	// 2d box class
 	class Box{
@@ -603,12 +686,12 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	// general
 	double	atn360(double dx, double dy);									// angle 0 to 2pi
 
-	// distance functions
-	//double Dist(double px, double py, double p1x, double p1y);				// distance between 2 points (2d)
-	//double Dist(Point& p0, Point& p1);										// distance between 2 points (3d)
-	//double Dist(CLine& s, Point& p1);											// distance between cline & point
+    // distance functions
+    // double Dist(double px, double py, double p1x, double p1y); // distance between 2 points (2d)
+    // double Dist(Point& p0, Point& p1);                         // distance between 2 points (3d)
+    // double Dist(CLine& s, Point& p1);                          // distance between cline & point
 
-	double Dist(const Point3d *p, const Vector3d *vl, const Point3d *pf);							// distance from line (p, vl) and pf
+    double Dist(const Point3d *p, const Vector3d *vl, const Point3d *pf);							// distance from line (p, vl) and pf
 	double DistSq(const Point3d *p, const Vector3d *vl, const Point3d *pf);						// distance squared from line (p, vl) and pf
 	double Dist(const Circle& c, const Point& p);											// distance between c & p
 	double Dist(const Point& p0, const Circle& c, const Point& p1);								// clockwise distance around c from p0 to p1
@@ -622,19 +705,19 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 	// point definitions
-	Point	Mid(const Point& p0, const Point& p1, double factor = 0.5);					//// midpoint
-	Point	Mid(const Span& sp);													//// midpoint of a span
+	Point	Mid(const Point& p0, const Point& p1, double factor = 0.5);					// midpoint
+	Point	Mid(const Span& sp);													// midpoint of a span
 	Point	Rel(const Point& p, double x, double y);								// relative point
 	Point	Polar(const Point& p, double angle, double r);						// polar from this point
 	Point	AtAngle(const Circle& c, double angle);								// Point at angle on a circle
 	Point	XonCLine(const CLine& s, double xval);								// returns point that has X on this line
 	Point	YonCLine(const CLine& s, double yval);								// returns point that has Y on this line
-	Point	Intof(const CLine& s0, const CLine& s1);									//// intof 2 clines
-	Point	Intof(int NF, const CLine& s, const Circle& c);								//// intof of circle & a cline
-	Point	Intof(int NF, const CLine& s, const Circle& c, Point& otherInters);			//// intof of circle & a cline (returns the other intersection)
-	Point	Intof(int LR, const Circle& c0, const Circle& c1);							//// intof 2 circles
-	Point	Intof(int LR, const Circle& c0, const Circle& c1, Point& otherInters);		//// intof 2 circles, (returns the other intersection)
-	int		Intof(const Circle& c0, const Circle& c1, Point& pLeft, Point& pRight);		////    ditto
+	Point	Intof(const CLine& s0, const CLine& s1);									// intof 2 clines
+	Point	Intof(int NF, const CLine& s, const Circle& c);								// intof of circle & a cline
+	Point	Intof(int NF, const CLine& s, const Circle& c, Point& otherInters);			// intof of circle & a cline (returns the other intersection)
+	Point	Intof(int LR, const Circle& c0, const Circle& c1);							// intof 2 circles
+	Point	Intof(int LR, const Circle& c0, const Circle& c1, Point& otherInters);		// intof 2 circles, (returns the other intersection)
+	int		Intof(const Circle& c0, const Circle& c1, Point& pLeft, Point& pRight);		//    ditto
 	Point	Along(const CLine& s, double d);										// distance along Cline
 	Point	Along(const CLine& s, double d, const Point& p);								// distance along Cline from point
 	Point	Around(const Circle& c, double d, const Point& p);								// distance around a circle from point
@@ -644,7 +727,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	// cline definitions
 
 	CLine	AtAngle(double angle, const Point& p, const CLine& s = HORIZ_CLINE);		// cline at angle to line thro' point
-	CLine	Tanto(int AT, const Circle& c,  double angle, const CLine& s0 = HORIZ_CLINE);//// cline tanto circle at angle to optional cline
+	CLine	Tanto(int AT, const Circle& c,  double angle, const CLine& s0 = HORIZ_CLINE);// cline tanto circle at angle to optional cline
 	CLine	Tanto(int AT, const Circle& c, const Point& p);								// cline tanto circle thro' a point
 	CLine	Tanto(int AT0, const Circle& c0, int AT1, const Circle& c1);					// cline tanto 2 circles
 	CLine	Normal(const CLine& s);													// noirmal to cline
@@ -668,11 +751,16 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 	int		apolloniusProblem(int AT1 , const Circle& c1 , int AT2 , const Circle& c2, int AT3 , const CLine& cl3, Circle& Solution1, Circle& Solution2);
 	int		apolloniusProblem(int AT1 , const Circle& c1 , int AT2 , const CLine& cl2, int AT3 , const CLine& cl3, Circle& Solution1, Circle& Solution2);
 
-	//		Circle	Tanto(int AT0, int NF, int AT1, CLine s1, int AT2, CLine s2);	// circle tanto circle, and 2 clines
-	Circle	Parallel(int LR, const Circle& c, double distance);					// parallel to circle by a distance
+    // Circle Tanto(int AT0,
+    //              int NF,
+    //              int AT1,
+    //              CLine s1,
+    //              int AT2,
+    //              CLine s2);                                     // circle tanto circle, and 2 clines
+    Circle Parallel(int LR, const Circle& c, double distance);  // parallel to circle by a distance
 
 
-	// misc
+    // misc
 	inline double Radians(double degrees) {return degrees * PI / 180;}
 	inline double Degrees(double radians) { return radians * 180 / PI;}
 	int quadratic(double a, double b, double c, double& x0, double& x1);	// solve quadratic
@@ -748,12 +836,12 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 	class SpanVertex{
 	public:
-		int type[SPANSTORAGE];							// LINEAR CW or ACW																// 0 straight (cw = -1 (T)   acw = 1 (A) )
-		int spanid[SPANSTORAGE];						// identification (eg wire offset span info)
-		const SpanDataObject* index[SPANSTORAGE];					// other - pointer to
-		double x[SPANSTORAGE], y[SPANSTORAGE];			// vertex
-		double xc[SPANSTORAGE], yc[SPANSTORAGE];		// centre of arc
-	public:
+        int type[SPANSTORAGE];    // LINEAR CW or ACW	// 0 straight (cw = -1 (T)   acw = 1 (A) )
+        int spanid[SPANSTORAGE];  // identification (eg wire offset span info)
+        const SpanDataObject* index[SPANSTORAGE];  // other - pointer to
+        double x[SPANSTORAGE], y[SPANSTORAGE];     // vertex
+        double xc[SPANSTORAGE], yc[SPANSTORAGE];   // centre of arc
+    public:
 		// methods
 		void	Add(int offset, int type, const Point& p0, const Point& pc, int ID = UNMARKED);
 		const SpanDataObject* GetIndex(int offset)const;
@@ -811,10 +899,13 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		// destructor
 		~Kurve();
 
-		// methods
-		inline int		nSpans(	)const {return (m_nVertices)? m_nVertices - 1 : 0;}				// returns the number of spans
-		bool	Closed()const;									// returns true if kurve is closed
-		inline bool	Started()const {return m_started;};
+        // methods
+        inline int nSpans() const
+        {
+            return (m_nVertices) ? m_nVertices - 1 : 0;
+        }  // returns the number of spans
+        bool Closed() const;  // returns true if kurve is closed
+        inline bool	Started()const {return m_started;};
 		void	FullCircle(int dir, const Point& c, double radius);								// make a full circle
 		void	Start();												// start a new kurve
 		void	Start(const Point& p);											// start a new kurve with start point
@@ -837,8 +928,11 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		int		Get(int spanVertexNumber, Point3d& p, Point3d& pc) const
 		{ Point p2d, pc2d; int d = Get(spanVertexNumber, p2d, pc2d); p = p2d; pc = pc2d; return d;}
 		int		Get(int spannumber, Span& sp, bool returnSpanProperties = false, bool transform = false) const;
-//		int		Get(int spannumber, Span3d& sp, bool returnSpanProperties = false, bool transform = false) const;
-		void	Get(Point &ps,Point &pe) const; // returns the start- and endpoint of the kurve
+        // int Get(int spannumber,
+        //         Span3d& sp,
+        //         bool returnSpanProperties = false,
+        //         bool transform = false) const;
+        void	Get(Point &ps,Point &pe) const; // returns the start- and endpoint of the kurve
 		const SpanDataObject* GetIndex(int vertexNumber)const;
 		inline double GetLength()const{ return Perim();};  // returns the length of a kurve
 
@@ -886,9 +980,16 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		Kurve	Part(double fromParam, double toParam);											// part kurve perimeter parameterisation
 		void AddSections(const Kurve* k, bool endOfSection);		// special add kurves for rollingball
 		void	AddEllipse(int dir, const Point& pStart, const Point& pEnd, const Point& pCentre, const Vector2d& majorAxis, double majorRadius, double minorRadius, double tolerance);
-//		void Kurve::AddEllipse(int dir, Plane *plEllipse, Vector3d *cylAxis, Point3d *cylCentre, double cylradius, Point3d *pStart, Point3d *pEnd, double tolerance);		/// elliptical curve - biarc in tolerance
+        // void Kurve::AddEllipse(int dir,
+        //                        Plane* plEllipse,
+        //                        Vector3d* cylAxis,
+        //                        Point3d* cylCentre,
+        //                        double cylradius,
+        //                        Point3d* pStart,
+        //                        Point3d* pEnd,
+        //                        double tolerance);  // elliptical curve - biarc in tolerance
 
-		void	Spiral(const Point& centre, double startAngle, double startRadius, double radiusRisePerRevolution, double endRadius);
+        void	Spiral(const Point& centre, double startAngle, double startRadius, double radiusRisePerRevolution, double endRadius);
 #ifdef PARASOLID
 		int ToPKcurve(PK_CURVE_t *curves, PK_INTERVAL_t *ranges, int start_spanno, int n_spans); // Convert to PK Curve
 
@@ -965,13 +1066,20 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		Line(const Point3d& p0, const Point3d& p1);
 		Line(const Span& sp);
 
-		// methods
-		void minmax();
-		Point3d Near(const Point3d& p, double& t)const;				// near point to line from point (0 >= t <= 1) in range
-		int Intof(const Line& l, Point3d& intof)const {return geoff_geometry::Intof(*this, l, intof);};	// intof 2 lines
-		bool atZ(double z, Point3d& p)const;						// returns p at z on line
-		bool Shortest(const Line& l2, Line& lshort, double& t1, double& t2)const;	// calculate shortest line between this & l2
-	};
+        // methods
+        void minmax();
+        Point3d Near(const Point3d& p,
+                     double& t) const;  // near point to line from point (0 >= t <= 1) in range
+        int Intof(const Line& l, Point3d& intof) const
+        {
+            return geoff_geometry::Intof(*this, l, intof);
+        };  // intof 2 lines
+        bool atZ(double z, Point3d& p) const;  // returns p at z on line
+        bool Shortest(const Line& l2,
+                      Line& lshort,
+                      double& t1,
+                      double& t2) const;  // calculate shortest line between this & l2
+    };
 
 
 class Triangle3d {

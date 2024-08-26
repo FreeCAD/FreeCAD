@@ -2843,9 +2843,11 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
 				areaPD = area / double(stepScaled); // area per distance
 				interp.addPoint(areaPD, angle);
-				double error = areaPD - targetAreaPD;
-				//	cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD << " target:" << targetAreaPD << " error:" << error << " max:"<< maxError << endl;
-				if (fabs(error) < maxError)
+                double error = areaPD - targetAreaPD;
+                // cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD
+                //      << " target:" << targetAreaPD << " error:" << error << " max:" << maxError
+                //      << endl;
+                if (fabs(error) < maxError)
 				{
 					angleHistory.push_back(angle);
 					if (angleHistory.size() > ANGLE_HISTORY_POINTS)
