@@ -2430,7 +2430,7 @@ void Application::checkForDeprecatedSettings()
                 ->GetBool("UseFCBakExtension", true);
         if (!useFCBakExtension) {
             // TODO: This should be translated
-            Base::Console().Warning("The `.FCStd#` backup format is deprecated as of v0.21 and may "
+            Base::Console().Warning("The `.FCStd#` backup format is deprecated and may "
                                     "be removed in future versions.\n"
                                     "To update, check the 'Preferences->General->Document->Use "
                                     "date and FCBak extension' option.\n");
