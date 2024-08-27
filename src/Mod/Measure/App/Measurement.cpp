@@ -350,8 +350,7 @@ double Measurement::length() const
             std::vector<std::string>::const_iterator subEl = subElements.begin();
 
             for (; obj != objects.end(); ++obj, ++subEl) {
-                // const Part::Feature *refObj = static_cast<const Part::Feature*>((*obj));
-                // const Part::TopoShape& refShape = refObj->Shape.getShape();
+
                 //  Get the length of one edge
                 TopoDS_Shape shape = getShape(*obj, (*subEl).c_str());
                 const TopoDS_Edge& edge = TopoDS::Edge(shape);
@@ -756,8 +755,6 @@ Base::Vector3d Measurement::massCenter() const
             std::vector<std::string>::const_iterator subEl = subElements.begin();
 
             for (; obj != objects.end(); ++obj, ++subEl) {
-                // const Part::Feature *refObj = static_cast<const Part::Feature*>((*obj));
-                // const Part::TopoShape& refShape = refObj->Shape.getShape();
 
                 // Compute inertia properties
 
@@ -767,15 +764,12 @@ Base::Vector3d Measurement::massCenter() const
                 // Get inertia properties
             }
 
-            // double mass = gprops.Mass();
             gp_Pnt cog = gprops.CentreOfMass();
 
             return Base::Vector3d(cog.X(), cog.Y(), cog.Z());
         }
         else {
             Base::Console().Error("Measurement::massCenter - measureType is not recognized\n");
-            //          throw Base::ValueError("Measurement - massCenter - Invalid References3D
-            //          Provided");
         }
     }
     return result;
