@@ -263,7 +263,7 @@ class ViewProviderDraft(object):
         draw style, shape color, transparency, and others.
 
         This method  updates the texture and pattern if
-        the properties `TextureImage`, `Pattern`, `DiffuseColor`,
+        the properties `TextureImage`, `Pattern`, `ShapeAppearance`,
         and `PatternSize` change.
 
         Parameters
@@ -275,7 +275,7 @@ class ViewProviderDraft(object):
             Name of the property that was modified.
         """
         # treatment of patterns and image textures
-        if prop in ("TextureImage", "Pattern", "DiffuseColor"):
+        if prop in ("TextureImage", "Pattern", "ShapeAppearance"):
             if hasattr(self.Object, "Shape"):
                 if self.Object.Shape.Faces:
                     path = None
