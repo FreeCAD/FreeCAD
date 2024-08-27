@@ -1366,42 +1366,48 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
     CoinPtr<SoPath> path = pp->getPath();
     if(!nodeArray.empty()) {
         auto idx = path->findNode(pcLinkRoot);
-        if(idx<0 || idx+2>=path->getLength())
+        if (idx < 0 || idx + 2 >= path->getLength()) {
             return false;
+        }
         auto node = path->getNode(idx+1);
         auto it = nodeMap.find(node);
-        if(it == nodeMap.end() || !isElementVisible(it->second))
+        if(it == nodeMap.end() || !isElementVisible(it->second)) {
             return false;
+        }
         int nodeIdx = it->second;
         ++idx;
         while(nodeArray[nodeIdx]->isGroup) {
             auto &info = *nodeArray[nodeIdx];
-            if(!info.isLinked())
+            if(!info.isLinked()) {
                 return false;
+            }
             ss << info.linkInfo->getLinkedName() << '.';
             idx += 2;
-            if(idx>=path->getLength())
+            if(idx>=path->getLength()) {
                 return false;
+            }
             auto iter = nodeMap.find(path->getNode(idx));
-            if(iter == nodeMap.end() || !isElementVisible(iter->second))
+            if(iter == nodeMap.end() || !isElementVisible(iter->second)) {
                 return false;
+            }
             nodeIdx = iter->second;
         }
+
         auto &info = *nodeArray[nodeIdx];
-        if(nodeIdx == it->second)
-            ss << it->second << '.';
-        else
-            ss << info.linkInfo->getLinkedName() << '.';
+        ss << info.linkInfo->getLinkedName() << '.';
+
         if(info.isLinked()) {
-            if(!info.linkInfo->getElementPicked(false,childType,pp,ss))
+            if (!info.linkInfo->getElementPicked(false, childType, pp, ss)) {
                 return false;
+            }
             subname = ss.str();
             return true;
         }
     }
 
-    if(!isLinked())
+    if(!isLinked()) {
         return false;
+    }
 
     if(nodeType >= 0) {
         if(linkInfo->getElementPicked(false,nodeType,pp,ss)) {
@@ -1411,26 +1417,33 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         return false;
     }
     auto idx = path->findNode(pcLinkedRoot);
-    if(idx<0 || idx+1>=path->getLength())
+    if(idx<0 || idx+1>=path->getLength()) {
         return false;
+    }
     auto node = path->getNode(idx+1);
     for(const auto &v : subInfo) {
         auto &sub = *v.second;
-        if(node != sub.pcNode) continue;
+        if (node != sub.pcNode) {
+            continue;
+        }
+
         std::ostringstream ss2;
-        if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,ss2))
+        if(!sub.linkInfo->getElementPicked(false,SnapshotTransform,pp,ss2)) {
             return false;
+        }
         const std::string &element = ss2.str();
         if(!sub.subElements.empty()) {
             if(sub.subElements.find(element)==sub.subElements.end()) {
                 auto pos = element.find('.');
-                if(pos==std::string::npos ||
-                   sub.subElements.find(element.c_str()+pos+1)==sub.subElements.end())
+                if (pos == std::string::npos ||
+                    sub.subElements.find(element.c_str() + pos + 1) == sub.subElements.end()) {
                     return false;
+                }
             }
         }
-        if(!autoSubLink || subInfo.size()>1)
+        if (!autoSubLink || subInfo.size() > 1) {
             ss << v.first;
+        }
         ss << element;
         subname = ss.str();
         return true;
@@ -2280,20 +2293,24 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {
 }
 
 bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!isSelectable())
+    if(!isSelectable()) {
         return false;
+    }
     auto ext = getLinkExtension();
-    if(!ext)
+    if (!ext) {
         return false;
+    }
     if(childVpLink && childVp) {
         auto path = pp->getPath();
         int idx = path->findNode(childVpLink->getSnapshot(LinkView::SnapshotTransform));
-        if(idx>=0)
-            return childVp->getElementPicked(pp,subname);
+        if(idx>=0) {
+            return childVp->getElementPicked(pp, subname);
+        }
     }
     bool ret = linkView->linkGetElementPicked(pp,subname);
-    if(!ret)
+    if(!ret) {
         return ret;
+    }
     if(isGroup(ext,true)) {
         const char *sub = nullptr;
         int idx = App::LinkBaseExtension::getArrayIndex(subname.c_str(),&sub);
