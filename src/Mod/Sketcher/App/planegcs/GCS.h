@@ -633,9 +633,9 @@ protected:
 // Helper elements
 ///////////////////////////////////////
 
-void free(VEC_pD& doublevec);
-void free(std::vector<Constraint*>& constrvec);
-void free(std::vector<SubSystem*>& subsysvec);
+void deleteAllContent(VEC_pD& doublevec);
+void deleteAllContent(std::vector<Constraint*>& constrvec);
+void deleteAllContent(std::vector<SubSystem*>& subsysvec);
 
 }  // namespace GCS
 

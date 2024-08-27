@@ -525,7 +525,7 @@ void System::clear()
 
     reference.clear();
     clearSubSystems();
-    free(clist);
+    deleteAllContent(clist);
     c2p.clear();
     p2c.clear();
 }
@@ -5823,12 +5823,11 @@ void System::identifyConflictingRedundantConstraints(
     nonredundantconstrNum = constrNum;
 }
 
-
 void System::clearSubSystems()
 {
     isInit = false;
-    free(subSystems);
-    free(subSystemsAux);
+    deleteAllContent(subSystems);
+    deleteAllContent(subSystemsAux);
     subSystems.clear();
     subSystemsAux.clear();
 }
@@ -5910,67 +5909,26 @@ double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir)
     return alphaStar;
 }
 
-void free(VEC_pD& doublevec)
+void deleteAllContent(VEC_pD& doublevec)
 {
-    for (VEC_pD::iterator it = doublevec.begin(); it != doublevec.end(); ++it) {
-        if (*it) {
-            delete *it;
-        }
+    for (auto& doubleptr : doublevec) {
+        delete doubleptr;
     }
     doublevec.clear();
 }
 
-void free(std::vector<Constraint*>& constrvec)
+void deleteAllContent(std::vector<Constraint*>& constrvec)
 {
-    for (std::vector<Constraint*>::iterator constr = constrvec.begin(); constr != constrvec.end();
-         ++constr) {
-        if (*constr) {
-            switch ((*constr)->getTypeId()) {
-                case Equal:
-                    delete static_cast<ConstraintEqual*>(*constr);
-                    break;
-                case Difference:
-                    delete static_cast<ConstraintDifference*>(*constr);
-                    break;
-                case P2PDistance:
-                    delete static_cast<ConstraintP2PDistance*>(*constr);
-                    break;
-                case P2PAngle:
-                    delete static_cast<ConstraintP2PAngle*>(*constr);
-                    break;
-                case P2LDistance:
-                    delete static_cast<ConstraintP2LDistance*>(*constr);
-                    break;
-                case PointOnLine:
-                    delete static_cast<ConstraintPointOnLine*>(*constr);
-                    break;
-                case Parallel:
-                    delete static_cast<ConstraintParallel*>(*constr);
-                    break;
-                case Perpendicular:
-                    delete static_cast<ConstraintPerpendicular*>(*constr);
-                    break;
-                case L2LAngle:
-                    delete static_cast<ConstraintL2LAngle*>(*constr);
-                    break;
-                case MidpointOnLine:
-                    delete static_cast<ConstraintMidpointOnLine*>(*constr);
-                    break;
-                case None:
-                default:
-                    delete *constr;
-            }
-        }
+    for (auto& constr : constrvec) {
+        delete constr;
     }
     constrvec.clear();
 }
 
-void free(std::vector<SubSystem*>& subsysvec)
+void deleteAllContent(std::vector<SubSystem*>& subsysvec)
 {
-    for (std::vector<SubSystem*>::iterator it = subsysvec.begin(); it != subsysvec.end(); ++it) {
-        if (*it) {
-            delete *it;
-        }
+    for (auto& subsys : subsysvec) {
+        delete subsys;
     }
 }
 
