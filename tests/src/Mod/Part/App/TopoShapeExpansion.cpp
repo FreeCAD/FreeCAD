@@ -1678,8 +1678,6 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 9);
     EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
-    // EXPECT_EQ(elements[IndexedName("Face", 1)],
-    // MappedName("Edge1;:L(Edge1;D1|Vertex1;:L(Vertex1;D1);RSF|Vertex2;:L(Vertex2;D1);RSF);RSF"));
     EXPECT_TRUE(allElementsMatch(
         topoShape,
         {
@@ -1712,9 +1710,7 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
     EXPECT_TRUE(surface.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 24);
     EXPECT_EQ(elements.count(IndexedName("Edge", 1)), 1);
-    // EXPECT_EQ(elements[IndexedName("Face", 1)],
-    // MappedName("Edge1;:L(Edge1;D1|Vertex1;:L(Vertex1;D1);RSF|Vertex2;:L(Vertex2;D1);RSF);RSF"));
-    EXPECT_TRUE(allElementsMatch(
+    EXPECT_TRUE(elementsMatch(  // Depending on OCCT versions can get 24 or 28 entries here.
         surface,
         {
             "Edge1",
