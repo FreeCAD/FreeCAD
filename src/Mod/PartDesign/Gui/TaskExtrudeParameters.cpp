@@ -711,7 +711,9 @@ void TaskExtrudeParameters::setCheckboxes(Mode mode, Type type)
         isLengthEdit2Visible = true;
         isTaperEditVisible = true;
         isTaperEdit2Visible = true;
-        isReversedEnabled = true;
+        isMidplaneVisible = true;
+        isMidplaneEnabled = true;
+        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
 
     ui->lengthEdit->setVisible(isLengthEditVisible);

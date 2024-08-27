@@ -302,7 +302,9 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
     else if (mode == PartDesign::Revolution::RevolMethod::TwoDimensions) {
         isRevolveAngleVisible = true;
         isRevolveAngle2Visible = true;
-        isReversedEnabled = true;
+        isMidplaneVisible = true;
+        isMidplaneEnabled = true;
+        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     }
 
     ui->revolveAngle->setVisible(isRevolveAngleVisible);
@@ -557,6 +559,7 @@ void TaskRevolutionParameters::onMidplane(bool on)
 {
     if (getObject()) {
         propMidPlane->setValue(on);
+        ui->checkBoxReversed->setEnabled(!on);
         recomputeFeature();
     }
 }
