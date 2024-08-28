@@ -1,9 +1,17 @@
-from FreeCAD import Vector, newDocument, closeDocument
+from FreeCAD import Vector, Base, newDocument, closeDocument
 import Part
+import Sketcher
 
 import unittest
 
 class RegressionTests(unittest.TestCase):
+
+    # pylint: disable=attribute-defined-outside-init
+
+    def setUp(self):
+        """Create a document for each test in the test suite"""
+        self.Doc = newDocument("PartRegressionTest." + self._testMethodName)
+        self.KeepTestDoc = False
 
     def test_issue_4456(self):
         """
@@ -27,11 +35,6 @@ class RegressionTests(unittest.TestCase):
         """
 
         # Arrange
-        from FreeCAD import Base
-        import Sketcher
-
-        self.Doc = newDocument("TestLoftWithPointSketch")
-
         ArcSketch = self.Doc.addObject("Sketcher::SketchObject", "ArcSketch")
         ArcSketch.Placement = Base.Placement(
             Base.Vector(0.000000, 0.000000, 0.000000),
@@ -92,16 +95,13 @@ class RegressionTests(unittest.TestCase):
 
         # Assert
         self.assertTrue(Loft.isValid())
-        if Loft.isValid():
-            closeDocument(self.Doc.Name)
+        self.KeepTestDoc = not Loft.isValid()
 
     def test_OptimalBox(self):
         box = Part.makeBox(1, 1, 1)
         self.assertTrue(box.optimalBoundingBox(True, False).isValid())
 
     def test_CircularReference(self):
-        # put me in def setup(self): ?
-        self.Doc = newDocument("TestSketchExpr")
 
         cube = self.Doc.addObject("Part::Box","Cube")
         cube.setExpression('Length', 'Width + 10mm')
@@ -119,5 +119,13 @@ class RegressionTests(unittest.TestCase):
         cube.recompute()
         assert cube.Placement.Base.isEqual(v1,1e-6)
 
-        # Put me in def tearDown(self): ?
+    def tearDown(self):
+        """Clean up our test, optionally preserving the test document"""
+        # This flag allows doing something like this:
+        #   self.KeepTestDoc = True
+        #   import TestApp
+        #   TestApp.Test("TestPartApp.RegressionTests.test_issue_15735")
+        # to leave the test document(s) around for further examination in an interactive setting.
+        if hasattr(self, "KeepTestDoc") and self.KeepTestDoc:
+            return
         closeDocument(self.Doc.Name)
