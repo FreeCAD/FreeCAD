@@ -42,6 +42,25 @@ import Preferences
 
 from SoSwitchMarker import SoSwitchMarker
 
+try:
+    import sys, os, traceback, inspect
+    from datetime import datetime
+except ImportError:
+    App.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
+    raise
+
+
+def trace():
+    print("Trace Begin")
+    # logger = App.Logger('MyModule')
+    # logger.info('log test {}',1)
+    # App.setLogLevel('MyModule','Trace')
+    # logger.trace('trace test {}',1)
+    lines = traceback.format_stack()
+    for i in range(0, len(lines) - 1):
+        print(lines[i].strip().split("\n", 1)[0])
+
+
 translate = App.Qt.translate
 
 TranslatedJointTypes = [

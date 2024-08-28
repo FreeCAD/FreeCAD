@@ -24,6 +24,7 @@ generate_from_xml(BomObjectPy)
 generate_from_xml(BomGroupPy)
 generate_from_xml(JointGroupPy)
 generate_from_xml(ViewGroupPy)
+generate_from_xml(SimulationGroupPy)
 
 SET(Python_SRCS
     AssemblyObjectPy.xml
@@ -38,6 +39,8 @@ SET(Python_SRCS
     JointGroupPyImp.cpp
     ViewGroupPy.xml
     ViewGroupPyImp.cpp
+    SimulationGroupPy.xml
+    SimulationGroupPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -62,6 +65,8 @@ SET(Assembly_SRCS
     JointGroup.h
     ViewGroup.cpp
     ViewGroup.h
+    SimulationGroup.cpp
+    SimulationGroup.h
     ${Module_SRCS}
     ${Python_SRCS}
 )

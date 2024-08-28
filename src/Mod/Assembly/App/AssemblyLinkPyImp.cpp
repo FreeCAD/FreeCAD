@@ -45,3 +45,15 @@ int AssemblyLinkPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
+
+Py::List AssemblyLinkPy::getJoints() const
+{
+    Py::List ret;
+    std::vector<App::DocumentObject*> list = getAssemblyLinkPtr()->getJoints();
+
+    for (auto It : list) {
+        ret.append(Py::Object(It->getPyObject(), true));
+    }
+
+    return ret;
+}
