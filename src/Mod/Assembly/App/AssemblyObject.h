@@ -280,7 +280,6 @@ public:
                                                     const char* propName);
     static std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop);
     static std::vector<std::string> getSubAsList(App::DocumentObject* joint, const char* propName);
-    static std::vector<std::string> splitSubName(const std::string& subName);
     static Base::Placement getPlacementFromProp(App::DocumentObject* obj, const char* propName);
 
     static Base::Placement getGlobalPlacement(App::DocumentObject* targetObj,

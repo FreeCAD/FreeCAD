@@ -2105,7 +2105,7 @@ Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetOb
     if (!targetObj || !rootObj || sub == "") {
         return Base::Placement();
     }
-    std::vector<std::string> names = splitSubName(sub);
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
 
     App::Document* doc = rootObj->getDocument();
     Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
@@ -2193,7 +2193,7 @@ std::vector<std::string> AssemblyObject::getSubAsList(App::PropertyXLinkSub* pro
         return {};
     }
 
-    return splitSubName(subs[0]);
+    return Base::Tools::splitSubName(subs[0]);
 }
 
 std::vector<std::string> AssemblyObject::getSubAsList(App::DocumentObject* obj, const char* pName)
@@ -2201,27 +2201,6 @@ std::vector<std::string> AssemblyObject::getSubAsList(App::DocumentObject* obj, 
     auto* prop = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(pName));
 
     return getSubAsList(prop);
-}
-
-std::vector<std::string> AssemblyObject::splitSubName(const std::string& sub)
-{
-    // Turns 'Part.Part001.Body.Pad.Edge1'
-    // Into ['Part', 'Part001','Body','Pad','Edge1']
-    std::vector<std::string> subNames;
-    std::string subName;
-    std::istringstream subNameStream(sub);
-    while (std::getline(subNameStream, subName, '.')) {
-        subNames.push_back(subName);
-    }
-
-    // Check if the last character of the input string is the delimiter.
-    // If so, add an empty string to the subNames vector.
-    // Because the last subname is the element name and can be empty.
-    if (!sub.empty() && sub.back() == '.') {
-        subNames.push_back("");  // Append empty string for trailing dot.
-    }
-
-    return subNames;
 }
 
 std::string AssemblyObject::getElementFromProp(App::DocumentObject* obj, const char* pName)
@@ -2370,7 +2349,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
 
     App::Document* doc = obj->getDocument();
 
-    std::vector<std::string> names = splitSubName(sub);
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
     names.insert(names.begin(), obj->getNameInDocument());
 
     bool assemblyPassed = false;
