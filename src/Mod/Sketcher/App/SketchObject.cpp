@@ -1868,7 +1868,6 @@ int SketchObject::setConstruction(int GeoId, bool on)
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
-#ifdef FC_USE_TNP_FIX
    Part::PropertyGeometryList *prop;
     int idx;
     if (GeoId >= 0) {
@@ -1882,21 +1881,12 @@ int SketchObject::setConstruction(int GeoId, bool on)
         idx = -GeoId-1;
     }else
         return -1;
-#else
-    const std::vector<Part::Geometry*>& vals = getInternalGeometry();
-    if (GeoId < 0 || GeoId >= int(vals.size()))
-        return -1;
-
-    if (getGeometryFacade(GeoId)->isInternalAligned())
-        return -1;
-#endif
 
     // While it may seem that there is not a need to trigger an update at this time, because the
     // solver has its own copy of the geometry, and updateColors of the viewprovider may be
     // triggered by the clearselection of the UI command, this won't update the elements widget, in
     // the accumulative of actions it is judged that it is worth to trigger an update here.
 
-#ifdef FC_USE_TNP_FIX
     std::unique_ptr<Part::Geometry> geo(prop->getValues()[idx]->clone());
     if(prop == &Geometry)
         GeometryFacade::setConstruction(geo.get(), on);
@@ -1906,12 +1896,6 @@ int SketchObject::setConstruction(int GeoId, bool on)
     }
 
     prop->set1Value(idx,std::move(geo));
-
-#else
-    std::unique_ptr<Part::Geometry> geo(vals[GeoId]->clone());
-    GeometryFacade::setConstruction(geo.get(), on);
-    this->Geometry.set1Value(GeoId, std::move(geo));
-#endif
     solverNeedsUpdate = true;
     return 0;
 }
@@ -7751,7 +7735,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
     solverNeedsUpdate = true;
     return ExternalGeometry.getValues().size() - 1;
 }
-#ifdef FC_USE_TNP_FIX
+
 int SketchObject::delExternal(int ExtGeoId)
 {
     return delExternal(std::vector<int>{ExtGeoId});
@@ -7780,73 +7764,7 @@ int SketchObject::delExternal(const std::vector<int>& ExtGeoIds)
     delExternalPrivate(geoIds, true);
     return 0;
 }
-#else
-int SketchObject::delExternal(int ExtGeoId)
-{
-    // no need to check input data validity as this is an sketchobject managed operation.
-    Base::StateLocker lock(managedoperation, true);
 
-    // get the actual lists of the externals
-    std::vector<DocumentObject*> Objects = ExternalGeometry.getValues();
-    std::vector<std::string> SubElements = ExternalGeometry.getSubValues();
-
-    if (ExtGeoId < 0 || ExtGeoId >= int(SubElements.size()))
-        return -1;
-
-    const std::vector<DocumentObject*> originalObjects = Objects;
-    const std::vector<std::string> originalSubElements = SubElements;
-
-    Objects.erase(Objects.begin() + ExtGeoId);
-    SubElements.erase(SubElements.begin() + ExtGeoId);
-
-    const std::vector<Constraint*>& constraints = Constraints.getValues();
-    std::vector<Constraint*> newConstraints;
-    std::vector<Constraint*> copiedConstraints;
-    int GeoId = GeoEnum::RefExt - ExtGeoId;
-    for (auto cstr : constraints) {
-        if (cstr->First != GeoId && cstr->Second != GeoId && cstr->Third != GeoId) {
-            auto copiedConstr = cstr;
-            if (copiedConstr->First < GeoId && copiedConstr->First != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->First += 1;
-            }
-            if (copiedConstr->Second < GeoId && copiedConstr->Second != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->Second += 1;
-            }
-            if (copiedConstr->Third < GeoId && copiedConstr->Third != GeoEnum::GeoUndef) {
-                if (cstr == copiedConstr)
-                    copiedConstr = cstr->clone();
-                copiedConstr->Third += 1;
-            }
-
-            newConstraints.push_back(copiedConstr);
-            if (cstr != copiedConstr)
-                copiedConstraints.push_back(copiedConstr);
-        }
-    }
-
-    ExternalGeometry.setValues(Objects, SubElements);
-    try {
-        rebuildExternalGeometry();
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
-        // revert to original values
-        ExternalGeometry.setValues(originalObjects, originalSubElements);
-        for (Constraint* it : copiedConstraints)
-            delete it;
-        return -1;
-    }
-
-    solverNeedsUpdate = true;
-    Constraints.setValues(std::move(newConstraints));
-    acceptGeometry();// This may need to be refactored into OnChanged for ExternalGeometry.
-    return 0;
-}
-#endif
 void SketchObject::delExternalPrivate(const std::set<long> &ids, bool removeRef) {
 
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
@@ -8503,7 +8421,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
     // We use a vector here to keep the order (roughly) the same as ExternalGeometry
     std::vector<std::vector<std::unique_ptr<Part::Geometry> > > newGeos;
     newGeos.reserve(Objects.size());
-#ifdef FC_USE_TNP_FIX
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
         const std::string &SubElement=SubElements[i];
@@ -8527,24 +8444,6 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
             refSet.insert(std::move(key));
             continue;
         }
-#else
-    for (std::vector<Part::Geometry*>::iterator it = ExternalGeo.begin(); it != ExternalGeo.end();
-         ++it)
-        if (*it)
-            delete *it;
-    ExternalGeo.clear();
-    Part::GeomLineSegment* HLine = new Part::GeomLineSegment();
-    Part::GeomLineSegment* VLine = new Part::GeomLineSegment();
-    HLine->setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(1, 0, 0));
-    VLine->setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(0, 1, 0));
-    GeometryFacade::setConstruction(HLine, true);
-    GeometryFacade::setConstruction(VLine, true);
-    ExternalGeo.push_back(HLine);
-    ExternalGeo.push_back(VLine);
-    for (int i = 0; i < int(Objects.size()); i++) {
-        const App::DocumentObject* Obj = Objects[i];
-        const std::string SubElement = SubElements[i];
-#endif
         if(!Obj || !Obj->getNameInDocument())
             continue;
 
@@ -10314,7 +10213,6 @@ void SketchObject::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &ExternalGeometry) {
-#ifdef FC_USE_TNP_FIX
         if (doc && doc->isPerformingTransaction()) {
             setStatus(App::PendingTransactionUpdate, true);
         }
@@ -10350,15 +10248,6 @@ void SketchObject::onChanged(const App::Property* prop)
             }
             solve();
         }
-#else
-        // make sure not to change anything while restoring this object
-        if (!isRestoring()) {
-            // external geometry was cleared
-            if (ExternalGeometry.getSize() == 0) {
-                delConstraintsToExternal();
-            }
-        }
-#endif
     }
 #if 0
     // For now do not delete anything (#0001791). When changing the support
@@ -10617,7 +10506,6 @@ void SketchObject::restoreFinished()
     try {
         migrateSketch();
 
-#ifdef FC_USE_TNP_FIX
         updateGeometryRefs();
         if(ExternalGeo.getSize()<=2) {
             if (ExternalGeo.getSize() < 2)
@@ -10634,11 +10522,6 @@ void SketchObject::restoreFinished()
         }else
             acceptGeometry();
 
-#else
-        validateExternalLinks();
-        rebuildExternalGeometry();
-        Constraints.acceptGeometry(getCompleteGeometry());
-#endif
         synchroniseGeometryState();
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before

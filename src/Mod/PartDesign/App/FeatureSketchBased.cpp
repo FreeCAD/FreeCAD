@@ -404,7 +404,6 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
-#ifdef FC_USE_TNP_FIX
 TopoShape ProfileBased::getProfileShape() const
 {
     TopoShape shape;
@@ -426,19 +425,6 @@ TopoShape ProfileBased::getProfileShape() const
     }
     return shape;
 }
-#else
-Part::TopoShape ProfileBased::getProfileShape() const
-{
-    auto shape = getTopoShape(Profile.getValue());
-    if (!shape.isNull() && !Profile.getSubValues().empty()) {
-        std::vector<Part::TopoShape> shapes;
-        for (auto& sub : Profile.getSubValues(true))
-            shapes.emplace_back(shape.getSubShape(sub.c_str()));
-        shape = Part::TopoShape().makeCompound(shapes);
-    }
-    return shape;
-}
-#endif
 
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.

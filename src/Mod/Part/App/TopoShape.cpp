@@ -1199,7 +1199,7 @@ bool TopoShape::getCenterOfGravity(Base::Vector3d& center) const
 
     return false;
 }
-#ifdef FC_USE_TNP_FIX
+
 void TopoShape::Save (Base::Writer &writer ) const
 {
     Data::ComplexGeoData::Save(writer);
@@ -1221,60 +1221,6 @@ void TopoShape::RestoreDocFile(Base::Reader &reader)
 }
 
 
-#else
-void TopoShape::Save (Base::Writer& writer) const
-{
-    if(!writer.isForceXML()) {
-        //See SaveDocFile(), RestoreDocFile()
-        // add a filename to the writer's list.  Each file on the list is eventually
-        // processed by SaveDocFile().
-        if (writer.getMode("BinaryBrep")) {
-            writer.Stream() << writer.ind() << "<TopoShape file=\""
-                            << writer.addFile("TopoShape.bin", this)
-                            << "\"/>" << std::endl;
-        }
-        else {
-            writer.Stream() << writer.ind() << "<TopoShape file=\""
-                            << writer.addFile("TopoShape.brp", this)
-                            << "\"/>" << std::endl;
-        }
-    }}
-
-void TopoShape::Restore(Base::XMLReader& reader)
-{
-    reader.readElement("TopoShape");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // add a filename to the writer's list.  Each file on the list is eventually
-        // processed by RestoreDocFile().
-        reader.addFile(file.c_str(),this);
-    }
-}
-
-void TopoShape::SaveDocFile (Base::Writer& writer) const
-{
-    if (getShape().IsNull()) {
-        return;
-    }
-    //the writer has already opened a stream with the appropriate filename
-    if (writer.getMode("BinaryBrep")) {
-        exportBinary(writer.Stream());
-    } else {
-        exportBrep(writer.Stream());
-    }
-}
-
-void TopoShape::RestoreDocFile(Base::Reader& reader)
-{
-    Base::FileInfo brep(reader.getFileName());
-    if (brep.hasExtension("bin")) {
-        importBinary(reader);
-    } else {
-        importBrep(reader);
-    }
-}
-#endif
 unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)
 {
     unsigned int size = 1; // this shape
