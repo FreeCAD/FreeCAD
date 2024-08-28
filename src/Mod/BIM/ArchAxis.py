@@ -398,7 +398,7 @@ class _ViewProviderAxis:
                                     except Exception:
                                         # workaround for pivy SoInput.setBuffer() bug
                                         buf = buf.replace("\n","")
-                                        pts = re.findall("point \[(.*?)\]",buf)[0]
+                                        pts = re.findall(r"point \[(.*?)\]",buf)[0]
                                         pts = pts.split(",")
                                         pc = []
                                         for point in pts:
