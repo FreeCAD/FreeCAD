@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="721"/>
       <location filename="../../Command.cpp" line="723"/>
       <source>Add triangle manually to a mesh</source>
-      <translation>Handmatig een driehoek toevoegen aan een gaas</translation>
+      <translation>Handmatig een driehoek toevoegen aan een mesh</translation>
     </message>
   </context>
   <context>
@@ -139,13 +139,13 @@
     <message>
       <location filename="../../Command.cpp" line="1265"/>
       <source>Check solid mesh</source>
-      <translation>Controleer vast maaswerk</translation>
+      <translation>Controleer vaste mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1266"/>
       <location filename="../../Command.cpp" line="1268"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Controleert of het maaswerk een volumemodel is</translation>
+      <translation>Controleert of de mesh een volumemodel is</translation>
     </message>
   </context>
   <context>
@@ -158,13 +158,13 @@
     <message>
       <location filename="../../Command.cpp" line="1046"/>
       <source>Evaluate and repair mesh...</source>
-      <translation>Evalueer en repareer maaswerk...</translation>
+      <translation>Evalueer en repareer mesh...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1047"/>
       <location filename="../../Command.cpp" line="1049"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Opent een venster voor analyse en reparatie van een maaswerk</translation>
+      <translation>Opent een venster voor analyse en reparatie van een mesh</translation>
     </message>
   </context>
   <context>
@@ -177,13 +177,13 @@
     <message>
       <location filename="../../Command.cpp" line="377"/>
       <source>Export mesh...</source>
-      <translation>Gaas exporteren...</translation>
+      <translation>Mesh exporteren...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="378"/>
       <location filename="../../Command.cpp" line="380"/>
       <source>Exports a mesh to file</source>
-      <translation>Exporteert een gaas naar een bestand</translation>
+      <translation>Exporteert een mesh naar een bestand</translation>
     </message>
   </context>
   <context>
@@ -221,7 +221,7 @@
       <location filename="../../Command.cpp" line="1524"/>
       <location filename="../../Command.cpp" line="1526"/>
       <source>Fill holes of the mesh</source>
-      <translation>Gaten in het gaas vullen</translation>
+      <translation>Gaten in de mesh vullen</translation>
     </message>
   </context>
   <context>
@@ -240,7 +240,7 @@
       <location filename="../../Command.cpp" line="1404"/>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Flips the normals of the mesh</source>
-      <translation>De normalen van het gaas omkeren</translation>
+      <translation>De normalen van de mesh omkeren</translation>
     </message>
   </context>
   <context>
@@ -253,13 +253,13 @@
     <message>
       <location filename="../../Command.cpp" line="460"/>
       <source>Create mesh from geometry...</source>
-      <translation>Genereer maaswerk vanuit geometrie...</translation>
+      <translation>Genereer mesh vanuit geometrie...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
       <location filename="../../Command.cpp" line="463"/>
       <source>Create mesh from the selected geometry</source>
-      <translation>Genereer maaswerk vanuit geselecteerde vorm</translation>
+      <translation>Genereer mesh vanuit geselecteerde vorm</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1694"/>
       <source>Merges selected meshes into one</source>
-      <translation>Voegt geselecteerde maaswerken samen tot één enkele</translation>
+      <translation>Voegt geselecteerde mesh-en samen tot één enkele</translation>
     </message>
   </context>
   <context>
@@ -403,7 +403,7 @@
       <location filename="../../Command.cpp" line="989"/>
       <location filename="../../Command.cpp" line="991"/>
       <source>Splits a mesh into two meshes</source>
-      <translation>Verdeelt een gaas in twee gazen</translation>
+      <translation>Verdeelt een mesh in twee mesh-en</translation>
     </message>
   </context>
   <context>
@@ -416,13 +416,13 @@
     <message>
       <location filename="../../Command.cpp" line="834"/>
       <source>Trim mesh</source>
-      <translation>Gaas bijsnijden</translation>
+      <translation>Mesh bijsnijden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="835"/>
       <location filename="../../Command.cpp" line="837"/>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Snijdt een maaswerk met een geselecteerde veelhoek</translation>
+      <translation>Verkleint een mesh met een geselecteerde veelhoek</translation>
     </message>
   </context>
   <context>
@@ -479,7 +479,7 @@
       <location filename="../../Command.cpp" line="1137"/>
       <location filename="../../Command.cpp" line="1139"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Ruimtelijk onafhankelijke onderdelen van het maaswerk verwijderen</translation>
+      <translation>Ruimtelijk onafhankelijke onderdelen van de mesh verwijderen</translation>
     </message>
   </context>
   <context>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="1789"/>
       <source>Scale selected meshes</source>
-      <translation>Geselecteerde maaswerken schalen</translation>
+      <translation>Geselecteerde mesh schalen</translation>
     </message>
   </context>
   <context>
@@ -510,13 +510,13 @@
     <message>
       <location filename="../../Command.cpp" line="930"/>
       <source>Create section from mesh and plane</source>
-      <translation>Genereer doorsnede van maaswerk en vlak</translation>
+      <translation>Genereer doorsnede van mesh en vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="931"/>
       <location filename="../../Command.cpp" line="932"/>
       <source>Section from mesh and plane</source>
-      <translation>Doorsnede van maaswerk en vlak</translation>
+      <translation>Doorsnede van mesh en vlak</translation>
     </message>
   </context>
   <context>
@@ -535,7 +535,7 @@
       <location filename="../../Command.cpp" line="1622"/>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Create mesh segments</source>
-      <translation>Gaassegmenten aanmaken</translation>
+      <translation>Mesh segmenten aanmaken</translation>
     </message>
   </context>
   <context>
@@ -704,7 +704,7 @@
     <message>
       <location filename="../../Command.cpp" line="1414"/>
       <source>Flip mesh normals</source>
-      <translation>Normale spiegelen van maaswerk</translation>
+      <translation>Normalen spiegelen van de mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1548"/>
@@ -714,7 +714,7 @@
     <message>
       <location filename="../../Command.cpp" line="1707"/>
       <source>Mesh merge</source>
-      <translation>Samenvoegen van maaswerk</translation>
+      <translation>Samenvoegen van mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
@@ -1464,7 +1464,7 @@ to a smoother appearance.
       <translation>Als deze optie is ingesteld, wordt de Phong-beschaduwing gebruikt, anders vlakke schaduwen.
 De beschaduwing bepaalt het uiterlijk van de oppervlakken.
 
-Bij vlakke beschaduwingen worden de loodlijnen niet per hoekpunt gedefinieerd, wat leidt
+Bij vlakke beschaduwingen worden de loodlijnen niet per hoekpunt gedefinieerd, wat leidt 
 tot een onrealistisch uiterlijk voor gebogen oppervlakken, terwijl het gebruik van Phong-beschaduwing
 tot een gladder uiterlijk leidt.
 </translation>
@@ -1822,7 +1822,7 @@ tot een gladder uiterlijk leidt.
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>Glad gaas</translation>
+      <translation>Vloeiende mesh</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -2169,7 +2169,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <location filename="../../Command.cpp" line="349"/>
       <source>Import mesh</source>
-      <translation>Gaas importeren</translation>
+      <translation>Mesh importeren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -2229,7 +2229,7 @@ Gelieve naar http://www.openscad.org/index.html te gaan om het te installeren.</
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Export mesh</source>
-      <translation>Gaas exporteren</translation>
+      <translation>Mesh exporteren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="470"/>

@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Intersection</source>
-      <translation>교집합</translation>
+      <translation>교차</translation>
     </message>
   </context>
   <context>
@@ -1212,7 +1212,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="87"/>
       <source>Torus</source>
-      <translation>토 러 스</translation>
+      <translation>원환체</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="120"/>
@@ -1235,7 +1235,7 @@
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
       <source>Radius:</source>
-      <translation>반경:</translation>
+      <translation>반지름:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
@@ -1594,7 +1594,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="272"/>
       <source>Error</source>
-      <translation>에러</translation>
+      <translation>오류</translation>
     </message>
   </context>
   <context>
@@ -1949,7 +1949,7 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.cpp" line="401"/>
       <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="427"/>

@@ -1070,7 +1070,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1172,7 +1172,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1261,7 +1261,7 @@ Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
       <translation>A hálócsoportok is exportálásra kerülnek.
-Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll,
+Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll, 
 ahol
 a kényszerítést vagy az anyagot alkalmazzák.</translation>
     </message>
@@ -1435,7 +1435,7 @@ elemzési konténer hozzáadásakor</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1545,7 +1545,7 @@ FreeCAD eredménytárgy: Az importált adatok FreeCAD VEM eredménytárgyá alak
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1640,8 +1640,8 @@ that "MAXKOI" needs to be increased.</source>
 (csomópontok száma elemenként szorozva
  véges elemek száma)
 
-Előfordulhat, hogy növelnie kell ezt a paramétert, ha
-egy iteratív megoldó használata esetén a "MAXKOI" paraméter
+Előfordulhat, hogy növelnie kell ezt a paramétert, ha 
+egy iteratív megoldó használata esetén a "MAXKOI" paraméter 
 értékét növelni kell hibaüzenet jelenik meg.</translation>
     </message>
     <message>
@@ -1655,7 +1655,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott z88r végrehajtható
+      <translation>A megadott z88r végrehajtható 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>

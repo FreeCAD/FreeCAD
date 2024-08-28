@@ -1010,7 +1010,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Spooles equation solver</source>
-      <translation>Solveur d'équations Spooles</translation>
+      <translation>Librairie d'équations Spooles</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
@@ -1231,7 +1231,7 @@ FEM : seuls les éléments de l'atelier FEM seront exportés. Cela signifie que 
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="47"/>
       <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
       <translation>Paramètres des éléments :
-- Tout : tous les éléments,
+- Tout : tous les éléments, 
 - Les plus élevés : les éléments les plus élevés uniquement,
 - FEM : les éléments de l'atelier FEM seulement (seules les arêtes n'appartenant pas aux faces et les faces n'appartenant pas aux volumes).</translation>
     </message>
@@ -1262,9 +1262,8 @@ Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
       <translation>Les groupes de maillages sont également exportés.
-Chaque élément d'analyse et matériau (s'il y a plusieurs matériaux)
-se compose de deux groupes de mailles, faces et nœuds, où
-la contrainte ou le matériau est appliqué.</translation>
+Chaque élément d'analyse et matériau (s'il y a plusieurs matériaux) se compose de deux groupes de
+mailles, faces et nœuds, où la contrainte ou le matériau est appliqué.</translation>
     </message>
   </context>
   <context>
@@ -1334,7 +1333,7 @@ Créer votre propre sous-répertoire pour chaque solveur. Nommer le répertoire 
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="279"/>
       <source>Create mesh groups for analysis reference shapes (highly experimental)</source>
-      <translation>Créer des groupes de maillage pour les formes de référence d'analyse (très expérimental)</translation>
+      <translation>Créer des collectes de maillage pour les formes de référence d'analyse (très expérimental)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
@@ -2563,7 +2562,7 @@ Spécifier un autre fichier.</translation>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="75"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation>L'atelier FEM est construit sans l'aide de Netgen. Le maillage ne fonctionnera pas!!!</translation>
+      <translation>L'atelier FEM est construit sans la prise en compte de Netgen. Le maillage ne fonctionnera pas !!!</translation>
     </message>
   </context>
   <context>
@@ -3461,12 +3460,12 @@ Remarque : pour la 2D, seul le réglage en X est possible, le réglage en Y sera
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation>Maillage de l'atelier FEM par Gmsh</translation>
+      <translation>Mailler avec le mailleur Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameters</source>
-      <translation>Paramètres de maillage FEM</translation>
+      <translation>Paramètres du maillage FEM</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -3507,7 +3506,7 @@ Remarque : pour la 2D, seul le réglage en X est possible, le réglage en Y sera
     <message>
       <location filename="../ui/MeshGmsh.ui" line="207"/>
       <source>Gmsh version</source>
-      <translation>Version de Gmsh</translation>
+      <translation>Version du mailleur Gmsh</translation>
     </message>
   </context>
   <context>
@@ -5572,12 +5571,12 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="649"/>
       <source>FEM mesh to mesh</source>
-      <translation>Maillage de l'atelier FEM à maillage</translation>
+      <translation>Convertir un maillage FEM en maillage surfacique</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="652"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
-      <translation>Convertir la surface d'un maillage de l'atelier FEM en maillage</translation>
+      <translation>Convertir la surface d'un maillage FEM en maillage surfacique</translation>
     </message>
   </context>
   <context>
@@ -5585,7 +5584,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="691"/>
       <source>FEM mesh boundary layer</source>
-      <translation>Couche limite du maillage de l'atelier FEM</translation>
+      <translation>Créer une couche limite de maillage</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="694"/>
@@ -5598,7 +5597,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="704"/>
       <source>Clear FEM mesh</source>
-      <translation>Effacer le maillage FEM</translation>
+      <translation>Effacer le maillage de l'atelier FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>
@@ -5624,7 +5623,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="748"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation>Maillage de l'atelier FEM à partir d'une forme de Gmsh</translation>
+      <translation>Mailler avec le mailleur Gmsh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="751"/>
@@ -5637,12 +5636,12 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="800"/>
       <source>FEM mesh group</source>
-      <translation>Groupe de maillages de l'atelier FEM</translation>
+      <translation>Collecter un maillage</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="801"/>
       <source>Creates a FEM mesh group</source>
-      <translation>Créer un groupe de maillages FEM</translation>
+      <translation>Regrouper et étiqueter les éléments d'un maillage</translation>
     </message>
   </context>
   <context>
@@ -5650,12 +5649,12 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="813"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>Maillage de l'atelier FEM à partir d'une forme de Netgen</translation>
+      <translation>Mailler avec le mailleur Netgen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="817"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Créer un maillage FEM à partir d'un solide ou d'une face par le mailleur interne Netgen</translation>
+      <translation>Créer un maillage FEM à partir d'un solide ou d'une face avec le mailleur Netgen</translation>
     </message>
   </context>
   <context>
@@ -6357,7 +6356,7 @@ Sélectionner d'abord un type de résultat.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="858"/>
       <source>FEM mesh refinement</source>
-      <translation>Mailler plus finement FEM</translation>
+      <translation>Mailler plus finement</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="859"/>

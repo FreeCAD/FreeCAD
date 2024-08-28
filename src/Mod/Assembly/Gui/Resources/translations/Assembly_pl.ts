@@ -11,8 +11,8 @@
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="53"/>
       <source>Create an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation>Tworzy obiekt złożenia w bieżącym dokumencie
-lub w bieżącym aktywnym złożeniu (jeśli istnieje).
+      <translation>Tworzy obiekt złożenia w bieżącym dokumencie 
+lub w bieżącym aktywnym złożeniu (jeśli istnieje). 
 Limit jednego głównego złożenia na plik.</translation>
     </message>
   </context>
@@ -26,15 +26,15 @@ Limit jednego głównego złożenia na plik.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="86"/>
       <source>1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.</source>
-      <translation>1 - Jeśli złożenie jest aktywne:
-stwórz połączenie trwale blokujące dwie części,
+      <translation>1 - Jeśli złożenie jest aktywne: 
+stwórz połączenie trwale blokujące dwie części, 
 zapobiegając wszelkim ruchom lub obrotom.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="92"/>
       <source>2 - If a part is active : Position sub parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation>2 - Jeśli część jest aktywna:
-Definiuje pozycję części podrzędnej poprzez dopasowanie wybranych układów współrzędnych.
+      <translation>2 - Jeśli część jest aktywna: 
+Definiuje pozycję części podrzędnej poprzez dopasowanie wybranych układów współrzędnych. 
 Druga część zostanie dopasowana.</translation>
     </message>
   </context>
@@ -48,7 +48,7 @@ Druga część zostanie dopasowana.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="121"/>
       <source>Create a Revolute Joint: Allows rotation around a single axis between selected parts.</source>
-      <translation>Utwórz połączenie z możliwością obrotu:
+      <translation>Utwórz połączenie z możliwością obrotu: 
 Pozwala na obrót wokół pojedynczej osi pomiędzy wybranymi częściami.</translation>
     </message>
   </context>
@@ -62,7 +62,7 @@ Pozwala na obrót wokół pojedynczej osi pomiędzy wybranymi częściami.</tran
     <message>
       <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Create a Cylindrical Joint: Enables rotation along one axis while permitting movement along the same axis between assembled parts.</source>
-      <translation>Tworzy łącze linearne: Umożliwia obrót wzdłuż jednej osi,
+      <translation>Tworzy łącze linearne: Umożliwia obrót wzdłuż jednej osi, 
 umożliwiając poruszanie się wzdłuż tej samej osi między częściami złożenia.</translation>
     </message>
   </context>
@@ -76,7 +76,7 @@ umożliwiając poruszanie się wzdłuż tej samej osi między częściami złoż
     <message>
       <location filename="../../../CommandCreateJoint.py" line="175"/>
       <source>Create a Slider Joint: Allows linear movement along a single axis but restricts rotation between selected parts.</source>
-      <translation>Tworzy łącze przesuwne: Pozwala na ruch liniowy wzdłuż pojedynczej osi,
+      <translation>Tworzy łącze przesuwne: Pozwala na ruch liniowy wzdłuż pojedynczej osi, 
 ale ogranicza rotację pomiędzy wybranymi częściami.</translation>
     </message>
   </context>
@@ -90,8 +90,8 @@ ale ogranicza rotację pomiędzy wybranymi częściami.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="201"/>
       <source>Create a Ball Joint: Connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact.</source>
-      <translation>Tworzy przegub kulowy: Łączy części w punkcie,
-umożliwiając nieograniczony ruch,
+      <translation>Tworzy przegub kulowy: Łączy części w punkcie, 
+umożliwiając nieograniczony ruch, 
 o ile punkty połączenia pozostają w kontakcie.</translation>
     </message>
   </context>
@@ -105,7 +105,7 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="227"/>
       <source>Create a Distance Joint: Fix the distance between the selected objects.</source>
-      <translation>Tworzy łącze odległości:
+      <translation>Tworzy łącze odległości: 
 Ustal odległość między wybranymi obiektami.</translation>
     </message>
     <message>
@@ -126,8 +126,8 @@ Odległość 0 między płaszczyznami sprawi, że będą one współpłaszczyzno
     <message>
       <location filename="../../../CommandCreateJoint.py" line="506"/>
       <source>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation>Zakotwienie części trwale blokuje jej pozycję w złożeniu,
-uniemożliwiając jakikolwiek ruch lub obrót.
+      <translation>Zakotwienie części trwale blokuje jej pozycję w złożeniu, 
+uniemożliwiając jakikolwiek ruch lub obrót. 
 Przed rozpoczęciem montażu należy zakotwić co najmniej jedną część.</translation>
     </message>
   </context>
@@ -154,7 +154,7 @@ Przed rozpoczęciem montażu należy zakotwić co najmniej jedną część.</tra
     <message>
       <location filename="../../../CommandInsertLink.py" line="60"/>
       <source>Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation>Wstawia komponentu do aktywnego złożenia.
+      <translation>Wstawia komponentu do aktywnego złożenia. 
 Spowoduje to utworzenie dynamicznych łączy do części, brył, prymitywów i złożeń.
 Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bieżącej sesji</translation>
     </message>
@@ -350,7 +350,7 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     <message>
       <location filename="../../../CommandCreateBom.py" line="294"/>
       <source>This name is already used. Please choose a different name.</source>
-      <translation>Ta nazwa jest już używana.
+      <translation>Ta nazwa jest już używana. 
 Proszę wybrać inną.</translation>
     </message>
     <message>
@@ -381,14 +381,14 @@ Proszę wybrać inną.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="395"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
-      <translation>Kolumny automatycznie: (Indeks, Ilość, Nazwa...) są wypełniane automatycznie.
+      <translation>Kolumny automatycznie: (Indeks, Ilość, Nazwa...) są wypełniane automatycznie. 
 Wszelkie wprowadzone modyfikacje zostaną zastąpione. Nie można zmienić nazwy tych kolumn.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="401"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</source>
       <translation>Kolumny niestandardowe:
- "Opis" i inne kolumny niestandardowe dodane przez kliknięcie przycisku "Dodaj kolumnę" nie zostaną nadpisane.
+ "Opis" i inne kolumny niestandardowe dodane przez kliknięcie przycisku "Dodaj kolumnę" nie zostaną nadpisane. 
 Nazwy tych kolumn można zmienić, klikając dwukrotnie lub naciskając klawisz F2 (zmiana nazwy kolumny spowoduje utratę jej danych).</translation>
     </message>
     <message>
@@ -409,23 +409,23 @@ Nazwy tych kolumn można zmienić, klikając dwukrotnie lub naciskając klawisz 
       <location filename="../../../JointObject.py" line="210"/>
       <location filename="../../../JointObject.py" line="474"/>
       <source>The first reference of the joint</source>
-      <translation type="unfinished">The first reference of the joint</translation>
+      <translation>Pierwsze odniesienie do połączenia</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint.</translation>
+      <translation>Jest to lokalny układ współrzędnych w pierwszym obiekcie Odniesienie 1, który będzie używany dla połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="241"/>
       <location filename="../../../JointObject.py" line="497"/>
       <source>The second reference of the joint</source>
-      <translation type="unfinished">The second reference of the joint</translation>
+      <translation>Drugie odniesienie do połączenia</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="252"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint.</translation>
+      <translation>Jest to lokalny układ współrzędnych w pierwszym obiekcie Odniesienie 2, który będzie używany dla połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="430"/>
@@ -529,7 +529,7 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
       <location filename="../../../CommandCreateView.py" line="246"/>
       <location filename="../../../CommandCreateView.py" line="280"/>
       <source>The objects moved by the move</source>
-      <translation type="unfinished">The objects moved by the move</translation>
+      <translation>Obiekty przeniesione przez ruch</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="257"/>
@@ -686,17 +686,17 @@ Pliki noszą nazwy "runPreDrag.asmt" i "dragging.log" i znajdują się w domyśl
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="176"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Obiekt jest powiązany z jednym lub większą liczbą połączeń.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Czy chcesz przenieść obiekt i usunąć powiązane połączenia?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
       <source>Move part</source>
       <translation>Przesuń część</translation>
     </message>
@@ -753,8 +753,8 @@ Pliki noszą nazwy "runPreDrag.asmt" i "dragging.log" i znajdują się w domyśl
     <message>
       <location filename="../../../CommandCreateJoint.py" line="403"/>
       <source>Create a Gears Joint: Links two rotating gears together. They will have inverse rotation direction.</source>
-      <translation>Utwórz połączenie kół zębatych:
-Łączy ze sobą dwa obracające się koła zębate.
+      <translation>Utwórz połączenie kół zębatych: 
+Łączy ze sobą dwa obracające się koła zębate. 
 Będą one miały odwrotny kierunek obrotu.</translation>
     </message>
   </context>
@@ -768,7 +768,7 @@ Będą one miały odwrotny kierunek obrotu.</translation>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="434"/>
       <source>Create a Belt Joint: Links two rotating objects together. They will have the same rotation direction.</source>
-      <translation>Utwórz połączenie pasowe:
+      <translation>Utwórz połączenie pasowe: 
 Łączy ze sobą dwa obracające się obiekty.
 Będą one miały ten sam kierunek obrotu.</translation>
     </message>
@@ -946,16 +946,14 @@ Naciśnij ESC, aby anulować.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</source>
-      <translation>Tworzy zestawienie materiałów bieżącego złożenia.
-Jeśli zespół jest aktywny, będzie to lista materiałowa tego zespołu.
+      <translation>Tworzy zestawienie materiałów bieżącego złożenia. 
+Jeśli zespół jest aktywny, będzie to lista materiałowa tego zespołu. 
 W przeciwnym razie będzie to zestawienie całego dokumentu.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
-      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation>Obiekt zestawienia jest obiektem dokumentu, który przechowuje ustawienia zestawienia.
-Jest to również obiekt arkusza kalkulacyjnego, dzięki czemu można łatwo wizualizować listę materiałową.
-Jeśli obiekt zestawienia nie ma być zapisany jako obiekt dokumentu, można go po prostu wyeksportować i anulować zadanie.</translation>
+      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

@@ -138,7 +138,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="60"/>
       <source>Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation>Beszúr egy alkatrészt az aktív összeállításba.
+      <translation>Beszúr egy alkatrészt az aktív összeállításba. 
 Ez dinamikus kapcsolatokat hoz létre alkatrészekhez, szilárd testekhez, alaptestekhez és összeállításokhoz.
 Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&gt;nyitva van az aktuális munkamenetben&lt;/b&gt;</translation>
     </message>
@@ -388,23 +388,23 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <location filename="../../../JointObject.py" line="210"/>
       <location filename="../../../JointObject.py" line="474"/>
       <source>The first reference of the joint</source>
-      <translation type="unfinished">The first reference of the joint</translation>
+      <translation>Csatlakozás első referencia pontja</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint.</translation>
+      <translation>Ez a Referencia1 tárgyon belüli helyi koordináta-rendszer, amelyet a csatlakoztatáshoz használni fogunk.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="241"/>
       <location filename="../../../JointObject.py" line="497"/>
       <source>The second reference of the joint</source>
-      <translation type="unfinished">The second reference of the joint</translation>
+      <translation>Csatlakozás második referencia pontja</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="252"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint.</translation>
+      <translation>Ez a Referencia2 tárgyon belüli helyi koordináta-rendszer, amelyet a csatlakoztatáshoz használni fogunk.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="430"/>
@@ -506,7 +506,7 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
       <location filename="../../../CommandCreateView.py" line="246"/>
       <location filename="../../../CommandCreateView.py" line="280"/>
       <source>The objects moved by the move</source>
-      <translation type="unfinished">The objects moved by the move</translation>
+      <translation>A mozgatás által mozgatott tárgyak</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="257"/>
@@ -663,17 +663,17 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="176"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
       <source>The object is associated to one or more joints.</source>
       <translation>A tárgy egy vagy több csatlakozással rendelkezik.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>El akarja mozgatni a tárgyat és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
     </message>
@@ -922,8 +922,8 @@ Nyomja meg az ESC billentyűt a törléshez.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
-      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation>A darabjegyzék tárgy egy dokumentumelem, amely a darabjegyzék beállításait tárolja. Ez egyben egy táblázatkezelő tárgy is, így könnyen megjelenítheti a darabjegyzéket. Ha nincs szüksége arra, hogy a BOM tárgyát dokumentumelemként mentse, akkor egyszerűen exportálhatja és törölheti a feladatot.</translation>
+      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

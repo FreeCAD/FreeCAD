@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation>Prohlížení</translation>
+      <translation>Inspekce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
@@ -24,18 +24,18 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation>Prohlížení</translation>
+      <translation>Inspekce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual inspection...</source>
-      <translation>Vizuální kontrola...</translation>
+      <translation>Vizuální inspekce...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <location filename="../../Command.cpp" line="51"/>
       <source>Visual inspection</source>
-      <translation>Vizuální kontrola</translation>
+      <translation>Vizuální inspekce</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
-      <translation>Vizuální kontrola</translation>
+      <translation>Vizuální inspekce</translation>
     </message>
   </context>
   <context>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation>Vizuální kontrola</translation>
+      <translation>Vizuální inspekce</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>

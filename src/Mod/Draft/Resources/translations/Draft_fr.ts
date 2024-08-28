@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Éditeur de styles d'annotation</translation>
+      <translation>Éditeur du style des annotations</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -811,7 +811,7 @@ view each time a command is started</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
@@ -2150,7 +2150,7 @@ Dans le cas contraire, les couleurs par défaut seront appliquées.</translation
     <message>
       <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
-      <translation>Utiliser l'ancien importateur Python</translation>
+      <translation>Utiliser l'ancien outil d'importation Python</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="69"/>
@@ -2443,7 +2443,7 @@ l'atelier BIM est installé et que "Afficher la bordure de la grille" est activ�
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="97"/>
       <source>Show human figure</source>
-      <translation>Afficher une silhouette humaine</translation>
+      <translation>Afficher une figurine</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="113"/>
@@ -3118,7 +3118,7 @@ Décocher pour utiliser le système de coordonnées du plan de travail.</transla
     <message>
       <location filename="../../DraftGui.py" line="550"/>
       <source>Filled</source>
-      <translation>Rempli</translation>
+      <translation>Remplir</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="554"/>
@@ -3874,7 +3874,7 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="67"/>
       <source>Annotation style editor</source>
-      <translation>Éditeur de style d'annotation</translation>
+      <translation>Éditeur du style des annotations</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="215"/>
@@ -5564,17 +5564,17 @@ Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Les bibliothèques d'importation/exportation de fichiers DXF nécessaires à FreeCAD pour gérer le format DXF n'ont pas été trouvées sur ce système.
-Soit en autorisant FreeCAD à télécharger ces bibliothèques :
-  1 - Charger l'atelier Draft
-  2 - Menu Édition → Préférences → Importer/Exporter → DXF → Permettre à FreeCAD de télécharger...
-Soit en téléchargeant ces bibliothèques manuellement, comme expliqué sur :
+1 - Vous pouvez soit autoriser FreeCAD à télécharger ces bibliothèques :
+      - en chargeant l'atelier Draft
+      - par le menu Édition → Préférences → Importer/Exporter → DXF → Permettre à FreeCAD de télécharger...
+2- Soit en téléchargeant ces bibliothèques manuellement, comme expliqué sur :
 https://github.com/yorikvanhavre/Draft-dxf-importer
-Pour permettre à FreeCAD de télécharger ces bibliothèques, répondez Yes.</translation>
+Pour permettre à FreeCAD de télécharger ces bibliothèques, répondez Oui.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
-      <translation>L'esquisse est trop complexe pour être éditée : il est suggéré d'utiliser l'éditeur par défaut de Sketcher.</translation>
+      <translation>L'esquisse est trop complexe pour être éditée : il est préférable d'utiliser l'éditeur par défaut de Sketcher.</translation>
     </message>
   </context>
   <context>
@@ -5607,7 +5607,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, répondez Yes.</t
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation>&amp;Draft</translation>
+      <translation>&amp;Formes</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
@@ -6179,7 +6179,7 @@ Cependant, une seule esquisse avec des traces déconnectées sera convertie en p
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="139"/>
       <source>Snaps to an imaginary line parallel to straight edges.</source>
-      <translation>Aimanter à une ligne imaginaire parallèle à des arêtes rectilignes</translation>
+      <translation>Aimanter à une ligne imaginaire parallèle aux arêtes rectilignes</translation>
     </message>
   </context>
   <context>
@@ -6200,12 +6200,12 @@ Cependant, une seule esquisse avec des traces déconnectées sera convertie en p
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Snap angle</source>
-      <translation>Angle d'aimantation</translation>
+      <translation>Aimanter aux angles</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
       <source>Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°.</source>
-      <translation>Aimante aux points cardinaux spéciaux sur les bords circulaires, à des multiples de 30° et 45°.</translation>
+      <translation>Aimanter aux points cardinaux spéciaux sur les arêtes circulaires, par multiple de 30° et 45°.</translation>
     </message>
   </context>
   <context>
@@ -6390,12 +6390,12 @@ Ctrl pour aimanter, Maj pour contraindre.</translation>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="61"/>
       <source>Subelement highlight</source>
-      <translation>Mettre en surbrillance des sous-éléments</translation>
+      <translation>Surligner des sous-éléments</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation>Mettre en surbrillance les sous-éléments des objets sélectionnés, afin qu'ils puissent ensuite être modifiés avec les outils de déplacement, de rotation et de mise à l'échelle.</translation>
+      <translation>Mettre en évidence des sous-éléments d'objets sélectionnés, afin qu'ils puissent ensuite être modifiés avec les outils de déplacement, de rotation et de mise à l'échelle</translation>
     </message>
   </context>
   <context>
@@ -6437,7 +6437,7 @@ Le réseau peut être transformé en un réseau orthogonal ou polaire en changea
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="78"/>
       <source>Annotation styles...</source>
-      <translation>Éditeur de styles d'annotation...</translation>
+      <translation>Éditer le style des annotations...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
@@ -6785,7 +6785,7 @@ Ctrl pour aimanter.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="65"/>
       <source>Array</source>
-      <translation>Réseau</translation>
+      <translation>Réseau orthogonal</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="68"/>
@@ -6804,7 +6804,7 @@ Le réseau peut être transformé en réseau polaire ou circulaire en changeant 
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>
       <source>Scale</source>
-      <translation>Échelle</translation>
+      <translation>Mettre à l'échelle</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
@@ -7096,7 +7096,7 @@ et fusionner les faces en une seule face.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="63"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>
@@ -8379,7 +8379,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="140"/>
       <location filename="../../InitGui.py" line="141"/>
       <source>Draft</source>
-      <translation>Dépouille</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="205"/>

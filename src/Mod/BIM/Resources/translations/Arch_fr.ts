@@ -801,7 +801,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation>Si cette option n'est pas cochée, ces paramètres seront appliqués automatiquement la prochaine fois. Vous pouvez modifier ces paramètres ultérieurement dans le menu Édition → Préférences → BIM → Native IFC</translation>
+      <translation>Si cette option n'est pas cochée, ces paramètres seront appliqués automatiquement la prochaine fois. Vous pourrez modifier ces paramètres ultérieurement dans le menu Édition → Préférences → BIM → Native IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
@@ -916,7 +916,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="41"/>
       <source>Saves the current document as a template, including all the current BIM settings</source>
-      <translation>Enregistrer le document en cours en tant que modèle, y compris tous les paramètres BIM en cours.</translation>
+      <translation>Enregistrer l'actuel document en tant que modèle, y compris tous les paramètres BIM en cours.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="44"/>
@@ -931,7 +931,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
       <source>Load template...</source>
-      <translation>Charger le modèle...</translation>
+      <translation>Charger un modèle...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="88"/>
@@ -951,17 +951,17 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="107"/>
       <source>Unnamed</source>
-      <translation>Sans nom</translation>
+      <translation>Nouveau</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</source>
-      <translation>Si ceci est coché, un personnage humain sera ajouté, ce qui aide grandement à indiquer une valeur d’échelle lors de la visualisation du modèle.</translation>
+      <translation>Si ceci est coché, une figurine sera ajoutée, ce qui aide à indiquer une valeur d’échelle lors de la visualisation du modèle.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="120"/>
       <source>Add a human figure</source>
-      <translation>Ajouter un personnage humain</translation>
+      <translation>Ajouter une figurine</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="142"/>
@@ -1121,7 +1121,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="534"/>
       <source>Add</source>
-      <translation>Dodaj</translation>
+      <translation>Ajouter</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="546"/>
@@ -1312,12 +1312,12 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogWelcome.ui" line="85"/>
       <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
+      <translation>FreeCAD est une application complexe. S'il s'agit de votre premier contact avec FreeCAD, ou si vous n'avez jamais travaillé avec la 3D ou en BIM, vous pouvez commencer par suivre notre &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;tutoriel de BIM&lt;/a&gt; (également disponible dans le menu &lt;span style=" font-weight:600;"&gt;Aide → Tutoriel de BIM&lt;/span&gt;).</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="95"/>
       <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
+      <translation>L'atelier BIM dispose également d'une &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;documentation complète&lt;/a&gt; disponible dans le menu Aide. Le bouton "Qu'est-ce que c'est ?" permet également d'ouvrir la page d'aide de n'importe quel outil de la barre d'outils.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="105"/>
@@ -2543,7 +2543,7 @@ to projections of hidden objects.</source>
       <location filename="../ui/preferences-arch.ui" line="486"/>
       <source>Scaling factor for patterns used by objects that have
 a Footprint display mode</source>
-      <translation>Facteur d'échelle pour les motifs utilisés par les objets qui ont un mode d'affichage Empreinte</translation>
+      <translation>Facteur d'échelle pour les motifs utilisés par les objets qui ont un mode d'affichage "Empreinte"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
@@ -3445,7 +3445,7 @@ travailler lors de l'ouverture du fichier.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1335"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>Catégorie</translation>
@@ -3461,7 +3461,7 @@ travailler lors de l'ouverture du fichier.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <location filename="../../bimcommands/BimWall.py" line="293"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
@@ -4225,7 +4225,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="1346"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1338"/>
+      <location filename="../../ArchCommands.py" line="1337"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>Type</translation>
@@ -4242,7 +4242,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <location filename="../../ArchWindow.py" line="1349"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1350"/>
@@ -4879,7 +4879,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <translation>Exporter un fichier CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1099"/>
+      <location filename="../../ArchCommands.py" line="1098"/>
       <source>Export CSV File</source>
       <translation>Exporter vers un fichier CSV</translation>
     </message>
@@ -4891,7 +4891,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="644"/>
       <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
@@ -4899,7 +4899,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <location filename="../../ArchSchedule.py" line="644"/>
       <location filename="../../ArchSchedule.py" line="662"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1339"/>
+      <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>Valeur</translation>
@@ -4907,7 +4907,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="644"/>
       <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>Unité</translation>
     </message>
@@ -5395,60 +5395,60 @@ La création du bâtiment est annulée.</translation>
       <translation>contient des faces qui ne font partie d'aucun solide</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1003"/>
       <source>Survey</source>
       <translation>Prendre des cotes</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1004"/>
       <source>Set description</source>
       <translation>Définir une description</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1005"/>
       <source>Clear</source>
       <translation>Effacer</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1006"/>
       <source>Copy Length</source>
       <translation>Copier la longueur</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1007"/>
       <source>Copy Area</source>
       <translation>Copier la surface</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1008"/>
       <source>Export CSV</source>
       <translation>Exporter en CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Area</source>
       <translation>Surface</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1057"/>
+      <location filename="../../ArchCommands.py" line="1056"/>
       <source>Total</source>
       <translation>Total</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1137"/>
+      <location filename="../../ArchCommands.py" line="1136"/>
       <source>Object doesn't have settable IFC attributes</source>
-      <translation>L'objet n'a pas d'attributs IFC paramétrables</translation>
+      <translation>L'objet n'a pas d'attributs paramétrables IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1143"/>
+      <location filename="../../ArchCommands.py" line="1142"/>
       <source>Disabling B-rep force flag of object</source>
-      <translation>Désactiver l'indicateur de force B-Rep de l'objet</translation>
+      <translation>Désactiver l'indicateur de forçage B-rep de l'objet</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1146"/>
-      <location filename="../../ArchCommands.py" line="1149"/>
+      <location filename="../../ArchCommands.py" line="1145"/>
+      <location filename="../../ArchCommands.py" line="1148"/>
       <source>Enabling B-rep force flag of object</source>
-      <translation>Activer l'indicateur de force B-Rep de l'objet</translation>
+      <translation>Activer l'indicateur de forçage B-rep de l'objet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="54"/>
@@ -5492,12 +5492,12 @@ La création du bâtiment est annulée.</translation>
       <translation>Créer un composant</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1337"/>
+      <location filename="../../ArchCommands.py" line="1336"/>
       <source>Key</source>
       <translation>Touche</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1347"/>
+      <location filename="../../ArchCommands.py" line="1346"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>L'objet ne possède pas d'attribut des propriétés IFC. Annuler la création de la feuille de calcul pour l'objet :</translation>
     </message>
@@ -6041,7 +6041,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchSite.py" line="542"/>
       <source>The elevation of level 0 of this site</source>
-      <translation>L’altitude du niveau 0 de ce site</translation>
+      <translation>L’élévation du niveau 0 de ce site</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="544"/>
@@ -7827,7 +7827,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../InitGui.py" line="408"/>
       <source>&amp;2D Drafting</source>
-      <translation>Dessin &amp;2D</translation>
+      <translation>Formes &amp;2D</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="409"/>
@@ -9241,7 +9241,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="355"/>
       <source>The version of Ifcopenshell installed on your system could not be parsed</source>
-      <translation>La version d'Ifcopenshell installée sur votre système n'a pas pu être analysée.</translation>
+      <translation>La version d'Ifcopenshell installée sur votre système n'a pas pu être interprétée.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="367"/>
@@ -9426,7 +9426,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="135"/>
       <source>Some additional workbenches are not installed, that extend BIM functionality:</source>
-      <translation>Certains ateliers supplémentaires ne sont pas installés et permettent d'étendre la fonctionnalité BIM :</translation>
+      <translation>Certains ateliers supplémentaires ne sont pas installés. Ils étendent les fonctions de BIM :</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="141"/>
@@ -9561,7 +9561,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="111"/>
       <source>Saves the current camera position to the selected items</source>
-      <translation>Enregistrer la position actuelle de la caméra sur les éléments sélectionnés</translation>
+      <translation>Enregistrer la position de la caméra sur les éléments sélectionnés</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="112"/>
@@ -9631,7 +9631,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
-      <translation>IfcOpenShell n'est pas installé et FreeCAD n'a pas réussi à trouver une version appropriée à installer. Vous pouvez toujours installer IfcOpenShell manuellement, voir https://wiki.freecad.org/IfcOpenShell pour plus d'instructions.</translation>
+      <translation>IfcOpenShell n'est pas installé et FreeCAD n'a pas réussi à trouver une version appropriée à installer. Vous pouvez toujours installer IfcOpenShell manuellement, voir https://wiki.freecad.org/IfcOpenShell/fr pour plus d'instructions.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
@@ -10215,7 +10215,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="38"/>
       <source>2D Offset...</source>
-      <translation>Décalage 2D...</translation>
+      <translation>Décaler en 2D...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="41"/>
@@ -10478,7 +10478,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="40"/>
       <source>Views manager</source>
-      <translation>Gestionnaire des vues BIM</translation>
+      <translation>Gérer les vues BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="43"/>
@@ -10674,13 +10674,13 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="23"/>
       <source>This dialog will help you to set FreeCAD up for efficient BIM workflow by setting a couple of typical FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under menu Edit -&gt; Preferences.</source>
       <translation>Cette boîte de dialogue vous aidera à configurer FreeCAD pour un flux de travail BIM efficace, en définissant quelques options typiques de FreeCAD.
-Vous pourrez de nouveau accéder à cette boîte de dialogue n’importe quand depuis le menu : Gérer → Configuration.
+Vous pourrez de nouveau accéder à cette boîte de dialogue n’importe quand depuis le menu : Gestion → Configurer des BIM.
 D’autres options de menu sont disponibles depuis le menu : Édition → Préférences.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="33"/>
       <source>Hover your mouse on each setting for additional info.</source>
-      <translation>Survoler chaque réglage de la souris pour des informations supplémentaires.</translation>
+      <translation>Survoler chaque réglage avec la souris pour des informations supplémentaires.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="230"/>
@@ -10727,12 +10727,13 @@ D’autres options de menu sont disponibles depuis le menu : Édition → Préf�
     <message>
       <location filename="../ui/dialogSetup.ui" line="327"/>
       <source>Default line width</source>
-      <translation>Épaisseur des traits par défaut</translation>
+      <translation>Épaisseur par défaut des traits</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="476"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Your name (optional). You can also add your email like this: John Doe &amp;lt;john@doe.com&amp;gt;. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Author name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Votre nom (optionnel). Vous pouvez aussi ajouter votre adresse de courriel comme ceci : John Doe&amp;lt;john@doe.com&amp;gt;. Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Général → Document → Nom de l’auteur&lt;/span&gt;</translation>
+      <translation>Votre nom (optionnel). Vous pouvez aussi ajouter votre adresse de courriel comme ceci : John Doe&amp;lt;john@doe.com&amp;gt;.
+Voir les préférences : Général → Document → Nom de l’auteur</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="159"/>
@@ -10743,7 +10744,7 @@ D’autres options de menu sont disponibles depuis le menu : Édition → Préf�
       <location filename="../ui/dialogSetup.ui" line="290"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Largeur de ligne par défaut.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affichage → Couleur des pièces → Largeur des lignes par défaut&lt;/span&gt; ou &lt;4&gt;Draft → Paramètres visuels → Largeur des lignes par défaut&lt;/4&gt;</translation>
+Voir les préférences : &lt;span style=" font-weight:600;"&gt;Affichage → Couleur des pièces → Largeur des lignes par défaut&lt;/span&gt; ou &lt;4&gt;Draft → Paramètres visuels → Largeur des lignes par défaut&lt;/4&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="293"/>
@@ -10783,25 +10784,26 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affi
     <message>
       <location filename="../ui/dialogSetup.ui" line="166"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of decimals you wish to see used in the interface controls and measurements. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Units &amp;gt; Number of decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Nombre de décimales que vous désirez voir dans les contrôles de l’interface et les mesures : &lt;span style=" font-weight:600;"&gt;Général → Unités → Nombre de décimales&lt;/span&gt;</translation>
+      <translation>Nombre de décimales que vous voulez voir dans les contrôles de l’interface et les mesures.
+Voir les préférences  : Général → Unités → Nombre de décimales</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="556"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Police par défaut.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft → Textes et dimensions → Famille de polices&lt;/span&gt; ou &lt;4&gt;TechDraw → TechDraw 1 → Police des étiquettes&lt;/4&gt;</translation>
+Voir les préférences  : Draft → Textes et dimensions → Famille de polices ou TechDraw → TechDraw 1 → Police des étiquettes</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="543"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Taille par défaut des flèches de dimension.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;TechDraw → TechDraw 2 → Taille des flèches&lt;/span&gt; ou&lt;4&gt;Draft → Textes et dimensions → Taille des flèches&lt;/4&gt;</translation>
+Voir les préférences : TechDraw → TechDraw 2 → Taille des flèches ou Draft → Textes et dimensions → Taille des flèches</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Style de dimension par défaut.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft → Textes et dimensions → Style des flèches&lt;/span&gt; ou &lt;4&gt;TechDraw → TechDraw 2 → Style des flèches&lt;/4&gt;</translation>
+Voir les préférences : Draft → Textes et dimensions → Style des flèches ou TechDraw → TechDraw 2 → Style des flèches</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="193"/>
@@ -10832,14 +10834,15 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Nombre de petits carreaux entre chaque ligne principale de la grille.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft → Grille et aimantation → Lignes principales tous les&lt;/span&gt;</translation>
+Voir les préférences : Draft → Grille et aimantation → Lignes principales tous les</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The unit you prefer to work with, that will be used everywhere: in dialogs, measurements and dimensions. However, you can enter any other unit anytime. For example, if you configured FreeCAD to work in millimeters, you can still enter measures as &amp;quot;10m&amp;quot; or &amp;quot;5ft&amp;quot;. You can also change the default unit system anytime without causing any modification to your model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>L'unité avec laquelle vous préférez travailler et qui sera utilisée partout : dans les boîtes de dialogue, les mesures et les dimensions. Cependant, vous pouvez rentrer n'importe quelle autre unité à tout moment.
-Par exemple, si vous avez configuré FreeCAD pour travailler en millimètres, vous pouvez toujours rentrer des mesures comme "10 m" ou "5 ft".
-Vous pouvez également changer le système d'unités par défaut à tout moment sans modifier votre modèle. Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Général → Système d'unités par défaut&lt;/span&gt;</translation>
+Par exemple, si vous avez configuré FreeCAD pour travailler en millimètres, vous avez toujours la possibilité de rentrer des mesures comme "10 m" ou "5 ft".
+Vous pouvez aussi changer le système d'unités par défaut à tout moment sans modifier votre modèle.
+Voir les préférences : Général → Système d'unités par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="179"/>
@@ -10850,38 +10853,18 @@ Vous pouvez également changer le système d'unités par défaut à tout moment 
       <location filename="../ui/dialogSetup.ui" line="303"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Le nombre de fichiers de sauvegarde à conserver lors de l'enregistrement d'un fichier.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Général → Document →Nombre maximal de fichiers de sauvegarde à conserver lorsqu'un document est enregistré à nouveau&lt;/span&gt;</translation>
+Voir les préférences : Général → Document →Nombre maximal de fichiers de sauvegarde à conserver lorsqu'un document est enregistré à nouveau</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="506"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional license you wish to use for new files. Keep &amp;quot;All rights reserved&amp;quot; if you don't wish to use any particular license. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Default license&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Licence optionnelle que vous souhaitez utiliser pour de nouveaux fichiers. Conserver "Tous droit réservés" si vous ne voulez pas utiliser une licence particulière.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Général → Document →Licence par défaut&lt;/span&gt;</translation>
+      <translation>Licence optionnelle que vous souhaitez utiliser pour de nouveaux fichiers. Conserver "Tous droits réservés" si vous ne voulez pas utiliser une licence particulière.
+Voir les préférences : Général → Document → Licence par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
       <translation>Tous droit réservés (aucune licence spécifique)</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="515"/>
-      <source>CC-BY</source>
-      <translation>CC-BY</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="520"/>
-      <source>CC-BY-SA</source>
-      <translation>CC-BY-SA</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="525"/>
-      <source>CC-BY-NC</source>
-      <translation>CC-BY-NC</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="530"/>
-      <source>CC-BY-SA-NC</source>
-      <translation>CC-BY-SA-NC</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>
@@ -10922,17 +10905,19 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Gén�
       <location filename="../ui/dialogSetup.ui" line="334"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Ceci est la taille du plus petit carreau de la grille.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft → Grille et aimantation → Espacement de la grille&lt;/span&gt;</translation>
+Voir les préférences : Draft → Grille et aimantation → Espacement de la grille</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Couleur par défaut de la géométrie de construction. Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft → Général → Couleur des géométries de construction&lt;/span&gt;</translation>
+      <translation>Couleur par défaut des géométries de construction.
+Voir les préférences : Draft → Général → Couleur des géométries de construction</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="384"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helpers&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Couleur par défaut des objets d'aide tels que les grilles et les axes. Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;BIM → Valeurs par défaut → Couleur des guides (grilles, axes, etc.)&lt;/span&gt;</translation>
+      <translation>Couleur par défaut des objets d'aide tels que les grilles et les axes.
+Voir les préférences : BIM → Valeurs par défaut → Couleur des guides (grilles, axes, etc.)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="433"/>
@@ -10942,9 +10927,8 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft
     <message>
       <location filename="../ui/dialogSetup.ui" line="486"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Taille par défaut des textes et des textes de dimensions. Emplacement dans les préférences :
-- Draft → Textes et dimensions → Taille de police
-- TechDraw → TechDraw 2 → Taille de police</translation>
+      <translation>Taille par défaut des textes et des textes de dimensions.
+Voir les préférences : Draft → Textes et dimensions → Taille de police ou TechDraw → TechDraw 2 → Taille de police</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="499"/>
@@ -10989,24 +10973,25 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft
     <message>
       <location filename="../ui/dialogSetup.ui" line="216"/>
       <source>Default camera altitude</source>
-      <translation>Altitude de la caméra par défaut</translation>
+      <translation>Hauteur de la caméra par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="463"/>
       <source>This is the altitude of the camera when you create a blank file. Good values are between 5 (view a few centimeters wide) and 5000 (view a few meters wide)</source>
-      <translation>Il s'agit de l'altitude de la caméra lorsque vous créez un fichier vierge. Les bonnes valeurs se situent entre 5 (vue à quelques centimètres de largeur) et 5000 (vue à quelques mètres de largeur)</translation>
+      <translation>Il s'agit de la hauteur de la caméra lorsque vous créez un fichier vierge. Les bonnes valeurs sont entre
+5 (pour une vue de quelques centimètres de largeur) et 5000 (pour une de quelques mètres de largeur).</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at startup&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Cocher cette case pour que FreeCAD démarre avec un nouveau document vierge. Emplacement dans les préférences :
-- Général → Document → Créer un nouveau document au démarrage</translation>
+      <translation>Cocher cette case pour que FreeCAD démarre avec un nouveau document vierge.
+Voir les préférences : Général → Document → Créer un nouveau document au démarrage</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="356"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of faces in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part Color &amp;gt; Default shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>La couleur par défaut des faces dans la vue 3D.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affichage → Couleur des pièces → Couleur des formes par défaut&lt;/span&gt;</translation>
+      <translation>Couleur par défaut des faces dans la vue 3D.
+Voir les préférences : Affichage → Couleur des pièces → Couleur des formes par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="363"/>
@@ -11031,8 +11016,8 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affic
     <message>
       <location filename="../ui/dialogSetup.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part Colors &amp;gt; Default line color, Draft &amp;gt; Visual settings &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>La couleur par défaut des lignes dans la vue 3D.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affichage → Couleurs des pièces → Couleur des lignes par défaut&lt;/span&gt; ou &lt;4&gt;Draft → Paramètres graphiques →Couleur des lignes par défaut&lt;/4&gt;</translation>
+      <translation>Couleur par défaut des lignes dans la vue 3D.
+Voir les préférences : Affichage → Couleurs des pièces → Couleur des lignes par défaut ou Draft → Paramètres graphiques → Couleur des lignes par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="405"/>
@@ -11042,8 +11027,8 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affic
     <message>
       <location filename="../ui/dialogSetup.ui" line="412"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>La couleur du gradient supérieur de l'arrière-plan de la vue 3D.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affichage → Couleurs →Dégradé de couleurs&lt;/span&gt;</translation>
+      <translation>Couleur du gradient supérieur de l'arrière-plan de la vue 3D.
+Voir les préférences : Affichage → Couleurs →Dégradé de couleurs</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="419"/>
@@ -11053,13 +11038,14 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affic
     <message>
       <location filename="../ui/dialogSetup.ui" line="426"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>La couleur du gradient inférieur de l'arrière-plan de la vue 3D.
-Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affichage → Couleurs →Dégradé de couleurs&lt;/span&gt;</translation>
+      <translation>Couleur du gradient inférieur de l'arrière-plan de la vue 3D.
+Voir les préférences : Affichage → Couleurs →Dégradé de couleurs</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="570"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Emplacement de la grille au démarrage de FreeCAD. Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Draft → Général → Plan de travail par défaut&lt;/span&gt;</translation>
+      <translation>Emplacement de la grille au démarrage de FreeCAD.
+Voir les préférences : Draft → Général → Plan de travail par défaut</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="613"/>
@@ -11107,7 +11093,7 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affic
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="212"/>
       <source>Remove Shape from BIM</source>
-      <translation>Supprimer la forme du BIM</translation>
+      <translation>Supprimer la forme du composant BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="215"/>
@@ -11120,12 +11106,12 @@ Emplacement dans les préférences : &lt;span style=" font-weight:600;"&gt;Affic
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="290"/>
       <source>Toggle IFC B-rep flag</source>
-      <translation>Activer/désactiver l'indicateur IFC B-Rep</translation>
+      <translation>Activer/désactiver l'indicateur B-rep de l'IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="293"/>
       <source>Force an object to be exported as B-rep or not</source>
-      <translation>Forcer un objet à être exporté en tant que B-Rep ou non</translation>
+      <translation>Forcer un objet à être exporté en tant que B-rep ou non</translation>
     </message>
   </context>
 </TS>
