@@ -125,6 +125,9 @@ will be listed as available.</string>
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="mode">
+             <enum>Gui::FileChooser::Directory</enum>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
