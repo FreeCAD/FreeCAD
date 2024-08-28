@@ -12,6 +12,7 @@ set(Assembly_Scripts
     CommandSolveAssembly.py
     CommandCreateJoint.py
     CommandCreateView.py
+    CommandCreateSimulation.py
     CommandExportASMT.py
     TestAssemblyWorkbench.py
     JointObject.py

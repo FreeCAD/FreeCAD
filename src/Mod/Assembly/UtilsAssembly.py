@@ -530,6 +530,26 @@ def color_from_unsigned(c):
     ]
 
 
+def getJoints(assembly):
+    joints = []
+    joint_group = getJointGroup(assembly, False)
+    for obj in joint_group.Group:
+        if hasattr(obj, "Proxy"):
+            proxy = obj.Proxy
+            if hasattr(proxy, "setJointConnectors"):
+                joints.append(obj)
+    return joints
+
+
+def getJointsOfType(assembly, jointTypes):
+    joints = []
+    allJoints = getJoints(assembly)
+    for joint in allJoints:
+        if joint.JointType in jointTypes:
+            joints.append(joint)
+    return joints
+
+
 def getBomGroup(assembly):
     bom_group = None
 
@@ -544,7 +564,7 @@ def getBomGroup(assembly):
     return bom_group
 
 
-def getJointGroup(assembly):
+def getJointGroup(assembly, create=True):
     joint_group = None
 
     for obj in assembly.OutList:
@@ -570,6 +590,20 @@ def getViewGroup(assembly):
         view_group = assembly.newObject("Assembly::ViewGroup", "Exploded Views")
 
     return view_group
+
+
+def getSimulationGroup(assembly):
+    sim_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::SimulationGroup":
+            sim_group = obj
+            break
+
+    if not sim_group:
+        sim_group = assembly.newObject("Assembly::SimulationGroup", "Simulations")
+
+    return sim_group
 
 
 def isAssemblyGrounded():
