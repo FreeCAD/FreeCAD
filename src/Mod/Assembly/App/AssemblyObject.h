@@ -31,6 +31,9 @@
 #include <App/FeaturePython.h>
 #include <App/Part.h>
 #include <App/PropertyLinks.h>
+#include "SimulationGroup.h"
+
+#include <3rdParty/OndselSolver/OndselSolver/enum.h>
 
 namespace MbD
 {
@@ -90,6 +93,9 @@ public:
     and redraw the joints Args : enableRedo : This store initial positions to enable undo while
     being in an active transaction (joint creation).*/
     int solve(bool enableRedo = false, bool updateJCS = true);
+    int generateSimulation(App::DocumentObject* sim);
+    int updateForFrame(size_t index, bool updateJCS = true);
+    size_t numberOfFrames();
     void preDrag(std::vector<App::DocumentObject*> dragParts);
     void doDragStep();
     void postDrag();
@@ -111,6 +117,7 @@ public:
 
     // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
+    void create_mbdSimulationParameters(App::DocumentObject* sim);
     std::shared_ptr<MbD::ASMTPart>
     makeMbdPart(std::string& name, Base::Placement plc = Base::Placement(), double mass = 1.0);
     std::shared_ptr<MbD::ASMTPart> getMbDPart(App::DocumentObject* obj);
@@ -140,6 +147,9 @@ public:
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup() const;
     ViewGroup* getExplodedViewGroup() const;
+    template<typename T>
+    T* getGroup();
+
     std::vector<App::DocumentObject*>
     getJoints(bool updateJCS = true, bool delBadJoints = false, bool subJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
@@ -178,12 +188,15 @@ public:
     std::vector<AssemblyLink*> getSubAssemblies();
     void updateGroundedJointsPlacements();
 
+    std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
+
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
 
     std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
     std::vector<App::DocumentObject*> draggedParts;
+    std::vector<App::DocumentObject*> motions;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 

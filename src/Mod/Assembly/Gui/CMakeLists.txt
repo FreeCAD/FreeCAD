@@ -28,6 +28,15 @@ SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
 generate_from_xml(ViewProviderAssemblyPy)
 
+set(AssemblyGui_UIC_SRCS
+    TaskAssemblyCreateBom.ui
+    TaskAssemblyCreateJoint.ui
+    TaskAssemblyCreateSimulation.ui
+    TaskAssemblyCreateView.ui
+    TaskAssemblyInsertLink.ui
+    Assembly.ui
+)
+
 SET(Python_SRCS
     ViewProviderAssemblyPy.xml
     ViewProviderAssemblyPyImp.cpp
@@ -51,6 +60,8 @@ SET(AssemblyGui_SRCS_Module
     ViewProviderJointGroup.h
     ViewProviderViewGroup.cpp
     ViewProviderViewGroup.h
+    ViewProviderSimulationGroup.cpp
+    ViewProviderSimulationGroup.h
     ${Assembly_QRC_SRCS}
 )
 
