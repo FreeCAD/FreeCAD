@@ -337,39 +337,43 @@ void SketchObject::buildShape()
 
     // get the geometry after running the solver
     auto geometries = solvedSketch.extractGeometry();
-    for(auto geo : geometries) {
+    for (auto geo : geometries) {
         ++geoId;
-        if(GeometryFacade::getConstruction(geo)) {
+        if (GeometryFacade::getConstruction(geo)) {
             continue;
         }
-        if (geo->isDerivedFrom<Part::GeomPoint>()) {
-            Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
-            int idx = getVertexIndexGeoPos(geoId -1, Sketcher::PointPos::start);
-            std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
-            if (!vertex.hasElementMap()) {
-                vertex.resetElementMap(std::make_shared<Data::ElementMap>());
-            }            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
-                                  Data::MappedName::fromRawData(name.c_str()),0L);
-            vertices.push_back(vertex);
-            vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
-        } else {
+        if (!geo->isDerivedFrom<Part::GeomPoint>()) {
             auto indexedName = Data::IndexedName::fromConst("Edge", geoId);
             shapes.push_back(getEdge(geo,convertSubName(indexedName, false).c_str()));
             if (checkSmallEdge(shapes.back())) {
                 FC_WARN("Edge too small: " << indexedName);
             }
+            continue;
         }
+
+        // From here, assuming `geo` is a point
+        Part::TopoShape vertex(TopoDS::Vertex(geo->toShape()));
+        int idx = getVertexIndexGeoPos(geoId -1, Sketcher::PointPos::start);
+        std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
+        if (!vertex.hasElementMap()) {
+            vertex.resetElementMap(std::make_shared<Data::ElementMap>());
+        }
+        vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+                              Data::MappedName::fromRawData(name.c_str()),0L);
+        vertices.push_back(vertex);
+        vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
     }
 
     for (auto geo : geometries) {
         delete geo;
     }
 
-    for(int i=2;i<ExternalGeo.getSize();++i) {
+    for (int i=2; i<ExternalGeo.getSize(); ++i) {
         auto geo = ExternalGeo[i];
         auto egf = ExternalGeometryFacade::getFacade(geo);
-        if(!egf->testFlag(ExternalGeometryExtension::Defining))
+        if(!egf->testFlag(ExternalGeometryExtension::Defining)) {
             continue;
+        }
         auto indexedName = Data::IndexedName::fromConst("ExternalEdge", i-1);
         shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
         if (checkSmallEdge(shapes.back())) {
@@ -384,25 +388,36 @@ void SketchObject::buildShape()
         Shape.setValue(Part::TopoShape());
         return;
     }
+
     Part::TopoShape result(0, getDocument()->getStringHasher());
     if (vertices.empty()) {
-         // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
-         result.makeElementWires(shapes,Part::OpCodes::Sketch);
-     } else {
-         std::vector<Part::TopoShape> results;
-         if (!shapes.empty()) {
-             // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
-             // geometry exposed through the Shape property, because
-             // SketchObject::getElementName() relies on this op code to
-             // differentiate geometries that are exposed with those in edit
-             // mode.
-             auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
-             for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
-                 results.push_back(wire);
-         }
-         results.insert(results.end(), vertices.begin(), vertices.end());
-         result.makeElementCompound(results);
-     }
+        // Notice here we supply op code Part::OpCodes::Sketch to makEWires().
+        result.makeElementWires(shapes, Part::OpCodes::Sketch);
+
+        result.Tag = getID();
+        InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
+        // Must set Shape property after InternalShape so that
+        // GeoFeature::updateElementReference() can run properly on change of Shape
+        // property, because some reference may pointing to the InternalShape
+        Shape.setValue(result);
+
+        return;
+    }
+
+    std::vector<Part::TopoShape> results;
+    if (!shapes.empty()) {
+        // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
+        // geometry exposed through the Shape property, because
+        // SketchObject::getElementName() relies on this op code to
+        // differentiate geometries that are exposed with those in edit
+        // mode.
+        auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
+        for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
+            results.push_back(wire);
+    }
+    results.insert(results.end(), vertices.begin(), vertices.end());
+    result.makeElementCompound(results);
+
     result.Tag = getID();
     InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
     // Must set Shape property after InternalShape so that
@@ -2056,11 +2071,13 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
     bool touched = false;
     auto geos = ExternalGeo.getValues();
     std::set<int> idSet(geoIds.begin(),geoIds.end());
-    for(auto geoId : geoIds) {
-        if(geoId > GeoEnum::RefExt || -geoId-1>=ExternalGeo.getSize())
+    for (auto geoId : geoIds) {
+        if(geoId > GeoEnum::RefExt || -geoId-1>=ExternalGeo.getSize()) {
             continue;
-        if(!idSet.count(geoId))
+        }
+        if(!idSet.count(geoId)) {
             continue;
+        }
         idSet.erase(geoId);
         const int idx = -geoId - 1;
         auto& geo = geos[idx];
@@ -2085,18 +2102,22 @@ int SketchObject::toggleExternalGeometryFlag(const std::vector<int> &geoIds,
         geo = geo->clone();
         egf->setGeometry(geo);
         egf->setFlag(flag, value);
-        for (size_t i=1; i<flags.size(); ++i)
+        for (size_t i=1; i<flags.size(); ++i) {
             egf->setFlag(flags[i], value);
-        if (value || flag != ExternalGeometryExtension::Frozen)
-            update = true;
+        }
+        update = update || (value || flag != ExternalGeometryExtension::Frozen);
         touched = true;
     }
 
-    if(!touched)
+    if (!touched) {
         return -1;
+    }
+
     ExternalGeo.setValues(geos);
-    if (update)
+    if (update) {
         rebuildExternalGeometry();
+    }
+
     return 0;
 }
 
