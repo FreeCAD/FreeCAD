@@ -546,10 +546,10 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
                 }
             }
         }
-        _elementMap->setElementName(IndexedName(reader.getAttribute("value"), types),
-                                    MappedName(reader.getAttribute("key")),
-                                    Tag,
-                                    &sids);
+        ensureElementMap()->setElementName(IndexedName(reader.getAttribute("value"), types),
+                                           MappedName(reader.getAttribute("key")),
+                                           Tag,
+                                           &sids);
     }
     if (invalid_count != 0) {
         FC_ERR("Found " << invalid_count << " invalid string id");  // NOLINT
