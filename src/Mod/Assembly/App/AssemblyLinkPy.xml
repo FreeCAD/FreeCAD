@@ -13,7 +13,12 @@
       <Author Licence="LGPL" Name="Ondsel" EMail="development@ondsel.com" />
       <UserDocu>This class handles document objects in Assembly</UserDocu>
     </Documentation>
-
+    <Attribute Name="Joints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all joints this assembly link has.</UserDocu>
+      </Documentation>
+      <Parameter Name="Joints" Type="List"/>
+    </Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
