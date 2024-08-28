@@ -9624,33 +9624,39 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier& path,
 
     auto deps = expr->getDeps();
     auto it = deps.find(this);
-    if (it != deps.end()) {
-        auto it2 = it->second.find("Constraints");
-        if (it2 != it->second.end()) {
-            for (auto& oid : it2->second) {
-                const Constraint* constraint = Constraints.getConstraint(oid);
-
-                if (!constraint->isDriving)
-                    return "Reference constraint from this sketch cannot be used in this "
-                           "expression.";
-            }
-        }
-        geoMap.clear();
-        const auto &vals = getInternalGeometry();
-        for(long i=0;i<(long)vals.size();++i) {
-            auto geo = vals[i];
-            auto gf = GeometryFacade::getFacade(geo);
-            if(!gf->getId())
-                gf->setId(++geoLastId);
-            else if(gf->getId() > geoLastId)
-                geoLastId = gf->getId();
-            while(!geoMap.insert(std::make_pair(gf->getId(),i)).second) {
-                FC_WARN("duplicate geometry id " << gf->getId() << " -> " << geoLastId+1);
-                gf->setId(++geoLastId);
-            }
-        }
-        updateGeoHistory();
+    if (it == deps.end()) {
+        return "";
     }
+
+    auto it2 = it->second.find("Constraints");
+    if (it2 != it->second.end()) {
+        for (auto& oid : it2->second) {
+            const Constraint* constraint = Constraints.getConstraint(oid);
+
+            if (!constraint->isDriving)
+                return "Reference constraint from this sketch cannot be used in this "
+                    "expression.";
+        }
+    }
+
+    geoMap.clear();
+    const auto &vals = getInternalGeometry();
+    for(long i=0; i<(long)vals.size(); ++i) {
+        auto geo = vals[i];
+        auto gf = GeometryFacade::getFacade(geo);
+        if(!gf->getId()) {
+            gf->setId(++geoLastId);
+        }
+        else if(gf->getId() > geoLastId) {
+            geoLastId = gf->getId();
+        }
+        while(!geoMap.insert(std::make_pair(gf->getId(),i)).second) {
+            FC_WARN("duplicate geometry id " << gf->getId() << " -> " << geoLastId+1);
+            gf->setId(++geoLastId);
+        }
+    }
+    updateGeoHistory();
+
     return "";
 }
 
