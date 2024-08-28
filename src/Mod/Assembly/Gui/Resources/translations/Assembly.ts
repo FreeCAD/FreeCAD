@@ -659,17 +659,17 @@ The files are named &quot;runPreDrag.asmt&quot; and &quot;dragging.log&quot; and
 <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="176"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="177"/>
         <source>The object is associated to one or more joints.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="178"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="179"/>
         <source>Do you want to move the object and delete associated joints?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderAssembly.cpp" line="805"/>
+        <location filename="../../ViewProviderAssembly.cpp" line="823"/>
         <source>Move part</source>
         <translation type="unfinished"></translation>
     </message>
@@ -916,7 +916,7 @@ Press ESC to cancel.</source>
     </message>
     <message>
         <location filename="../../../CommandCreateBom.py" line="81"/>
-        <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don&apos;t need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+        <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don&apos;t need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
