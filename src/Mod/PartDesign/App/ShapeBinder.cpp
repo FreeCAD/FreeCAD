@@ -704,7 +704,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             if (hit)
                 return;
         }
-#ifdef FC_USE_TNP_FIX
         std::ostringstream ss;
         int idx = -1;
         for(auto &shape : shapes) {
@@ -725,7 +724,6 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 shape = shape.makeElementCopy();
         }
 
-#endif
         if (shapes.size() == 1 && !Relative.getValue())
             shapes.back().setPlacement(Base::Placement());
         else {

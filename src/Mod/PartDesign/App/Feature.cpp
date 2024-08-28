@@ -66,7 +66,6 @@ Feature::Feature()
 
 App::DocumentObjectExecReturn* Feature::recompute()
 {
-#ifdef FC_USE_TNP_FIX
     SuppressedShape.setValue(TopoShape());
 
     if (!Suppressed.getValue()) {
@@ -96,21 +95,6 @@ App::DocumentObjectExecReturn* Feature::recompute()
         Shape.setValue(getBaseTopoShape(true));
     }
     return App::DocumentObject::StdReturn;
-#else
-    try {
-        auto baseShape = getBaseTopoShape();
-        if (Suppressed.getValue()) {
-            this->Shape.setValue(baseShape.getShape());
-            return StdReturn;
-        }
-    }
-    catch (Base::Exception&) {
-        //invalid BaseShape
-        Suppressed.setValue(false);
-    }
-
-    return DocumentObject::recompute();
-#endif
 }
 
 void Feature::updateSuppressedShape()
@@ -144,28 +128,6 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-#ifndef FC_USE_TNP_FIX
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
-{
-    if (shape.IsNull()) {
-        Standard_Failure::Raise("Shape is null");
-    }
-
-    // If single solid rule is not enforced  we simply return the shape as is
-    if (singleSolidRuleMode() != Feature::SingleSolidRuleMode::Enforced) {
-        return shape;
-    }
-
-    TopExp_Explorer xp;
-    xp.Init(shape, TopAbs_SOLID);
-    if (xp.More()) {
-        return xp.Current();
-    }
-
-    return {};
-}
-#endif
 TopoShape Feature::getSolid(const TopoShape& shape)
 {
     if (shape.isNull()) {

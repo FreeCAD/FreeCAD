@@ -792,41 +792,6 @@ void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
     setMappedChildElements(children);
 }
 
-#ifndef FC_USE_TNP_FIX
-namespace
-{
-void warnIfLogging()
-{
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        FC_WARN("hasher mismatch");  // NOLINT
-    }
-}
-
-void hasherMismatchError()
-{
-    FC_ERR("hasher mismatch");  // NOLINT
-}
-
-
-void checkAndMatchHasher(TopoShape& topoShape1, const TopoShape& topoShape2)
-{
-    if (topoShape1.Hasher) {
-        if (topoShape2.Hasher != topoShape1.Hasher) {
-            if (topoShape1.getElementMapSize(false) == 0U) {
-                warnIfLogging();
-            }
-            else {
-                hasherMismatchError();
-            }
-            topoShape1.Hasher = topoShape2.Hasher;
-        }
-    }
-    else {
-        topoShape1.Hasher = topoShape2.Hasher;
-    }
-}
-}  // namespace
-#endif
 
 // TODO: Refactor mapSubElementTypeForShape to reduce complexity
 void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
@@ -2045,11 +2010,7 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
         }
         return TopoShape();
     }
-#ifdef FC_USE_TNP_FIX
     auto res = shapeTypeAndIndex(mapped.index);
-#else
-    auto res = shapeTypeAndIndex(Type);
-#endif
     if (res.second <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));
