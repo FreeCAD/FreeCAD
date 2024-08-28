@@ -158,7 +158,7 @@ class BIM_Preflight_TaskPanel:
     def getStandardButtons(self):
         from PySide import QtCore, QtGui
 
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
         from PySide import QtCore, QtGui
