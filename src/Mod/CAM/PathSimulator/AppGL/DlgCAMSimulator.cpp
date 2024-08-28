@@ -81,7 +81,10 @@ void DlgCAMSimulator::exposeEvent(QExposeEvent* event)
 
 void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
 {
-    mMillSimulator->MouseMove(ev->x(), ev->y());
+    int modifiers = ev->modifiers() & Qt::ShiftModifier ? MS_KBD_SHIFT : 0;
+    modifiers |= ev->modifiers() & Qt::ControlModifier ? MS_KBD_CONTROL : 0;
+    modifiers |= ev->modifiers() & Qt::AltModifier ? MS_KBD_ALT : 0;
+    mMillSimulator->MouseMove(ev->x(), ev->y(), modifiers);
 }
 
 void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
