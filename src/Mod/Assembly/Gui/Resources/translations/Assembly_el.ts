@@ -753,7 +753,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="465"/>
       <source>Create a Gears/Belt Joint: Links two rotating gears together.</source>
-      <translation>Δημιουργήστε ένα Γρνάζι/Αρθρωση Ιμάντα: 
+      <translation>Δημιουργήστε ένα Γρνάζι/Αρθρωση Ιμάντα:
 Συνδέει δύο περιστρεφόμενα εργαλεία μαζί.</translation>
     </message>
     <message>
