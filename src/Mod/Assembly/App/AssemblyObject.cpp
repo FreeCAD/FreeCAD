@@ -2078,6 +2078,7 @@ void AssemblyObject::setJointActivated(App::DocumentObject* joint, bool val)
         propActivated->setValue(val);
     }
 }
+
 bool AssemblyObject::getJointActivated(App::DocumentObject* joint)
 {
     auto* propActivated = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
@@ -2085,65 +2086,6 @@ bool AssemblyObject::getJointActivated(App::DocumentObject* joint)
         return propActivated->getValue();
     }
     return false;
-}
-
-Base::Placement AssemblyObject::getPlacementFromProp(App::DocumentObject* obj, const char* propName)
-{
-    Base::Placement plc = Base::Placement();
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName(propName));
-    if (propPlacement) {
-        plc = propPlacement->getValue();
-    }
-    return plc;
-}
-
-
-Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetObj,
-                                                   App::DocumentObject* rootObj,
-                                                   const std::string& sub)
-{
-    if (!targetObj || !rootObj || sub == "") {
-        return Base::Placement();
-    }
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
-
-    App::Document* doc = rootObj->getDocument();
-    Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
-
-    for (auto& name : names) {
-        App::DocumentObject* obj = doc->getObject(name.c_str());
-        if (!obj) {
-            return Base::Placement();
-        }
-
-        plc = plc * getPlacementFromProp(obj, "Placement");
-
-        if (obj == targetObj) {
-            return plc;
-        }
-        if (isLink(obj)) {
-            // Update doc in case its an external link.
-            doc = obj->getLinkedObject()->getDocument();
-        }
-    }
-
-    // If targetObj has not been found there's a problem
-    return Base::Placement();
-}
-
-Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetObj,
-                                                   App::PropertyXLinkSub* prop)
-{
-    if (!targetObj || !prop) {
-        return Base::Placement();
-    }
-
-    std::vector<std::string> subs = prop->getSubValues();
-    if (subs.empty()) {
-        return Base::Placement();
-    }
-
-    return getGlobalPlacement(targetObj, prop->getValue(), subs[0]);
 }
 
 double AssemblyObject::getJointDistance(App::DocumentObject* joint)

@@ -179,6 +179,10 @@ public:
     /// Return the higher level element names of the given element
     virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
 
+    static Base::Placement getPlacementFromProp(DocumentObject* obj, const char* propName);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, DocumentObject* rootObj, const std::string& sub);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, PropertyXLinkSub* prop);
+
 protected:
     void onChanged(const Property* prop) override;
 //    void onDocumentRestored() override;
