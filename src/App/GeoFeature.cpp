@@ -295,6 +295,8 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
     App::Document* doc = rootObj->getDocument();
     Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
 
+    if (targetObj == rootObj) return plc;
+
     for (auto& name : names) {
         App::DocumentObject* obj = doc->getObject(name.c_str());
         if (!obj) {
