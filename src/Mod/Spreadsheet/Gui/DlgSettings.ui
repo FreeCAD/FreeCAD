@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>149</height>
+    <width>392</width>
+    <height>282</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,8 +25,8 @@
      <property name="title">
       <string>Display Settings</string>
      </property>
-     <layout class="QHBoxLayout" name="gridLayout1">
-      <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowAlias">
         <property name="toolTip">
          <string>If checked, use the custom presentation to display cell string.</string>
@@ -42,7 +42,62 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="2">
+       <widget class="Gui::PrefSpinBox" name="dZLSpinBox">
+        <property name="toolTip">
+         <string>Set a zoom level for table view from 60% to 160%.</string>
+        </property>
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="minimum">
+         <number>60</number>
+        </property>
+        <property name="maximum">
+         <number>160</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultZoomLevel</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Spreadsheet</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="dZLLabel">
+        <property name="text">
+         <string>Default zoom level:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="Gui::PrefLineEdit" name="formatString">
+        <property name="toolTip">
+         <string>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</string>
+        </property>
+        <property name="text">
+         <string notr="true">%V = %A</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisplayAliasFormatString</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Spreadsheet</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
        <spacer name="horizontalSpacer1">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -54,26 +109,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="0" column="2">
-       <widget class="Gui::PrefLineEdit" name="formatString">
-        <property name="text">
-            <string notr="true">%V = %A</string>
-        </property>
-        <property name="toolTip">
-         <string>The format of the custom cell string presentation.
-Defaults to: %V = %A
-
-%A - alias name
-%V - cell value</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DisplayAliasFormatString</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Spreadsheet</cstring>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -110,10 +145,10 @@ Defaults to: %V = %A
         </property>
        </spacer>
       </item>
-     <item row="0" column="2">
+      <item row="0" column="2">
        <widget class="Gui::PrefComboBox" name="delimiterComboBox">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=&quot; font-style:italic;&quot;&gt;tab&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;comma&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -166,7 +201,7 @@ Defaults to: %V = %A
          <string/>
         </property>
         <property name="text">
-         <string notr="true">"</string>
+         <string notr="true">&quot;</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ImportExportQuoteCharacter</cstring>
@@ -205,7 +240,7 @@ Defaults to: %V = %A
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item row="2" column="0">
@@ -226,8 +261,18 @@ Defaults to: %V = %A
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -235,12 +280,15 @@ Defaults to: %V = %A
    <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
-  <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>delimiterComboBox</tabstop>
+  <tabstop>quoteCharLineEdit</tabstop>
+  <tabstop>escapeCharLineEdit</tabstop>
+  <tabstop>dZLSpinBox</tabstop>
+  <tabstop>checkBoxShowAlias</tabstop>
+  <tabstop>formatString</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
