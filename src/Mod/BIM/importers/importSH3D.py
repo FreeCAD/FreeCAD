@@ -28,6 +28,7 @@ import os
 import tempfile
 import xml.sax
 import zipfile
+from builtins import open as pyopen
 
 import FreeCAD
 import Arch
@@ -42,9 +43,6 @@ import Part
 #  This module provides tools to import SH3D files created from Sweet Home 3D.
 
 DEBUG = True
-
-if open.__module__ in ['__builtin__','io']:
-    pyopen = open # because we'll redefine open below
 
 
 def open(filename):
