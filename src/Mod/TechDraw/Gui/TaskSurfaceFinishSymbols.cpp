@@ -267,6 +267,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
 
     // Create scene and all items used in the scene
     symbolScene = new(QGraphicsScene);
+    // symbolScene->setBackgroundBrush(Qt::blue);
     ui->graphicsView->setBackgroundBrush(Qt::NoBrush);
     ui->graphicsView->setScene(symbolScene);
 
@@ -281,7 +282,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     leAddition->resize(25, 20);
     leAddition->setToolTip(QObject::tr("Addition"));
     QGraphicsProxyWidget* proxyAddition = symbolScene->addWidget(leAddition);
-    proxyAddition->setPos(-80, -85);
+    proxyAddition->setPos(-110, -85);
     proxyAddition->setZValue(-2);
     // QComboBox showing RA values
     cbRA = new(QComboBox);
@@ -313,7 +314,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
         cbMinRought->addItem(QString::fromStdString(nextGrade));
     cbMinRought->setToolTip(QObject::tr("Minimum roughness grade number"));
     proxyMinRough = symbolScene->addWidget(cbMinRought);
-    proxyMinRough->setPos(-80, -118);
+    proxyMinRough->setPos(-100, -118);
     proxyMinRough-> setZValue(1);
     proxyMinRough->hide();
     // QComboBox showing maximal roughness grade
@@ -323,7 +324,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
         cbMaxRought->addItem(QString::fromStdString(nextGrade));
     cbMaxRought->setToolTip(QObject::tr("Maximum roughness grade number"));
     proxyMaxRough = symbolScene->addWidget(cbMaxRought);
-    proxyMaxRough->setPos(-80, -143);
+    proxyMaxRough->setPos(-100, -143);
     proxyMaxRough->setZValue(1);
     proxyMaxRough->hide();
     // add horizontal line
