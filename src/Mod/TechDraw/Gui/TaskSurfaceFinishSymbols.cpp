@@ -235,6 +235,17 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     ui->pbIcon04->setIcon(baseSymbol(anyMethodAll));
     ui->pbIcon05->setIcon(baseSymbol(removeProhibitAll));
     ui->pbIcon06->setIcon(baseSymbol(removeRequiredAll));
+
+    int w = ui->pbIcon01->width();
+    int h = ui->pbIcon01->height();
+    ui->pbIcon01->setIconSize(QSize(w, h));
+    ui->pbIcon02->setIconSize(QSize(w, h));
+    ui->pbIcon03->setIconSize(QSize(w, h));
+    ui->pbIcon04->setIconSize(QSize(w, h));
+    ui->pbIcon05->setIconSize(QSize(w, h));
+    ui->pbIcon06->setIconSize(QSize(w, h));
+
+
     activeIcon = anyMethod ;
     isISO = true;
 
