@@ -27,6 +27,7 @@
 
 
 import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
+from builtins import open as pyopen
 from draftutils import params
 from draftutils.translate import translate
 
@@ -53,9 +54,6 @@ supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "
                      "IfcWallStandardCase", "IfcWindow", "IfcWindowStandardCase", "IfcBuildingElementProxy",
                      "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
 # TODO : shading device not supported?
-
-if open.__module__ in ['__builtin__','io']:
-    pyopen = open # because we'll redefine open below
 
 def open(filename,skip=None):
     "called when freecad opens a file"
