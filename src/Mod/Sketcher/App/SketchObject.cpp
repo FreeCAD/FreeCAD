@@ -5038,39 +5038,40 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
 
             // First of constraint is in geoIdList
             if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
-                if ((constr->Type != Sketcher::DistanceX && constr->Type != Sketcher::DistanceY)
-                    || constr->FirstPos == Sketcher::PointPos::none) {
-                    // if it is not a point locking DistanceX/Y
-                    if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
-                         || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Diameter
-                         || constr->Type == Sketcher::Weight || constr->Type == Sketcher::Radius)
-                        && clone) {
-                        // Distances on a single Element are mapped to equality
-                        // constraints in clone mode
-                        Constraint* constNew = constr->copy();
-                        constNew->Type = Sketcher::Equal;
-                        constNew->isDriving = true;
-                        // first is already (constr->First)
-                        constNew->Second = fit->second;
-                        newconstrVals.push_back(constNew);
-                    }
-                    else if (constr->Type == Sketcher::Angle && clone) {
-                        if (getGeometry(constr->First)->is<Part::GeomLineSegment>()) {
-                            // Angles on a single Element are mapped to parallel
-                            // constraints in clone mode
-                            Constraint* constNew = constr->copy();
-                            constNew->Type = Sketcher::Parallel;
-                            constNew->isDriving = true;
-                            // first is already (constr->First)
-                            constNew->Second = fit->second;
-                            newconstrVals.push_back(constNew);
-                        }
-                    }
-                    else {
-                        Constraint* constNew = constr->copy();
-                        constNew->First = fit->second;
-                        newconstrVals.push_back(constNew);
-                    }
+                if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)
+                    && constr->FirstPos != Sketcher::PointPos::none) {
+                    continue;
+                }
+                // if it is not a point locking DistanceX/Y
+                if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
+                     || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Diameter
+                     || constr->Type == Sketcher::Weight || constr->Type == Sketcher::Radius)
+                    && clone) {
+                    // Distances on a single Element are mapped to equality
+                    // constraints in clone mode
+                    Constraint* constNew = constr->copy();
+                    constNew->Type = Sketcher::Equal;
+                    constNew->isDriving = true;
+                    // first is already (constr->First)
+                    constNew->Second = fit->second;
+                    newconstrVals.push_back(constNew);
+                    continue;
+                }
+                if (!(constr->Type == Sketcher::Angle && clone)) {
+                    Constraint* constNew = constr->copy();
+                    constNew->First = fit->second;
+                    newconstrVals.push_back(constNew);
+                    continue;
+                }
+                if (getGeometry(constr->First)->is<Part::GeomLineSegment>()) {
+                    // Angles on a single Element are mapped to parallel
+                    // constraints in clone mode
+                    Constraint* constNew = constr->copy();
+                    constNew->Type = Sketcher::Parallel;
+                    constNew->isDriving = true;
+                    // first is already (constr->First)
+                    constNew->Second = fit->second;
+                    newconstrVals.push_back(constNew);
                 }
                 continue;
             }
@@ -5098,14 +5099,13 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                     constNew->Second = fit->second;
                     constNew->SecondPos = Sketcher::PointPos::none;
                     newconstrVals.push_back(constNew);
+                    continue;
                 }
-                else {
-                    // this includes InternalAlignment constraints
-                    Constraint* constNew = constr->copy();
-                    constNew->First = fit->second;
-                    constNew->Second = sit->second;
-                    newconstrVals.push_back(constNew);
-                }
+                // remaining, this includes InternalAlignment constraints
+                Constraint* constNew = constr->copy();
+                constNew->First = fit->second;
+                constNew->Second = sit->second;
+                newconstrVals.push_back(constNew);
                 continue;
             }
 
@@ -5202,7 +5202,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 constNew->SecondPos = Sketcher::PointPos::none;
                 newconstrVals.push_back(constNew);
             }
-            else {  // it is just one more element in the col direction
+            else {
+                // it is just one more element in the col direction
                 cgeoid++;
 
                 // all other first rowers get an equality and perpendicular constraint
@@ -5243,7 +5244,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
             constNew->SecondPos = Sketcher::PointPos::end;
             newconstrVals.push_back(constNew);
 
-            if (y == 0 && x == 1) {  // first element of the first row
+            if (y == 0 && x == 1) {
+                // first element of the first row
                 colrefgeoid = cgeoid;
                 cgeoid++;
 
@@ -5262,7 +5264,8 @@ int SketchObject::addCopy(const std::vector<int>& geoIdList,
                 constNew->setValue(atan2(displacement.y, displacement.x));
                 newconstrVals.push_back(constNew);
             }
-            else {  // any other element
+            else {
+                // any other element
                 cgeoid++;
 
                 // all other elements get an equality and parallel constraint
