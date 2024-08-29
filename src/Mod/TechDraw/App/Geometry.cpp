@@ -539,7 +539,9 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
                 result = std::make_shared<Generic>(edge);
             } else if (bspline->isCircle())  {
                 circEdge = bspline->asCircle(isArc);
-                if (!circEdge.IsNull()) {
+                if (circEdge.IsNull()) {
+                    result = bspline;
+                } else {
                     if (isArc) {
                         result = std::make_shared<AOC>(circEdge);
                     } else {
