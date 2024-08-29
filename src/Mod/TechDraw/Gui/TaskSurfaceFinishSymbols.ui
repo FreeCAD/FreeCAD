@@ -310,15 +310,6 @@
      <property name="lineWidth">
       <number>0</number>
      </property>
-     <property name="backgroundBrush">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>240</red>
-        <green>240</green>
-        <blue>240</blue>
-       </color>
-      </brush>
-     </property>
      <property name="sceneRect">
       <rectf>
        <x>0.000000000000000</x>
