@@ -954,7 +954,7 @@ class _SolverCalculixContextManager:
         )
         FreeCADGui.doCommand(
             "{}.IterationsControlParameterTimeUse = {}".format(
-                self.cli_name, ccx_prefs.GetInt("UseNonCcxIterationParam", False)
+                self.cli_name, ccx_prefs.GetBool("UseNonCcxIterationParam", False)
             )
         )
         FreeCADGui.doCommand(
