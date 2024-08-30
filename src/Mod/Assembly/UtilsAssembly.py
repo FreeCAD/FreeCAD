@@ -894,10 +894,15 @@ def findPlacement(ref, ignoreVertex=False):
     isLine = False
 
     if elt_type == "Vertex":
-        vertex = obj.Shape.Vertexes[elt_index - 1]
+        vertex = get_element(obj.Shape.Vertexes, elt_index, elt)
+        if vertex is None:
+            return App.Placement()
         plc.Base = (vertex.X, vertex.Y, vertex.Z)
     elif elt_type == "Edge":
-        edge = obj.Shape.Edges[elt_index - 1]
+        edge = get_element(obj.Shape.Edges, elt_index, elt)
+        if edge is None:
+            return App.Placement()
+
         curve = edge.Curve
 
         # First we find the translation
@@ -911,7 +916,10 @@ def findPlacement(ref, ignoreVertex=False):
                 line_middle = (edge_points[0] + edge_points[1]) * 0.5
                 plc.Base = line_middle
         else:
-            vertex = obj.Shape.Vertexes[vtx_index - 1]
+            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            if vertex is None:
+                return App.Placement()
+
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
 
         # Then we find the Rotation
@@ -925,7 +933,10 @@ def findPlacement(ref, ignoreVertex=False):
             plane = Part.Plane(plane_origin, plane_normal)
             plc.Rotation = App.Rotation(plane.Rotation)
     elif elt_type == "Face":
-        face = obj.Shape.Faces[elt_index - 1]
+        face = get_element(obj.Shape.Faces, elt_index, elt)
+        if face is None:
+            return App.Placement()
+
         surface = face.Surface
 
         # First we find the translation
@@ -943,7 +954,10 @@ def findPlacement(ref, ignoreVertex=False):
                 plc.Base = face.CenterOfGravity
         elif vtx_type == "Edge":
             # In this case the edge is a circle/arc and the wanted vertex is its center.
-            edge = face.Edges[vtx_index - 1]
+            edge = get_element(face.Edges, vtx_index, vtx)
+            if edge is None:
+                return App.Placement()
+
             curve = edge.Curve
             if curve.TypeId == "Part::GeomCircle":
                 center_point = curve.Location
@@ -956,7 +970,10 @@ def findPlacement(ref, ignoreVertex=False):
                 plc.Base = findCylindersIntersection(obj, surface, edge, elt_index)
 
         else:
-            vertex = obj.Shape.Vertexes[vtx_index - 1]
+            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            if vertex is None:
+                return App.Placement()
+
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
 
         # Then we find the Rotation
@@ -987,6 +1004,13 @@ def findPlacement(ref, ignoreVertex=False):
     # plc = activeAssembly().Placement.inverse() * plc
 
     return plc
+
+
+def get_element(shape_elements, index, sub):
+    if index - 1 < 0 or index - 1 >= len(shape_elements):
+        print(f"Joint Corrupted: Index of {sub} out of bound.")
+        return None
+    return shape_elements[index - 1]
 
 
 def isRefValid(ref, number_sub):
