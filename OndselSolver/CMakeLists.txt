@@ -297,7 +297,7 @@ set(ONDSELSOLVER_SRC
         System.cpp
         SystemNewtonRaphson.cpp
         SystemSolver.cpp
-        Time.cpp
+        SymTime.cpp
         TooManyTriesError.cpp
         TooSmallStepSizeError.cpp
         Translation.cpp

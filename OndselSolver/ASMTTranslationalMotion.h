@@ -20,6 +20,7 @@ namespace MbD {
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         std::shared_ptr<ItemIJ> mbdClassNew() override;
         void readMotionJoint(std::vector<std::string>& lines);
+        void setTranslationZ(std::string tranZ);
         void readTranslationZ(std::vector<std::string>& lines);
         void storeOnLevel(std::ofstream& os, size_t level) override;
         void storeOnTimeSeries(std::ofstream& os) override;

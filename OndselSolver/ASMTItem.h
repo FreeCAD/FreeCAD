@@ -46,8 +46,11 @@ namespace MbD {
 		void readDoublesInto(std::string str, std::string label, FRowDsptr& row);
 		virtual void deleteMbD();
 		virtual void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
-		virtual void updateFromMbD();
-		virtual void compareResults(AnalysisType type);
+        virtual void updateForFrame(size_t index);
+        virtual void updateFromInitiallyAssembledState();
+        virtual void updateFromInputState();
+        virtual void updateFromMbD();
+        virtual void compareResults(AnalysisType type);
 		virtual void outputResults(AnalysisType type);
 		std::shared_ptr<Units> mbdUnits();
 		std::shared_ptr<Constant> sptrConstant(double value);

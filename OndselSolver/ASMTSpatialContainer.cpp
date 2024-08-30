@@ -360,6 +360,26 @@ ASMTSpatialContainer* MbD::ASMTSpatialContainer::partOrAssembly()
 	return this;
 }
 
+void MbD::ASMTSpatialContainer::updateForFrame(size_t index)
+{
+    position3D = getPosition3D(index);
+    rotationMatrix = getRotationMatrix(index);
+    velocity3D = getVelocity3D(index);
+    omega3D = getOmega3D(index);
+    acceleration3D = getAcceleration3D(index);
+    alpha3D = getAlpha3D(index);
+}
+
+void MbD::ASMTSpatialContainer::updateFromInitiallyAssembledState()
+{
+
+}
+
+void MbD::ASMTSpatialContainer::updateFromInputState()
+{
+
+}
+
 void MbD::ASMTSpatialContainer::updateFromMbD()
 {
 	auto mbdUnts = mbdUnits();
@@ -372,6 +392,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	omega3D = omeOPO;
 	auto aOcmO = mbdPart->qXddot()->times(mbdUnts->acceleration);
 	auto alpOPO = mbdPart->alpOpO()->times(mbdUnts->alpha);
+    alpha3D = alpOPO;
 	auto& rPcmP = principalMassMarker->position3D;
 	auto& aAPp = principalMassMarker->rotationMatrix;
 	auto aAOP = aAOp->timesTransposeFullMatrix(aAPp);
@@ -384,7 +405,8 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	auto vOPO = vOcmO->minusFullColumn(omeOPO->cross(rPcmO));
 	velocity3D = vOPO;
 	auto aOPO = aOcmO->minusFullColumn(alpOPO->cross(rPcmO))->minusFullColumn(omeOPO->cross(omeOPO->cross(rPcmO)));
-	xs->push_back(rOPO->at(0));
+    acceleration3D = aOPO;
+    xs->push_back(rOPO->at(0));
 	ys->push_back(rOPO->at(1));
 	zs->push_back(rOPO->at(2));
 	auto bryantAngles = aAOP->bryantAngles();
@@ -763,4 +785,22 @@ FColDsptr MbD::ASMTSpatialContainer::getOmega3D(size_t i)
 	vec3->atiput(1, omeys->at(i));
 	vec3->atiput(2, omezs->at(i));
 	return vec3;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::getAcceleration3D(size_t i)
+{
+    auto vec3 = std::make_shared<FullColumn<double>>(3);
+    vec3->atiput(0, axs->at(i));
+    vec3->atiput(1, ays->at(i));
+    vec3->atiput(2, azs->at(i));
+    return vec3;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::getAlpha3D(size_t i)
+{
+    auto vec3 = std::make_shared<FullColumn<double>>(3);
+    vec3->atiput(0, alpxs->at(i));
+    vec3->atiput(1, alpys->at(i));
+    vec3->atiput(2, alpzs->at(i));
+    return vec3;
 }

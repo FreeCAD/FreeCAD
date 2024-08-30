@@ -78,6 +78,12 @@ void MbD::ASMTSimulationParameters::sethout(double h)
 void MbD::ASMTSimulationParameters::seterrorTol(double tol)
 {
 	errorTol = tol;
+    errorTolPosKine = tol;
+	errorTolAccKine = tol;
+	corAbsTol = tol;
+	corRelTol = tol;
+	intAbsTol = tol;
+    intRelTol = tol;
 }
 
 void MbD::ASMTSimulationParameters::setmaxIter(size_t maxIter)

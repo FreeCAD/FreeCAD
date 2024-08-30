@@ -27,9 +27,15 @@ void MbD::ASMTTranslationalMotion::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTTranslationalMotion::initMarkers()
 {
-	auto jt = root()->jointAt(motionJoint);
-	markerI = jt->markerI;
-	markerJ = jt->markerJ;
+    if (motionJoint == "") {
+        assert(markerI != "");
+        assert(markerJ != "");
+    }
+    else {
+        auto jt = root()->jointAt(motionJoint);
+        markerI = jt->markerI;
+        markerJ = jt->markerJ;
+    }
 }
 
 void MbD::ASMTTranslationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
@@ -58,6 +64,11 @@ void MbD::ASMTTranslationalMotion::readMotionJoint(std::vector<std::string>& lin
 	lines.erase(lines.begin());
 	motionJoint = readString(lines[0]);
 	lines.erase(lines.begin());
+}
+
+void MbD::ASMTTranslationalMotion::setTranslationZ(std::string tranZ)
+{
+    translationZ = tranZ;
 }
 
 void MbD::ASMTTranslationalMotion::readTranslationZ(std::vector<std::string>& lines)

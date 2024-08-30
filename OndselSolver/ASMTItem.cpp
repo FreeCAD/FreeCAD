@@ -191,6 +191,21 @@ void MbD::ASMTItem::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
 	assert(false);
 }
 
+void MbD::ASMTItem::updateForFrame(size_t index)
+{
+    assert(false);
+}
+
+void MbD::ASMTItem::updateFromInitiallyAssembledState()
+{
+    assert(false);
+}
+
+void MbD::ASMTItem::updateFromInputState()
+{
+    assert(false);
+}
+
 void MbD::ASMTItem::updateFromMbD()
 {
 	assert(false);

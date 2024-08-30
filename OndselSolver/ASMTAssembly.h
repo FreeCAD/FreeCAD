@@ -27,6 +27,7 @@ namespace MbD {
 	class ASMTLimit;
 	class SystemSolver;
 	class ASMTItemIJ;
+    class ExternalSystem;
 
 	class ASMTAssembly : public ASMTSpatialContainer
 	{
@@ -91,6 +92,7 @@ namespace MbD {
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		void outputFile(const std::string& filename);
 		void storeOnLevel(std::ofstream& os, size_t level) override;
+        size_t numberOfFrames();
 
 		/* This function performs a one shot solve of the assembly.*/
 		void solve();
@@ -133,6 +135,7 @@ namespace MbD {
 		void storeOnTimeSeries(std::ofstream& os) override;
 		void setFilename(const std::string& filename);
 		void setDebug(bool todebug);
+        void updateForFrame(size_t index) override;
 
 		std::string filename = "";
 		std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";
@@ -151,6 +154,7 @@ namespace MbD {
 		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
 		std::shared_ptr<System> mbdSystem;
 		bool debug = false;
+        std::shared_ptr<ExternalSystem> externalSystem;
 
 	};
 }

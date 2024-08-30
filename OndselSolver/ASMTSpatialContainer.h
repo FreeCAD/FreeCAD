@@ -72,7 +72,10 @@ namespace MbD {
 		virtual FColDsptr vOcmO();
 		virtual FColDsptr omeOpO();
 		ASMTSpatialContainer* partOrAssembly() override;
-		void updateFromMbD() override;
+        void updateForFrame(size_t index) override;
+        void updateFromInitiallyAssembledState() override;
+        void updateFromInputState() override;
+        void updateFromMbD() override;
 		void compareResults(AnalysisType type) override;
 		void outputResults(AnalysisType type) override;
 		void addRefPoint(std::shared_ptr<ASMTRefPoint> refPoint);
@@ -92,12 +95,16 @@ namespace MbD {
 		void storeOnLevelRefCurves(std::ofstream& os, size_t level);
 		void storeOnLevelRefSurfaces(std::ofstream& os, size_t level);
 		void storeOnTimeSeries(std::ofstream& os) override;
-		FColDsptr getVelocity3D(size_t i);
-		FColDsptr getOmega3D(size_t i);
+        FColDsptr getVelocity3D(size_t i);
+        FColDsptr getOmega3D(size_t i);
+        FColDsptr getAcceleration3D(size_t i);
+        FColDsptr getAlpha3D(size_t i);
 
 		FColDsptr velocity3D = std::make_shared<FullColumn<double>>(3);
-		FColDsptr omega3D = std::make_shared<FullColumn<double>>(3);
-		std::shared_ptr<std::vector<std::shared_ptr<ASMTRefPoint>>> refPoints;
+        FColDsptr omega3D = std::make_shared<FullColumn<double>>(3);
+        FColDsptr acceleration3D = std::make_shared<FullColumn<double>>(3);
+        FColDsptr alpha3D = std::make_shared<FullColumn<double>>(3);
+        std::shared_ptr<std::vector<std::shared_ptr<ASMTRefPoint>>> refPoints;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTRefCurve>>> refCurves;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTRefSurface>>> refSurfaces;
 		FRowDsptr vxs, vys, vzs, omexs, omeys, omezs;

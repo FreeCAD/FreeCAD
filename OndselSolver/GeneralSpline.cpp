@@ -106,7 +106,7 @@ void MbD::GeneralSpline::computeDerivatives()
 	else {
 		//"Zero out higher derivatives at node n and node 1 to get the p end equations."
 		unsigned int count = 0;
-		auto npass = 0;
+		unsigned int npass = 0;
 		while (count < p) {
 			matrix->atijput(np - count, np - npass, 1.0);
 			count++;

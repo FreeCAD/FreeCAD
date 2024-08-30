@@ -40,3 +40,5 @@ build
 cmake-build-debug
 .idea
 temp/
+/testapp/draggingBackhoe.log
+/testapp/runPreDragBackhoe.asmt

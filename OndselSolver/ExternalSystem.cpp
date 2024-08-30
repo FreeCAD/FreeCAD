@@ -9,6 +9,7 @@
 #include "ExternalSystem.h"
 #include "CADSystem.h"
 #include "ASMTAssembly.h"
+//#include <Mod/Assembly/App/AssemblyObject.h>
 #include "System.h"
 
 using namespace MbD;
@@ -18,10 +19,14 @@ void MbD::ExternalSystem::preMbDrun(std::shared_ptr<System> mbdSys)
 	if (cadSystem) {
 		cadSystem->preMbDrun(mbdSys);
 	}
-	else if (asmtAssembly) {
-		asmtAssembly->preMbDrun(mbdSys);
-	}
-	else {
+    else if (asmtAssembly) {
+        asmtAssembly->preMbDrun(mbdSys);
+        //asmtAssembly->externalSystem->preMbDrun(mbdSys);
+    }
+    else if (freecadAssemblyObject) {
+        //freecadAssemblyObject->preMbDrun();
+    }
+    else {
 		assert(false);
 	}
 }
@@ -39,7 +44,10 @@ void MbD::ExternalSystem::updateFromMbD()
 	else if (asmtAssembly) {
 		asmtAssembly->updateFromMbD();
 	}
-	else {
+    else if (freecadAssemblyObject) {
+        //freecadAssemblyObject->updateFromMbD();
+    }
+    else {
 		assert(false);
 	}
 }
@@ -53,8 +61,12 @@ void MbD::ExternalSystem::outputFor(AnalysisType type)
 		asmtAssembly->updateFromMbD();
 		asmtAssembly->compareResults(type);
 		asmtAssembly->outputResults(type);
-	}
-	else {
+        //asmtAssembly->externalSystem->outputFor(type);
+    }
+    else if (freecadAssemblyObject) {
+        //freecadAssemblyObject->outputResults(type);
+    }
+    else {
 		assert(false);
 	}
 }
