@@ -99,8 +99,6 @@ QGIDatumLabel::QGIDatumLabel() : m_dragState(NoDrag)
     setSelectability(true);
     setFiltersChildEvents(true);
 
-    m_lineWidth = Rez::guiX(0.5);
-
     m_textItems = new QGraphicsItemGroup();
     m_textItems->setParentItem(this);
     m_dimText = new QGCustomText();
@@ -117,6 +115,12 @@ QGIDatumLabel::QGIDatumLabel() : m_dragState(NoDrag)
     m_unitText->setParentItem(m_textItems);
 
     m_frame = new QGraphicsRectItem();
+    QPen framePen;
+    framePen.setWidthF(Rez::guiX(0.5));
+    framePen.setColor(m_dimText->defaultTextColor());
+    framePen.setJoinStyle(Qt::MiterJoin);
+    m_frame->setPen(framePen);
+
     m_ctrl = false;
 }
 
@@ -364,6 +368,20 @@ void QGIDatumLabel::updateFrameRect() {
     m_frame->setRect(m_textItems->childrenBoundingRect().adjusted(-paddingLeft, -paddingTop, paddingRight, paddingBottom)); // Update bouding rect
 }
 
+void QGIDatumLabel::setLineWidth(double lineWidth)
+{
+    QPen pen = m_frame->pen();
+    pen.setWidthF(lineWidth);
+    m_frame->setPen(pen);
+}
+
+void QGIDatumLabel::setFrameColor(QColor color)
+{
+    QPen pen = m_frame->pen();
+    pen.setColor(color);
+    m_frame->setPen(pen);
+}
+
 void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                           QWidget* widget)
 {
@@ -374,14 +392,6 @@ void QGIDatumLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 
     //    painter->setPen(Qt::blue);
     //    painter->drawRect(boundingRect());          //good for debugging
-
-    QPen framePen;
-    framePen.setWidthF(m_lineWidth);
-    framePen.setColor(m_dimText->defaultTextColor());
-    framePen.setJoinStyle(Qt::MiterJoin);
-    m_frame->setPen(framePen);
-
-
 }
 
 void QGIDatumLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
@@ -573,6 +583,7 @@ void QGIDatumLabel::setPrettySel()
     m_tolTextOver->setPrettySel();
     m_tolTextUnder->setPrettySel();
     m_unitText->setPrettySel();
+    setFrameColor(PreferencesGui::selectQColor());
     Q_EMIT setPretty(SEL);
 }
 
@@ -583,6 +594,7 @@ void QGIDatumLabel::setPrettyPre()
     m_tolTextOver->setPrettyPre();
     m_tolTextUnder->setPrettyPre();
     m_unitText->setPrettyPre();
+    setFrameColor(PreferencesGui::preselectQColor());
     Q_EMIT setPretty(PRE);
 }
 
@@ -593,6 +605,7 @@ void QGIDatumLabel::setPrettyNormal()
     m_tolTextOver->setPrettyNormal();
     m_tolTextUnder->setPrettyNormal();
     m_unitText->setPrettyNormal();
+    setFrameColor(PreferencesGui::normalQColor());
     Q_EMIT setPretty(NORMAL);
 }
 
@@ -604,6 +617,7 @@ void QGIDatumLabel::setColor(QColor color)
     m_tolTextOver->setColor(m_colNormal);
     m_tolTextUnder->setColor(m_colNormal);
     m_unitText->setColor(m_colNormal);
+    setFrameColor(m_colNormal);
 }
 
 void QGIDatumLabel::setSelectability(bool val)

@@ -90,6 +90,7 @@ public:
     void setPrettyNormal();
     void setColor(QColor color);
     void setSelectability(bool val);
+    void setFrameColor(QColor color);
 
     QGCustomText* getDimText() { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -103,8 +104,8 @@ public:
     bool isFramed() const { return m_frame->parentItem(); }  // If empty pointer, then no frame
     void setFramed(bool framed);
 
-    double getLineWidth() const { return m_lineWidth; }
-    void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
+    double getLineWidth() const { return m_frame->pen().widthF(); }
+    void setLineWidth(double lineWidth);
     void setQDim(QGIViewDimension* qDim) { parent = qDim;}
 
 Q_SIGNALS:
@@ -148,8 +149,6 @@ private:
 
     double posX;
     double posY;
-
-    double m_lineWidth;
 
     int m_dragState;
 
