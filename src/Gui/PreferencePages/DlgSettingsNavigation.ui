@@ -142,6 +142,11 @@
       </item>
       <item row="1" column="4">
        <widget class="Gui::PrefComboBox" name="naviCubeFontName">
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+         </size>
+        </property>
         <property name="toolTip">
          <string>Font name of the navigation cube</string>
         </property>
@@ -566,7 +571,7 @@ Free Turntable: the part will be rotated around the z-axis.</string>
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="Gui::PrefUnitSpinBox" name="qspinNewDocScale">
+       <widget class="Gui::PrefUnitSpinBox" name="qspinNewDocScale" native="true">
         <property name="toolTip">
          <string>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</string>
