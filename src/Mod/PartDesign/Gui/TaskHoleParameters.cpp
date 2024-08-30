@@ -66,10 +66,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadType->addItem(tr("UTS coarse profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS fine profile"), QByteArray("UTS"));
     ui->ThreadType->addItem(tr("UTS extra fine profile"), QByteArray("UTS"));
-    ui->ThreadType->addItem(tr("NPT national pipe profile"), QByteArray("NPT"));
-    ui->ThreadType->addItem(tr("BSP british standard pipe profile"), QByteArray("BSP"));
-    ui->ThreadType->addItem(tr("BSW british standard whitworth profile"), QByteArray("BSW"));
-    ui->ThreadType->addItem(tr("BSF british standard fine profile"), QByteArray("BSF"));
+    ui->ThreadType->addItem(tr("ANSI pipe profile"), QByteArray("NPT"));
+    ui->ThreadType->addItem(tr("BSP pipe profile"), QByteArray("BSP"));
+    ui->ThreadType->addItem(tr("BSW whitworth profile"), QByteArray("BSW"));
+    ui->ThreadType->addItem(tr("BSF fine profile"), QByteArray("BSF"));
 
 
     // read values from the hole properties
