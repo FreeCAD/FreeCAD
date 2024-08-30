@@ -7,7 +7,6 @@ set(Namespace_SRCS
     IndentedItemDelegate.py
     InitGui.py
     Init.py
-    package.xml
     RefreshTools.py
     ResultsDocument.py
     ResultsPreferences.py
@@ -20,9 +19,7 @@ set(Namespace_SRCS
     SearchResults.py
     Serialize.py
     Tango-System-search.svg
-    Tango-System-search.svg.url
     Tango-Tools-spanner-hammer.svg
-    Tango-Tools-spanner-hammer.svg.url
 )
 
 
