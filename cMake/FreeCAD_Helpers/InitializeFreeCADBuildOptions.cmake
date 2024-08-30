@@ -141,6 +141,8 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
     option(BUILD_CLOUD "Build the FreeCAD cloud module" OFF)
     option(ENABLE_DEVELOPER_TESTS "Build the FreeCAD unit tests suit" ON)
+    option(BUILD_SEARCHBAR "Build the FreeCAD SearchBar module" ON)
+
 
     if(MSVC)
         set(FREECAD_3DCONNEXION_SUPPORT "NavLib" CACHE STRING "Select version of the 3Dconnexion device integration")
