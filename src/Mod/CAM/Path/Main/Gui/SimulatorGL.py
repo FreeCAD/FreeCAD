@@ -33,7 +33,7 @@ import Path.Main.Job as PathJob
 from   PathScripts import PathUtils
 import CAMSimulator
 
-from FreeCAD import Vector
+from FreeCAD import Vector, Placement, Rotation
 
 
 # lazily loaded modules
@@ -167,7 +167,10 @@ class CAMSimulation:
         """ Get the edge profile of a tool solid. Basically locating the
             side edge that OCC creates on any revolved object
         """
+        originalPlacement = tool.Placement
+        tool.Placement = Placement(Vector(0,0,0), Rotation(Vector(0,0,1),0), Vector(0,0,0))
         shape = tool.Shape
+        tool.Placement = originalPlacement
         sideEdgeList = []
         for _i, edge in enumerate(shape.Edges):
             if not edge.isClosed():
