@@ -915,6 +915,14 @@ protected:
     /// b-splines need their own treatment
     int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
 
+    void onGeometryChanged();
+    void onConstraintsChanged();
+    void onExternalGeoChanged();
+    void onExternalGeometryChanged();
+    void onPlacementChanged();
+    void onExpressionEngineChanged();
+    void onAttachmentSupportChanged();
+
     void onDocumentRestored() override;
     void restoreFinished() override;
     void onSketchRestore();
