@@ -9850,268 +9850,331 @@ static inline bool checkMigration(Part::PropertyGeometryList &prop)
 void SketchObject::onChanged(const App::Property* prop)
 {
     if (prop == &Geometry) {
-        if (isRestoring() && checkMigration(Geometry)) {
-            // Construction migration to extension
-            for (auto geometryValue : Geometry.getValues()) {
-                if (geometryValue->hasExtension(
-                        Part::GeometryMigrationExtension::getClassTypeId())) {
-                    auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
-                        geometryValue
-                            ->getExtension(Part::GeometryMigrationExtension::getClassTypeId())
-                            .lock());
-
-                    auto gf = GeometryFacade::getFacade(
-                        geometryValue);  // at this point IA geometry is already migrated
-
-                    if (ext->testMigrationType(Part::GeometryMigrationExtension::Construction)) {
-                        bool oldconstr = ext->getConstruction();
-                        if (geometryValue->is<Part::GeomPoint>()
-                            && !gf->isInternalAligned()) {
-                            oldconstr = true;
-                        }
-                        gf->setConstruction(oldconstr);
-                    }
-                    if (ext->testMigrationType(Part::GeometryMigrationExtension::GeometryId)) {
-                        gf->setId(ext->getId());
-                    }
-                }
-            }
-        }
-        geoMap.clear();
-        const auto &vals = getInternalGeometry();
-        for(long i=0;i<(long)vals.size();++i) {
-            auto geo = vals[i];
-            auto gf = GeometryFacade::getFacade(geo);
-            if (gf->getId() == 0) {
-                gf->setId(++geoLastId);
-            }
-            else if (gf->getId() > geoLastId) {
-                geoLastId = gf->getId();
-            }
-            while (!geoMap.insert(std::make_pair(gf->getId(), i)).second) {
-                FC_WARN("duplicate geometry id " << gf->getId() << " -> "
-                                                 << geoLastId + 1);  // NOLINT
-                gf->setId(++geoLastId);
-            }
-        }
-        updateGeoHistory();
+        onGeometryChanged();
     }
-
-    auto doc = getDocument();
-
-    if (prop == &Geometry || prop == &Constraints) {
-        if (doc && doc->isPerformingTransaction()) {// undo/redo
-            setStatus(App::PendingTransactionUpdate, true);
-        }
-        else {
-            if (!internaltransaction) {
-                // internal sketchobject operations changing both geometry and constraints will
-                // explicitly perform an update
-                if (prop == &Geometry) {
-                    if (managedoperation || isRestoring()) {
-                        // if geometry changed, the constraint geometry indices must be updated
-                        acceptGeometry();
-                    }
-                    else {
-                        // this change was not effect via SketchObject, but using direct access to
-                        // properties, check input data
-
-                        // declares constraint invalid if indices go beyond the geometry and any
-                        // call to getValues with return an empty list until this is fixed.
-                        bool invalidinput = Constraints.checkConstraintIndices(
-                            getHighestCurveIndex(), -getExternalGeometryCount());
-
-                        if (!invalidinput) {
-                            acceptGeometry();
-                        }
-                        else {
-                            Base::Console().error(
-                                this->getFullLabel() + " SketchObject::onChanged ",
-                                QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Geometry Property "
-                                "results in invalid constraint indices") "\n");
-                        }
-                        Base::StateLocker lock(internaltransaction, true);
-                        setUpSketch();
-                    }
-                }
-                else {// Change is in Constraints
-
-                    if (managedoperation || isRestoring()) {
-                        Constraints.checkGeometry(getCompleteGeometry());
-                    }
-                    else {
-                        // this change was not effect via SketchObject, but using direct access to
-                        // properties, check input data
-
-                        // declares constraint invalid if indices go beyond the geometry and any
-                        // call to getValues with return an empty list until this is fixed.
-                        bool invalidinput = Constraints.checkConstraintIndices(
-                            getHighestCurveIndex(), -getExternalGeometryCount());
-
-                        if (!invalidinput) {
-                            if (Constraints.checkGeometry(getCompleteGeometry())) {
-                                // if there are invalid geometry indices in the constraints, we need
-                                // to update them
-                                acceptGeometry();
-                            }
-                        }
-                        else {
-                            Base::Console().error(
-                                this->getFullLabel() + " SketchObject::onChanged ",
-                                QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
-                                "Property results in invalid constraint indices") "\n");
-                        }
-                        Base::StateLocker lock(internaltransaction, true);
-                        setUpSketch();
-                    }
-                }
-            }
-        }
+    else if (prop == &Constraints) {
+        onConstraintsChanged();
     }
     else if (prop == &ExternalGeo && !prop->testStatus(App::Property::User3)) {
-        if (doc && doc->isPerformingTransaction()) {
-            setStatus(App::PendingTransactionUpdate, true);
-        }
-
-        if (isRestoring() && checkMigration(ExternalGeo)) {
-            for (auto geometryValue : ExternalGeo.getValues()) {
-                if (geometryValue->hasExtension(
-                        Part::GeometryMigrationExtension::getClassTypeId())) {
-                    auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
-                        geometryValue
-                            ->getExtension(Part::GeometryMigrationExtension::getClassTypeId())
-                            .lock());
-                    std::unique_ptr<ExternalGeometryFacade> egf;
-                    if (ext->testMigrationType(Part::GeometryMigrationExtension::GeometryId)) {
-                        egf = ExternalGeometryFacade::getFacade(geometryValue);
-                        egf->setId(ext->getId());
-                    }
-
-                    if (ext->testMigrationType(
-                            Part::GeometryMigrationExtension::ExternalReference)) {
-                        if (!egf) {
-                            egf = ExternalGeometryFacade::getFacade(geometryValue);
-                        }
-                        egf->setRef(ext->getRef());
-                        egf->setRefIndex(ext->getRefIndex());
-                        egf->setFlags(ext->getFlags());
-                    }
-                }
-            }
-        }
-        externalGeoRefMap.clear();
-        externalGeoMap.clear();
-        std::set<std::string> detached;
-        for(int i=0;i<ExternalGeo.getSize();++i) {
-            auto geo = ExternalGeo[i];
-            auto egf = ExternalGeometryFacade::getFacade(geo);
-            if (egf->testFlag(ExternalGeometryExtension::Detached)) {
-                if (!egf->getRef().empty()) {
-                    detached.insert(egf->getRef());
-                    egf->setRef(std::string());
-                }
-                egf->setFlag(ExternalGeometryExtension::Detached,false);
-                egf->setFlag(ExternalGeometryExtension::Missing,false);
-            }
-            if (egf->getId() > geoLastId) {
-                geoLastId = egf->getId();
-            }
-            if (!externalGeoMap.emplace(egf->getId(), i).second) {
-                FC_WARN("duplicate geometry id " << egf->getId() << " -> "
-                                                 << geoLastId + 1);  // NOLINT
-                egf->setId(++geoLastId);
-                externalGeoMap[egf->getId()] = i;
-            }
-            if (!egf->getRef().empty()) {
-                externalGeoRefMap[egf->getRef()].push_back(egf->getId());
-            }
-        }
-        if (!detached.empty()) {
-            auto objs = ExternalGeometry.getValues();
-            assert(externalGeoRef.size() == objs.size());
-            auto itObj = objs.begin();
-            auto subs = ExternalGeometry.getSubValues();
-            auto itSub = subs.begin();
-            for (const auto& i : externalGeoRef) {
-                if (detached.count(i) != 0U) {
-                    itObj = objs.erase(itObj);
-                    itSub = subs.erase(itSub);
-                    auto& refs = externalGeoRefMap[i];
-                    for (long id : refs) {
-                        auto it = externalGeoMap.find(id);
-                        if(it!=externalGeoMap.end()) {
-                            auto geo = ExternalGeo[it->second];
-                            ExternalGeometryFacade::getFacade(geo)->setRef(std::string());
-                        }
-                    }
-                    refs.clear();
-                } else {
-                    ++itObj;
-                    ++itSub;
-                }
-            }
-            ExternalGeometry.setValues(objs, subs);
-        }
-        else {
-            signalElementsChanged();
-        }
+        onExternalGeoChanged();
     }
     else if (prop == &ExternalGeometry) {
-        if (doc && doc->isPerformingTransaction()) {
-            setStatus(App::PendingTransactionUpdate, true);
-        }
-
-        if(!isRestoring()) {
-            // must wait till onDocumentRestored() when shadow references are
-            // fully restored
-            updateGeometryRefs();
-            signalElementsChanged();
-        }
+        onExternalGeometryChanged();
     }
     else if (prop == &Placement) {
-        if (ExternalGeometry.getSize() > 0) {
-            touch();
-        }
+        onPlacementChanged();
     }
     else if (prop == &ExpressionEngine) {
-        if (!isRestoring() && doc && !doc->isPerformingTransaction() && noRecomputes
-            && !managedoperation) {
-            // if we do not have a recompute, the sketch must be solved to
-            // update the DoF of the solver, constraints and UI
-            try {
-                auto res = ExpressionEngine.execute();
-                if (res) {
-                    FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
-                                                  << res->Why);  // NOLINT
-                    delete res;
-                }
-            } catch (Base::Exception &e) {
-                e.reportException();
-                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
-                                              << e.what());  // NOLINT
-            }
-            solve();
-        }
+        onExpressionEngineChanged();
     }
 #if 0
     // For now do not delete anything (#0001791). When changing the support
     // face it might be better to check which external geometries can be kept.
     else if (prop == &AttachmentSupport) {
-        // make sure not to change anything while restoring this object
-        if (!isRestoring()) {
-            // if support face has changed then clear the external geometry
-            delConstraintsToExternal();
-            for (int i=0; i < getExternalGeometryCount(); i++) {
-                delExternal(0);
-            }
-            rebuildExternalGeometry();
-        }
+        onAttachmentSupportChanged();
     }
 #endif
     Part::Part2DObject::onChanged(prop);
 }
 
-void SketchObject::onUpdateElementReference(const App::Property *prop) {
+void SketchObject::onGeometryChanged()
+{
+    if (isRestoring() && checkMigration(Geometry)) {
+        // Construction migration to extension
+        for (auto geometryValue : Geometry.getValues()) {
+            if (!geometryValue->hasExtension(
+                      Part::GeometryMigrationExtension::getClassTypeId())) {
+                continue;
+            }
+
+            auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
+                geometryValue
+                ->getExtension(Part::GeometryMigrationExtension::getClassTypeId())
+                .lock());
+
+            // at this point IA geometry is already migrated
+            auto gf = GeometryFacade::getFacade(geometryValue);
+
+            if (ext->testMigrationType(Part::GeometryMigrationExtension::Construction)) {
+                bool oldconstr = ext->getConstruction()
+                    || (geometryValue->is<Part::GeomPoint>() && !gf->isInternalAligned());
+                gf->setConstruction(oldconstr);
+            }
+            if (ext->testMigrationType(Part::GeometryMigrationExtension::GeometryId)) {
+                gf->setId(ext->getId());
+            }
+        }
+    }
+    geoMap.clear();
+    const auto &vals = getInternalGeometry();
+    for (long i = 0; i < (long)vals.size(); ++i) {
+        auto geo = vals[i];
+        auto gf = GeometryFacade::getFacade(geo);
+        if (gf->getId() == 0) {
+            gf->setId(++geoLastId);
+        }
+        else if (gf->getId() > geoLastId) {
+            geoLastId = gf->getId();
+        }
+        while (!geoMap.insert(std::make_pair(gf->getId(), i)).second) {
+            FC_WARN("duplicate geometry id " << gf->getId() << " -> "
+                    << geoLastId + 1);  // NOLINT
+            gf->setId(++geoLastId);
+        }
+    }
+    updateGeoHistory();
+
+    auto doc = getDocument();
+
+    if (doc && doc->isPerformingTransaction()) {
+        // undo/redo
+        setStatus(App::PendingTransactionUpdate, true);
+        return;
+    }
+
+    if (internaltransaction) {
+        return;
+    }
+
+    // internal sketchobject operations changing both geometry and constraints will
+    // explicitly perform an update
+
+    if (managedoperation || isRestoring()) {
+        // if geometry changed, the constraint geometry indices must be updated
+        acceptGeometry();
+        return;
+    }
+
+    // this change was not effect via SketchObject, but using direct access to
+    // properties, check input data
+
+    // declares constraint invalid if indices go beyond the geometry and any
+    // call to getValues with return an empty list until this is fixed.
+    bool invalidinput = Constraints.checkConstraintIndices(
+        getHighestCurveIndex(), -getExternalGeometryCount());
+
+    if (!invalidinput) {
+        acceptGeometry();
+    }
+    else {
+        Base::Console().error(
+            this->getFullLabel() + " SketchObject::onChanged ",
+            QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
+                              "Property results in invalid constraint indices") "\n");
+    }
+    Base::StateLocker lock(internaltransaction, true);
+    setUpSketch();
+}
+
+void SketchObject::onConstraintsChanged()
+{
+    auto doc = getDocument();
+
+    if (doc && doc->isPerformingTransaction()) {
+        // undo/redo
+        setStatus(App::PendingTransactionUpdate, true);
+        return;
+    }
+
+    if (internaltransaction) {
+        return;
+    }
+
+    if (managedoperation || isRestoring()) {
+        Constraints.checkGeometry(getCompleteGeometry());
+        return;
+    }
+
+    // this change was not effect via SketchObject, but using direct access to
+    // properties, check input data
+
+    // declares constraint invalid if indices go beyond the geometry and any
+    // call to getValues with return an empty list until this is fixed.
+    bool invalidinput = Constraints.checkConstraintIndices(
+        getHighestCurveIndex(), -getExternalGeometryCount());
+
+    if (!invalidinput) {
+        if (Constraints.checkGeometry(getCompleteGeometry())) {
+            // if there are invalid geometry indices in the constraints, we need
+            // to update them
+            acceptGeometry();
+        }
+    }
+    else {
+        Base::Console().error(
+            this->getFullLabel() + " SketchObject::onChanged ",
+            QT_TRANSLATE_NOOP("Notifications", "Unmanaged change of Constraint "
+                              "Property results in invalid constraint indices") "\n");
+    }
+    Base::StateLocker lock(internaltransaction, true);
+    setUpSketch();
+}
+
+/// not to be confused with `onExternalGeometryChanged`. These names may need fixing.
+void SketchObject::onExternalGeoChanged()
+{
+    if (ExternalGeo.testStatus(App::Property::User3)) {
+        return;
+    }
+
+    auto doc = getDocument();
+
+    if (doc && doc->isPerformingTransaction()) {
+        setStatus(App::PendingTransactionUpdate, true);
+    }
+
+    if (isRestoring() && checkMigration(ExternalGeo)) {
+        for (auto geometryValue : ExternalGeo.getValues()) {
+            if (!geometryValue->hasExtension(
+                    Part::GeometryMigrationExtension::getClassTypeId())) {
+                continue;
+            }
+
+            auto ext = std::static_pointer_cast<Part::GeometryMigrationExtension>(
+                geometryValue
+                ->getExtension(Part::GeometryMigrationExtension::getClassTypeId())
+                .lock());
+            std::unique_ptr<ExternalGeometryFacade> egf;
+            if (ext->testMigrationType(Part::GeometryMigrationExtension::GeometryId)) {
+                egf = ExternalGeometryFacade::getFacade(geometryValue);
+                egf->setId(ext->getId());
+            }
+
+            if (!ext->testMigrationType(Part::GeometryMigrationExtension::ExternalReference)) {
+                continue;
+            }
+
+            if (!egf) {
+                egf = ExternalGeometryFacade::getFacade(geometryValue);
+            }
+            egf->setRef(ext->getRef());
+            egf->setRefIndex(ext->getRefIndex());
+            egf->setFlags(ext->getFlags());
+        }
+    }
+    externalGeoRefMap.clear();
+    externalGeoMap.clear();
+    std::set<std::string> detached;
+    for(int i=0; i<ExternalGeo.getSize(); ++i) {
+        auto geo = ExternalGeo[i];
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        if (egf->testFlag(ExternalGeometryExtension::Detached)) {
+            if (!egf->getRef().empty()) {
+                detached.insert(egf->getRef());
+                egf->setRef(std::string());
+            }
+            egf->setFlag(ExternalGeometryExtension::Detached,false);
+            egf->setFlag(ExternalGeometryExtension::Missing,false);
+        }
+        if (egf->getId() > geoLastId) {
+            geoLastId = egf->getId();
+        }
+        if (!externalGeoMap.emplace(egf->getId(), i).second) {
+            FC_WARN("duplicate geometry id " << egf->getId() << " -> "
+                    << geoLastId + 1);  // NOLINT
+            egf->setId(++geoLastId);
+            externalGeoMap[egf->getId()] = i;
+        }
+        if (!egf->getRef().empty()) {
+            externalGeoRefMap[egf->getRef()].push_back(egf->getId());
+        }
+    }
+    if (detached.empty()) {
+        signalElementsChanged();
+        return;
+    }
+
+    auto objs = ExternalGeometry.getValues();
+    assert(externalGeoRef.size() == objs.size());
+    auto itObj = objs.begin();
+    auto subs = ExternalGeometry.getSubValues();
+    auto itSub = subs.begin();
+    for (const auto& i : externalGeoRef) {
+        if (detached.count(i) == 0U) {
+            ++itObj;
+            ++itSub;
+            continue;
+        }
+
+        itObj = objs.erase(itObj);
+        itSub = subs.erase(itSub);
+        auto& refs = externalGeoRefMap[i];
+        for (long id : refs) {
+            auto it = externalGeoMap.find(id);
+            if (it!=externalGeoMap.end()) {
+                auto geo = ExternalGeo[it->second];
+                ExternalGeometryFacade::getFacade(geo)->setRef(std::string());
+            }
+        }
+        refs.clear();
+    }
+    ExternalGeometry.setValues(objs, subs);
+}
+
+void SketchObject::onExternalGeometryChanged()
+{
+    auto doc = getDocument();
+
+    if (doc && doc->isPerformingTransaction()) {
+        setStatus(App::PendingTransactionUpdate, true);
+    }
+
+    if(!isRestoring()) {
+        // must wait till onDocumentRestored() when shadow references are
+        // fully restored
+        updateGeometryRefs();
+        signalElementsChanged();
+    }
+}
+
+void SketchObject::onPlacementChanged()
+{
+    if (ExternalGeometry.getSize() > 0) {
+        touch();
+    }
+}
+
+void SketchObject::onExpressionEngineChanged()
+{
+    auto doc = getDocument();
+
+    if (!isRestoring() && doc && !doc->isPerformingTransaction() && noRecomputes
+        && !managedoperation) {
+        // if we do not have a recompute, the sketch must be solved to
+        // update the DoF of the solver, constraints and UI
+        try {
+            auto res = ExpressionEngine.execute();
+            if (res) {
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
+                       << res->Why);  // NOLINT
+                delete res;
+            }
+        } catch (Base::Exception &e) {
+            e.reportException();
+            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": "
+                   << e.what());  // NOLINT
+        }
+        solve();
+    }
+}
+
+void SketchObject::onAttachmentSupportChanged()
+{
+    // make sure not to change anything while restoring this object
+    if (isRestoring()) {
+        return;
+    }
+
+    // if support face has changed then clear the external geometry
+    delConstraintsToExternal();
+    for (int i=0; i < getExternalGeometryCount(); i++) {
+        delExternal(0);
+    }
+    rebuildExternalGeometry();
+}
+
+void SketchObject::onUpdateElementReference(const App::Property *prop)
+{
     if(prop == &ExternalGeometry) {
         updateGeoRef = true;
         // Must call updateGeometryRefs() now to avoid the case of recursive
@@ -10123,7 +10186,8 @@ void SketchObject::onUpdateElementReference(const App::Property *prop) {
     }
 }
 
-void SketchObject::updateGeometryRefs() {
+void SketchObject::updateGeometryRefs()
+{
     const auto &objs = ExternalGeometry.getValues();
     const auto &subs = ExternalGeometry.getSubValues();
     const auto &shadows = ExternalGeometry.getShadowSubs();
