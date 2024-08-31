@@ -8402,7 +8402,7 @@ beyond the dimension line</translation>
       <location filename="../../InitGui.py" line="207"/>
       <location filename="../../InitGui.py" line="208"/>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Importas-Eksportas</translation>
     </message>
   </context>
   <context>

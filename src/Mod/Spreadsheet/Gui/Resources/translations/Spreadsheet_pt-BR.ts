@@ -426,25 +426,25 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Endereço da célula final</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>O endereço da célula inicial para vincular.
+Digite '=' se você quiser usar uma expressão.
+A expressão deve retornar uma string de algum endereço de célula.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>O endereço da célula final para vincular.
+Digite '=' se você quiser usar uma expressão.
+A expressão deve retornar uma string de algum endereço de célula.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -503,14 +503,11 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Endereço da célula inicial.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+A primeira coluna da área delimitada deve conter uma lista de nomes de configuração, que será usada para gerar uma lista de strings e vincular esta lista à propriedade indicada para o usuário poder alternar valores.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+A primeira linha da área delimitada será indiretamente vinculada à qualquer linha selecionada por essa propriedade.
 </translation>
     </message>
     <message>
@@ -524,14 +521,11 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Endereço da célula final.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+A primeira coluna da área delimitada deve conter uma lista de nomes de configuração, que será usada para gerar uma lista de strings e vincular esta lista à propriedade indicada para o usuário poder alternar valores.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+A primeira linha da área delimitada será indiretamente vinculada à qualquer linha selecionada por essa propriedade.
 </translation>
     </message>
     <message>
@@ -543,8 +537,7 @@ by that property.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Digite uma expressão para especificar o objeto e o nome da propriedade para alternar dinamicamente a configuração do design. A propriedade será criada se não existir.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
@@ -663,7 +656,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Texto para a unidade</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -727,12 +720,12 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Falha ao copiar e colar</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>O nome contém caracteres inválidos!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Busque a célula pelo nome, por exemplo
@@ -957,12 +950,12 @@ Padrão para: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character:</source>
-      <translation type="unfinished">Quote Character:</translation>
+      <translation>Caractere de aspas:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character:</source>
-      <translation type="unfinished">Escape Character:</translation>
+      <translation>Caracter de escape:</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="116"/>
@@ -990,12 +983,12 @@ Padrão para: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="283"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Tabela de configuração</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="341"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Desconfigurar tabela de configuração</translation>
     </message>
   </context>
   <context>
@@ -1128,12 +1121,12 @@ Padrão para: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Exportar PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>Arquivo PDF</translation>
     </message>

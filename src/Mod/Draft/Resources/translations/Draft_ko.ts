@@ -812,16 +812,15 @@ view each time a command is started</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation>작업 기준면에 제공할 선택적 오프셋
-기본 위치보다 위에. 이것을 하나와 함께 사용하세요.
-위에 있는 버튼의</translation>
+      <translation>기본 위치보다 높은 작업 평면에 적용할 선택적 편차입니다. 이 편차를 위의 버튼 중 하나와 함께 사용하세요.
+</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="106"/>
@@ -1025,7 +1024,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
       <source>Solid</source>
-      <translation>복합체</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
@@ -2608,7 +2607,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="426"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>계속</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="362"/>
@@ -2845,7 +2844,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../DraftGui.py" line="563"/>
       <location filename="../../DraftGui.py" line="823"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>계속</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
@@ -3097,7 +3096,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../DraftGui.py" line="537"/>
       <location filename="../../DraftGui.py" line="805"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="538"/>
@@ -3149,12 +3148,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>이 옵션을 선택하면 기존 오프셋 대신 OCC 스타일 오프셋이 수행됩니다.</translation>
+      <translation>이것을 선택하면 고전적 편차 대신 OCC 방식의 편차가 적용됩니다</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="567"/>
       <source>OCC-style offset</source>
-      <translation type="unfinished">OCC-style offset</translation>
+      <translation>OCC 방식의 편차</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="569"/>
@@ -3291,7 +3290,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="779"/>
@@ -3305,7 +3304,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="798"/>
       <location filename="../../draftguitools/gui_trimex.py" line="214"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>편차 거리</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="794"/>
@@ -3557,7 +3556,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="676"/>
       <source>Wire</source>
-      <translation>와이어</translation>
+      <translation>철사</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="708"/>
@@ -4140,7 +4139,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="219"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>편차 각도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="479"/>
@@ -4182,7 +4181,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="185"/>
       <source>Create B-spline</source>
-      <translation>생성: B-spline</translation>
+      <translation>B-조절곡선 생성</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="66"/>
@@ -4573,22 +4572,22 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>편차를 생성할 대상을 선택하세요</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>편차 생성은 한번에 하나의 대상에만 가능합니다.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>이 유형의 대상은 편차를 생성할 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>베지어 곡선에 대한 편차 생성은 현재 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="110"/>
@@ -4866,12 +4865,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="466"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>경로 길이에 비해 시작 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>경로 길이에 비해 종료 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="534"/>
@@ -5720,7 +5719,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="328"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>편차 방향이 정의되지 않았습니다. 먼저 객체의 양쪽에서 마우스를 움직여 방향을 지정하세요.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
@@ -7097,16 +7096,16 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="63"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>선택한 개체의 편차입니다.
+또한 원본 개체의 편차 복사본을 만들 수도 있습니다.
+스냅하려면 CTRL, 구속하려면 Shift 키를 누릅니다. Alt 키를 누른 상태에서 클릭할 때마다 복사본을 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -8069,7 +8068,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="53"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>모든 면에 적용할 선택적 편차 값</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="56"/>

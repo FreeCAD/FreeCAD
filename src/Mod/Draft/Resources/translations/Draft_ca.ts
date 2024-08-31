@@ -1224,12 +1224,12 @@ Giny d'escala d'anotacions. Si l'escala és 1:100, el multiplicador és 100.</tr
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
       <source>Dim line overshoot</source>
-      <translation type="unfinished">Dim line overshoot</translation>
+      <translation>Superació de la línia de dimensió</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
       <source>Ext line length</source>
-      <translation type="unfinished">Ext line length</translation>
+      <translation>Longitud de línies d'extensió</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
@@ -1245,7 +1245,7 @@ per a dimensions lineals.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
       <source>Ext line overshoot</source>
-      <translation type="unfinished">Ext line overshoot</translation>
+      <translation>Superació de línia d'extensió</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
@@ -1422,8 +1422,8 @@ Tingueu en compte que això no és totalment compatible i que molts objectes no 
       <location filename="../ui/preferences-draft.ui" line="222"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face colors.
 Only for the splitFaces and makeShell options.</source>
-      <translation type="unfinished">If checked, Draft Downgrade and Draft Upgrade will keep face colors.
-Only for the splitFaces and makeShell options.</translation>
+      <translation>Si està marcat, en baixar de categoria i promocionar l'esbós conservaran els colors de les cares.
+Només disponible per les opcions dividir cares i crear closca.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="226"/>
@@ -1434,8 +1434,8 @@ Only for the splitFaces and makeShell options.</translation>
       <location filename="../ui/preferences-draft.ui" line="239"/>
       <source>If checked, Draft Downgrade and Draft Upgrade will keep face names.
 Only for the splitFaces and makeShell options.</source>
-      <translation type="unfinished">If checked, Draft Downgrade and Draft Upgrade will keep face names.
-Only for the splitFaces and makeShell options.</translation>
+      <translation>Si està marcat, en baixar de categoria i promocionar l'esbós conservaran els noms de les cares.
+Només disponible per les opcions dividir cares i crear closca.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="243"/>
@@ -1459,7 +1459,7 @@ accidentally and modifying the entered value.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="328"/>
       <source>Edit node pick radius</source>
-      <translation type="unfinished">Edit node pick radius</translation>
+      <translation>Editar el radi dels nodes de selecció</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="335"/>
@@ -1857,7 +1857,7 @@ per a dimensions lineals.</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="447"/>
       <source>Feet separator</source>
-      <translation type="unfinished">Feet separator</translation>
+      <translation>Separador d'unitat de peus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="626"/>
@@ -2126,12 +2126,12 @@ Otherwise default colors will be applied.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
-      <translation type="unfinished">Use legacy Python importer</translation>
+      <translation>Utilitza l'importador Python llegat</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Use legacy Python exporter</source>
-      <translation type="unfinished">Use legacy Python exporter</translation>
+      <translation>Utilitza l'exportador Python llegat</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="139"/>
@@ -2141,7 +2141,7 @@ Otherwise default colors will be applied.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>Layouts</source>
-      <translation type="unfinished">Layouts</translation>
+      <translation>Disposicions</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="239"/>
@@ -2344,14 +2344,14 @@ Major grid lines are thicker than minor grid lines.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="483"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
-      <translation type="unfinished">The Alt modifier key. The function of this key depends on the command.</translation>
+      <translation>La tecla modificadora Alt. La funció d'aquesta tecla depèn de la comanda.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
       <source>If checked, the grid will always be visible in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation type="unfinished">If checked, the grid will always be visible in new views.
-Use Draft ToggleGrid to change this for the active view.</translation>
+      <translation>Si està marcat, la quadrícula sempre serà visible a les noves vistes.
+Utilitzeu Commuta la graella de l'Esbós per canviar-ho per a la vista activa.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="186"/>
@@ -2382,8 +2382,8 @@ Use Draft ToggleGrid to change this for the active view.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="49"/>
       <source>If checked, the grid will be visible during commands in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation type="unfinished">If checked, the grid will be visible during commands in new views.
-Use Draft ToggleGrid to change this for the active view.</translation>
+      <translation>Si està marcat, la quadrícula serà visible durant les comandes a les noves vistes.
+Utilitzeu Commuta la graella de l'Esbós per canviar-ho per a la vista activa.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="53"/>
@@ -4261,7 +4261,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
       <source>Endpoint of Bézier curve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of Bézier curve can't be smoothed</translation>
+      <translation>El punt final d'una corba Bézier no es pot suavitzar</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -4759,27 +4759,27 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="119"/>
       <source>added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</source>
-      <translation type="unfinished">added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' and 'ScaleToSize'  properties</translation>
+      <translation>s'han afegit les propietats  'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', 'ObliqueAngle' i 'ScaleToSize'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="121"/>
       <source>changed 'Tracking' property type</source>
-      <translation type="unfinished">changed 'Tracking' property type</translation>
+      <translation>s'ha canviat el tipus de la propietat 'Seguiment'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="175"/>
       <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
-      <translation type="unfinished">ShapeString: oblique angle must be in the -80 to +80 degree range</translation>
+      <translation>Forma d'etiqueta: L'angle oblic ha d'estar en el rang d'entre -80 i +80 graus</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="187"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>Forma d'etiquetes: la cadena no té filferros</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="221"/>
       <source>ShapeString: face creation failed for one character</source>
-      <translation type="unfinished">ShapeString: face creation failed for one character</translation>
+      <translation>Forma d'etiquetes: la creació de cares ha fallat per a un caràcter</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="77"/>
@@ -4789,7 +4789,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftobjects/draft_annotation.py" line="80"/>
       <source>added view property 'AnnotationStyle'</source>
-      <translation type="unfinished">added view property 'AnnotationStyle'</translation>
+      <translation>s'ha afegit la propietat 'estil d'anotació'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="322"/>
@@ -4799,61 +4799,61 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="420"/>
       <source>migrated 'PathObj' property to 'PathObject'</source>
-      <translation type="unfinished">migrated 'PathObj' property to 'PathObject'</translation>
+      <translation>s'ha migrat la propietat 'PathObj' a 'PathObject'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="424"/>
       <source>migrated 'PathSubs' property to 'PathSubelements'</source>
-      <translation type="unfinished">migrated 'PathSubs' property to 'PathSubelements'</translation>
+      <translation>s'ha migrat la propietat 'PathSubs' a 'PathSubelements'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="428"/>
       <source>migrated 'Xlate' property to 'ExtraTranslation'</source>
-      <translation type="unfinished">migrated 'Xlate' property to 'ExtraTranslation'</translation>
+      <translation>s'ha migrat la propietat 'Xlate' a 'ExtraTranslation'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="141"/>
       <location filename="../../draftobjects/patharray.py" line="431"/>
       <location filename="../../draftobjects/pointarray.py" line="145"/>
       <source>added 'Fuse' property</source>
-      <translation type="unfinished">added 'Fuse' property</translation>
+      <translation>s'ha afegit la propietat 'Fuse'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="466"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>El desplaçament inicial és massa gran per la longitud del camí. Utilitzant zero en el seu lloc.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>El desplaçament final és massa gran per la longitud del camí menys el desplaçament inicial. Utilitzant zero en el seu lloc.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="534"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
-      <translation type="unfinished">Length of tangent vector is zero. Copy not aligned.</translation>
+      <translation>La longitud del vector tangent és zero. Còpia no-alineada.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="548"/>
       <location filename="../../draftobjects/patharray.py" line="570"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
-      <translation type="unfinished">Length of normal vector is zero. Using a default axis instead.</translation>
+      <translation>La longitud del vector normal és zero. Utilitzant l'eix predeterminat en el seu lloc.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="554"/>
       <location filename="../../draftobjects/patharray.py" line="576"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
-      <translation type="unfinished">Tangent and normal vectors are parallel. Normal replaced by a default axis.</translation>
+      <translation>Els vectors tangent i normal són paral·lels. S'ha substituït el vector normal per un eix predeterminat.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="566"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
-      <translation type="unfinished">Cannot calculate normal vector. Using the default normal instead.</translation>
+      <translation>No es pot calcular el vector normal. Utilitzant el vector normal predeterminat en el seu lloc.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="582"/>
       <source>AlignMode {} is not implemented</source>
-      <translation type="unfinished">AlignMode {} is not implemented</translation>
+      <translation>AlignMode {} no està implementat</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="103"/>
@@ -4863,7 +4863,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="110"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Totes les formes han de ser planars</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="62"/>
@@ -4878,7 +4878,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>Les vores no estan connectades o el radi és massa gran.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
@@ -4920,13 +4920,13 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_circulararray.py" line="125"/>
       <location filename="../../draftmake/make_polararray.py" line="97"/>
       <source>Wrong input: base_object not in document.</source>
-      <translation type="unfinished">Wrong input: base_object not in document.</translation>
+      <translation>Entrada incorrecta: base_object no es troba al document.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="179"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
       <source>Wrong input: path_object not in document.</source>
-      <translation type="unfinished">Wrong input: path_object not in document.</translation>
+      <translation>Entrada incorrecta: path_object no es troba al document.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="186"/>
@@ -4962,12 +4962,12 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="206"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista o tupla de cadenes, o una sola cadena.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="237"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
+      <translation>Entrada incorrecta: ha de ser 'Original', 'Frenet', o 'Tangent'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="81"/>
@@ -4979,7 +4979,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_orthoarray.py" line="89"/>
       <location filename="../../draftmake/make_orthoarray.py" line="92"/>
       <source>Input: single value expanded to vector.</source>
-      <translation type="unfinished">Input: single value expanded to vector.</translation>
+      <translation>Entrada: un valor únic s'ha convertit en vector.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="108"/>
@@ -4993,7 +4993,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_orthoarray.py" line="115"/>
       <location filename="../../draftmake/make_orthoarray.py" line="118"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>Entrada: el nombre d'elements ha de ser com a mínim 1. S'estableix a 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="212"/>
@@ -5005,32 +5005,32 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_label.py" line="223"/>
       <source>Wrong input: target_object must not be a list.</source>
-      <translation type="unfinished">Wrong input: target_object must not be a list.</translation>
+      <translation>Entrada incorrecta: target_object no ha de ser una llista.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="228"/>
       <source>Wrong input: target_object not in document.</source>
-      <translation type="unfinished">Wrong input: target_object not in document.</translation>
+      <translation>Entrada incorrecta: target_object no es troba al document.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="240"/>
       <source>Wrong input: subelements must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: subelements must be a list or tuple of strings, or a single string.</translation>
+      <translation>Entrada incorrecta: els subelements han de ser una llista o tupla de cadenes, o una sola cadena.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="251"/>
       <source>Wrong input: subelement {} not in object.</source>
-      <translation type="unfinished">Wrong input: subelement {} not in object.</translation>
+      <translation>Entrada incorrecta: el subelement {} no està en l'objecte.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="259"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+      <translation>Entrada incorrecta: label_type ha de ser una cadena.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="264"/>
       <source>Wrong input: label_type must be one of the following:</source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following:</translation>
+      <translation>Entrada incorrecta: label_type ha de ser una de les següents:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="272"/>
@@ -5038,23 +5038,23 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
       <location filename="../../draftmake/make_text.py" line="98"/>
       <location filename="../../draftmake/make_text.py" line="103"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list of strings or a single string.</translation>
+      <translation>Entrada incorrecta: ha de ser una llista de cadenes o una sola cadena.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="285"/>
       <location filename="../../draftmake/make_label.py" line="289"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
+      <translation>Entrada incorrecta: ha de ser una cadena, 'Horitzontal', 'Vertical' o 'Personalitzat'.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="301"/>
       <source>Wrong input: points {} must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: points {} must be a list of at least two vectors.</translation>
+      <translation>Entrada incorrecta: els punts {} han de ser una llista de com a mínim dos vectors.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="335"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
+      <translation>La direcció no és 'Personalitzada'; no s'utilitzaran els punts.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="362"/>
@@ -5064,7 +5064,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="99"/>
       <source>Wrong input: point_object not in document.</source>
-      <translation type="unfinished">Wrong input: point_object not in document.</translation>
+      <translation>Entrada incorrecta: point_object no es troba al document.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="105"/>
@@ -5084,13 +5084,13 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="305"/>
       <source>Wrong input: edge_object must not be a list or tuple.</source>
-      <translation type="unfinished">Wrong input: edge_object must not be a list or tuple.</translation>
+      <translation>Entrada incorrecta: edge_object no ha de ser una llista o tupla.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="310"/>
       <location filename="../../draftmake/make_dimension.py" line="426"/>
       <source>Wrong input: edge_object not in document.</source>
-      <translation type="unfinished">Wrong input: edge_object not in document.</translation>
+      <translation>Entrada incorrecta: edge_object no es troba al document.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="314"/>
@@ -5101,7 +5101,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="318"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>Entrada incorrecta: l'objecte no té com a mínim un element a 'Vèrtexs' útil per mesurar.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="324"/>
@@ -5123,7 +5123,7 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="344"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation type="unfinished">i2: values below 1 are not allowed; will be set to the last vertex in the object.</translation>
+      <translation>i2: no es permeten valors inferiors a 1; s'establirà l'últim vèrtex de l'objecte.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="434"/>
@@ -5499,17 +5499,17 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="142"/>
       <source>migrated 'PointList' property to 'PointObject'</source>
-      <translation type="unfinished">migrated 'PointList' property to 'PointObject'</translation>
+      <translation>s'ha migrat la propietat 'PointList' a 'PointObject'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="75"/>
       <source>changed 'Group' property type</source>
-      <translation type="unfinished">changed 'Group' property type</translation>
+      <translation>s'ha canviat el tipus de la propietat 'Grup'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="99"/>
       <source>updated view properties</source>
-      <translation type="unfinished">updated view properties</translation>
+      <translation>s'han actualitzat les propietats de vista</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="143"/>
@@ -5521,19 +5521,19 @@ Please either allow FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either allow FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
+      <translation>No s'han trobat en el sistema les biblioteques d'importació/exportació DXF
+necessàries perquè FreeCAD pugui manegar el format DXF
+Si us plau, permeteu que FreeCAD descarregui aquestes llibreries:
+  1 - Carregui el banc de treball Esbós
+  2 - Menú Editar &gt; Preferències &gt; Importa-Exporta &gt; DXF &gt; Activa descàrregues
+O descarregueu aquestes llibreries manualment tal com s'explica a
 https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
+      <translation>El croquis és massa complex per editar-lo: se suggereix usar l'editor per defecte de l'entorn de croquis</translation>
     </message>
   </context>
   <context>
@@ -5541,32 +5541,32 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>Eines de creació d'esbós</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>Eines d'anotació d'esbós</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Eines de modificació d'esbós</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
-      <translation type="unfinished">Draft utility tools</translation>
+      <translation>Eines d'utilitat d'esbós</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft snap</source>
-      <translation type="unfinished">Draft snap</translation>
+      <translation>Ajust d'esbós</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
-      <translation type="unfinished">&amp;Drafting</translation>
+      <translation>&amp;Esborrany</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="123"/>
@@ -5576,12 +5576,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
-      <translation type="unfinished">&amp;Modification</translation>
+      <translation>&amp;Modificació</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Utilities</source>
-      <translation type="unfinished">&amp;Utilities</translation>
+      <translation>&amp;Utilitats</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
@@ -5591,12 +5591,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftutils/init_tools.py" line="58"/>
       <source>Bézier tools</source>
-      <translation type="unfinished">Bézier tools</translation>
+      <translation>Eines de Bézier</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="89"/>
       <source>Array tools</source>
-      <translation type="unfinished">Array tools</translation>
+      <translation>Eines de matriu</translation>
     </message>
   </context>
   <context>
@@ -5606,14 +5606,14 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>Ha fallat la descàrrega de llibreries dxf.
+Si us plau, instal·li manualment el complement de la llibreria dxf 
+mitjançant l'opció Eines -&gt;Gestor de complements</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="51"/>
       <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
+      <translation>Heu de triar un objecte base abans d'utilitzar aquesta ordre</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="80"/>
@@ -5623,22 +5623,22 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>Elimina els objectes originals</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Crea un xamfrà</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="421"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Desa l'estil</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="422"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Nom d'aquest estil nou:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="429"/>
@@ -5733,7 +5733,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="160"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Triar des de/fins als punts</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="161"/>
@@ -5743,27 +5743,27 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="208"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>L'objecte de punt no té un punt discret, no es pot usar per a una matriu.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="110"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry: Tancat amb el mateix punt primer/darrer. Geometria no actualitzada.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="101"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Escrivint la posició de la càmera</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="118"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Escrivint l'estat visible/ocult dels objectes</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="283"/>
       <source>On</source>
-      <translation type="unfinished">On</translation>
+      <translation>Activat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="284"/>
@@ -5799,7 +5799,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="290"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>Color d'impressió de la línia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="311"/>
@@ -5877,7 +5877,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importOCA.py" line="414"/>
       <source>OCA: found no data to export</source>
-      <translation type="unfinished">OCA: found no data to export</translation>
+      <translation>OCA: no s'ha trobat cap dada per a exportar</translation>
     </message>
     <message>
       <location filename="../../importOCA.py" line="459"/>
@@ -5898,12 +5898,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../importSVG.py" line="1813"/>
       <source>Unknown SVG export style, switching to Translated</source>
-      <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+      <translation>Estil d'exportació SVG desconegut, s'està canviant a Traduït</translation>
     </message>
     <message>
       <location filename="../../importSVG.py" line="1833"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>La llista d'exportació no conté cap objecte amb una caixa delimitadora vàlida</translation>
     </message>
   </context>
   <context>
@@ -5916,7 +5916,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_selectplane.py" line="62"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane.</source>
-      <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane.</translation>
+      <translation>Selecciona 3 vèrtexs, una o més formes, o un objecte per a definir un pla de treball.</translation>
     </message>
   </context>
   <context>
@@ -5931,9 +5931,9 @@ from menu Tools -&gt; Addon Manager</translation>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Crea còpies de l'objecte seleccionat al llarg d'un camí determinat.
+Primer trieu l'objecte, i després trieu el camí.
+El camí pot ser una polilínia, B-spline, corba Bézier, o fins i tot, arestes d'altres objectes.</translation>
     </message>
   </context>
   <context>
@@ -5941,14 +5941,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="167"/>
       <source>Path link array</source>
-      <translation type="unfinished">Path link array</translation>
+      <translation>Matriu d'enllaços de camins</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="170"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Igual que l'eina Matriu de camí, però crea una matriu d'enllaços.
+Una Matriu d'enllaços és més eficient gestionant moltes còpies, però l'opció 'combina' no es pot emprar.</translation>
     </message>
   </context>
   <context>
@@ -5969,15 +5969,12 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement.
+      <translation>Crea una etiqueta, que pot estar vinculada a un objecte o subelement seleccionat.
 
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
+Primer trieu el vèrtex, aresta o cara d'un objecte, aleshores crideu aquesta ordre, després definiu la posició de la línia guia i l'etiqueta textual.
+L'etiqueta podrà mostrar informació sobre aquest objecte i sobre el subelement seleccionat, si n'hi ha cap.
 
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</translation>
+Si hi ha molts objectes o subelement seleccionats, només es mostrarà informació del primer en cada cas.</translation>
     </message>
   </context>
   <context>
@@ -5990,7 +5987,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una línia de 2 punts. CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -6003,7 +6000,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="309"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una línia de múltiples punts (polilínia). CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -6016,7 +6013,7 @@ will be used to provide information to the label.</translation>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="44"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Crea tramats a les cares d'un objecte seleccionat</translation>
     </message>
   </context>
   <context>
@@ -6030,8 +6027,8 @@ will be used to provide information to the label.</translation>
       <location filename="../../draftguitools/gui_join.py" line="57"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Uneix les línies o polilínies seleccionades en un sol objecte.
+Les línies han de compartir un punt al principi o al final perquè l'operació tingui èxit.</translation>
     </message>
   </context>
   <context>
@@ -6044,7 +6041,7 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>Crea una anotació multilínia. CTRL per ajustar.</translation>
     </message>
   </context>
   <context>
@@ -6052,16 +6049,15 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to sketch</source>
-      <translation type="unfinished">Draft to sketch</translation>
+      <translation>Esbós a Croquis</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>Conversió bidireccional entre objectes Esbós i Croquis.
+Diversos objectes Esbós es convertiran en un sol Croquis sense restriccions, mentre que un sol Croquis amb traços no continus es convertirà en diversos objectes Esbós individuals.</translation>
     </message>
   </context>
   <context>
@@ -6069,12 +6065,12 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="66"/>
       <source>Snap lock</source>
-      <translation type="unfinished">Snap lock</translation>
+      <translation>Bloqueig d'ajustament</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="67"/>
       <source>Enables or disables snapping globally.</source>
-      <translation type="unfinished">Enables or disables snapping globally.</translation>
+      <translation>Habilita o deshabilita l'ajustament global.</translation>
     </message>
   </context>
   <context>
@@ -6256,7 +6252,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="265"/>
       <source>Projects snap points onto the current working plane.</source>
-      <translation type="unfinished">Projects snap points onto the current working plane.</translation>
+      <translation>Projecta els punts d'ajustament al pla de treball actual.</translation>
     </message>
   </context>
   <context>
@@ -6342,7 +6338,7 @@ CTRL per ajustar, SHIFT per restringir.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>Activa/desactiva la graella d'Esbós.</translation>
     </message>
   </context>
   <context>
@@ -6350,12 +6346,12 @@ CTRL per ajustar, SHIFT per restringir.</translation>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="61"/>
       <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
+      <translation>Ressaltat de subelement</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
+      <translation>Ressalta els subelements dels objectes seleccionats, fent que puguin ser editats amb les eines moure, rotar i escalar.</translation>
     </message>
   </context>
   <context>
@@ -6370,9 +6366,8 @@ CTRL per ajustar, SHIFT per restringir.</translation>
       <source>Edits the active object.
 Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT + Left Click to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Edita l'objecte actiu.
+Premeu E o bé ALT+botó dret per mostrar un menú contextual en els nodes suportats i en els objectes suportats.</translation>
     </message>
   </context>
   <context>
@@ -6388,10 +6383,9 @@ on supported nodes and on supported objects.</translation>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Crea còpies de l'objecte seleccionat i els disposa les còpies en un patró radial, creant diverses capes circulars.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+La matriu es pot transformar en ortogonal o polar canviant-ne el tipus.</translation>
     </message>
   </context>
   <context>
@@ -6399,7 +6393,7 @@ The array can be turned into an orthogonal or a polar array by changing its type
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="78"/>
       <source>Annotation styles...</source>
-      <translation type="unfinished">Annotation styles...</translation>
+      <translation>Estils d'anotacions...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
@@ -6417,7 +6411,7 @@ The array can be turned into an orthogonal or a polar array by changing its type
     <message>
       <location filename="../../draftguitools/gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>Crea un objecte de punt. Cliqueu en qualsevol punt de la vista 3D.</translation>
     </message>
   </context>
   <context>
@@ -6475,7 +6469,7 @@ Crea un grup abans d'utilitzar aquesta eina.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
       <source>Select a group to add all Draft and BIM objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and BIM objects to.</translation>
+      <translation>Selecciona un grup on s'afegiran tots els objectes Esbós i BIM.</translation>
     </message>
   </context>
   <context>
@@ -6512,7 +6506,7 @@ Crea un grup de construcció si aquest no existeix.</translation>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="46"/>
       <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
+      <translation>Crear un pla de treball intermediari</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="49"/>
@@ -6677,9 +6671,9 @@ CTRL per ajustar, MAJÚS per restringir.</translation>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Crea una corba de Bézier formada per segments de 2n grau (quadrat) i 3r grau (cúbic). Feu clic i arrossegueu per definir cada segment.
+Després de crear la corba, podeu tornar a editar cada punt de control i definir les propietats de cada nus.
+CTRL per ajustar, MAJÚS per restringir.</translation>
     </message>
   </context>
   <context>
@@ -6741,7 +6735,7 @@ CTRL per ajustar, ALT per seleccionar objectes tangents.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="65"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Matriu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="68"/>
@@ -6749,10 +6743,9 @@ CTRL per ajustar, ALT per seleccionar objectes tangents.</translation>
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Crea còpies de l'objecte seleccionat i les disposa les seves còpies en un patró ortogonal, fent que les còpies segueixin la direcció definida en els eixos X, Y i Z.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+La matriu es pot convertir en polar o circular canviant-ne el tipus.</translation>
     </message>
   </context>
   <context>
@@ -6766,8 +6759,8 @@ The array can be turned into a polar or a circular array by changing its type.</
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
-      <translation type="unfinished">Scales the selected objects from a base point.
-CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
+      <translation>Escala els objectes seleccionats a partir d'un punt base.
+CTRL per ajustar, MAJÚS per restringir, ALT per a copiar.</translation>
     </message>
   </context>
   <context>
@@ -6781,8 +6774,8 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
       <location filename="../../draftguitools/gui_layers.py" line="71"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties.</translation>
+      <translation>Afegeix una capa al document.
+Els objectes afegits en aquesta capa poden compartir les mateixes propietats visuals.</translation>
     </message>
   </context>
   <context>
@@ -6796,8 +6789,8 @@ Objects added to this layer can share the same visual properties.</translation>
       <location filename="../../draftguitools/gui_pointarray.py" line="70"/>
       <source>Creates copies of the selected base object at the points of a point object.
 First select the base object, and then select the point object.</source>
-      <translation type="unfinished">Creates copies of the selected base object at the points of a point object.
-First select the base object, and then select the point object.</translation>
+      <translation>Crea còpies de l'objecte base seleccionar als punts dels objectes de punt.
+Primer, seleccioneu l'objecte base, i després seleccioneu els objectes de punt.</translation>
     </message>
   </context>
   <context>
@@ -6805,14 +6798,14 @@ First select the base object, and then select the point object.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="132"/>
       <source>Point link array</source>
-      <translation type="unfinished">Point link array</translation>
+      <translation>Matriu d'enllaços de punts</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="135"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
-      <translation type="unfinished">Like the PointArray tool, but creates a 'Point link array' instead.
-A 'Point link array' is more efficient when handling many copies.</translation>
+      <translation>Com l'eina Matriu de punts, però crea una 'Matriu d'enllaços de punts'.
+Una 'Matriu d'enllaços de punts' és més eficient quan s'empren moltes còpies.</translation>
     </message>
   </context>
   <context>
@@ -6820,12 +6813,12 @@ A 'Point link array' is more efficient when handling many copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="66"/>
       <source>Array tools</source>
-      <translation type="unfinished">Array tools</translation>
+      <translation>Eines de matriu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="69"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Crea diversos tipus de matriu, incloent-hi rectangular, polar, circular, camí i punt</translation>
     </message>
   </context>
   <context>
@@ -6839,8 +6832,8 @@ A 'Point link array' is more efficient when handling many copies.</translation>
       <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>Commuta el mode de Construcció.
+Quan s'activa, els objectes creats a continuació seran inclosos en el grup de construcció, i seran dibuixats amb el color i les propietats especificades.</translation>
     </message>
   </context>
   <context>
@@ -6848,16 +6841,16 @@ When this is active, the following objects created will be included in the const
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="136"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Commuta la vista normal/filferro</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="138"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>Canvia el mode de visualització dels objectes seleccionats de línies planes a model de filferro i viceversa.
+És útil per visualitzar ràpidament objectes ocults rere d'altres objectes.
+Està pensat per a usar-se amb formes tancades i sòlids, i no afecta els filferros oberts.</translation>
     </message>
   </context>
   <context>
@@ -6881,18 +6874,18 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>Crea una acotació.
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- Trieu tres punts per crear una acotació lineal simple.
+- Trieu una línia recta per crear una acotació lineal lligada a la recta.
+- Trieu un arc o una circumferència per crear una acotació de radi o diàmetre associada a aquest arc.
+- Seleccioneu dues línies rectes per crear una acotació angular entre elles.
+CTRL per ajustar, MAJÚS per restringir, ALT per tirar una aresta o un arc.
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+Podeu seleccionar una sola línia o un sol arc circular abans d'invocar aquesta ordre
+per convertir-lo en una cota enllaçada.
+També podeu seleccionar un objecte 'App::MeasureDistance' abans d'executar aquesta
+ordre per convertir-lo en un objecte 'Esbós d'acotació'.</translation>
     </message>
   </context>
   <context>
@@ -6907,9 +6900,9 @@ to turn it into a 'Draft Dimension' object.</translation>
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
-      <translation type="unfinished">Stretches the selected objects.
-Select an object, then draw a rectangle to pick the vertices that will be stretched,
-then draw a line to specify the distance and direction of stretching.</translation>
+      <translation>Estira els objectes seleccionats.
+Seleccioneu un objecte, dibuixeu un rectangle per triar els vèrtexs que seran estirats,
+i finalment dibuixeu una línia per definir la distància i direcció d'estirament.</translation>
     </message>
   </context>
   <context>
@@ -6922,7 +6915,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle. CTRL to snap.</source>
-      <translation type="unfinished">Creates a 2-point rectangle. CTRL to snap.</translation>
+      <translation>Crea un rectangle amb 2 punts. CTRL per ajustar.</translation>
     </message>
   </context>
   <context>
@@ -6935,7 +6928,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="67"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>Reflecteix els objectes seleccionats al llarg d'una línia definida per dos punts.</translation>
     </message>
   </context>
   <context>
@@ -6950,9 +6943,9 @@ then draw a line to specify the distance and direction of stretching.</translati
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path, and twists the copies.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Crea còpies de l'objecte seleccionat al llarg d'un camí determinat, i en gira les còpies.
+Primer trieu l'objecte, i després trieu el camí.
+El camí pot ser una polilínia, B-spline, corba Bézier, o fins i tot, arestes d'altres objectes.</translation>
     </message>
   </context>
   <context>
@@ -6960,14 +6953,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted link array</source>
-      <translation type="unfinished">Path twisted link array</translation>
+      <translation>Matriu d'enllaços de camí retorçat</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Igual que l'eina Matriu de camí retorçat, però crea una matriu d'enllaços.
+Una Matriu d'enllaços és més eficient gestionant moltes còpies, però l'opció 'combina' no es pot emprar.</translation>
     </message>
   </context>
   <context>
@@ -6981,8 +6974,8 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <location filename="../../draftguitools/gui_clone.py" line="74"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>Crea un clon dels objectes seleccionats.
+El clon resultant pot ser escalat en qualsevol de les seves tres direccions.</translation>
     </message>
   </context>
   <context>
@@ -6998,10 +6991,9 @@ The resulting clone can be scaled in each of its three directions.</translation>
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
+      <translation>Crea còpies de l'objecte seleccionat, i disposa les còpies en un patró polar definit per un centre de rotació i el seu angle.
 
-The array can be turned into an orthogonal or a circular array by changing its type.</translation>
+La matriu es pot convertir en ortogonal o circular canviant-ne el tipus.</translation>
     </message>
   </context>
   <context>
@@ -7037,10 +7029,9 @@ línies rectes dibuixades en el pla XY. Els objectes seleccionats que no siguin 
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>Promociona els objectes seleccionats a formes més complexes.
+El resultat de l'operació depèn del tipus dels objectes, que poden ser promocionats diverses vegades seguides.
+Per exemple, pot unir objectes seleccionats en un de sol, convertir vores simples en polilínies paramètriques, convertir vores tancades en cares amb ompliment i polígons paramètrics, i combinar cares en una sola cara.</translation>
     </message>
   </context>
   <context>
@@ -7055,9 +7046,9 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Desplaçaments de l'objecte seleccionat.
+També pot crear una còpia desplaçada de l'objecte original.
+CTRL per ajustar, MAJÚS per restringir. Manteniu ALT i feu clic per crear una còpia per cada clic.</translation>
     </message>
   </context>
   <context>
@@ -7073,10 +7064,10 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY plane.
-The initial projection direction is the negative of the current active view direction.
-You can select individual faces to project, or the entire solid, and also include hidden lines.
-These projections can be used to create technical drawings with the TechDraw Workbench.</translation>
+      <translation>Crea una projecció 2D dels objectes seleccionats sobre el pla XY.
+La direcció de projecció inicial és la negativa de la direcció de la vista actual.
+Podeu triar cares individuals per ser projectades, o bé tot el sòlid, i incloure també línies ocultes.
+Aquestes projeccions poden usar-se per crear dibuixos tècnics amb el banc de treball Dibuix Tècnic.</translation>
     </message>
   </context>
   <context>
@@ -7090,8 +7081,8 @@ These projections can be used to create technical drawings with the TechDraw Wor
       <location filename="../../draftguitools/gui_shapestrings.py" line="68"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
-      <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
-The closed shapes can be used for extrusions and boolean operations.</translation>
+      <translation>Crea una forma a partir d'una cadena de text triant una tipografia i una situació.
+Les formes tancades es poden emprar per a extrusions i per a operacions booleanes.</translation>
     </message>
   </context>
   <context>
@@ -7106,9 +7097,9 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>Repara objectes Esbós malmesos desats amb una versió anterior del programa.
+Si hi ha un objecte seleccionat, intentarà reparar l'objecte en qüestió,
+altrament intentarà reparar tots els objectes del document actiu.</translation>
     </message>
   </context>
   <context>
@@ -7123,9 +7114,9 @@ otherwise it will try to heal all objects in the active document.</translation>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>Degrada els objectes seleccionats a les seves formes més simples.
+El resultat de l'operació depèn dels tipus d'objectes, que poden ser degradats diverses vegades seguides.
+Per exemple, explota les polilínies seleccionades en cares més simples, filferros i després vores. També pot restar cares.</translation>
     </message>
   </context>
   <context>
@@ -7133,14 +7124,14 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="../../draftobjects/text.py" line="57"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>Posició del punt base de la primera línia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/text.py" line="69"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>Text mostrat per aquest objecte.
+Consisteix en una llista de cadenes de text; cada element de la llista es mostrarà en la seva pròpia línia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="56"/>
@@ -7150,116 +7141,115 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/shapestring.py" line="60"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>Nom del fitxer de tipus de lletra</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="64"/>
       <source>Height of text</source>
-      <translation type="unfinished">Height of text</translation>
+      <translation>Alçada del text</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="68"/>
       <source>Horizontal and vertical alignment</source>
-      <translation type="unfinished">Horizontal and vertical alignment</translation>
+      <translation>Alineació horitzontal i vertical</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="76"/>
       <source>Height reference used for justification</source>
-      <translation type="unfinished">Height reference used for justification</translation>
+      <translation>Referència d'alçada utilitzada per la justificació</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="82"/>
       <source>Keep left margin and leading white space when justification is left</source>
-      <translation type="unfinished">Keep left margin and leading white space when justification is left</translation>
+      <translation>Conservar marge esquerre i l'espai en blanc inicial quan la justificació és a l'esquerra</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="86"/>
       <source>Scale to ensure cap height is equal to size</source>
-      <translation type="unfinished">Scale to ensure cap height is equal to size</translation>
+      <translation>Escala per garantir que l'alçada del límit sigui igual a la mida</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="90"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Espaiat entre caràcters</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="94"/>
       <source>Oblique (slant) angle</source>
-      <translation type="unfinished">Oblique (slant) angle</translation>
+      <translation>Angle oblic (inclinació)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="98"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Emplena les lletres amb cares</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shapestring.py" line="102"/>
       <source>Fuse faces if faces overlap, usually not required (can be very slow)</source>
-      <translation type="unfinished">Fuse faces if faces overlap, usually not required (can be very slow)</translation>
+      <translation>Combina cares si les cares s'encavalquen, normalment no es necessita (pot ser molt lent)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="47"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>L'objecte base utilitzat per aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="50"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>L'arxiu PAT utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="53"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>El nom del patró utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="56"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>L'escala del patró utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="59"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>La rotació del patró utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="62"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Si s'estableix a Fals, s'aplica el tramat com a les cares, sense traducció (això podria donar resultats erronis per a cares no XY)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>Els objectes inclosos en aquest clon</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="51"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>El factor d'escala d'aquest clon</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>Si els clons inclouen diversos objectes, marqueu com a Cert per a combinar o Fals per compondre</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="44"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>Angle inicial de l'arc</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="49"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Angle final de l'arc (per a una circumferència sencera, 
+                introduïu el mateix valor que el primer angle)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="53"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Radi del cercle</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="57"/>
@@ -7297,32 +7287,32 @@ set True for fusion or False for compound</translation>
     <message>
       <location filename="../../draftobjects/polygon.py" line="55"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Com cal dibuixar el polígon a partir del cercle de control</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="59"/>
       <location filename="../../draftobjects/rectangle.py" line="51"/>
       <location filename="../../draftobjects/wire.py" line="76"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>Radi a utilitzar per arrodonir les cantonades</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="63"/>
       <location filename="../../draftobjects/rectangle.py" line="54"/>
       <location filename="../../draftobjects/wire.py" line="80"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Mida del xamfrà per donar a les cantonades</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="87"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>L'objecte base que es duplicarà.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="94"/>
       <location filename="../../draftobjects/patharray.py" line="185"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>L'objecte al llarg del qual es distribuiran les còpies. Ha de contenir 'Vores'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="112"/>
@@ -7332,7 +7322,7 @@ set True for fusion or False for compound</translation>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="119"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Factor de rotació de la matriu retorçada.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="126"/>
@@ -7340,14 +7330,14 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/array.py" line="335"/>
       <location filename="../../draftobjects/pointarray.py" line="111"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Mostra els elements individuals de la matriu (només per matrius de tipus 'Enllaç')</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="68"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>Posició de l'extrem de la línia guia.
+Aquest punt pot estar decorat amb una fletxa o altres símbols.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="82"/>
@@ -7355,10 +7345,9 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
+      <translation>Objecte o, opcionalment, subelement les propietats del qual es mostraran com a 'Text', segons 'Label Type'.
 
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+No es mostrarà 'Target' si 'Label Type' s'ha establert com a 'Custom'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="112"/>
@@ -7371,15 +7360,14 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>Llista de punts que defineixen la línia guia; normalment, una llista de tres punts.
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+El primer punt ha de ser la posició del text, és a dir, 'Emplaçament', i l'últim punt
+ha de ser l'extrem de la línia, és a dir, el punt de 'Destí'. El punt central es calcula
+automàticament segons el signe i valor de 'Direcció de la recta' i 'Distància de la recta'.
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+Si 'Direcció de la recta' té el valor 'Personalitzat', la propietat 'Punts' pot ser una llista 
+de punts arbitrària.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="127"/>
@@ -7387,10 +7375,10 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>Direcció del segment recte de la línia guia.
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+Si es tria 'Personalitzat', els punts es poden especificar assignant
+una llista personalitzada a l'atribut 'Punts'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="145"/>
@@ -7399,21 +7387,21 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>Longitud del segment recte de la línia guia.
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+Aquesta és una distància orientada; si el valor és negatiu, es dibuixarà
+la línia cap a l'esquerra o per sota de 'Text', altrament cap a la dreta o per
+damunt seu, segons el valor de 'Direcció de la recta'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="159"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>Posició de l'element 'Text' a l'espai 3D</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="169"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>El text que es mostrarà quan 'Tipus d'etiqueta' s'ha establert com a 'Personalitzat'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="184"/>
@@ -7422,11 +7410,11 @@ depending on the value of 'Straight Direction'.</translation>
 This property is read-only, as the final text depends on 'Label Type',
 and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">The text displayed by this label.
+      <translation>Text que mostra aquesta etiqueta.
 
-This property is read-only, as the final text depends on 'Label Type',
-and the object defined in 'Target'.
-The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
+Aquesta propietat és de només lectura, ja que el text final depèn de 'Label Type',
+i de l'objecte definit a 'Target'.
+El 'Custom Text' només es mostrarà si 'Label Type' és 'Custom'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="219"/>
@@ -7438,47 +7426,47 @@ For other types, the string will be calculated automatically from the object def
 
 For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</source>
-      <translation type="unfinished">The type of information displayed by this label.
+      <translation>El tipus d'informació que mostra aquesta etiqueta.
 
-If 'Custom' is chosen, the contents of 'Custom Text' will be used.
-For other types, the string will be calculated automatically from the object defined in 'Target'.
-'Tag' and 'Material' only work for objects that have these properties, like Arch objects.
+Si s'escull 'Personalitzat', s'utilitzarà el contingut de 'Text personalitzat'.
+Per a altres tipus, la cadena es calcularà automàticament a partir de l'objecte definit a 'Objectiu'.
+'Etiqueta' i 'Material' només funcionen per a objectes que tenen aquestes propietats, com els objectes Arch.
 
-For 'Position', 'Length', and 'Area' these properties will be extracted from the main object in 'Target',
-or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
+Per a 'Posició', 'Longitud' i 'Àrea', aquestes propietats s'extreuen de l'objecte principal a 'Objectiu',
+o des del subelement 'VertexN', 'EdgeN' o 'FaceN', respectivament, si s'especifica.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="85"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
-      <translation type="unfinished">General scaling factor that affects the annotation consistently
-because it scales the text, and the line decorations, if any,
-in the same proportion.</translation>
+      <translation>Factor d'escala genèric que afecta les anotacions de manera consistent,
+ja que escala el text i les decoracions de línia, si n'hi ha,
+en la mateixa proporció.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="101"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation type="unfinished">Annotation style to apply to this object.
-When using a saved style some of the view properties will become read-only;
-they will only be editable by changing the style through the 'Annotation style editor' tool.</translation>
+      <translation>Tipus d'anotació que s'aplicarà a aquest objecte.
+Quan s'utilitzi un estil desat, algunes de les propietats de la vista esdevindran només de lectura;
+només podran fer-se editables canviant l'estil a través de l'eina 'Editor d'estils d'anotació'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="177"/>
       <location filename="../../draftobjects/array.py" line="97"/>
       <source>The base object that will be duplicated</source>
-      <translation type="unfinished">The base object that will be duplicated</translation>
+      <translation>L'objecte base que es duplicarà</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="200"/>
       <source>List of connected edges in the 'Path Object'.
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
-      <translation type="unfinished">List of connected edges in the 'Path Object'.
-If these are present, the copies will be created along these subelements only.
-Leave this property empty to create copies along the entire 'Path Object'.</translation>
+      <translation>Llista de vores connectades en un 'Objecte de Camí'.
+Si són presents, les còpies només seran creades al llarg d'aquests subelements.
+Deixeu la propietat en blanc per crear còpies al llarg de tot l''Objecte de Camí'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="219"/>
@@ -7489,23 +7477,23 @@ Leave this property empty to create copies along the entire 'Path Object'.</tran
       <location filename="../../draftobjects/patharray.py" line="238"/>
       <source>Additional translation that will be applied to each copy.
 This is useful to adjust for the difference between shape centre and shape reference point.</source>
-      <translation type="unfinished">Additional translation that will be applied to each copy.
-This is useful to adjust for the difference between shape centre and shape reference point.</translation>
+      <translation>Translació addicional que s'aplicarà a cada còpia.
+Això és útil per ajustar per la diferència entre el centre de la forma i el punt de referència de la forma.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="246"/>
       <source>Alignment vector for 'Tangent' mode</source>
-      <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
+      <translation>Vector d'alineació pel mode 'Tangent'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="254"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>Força l'ús del 'Vector Vertical' com a direcció Z local quan s'utilitza el mode 'Original' o 'Tangent'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="262"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation type="unfinished">Direction of the local Z axis when 'Force Vertical' is true</translation>
+      <translation>Direcció de l'eix local Z quan 'Força Vertical' és cert</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="270"/>
@@ -7515,29 +7503,29 @@ This is useful to adjust for the difference between shape centre and shape refer
 - Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
 
 To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation type="unfinished">Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
+      <translation>Mètode per a orientar les còpies al llarg del camí.
+- Original: X és tangent a la corba, Y és normal i Z és el producte vectorial.
+- Frenet: alinea l'objecte seguint el sistema de coordenades local al llarg del camí.
+- Tangent: similar a 'Original' però l'eix X local s'alinea prèviament amb 'Vector Tangent'.
 
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</translation>
+Per a obtenir millors resultats amb 'Original' o 'Tangent' proveu d'establir 'Força Vertical' com a cert.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="279"/>
       <source>Length from the start of the path to the first copy.</source>
-      <translation type="unfinished">Length from the start of the path to the first copy.</translation>
+      <translation>Longitud des de l'inici del camí fins a la primera còpia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="287"/>
       <source>Length from the end of the path to the last copy.</source>
-      <translation type="unfinished">Length from the end of the path to the last copy.</translation>
+      <translation>Longitud des del final del camí fins a l'última còpia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="297"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>Orienta les còpies al llarg del camí segons 'Mode d'Alineació'.
+Altrament, les còpies tindran la mateixa orientació que l'objecte base original.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="113"/>
@@ -7545,10 +7533,10 @@ Otherwise the copies will have the same orientation as the original Base object.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>El tipus de matriu per crear.
+- Ortogonal: situa les còpies en la direcció dels eixos globals X, Y, Z.
+- Polar: situa les còpies sobre un arc de cercle, fins a un angle especificat, i amb una certa orientació definida pel centre i un eix.
+- Circular: situa les còpies en capes circular concèntriques al voltant d'un objecte base.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="102"/>
@@ -7556,7 +7544,7 @@ Otherwise the copies will have the same orientation as the original Base object.
       <location filename="../../draftobjects/array.py" line="124"/>
       <location filename="../../draftobjects/pointarray.py" line="86"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
+      <translation>Especifica si les còpies s'han de combinar si es toquen (més lent)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="151"/>
@@ -7576,38 +7564,38 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="../../draftobjects/array.py" line="179"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>Distància i orientació d'intervals en la direcció X</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="189"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>Distància i orientació d'intervals en la direcció Y</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="199"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>Distància i orientació d'intervals en la direcció Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="214"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation type="unfinished">The axis direction around which the elements in a polar or a circular array will be created</translation>
+      <translation>La direcció de l'eix al voltant del qual es crearan els elements en una matriu polar o circular</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="225"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation type="unfinished">Center point for polar and circular arrays.
-The 'Axis' passes through this point.</translation>
+      <translation>Punt central per matrius polars i circulars.
+L''Eix' passa per aquest punt.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="244"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation type="unfinished">The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
+      <translation>L'objecte de tipus eix que sobreescriu el valor d''Eix' i 'Centre', per exemple una línia de referència.
+La col·locació, posició i rotació, s'utilitzaran en crear matrius polars i circulars.
+Deixa aquesta propietat buida per poder especificar 'Eix' i 'Centre' manualment.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="257"/>
@@ -7617,22 +7605,22 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</trans
     <message>
       <location filename="../../draftobjects/array.py" line="267"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
+      <translation>Distància i orientació dels intervals en la direcció 'Eix'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="276"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>Angle a cobrir amb còpies</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="289"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>Distància entre capes circulars</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="299"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation type="unfinished">Distance between copies in the same circular layer</translation>
+      <translation>Distància entre còpies dins d'una mateixa capa circular</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="309"/>
@@ -7642,56 +7630,56 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</trans
     <message>
       <location filename="../../draftobjects/array.py" line="320"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Un paràmetre que determina quants plans de simetria tindrà la matriu circular.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="137"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>Nombre total d'elements dins la matriu.
+Aquesta propietat és de només lectura, ja que el nombre depèn dels paràmetres de la matriu.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="67"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>Objecte base que serà duplicat</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="75"/>
       <source>Object containing points used to distribute the copies.</source>
-      <translation type="unfinished">Object containing points used to distribute the copies.</translation>
+      <translation>Objecte que conté punts utilitzats per a distribuir les còpies.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="94"/>
       <source>Number of copies in the array.
 This property is read-only, as the number depends on the points in 'Point Object'.</source>
-      <translation type="unfinished">Number of copies in the array.
-This property is read-only, as the number depends on the points in 'Point Object'.</translation>
+      <translation>Nombre de còpies a la matriu.
+Aquesta propietat és només de lectura, jau que el nombre depèn dels punts dins l''Objecte Punt'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="103"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation type="unfinished">Additional placement, shift and rotation, that will be applied to each copy</translation>
+      <translation>Posicionament, desplaçament o rotació addicionals que s'aplicarà a cada còpia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>L'objecte base que és representat per aquesta visualització 2D</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>El vector de projecció d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="68"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Manera en què l'objecte mostrat ha de ser projectat</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Els índexs de les cares que seran projectades en el mode Individual Faces</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="80"/>
@@ -7701,62 +7689,62 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="86"/>
       <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
+      <translation>Fusiona el mur i els objectes estructurals del mateix tipus i material</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="91"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>Tessel·la El·lipsis i B-splines en segments de línia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="97"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
+      <translation>Per als modes Tallalínies i Tallacares, això deixa les cares al lloc de tall</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>Longitud de línies si s'està tessel·lant el·lipses o B-Splines en segments de línia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="109"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Si això és Cert, aquest objecte només inclourà objectes visibles</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="115"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Una llista dels punts exclosos. Qualsevol vora que toqui qualsevol d'aquests punts no serà dibuixada.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="120"/>
       <source>A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.</translation>
+      <translation>Una llista de noms dels objectes exclosos. Qualsevol objecte mostrat que el seu nom estigui en aquesta llista, no serà dibuixat.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="125"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Si això és Cert, només la geometria sòlida serà tractada. Això anul·la la propietat Sòlids de l'objecte base</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="130"/>
       <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation type="unfinished">If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</translation>
+      <translation>Si això és Cert, el contingut es retalla a les vores del pla de secció, si escau. Això anul·la la propietat Retall de l'objecte base</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="135"/>
       <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
+      <translation>Aquest objecte només es tornarà a calcular si això és Cert.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="45"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Els punts de la corba de Bézier</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="49"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>El grau de la funció de Bézier</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="53"/>
@@ -7766,96 +7754,95 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="57"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Si la corba de Bézier ha de ser tancada o no</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="61"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>Crea una cara si aquesta corba és tancada</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bezcurve.py" line="65"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>La longitud d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="42"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>La posició d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>Ubicació X</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Ubicació Y</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Ubicació Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="44"/>
       <source>Start angle of the elliptical arc</source>
-      <translation type="unfinished">Start angle of the elliptical arc</translation>
+      <translation>Angle inicial de l'arc el·líptic</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="48"/>
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>Angle final de l'arc el·líptic
+                (per a un cercle sencer, introduïu el mateix valor que el primer angle)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="51"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>Radi menor de l'el·lipse</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="54"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>Radi major de l'el·lipse</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="60"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>Àrea d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="45"/>
       <source>The start point of this line.</source>
-      <translation type="unfinished">The start point of this line.</translation>
+      <translation>El punt inicial d'aquesta línia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="53"/>
       <source>The end point of this line.</source>
-      <translation type="unfinished">The end point of this line.</translation>
+      <translation>El punt final d'aquesta línia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="61"/>
       <source>The length of this line.</source>
-      <translation type="unfinished">The length of this line.</translation>
+      <translation>La longitud d'aquesta línia.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="69"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>Radi a utilitzar per al cantell de la cantonada.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="136"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation type="unfinished">The normal direction of the text of the dimension</translation>
+      <translation>La direcció normal del text de la cota</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="149"/>
       <source>The object measured by this dimension object</source>
-      <translation type="unfinished">The object measured by this dimension object</translation>
+      <translation>L'objecte mesurat per aquest objecte de cota</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="166"/>
@@ -7866,13 +7853,13 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>L'objecte i els subelements específics d'aquest,
+que aquest objecte de cota està mesurant.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Hi ha diverses possibilitats:
+- Un objecte, i una de les seves vores.
+- Un objecte, i dos dels seus vèrtexs.
+- Un objecte d'arc, i la seva vora.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="189"/>
@@ -7884,14 +7871,14 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>Un punt pel qual passarà la línia de cota, o una extrapolació d'aquesta.
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- Per a cotes lineals, aquesta propietat controla la proximitat de la línia de cotes
+a l'objecte mesurat.
+- Per a cotes radials, això controla la direcció de la línia de cotes
+que mostra el radi o diàmetre mesurat.
+- Per a cotes angulars, això controla el radi de l'arc de cota
+que mostra l'angle mesurat.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="248"/>
@@ -7899,10 +7886,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Punt inicial d'una línia de cota.
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Si és una cota de radi, serà el centre de l'arc.
+Si és una cota de diàmetre, serà un punt que es troba a l'arc.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="262"/>
@@ -7910,17 +7897,17 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>Punt final d'una línia de cota.
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+Si és una cota de radi o de diàmetre
+serà un punt sobre l'arc.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="274"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>Direcció de la línia de cota.
+Si es manté en '(0,0,0)', la direcció es calcularà automàticament.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="291"/>
@@ -7931,34 +7918,34 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>El valor de la mesura.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+Aquesta propietat és només de lectura perquè es calcula el valor
+de les propietats 'Inici' i 'Fi'.
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+Si la 'Geometria enllaçada' és un arc o cercle, aquesta 'Distància'
+és el radi o el diàmetre, depenent de la propietat 'Diàmetre'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="302"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>Quan es mesuren arcs circulars, determina si es mostra el valor
+del radi o el diàmetre</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="517"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Angle inicial de la línia de cota (arc circular).
+L'arc es dibuixa en sentit contrari de les agulles del rellotge.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="528"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Angle final de la línia de cota (arc circular).
+L'arc es dibuixa en sentit contrari de les agulles del rellotge.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="543"/>
@@ -7966,10 +7953,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>Centre de la línia de cota, que és un arc circular.
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+Normalment, aquest és el punt on intersequen dos segments de línia o
+les seves extensions, resultant en l'angle mesurat entre ambdues.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="557"/>
@@ -7977,140 +7964,140 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Valor de la mesura.
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+Aquesta propietat és només de lectura, ja que es calcula a partir
+de les propietats 'Primer angle' i 'Últim angle'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="45"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Longitud del rectangle</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="48"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>Alçada del rectangle</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="60"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>Subdivisions horitzontals d'aquest rectangle</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="63"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>Subdivisions verticals d'aquest rectangle</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="44"/>
       <source>Linked faces</source>
-      <translation type="unfinished">Linked faces</translation>
+      <translation>Cares enllaçades</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="47"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Especifica si cal suprimir les línies de divisió</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="50"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Valor opcional d'extrusió que s'aplicarà a totes les cares</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="53"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Valor opcional de desplaçament que s'aplicarà a totes les cares</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="56"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>Especifica si les formes seran cosides</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="59"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation type="unfinished">The area of the faces of this Facebinder</translation>
+      <translation>Àrea de les cares d'aquest Lligacares</translation>
     </message>
     <message>
       <location filename="../../draftobjects/block.py" line="43"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>Els components d'aquest bloc</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="48"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>Els vèrtexs del filferro</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="52"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>Si el filferro és tancat o no</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="56"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>L'objecte base és el filferro, està format per 2 objectes</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="60"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>L'objecte eina és el filferro, està format per 2 objectes</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="64"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>El punt inicial d'aquesta línia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="68"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>El punt final d'aquesta línia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="72"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>La longitud d'aquesta línia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="84"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>Crea una cara si aquest objecte és tancat</translation>
     </message>
     <message>
       <location filename="../../draftobjects/wire.py" line="88"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>El nombre de subdivisions de cada vora</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="45"/>
       <source>The points of the B-spline</source>
-      <translation type="unfinished">The points of the B-spline</translation>
+      <translation>Els punts de la B-spline</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="49"/>
       <source>If the B-spline is closed or not</source>
-      <translation type="unfinished">If the B-spline is closed or not</translation>
+      <translation>Indica si la B-spline és tancada o no</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="53"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>Crea una cara si la spline és tancada</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="66"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Factor de parametrització</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Força la sincronització del posicionament de patrons, fins i tot quan s'expandeixen els elements de la matriu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="112"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Mostra els elements individuals de la matriu</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="135"/>
@@ -8121,12 +8108,12 @@ the 'First Angle' and 'Last Angle' properties.</translation>
       <location filename="../../draftviewproviders/view_label.py" line="86"/>
       <location filename="../../draftviewproviders/view_text.py" line="62"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>Interlineat (relatiu a la mida de la lletra)</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="58"/>
       <source>Vertical alignment</source>
-      <translation type="unfinished">Vertical alignment</translation>
+      <translation>Alineació vertical</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="69"/>
@@ -8137,17 +8124,17 @@ the 'First Angle' and 'Last Angle' properties.</translation>
       <location filename="../../draftviewproviders/view_label.py" line="77"/>
       <location filename="../../draftviewproviders/view_text.py" line="53"/>
       <source>Horizontal alignment</source>
-      <translation type="unfinished">Horizontal alignment</translation>
+      <translation>Alineació horitzontal</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="119"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>El tipus de marc al voltant del text d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="128"/>
       <source>Display a leader line or not</source>
-      <translation type="unfinished">Display a leader line or not</translation>
+      <translation>Mostrar una línia guia o no</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="148"/>
@@ -8162,62 +8149,62 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="109"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Defineix un patró SVG.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="119"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Defineix la mida del patró SVG.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="67"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Si és cert, els objectes continguts a aquesta capa adoptaran el color de la línia de la capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="78"/>
       <source>If it is true, the objects contained within this layer will adopt the shape appearance of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape appearance of the layer</translation>
+      <translation>Si és cert, els objectes continguts a aquesta capa adoptaran l'aparença de la forma de la capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="89"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>Si és cert, el color d'impressió serà utilitzat quan els objectes d'aquesta capa estiguin posicionats a la pàgina de Dibuix Tècnic</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="100"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>El color de línia dels objectes continguts dins d'aquesta capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="110"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>El color de la forma dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="121"/>
       <source>The shape appearance of the objects contained within this layer</source>
-      <translation type="unfinished">The shape appearance of the objects contained within this layer</translation>
+      <translation>L'aparença de la forma dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>El gruix de línia dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="143"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>L'estil de dibuix dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="154"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>La transparència dels objectes continguts en aquesta capa</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="165"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>El color de línia dels objectes continguts en aquesta capa, quan són utilitzats a una pàgina de Dibuix Tècnic</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="117"/>
@@ -8232,26 +8219,26 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="124"/>
       <source>Spacing between text and dimension line</source>
-      <translation type="unfinished">Spacing between text and dimension line</translation>
+      <translation>Espaiat entre el text i la línia de cota</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="133"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>Gira el text de la cota 180 graus</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="143"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
-      <translation type="unfinished">Text Position.
-Leave '(0,0,0)' for automatic position</translation>
+      <translation>Posició del text.
+Deixeu-lo a '(0,0,0)' per al posicionament automàtic</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="154"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
-      <translation type="unfinished">Text override.
-Write '$dim' so that it is replaced by the dimension length.</translation>
+      <translation>Text per sobreescriure.
+Introduïu '$dim' per substituir-lo per la longitud de la cota.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="167"/>
@@ -8261,16 +8248,16 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="176"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>Mostra el sufix de la unitat</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="187"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>Una unitat per expressar la mesura.
+Deixeu en blanc pel sistema predeterminat.
+Utilitzeu 'arc' per forçar la notació d'arc dels EUA</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="99"/>
@@ -8287,14 +8274,14 @@ Use 'arch' to force US arch notation</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="219"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Girar les fletxes de cota 180 graus</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="230"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>Distància en què les línies de cota s'estendran
+més enllà de les línies d'extensió</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="239"/>
@@ -8305,13 +8292,13 @@ past the extension lines</translation>
       <location filename="../../draftviewproviders/view_dimension.py" line="249"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension line
-beyond the dimension line</translation>
+      <translation>Longitud de la línia d'extensió
+més enllà de la línia de cota</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="258"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>Mostra la línia i les fletxes de cota</translation>
     </message>
   </context>
   <context>
@@ -8328,12 +8315,12 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="92"/>
       <source>Manage layers...</source>
-      <translation type="unfinished">Manage layers...</translation>
+      <translation>Gestiona les capes...</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="95"/>
       <source>Set/modify the different layers of this document</source>
-      <translation type="unfinished">Set/modify the different layers of this document</translation>
+      <translation>Estableix/modifica les diferents capes d'aquest document</translation>
     </message>
   </context>
   <context>
@@ -8361,12 +8348,12 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="58"/>
       <source>Open hyperlinks</source>
-      <translation type="unfinished">Open hyperlinks</translation>
+      <translation>Obre els enllaços</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="60"/>
       <source>Open linked documents</source>
-      <translation type="unfinished">Open linked documents</translation>
+      <translation>Obre els documents enllaçats</translation>
     </message>
   </context>
 </TS>

@@ -980,7 +980,7 @@ bude rovina přesunuta do středu pohledu.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="102"/>
       <source>Specular shape color</source>
-      <translation>Barva zrcadlení tvaru</translation>
+      <translation>Zrcadlení barvy tvaru</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
@@ -990,7 +990,7 @@ bude rovina přesunuta do středu pohledu.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="130"/>
       <source>Shape shininess</source>
-      <translation>Odlesky tvaru</translation>
+      <translation>Lesklost tvaru</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
@@ -6691,7 +6691,7 @@ CTRL přichytí, SHIFT omezí na aktuální segment nebo na normální, ALT inve
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="51"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation>Použije aktuální styl definovaný v panelu nástrojů (šířka čáry a barvy) na vybrané objekty a skupiny.</translation>
+      <translation>Použije aktuální styl definovaný v panelu nástrojů (tloušťka čáry a barvy) na vybrané objekty a skupiny.</translation>
     </message>
   </context>
   <context>
@@ -8247,7 +8247,7 @@ vlastnosti 'První úhel' a 'Poslední úhel'.</translation>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="133"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation>Šířka čáry objektů obsažených v této vrstvě</translation>
+      <translation>Tloušťka čáry objektů obsažených v této vrstvě</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_layer.py" line="143"/>

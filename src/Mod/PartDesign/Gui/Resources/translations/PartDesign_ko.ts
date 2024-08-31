@@ -32,7 +32,7 @@ Dependent properties are then calculated.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="85"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation>나선 경로의 높이, 프로파일 범위를 고려하지 않음.</translation>
+      <translation>윤곽의 범위를 고려하지 않은 나선 경로의 높이,</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="87"/>
@@ -69,13 +69,13 @@ i.e. counter-clockwise when moving along its axis.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="103"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>설정된 경우, 선택된 프로파일과 기존의 본체와의 교차면을 얻을 수 있습니다.</translation>
+      <translation>설정된 경우, 선택된 윤곽과 기존의 몸통과의 교차면을 얻을 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="105"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>거짓인 경우, 도구는 프로파일 경계 상자에 기반하여 자가 교차를 피할 수 있도록 피치의 초기 값을 제안합니다.</translation>
+      <translation>거짓인 경우, 도구는 윤곽 경계 상자에 기반하여 자기 교차를 피할 수 있도록 피치의 초기 값을 제안합니다.</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="98"/>
@@ -90,7 +90,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
       <source>Module of the gear</source>
-      <translation type="unfinished">Module of the gear</translation>
+      <translation>기어의 모듈</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="108"/>
@@ -100,7 +100,8 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="111"/>
       <source>True=external Gear, False=internal Gear</source>
-      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
+      <translation>참=외기어
+거짓=내기어</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="115"/>
@@ -156,7 +157,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1436"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>선택한 프로파일을 다른 프로파일 단면으로 로프트</translation>
+      <translation>선택한 윤곽을 다른 윤곽 단면으로 로프트</translation>
     </message>
   </context>
   <context>
@@ -174,7 +175,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>선택된 스케치를 경로 또는 다른 프로파일을 따라 스윕</translation>
+      <translation>선택된 스케치를 경로를 따라가거나 다른 윤곽 스케치까지 쓸어서 파이프 생성</translation>
     </message>
   </context>
   <context>
@@ -475,12 +476,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="532"/>
       <source>Set tip</source>
-      <translation>작업시작점 설정</translation>
+      <translation>끝단 설정</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="533"/>
       <source>Move the tip of the body</source>
-      <translation>본체의 끝부분을 이동하시오</translation>
+      <translation>몸통의 끝단을 이동</translation>
     </message>
   </context>
   <context>
@@ -493,7 +494,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2260"/>
       <source>Create MultiTransform</source>
-      <translation>다중 패턴 생성</translation>
+      <translation>다중변환 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2261"/>
@@ -624,7 +625,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1208"/>
       <source>Revolve a selected sketch</source>
-      <translation>선택된 스케치를 회전</translation>
+      <translation>선택된 스케치를 공전</translation>
     </message>
   </context>
   <context>
@@ -655,12 +656,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Create a shape binder</source>
-      <translation>모양 바인더 만들기</translation>
+      <translation>형상 점착제 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Create a new shape binder</source>
-      <translation>새 모양 바인더 만들기</translation>
+      <translation>새 형상 점착제 생성</translation>
     </message>
   </context>
   <context>
@@ -674,7 +675,7 @@ so that self intersection is avoided.</source>
       <location filename="../../Command.cpp" line="346"/>
       <location filename="../../Command.cpp" line="347"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation>하위 개체 모양 바인더 만들기</translation>
+      <translation>하위 개체 형상 점착제 생성</translation>
     </message>
   </context>
   <context>
@@ -692,7 +693,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1614"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>나선을 따라 선택한 스케치를 스윕하고 본체에서 제거</translation>
+      <translation> 선택한 스케치를  나선을 따라 쓸어서 만든 파이프를 몸통에서 제거</translation>
     </message>
   </context>
   <context>
@@ -710,7 +711,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1487"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>다른 프로파일 섹션을 통해 선택한 프로파일을 로프트하고 본체에서 제거</translation>
+      <translation> 선택한 윤곽을 다른 윤곽 단면으로  로프트하고 몸통에서 제거</translation>
     </message>
   </context>
   <context>
@@ -728,7 +729,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>경로를 따라 또는 다른 프로파일로 선택한 스케치를 스윕하고 본체에서 제거</translation>
+      <translation>선택된 스케치를 경로를 따라가거나 다른 윤곽 스케치까지 쓸어서 생긴 파이프를 몸통에서 제거</translation>
     </message>
   </context>
   <context>
@@ -746,7 +747,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1928"/>
       <source>Make a thick solid</source>
-      <translation>솔리드에 두께를 제외한 부분을 잘라낸 모델을 생성합니다.</translation>
+      <translation>두께가 있는 고체를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -862,17 +863,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Edit ShapeBinder</source>
-      <translation>ShapeBinder 편집</translation>
+      <translation>형상 점착제 편집</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="309"/>
       <source>Create ShapeBinder</source>
-      <translation>ShapeBinder 만들기</translation>
+      <translation>형상 점착제 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="392"/>
       <source>Create SubShapeBinder</source>
-      <translation>SubShapeBinder 만들기</translation>
+      <translation>하위 형상 점착제 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -919,7 +920,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="579"/>
       <source>Move tip to selected feature</source>
-      <translation>선택한 도형특징으로 tip 이동</translation>
+      <translation>선택한 도형특징으로 끝단 이동</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="624"/>
@@ -934,7 +935,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="898"/>
       <source>Move an object inside tree</source>
-      <translation>트리 내부에서 개체 이동</translation>
+      <translation>나무 보기에서 개체 이동</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="267"/>
@@ -962,7 +963,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="42"/>
       <source>Valid</source>
-      <translation>이용 가능</translation>
+      <translation>유효한</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="43"/>
@@ -1020,7 +1021,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Modeling tools</source>
-      <translation>모델링 도구</translation>
+      <translation>조형 도구</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
@@ -1105,7 +1106,7 @@ so that self intersection is avoided.</source>
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation>새로운 부품설계(PartDesign) 객체를 생성하기 위해서, 문서에 활성화된 본체(Body) 가 있어야 합니다. 하나의 본체를 더블 클릭하여 활성화하거나 새로운 본체를 생성하세요.</translation>
+      <translation>새로운 부품설계 객체를 생성하기 위해서, 문서에 활성화된 몸통이 있어야 합니다. 하나의 몸통을 더블 클릭하여 활성화하거나 새로운 몸통을 생성하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
@@ -1153,7 +1154,7 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="1749"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1805"/>
       <source>Radius:</source>
-      <translation>반경:</translation>
+      <translation>반지름:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="307"/>
@@ -1218,7 +1219,7 @@ Please select a body from below, or create a new body.</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
       <source>Radius in local z-direction</source>
-      <translation>로컬 z 방향의 반경</translation>
+      <translation>지역 z 방향의 반경</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
@@ -1234,8 +1235,7 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local y-direction
 If zero, it is equal to Radius2</source>
-      <translation>로컬 y 방향의 반경
-0이면 Radius2와 같습니다.</translation>
+      <translation>지역 y 방향의 반경이 0이면 그것은 반경2와 같습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1246,12 +1246,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation>로컬 xy 평면의 반경</translation>
+      <translation>지역 xy평면에서의 반경</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation>로컬 xz 평면의 반경</translation>
+      <translation>지역 xz평면에서의 반경</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1268,7 +1268,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2313"/>
       <source>Circumradius:</source>
-      <translation>Circumradius:</translation>
+      <translation>외접원 반경:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
@@ -1394,7 +1394,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>선택한 지오메트리가 활성화된 바디에 속해있지 않습니다. 선택된 지오메트리를 처리하는 방법을 정의하세요. 이러한 참조가 필요하지 않으면 취소버튼을 누르세요.</translation>
+      <translation>선택한 기하형상이  활성화된 몸통에 속해있지 않습니다. 선택된 것들을 처리하는 방법을 정의하세요. 이러한 참조가 필요하지 않으면 명령을 취소하세요</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1572,12 +1572,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="347"/>
       <source>Empty body list</source>
-      <translation>비어 있는 몸체 목록</translation>
+      <translation>비어 있는 몸통 목록</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="348"/>
       <source>The body list cannot be empty</source>
-      <translation>바디 목록은 비어있을 수 없습니다</translation>
+      <translation>몸통 목록은 비어있을 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="360"/>
@@ -1712,7 +1712,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>미리 보기</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
@@ -1722,7 +1722,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
       <source>No shape selected</source>
-      <translation>셰이프가 선택되지 않았습니다.</translation>
+      <translation>선택된 형상이 없습니다.</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
@@ -1748,12 +1748,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
       <source>Click on a shape in the model</source>
-      <translation type="unfinished">Click on a shape in the model</translation>
+      <translation>모형에서 형상을 클릭하세요</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
       <source>Click on a face in the model</source>
-      <translation>모델의 면을 클릭하시오</translation>
+      <translation>모형의 면을 클릭하세요</translation>
     </message>
   </context>
   <context>
@@ -1796,7 +1796,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="61"/>
       <source>Valid</source>
-      <translation>이용 가능</translation>
+      <translation>유효한</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="62"/>
@@ -1841,7 +1841,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="80"/>
       <source>Select attachment</source>
-      <translation type="unfinished">Select attachment</translation>
+      <translation>부착 선택</translation>
     </message>
   </context>
   <context>
@@ -1868,7 +1868,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="47"/>
       <source>Radius:</source>
-      <translation>반경:</translation>
+      <translation>반지름:</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="63"/>
@@ -1891,7 +1891,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="29"/>
       <source>Valid</source>
-      <translation>이용 가능</translation>
+      <translation>유효한</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
@@ -2003,7 +2003,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="272"/>
       <source>Remove outside of profile</source>
-      <translation>프로파일 외부 제거</translation>
+      <translation>윤곽 외부 제거</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="289"/>
@@ -2033,7 +2033,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="330"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>오류: 지원되지 않는 모드</translation>
     </message>
   </context>
   <context>
@@ -2115,7 +2115,7 @@ click again to end selection</source>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <location filename="../../TaskLinearPatternParameters.ui" line="131"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="93"/>
@@ -2267,12 +2267,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation>돌출이 끝나는 위치에서 면으로부터의 옵셋</translation>
+      <translation>깔판생성이 끝나는 면으로부터의 편차</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
       <source>Reverses pad direction</source>
-      <translation>돌출방향 반전</translation>
+      <translation>깔판 생성 방향 반전</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="70"/>
@@ -2302,7 +2302,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>형상까지</translation>
     </message>
   </context>
   <context>
@@ -2325,24 +2325,24 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="75"/>
       <source>Offset to face</source>
-      <translation>면까지 옵셋</translation>
+      <translation>면까지 편차</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="130"/>
       <source>Select shape</source>
-      <translation type="unfinished">Select shape</translation>
+      <translation>형상 선택</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="148"/>
       <source>Select all faces</source>
-      <translation type="unfinished">Select all faces</translation>
+      <translation>모든 면 선택</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="170"/>
       <source>Click button to enter selection mode,
          click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-         click again to end selection</translation>
+      <translation>단추를 눌러 선택모드로 들어가십시오
+단추를 다시 눌러 선택을 해제하십시오</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
@@ -2363,7 +2363,7 @@ click again to end selection</source>
       <location filename="../../TaskPadPocketParameters.ui" line="259"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation>방향을 설정하거나 참조로 모델의 모서리를 선택하시오</translation>
+      <translation>방향을 설정하거나 참조로 모형의 모서리를 선택하시오</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="264"/>
@@ -2373,7 +2373,7 @@ from the model as reference</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="269"/>
       <source>Select reference...</source>
-      <translation>레퍼런스 선택</translation>
+      <translation>참조 선택</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="274"/>
@@ -2389,7 +2389,7 @@ from the model as reference</source>
       <location filename="../../TaskPadPocketParameters.ui" line="294"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>돌출방향의 사용자정의 벡터를 사용하거나, 그렇지 않으면 스케치평면의 법선벡터가 사용될 것입니다</translation>
+      <translation>깔판의 생성방향으로 사용자정의 향량을 사용하세요, 그렇지 않으면 스케치 평면에 법선 향량이 사용될 것입니다</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="307"/>
@@ -2540,7 +2540,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="166"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation>프로파일의 방향을 계산하는 데 사용되는 상수 종법선 벡터를 설정하십시오.</translation>
+      <translation>윤곽의의 방향을 계산하는 데 사용되는 상수 종법선 향량을 설정하십시오.</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="190"/>
@@ -2594,7 +2594,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation>오른쪽 꼭지점</translation>
+      <translation>각진 모서리</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
@@ -2604,7 +2604,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation>따라가기 경로</translation>
+      <translation>쓸어 나가는 경로</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2635,7 +2635,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="424"/>
       <source>No active body</source>
-      <translation>활성화된 바디 없음</translation>
+      <translation>활성화된 몸통 없음</translation>
     </message>
   </context>
   <context>
@@ -2691,7 +2691,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation>홈파기가 끝나는 위치에서 면으로부터의 옵셋</translation>
+      <translation>오목자리가 끝나는 면으로부터의 편차</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
@@ -2726,7 +2726,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>형상까지</translation>
     </message>
   </context>
   <context>
@@ -2754,7 +2754,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Offset Angle</source>
-      <translation>옵셋 각도</translation>
+      <translation>편차 각도</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="93"/>
@@ -2764,7 +2764,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="137"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="168"/>
@@ -2850,7 +2850,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="128"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>반전된</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="137"/>
@@ -2923,22 +2923,22 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>대상</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>
       <source>Add Geometry</source>
-      <translation>지오메트리(Geometry) 추가</translation>
+      <translation>도형 추가</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="67"/>
       <source>Remove Geometry</source>
-      <translation>지오메트리(Geometry) 제거</translation>
+      <translation>도형 제거</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="60"/>
       <source>Datum shape parameters</source>
-      <translation>데이텀 형상 매개 변수</translation>
+      <translation>기준 형상 매개 변수</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="130"/>
@@ -2983,7 +2983,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="76"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>방식</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="84"/>
@@ -3014,7 +3014,7 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.ui" line="115"/>
       <location filename="../../TaskThicknessParameters.ui" line="125"/>
       <source>Intersection</source>
-      <translation>교집합</translation>
+      <translation>교차</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="132"/>
@@ -3103,7 +3103,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="35"/>
       <source>Transform body</source>
-      <translation type="unfinished">Transform body</translation>
+      <translation>몸통을 이동 변환</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="48"/>
@@ -3340,17 +3340,17 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="960"/>
       <source>Move tip</source>
-      <translation>팁 이동</translation>
+      <translation>끝단 이동</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="961"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation>이동된 도형특징은 현재 설정된 tip 뒤에 나타납니다.</translation>
+      <translation>이동된 도형특징은 현재 설정된 끝단 뒤에 나타납니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="962"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation>마지막 도형특징을 새 작업시작점으로 하시겠습니까?</translation>
+      <translation>마지막 도형특징을 새 끝단으로 하시겠습니까?</translation>
     </message>
   </context>
   <context>
@@ -3363,14 +3363,14 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="140"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>선택된 객체에 적합한 첨부 모드가 없습니다. 다른 것을 선택하세요.</translation>
+      <translation>선택된 객체에 적합한 부착 방법이 없습니다. 다른 것을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="146"/>
       <location filename="../../Command.cpp" line="149"/>
       <location filename="../../Command.cpp" line="151"/>
       <source>Error</source>
-      <translation>에러</translation>
+      <translation>오류</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="146"/>
@@ -3380,7 +3380,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-Shape Binder</source>
-      <translation>하위형상참조(Sub-Shapebinder)</translation>
+      <translation>하위형상 점착제</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="650"/>
@@ -3390,7 +3390,7 @@ click again to end selection</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="651"/>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation>스케치의 받침판으로 하나의 면을 선택해야 합니다.</translation>
+      <translation>스케치의 받침으로 하나의 면을 선택해야 합니다.</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="654"/>
@@ -3400,17 +3400,17 @@ click again to end selection</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="655"/>
       <source>You have to select a face as support for a sketch!</source>
-      <translation>스케치의 받침판으로 면을 선택해야 합니다.</translation>
+      <translation>스케치의 받침으로 면을 선택해야 합니다.</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="658"/>
       <source>No planar support</source>
-      <translation>평평한 받침판이 없음</translation>
+      <translation>평평한 받침이 없음</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="659"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>스케치의 받침판으로 평면이 필요합니다.</translation>
+      <translation>스케치의 받침으로 평면이 필요합니다.</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="662"/>
@@ -3449,7 +3449,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="896"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>빼기 작업을 할 솔리드바디가 없기 때문에 이 명령을 사용할 수 없습니다.</translation>
+      <translation>빼기 작업을 할 고체 몸통이 없기 때문에 이 명령을 사용할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="897"/>
@@ -3464,7 +3464,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="919"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation>바디에서 외부 도형을 참조하기 위해 외부도형참조(ShapeBinder) 또는 BaseFeature를 사용하는 것을 고려해 보세요.</translation>
+      <translation>몸통에서 외부 도형을 참조하기 위해 형상 점착제나 기반특징을 사용하는 것을 고려해 보세요.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
@@ -3534,49 +3534,49 @@ click again to end selection</source>
       <location filename="../../CommandBody.cpp" line="134"/>
       <location filename="../../CommandBody.cpp" line="183"/>
       <source>Bad base feature</source>
-      <translation>잘못된 기본 도형특징</translation>
+      <translation>잘못된 기반 도형특징</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="117"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>본문은 PartDesign 기능을 기반으로 할 수 없습니다.</translation>
+      <translation>몸통은 부품설계에서 만들어진 도형특징을 기반으로 할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="122"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1은(는) 이미 본문에 속해 있으므로 다른 본문의 기본 기능으로 사용할 수 없습니다.</translation>
+      <translation>%1은(는) 이미 몸통에 속해 있으므로 다른 몸통의 기반 도형특징으로 사용할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>베이스 피처(%1) 는 다른 부품에 속합니다.</translation>
+      <translation>기반 도형특징(%1) 은 다른 부품에 속합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="159"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>선택한 모양은 여러 솔리드로 구성됩니다.
+      <translation>선택한 형상은 여러 고체들로 구성됩니다.
 이로 인해 예기치 않은 결과가 발생할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="163"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation>선택한 모양은 여러 셸로 구성됩니다.
+      <translation>선택한 형상은 여러 껍질들로 구성됩니다.
 이로 인해 예기치 않은 결과가 발생할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>선택한 모양은 쉘로만 구성됩니다.
+      <translation>선택한 형상은 껍질로만 구성됩니다.
 이로 인해 예기치 않은 결과가 발생할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="171"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>선택한 쉐이프는 여러 솔리드 또는 쉘로 구성됩니다.
+      <translation>선택한 형상은 여러 고체 또는 껍질로 구성됩니다.
 이로 인해 예기치 않은 결과가 발생할 수 있습니다.</translation>
     </message>
     <message>
@@ -3597,22 +3597,22 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="347"/>
       <source>Nothing to migrate</source>
-      <translation>결합할 것이 없습니다.</translation>
+      <translation>이전할 것이 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="348"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation>본문에 속하지 않는 PartDesign 기능을 찾을 수 없습니다. 마이그레이션할 항목이 없습니다.</translation>
+      <translation>부품설계 작업대에서 만들어지지 않은 도형특징을 찾을 수 없습니다. 모든 도형특징들은 몸통에 속해 있습니다. 높은 버전으로 이전할 것이 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="496"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation>스케치 평면은 마이그레이션할 수 없습니다.</translation>
+      <translation>스케치 평면은 이전할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="497"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>베이스 또는 데이텀 평면을 스케치 평면으로 사용하도록 '%1'을(를) 편집하고 재정의하십시오.</translation>
+      <translation>기본 또는 기준 평면을 스케치 평면으로 사용하도록 '%1'을(를) 편집하고 재정의하십시오.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="559"/>
@@ -3636,7 +3636,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="569"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>고체 도형특징만 몸통의 TIP이 될 수 있습니다.</translation>
+      <translation>고체 도형특징만 몸통의 끝단이 될 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="687"/>
@@ -3663,7 +3663,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="862"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>몸통의 기본 도형특징은 이동이 불가능합니다.</translation>
+      <translation>몸통의 기반 도형특징은 이동이 불가능합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="869"/>
@@ -3703,13 +3703,13 @@ This may lead to unexpected results.</source>
       <location filename="../../TaskTransformedParameters.cpp" line="441"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>Vertical sketch axis</source>
-      <translation type="unfinished">Vertical sketch axis</translation>
+      <translation>수직 스케치 축</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="442"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="205"/>
       <source>Horizontal sketch axis</source>
-      <translation type="unfinished">Horizontal sketch axis</translation>
+      <translation>수평 스케치 축</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="207"/>
@@ -3738,7 +3738,7 @@ Body가 없는 PartDesign 개체가 있는 레거시 문서가 있는 경우 Par
     <message>
       <location filename="../../Utils.cpp" line="187"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>새로운 부품설계(PartDesign) 객체를 생성하기 위해서, 문서에 활성화된 바디(Body)가 있어야 합니다. 하나의 바디(Body)를 더블 클릭하여 활성화하거나 새로운 바디(Body)를 생성하세요.</translation>
+      <translation>새로운 부품설계 객체를 생성하기 위해서, 문서에 활성화된 몸통이 있어야 합니다. 하나의 몸통을 더블 클릭하여 활성화하거나 새로운 몸통을 생성하세요.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="222"/>
@@ -3861,7 +3861,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
       <source>Edit shape binder</source>
-      <translation>형상 바인더(Shape binder) 수정</translation>
+      <translation>형상 점착제 편집</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="316"/>
@@ -3871,17 +3871,17 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="318"/>
       <source>Select bound object</source>
-      <translation>바인딩된 개체 선택</translation>
+      <translation>점착된 개체 선택</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
       <source>One transformed shape does not intersect the support</source>
-      <translation type="unfinished">One transformed shape does not intersect the support</translation>
+      <translation>하나의 변환된 형상이 받침과 교차되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
       <source>%1 transformed shapes do not intersect the support</source>
-      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
+      <translation>%1 변환된 형상이 받침과 교차되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3920,7 +3920,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate manually</source>
-      <translation>수동 변환</translation>
+      <translation>수동 이전</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="51"/>
@@ -3978,7 +3978,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="14"/>
       <source>Sprocket parameters</source>
-      <translation type="unfinished">Sprocket parameters</translation>
+      <translation>사슬톱니(Sprocket) 매개변수</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="26"/>
@@ -4186,12 +4186,12 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="447"/>
       <source>Whether the hole gets a modelled thread</source>
-      <translation>구멍에 모델링된 나사산이 생성되는지 여부</translation>
+      <translation>구멍에 나사산이 생성되는지 여부</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="450"/>
       <source>Model Thread</source>
-      <translation>모델링된 나사산</translation>
+      <translation>나사산 만들기</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="466"/>
@@ -4213,12 +4213,12 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="470"/>
       <source>Update thread view</source>
-      <translation type="unfinished">Update thread view</translation>
+      <translation>나사산 보기 새로고침</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="486"/>
       <source>Custom Clearance</source>
-      <translation type="unfinished">Custom Clearance</translation>
+      <translation>사용자 정의 공차</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="499"/>
@@ -4233,12 +4233,12 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="431"/>
       <source>Right hand</source>
-      <translation>오른손</translation>
+      <translation>오른나사</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="410"/>
       <source>Left hand</source>
-      <translation>왼손</translation>
+      <translation>왼나사</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="63"/>
@@ -4284,7 +4284,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="692"/>
       <source>Drill Point</source>
-      <translation type="unfinished">Drill Point</translation>
+      <translation>드릴 끝</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="134"/>
@@ -4349,7 +4349,7 @@ the screw's top below the surface</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="530"/>
       <source>Hole Cut Type</source>
-      <translation type="unfinished">Hole Cut Type</translation>
+      <translation>구멍 가공 유형</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
@@ -4401,7 +4401,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="227"/>
       <source>Reversed</source>
-      <translation type="unfinished">Reversed</translation>
+      <translation>반전된</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="642"/>
@@ -4447,12 +4447,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Create a subtractive feature</source>
-      <translation type="unfinished">Create a subtractive feature</translation>
+      <translation>뺄셈적 도형특징 생성</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Apply a pattern</source>
-      <translation type="unfinished">Apply a pattern</translation>
+      <translation>패턴 적용</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -4510,7 +4510,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>점개선(involute) 기어의 정의를 생성하거나 편집합니다.</translation>
     </message>
   </context>
   <context>
@@ -4523,7 +4523,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>사슬톱니바퀴(sprocket) 의 정의를 생성하거나 편집합니다.</translation>
     </message>
   </context>
   <context>
@@ -4551,47 +4551,47 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>시작 모서리 유형</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>시작 모서리 크기</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>끝 모서리 유형</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="55"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>끝 모서리 크기</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="64"/>
       <source>Shaft wizard</source>
-      <translation type="unfinished">Shaft wizard</translation>
+      <translation>축 마법사</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 1</source>
-      <translation type="unfinished">Section 1</translation>
+      <translation>단면 1</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="72"/>
       <source>Section 2</source>
-      <translation type="unfinished">Section 2</translation>
+      <translation>단면 2</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
       <source>Add column</source>
-      <translation type="unfinished">Add column</translation>
+      <translation>열 추가</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
       <source>Section %s</source>
-      <translation type="unfinished">Section %s</translation>
+      <translation>단면 %s</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
@@ -4650,7 +4650,7 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
       <source>You may have to install the Plot add-on</source>
-      <translation type="unfinished">You may have to install the Plot add-on</translation>
+      <translation>Plot 애드온을 설치해야 할 수도 있습니다</translation>
     </message>
   </context>
   <context>
@@ -4694,12 +4694,12 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="64"/>
       <source>BaseFeature link is not set</source>
-      <translation>기본 도형특징에 대한 연결이 설정되지 않았습니다</translation>
+      <translation>기반 도형특징에 대한 연결이 설정되지 않았습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="69"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation>기본 도형특징은 부품의 도형특징 이어야 합니다.</translation>
+      <translation>기반 도형특징은 부품 작업대에서 생성된 도형특징 이어야 합니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="78"/>
@@ -4707,138 +4707,117 @@ over 90: larger hole radius at the bottom</translation>
       <translation>기반 특징에 빈 형상이 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="80"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="82"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation type="unfinished">Cannot do boolean cut without BaseFeature</translation>
+      <translation>기반 도형특징이 없이는 불리언 자르기 연산을 할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="94"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="115"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="96"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="125"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
       <translation type="unfinished">Cannot do boolean with anything but Part::Feature and its derivatives</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="101"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="103"/>
       <source>Cannot do boolean operation with invalid base shape</source>
-      <translation type="unfinished">Cannot do boolean operation with invalid base shape</translation>
+      <translation>유효하지 않은 기본 형상으로는 부울 연산을 실행할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="107"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="109"/>
       <source>Cannot do boolean on feature which is not in a body</source>
-      <translation type="unfinished">Cannot do boolean on feature which is not in a body</translation>
+      <translation>몸통에 속하지 않은 도형특징에 부울 연산을 실행할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="125"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="135"/>
       <source>Base shape is null</source>
       <translation>기초 형상이 비어 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="128"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="116"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
       <source>Tool shape is null</source>
       <translation type="unfinished">Tool shape is null</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="133"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="155"/>
+      <source>Unsupported boolean operation</source>
+      <translation type="unfinished">Unsupported boolean operation</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <source>Fusion of tools failed</source>
       <translation type="unfinished">Fusion of tools failed</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="736"/>
-      <location filename="../../../App/FeaturePad.cpp" line="237"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="230"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="399"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="733"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="753"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="138"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="297"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="317"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="532"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="137"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="151"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="166"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="397"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="417"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="248"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="218"/>
       <source>Resulting shape is not a solid</source>
       <translation>결과 형상이 고체가 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="142"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="176"/>
       <source>Cut out failed</source>
       <translation>잘라내기 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="147"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="181"/>
       <source>Common operation failed</source>
-      <translation type="unfinished">Common operation failed</translation>
+      <translation>부울 교집합 연산 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="740"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="751"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="758"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="202"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="278"/>
-      <location filename="../../../App/FeaturePad.cpp" line="240"/>
-      <location filename="../../../App/FeaturePad.cpp" line="248"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="199"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="233"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="402"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="171"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="737"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="757"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="118"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="200"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="300"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="320"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="537"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="154"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="169"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="192"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="117"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="1905"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="357"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="193"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>결과에는 여러 고체들이 있습니다. 현재는 지원되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="184"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="258"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="153"/>
       <source>Failed to create chamfer</source>
       <translation>모따기 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="262"/>
       <location filename="../../../App/FeatureDraft.cpp" line="319"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="99"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="184"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="98"/>
       <source>Resulting shape is null</source>
       <translation>결과 형상이 비어 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="207"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="273"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="195"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="176"/>
       <source>Resulting shape is invalid</source>
       <translation>결과 형상이 무효합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="125"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="124"/>
       <source>No edges specified</source>
-      <translation type="unfinished">No edges specified</translation>
+      <translation>모서리가 지정되지 않았습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="346"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="240"/>
       <source>Size must be greater than zero</source>
       <translation>크기는 0보다 커야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="355"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="249"/>
       <source>Size2 must be greater than zero</source>
       <translation>크기2는 0보다 커야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="360"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="254"/>
       <source>Angle must be greater than 0 and less than 180</source>
       <translation>각도는 0보다 크고 180보다 작아야 합니다</translation>
     </message>
@@ -4848,44 +4827,34 @@ over 90: larger hole radius at the bottom</translation>
       <translation>구배 생성 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="82"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="81"/>
       <source>Fillet not possible on selected shapes</source>
       <translation>선택한 형상에 모따기를 할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="89"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="157"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="88"/>
       <source>Fillet radius must be greater than zero</source>
       <translation>모깎기 반지름은 0보다 커야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureFillet.cpp" line="180"/>
-      <source>Failed to create fillet</source>
-      <translation>모깎기 실패</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="89"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="251"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="87"/>
       <source>Angle of groove too large</source>
       <translation>회전 잘라내기(Groove) 각도가 너무 큽니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="93"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="255"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="91"/>
       <source>Angle of groove too small</source>
       <translation>회전 잘라내기(Groove) 각도가 너무 작습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="110"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="274"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
       <translation>요청한 도형특징을 생성할 수 없습니다. 그 이유는 다음과 같습니다.
-  - 활성화된 몸통에는 기본 모양이 포함되어 있지 않으므로
-  제거할 재료가 없습니다.
+  - 활성화된 몸통에는 기본 형상이 포함되어 있지 않으므로 제거할 재료가 없습니다.
   - 선택한 스케치는 활성화된 몸통에 속하지 않습니다.</translation>
     </message>
     <message>
@@ -4901,30 +4870,29 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="487"/>
       <source>Failed to obtain profile shape</source>
-      <translation type="unfinished">Failed to obtain profile shape</translation>
+      <translation>윤곽 형상을 얻는데 실패했습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="539"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation type="unfinished">Creation failed because direction is orthogonal to sketch's normal vector</translation>
+      <translation>방향이 스케치의 법선 향량에 직교하므로 만들지 못했습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="598"/>
       <source>Extrude: Can only offset one face</source>
-      <translation type="unfinished">Extrude: Can only offset one face</translation>
+      <translation>돌출: 오직 하나의 면만 편차 가능</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="558"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="132"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="291"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="127"/>
       <source>Creating a face from sketch failed</source>
-      <translation type="unfinished">Creating a face from sketch failed</translation>
+      <translation>스케치로부터 면생성 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="635"/>
       <source>Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Up to face: Could not get SubShape!</translation>
+      <translation>면까지: 하위 형상을 얻을 수 없습니다!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="677"/>
@@ -4934,40 +4902,32 @@ over 90: larger hole radius at the bottom</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="688"/>
       <source>Padding with draft angle failed</source>
-      <translation type="unfinished">Padding with draft angle failed</translation>
+      <translation>구배를 준 깔판 생성이 실패했습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="158"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="148"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="313"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="149"/>
       <source>Revolve axis intersects the sketch</source>
-      <translation>회전축이 스케치와 교차합니다</translation>
+      <translation>공전축이 스케치와 교차합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureGroove.cpp" line="213"/>
-      <source>Cut out of base feature failed</source>
-      <translation type="unfinished">Cut out of base feature failed</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="265"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="203"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="321"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="227"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="157"/>
       <source>Could not revolve the sketch!</source>
-      <translation>스케치를 회전시킬 수 없음</translation>
+      <translation>스케치를 공전시킬 수 없음!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="277"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="236"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="365"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="239"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="201"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities in a sketch are not allowed.</translation>
+      <translation>스케치로부터 면을 생성할 수 없습니다.
+스케치에서 교차하는 개체들은 허용되지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="128"/>
       <source>Error: Pitch too small!</source>
-      <translation type="unfinished">Error: Pitch too small!</translation>
+      <translation>오류: 너무 작은 피치!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="130"/>
@@ -4995,7 +4955,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="170"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>오류: 지원되지 않는 모드</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="182"/>
@@ -5009,52 +4969,52 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2157"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="272"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="302"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="268"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="298"/>
       <source>Error: Result is not a solid</source>
       <translation>오류: 결과가 고체가 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="252"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="246"/>
       <source>Error: There is nothing to subtract</source>
       <translation>오류: 뺄 것이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="255"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="276"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="305"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="250"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="272"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="301"/>
       <source>Error: Result has multiple solids</source>
       <translation>오류: 결과가 여러 고체들을 가집니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="266"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="261"/>
       <source>Error: Adding the helix failed</source>
-      <translation type="unfinished">Error: Adding the helix failed</translation>
+      <translation>오류: 나선 추가 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="289"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="285"/>
       <source>Error: Intersecting the helix failed</source>
       <translation type="unfinished">Error: Intersecting the helix failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="296"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="292"/>
       <source>Error: Subtracting the helix failed</source>
       <translation type="unfinished">Error: Subtracting the helix failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHelix.cpp" line="317"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="313"/>
       <source>Error: Could not create face from sketch</source>
-      <translation type="unfinished">Error: Could not create face from sketch</translation>
+      <translation>오류: 스케치로부터 면을 생성할 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1687"/>
       <source>Hole error: Creating a face from sketch failed</source>
-      <translation type="unfinished">Hole error: Creating a face from sketch failed</translation>
+      <translation>구멍 오류: 스케치로부터 면 생성 실패</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1712"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation type="unfinished">Hole error: Unsupported length specification</translation>
+      <translation>구멍 오류: 지원되지 않는 길이 사양</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1715"/>
@@ -5069,17 +5029,17 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1759"/>
       <source>Hole error: Hole cut diameter too small</source>
-      <translation type="unfinished">Hole error: Hole cut diameter too small</translation>
+      <translation>구멍 오류: 구멍파기 지름이 너무 작습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1763"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be less than hole depth</translation>
+      <translation>구멍 오류: 구멍파기 깊이는 구멍의 전체 깊이보다 작아야 합니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1767"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
-      <translation type="unfinished">Hole error: Hole cut depth must be greater or equal to zero</translation>
+      <translation>구멍 오류: 구멍파기 깊이는 0 이상이어야 합니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
@@ -5089,17 +5049,17 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1822"/>
       <source>Hole error: Invalid drill point angle</source>
-      <translation type="unfinished">Hole error: Invalid drill point angle</translation>
+      <translation>구멍 오류: 무효한 드릴 끝 각도</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1832"/>
       <source>Hole error: Invalid drill point</source>
-      <translation type="unfinished">Hole error: Invalid drill point</translation>
+      <translation>구멍 오류: 무효한 드릴 끝</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1866"/>
       <source>Hole error: Could not revolve sketch</source>
-      <translation type="unfinished">Hole error: Could not revolve sketch</translation>
+      <translation>구멍 오류: 스케치를 공전시킬 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1870"/>
@@ -5109,432 +5069,280 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1880"/>
       <source>Error: Adding the thread failed</source>
-      <translation type="unfinished">Error: Adding the thread failed</translation>
+      <translation>오류: 나사산 추가 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="375"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="391"/>
-      <location filename="../../../App/FeatureTransformed.cpp" line="411"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
-      <translation>불 연산 실패</translation>
+      <translation>부울 연산 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="249"/>
       <location filename="../../../App/FeatureHole.cpp" line="1916"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</translation>
+      <translation>스케치로부터 면을 생성할 수 없습니다.
+스케치에 교차하는 선이나 또는 다수의 면이 있으면 면까지 오목자리를 만들 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2037"/>
       <source>Thread type out of range</source>
-      <translation type="unfinished">Thread type out of range</translation>
+      <translation>나사산의 유형이 범위를 벗어납니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2040"/>
       <source>Thread size out of range</source>
-      <translation type="unfinished">Thread size out of range</translation>
+      <translation>나사산의 크기가 범위를 벗어납니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2132"/>
       <source>Error: Thread could not be built</source>
-      <translation type="unfinished">Error: Thread could not be built</translation>
+      <translation>오류: 나사산을 만들 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="137"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="409"/>
       <source>Loft: At least one section is needed</source>
-      <translation>뾰족탑: 최소 하나의 단면이 필요합니다.</translation>
+      <translation>로프트: 최소 하나의 단면이 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="142"/>
-      <source>Loft: Could not obtain profile shape</source>
-      <translation type="unfinished">Loft: Could not obtain profile shape</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="155"/>
-      <source>Loft: When using points for profile/sections, the sketch should have a single point</source>
-      <translation type="unfinished">Loft: When using points for profile/sections, the sketch should have a single point</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="163"/>
-      <source>Loft: All sections need to be part features</source>
-      <translation type="unfinished">Loft: All sections need to be part features</translation>
+      <location filename="../../../App/FeatureLoft.cpp" line="265"/>
+      <source>Loft: A fatal error occurred when making the loft</source>
+      <translation>로프트: 로프트 생성 중 치명적 오류 발생</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="168"/>
-      <source>Loft: Could not obtain section shape</source>
-      <translation type="unfinished">Loft: Could not obtain section shape</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="184"/>
-      <source>Loft: A section doesn't contain any wires nor is a single vertex</source>
-      <translation type="unfinished">Loft: A section doesn't contain any wires nor is a single vertex</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="186"/>
-      <source>Loft: Only the profile and the last section can be vertices</source>
-      <translation type="unfinished">Loft: Only the profile and the last section can be vertices</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="188"/>
-      <source>Loft: For closed lofts only the profile can be a vertex</source>
-      <translation type="unfinished">Loft: For closed lofts only the profile can be a vertex</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="195"/>
-      <source>Loft: all loft sections need to have the same amount of inner wires</source>
-      <translation type="unfinished">Loft: all loft sections need to have the same amount of inner wires</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="234"/>
-      <source>Loft could not be built</source>
-      <translation>뽀족탑을 만들 수 없습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="267"/>
-      <source>Loft: Result is not a solid</source>
-      <translation>뾰족탑: 결과가 고체가 아닙니다</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="280"/>
-      <source>Loft: There is nothing to subtract from</source>
-      <translation>뾰족탑을 뺄 것이 없습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="290"/>
-      <source>Loft: Adding the loft failed</source>
-      <translation>뾰족탑: 뾰족탑 추가 실패</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="310"/>
-      <source>Loft: Subtracting the loft failed</source>
-      <translation>뽀족탑: 뾰족탑 빼기 실패</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="336"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="549"/>
-      <source>Loft: A fatal error occurred when making the loft</source>
-      <translation>뾰족탑: 뾰족탑 생성 중 치명적 오류 발생</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="448"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>로프트: 스케치로부터 면 생성이 실패했습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="481"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="201"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="106"/>
-      <source>Pad: Can't pad up to shape without base shape.</source>
-      <translation>깔판: 기본 모양이 없이 깔판을 만들 수 없습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="138"/>
-      <source>Pad: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation>깔판: 방향이 스케치의 법선 벡터에 직교하므로 만들지 못했습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="149"/>
-      <source>Pad: Creating a face from sketch failed</source>
-      <translation>깔판:  스케치로부터 면 생성이 실패했습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="220"/>
-      <source>Pad: Resulting shape is empty</source>
-      <translation>깔판: 결과 형상이 비어 있습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePad.cpp" line="231"/>
-      <source>Pad: Fusion with base feature failed</source>
-      <translation type="unfinished">Pad: Fusion with base feature failed</translation>
+      <translation>로프트: 껍질 생성에 실패했습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="770"/>
-      <location filename="../../../App/FeaturePad.cpp" line="261"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation type="unfinished">Could not create face from sketch.
-Intersecting sketch entities or multiple faces in a sketch are not allowed.</translation>
+      <translation>스케치로부터 면을 생성할 수 없습니다.
+스케치에서 교차하는 선이나 또는 다수의 면은 허용되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="177"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="511"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="176"/>
       <source>Pipe: Could not obtain profile shape</source>
-      <translation>파이프: 프로파일 형상을 얻을 수 없습니다</translation>
+      <translation>파이프: 윤곽 형상을 얻을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="182"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="516"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="181"/>
       <source>No spine linked</source>
-      <translation type="unfinished">No spine linked</translation>
+      <translation>연결된 척추(경로) 가 없음</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="195"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="529"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="194"/>
       <source>No auxiliary spine linked.</source>
-      <translation type="unfinished">No auxiliary spine linked.</translation>
+      <translation>연결된 보조 척추가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="216"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="550"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="215"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>파이프:단면에 고립점을 갖는 스케치를 사용하려면 오직 한 개의 고립점만 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="556"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="221"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
-      <translation>파이프: 프로파일에서 단일점을 사용하는 경우, 적어도 하나의 단면(section)이 필요합니다</translation>
+      <translation>파이프: 하나의 점을 윤곽으로 사용하는 경우, 적어도 하나의 단면이 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="236"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="570"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="235"/>
       <source>Pipe: All sections need to be part features</source>
       <translation>파이프: 모든 단면은 부품의 도형특징 이어야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="242"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="576"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="241"/>
       <source>Pipe: Could not obtain section shape</source>
-      <translation>파이프: 단면형태를 가져올 수 없습니다</translation>
+      <translation>파이프: 단면 형상을 얻을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="251"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="585"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="250"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
-      <translation>파이프: 오직 프로파일과 마지막 단면(section)만이 꼭짓점(vertices)이 될 수 있습니다</translation>
+      <translation>파이프: 오직 윤곽과 마지막 단면만이 꼭지점이 될 수 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="260"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="594"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="259"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation type="unfinished">Multisections need to have the same amount of inner wires as the base section</translation>
+      <translation>다중단면은 기본 단면으로서 내부에 동일한 양의 철사를 가져야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="287"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="621"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="286"/>
       <source>Path must not be a null shape</source>
       <translation>경로는 빈 형상이 아니어야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="322"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="656"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="321"/>
       <source>Pipe could not be built</source>
       <translation>파이프를 만들 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="368"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="702"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="366"/>
       <source>Result is not a solid</source>
       <translation>결과가 고체가 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="383"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="717"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="381"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>파이프: 제거해야 할 대상이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="728"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="392"/>
       <source>Adding the pipe failed</source>
       <translation>파이프 추가에 실패하였습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="413"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="748"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="412"/>
       <source>Subtracting the pipe failed</source>
       <translation>파이프 제거에 실패하였습니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="436"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="772"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>파이프를 생성하는데 치명적 오류가 발생하였습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="896"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="559"/>
       <source>Invalid element in spine.</source>
-      <translation type="unfinished">Invalid element in spine.</translation>
+      <translation>척추의 요소가 유효하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="899"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="562"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Element in spine is neither an edge nor a wire.</translation>
+      <translation>척추에 있는 요소는 모서리도 아니고 철사도 아닙니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="912"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="575"/>
       <source>Spine is not connected.</source>
-      <translation type="unfinished">Spine is not connected.</translation>
+      <translation>척추가 이어지지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="916"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="579"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Spine is neither an edge nor a wire.</translation>
+      <translation>철사는 모서리도 아니고 철사도 아닙니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="920"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="583"/>
       <source>Invalid spine.</source>
-      <translation type="unfinished">Invalid spine.</translation>
+      <translation>유효하지 않은 척추</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="141"/>
-      <source>Pocket: Creation failed because direction is orthogonal to sketch's normal vector</source>
-      <translation>오목 자리: 방향이 스케치의 법선 벡터에 직교하므로 만들지 못했습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="152"/>
-      <source>Pocket: Creating a face from sketch failed</source>
-      <translation>오목 자리: 스케치로부터 면 생성이 실패했습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="158"/>
-      <source>Pocket: Extruding up to a face is only possible if the sketch is located on a face</source>
-      <translation type="unfinished">Pocket: Extruding up to a face is only possible if the sketch is located on a face</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="193"/>
-      <source>Pocket: Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Pocket: Up to face: Could not get SubShape!</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="216"/>
-      <source>Pocket: Resulting shape is empty</source>
-      <translation>오목 자리: 결과 형상이 비어 있습니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="225"/>
-      <source>Pocket: Cut out of base feature failed</source>
-      <translation type="unfinished">Pocket: Cut out of base feature failed</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="105"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="95"/>
       <source>Cannot subtract primitive feature without base feature</source>
       <translation>기본 도형특징 없이는 기초 도형특징을 뺄 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="521"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="124"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="237"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="113"/>
       <source>Unknown operation type</source>
-      <translation type="unfinished">Unknown operation type</translation>
+      <translation>알 수 없는 연산 유형</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="527"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="243"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="120"/>
       <source>Failed to perform boolean operation</source>
       <translation>부울 연산 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="145"/>
-      <source>Adding the primitive failed</source>
-      <translation>기초 도형 더하기 실패</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="161"/>
-      <source>Subtracting the primitive failed</source>
-      <translation>기초 도형 빼기 실패</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="233"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="188"/>
       <source>Length of box too small</source>
       <translation>상자 길이가 너무 작습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="235"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="190"/>
       <source>Width of box too small</source>
       <translation>상자 폭이 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="237"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="192"/>
       <source>Height of box too small</source>
       <translation>상자 높이가 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="283"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="238"/>
       <source>Radius of cylinder too small</source>
       <translation>원통의 반지름이 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="285"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="240"/>
       <source>Height of cylinder too small</source>
       <translation>원통의 높이가 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="287"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="242"/>
       <source>Rotation angle of cylinder too small</source>
       <translation>원통의 회전 각도가 너무 작습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="340"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="295"/>
       <source>Radius of sphere too small</source>
       <translation>구의 반지름이 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="389"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="391"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="344"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="346"/>
       <source>Radius of cone cannot be negative</source>
       <translation>원뿔의 반지름은 음수가 될 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="393"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="348"/>
       <source>Height of cone too small</source>
       <translation>원뿔의 높이가 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="456"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="458"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="411"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="413"/>
       <source>Radius of ellipsoid too small</source>
       <translation>타원체의 반지름이 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="540"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="542"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="495"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="497"/>
       <source>Radius of torus too small</source>
       <translation>원환체의 반지름이 너무 작습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="605"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="560"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
       <translation>각기둥의 다각형이 잘못되었습니다. 측면이 3개 이상이어야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="607"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="562"/>
       <source>Circumradius of the polygon, of the prism, is too small</source>
       <translation>다각형의 원반지름, 각기둥의 원반지름이 너무 작습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="609"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="564"/>
       <source>Height of prism is too small</source>
       <translation>각기둥의 높이가 너무 작습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="690"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="645"/>
       <source>delta x of wedge too small</source>
       <translation>쐐기(wedge)의 x값 변화율이 너무 작습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="693"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="648"/>
       <source>delta y of wedge too small</source>
       <translation>쐐기(wedge)의 y값 변화율이 너무 작습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="696"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="651"/>
       <source>delta z of wedge too small</source>
       <translation>쐐기(wedge)의 z값 변화율이 너무 작습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="699"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="654"/>
       <source>delta z2 of wedge is negative</source>
       <translation>쐐기(wedge)의 z2값 변화율이 음수입니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="702"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="657"/>
       <source>delta x2 of wedge is negative</source>
       <translation>쐐기(wedge)의 x2값 변화율이 음수입니다</translation>
     </message>
@@ -5554,40 +5362,39 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation>참조 축이 잘못되었습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="254"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="729"/>
       <source>Fusion with base feature failed</source>
       <translation>기본 도형특징들 결합 실패</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="111"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="112"/>
       <source>Transformation feature Linked object is not a Part object</source>
       <translation type="unfinished">Transformation feature Linked object is not a Part object</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="116"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="117"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation type="unfinished">No originals linked to the transformed feature.</translation>
+      <translation>변환된 도형특징에 연결된 원본이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="276"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="277"/>
       <source>Cannot transform invalid support shape</source>
-      <translation type="unfinished">Cannot transform invalid support shape</translation>
+      <translation>무효한 받침 형상을 변환할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="305"/>
-      <source>Transformation failed</source>
-      <translation>변환 실패</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="342"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="323"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>덧셈/뺄셈 도형특징의 형태가 비어 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="334"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="315"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>오직 덧셈/뺄셈 도형특징들만 변형이 가능합니다</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureThickness.cpp" line="101"/>
+      <source>Invalid face reference</source>
+      <translation type="unfinished">Invalid face reference</translation>
     </message>
   </context>
   <context>
@@ -5595,7 +5402,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Active body</source>
-      <translation>활성화된 몸통</translation>
+      <translation>몸통 활성화</translation>
     </message>
   </context>
   <context>
@@ -5608,7 +5415,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2443"/>
       <source>Create a datum object or local coordinate system</source>
-      <translation type="unfinished">Create a datum object or local coordinate system</translation>
+      <translation>작업기준 또는 지역 좌표계를 생성</translation>
     </message>
   </context>
   <context>
@@ -5621,7 +5428,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     <message>
       <location filename="../../Command.cpp" line="2478"/>
       <source>Create a datum object or local coordinate system</source>
-      <translation type="unfinished">Create a datum object or local coordinate system</translation>
+      <translation>작업기준 또는 지역 좌표계를 생성</translation>
     </message>
   </context>
 </TS>

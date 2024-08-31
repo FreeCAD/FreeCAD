@@ -91,7 +91,7 @@ personalizada y puede parecer más agradable que la opción de wiki. El módulo 
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Nota: si los componentes web PySide no se encuentran en su sistema, las páginas de ayuda se abrirán en su navegador web por defecto independientemente de las opciones a continuación</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -108,7 +108,7 @@ personalizada y puede parecer más agradable que la opción de wiki. El módulo 
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
       <translation>La documentación se abrirá en un diálogo acoplable dentro de la ventana de FreeCAD,
-que le permite mantenerla abierta mientras trabaja en la vista 3D. Esto requiere el componente QtWebengineWidgets de PySide</translation>
+que te permite mantenerlo abierto mientras trabajas en la vista 3D. Esto requiere el componente QtWebengineWidgets de PySide</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
@@ -127,7 +127,7 @@ Markdown.</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
-      <translation>La documentación se abrirá en una nueva pestaña dentro de la interfaz FreeCAD. Esto requiere el componente QtWebengineWidgets de PySide</translation>
+      <translation>La documentación se abrirá en una nueva pestaña dentro de la interfaz FreeCAD. Esto requiere el componente PySide QtWebengineWidgets</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
@@ -160,12 +160,12 @@ Markdown.</translation>
     <message>
       <location filename="../../Help.py" line="80"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>El módulo QtWebEngineWidgets de PySide no está disponible. La representación de la ayuda se efectúa mediante el navegador web del sistema</translation>
+      <translation>El módulo PySide QtWebEngineWidgets no está disponible. El renderizado de ayuda se realiza con el navegador del sistema</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>No hay ningún renderizador Markdown instalado en su sistema, así que esta página de ayuda se muestra como tal. Por favor, instale los módulos Python de Markdown o Pandoc para mejorar la presentación de esta página.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

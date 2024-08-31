@@ -3341,7 +3341,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
         <location filename="../../ArchStructure.py" line="456"/>
-        <location filename="../../ArchCommands.py" line="1336"/>
+        <location filename="../../ArchCommands.py" line="1335"/>
         <location filename="../../bimcommands/BimProfile.py" line="74"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
@@ -3357,7 +3357,7 @@ unit to work with when opening the file.</source>
     <message>
         <location filename="../../ArchStructure.py" line="472"/>
         <location filename="../../ArchPrecast.py" line="1412"/>
-        <location filename="../../ArchCommands.py" line="1011"/>
+        <location filename="../../ArchCommands.py" line="1010"/>
         <location filename="../../bimcommands/BimWall.py" line="293"/>
         <location filename="../../bimcommands/BimPanel.py" line="148"/>
         <source>Length</source>
@@ -4110,7 +4110,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
         <location filename="../../ArchWindow.py" line="1346"/>
         <location filename="../../ArchComponent.py" line="2012"/>
-        <location filename="../../ArchCommands.py" line="1338"/>
+        <location filename="../../ArchCommands.py" line="1337"/>
         <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
@@ -4764,7 +4764,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1099"/>
+        <location filename="../../ArchCommands.py" line="1098"/>
         <source>Export CSV File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4776,7 +4776,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
         <location filename="../../ArchSchedule.py" line="644"/>
         <location filename="../../ArchSchedule.py" line="662"/>
-        <location filename="../../ArchCommands.py" line="1010"/>
+        <location filename="../../ArchCommands.py" line="1009"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4784,7 +4784,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <location filename="../../ArchSchedule.py" line="644"/>
         <location filename="../../ArchSchedule.py" line="662"/>
         <location filename="../../ArchComponent.py" line="2013"/>
-        <location filename="../../ArchCommands.py" line="1339"/>
+        <location filename="../../ArchCommands.py" line="1338"/>
         <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
@@ -4792,7 +4792,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
         <location filename="../../ArchSchedule.py" line="644"/>
         <location filename="../../ArchSchedule.py" line="662"/>
-        <location filename="../../ArchCommands.py" line="1340"/>
+        <location filename="../../ArchCommands.py" line="1339"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5272,58 +5272,58 @@ Building creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1004"/>
+        <location filename="../../ArchCommands.py" line="1003"/>
         <source>Survey</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1005"/>
+        <location filename="../../ArchCommands.py" line="1004"/>
         <source>Set description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1006"/>
+        <location filename="../../ArchCommands.py" line="1005"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1007"/>
+        <location filename="../../ArchCommands.py" line="1006"/>
         <source>Copy Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1008"/>
+        <location filename="../../ArchCommands.py" line="1007"/>
         <source>Copy Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1009"/>
+        <location filename="../../ArchCommands.py" line="1008"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1012"/>
+        <location filename="../../ArchCommands.py" line="1011"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1057"/>
+        <location filename="../../ArchCommands.py" line="1056"/>
         <source>Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1137"/>
+        <location filename="../../ArchCommands.py" line="1136"/>
         <source>Object doesn&apos;t have settable IFC attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1143"/>
+        <location filename="../../ArchCommands.py" line="1142"/>
         <source>Disabling B-rep force flag of object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1146"/>
-        <location filename="../../ArchCommands.py" line="1149"/>
+        <location filename="../../ArchCommands.py" line="1145"/>
+        <location filename="../../ArchCommands.py" line="1148"/>
         <source>Enabling B-rep force flag of object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5369,12 +5369,12 @@ Building creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1337"/>
+        <location filename="../../ArchCommands.py" line="1336"/>
         <source>Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchCommands.py" line="1347"/>
+        <location filename="../../ArchCommands.py" line="1346"/>
         <source>The object doesn&apos;t have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10710,26 +10710,6 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
         <location filename="../ui/dialogSetup.ui" line="510"/>
         <source>All rights reserved (no specific license)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/dialogSetup.ui" line="515"/>
-        <source>CC-BY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/dialogSetup.ui" line="520"/>
-        <source>CC-BY-SA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/dialogSetup.ui" line="525"/>
-        <source>CC-BY-NC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/dialogSetup.ui" line="530"/>
-        <source>CC-BY-SA-NC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
