@@ -889,6 +889,15 @@ protected:
     void buildShape();
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
+
+    void onGeometryChanged();
+    void onConstraintsChanged();
+    void onExternalGeoChanged();
+    void onExternalGeometryChanged();
+    void onPlacementChanged();
+    void onExpressionEngineChanged();
+    void onAttachmentSupportChanged();
+
     void onDocumentRestored() override;
     void restoreFinished() override;
 
