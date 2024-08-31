@@ -899,6 +899,14 @@ protected:
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
 
+    /// Helper functions for `deleteUnusedInternalGeometry` by cases
+    /// two foci for ellipses and arcs of ellipses and hyperbolas
+    int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
+    /// one focus for parabolas
+    int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
+    /// b-splines need their own treatment
+    int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
     void onGeometryChanged();
     void onConstraintsChanged();
     void onExternalGeoChanged();
