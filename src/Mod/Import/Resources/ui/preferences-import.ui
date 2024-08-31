@@ -83,7 +83,7 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBox">
      <property name="toolTip">
-      <string>If this is checked, no Compound merge will be done during file reading (slower but higher details).</string>
+      <string>If this is checked, Compound merge will be done during file reading (slower but higher details).</string>
      </property>
      <property name="text">
       <string>Enable STEP Compound merge</string>
