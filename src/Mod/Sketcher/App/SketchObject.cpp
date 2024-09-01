@@ -10194,14 +10194,14 @@ void SketchObject::updateGeometryRefs()
     assert(subs.size() == shadows.size());
     std::vector<std::string> originalRefs;
     std::map<std::string,std::string> refMap;
-    if(updateGeoRef) {
+    if (updateGeoRef) {
         assert(externalGeoRef.size() == objs.size());
         updateGeoRef = false;
         originalRefs = std::move(externalGeoRef);
     }
     externalGeoRef.clear();
     std::unordered_map<std::string, int> legacyMap;
-    for(int i=0;i<(int)objs.size();++i) {
+    for (int i=0;i<(int)objs.size();++i) {
         auto obj = objs[i];
         const std::string& sub = shadows[i].newName.empty() ? subs[i] : shadows[i].newName;
         externalGeoRef.emplace_back(obj->getNameInDocument());
@@ -10219,56 +10219,7 @@ void SketchObject::updateGeometryRefs()
     }
     bool touched = false;
     auto geos = ExternalGeo.getValues();
-    if(refMap.empty()) {
-        for(auto geo : geos) {
-            auto egf = ExternalGeometryFacade::getFacade(geo);
-            if (egf->getRefIndex() < 0) {
-                if (egf->getId() < 0 && !egf->getRef().empty()) {
-                    // NOLINTNEXTLINE
-                    FC_ERR("External geometry reference corrupted in " << getFullName()
-                            << " Please check.");
-                    // This could happen if someone saved the sketch containing
-                    // external geometries using some rogue releases during the
-                    // migration period. As a remedy, We re-initiate the
-                    // external geometry here to trigger rebuild later, with
-                    // call to rebuildExternalGeometry()
-                    initExternalGeo();
-                    return;
-                }
-                auto it = legacyMap.find(egf->getRef());
-                if (it != legacyMap.end() && egf->getRef() != externalGeoRef[it->second]) {
-                    if(getDocument() && !getDocument()->isPerformingTransaction()) {
-                        // FIXME: this is a bug. Find out when and why does this happen
-                        //
-                        // Amendment: maybe the original bug is because of not
-                        // handling external geometry changes during undo/redo,
-                        // which should be considered as normal. So warning only
-                        // if not undo/redo.
-                        //
-                        // NOLINTNEXTLINE
-                        FC_WARN("Update legacy external reference "
-                                << egf->getRef() << " -> " << externalGeoRef[it->second] << " in "
-                                << getFullName());
-                    }
-                    else {
-                        // NOLINTNEXTLINE
-                        FC_LOG("Update undo/redo external reference "
-                               << egf->getRef() << " -> " << externalGeoRef[it->second] << " in "
-                               << getFullName());
-                    }
-                    touched = true;
-                    egf->setRef(externalGeoRef[it->second]);
-                }
-                continue;
-            }
-            if (egf->getRefIndex() < (int)externalGeoRef.size()
-                && egf->getRef() != externalGeoRef[egf->getRefIndex()]) {
-                touched = true;
-                egf->setRef(externalGeoRef[egf->getRefIndex()]);
-            }
-            egf->setRefIndex(-1);
-        }
-    }else{
+    if (!refMap.empty()) {
         for(auto &v : refMap) {
             auto it = externalGeoRefMap.find(v.first);
             if (it == externalGeoRefMap.end()) {
@@ -10276,19 +10227,79 @@ void SketchObject::updateGeometryRefs()
             }
             for (long id : it->second) {
                 auto iter = externalGeoMap.find(id);
-                if(iter!=externalGeoMap.end()) {
+                if (iter != externalGeoMap.end()) {
                     auto &geo = geos[iter->second];
                     geo = geo->clone();
                     auto egf = ExternalGeometryFacade::getFacade(geo);
                     // NOLINTNEXTLINE
                     FC_LOG(getFullName() << " ref change on ExternalEdge" << iter->second - 1 << ' '
-                                         << egf->getRef() << " -> " << v.second);
+                           << egf->getRef() << " -> " << v.second);
                     egf->setRef(v.second);
                     touched = true;
                 }
             }
         }
+
+        if (touched) {
+            ExternalGeo.setValues(std::move(geos));
+        }
+        return;
     }
+
+    // `refMap` is empty from here
+
+    for (auto geo : geos) {
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        if (egf->getRefIndex() >= 0) {
+            if (egf->getRefIndex() < (int)externalGeoRef.size()
+                && egf->getRef() != externalGeoRef[egf->getRefIndex()]) {
+                touched = true;
+                egf->setRef(externalGeoRef[egf->getRefIndex()]);
+            }
+            egf->setRefIndex(-1);
+            continue;
+        }
+
+        if (egf->getId() < 0 && !egf->getRef().empty()) {
+            // NOLINTNEXTLINE
+            FC_ERR("External geometry reference corrupted in " << getFullName()
+                   << " Please check.");
+            // This could happen if someone saved the sketch containing
+            // external geometries using some rogue releases during the
+            // migration period. As a remedy, We re-initiate the
+            // external geometry here to trigger rebuild later, with
+            // call to rebuildExternalGeometry()
+            initExternalGeo();
+            return;
+        }
+
+        auto it = legacyMap.find(egf->getRef());
+        if (it == legacyMap.end() || egf->getRef() == externalGeoRef[it->second]) {
+            continue;
+        }
+
+        if (getDocument() && !getDocument()->isPerformingTransaction()) {
+            // FIXME: this is a bug. Find out when and why does this happen
+            //
+            // Amendment: maybe the original bug is because of not handling external geometry
+            // changes during undo/redo, which should be considered as normal. So warning
+            // only if not undo/redo.
+            //
+            // NOLINTNEXTLINE
+            FC_WARN("Update legacy external reference "
+                    << egf->getRef() << " -> " << externalGeoRef[it->second] << " in "
+                    << getFullName());
+        }
+        else {
+            // NOLINTNEXTLINE
+            FC_LOG("Update undo/redo external reference "
+                   << egf->getRef() << " -> " << externalGeoRef[it->second] << " in "
+                   << getFullName());
+        }
+        touched = true;
+        egf->setRef(externalGeoRef[it->second]);
+    }
+
     if (touched) {
         ExternalGeo.setValues(std::move(geos));
     }
