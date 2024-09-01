@@ -1911,7 +1911,7 @@ void MainWindow::startSplasher()
         if (hGrp->GetBool("ShowSplasher", true)) {
             d->splashscreen = new SplashScreen(this->splashImage());
 
-            if (!hGrp->GetBool("ShowSplasherMessages", true)) {
+            if (!hGrp->GetBool("ShowSplasherMessages", false)) {
                 d->splashscreen->setShowMessages(false);
             }
 
