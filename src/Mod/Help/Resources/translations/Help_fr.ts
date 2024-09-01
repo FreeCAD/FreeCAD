@@ -153,7 +153,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation>Aucun moteur de rendu Markdown n'est installé sur votre système, cette page d'aide est donc rendue telle quelle. Installer les modules Python "Markdown" ou "Pandoc" pour améliorer le rendu de cette page.</translation>
+      <translation>Le moteur de rendu Markdown n'est pas installé sur votre système, cette page d'aide est donc rendue telle quelle. Installer les modules Python "Markdown" ou "Pandoc" pour améliorer le rendu de cette page.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

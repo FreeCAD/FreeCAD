@@ -37,7 +37,7 @@
 namespace Measure
 {
 
-class MeasureExport MeasureLength : public Measure::MeasureBaseExtendable<Part::MeasureLengthInfo>
+class MeasureExport MeasureLength: public Measure::MeasureBaseExtendable<Part::MeasureLengthInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureLength);
 
@@ -49,18 +49,25 @@ public:
     App::PropertyLinkSubList Elements;
     App::PropertyDistance Length;
 
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     void recalculateLength();
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "MeasureGui::ViewProviderMeasureLength";
     }
 
     static bool isValidSelection(const App::MeasureSelection& selection);
     void parseSelection(const App::MeasureSelection& selection) override;
 
-    std::vector<std::string> getInputProps() override {return {"Elements"};}
-    App::Property* getResultProp() override {return &this->Length;}
+    std::vector<std::string> getInputProps() override
+    {
+        return {"Elements"};
+    }
+    App::Property* getResultProp() override
+    {
+        return &this->Length;
+    }
 
     // Return a placement for the viewprovider, just use the first element for now
     Base::Placement getPlacement() override;
@@ -71,11 +78,9 @@ public:
 
 private:
     void onChanged(const App::Property* prop) override;
-
 };
 
-} //namespace Measure
+}  // namespace Measure
 
 
-#endif // MEASURE_MEASURELENGTH_H
-
+#endif  // MEASURE_MEASURELENGTH_H

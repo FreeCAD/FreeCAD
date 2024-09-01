@@ -6,13 +6,13 @@
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Inspect Appearance...</source>
-      <translation type="unfinished">Inspect Appearance...</translation>
+      <translation>Tikrinti išvaizdą...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <location filename="../../Command.cpp" line="150"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspect the appearance properties of the selected object</translation>
+      <translation>Tikrinti pasirinkto daikto atvaizdavimo savybes</translation>
     </message>
   </context>
   <context>
@@ -20,13 +20,13 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspect Material...</source>
-      <translation type="unfinished">Inspect Material...</translation>
+      <translation>Tikrinti Medžiagą...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <location filename="../../Command.cpp" line="177"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation type="unfinished">Inspect the material properties of the selected object</translation>
+      <translation>Tikrinti pasirinkto daikto medžiagos savybes</translation>
     </message>
   </context>
   <context>
@@ -39,12 +39,12 @@
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>Taisyti...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Edit material properties</source>
-      <translation type="unfinished">Edit material properties</translation>
+      <translation>Keisti medžiagos savybes</translation>
     </message>
   </context>
   <context>
@@ -52,17 +52,17 @@
     <message>
       <location filename="../../Array2D.ui" line="14"/>
       <source>2D Array</source>
-      <translation type="unfinished">2D Array</translation>
+      <translation>Dvimatis masyvas</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="76"/>
       <source>Delete row</source>
-      <translation type="unfinished">Delete row</translation>
+      <translation>Naikinti eilutę</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="134"/>
       <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
+      <translation>Kontekstinis meniu</translation>
     </message>
   </context>
   <context>
@@ -70,36 +70,36 @@
     <message>
       <location filename="../../Array3D.ui" line="14"/>
       <source>3D Array</source>
-      <translation type="unfinished">3D Array</translation>
+      <translation>Trimatis masyvas</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete row</source>
-      <translation type="unfinished">Delete row</translation>
+      <translation>Naikinti eilutę</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
       <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
+      <translation>Kontekstinis meniu</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>Patvirtinti panaikinimą</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Are you sure you want to delete the row?</source>
-      <translation type="unfinished">Are you sure you want to delete the row?</translation>
+      <translation>Ar tikrai norite naikinti šią eilutę?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation type="unfinished">Removing this will also remove all 2D contents.</translation>
+      <translation>Pašalinus tai, bus pašalintas ir visas dvimatis turinys.</translation>
     </message>
   </context>
   <context>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <translation>Rodymo ypatybės</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
       <source>Line transparency:</source>
-      <translation type="unfinished">Line transparency:</translation>
+      <translation>Linijos permatomumas:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
@@ -183,17 +183,17 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot:</source>
-      <translation type="unfinished">Color plot:</translation>
+      <translation>Spalvotas brėžinys:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Tinkinta išvaizda:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
       <source>Point color:</source>
-      <translation type="unfinished">Point color:</translation>
+      <translation>Taško spalva:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
@@ -206,17 +206,17 @@
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
       <source>Basic Appearance</source>
-      <translation type="unfinished">Basic Appearance</translation>
+      <translation>Pagrindinė išvaizda</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
       <source>Texture Appearance</source>
-      <translation type="unfinished">Texture Appearance</translation>
+      <translation>Tekstūros išvaizda</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
       <source>All Materials</source>
-      <translation type="unfinished">All Materials</translation>
+      <translation>Visos medžiagos</translation>
     </message>
   </context>
   <context>
@@ -239,22 +239,22 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
+      <translation>Veikiamojo dokumento pavadinimas</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / Internal Name</source>
-      <translation type="unfinished">Label / Internal Name</translation>
+      <translation>Žymė / Vidinis pavadinimas</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>Pokūnis / Rūšis</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>Pavidalas.RūšiesID / RūšiesID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -274,27 +274,27 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse Color</source>
-      <translation type="unfinished">Diffuse Color</translation>
+      <translation>Išsklaidytoji spalva</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient Color</source>
-      <translation type="unfinished">Ambient Color</translation>
+      <translation>Aplinkos spalva</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive Color</source>
-      <translation type="unfinished">Emissive Color</translation>
+      <translation>Švytėjimo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular Color</source>
-      <translation type="unfinished">Specular Color</translation>
+      <translation>Atspindėtoji spalva</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
-      <translation type="unfinished">Shininess</translation>
+      <translation>Blizgesys</translation>
     </message>
   </context>
   <context>
@@ -317,22 +317,22 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
+      <translation>Veikiamojo dokumento pavadinimas</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / Internal Name</source>
-      <translation type="unfinished">Label / Internal Name</translation>
+      <translation>Žymė / Vidinis pavadinimas</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>Pokūnis / Rūšis</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>Pavidalas.RūšiesID / RūšiesID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -347,28 +347,28 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
       <source>Document: </source>
-      <translation type="unfinished">Document: </translation>
+      <translation>Dokumentas: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="166"/>
       <source>Label: </source>
-      <translation type="unfinished">Label: </translation>
+      <translation>Žymė: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal Name: </source>
-      <translation type="unfinished">Internal Name: </translation>
+      <translation>Vidinis pavadinimas: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
       <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Type: </source>
-      <translation type="unfinished">Type: </translation>
+      <translation>Rūšis: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
-      <translation type="unfinished">TypeID: </translation>
+      <translation>RūšiesID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="221"/>
@@ -377,7 +377,7 @@
       <location filename="../../DlgInspectMaterial.cpp" line="292"/>
       <location filename="../../DlgInspectMaterial.cpp" line="314"/>
       <source>Name: </source>
-      <translation type="unfinished">Name: </translation>
+      <translation>Pavadinimas: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="246"/>
@@ -391,41 +391,41 @@
       <location filename="../../DlgInspectMaterial.cpp" line="266"/>
       <location filename="../../DlgInspectMaterial.cpp" line="341"/>
       <source>UUID: </source>
-      <translation type="unfinished">UUID: </translation>
+      <translation>UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="269"/>
       <location filename="../../DlgInspectMaterial.cpp" line="343"/>
       <source>Library: </source>
-      <translation type="unfinished">Library: </translation>
+      <translation>Biblioteka: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library Directory: </source>
-      <translation type="unfinished">Library Directory: </translation>
+      <translation>Bibliotekos aplankas: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub Directory: </source>
-      <translation type="unfinished">Sub Directory: </translation>
+      <translation>Poaplankis: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
       <location filename="../../DlgInspectMaterial.cpp" line="350"/>
       <source>Inherits:</source>
-      <translation type="unfinished">Inherits:</translation>
+      <translation>Paveldi:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation type="unfinished">Model UUID: </translation>
+      <translation>Modelio UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
-      <translation type="unfinished">Has value: </translation>
+      <translation>Turi vertę: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -440,22 +440,22 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance Models:</source>
-      <translation type="unfinished">Appearance Models:</translation>
+      <translation>Išvaizdos modeliai:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical Models:</source>
-      <translation type="unfinished">Physical Models:</translation>
+      <translation>Fizikiniai modeliai:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance Properties:</source>
-      <translation type="unfinished">Appearance Properties:</translation>
+      <translation>Išvaizdos savybės:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
       <source>Physical Properties:</source>
-      <translation type="unfinished">Physical Properties:</translation>
+      <translation>Fizikinės savybės:</translation>
     </message>
   </context>
   <context>
@@ -472,12 +472,12 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation type="unfinished">Default Material</translation>
+      <translation>Numatytoji medžiaga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>Fizikinis</translation>
     </message>
   </context>
   <context>
@@ -490,7 +490,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card resources</source>
-      <translation type="unfinished">Card resources</translation>
+      <translation>Kortelės šaltiniai</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
@@ -604,7 +604,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="283"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>Medžiagų rengyklė</translation>
     </message>
   </context>
   <context>
@@ -718,52 +718,52 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="187"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation type="unfinished">Saving over the original file may cause other documents to break. This is not recommended.</translation>
+      <translation>Įrašymas į pirminį failą gali sugadinti dokumentą. To nepatariama daryti.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="209"/>
       <source>Confirm Save As New Material</source>
-      <translation type="unfinished">Confirm Save As New Material</translation>
+      <translation>Patvirtinkite, kad įrašote kaip naują medžiagą</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="211"/>
       <source>Save as new material</source>
-      <translation type="unfinished">Save as new material</translation>
+      <translation>Įrašyti kaip naują medžiagą</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="214"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Would you like to save as a new material?</translation>
+      <translation>Ši medžiaga jau yra bibliotekoje. Ar norite ją įrašyti kaip naują medžiagą?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="236"/>
       <source>Confirm Save As Copy</source>
-      <translation type="unfinished">Confirm Save As Copy</translation>
+      <translation>Patvirtinkite, kad saugote kaip kopiją</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="238"/>
       <source>Save as Copy</source>
-      <translation type="unfinished">Save as Copy</translation>
+      <translation>Išsaugoti kaip kopiją</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="241"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</translation>
+      <translation>Nerekomenduojama išsaugoti kopijos, nes tai gali sugadinti kitus dokumentus. Rekomenduojame išsaugoti kaip naują medžiagą.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="244"/>
       <source>Save Copy</source>
-      <translation type="unfinished">Save Copy</translation>
+      <translation>Įrašyti &amp;kopiją</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="245"/>
       <source>Save As New</source>
-      <translation type="unfinished">Save As New</translation>
+      <translation>Įrašyti kaip naują</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="526"/>
       <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
+      <translation>Kontekstinis meniu</translation>
     </message>
   </context>
   <context>
@@ -771,19 +771,19 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="142"/>
       <source>Launch editor</source>
-      <translation type="unfinished">Launch editor</translation>
+      <translation>Paleisti rengyklę</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
       <location filename="../../MaterialTreeWidget.cpp" line="546"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Parankiniai</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
       <location filename="../../MaterialTreeWidget.cpp" line="553"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Paskiausi</translation>
     </message>
   </context>
   <context>
@@ -791,7 +791,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="20"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Medžiagos</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="51"/>
@@ -801,7 +801,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Tėvinis</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>
@@ -811,7 +811,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
       <source>Source URL</source>
-      <translation type="unfinished">Source URL</translation>
+      <translation>Šaltinio URL</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
@@ -831,7 +831,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source Reference</source>
-      <translation type="unfinished">Source Reference</translation>
+      <translation>Šaltinio nuoroda</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -846,27 +846,27 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
-      <translation type="unfinished">Inherit New</translation>
+      <translation>Paveldėti naują</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
+      <translation>Pridėti prie parankinių</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>Fizikinis</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="236"/>
       <source>Add physical model</source>
-      <translation type="unfinished">Add physical model</translation>
+      <translation>Pridėti fizikinė modelį</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="246"/>
       <source>Delete physical model</source>
-      <translation type="unfinished">Delete physical model</translation>
+      <translation>Naikinti fizikinį modelį</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
@@ -876,12 +876,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="286"/>
       <source>Add appearance model</source>
-      <translation type="unfinished">Add appearance model</translation>
+      <translation>Pridėti išvaizdos modelį</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="296"/>
       <source>Delete appearance model</source>
-      <translation type="unfinished">Delete appearance model</translation>
+      <translation>Naikinti išvaizdos modelį</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="481"/>
@@ -891,17 +891,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="603"/>
       <source>Old Format Material</source>
-      <translation type="unfinished">Old Format Material</translation>
+      <translation>Senojo formato medžiaga</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="605"/>
       <source>This file is in the old material card format.</source>
-      <translation type="unfinished">This file is in the old material card format.</translation>
+      <translation>Šis failas yra senojo formato medžiagos kortelė.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="687"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation type="unfinished">This card uses the old format and must be saved before use</translation>
+      <translation>Ši kortelė naudoja senąjį formatą ir turi būti išsaugota prieš naudojimą</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="745"/>
@@ -930,12 +930,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="843"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Parankiniai</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="850"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Paskiausi</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1116"/>
@@ -945,17 +945,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1283"/>
       <source>Context menu</source>
-      <translation type="unfinished">Context menu</translation>
+      <translation>Kontekstinis meniu</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1285"/>
       <source>Inherit from</source>
-      <translation type="unfinished">Inherit from</translation>
+      <translation>Paveldėti iš</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1289"/>
       <source>Inherit new material</source>
-      <translation type="unfinished">Inherit new material</translation>
+      <translation>Paveldėti naują medžiagą</translation>
     </message>
   </context>
   <context>
@@ -963,7 +963,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="14"/>
       <source>Material Models</source>
-      <translation type="unfinished">Material Models</translation>
+      <translation>Medžiagos modeliai</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="41"/>
@@ -985,7 +985,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
       <source>DOI</source>
-      <translation type="unfinished">DOI</translation>
+      <translation>DOI</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="87"/>
@@ -995,29 +995,29 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
+      <translation>Pridėti prie parankinių</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
       <location filename="../../ModelSelect.cpp" line="438"/>
       <location filename="../../ModelSelect.cpp" line="454"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Savybės</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="332"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Parankiniai</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Paskiausi</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="356"/>
       <source>Inherited</source>
-      <translation type="unfinished">Inherited</translation>
+      <translation>Paveldėta</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="357"/>
@@ -1040,7 +1040,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../TextEdit.ui" line="14"/>
       <source>Text Edit</source>
-      <translation type="unfinished">Text Edit</translation>
+      <translation>Teksto taisymas</translation>
     </message>
   </context>
   <context>
@@ -1048,27 +1048,27 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>Medžiagų rengyklė</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material card</source>
-      <translation type="unfinished">Material card</translation>
+      <translation>Medžiagų kortelė</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>Išorinėje naršyklėje atidaro šios medžiagos produkto URL</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
       <source>Existing material cards</source>
-      <translation type="unfinished">Existing material cards</translation>
+      <translation>Esamos medžiagų kortelės</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="67"/>
       <source>Opens an existing material card</source>
-      <translation type="unfinished">Opens an existing material card</translation>
+      <translation>Atveria esamas medžiagos korteles</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
@@ -1078,22 +1078,22 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation type="unfinished">Saves this material as a card</translation>
+      <translation>Išsaugoti šią medžiagą kaip kortelę</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save as...</source>
-      <translation type="unfinished">Save as...</translation>
+      <translation>Išsaugoti kaip...</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material parameter</source>
-      <translation type="unfinished">Material parameter</translation>
+      <translation>Medžiagos savybė</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add / remove parameter</source>
-      <translation type="unfinished">Add / remove parameter</translation>
+      <translation>Pridėti arba naikinti savybę</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -1103,7 +1103,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete property</source>
-      <translation type="unfinished">Delete property</translation>
+      <translation>Naikinti savybę</translation>
     </message>
   </context>
   <context>
@@ -1111,7 +1111,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="54"/>
       <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <translation>Rodymo ypatybės</translation>
     </message>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="57"/>
@@ -1124,7 +1124,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../AppMatGui.cpp" line="106"/>
       <source>Material workbench</source>
-      <translation type="unfinished">Material workbench</translation>
+      <translation>Medžiagos darbastalis</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="108"/>
@@ -1135,56 +1135,56 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="181"/>
       <source>Confirm Overwrite</source>
-      <translation type="unfinished">Confirm Overwrite</translation>
+      <translation>Patvirtinkite perrašymą</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="370"/>
       <location filename="../../MaterialSave.cpp" line="371"/>
       <source>No writeable library</source>
-      <translation type="unfinished">No writeable library</translation>
+      <translation>Nėra įrašomų bibliotekų</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="558"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Are you sure you want to delete &apos;%1&apos;?</translation>
+      <translation>Ar tikrai norite naikinti „%1“?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="562"/>
       <source>Removing this will also remove all contents.</source>
-      <translation type="unfinished">Removing this will also remove all contents.</translation>
+      <translation>Pašalinus tai, bus pašalintas ir visas turinys.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>You must save the material before using it.</source>
-      <translation type="unfinished">You must save the material before using it.</translation>
+      <translation>Prieš naudodami medžiagą, turite ją išsaugoti.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1310"/>
       <source>Unsaved Material</source>
-      <translation type="unfinished">Unsaved Material</translation>
+      <translation>Neišsaugota medžiaga</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1311"/>
       <source>Do you want to save your changes to the material before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to the material before closing?</translation>
+      <translation>Ar norite įrašyti medžiagos savybių keitimus prieš užveriant?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
-      <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
+      <translation>Jei neįrašysite, jūsų pakeitimai bus prarasti.</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="166"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="555"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>Patvirtinti panaikinimą</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="168"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
-      <translation type="unfinished">Are you sure you want to delete the row?</translation>
+      <translation>Ar tikrai norite naikinti šią eilutę?</translation>
     </message>
   </context>
   <context>
@@ -1192,13 +1192,13 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Appearance...</source>
-      <translation type="unfinished">Appearance...</translation>
+      <translation>Išvaizda...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <location filename="../../Command.cpp" line="92"/>
       <source>Sets the display properties of the selected object</source>
-      <translation type="unfinished">Sets the display properties of the selected object</translation>
+      <translation>Nustato pasirinktų objektų atvaizdavimo savybes</translation>
     </message>
   </context>
   <context>
@@ -1206,13 +1206,13 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>Material...</source>
-      <translation type="unfinished">Material...</translation>
+      <translation>Medžiaga...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>
       <location filename="../../Command.cpp" line="121"/>
       <source>Sets the material of the selected object</source>
-      <translation type="unfinished">Sets the material of the selected object</translation>
+      <translation>Nustato pasirinkto objekto atvaizdavimo savybes</translation>
     </message>
   </context>
   <context>
@@ -1220,12 +1220,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Materials</source>
-      <translation type="unfinished">&amp;Materials</translation>
+      <translation>&amp;Medžiagos</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Medžiagos</translation>
     </message>
   </context>
 </TS>

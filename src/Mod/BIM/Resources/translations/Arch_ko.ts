@@ -1627,7 +1627,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="52"/>
       <source>Link</source>
-      <translation>링크</translation>
+      <translation>연결</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="63"/>
@@ -1832,7 +1832,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="191"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>도형</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
@@ -2611,7 +2611,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="252"/>
       <source>Solid</source>
-      <translation>복합체</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="257"/>
@@ -2986,7 +2986,7 @@ Netgen을 사용하는 경우 사용 가능한지 확인합니다.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>공간 분할</translation>
+      <translation>쪽매붙임</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
@@ -3393,7 +3393,7 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1335"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>카테고리</translation>
@@ -3409,7 +3409,7 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <location filename="../../bimcommands/BimWall.py" line="293"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
@@ -3692,7 +3692,7 @@ IFC 파일은 "항상" 메트릭 단위로 작성됩니다. 임페리얼 단위�
     <message>
       <location filename="../../ArchProfile.py" line="467"/>
       <source>Profile</source>
-      <translation>프로필</translation>
+      <translation>윤곽</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="716"/>
@@ -4173,7 +4173,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
     <message>
       <location filename="../../ArchWindow.py" line="1346"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1338"/>
+      <location filename="../../ArchCommands.py" line="1337"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>유형</translation>
@@ -4190,7 +4190,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <location filename="../../ArchWindow.py" line="1349"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1350"/>
@@ -4464,7 +4464,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
     <message>
       <location filename="../../ArchGrid.py" line="390"/>
       <source>Add column</source>
-      <translation type="unfinished">Add column</translation>
+      <translation>열 추가</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="391"/>
@@ -4827,7 +4827,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>CSV 파일로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1099"/>
+      <location filename="../../ArchCommands.py" line="1098"/>
       <source>Export CSV File</source>
       <translation>CSV 파일로 내보내기</translation>
     </message>
@@ -4839,7 +4839,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
     <message>
       <location filename="../../ArchSchedule.py" line="644"/>
       <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
@@ -4847,7 +4847,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <location filename="../../ArchSchedule.py" line="644"/>
       <location filename="../../ArchSchedule.py" line="662"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1339"/>
+      <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>값</translation>
@@ -4855,7 +4855,7 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
     <message>
       <location filename="../../ArchSchedule.py" line="644"/>
       <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>단위</translation>
     </message>
@@ -5351,58 +5351,58 @@ Building creation aborted.</source>
       <translation>모든 솔리드에 속하지 않는 면을 포함</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1003"/>
       <source>Survey</source>
       <translation>탐색</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1004"/>
       <source>Set description</source>
       <translation>설명 설정</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1005"/>
       <source>Clear</source>
       <translation>지우기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1006"/>
       <source>Copy Length</source>
       <translation>길이 복사</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1007"/>
       <source>Copy Area</source>
       <translation>범위 복사</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1008"/>
       <source>Export CSV</source>
       <translation>CSV로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Area</source>
       <translation>면적</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1057"/>
+      <location filename="../../ArchCommands.py" line="1056"/>
       <source>Total</source>
       <translation>합계</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1137"/>
+      <location filename="../../ArchCommands.py" line="1136"/>
       <source>Object doesn't have settable IFC attributes</source>
       <translation type="unfinished">Object doesn't have settable IFC attributes</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1143"/>
+      <location filename="../../ArchCommands.py" line="1142"/>
       <source>Disabling B-rep force flag of object</source>
       <translation type="unfinished">Disabling B-rep force flag of object</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1146"/>
-      <location filename="../../ArchCommands.py" line="1149"/>
+      <location filename="../../ArchCommands.py" line="1145"/>
+      <location filename="../../ArchCommands.py" line="1148"/>
       <source>Enabling B-rep force flag of object</source>
       <translation type="unfinished">Enabling B-rep force flag of object</translation>
     </message>
@@ -5448,12 +5448,12 @@ Building creation aborted.</source>
       <translation>구성 요소 만들기</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1337"/>
+      <location filename="../../ArchCommands.py" line="1336"/>
       <source>Key</source>
       <translation>키</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1347"/>
+      <location filename="../../ArchCommands.py" line="1346"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>객체에 IfcProperties 특성이 없습니다. 객체에 대한 스프레드시트 생성을 취소합니다:</translation>
     </message>
@@ -7830,7 +7830,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="42"/>
       <source>Profile</source>
-      <translation>프로필</translation>
+      <translation>윤곽</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="46"/>
@@ -9726,7 +9726,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="39"/>
       <source>Intersection</source>
-      <translation>교집합</translation>
+      <translation>교차</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="42"/>
@@ -10156,7 +10156,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="38"/>
       <source>2D Offset...</source>
-      <translation type="unfinished">2D Offset...</translation>
+      <translation>2D 편차...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="41"/>
@@ -10792,26 +10792,6 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
       <translation type="unfinished">All rights reserved (no specific license)</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="515"/>
-      <source>CC-BY</source>
-      <translation type="unfinished">CC-BY</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="520"/>
-      <source>CC-BY-SA</source>
-      <translation type="unfinished">CC-BY-SA</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="525"/>
-      <source>CC-BY-NC</source>
-      <translation type="unfinished">CC-BY-NC</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="530"/>
-      <source>CC-BY-SA-NC</source>
-      <translation type="unfinished">CC-BY-SA-NC</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>

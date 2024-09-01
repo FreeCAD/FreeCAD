@@ -56,11 +56,9 @@ std::string Data::noElementName(const char *name) {
 }
 
 const char *Data::findElementName(const char *subname) {
-#ifdef FC_USE_TNP_FIX
     // skip leading dots
     while(subname && subname[0] == '.')
         ++subname;
-#endif
     if(!subname || !subname[0] || isMappedElement(subname))
         return subname;
     const char *dot = strrchr(subname,'.');

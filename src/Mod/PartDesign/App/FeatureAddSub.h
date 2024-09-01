@@ -54,10 +54,6 @@ public:
 protected:
     Type addSubType{Additive};
 
-#ifndef FC_USE_TNP_FIX
-    // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
-#endif
    TopoShape refineShapeIfActive(const TopoShape&) const;
 };
 

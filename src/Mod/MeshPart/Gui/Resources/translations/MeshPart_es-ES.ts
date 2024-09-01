@@ -222,7 +222,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Pulse 'Empezar', luego seleccione puntos en la malla; cuando se hayan establecido suficientes puntos, haga clic derecho y seleccione 'Crear'. Repetir este proceso para crear más curvas. Cierre este panel de tareas para completar la operación.
 
-Este comando solo funciona con un objeto 'malla', no con una cara regular o superficie. Para convertir un objeto a una malla utilice las herramientas del entorno de trabajo Mesh.</translation>
+Este comando solo funciona con un objeto 'malla', no con una cara regular o superficie. Para convertir un objeto a una malla utilice las herramientas del banco de trabajo Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>

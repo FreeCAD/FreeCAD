@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Create mesh segments</source>
-      <translation>Gaassegmenten aanmaken</translation>
+      <translation>Mesh segmenten aanmaken</translation>
     </message>
   </context>
   <context>
@@ -236,7 +236,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>Pas B-Spline in</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
@@ -393,7 +393,7 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Please select a point cloud.</source>
-      <translation type="unfinished">Please select a point cloud.</translation>
+      <translation>Selecteer alstublieft een puntwolk.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
@@ -424,7 +424,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation>Glad gaas</translation>
+      <translation>Vloeiende mesh</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -612,12 +612,12 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>Middelpuntzoekend</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <translation>Iso-Parametrisch</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -627,47 +627,47 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>
       <source>Parametrization type</source>
-      <translation type="unfinished">Parametrization type</translation>
+      <translation>Parametrisering type</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="96"/>
       <source>C0</source>
-      <translation type="unfinished">C0</translation>
+      <translation>C0</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="101"/>
       <source>G1</source>
-      <translation type="unfinished">G1</translation>
+      <translation>G1</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="106"/>
       <source>C1</source>
-      <translation type="unfinished">C1</translation>
+      <translation>C1</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="111"/>
       <source>G2</source>
-      <translation type="unfinished">G2</translation>
+      <translation>G2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="116"/>
       <source>C2</source>
-      <translation type="unfinished">C2</translation>
+      <translation>C2</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="121"/>
       <source>C3</source>
-      <translation type="unfinished">C3</translation>
+      <translation>C3</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="126"/>
       <source>CN</source>
-      <translation type="unfinished">CN</translation>
+      <translation>CN</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="134"/>
       <source>Minimum degree</source>
-      <translation type="unfinished">Minimum degree</translation>
+      <translation>Minimale graad</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="141"/>
@@ -705,12 +705,12 @@
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Approximate B-spline curve...</source>
-      <translation type="unfinished">Approximate B-spline curve...</translation>
+      <translation>Geschatte B-spline curve...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>Approximate a B-spline curve</source>
-      <translation type="unfinished">Approximate a B-spline curve</translation>
+      <translation>Benadert een B-spline curve</translation>
     </message>
   </context>
   <context>

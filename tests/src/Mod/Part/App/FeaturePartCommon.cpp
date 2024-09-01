@@ -185,24 +185,8 @@ TEST_F(FeaturePartCommonTest, testHistory)
     _common->execute();
     hist = _common->History.getValues();
     // Assert
-#ifndef FC_USE_TNP_FIX
-    ASSERT_EQ(hist.size(), 2);
-    EXPECT_EQ(hist[0].shapeMap, compare1);
-    EXPECT_EQ(hist[1].shapeMap, compare2);
-
-    // Act to reverse the histories
-    _common->Base.setValue(_boxes[1]);
-    _common->Tool.setValue(_boxes[0]);
-    _common->execute();
-    hist = _common->History.getValues();
-    // Assert
-    ASSERT_EQ(hist.size(), 2);
-    EXPECT_EQ(hist[0].shapeMap, compare2);
-    EXPECT_EQ(hist[1].shapeMap, compare1);
-#else
     ASSERT_EQ(hist.size(),
               0);  // TODO: with TNP enabled, this becomes 0, matches the code.  Correct?
-#endif
 }
 
 TEST_F(FeaturePartCommonTest, testMapping)
@@ -215,9 +199,5 @@ TEST_F(FeaturePartCommonTest, testMapping)
     _common->execute();
     const Part::TopoShape& ts1 = _common->Shape.getShape();
     // Assert
-#ifndef FC_USE_TNP_FIX
-    EXPECT_EQ(ts1.getElementMap().size(), 0);
-#else
     EXPECT_EQ(ts1.getElementMap().size(), 26);
-#endif
 }

@@ -226,7 +226,7 @@
       <location filename="../../../JointObject.py" line="51"/>
       <location filename="../../../JointObject.py" line="1556"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Distància</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
@@ -386,23 +386,23 @@
       <location filename="../../../JointObject.py" line="210"/>
       <location filename="../../../JointObject.py" line="474"/>
       <source>The first reference of the joint</source>
-      <translation type="unfinished">The first reference of the joint</translation>
+      <translation>La primera referència de la juntura</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint.</translation>
+      <translation>Aquest és el sistema de coordenades local de la referència 1 de l'objecte, que s'utilitzarà per a la juntura.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="241"/>
       <location filename="../../../JointObject.py" line="497"/>
       <source>The second reference of the joint</source>
-      <translation type="unfinished">The second reference of the joint</translation>
+      <translation>La segona referència de la juntura</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="252"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint.</translation>
+      <translation>Aquest és el sistema de coordenades local de la referència 2 de l'objecte, que s'utilitzarà per a la juntura.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="430"/>
@@ -503,7 +503,7 @@
       <location filename="../../../CommandCreateView.py" line="246"/>
       <location filename="../../../CommandCreateView.py" line="280"/>
       <source>The objects moved by the move</source>
-      <translation type="unfinished">The objects moved by the move</translation>
+      <translation>Els objectes desplaçats pel moviment</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="257"/>
@@ -660,17 +660,17 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="176"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objecte està associat a una o més juntures.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vols moure l'objecte i eliminar les juntures associades?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
       <source>Move part</source>
       <translation>Moure peça</translation>
     </message>
@@ -919,8 +919,8 @@ Perm ESC per a cancel·lar.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
-      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation>L'objecte BOM és un objecte de document que desa les preferències del teu Llistat de Materials. També és un full de càlcul perquè pugueu visualitzar fàcilment el llistat. Si no necessiteu que l'objecte BOM es desi com a objecte de document, podeu exportar i cancel·lar la tasca.</translation>
+      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

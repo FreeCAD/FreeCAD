@@ -324,22 +324,12 @@ App::DocumentObjectExecReturn* Transformed::execute()
                                           "Shape of additive/subtractive feature is empty"));
                 }
                 gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-#ifdef FC_USE_TNP_FIX
                 if (!fuseShape.isNull()) {
                     fuseShape = fuseShape.makeElementTransform(trsf);
                 }
                 if (!cutShape.isNull()) {
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
-#else
-                if (!fuseShape.isNull()) {
-                    fuseShape = fuseShape.makeTransform(trsf);
-                }
-                if (!cutShape.isNull()) {
-                    cutShape = cutShape.makeTransform(trsf);
-                }
-
-#endif
                 if (!fuseShape.isNull()) {
                     supportShape.makeElementFuse(getTransformedCompShape(supportShape, fuseShape));
                 }

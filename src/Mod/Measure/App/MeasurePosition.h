@@ -40,7 +40,8 @@ namespace Measure
 {
 
 
-class MeasureExport MeasurePosition : public Measure::MeasureBaseExtendable<Part::MeasurePositionInfo>
+class MeasureExport MeasurePosition
+    : public Measure::MeasureBaseExtendable<Part::MeasurePositionInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasurePosition);
 
@@ -52,18 +53,25 @@ public:
     App::PropertyLinkSub Element;
     App::PropertyPosition Position;
 
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     void recalculatePosition();
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "MeasureGui::ViewProviderMeasurePosition";
     }
 
     static bool isValidSelection(const App::MeasureSelection& selection);
     void parseSelection(const App::MeasureSelection& selection) override;
-    
-    std::vector<std::string> getInputProps() override {return {"Element"};}
-    App::Property* getResultProp() override {return &this->Position;}
+
+    std::vector<std::string> getInputProps() override
+    {
+        return {"Element"};
+    }
+    App::Property* getResultProp() override
+    {
+        return &this->Position;
+    }
     QString getResultString() override;
 
     Base::Placement getPlacement() override;
@@ -72,11 +80,10 @@ public:
     std::vector<App::DocumentObject*> getSubject() const override;
 
 private:
-
     void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Measure
+}  // namespace Measure
 
 
-#endif // APP_MEASUREPOSITION_H
+#endif  // APP_MEASUREPOSITION_H

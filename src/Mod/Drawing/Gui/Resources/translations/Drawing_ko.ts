@@ -283,81 +283,81 @@
       <translation>렌더러(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="482"/>
+      <location filename="../../DrawingView.cpp" line="485"/>
       <source>Export PDF</source>
       <translation>PDF로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="483"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>PDF file</source>
       <translation>PDF 파일</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="499"/>
+      <location filename="../../DrawingView.cpp" line="502"/>
       <source>Page sizes</source>
       <translation>페이지 크기</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="500"/>
+      <location filename="../../DrawingView.cpp" line="503"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="502"/>
+      <location filename="../../DrawingView.cpp" line="505"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="504"/>
+      <location filename="../../DrawingView.cpp" line="507"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="506"/>
+      <location filename="../../DrawingView.cpp" line="509"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="508"/>
+      <location filename="../../DrawingView.cpp" line="511"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="510"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different orientation</source>
       <translation>다른 방향</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>프린터 사용중인 방향이 현재 드로잉과는 다릅니다. 계속 진행하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="605"/>
-      <location filename="../../DrawingView.cpp" line="616"/>
+      <location filename="../../DrawingView.cpp" line="608"/>
+      <location filename="../../DrawingView.cpp" line="619"/>
       <source>Different paper size</source>
       <translation>다른 용지 크기</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
-      <location filename="../../DrawingView.cpp" line="617"/>
+      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>프린터가 사용중인 종이 크기가 현재 드로잉과는 다릅니다. 계속 진행하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="631"/>
+      <location filename="../../DrawingView.cpp" line="634"/>
       <source>Opening file failed</source>
       <translation>파일 열기 실패</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="632"/>
+      <location filename="../../DrawingView.cpp" line="635"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>쓰기에 사용할 '%1' 파일을 열 수 없습니다.</translation>
     </message>
@@ -372,7 +372,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="34"/>
       <source>Projection</source>
-      <translation>투영</translation>
+      <translation>투상</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="45"/>

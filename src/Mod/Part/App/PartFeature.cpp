@@ -1257,7 +1257,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
                                noElementMap,
                                hiddens,
                                lastLink);
-#ifdef FC_USE_TNP_FIX
     if (needSubElement && shape.shapeType(true) == TopAbs_COMPOUND) {
         if (shape.countSubShapes(TopAbs_SOLID) == 1)
             shape = shape.getSubTopoShape(TopAbs_SOLID, 1);
@@ -1274,7 +1273,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject* obj,
         else if (shape.countSubShapes(TopAbs_VERTEX) == 1)
             shape = shape.getSubTopoShape(TopAbs_VERTEX, 1);
     }
-#endif
     Base::Matrix4D topMat;
     if (pmat || transform) {
         // Obtain top level transformation
@@ -1426,7 +1424,6 @@ void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the point data as well
     if (prop == &this->Placement) {
-#ifdef FC_USE_TNP_FIX
         TopoShape shape = this->Shape.getShape();
         auto oldTransform = shape.getTransform();
         auto newTransform = this->Placement.getValue().toMatrix();
@@ -1437,19 +1434,11 @@ void Feature::onChanged(const App::Property* prop)
         if ( oldTransform != newTransform) {
             this->Shape.setValue(shape);
         }
-
-#else
-        this->Shape.setTransform(this->Placement.getValue().toMatrix());
-#endif
     }
     // if the point data has changed check and adjust the transformation as well
     else if (prop == &this->Shape) {
         if (this->isRecomputing()) {
-#ifdef FC_USE_TNP_FIX
             this->Shape._Shape.setTransform(this->Placement.getValue().toMatrix());
-#else
-            this->Shape.setTransform(this->Placement.getValue().toMatrix());
-#endif
         }
         else {
             Base::Placement p;
@@ -1457,13 +1446,7 @@ void Feature::onChanged(const App::Property* prop)
             if (!this->Shape.getValue().IsNull()) {
                 try {
                     p.fromMatrix(this->Shape.getShape().getTransform());
-#ifdef FC_USE_TNP_FIX
                     this->Placement.setValueIfChanged(p);
-#else
-                    if (p != this->Placement.getValue()) {
-                        this->Placement.setValue(p);
-                    }
-#endif
                 }
                 catch (const Base::ValueError&) {
                 }
@@ -1474,7 +1457,6 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
-#ifdef FC_USE_TNP_FIX
 
 const std::vector<std::string>& Feature::searchElementCache(const std::string& element,
                                                             Data::SearchOptions options,
@@ -1518,7 +1500,7 @@ const std::vector<std::string>& Feature::searchElementCache(const std::string& e
     }
     return it->second.names;
 }
-#endif
+
 TopLoc_Location Feature::getLocation() const
 {
     Base::Placement pl = this->Placement.getValue();
@@ -1639,11 +1621,8 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
 bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 {
     (void)container;
-#ifdef FC_USE_TNP_FIX
     return false;
-#else
-    return true;
-#endif
+
     // TODO:  March 2024 consider if any of this RT branch logic makes sense:
 //    if (!container) {
 //        return false;

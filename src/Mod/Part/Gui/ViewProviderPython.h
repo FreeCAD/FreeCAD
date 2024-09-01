@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERPYTHON_H
 #define PARTGUI_VIEWPROVIDERPYTHON_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 namespace PartGui {
@@ -45,8 +45,8 @@ protected:
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 
-using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderPart>;
-using ViewProviderCustomPython = Gui::ViewProviderPythonFeatureT<ViewProviderCustom>;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderPart>;
+using ViewProviderCustomPython = Gui::ViewProviderFeaturePythonT<ViewProviderCustom>;
 
 } // namespace PartGui
 

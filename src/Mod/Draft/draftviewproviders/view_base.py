@@ -56,7 +56,7 @@ class ViewProviderDraft(object):
     vobj : a base C++ view provider
         The view provider of the scripted object (`obj.ViewObject`),
         which commonly may be of types `PartGui::ViewProvider2DObjectPython`,
-        `PartGui::ViewProviderPython`, or `Gui::ViewProviderPythonFeature`.
+        `PartGui::ViewProviderPython`, or `Gui::ViewProviderFeaturePython`.
 
         A basic view provider is instantiated during the creation
         of the base C++ object, for example,

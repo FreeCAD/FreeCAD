@@ -3603,7 +3603,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../../AppFemGui.cpp" line="189"/>
       <location filename="../../AppFemGui.cpp" line="190"/>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Importas-Eksportas</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="313"/>

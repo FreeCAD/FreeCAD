@@ -709,27 +709,27 @@
     <message>
       <location filename="../../Command.cpp" line="1548"/>
       <source>Fill up holes</source>
-      <translation type="unfinished">Fill up holes</translation>
+      <translation>Užpildyti skyles</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1707"/>
       <source>Mesh merge</source>
-      <translation type="unfinished">Mesh merge</translation>
+      <translation>Apjungti tinklus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1753"/>
       <source>Mesh split</source>
-      <translation type="unfinished">Mesh split</translation>
+      <translation>Išskaidyti tinklą</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1816"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Keisti tinklo dydį</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="156"/>
       <source>Mesh Decimating</source>
-      <translation type="unfinished">Mesh Decimating</translation>
+      <translation>Tinklo retinimas</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="548"/>
@@ -739,7 +739,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Remove non-manifolds</source>
-      <translation type="unfinished">Remove non-manifolds</translation>
+      <translation>Pašalinti nedaugdaras</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="763"/>

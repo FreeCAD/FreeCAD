@@ -40,7 +40,7 @@ namespace Measure
 {
 
 
-class MeasureExport MeasureRadius : public Measure::MeasureBaseExtendable<Part::MeasureRadiusInfo>
+class MeasureExport MeasureRadius: public Measure::MeasureBaseExtendable<Part::MeasureRadiusInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureRadius);
 
@@ -52,8 +52,9 @@ public:
     App::PropertyLinkSub Element;
     App::PropertyDistance Radius;
 
-    App::DocumentObjectExecReturn *execute() override;
-    const char* getViewProviderName() const override {
+    App::DocumentObjectExecReturn* execute() override;
+    const char* getViewProviderName() const override
+    {
         return "MeasureGui::ViewProviderMeasureRadius";
     }
 
@@ -63,8 +64,14 @@ public:
     static bool isPrioritizedSelection(const App::MeasureSelection& selection);
     void parseSelection(const App::MeasureSelection& selection) override;
 
-    std::vector<std::string> getInputProps() override {return {"Element"};}
-    App::Property* getResultProp() override {return &this->Radius;}
+    std::vector<std::string> getInputProps() override
+    {
+        return {"Element"};
+    }
+    App::Property* getResultProp() override
+    {
+        return &this->Radius;
+    }
 
     // Return a placement for the viewprovider, just use the first element for now
     Base::Placement getPlacement() override;
@@ -78,13 +85,9 @@ public:
 private:
     void onChanged(const App::Property* prop) override;
     Part::MeasureRadiusInfoPtr getMeasureInfoFirst() const;
-
-
 };
 
-} //namespace Measure
+}  // namespace Measure
 
 
-#endif // MEASURE_MEASURERADIUS_H
-
-
+#endif  // MEASURE_MEASURERADIUS_H

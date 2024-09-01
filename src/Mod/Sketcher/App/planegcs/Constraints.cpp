@@ -1624,10 +1624,10 @@ double ConstraintTangentCircumf::grad(double* param)
         }
         else {
             if (param == r1()) {
-                deriv += 2 * (*r1() + *r2());
+                deriv += -2 * (*r1() + *r2());
             }
             if (param == r2()) {
-                deriv += 2 * (*r1() + *r2());
+                deriv += -2 * (*r1() + *r2());
             }
         }
     }

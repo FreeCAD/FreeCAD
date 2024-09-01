@@ -70,6 +70,8 @@ public:
     void newDraftFile() const;
     void newArchFile() const;
 
+    bool onHasMsg(const char* pMsg) const override;
+
 public:
     enum class PostStartBehavior
     {

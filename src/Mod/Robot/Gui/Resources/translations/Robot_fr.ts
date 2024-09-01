@@ -395,7 +395,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation>Vous avez besoin d’au moins deux points de passage sur une trajectoire pour la simulation.</translation>
+      <translation>Vous avez besoin d’au moins deux points de passage dans une trajectoire pour pouvoir la simuler.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="89"/>

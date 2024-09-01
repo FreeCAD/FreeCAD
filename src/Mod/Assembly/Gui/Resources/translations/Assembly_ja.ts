@@ -386,23 +386,23 @@
       <location filename="../../../JointObject.py" line="210"/>
       <location filename="../../../JointObject.py" line="474"/>
       <source>The first reference of the joint</source>
-      <translation type="unfinished">The first reference of the joint</translation>
+      <translation>ジョイントの1つ目の参照</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint.</translation>
+      <translation>ジョイントに使用される Reference1 のオブジェクト内のローカル座標系です。</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="241"/>
       <location filename="../../../JointObject.py" line="497"/>
       <source>The second reference of the joint</source>
-      <translation type="unfinished">The second reference of the joint</translation>
+      <translation>ジョイントの2つ目の参照</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="252"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
-      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint.</translation>
+      <translation>ジョイントに使用される Reference2 のオブジェクト内のローカル座標系です。</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="430"/>
@@ -503,7 +503,7 @@
       <location filename="../../../CommandCreateView.py" line="246"/>
       <location filename="../../../CommandCreateView.py" line="280"/>
       <source>The objects moved by the move</source>
-      <translation type="unfinished">The objects moved by the move</translation>
+      <translation>運動によって移動するオブジェクト</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="257"/>
@@ -660,17 +660,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="176"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
       <source>The object is associated to one or more joints.</source>
       <translation>オブジェクトは1つ以上のジョイントに関連付けられています。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>オブジェクトを移動して関連付けられているジョイントを削除しますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
       <source>Move part</source>
       <translation>パーツを移動</translation>
     </message>
@@ -919,8 +919,8 @@ Press ESC to cancel.</source>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
-      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation>BOMオブジェクトは、BOMの設定を保存するドキュメントオブジェクトです。 スプレッドシートオブジェクトでもあるのでBOMを簡単に可視化できます。BOMオブジェクトをドキュメントオブジェクトとして保存する必要がない場合は、たんにエクスポートしてこのタスクをキャンセルすることもできます。</translation>
+      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

@@ -2925,7 +2925,8 @@ static void doSelect(void* ud, SoEventCallback * cb)
             Gui::Selection().clearSelection(doc->getName());
         }
 
-        for(auto obj : doc->getObjects()) {
+        const std::vector<App::DocumentObject*> objects = doc->getObjects();
+        for(auto obj : objects) {
             if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
                 continue;
 
