@@ -1971,11 +1971,12 @@ QPixmap MainWindow::aboutImage() const
 void MainWindow::renderDevBuildWarning(
     QPainter &painter,
     const QPoint startPosition,
-    const QSize maxSize)
+    const QSize maxSize,
+    QColor color)
 {
     // Create a background box that fades out the artwork for better legibility
-    QColor fader (Qt::black);
-    constexpr float halfDensity (0.5);
+    QColor fader (Qt::white);
+    constexpr float halfDensity (0.65);
     fader.setAlphaF(halfDensity);
     QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
     painter.setBrush(fillBrush);
@@ -2006,6 +2007,7 @@ void MainWindow::renderDevBuildWarning(
     int boxHeight = static_cast<int>(lineHeight*lineExpansionFactor);
 
     // Draw the background rectangle and the text
+    painter.setPen(color);
     painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
     painter.drawText(startPosition.x()+padding, startPosition.y()+lineHeight, devWarningLine1);
     painter.drawText(startPosition.x()+padding, startPosition.y()+2*lineHeight, devWarningLine2);
@@ -2019,8 +2021,18 @@ QPixmap MainWindow::splashImage() const
     if (fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
 
-    // if no image was found try the config
+    // determine the count of splashes
     std::string splash_path = App::Application::Config()["SplashScreen"];
+    QStringList pixmaps = Gui::BitmapFactory().findIconFiles().filter(QString::fromStdString(splash_path));
+    // divide by 2 since there's two sets (normal and 2x)
+    // minus 1 to ignore the default splash that isn't numbered
+    int splash_count = pixmaps.count()/2 - 1;
+
+    // set a random splash path
+    int random = rand() % splash_count;
+    splash_path += std::to_string(random);
+
+    // if no image was found try the config
     if (splash_image.isNull()) {
         QString path = QString::fromUtf8(splash_path.c_str());
         if (QDir(path).isRelative()) {
@@ -2036,7 +2048,7 @@ QPixmap MainWindow::splashImage() const
     if (splash_image.isNull()) {
         if (qApp->devicePixelRatio() > 1.0) {
             // For HiDPI screens, we have a double-resolution version of the splash image
-            splash_path += "2x";
+            splash_path += "_2x";
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
             splash_image.setDevicePixelRatio(2.0);
             pixelRatio = 2.0;
@@ -2048,7 +2060,8 @@ QPixmap MainWindow::splashImage() const
 
     // include application name and version number
     std::map<std::string,std::string>::const_iterator tc = App::Application::Config().find("SplashInfoColor");
-    if (tc != App::Application::Config().end()) {
+    std::map<std::string,std::string>::const_iterator wc = App::Application::Config().find("SplashWarningColor");
+    if (tc != App::Application::Config().end() && wc != App::Application::Config().end()) {
         QString title = qApp->applicationName();
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
@@ -2089,7 +2102,7 @@ QPixmap MainWindow::splashImage() const
         int h = splash_image.height();
 
         QFont fontVer = painter.font();
-        fontVer.setPointSizeF(14.0);
+        fontVer.setPointSizeF(11.0);
         QFontMetrics metricVer(fontVer);
         int v = QtTools::horizontalAdvance(metricVer, version);
 
@@ -2115,13 +2128,17 @@ QPixmap MainWindow::splashImage() const
                 painter.drawText(x, y, title);
             }
             painter.setFont(fontVer);
-            painter.drawText(x + (l + 5), y, version);
-            if (suffix == QLatin1String("dev")) {
+            painter.drawText(x + (l + 235), y - 7, version);
+            QColor warningColor;
+            warningColor.setNamedColor(QString::fromLatin1(wc->second.c_str()));
+            if (suffix == QLatin1String("dev") && warningColor.isValid()) {
+                fontVer.setPointSizeF(14.0);
+                painter.setFont(fontVer);
                 const int lineHeight = metricVer.lineSpacing();
-                const int padding {10}; // Distance from the edge of the graphic's bounding box
-                QPoint startPosition(padding, y + lineHeight);
+                const int padding {45}; // Distance from the edge of the graphic's bounding box
+                QPoint startPosition(padding, y + lineHeight*2);
                 QSize maxSize(w/pixelRatio - 2*padding, lineHeight * 3);
-                MainWindow::renderDevBuildWarning(painter, startPosition, maxSize);
+                MainWindow::renderDevBuildWarning(painter, startPosition, maxSize, warningColor);
             }
             painter.end();
         }
