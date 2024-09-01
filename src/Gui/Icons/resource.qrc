@@ -1,7 +1,35 @@
 <RCC>
     <qresource prefix="/icons">
         <file>freecadsplash.png</file>
-        <file>freecadsplash2x.png</file>
+        <file>freecadsplash0.png</file>
+        <file>freecadsplash1.png</file>
+        <file>freecadsplash2.png</file>
+        <file>freecadsplash3.png</file>
+        <file>freecadsplash4.png</file>
+        <file>freecadsplash5.png</file>
+        <file>freecadsplash6.png</file>
+        <file>freecadsplash7.png</file>
+        <file>freecadsplash8.png</file>
+        <file>freecadsplash9.png</file>
+        <file>freecadsplash10.png</file>
+        <file>freecadsplash11.png</file>
+        <file>freecadsplash12.png</file>
+        <file>freecadsplash13.png</file>
+        <file>freecadsplash_2x.png</file>
+        <file>freecadsplash0_2x.png</file>
+        <file>freecadsplash1_2x.png</file>
+        <file>freecadsplash2_2x.png</file>
+        <file>freecadsplash3_2x.png</file>
+        <file>freecadsplash4_2x.png</file>
+        <file>freecadsplash5_2x.png</file>
+        <file>freecadsplash6_2x.png</file>
+        <file>freecadsplash7_2x.png</file>
+        <file>freecadsplash8_2x.png</file>
+        <file>freecadsplash9_2x.png</file>
+        <file>freecadsplash10_2x.png</file>
+        <file>freecadsplash11_2x.png</file>
+        <file>freecadsplash12_2x.png</file>
+        <file>freecadsplash13_2x.png</file>
         <file>freecadabout.png</file>
         <file>background.png</file>
         <file>mouse_pointer.svg</file>
