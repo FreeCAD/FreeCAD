@@ -161,38 +161,40 @@ App::DocumentObjectExecReturn* Revolution::execute()
 
         // Create a fresh support even when base exists so that it can be used for patterns
         TopoShape result(0);
-        TopoDS_Face supportface = getSupportFace();
-        supportface.Move(invObjLoc);
+        TopoShape supportface = getSupportFace();
+        supportface.move(invObjLoc);
 
         if (method == RevolMethod::ToFace || method == RevolMethod::ToFirst
             || method == RevolMethod::ToLast) {
-            TopoDS_Face upToFace;
+            TopoShape upToFace;
             if (method == RevolMethod::ToFace) {
-                getFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
+                getUpToFaceFromLinkSub(upToFace, UpToFace);
+                upToFace.move(invObjLoc);
             }
             else {
                 throw Base::RuntimeError(
                     "ProfileBased: Revolution up to first/last is not yet supported");
             }
 
-            // TODO: This method is designed for extrusions. needs to be adapted for revolutions.
-            // getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
-
-            //            TopoDS_Face supportface = getSupportFace();
-            supportface.Move(invObjLoc);
-
             if (Reversed.getValue()) {
                 dir.Reverse();
             }
 
-            TopExp_Explorer Ex(supportface, TopAbs_WIRE);
+            TopExp_Explorer Ex(supportface.getShape(), TopAbs_WIRE);
             if (!Ex.More()) {
                 supportface = TopoDS_Face();
             }
-
+            RevolMode mode = RevolMode::None;
+            // revolve the face to a solid
             try {
-                result = base.makeElementRevolution(gp_Ax1(pnt, dir), supportface, upToFace);
+                result = base.makeElementRevolution(base,
+                                    TopoDS::Face(sketchshape.getShape()),
+                                    gp_Ax1(pnt, dir),
+                                    TopoDS::Face(supportface.getShape()),
+                                    TopoDS::Face(upToFace.getShape()),
+                                    nullptr,
+                                    Part::RevolMode::None,
+                                    Standard_True);
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
@@ -292,7 +294,7 @@ Revolution::RevolMethod Revolution::methodFromString(const std::string& methodSt
 }
 
 void Revolution::generateRevolution(TopoShape& revol,
-                                    const TopoDS_Shape& sketchshape,
+                                    const TopoShape& sketchshape,
                                     const gp_Ax1& axis,
                                     const double angle,
                                     const double angle2,
@@ -322,15 +324,16 @@ void Revolution::generateRevolution(TopoShape& revol,
             revolAx.Reverse();
         }
 
-        TopoDS_Shape from = sketchshape;
+        TopoShape from = sketchshape;
         if (method == RevolMethod::TwoDimensions || midplane) {
             gp_Trsf mov;
             mov.SetRotation(revolAx, angleOffset);
             TopLoc_Location loc(mov);
-            from.Move(loc);
+            from.move(loc);
         }
 
-        revol = TopoShape(from).makeElementRevolve(revolAx,angleTotal);
+        revol = from;
+        revol = revol.makeElementRevolve(revolAx,angleTotal);
         revol.Tag = -getID();
     } else {
         std::stringstream str;
@@ -339,8 +342,8 @@ void Revolution::generateRevolution(TopoShape& revol,
     }
 }
 
-void Revolution::generateRevolution(TopoDS_Shape& revol,
-                                    const TopoDS_Shape& baseshape,
+void Revolution::generateRevolution(TopoShape& revol,
+                                    const TopoShape& baseshape,
                                     const TopoDS_Shape& profileshape,
                                     const TopoDS_Face& supportface,
                                     const TopoDS_Face& uptoface,
@@ -350,20 +353,8 @@ void Revolution::generateRevolution(TopoDS_Shape& revol,
                                     Standard_Boolean Modify)
 {
     if (method == RevolMethod::ToFirst || method == RevolMethod::ToFace || method == RevolMethod::ToLast) {
-        BRepFeat_MakeRevol RevolMaker;
-        TopoDS_Shape base = baseshape;
-        for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
-            RevolMaker.Init(base, xp.Current(), supportface, axis, Mode, Modify);
-            RevolMaker.Perform(uptoface);
-            if (!RevolMaker.IsDone())
-                throw Base::RuntimeError("ProfileBased: Up to face: Could not revolve the sketch!");
-
-            base = RevolMaker.Shape();
-            if (Mode == RevolMode::None)
-                Mode = RevolMode::FuseWithBase;
-        }
-
-        revol = base;
+        revol = revol.makeElementRevolution(baseshape, profileshape, axis, supportface, uptoface, nullptr,
+                                            static_cast<Part::RevolMode>(Mode), Modify, nullptr);
     }
     else {
         std::stringstream str;

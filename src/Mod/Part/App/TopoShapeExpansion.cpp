@@ -97,6 +97,7 @@
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "Base/Tools.h"
+#include "Base/BoundBox.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -4436,6 +4437,7 @@ TopoShape& TopoShape::makeElementRevolve(const TopoShape& _base,
 }
 
 TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
+                                            const TopoDS_Shape& profile,
                                             const gp_Ax1& axis,
                                             const TopoDS_Face& supportface,
                                             const TopoDS_Face& uptoface,
@@ -4447,7 +4449,9 @@ TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
     if (!op) {
         op = Part::OpCodes::Revolve;
     }
-
+    if (Mode == RevolMode::None) {
+        Mode = RevolMode::FuseWithBase;
+    }
     TopoShape base(_base);
     if (base.isNull()) {
         FC_THROWM(NullShapeException, "Null shape");
@@ -4460,8 +4464,8 @@ TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
     }
 
     BRepFeat_MakeRevol mkRevol;
-    for (TopExp_Explorer xp(base.getShape(), TopAbs_FACE); xp.More(); xp.Next()) {
-        mkRevol.Init(_base.getShape(),
+    for (TopExp_Explorer xp(profile, TopAbs_FACE); xp.More(); xp.Next()) {
+        mkRevol.Init(base.getShape(),
                      xp.Current(),
                      supportface,
                      axis,
@@ -4472,9 +4476,6 @@ TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
             throw Base::RuntimeError("Revolution: Up to face: Could not revolve the sketch!");
         }
         base = mkRevol.Shape();
-        if (Mode == RevolMode::None) {
-            Mode = RevolMode::FuseWithBase;
-        }
     }
     return makeElementShape(mkRevol, base, op);
 }

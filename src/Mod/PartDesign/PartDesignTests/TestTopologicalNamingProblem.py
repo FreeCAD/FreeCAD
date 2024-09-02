@@ -580,28 +580,62 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         #  See if we can turn those off, or try them on the other types?
 
     def testPartDesignElementMapRevolution(self):
+        # App.KeepTestDoc = True    # Uncomment this if you want to keep the test document to examine
+        self.Doc.UseHasher = False
         # Arrange
-        body = self.Doc.addObject("PartDesign::Body", "Body")
-        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
-        TestSketcherApp.CreateRectangleSketch(sketch, (1, 1), (2, 2))  # (pt), (w,l)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
-            return
-        # Act
-        revolution = self.Doc.addObject("PartDesign::Revolution", "Revolution")
-        revolution.ReferenceAxis = (self.Doc.getObject("Sketch"), ["V_Axis"])
-        revolution.Profile = sketch
+        body = self.Doc.addObject('PartDesign::Body', 'Body')
+        sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
+        TestSketcherApp.CreateRectangleSketch(sketch, (0, 1), (3, 2))  # (pt), (w,l)
         body.addObject(sketch)
-        body.addObject(revolution)
         self.Doc.recompute()
-        # Assert
+        pad = self.Doc.addObject('PartDesign::Pad', 'Pad')
+        pad.Profile = sketch
+        pad.Length = 3
+        body.addObject(pad)
+        self.Doc.recompute()
+
+        sketch2 = self.Doc.addObject('Sketcher::SketchObject', 'Sketch001')
+        TestSketcherApp.CreateRectangleSketch(sketch2, (2, -3), (1, 2))  # (pt), (w,l)
+        sketch2.AttachmentSupport = (pad, ["Face5"])
+        sketch2.MapMode = 'FlatFace'
+        body.addObject(sketch2)
+        self.Doc.recompute()
+        revolution = self.Doc.addObject('PartDesign::Revolution', 'Revolution')
+        revolution.ReferenceAxis = (sketch2, ['V_Axis'])
+        revolution.Reversed = 1
+        revolution.Profile = sketch2
+        revolution.Angle=180
+        revolution.Refine = True
+        body.addObject(revolution)
+        volume = (math.pi * 3 * 3 - math.pi * 2 * 2) * 2  / 2
+        padVolume =  3 * 3 * 2 # 50.26548245743668
+        # Act
+        self.Doc.recompute()
+        # Assert the Shape is correct
         self.assertEqual(len(body.Shape.childShapes()), 1)
-        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 14)
-        self.assertEqual(revolution.Shape.ElementMapSize, 14)
-        self.assertEqual(
-            self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap), (4, 6, 4)
-        )
-        volume = (math.pi * 3 * 3 - math.pi * 1 * 1) * 2  # 50.26548245743668
-        self.assertAlmostEqual(revolution.Shape.Volume, volume)
+        self.assertAlmostEqual(pad.Shape.Volume, padVolume)
+        self.assertAlmostEqual(revolution.Shape.Volume, volume + padVolume)
+        # Assert the element map is correct
+        self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 46)
+        self.assertEqual(revolution.Shape.ElementMapSize, 46)
+        self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),
+                         (9, 21, 14))
+        self.assertEqual( revolution.Shape.ElementReverseMap["Vertex9"][1].count(";"), 3)
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face9"].count(";"), 16)
+        # Arrange for an UpToFace mode test
+        revolution.Type = 3
+        revolution.UpToFace = (pad, ("Face4"))
+        revolution.Reversed = 1
+        revolution.Midplane = 0
+        volume = (math.pi * 3 * 3 - math.pi * 2 * 2) * 2  / 4 * 3
+        # Act
+        self.Doc.recompute()
+        # Assert UpToFace shape is correct
+        self.assertAlmostEqual(revolution.Shape.Volume, volume + padVolume)
+        # Assert UpToFace element map is correct
+        self.assertEqual(self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap),
+                         (8, 18, 12))
+        self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count(";"), 7)
 
     def testPartDesignElementMapLoft(self):
         # Arrange
