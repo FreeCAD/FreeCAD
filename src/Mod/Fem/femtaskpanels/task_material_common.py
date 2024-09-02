@@ -39,20 +39,17 @@ import FreeCADGui
 from FreeCAD import Units
 
 from femguiutils import selection_widgets
+from . import base_femtaskpanel
 
 
-unicode = str
-
-
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The editmode TaskPanel for FemMaterial objects
     """
 
     def __init__(self, obj):
+        super().__init__(obj)
 
-        FreeCAD.Console.PrintMessage("\n")  # empty line on start task panel
-        self.obj = obj
         self.material = self.obj.Material  # FreeCAD material dictionary of current material
         self.card_path = ""
         self.materials = {}  # { card_path : FreeCAD material dict, ... }
@@ -213,18 +210,12 @@ class _TaskPanel:
                 )
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
-        self.recompute_and_set_back_all()
-        return True
+        self.selectionWidget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
         self.selectionWidget.finish_selection()
-        doc.resetEdit()
+        return super().reject()
 
     def do_not_set_thermal_zeros(self):
         """thermal material parameter are set to 0.0 if not available
@@ -274,13 +265,14 @@ class _TaskPanel:
                     for a_mat_item in self.materials[a_mat].items():
                         if item[0] == a_mat_item[0]:
                             # now check if we have a number value in a unit
-                            if item[1].split() != item[1]:
-                                if not self.isfloat(item[1].split()[0]):
-                                    break
-                                if float(item[1].split()[0]) == float(a_mat_item[1].split()[0]):
-                                    unmatched_item = False
-                            else:
-                                # it can be a unitless number
+                            if item[1].split() and not self.isfloat(item[1].split()[0]):
+                                break
+                            if item[1].split() and float(item[1].split()[0]) == float(
+                                a_mat_item[1].split()[0]
+                            ):
+                                unmatched_item = False
+                            elif not item[1].split():
+                                # handle the case where item[1] is an empty string
                                 if not self.isfloat(item[1]):
                                     break
                                 if float(item[1]) == float(a_mat_item[1]):
@@ -578,11 +570,10 @@ class _TaskPanel:
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material
-                # unicode() is an alias to str for py3
                 if qUnit != "":
-                    material[matProperty] = unicode(value) + " " + qUnit
+                    material[matProperty] = str(value) + " " + qUnit
                 else:
-                    material[matProperty] = unicode(value)
+                    material[matProperty] = str(value)
                 self.material = material
                 if self.has_transient_mat is False:
                     self.add_transient_material()
@@ -625,7 +616,7 @@ class _TaskPanel:
         elif value == 0:
             # PoissonRatio was set to 0.0 what is possible
             material = self.material
-            material["PoissonRatio"] = unicode(value)
+            material["PoissonRatio"] = str(value)
             self.material = material
             if self.has_transient_mat is False:
                 self.add_transient_material()

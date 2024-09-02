@@ -119,7 +119,7 @@
 #include "ViewProviderPlacement.h"
 #include "ViewProviderPlane.h"
 #include "ViewProviderPart.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 #include "ViewProviderTextDocument.h"
 #include "ViewProviderTextureExtension.h"
 #include "ViewProviderVRMLObject.h"
@@ -1928,8 +1928,8 @@ void Application::initTypes()
     Gui::ViewProviderVRMLObject                 ::init();
     Gui::ViewProviderAnnotation                 ::init();
     Gui::ViewProviderAnnotationLabel            ::init();
-    Gui::ViewProviderPythonFeature              ::init();
-    Gui::ViewProviderPythonGeometry             ::init();
+    Gui::ViewProviderFeaturePython              ::init();
+    Gui::ViewProviderGeometryPython             ::init();
     Gui::ViewProviderPlacement                  ::init();
     Gui::ViewProviderPlacementPython            ::init();
     Gui::ViewProviderOriginFeature              ::init();
@@ -2001,10 +2001,9 @@ bool onlySingleInstance(GUISingleApplication& mainApp)
                 fn = QDir::cleanPath(fn);
             }
 
-            QByteArray msg = fn.toUtf8();
-            msg.prepend("OpenFile:");
-            if (!mainApp.sendMessage(msg)) {
-                qWarning("Failed to send message to server");
+            fn.prepend(QLatin1String("OpenFile:"));
+            if (!mainApp.sendMessage(fn)) {
+                qWarning("Failed to send OpenFile message to server");
                 break;
             }
         }
@@ -2027,7 +2026,7 @@ void setAppNameAndIcon()
     else {
         QApplication::setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
     }
-#ifndef Q_OS_MACX
+#ifndef Q_OS_MACOS
     QApplication::setWindowIcon(
         Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
 #endif

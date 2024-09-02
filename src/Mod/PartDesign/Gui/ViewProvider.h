@@ -26,7 +26,7 @@
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include "ViewProviderBody.h"
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include "Gui/ViewProviderSuppressibleExtension.h"
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
@@ -93,7 +93,7 @@ protected:
     bool isSetTipIcon{false};
 };
 
-using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProvider>;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
 
 } // namespace PartDesignGui
 

@@ -1130,6 +1130,8 @@ PyObject* DrawUtil::colorToPyTuple(App::Color color)
 }
 
 //check for crazy edge.  This is probably a geometry error of some sort.
+// note that cosmetic edges are stored as unscaled, so this test will be checking 1:1 lengths.
+// a 1:1 length of > 10m is perfectly reasonable, so this check causes trouble with cosmetics.
 bool DrawUtil::isCrazy(TopoDS_Edge e)
 {
 

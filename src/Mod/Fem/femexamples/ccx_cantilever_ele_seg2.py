@@ -92,7 +92,7 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = new_fem_mesh
 
     # set mesh obj parameter
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.ElementDimension = "1D"
     femmesh_obj.ElementOrder = "1st"

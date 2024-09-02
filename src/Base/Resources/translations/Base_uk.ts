@@ -6,12 +6,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>Стандарт (мм, кг, с, градус)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>МКС (м, кг, с, градус)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -26,22 +26,22 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="77"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Будівля Євро (см, м², м³)</translation>
+      <translation>Будівництво Євро (см, м², м³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="79"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Будівля США (ft-in, sqft, cft)</translation>
+      <translation>Будівництво США (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
+      <source>Metric small parts &amp; CNC (mm, mm/min)</source>
       <translation>Метричні дрібні деталі та ЧПК (мм, мм/хв)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>Імперська для цивільних (ft, ft/с)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>Метрична десяткова (м, м², м³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

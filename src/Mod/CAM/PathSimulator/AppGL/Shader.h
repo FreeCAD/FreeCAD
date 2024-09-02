@@ -33,17 +33,28 @@ class Shader
 public:
     Shader()
     {}
+    ~Shader();
 
 public:
     unsigned int shaderId = 0;
     void UpdateModelMat(mat4x4 transformMat, mat4x4 normalMat);
     void UpdateProjectionMat(mat4x4 mat);
     void UpdateViewMat(mat4x4 mat);
-    void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient);
+    void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity);
     void UpdateObjColor(vec3 objColor);
+    void UpdateObjColorAlpha(vec4 objColor);
+    void UpdateNormalState(bool isInverted);
     void UpdateTextureSlot(int slot);
-    unsigned int CompileShader(char* vertShader, char* fragShader);
+    void UpdateAlbedoTexSlot(int albedoSlot);
+    void UpdatePositionTexSlot(int positionSlot);
+    void UpdateNormalTexSlot(int normalSlot);
+    void UpdateNoiseTexSlot(int noiseSlot);
+    void UpdateSsaoTexSlot(int ssaoSlot);
+    void UpdateKernelVals(int nVals, float *vals);
+    void UpdateCurSegment(int curSeg);
+    unsigned int CompileShader(const char* vertShader, const char* fragShader);
     void Activate();
+    void Destroy();
     bool IsValid()
     {
         return shaderId > 0;
@@ -57,9 +68,20 @@ protected:
     int mViewPos = -1;
     int mLightPosPos = -1;
     int mLightColorPos = -1;
-    int mAmbientPos = -1;
+    int mLightLinearPos = -1;
+    int mLightAmbientPos = -1;
     int mObjectColorPos = -1;
+    int mObjectColorAlphaPos = -1;
     int mTexSlotPos = -1;
+    int mInvertedNormalsPos = -1;
+    int mSsaoSamplesPos = -1;
+    int mAlbedoPos = -1;
+    int mPositionPos = -1;
+    int mNormalPos = -1;
+    int mSsaoPos = -1;
+    int mNoisePos = -1;
+    int mSamplesPos = -1;
+    int mCurSegmentPos = -1;
 
     const char* vertShader = nullptr;
     const char* fragShader = nullptr;
@@ -73,5 +95,17 @@ extern const char* VertShader3DNorm;
 extern const char* VertShader3DInvNorm;
 extern const char* VertShader2DTex;
 extern const char* FragShader2dTex;
+extern const char* VertShader2DFbo;
+extern const char* FragShader2dFbo;
+extern const char* VertShaderGeom;
+extern const char* FragShaderGeom;
+extern const char* FragShaderSSAO;
+extern const char* FragShaderSSAOLighting;
+extern const char* FragShaderStdLighting;
+extern const char* FragShaderSSAOBlur;
+extern const char* VertShader3DLine;
+extern const char* FragShader3DLine;
+
+
 }  // namespace MillSim
 #endif  // !__shader_h__

@@ -670,7 +670,6 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
           &myWorkPlane);
     }
 
-    // clearable = offset(offset(A, -dTool/2), dTool/2)
     CArea clearable(*myArea);
     clearable.OffsetWithClipper(-diameter/2, JoinType, EndType, params.MiterLimit, roundPrecision);
     clearable.OffsetWithClipper(diameter/2, JoinType, EndType, params.MiterLimit, roundPrecision);
@@ -874,17 +873,8 @@ struct WireJoiner {
     }
 
     void add(const TopoDS_Edge& e, bool bbox = false) {
-        // if(BRep_Tool::IsClosed(e)){
-        //     BRepBuilderAPI_MakeWire mkWire;
-        //     mkWire.Add(e);
-        //     TopoDS_Wire wire = mkWire.Wire();
-        //     builder.Add(comp,wire);
-        //     return;
-        // }
         gp_Pnt p1, p2;
         getEndPoints(e, p1, p2);
-        // if(p1.SquareDistance(p2) < Precision::SquareConfusion())
-        //     return;
         edges.emplace_front(e, p1, p2, bbox);
         add(edges.begin());
     }
@@ -1461,14 +1451,6 @@ int Area::project(TopoDS_Shape& shape_out,
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
         ADD_HLR_SHAPE(V);
         ADD_HLR_SHAPE(OutLineV);
-        // ADD_HLR_SHAPE(Rg1LineV);
-        // ADD_HLR_SHAPE(RgNLineV);
-        // ADD_HLR_SHAPE(IsoLineV);
-        // ADD_HLR_SHAPE(H)
-        // ADD_HLR_SHAPE(Rg1LineH);
-        // ADD_HLR_SHAPE(RgNLineH);
-        // ADD_HLR_SHAPE(OutLineH);
-        // ADD_HLR_SHAPE(IsoLineH);
     }
     catch (...) {
         AREA_ERR("error occurred while extracting edges");
@@ -1478,7 +1460,6 @@ int Area::project(TopoDS_Shape& shape_out,
     joiner.splitEdges();
     FC_TIME_LOG(t1, "WireJoiner splitEdges");
     for (const auto& v : joiner.edges) {
-        // joiner.builder.Add(joiner.comp,BRepBuilderAPI_MakeWire(v.edge).Wire());
         showShape(v.edge, "split");
     }
 
@@ -2457,21 +2438,6 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient) 
         pt = pnext;
     }
 
-#if 0
-    if (c.IsClosed() && !BRep_Tool::IsClosed(mkWire.Wire())) {
-        // This should never happen after changing libarea's
-        // Point::tolerance to be the same as Precision::Confusion().
-        // Just leave it here in case.
-        BRepAdaptor_Curve curve(mkWire.Edge());
-        gp_Pnt p1(curve.Value(curve.FirstParameter()));
-        gp_Pnt p2(curve.Value(curve.LastParameter()));
-        AREA_WARN("warning: patch open wire type " <<
-            c.m_vertices.back().m_type << endl << AREA_XYZ(p1) << endl <<
-            AREA_XYZ(p2) << endl << AREA_XYZ(pt) << endl << AREA_XYZ(pstart));
-        mkWire.Add(BRepBuilderAPI_MakeEdge(pt, pstart).Edge());
-    }
-#endif
-
     ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
         hEdges, Precision::Confusion(), Standard_False, hWires);
     if (!hWires->Length())
@@ -2868,14 +2834,7 @@ struct ShapeInfo {
                                 mkEdge1.Init(curve, pprev, myBestPt);
                                 mkEdge2.Init(curve, myBestPt, pt);
                             }
-                            // Using parameter is not working, why?
-                            // if(reversed) {
-                            //     mkEdge1.Init(curve, myBestParameter, last);
-                            //     mkEdge2.Init(curve, first, myBestParameter);
-                            // }else{
-                            //     mkEdge1.Init(curve, first, myBestParameter);
-                            //     mkEdge2.Init(curve, myBestParameter, last);
-                            // }
+                            
                             if (mkEdge1.IsDone() && mkEdge2.IsDone()) {
                                 if (reversed) {
                                     eend = TopoDS::Edge(mkEdge1.Edge().Reversed());
@@ -2888,9 +2847,6 @@ struct ShapeInfo {
                                 pend = myBestPt;
                                 estart = mySupport;
                                 state = 1;
-                                // AREA_TRACE((reversed?"reversed ":"")<<"edge split "<<AREA_XYZ(pprev)<<", " <<
-                                //         AREA_XYZ(myBestPt)<< ", "<<AREA_XYZ(pt)<<", "<<d1<<", "<<d2 <<", ("<<
-                                //         first<<", " << myBestParameter << ", " << last<<')');
                                 continue;
                             }
                             AREA_WARN((reversed ? "reversed " : "") << "edge split failed " << AREA_XYZ(pprev) << ", " <<
@@ -2900,13 +2856,11 @@ struct ShapeInfo {
 
                         if (d1 < d2) {
                             pend = pprev;
-                            // AREA_TRACE("split edge->start");
                             estart = edge;
                             state = 1;
                             mkWire.Add(edge);
                         }
                         else {
-                            // AREA_TRACE("split edge->end");
                             mySupportEdge = false;
                             myBestPt = pt;
                             continue;
@@ -2915,8 +2869,6 @@ struct ShapeInfo {
                 }
                 else if (myBestPt.SquareDistance(pprev) <= Precision::SquareConfusion()) {
                     pend = pprev;
-                    // AREA_TRACE("break vertex");
-                    //if best point is on some vertex
                     estart = edge;
                     state = 1;
                     mkWire.Add(edge);
@@ -3278,8 +3230,6 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape>& shapes,
         }
         FC_TIME_LOG(t, "plane merging");
     }
-
-    //FC_DURATION_DECL_INIT(td);
 
     bounds.SetGap(0.0);
     Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;

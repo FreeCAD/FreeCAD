@@ -57,7 +57,7 @@ class GmshTools:
             self.analysis = None
 
         # part to mesh
-        self.part_obj = self.mesh_obj.Part
+        self.part_obj = self.mesh_obj.Shape
 
         # clmax, CharacteristicLengthMax: float, 0.0 = 1e+22
         self.clmax = Units.Quantity(self.mesh_obj.CharacteristicLengthMax).Value
@@ -101,6 +101,8 @@ class GmshTools:
             self.algorithm2D = "8"
         elif algo2D == "Packing Parallelograms":
             self.algorithm2D = "9"
+        elif algo2D == "Quasi-structured Quad":
+            self.algorithm2D = "11"
         else:
             self.algorithm2D = "2"
 
@@ -607,8 +609,6 @@ class GmshTools:
                                 for i in range(mr_obj.NumberOfLayers)
                             ]
                         )
-                        # setting["hwall_n"] * 5 # tangential cell dimension
-                        setting["hwall_t"] = setting["thickness"]
 
                         # hfar: cell dimension outside boundary
                         # should be set later if some character length is set
@@ -841,7 +841,7 @@ class GmshTools:
         )
         geo.write(
             "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, "
-            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms)\n"
+            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms, 11=Quasi-structured Quad)\n"
         )
         if len(self.bl_setting_list) and self.dimension == 3:
             geo.write("Mesh.Algorithm = " + "DelQuad" + ";\n")  # Frontal/DelQuad are tested
@@ -984,7 +984,7 @@ doc.recompute()
 box_obj.ViewObject.Visibility = False
 
 femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + "_Mesh")
-femmesh_obj.Part = box_obj
+femmesh_obj.Shape = box_obj
 doc.recompute()
 
 from femmesh.gmshtools import GmshTools as gt
@@ -1011,7 +1011,7 @@ for len in max_mesh_sizes:
     quantity_len = "{}".format(len)
     print("\n\n Start length = {}".format(quantity_len))
     femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + "_Mesh")
-    femmesh_obj.Part = box_obj
+    femmesh_obj.Shape = box_obj
     femmesh_obj.CharacteristicLengthMax = "{}".format(quantity_len)
     femmesh_obj.CharacteristicLengthMin = "{}".format(quantity_len)
     doc.recompute()

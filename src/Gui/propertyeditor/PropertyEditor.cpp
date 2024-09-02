@@ -261,7 +261,23 @@ void PropertyEditor::closeEditor()
     if (editingIndex.isValid()) {
         Base::StateLocker guard(closingEditor);
         bool hasFocus = activeEditor && activeEditor->hasFocus();
+#ifdef Q_OS_MACOS
+        // Brute-force workaround for https://github.com/FreeCAD/FreeCAD/issues/14350
+        int currentIndex = 0;
+        QTabBar *tabBar = nullptr;
+        if (auto mdiArea = Gui::MainWindow::getInstance()->findChild<QMdiArea*>()) {
+            tabBar = mdiArea->findChild<QTabBar*>();
+            if (tabBar) {
+                currentIndex = tabBar->currentIndex();
+            }
+        }
+#endif
         closePersistentEditor(editingIndex);
+#ifdef Q_OS_MACOS
+        if (tabBar) {
+            tabBar->setCurrentIndex(currentIndex);
+        }
+#endif
         editingIndex = QPersistentModelIndex();
         activeEditor = nullptr;
         if(hasFocus)
@@ -529,28 +545,27 @@ void PropertyEditor::onRowsRemoved(const QModelIndex &, int, int)
     removingRows = 0;
 }
 
-void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const
+void PropertyEditor::drawBranches(QPainter* painter,
+                                  const QRect& rect,
+                                  const QModelIndex& index) const
 {
     QTreeView::drawBranches(painter, rect, index);
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    //QStyleOptionViewItem opt = viewOptions();
-#else
-    //QStyleOptionViewItem opt;
-    //initViewItemOption(&opt);
-#endif
     auto property = static_cast<PropertyItem*>(index.internalPointer());
+
     if (property && property->isSeparator()) {
         painter->fillRect(rect, this->background);
-    //} else if (selectionModel()->isSelected(index)) {
-    //    painter->fillRect(rect, opt.palette.brush(QPalette::Highlight));
     }
+}
 
-    //QPen savedPen = painter->pen();
-    //QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt));
-    //painter->setPen(QPen(color));
-    //painter->drawLine(rect.x(), rect.bottom(), rect.right(), rect.bottom());
-    //painter->setPen(savedPen);
+void Gui::PropertyEditor::PropertyEditor::drawRow(QPainter* painter,
+                                                  const QStyleOptionViewItem& options,
+                                                  const QModelIndex& index) const
+{
+    // render background also for non alternate rows based on the `itemBackground` property.
+    painter->fillRect(options.rect, itemBackground());
+
+    QTreeView::drawRow(painter, options, index);
 }
 
 void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDocument)

@@ -110,7 +110,7 @@
 #include "SuppressibleExtension.h"
 #include "SuppressibleExtensionPy.h"
 #include "Part.h"
-#include "PartPy.h"
+#include "GeoFeaturePy.h"
 #include "Placement.h"
 #include "ProgramOptionsUtilities.h"
 #include "Property.h"
@@ -330,7 +330,6 @@ void Application::setupPythonTypes()
     Base::Interpreter().addType(&App::DocumentObjectPy::Type, pAppModule, "DocumentObject");
     Base::Interpreter().addType(&App::DocumentObjectGroupPy::Type, pAppModule, "DocumentObjectGroup");
     Base::Interpreter().addType(&App::GeoFeaturePy::Type, pAppModule, "GeoFeature");
-    Base::Interpreter().addType(&App::PartPy::Type, pAppModule, "Part");
 
     // Add extension types
     Base::Interpreter().addType(&App::ExtensionPy::Type, pAppModule, "Extension");
@@ -424,6 +423,10 @@ void Application::setupPythonException(PyObject* module)
     Base::PyExc_FC_CADKernelError = PyErr_NewException("Base.CADKernelError", Base::PyExc_FC_GeneralError, nullptr);
     Py_INCREF(Base::PyExc_FC_CADKernelError);
     PyModule_AddObject(module, "CADKernelError", Base::PyExc_FC_CADKernelError);
+
+    Base::PyExc_FC_PropertyError = PyErr_NewException("Base.PropertyError", PyExc_AttributeError, nullptr);
+    Py_INCREF(Base::PyExc_FC_PropertyError);
+    PyModule_AddObject(module, "PropertyError", Base::PyExc_FC_PropertyError);
 }
 // clang-format on
 
@@ -1987,6 +1990,7 @@ void Application::initTypes()
     App::PropertyLinkSubListHidden  ::init();
     App::PropertyXLink              ::init();
     App::PropertyXLinkSub           ::init();
+    App::PropertyXLinkSubHidden     ::init();
     App::PropertyXLinkSubList       ::init();
     App::PropertyXLinkList          ::init();
     App::PropertyXLinkContainer     ::init();
@@ -2184,6 +2188,7 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::UnitsMismatchError>;
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::PropertyError>;
 }
 
 namespace {
@@ -2217,6 +2222,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"System config file to load/save system settings")
     ("run-test,t", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
+    ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
@@ -2441,8 +2447,9 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["SystemParameter"] = vm["system-cfg"].as<string>();
     }
 
-    if (vm.count("run-test")) {
-        string testCase = vm["run-test"].as<string>();
+    if (vm.count("run-test") || vm.count("run-open")) {
+        string testCase = vm.count("run-open") ? vm["run-open"].as<string>() : vm["run-test"].as<string>();
+
         if ( "0" == testCase) {
             testCase = "TestApp.All";
         }
@@ -2452,6 +2459,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         mConfig["TestCase"] = testCase;
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
+        mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
     }
 
     if (vm.count("single-instance")) {

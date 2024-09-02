@@ -223,8 +223,8 @@ Rubberband::Rubberband() : viewer(nullptr)
     working = false;
     stipple = true;
 
-    rgb_r = 1.0f;
-    rgb_g = 1.0f;
+    rgb_r = 0.27f;
+    rgb_g = 0.4f;
     rgb_b = 1.0f;
     rgb_a = 1.0f;
 }

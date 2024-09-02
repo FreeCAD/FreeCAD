@@ -198,8 +198,8 @@ void AttachEngine::setReferences(const App::PropertyLinkSubList& references)
     this->shadowSubs.clear();
     this->shadowSubs.reserve(this->objNames.size());
     for (auto& shadow : references.getShadowSubs()) {
-        this->shadowSubs.push_back(shadow.first);
-        this->subnames.push_back(shadow.second);
+        this->shadowSubs.push_back(shadow.newName);
+        this->subnames.push_back(shadow.oldName);
     }
     assert(this->objNames.size() == this->subnames.size());
 }
@@ -831,75 +831,88 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
     shapes.resize(objs.size());
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
-        if (!objs[i]->isDerivedFrom<App::GeoFeature>()) {
-            throw AttachEngineException("AttachEngine3D: link points to something that is not App::GeoFeature");
+        if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            FC_THROWM(AttachEngineException,
+                      "AttachEngine3D: attached to a non App::GeoFeature '"
+                          << objs[i]->getNameInDocument() << "'");
         }
-        App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
+        auto* geof = dynamic_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
         Part::TopoShape shape;
-        if (geof->isDerivedFrom(Part::Feature::getClassTypeId())){
-            shape = (static_cast<Part::Feature*>(geof)->Shape.getShape());
-            if (shape.isNull()){
-                throw AttachEngineException("AttachEngine3D: Part has null shape");
-            }
-            if (sub[i].length()>0){
-                try{
-                    shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
-                    if (shape.isNull())
-                        throw AttachEngineException("AttachEngine3D: null subshape");
-                    storage.push_back(shape.getShape());
-                } catch (Standard_Failure &e){
-                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                                  << objs[i]->getNameInDocument() << '.' << sub[i]
-                                  << std::endl << e.GetMessageString());
-                } catch (Base::CADKernelError &e){
-                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
-                                  << objs[i]->getNameInDocument() << '.' << sub[i]
-                                  << std::endl << e.what());
-                }
-                if(storage[storage.size()-1].IsNull())
-                    FC_THROWM(AttachEngineException, "AttachEngine3D: null subshape "
-                                  << objs[i]->getNameInDocument() << '.' << sub[i]);
-            } else {
-                storage.push_back(shape.getShape());
-            }
-            shapes[i] = &(storage[storage.size()-1]);
-        } else if (  geof->isDerivedFrom(App::Plane::getClassTypeId())  ){
-            //obtain Z axis and origin of placement
+        if (geof->isDerivedFrom(App::Plane::getClassTypeId())) {
+            // obtain Z axis and origin of placement
             Base::Vector3d norm;
-            geof->Placement.getValue().getRotation().multVec(Base::Vector3d(0.0,0.0,1.0),norm);
+            geof->Placement.getValue().getRotation().multVec(Base::Vector3d(0.0, 0.0, 1.0), norm);
             Base::Vector3d org;
-            geof->Placement.getValue().multVec(Base::Vector3d(),org);
-            //make shape - an local-XY plane infinite face
-            gp_Pln pl = gp_Pln(gp_Pnt(org.x, org.y, org.z), gp_Dir(norm.x, norm.y, norm.z));
-            TopoDS_Shape myShape = BRepBuilderAPI_MakeFace(pl).Shape();
+            geof->Placement.getValue().multVec(Base::Vector3d(), org);
+            // make shape - an local-XY plane infinite face
+            gp_Pln plane = gp_Pln(gp_Pnt(org.x, org.y, org.z), gp_Dir(norm.x, norm.y, norm.z));
+            TopoDS_Shape myShape = BRepBuilderAPI_MakeFace(plane).Shape();
             myShape.Infinite(true);
-            storage.push_back(myShape);
-            shapes[i] = &(storage[storage.size()-1]);
-        } else if (  geof->isDerivedFrom(App::Line::getClassTypeId())  ){
-            //obtain X axis and origin of placement
-            //note an inconsistency: App::Line is along local X, PartDesign::DatumLine is along local Z.
+            storage.emplace_back(myShape);
+            shapes[i] = &(storage[storage.size() - 1]);
+        }
+        else if (geof->isDerivedFrom(App::Line::getClassTypeId())) {
+            // obtain X axis and origin of placement
+            // note an inconsistency: App::Line is along local X, PartDesign::DatumLine is along
+            // local Z.
             Base::Vector3d dir;
-            geof->Placement.getValue().getRotation().multVec(Base::Vector3d(1.0,0.0,0.0),dir);
+            geof->Placement.getValue().getRotation().multVec(Base::Vector3d(1.0, 0.0, 0.0), dir);
             Base::Vector3d org;
-            geof->Placement.getValue().multVec(Base::Vector3d(),org);
-            //make shape - an infinite line along local X axis
-            gp_Lin l = gp_Lin(gp_Pnt(org.x, org.y, org.z), gp_Dir(dir.x, dir.y, dir.z));
-            TopoDS_Shape myShape = BRepBuilderAPI_MakeEdge(l).Shape();
+            geof->Placement.getValue().multVec(Base::Vector3d(), org);
+            // make shape - an infinite line along local X axis
+            gp_Lin line = gp_Lin(gp_Pnt(org.x, org.y, org.z), gp_Dir(dir.x, dir.y, dir.z));
+            TopoDS_Shape myShape = BRepBuilderAPI_MakeEdge(line).Shape();
             myShape.Infinite(true);
-            storage.push_back(myShape);
-            shapes[i] = &(storage[storage.size()-1]);
-        } else {
-            Base::Console().Warning("Attacher: linked object %s is unexpected, assuming it has no shape.\n",geof->getNameInDocument());
-            storage.emplace_back();
-            shapes[i] = &(storage[storage.size()-1]);
+            storage.emplace_back(myShape);
+            shapes[i] = &(storage[storage.size() - 1]);
+        }
+        else {
+            try {
+                shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
+                for (;;) {
+                    if (shape.isNull()) {
+                        FC_THROWM(AttachEngineException,
+                                  "AttachEngine3D: subshape not found "
+                                      << objs[i]->getNameInDocument() << '.' << sub[i]);
+                    }
+                    if (shape.shapeType() != TopAbs_COMPOUND
+                        || shape.countSubShapes(TopAbs_SHAPE) != 1) {
+                        break;
+                    }
+                    // auto extract the single sub-shape from a compound
+                    shape = shape.getSubTopoShape(TopAbs_SHAPE, 1);
+                }
+                storage.emplace_back(shape.getShape());
+            }
+            catch (Standard_Failure& e) {
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
+                                                                << '.' << sub[i] << std::endl
+                                                                << e.GetMessageString());
+            }
+            catch (Base::CADKernelError& e) {
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: subshape not found " << objs[i]->getNameInDocument()
+                                                                << '.' << sub[i] << std::endl
+                                                                << e.what());
+            }
+            if (storage.back().IsNull()) {
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
+                                                           << sub[i]);
+            }
+            shapes[i] = &(storage.back());
         }
 
-        //FIXME: unpack single-child compounds here? Compounds are not used so far, so it should be considered later, when the need arises.
+        // FIXME: unpack single-child compounds here? Compounds are not used so far, so it should be
+        // considered later, when the need arises.
         types[i] = getShapeType(*(shapes[i]));
-        if (sub[i].length() == 0)
+        if (sub[i].length() == 0) {
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
+        }
     }
+
 }
 
 void AttachEngine::throwWrongMode(eMapMode mmode)

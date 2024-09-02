@@ -214,7 +214,7 @@ namespace KDL {
       
       class joint_type_exception: public std::exception{
 	const char* what() const throw() override{
-	  return "Joint Type excption";}
+	  return "Joint Type exception";}
       } joint_type_ex;
 
     };

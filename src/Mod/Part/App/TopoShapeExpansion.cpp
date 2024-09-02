@@ -41,7 +41,6 @@
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
@@ -52,9 +51,6 @@
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <BRepBuilderAPI_NurbsConvert.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_NurbsConvert.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -81,7 +77,6 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
 #include <gp_Pln.hxx>
 
 #include <utility>
@@ -106,7 +101,6 @@
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepFeat_MakeRevol.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
@@ -321,10 +315,12 @@ TopoDS_Shape TopoShape::findShape(TopAbs_ShapeEnum type, int idx) const
 
 std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape& subshape,
                                                                 std::vector<std::string>* names,
-                                                                CheckGeometry checkGeometry,
+                                                                Data::SearchOptions options,
                                                                 double tol,
                                                                 double atol) const
 {
+    bool checkGeometry = options.testFlag(Data::SearchOption::CheckGeometry);
+    bool singleSearch = options.testFlag(Data::SearchOption::SingleResult);
     std::vector<TopoShape> res;
     if (subshape.isNull() || this->isNull()) {
         return res;
@@ -332,7 +328,109 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
     double tol2 = tol * tol;
     int index = 0;
     TopAbs_ShapeEnum shapeType = subshape.shapeType();
+
+    // This is an intentionally recursive method, which will exit after looking through all
+    // ancestors.
+    auto searchCompositeShape = [&](TopAbs_ShapeEnum childType) {  // NOLINT (misc-no-recu2rsive)
+        unsigned long count = subshape.countSubShapes(childType);
+        if (!count) {
+            return;
+        }
+        auto first = subshape.getSubTopoShape(childType, 1);
+        for (const auto& child :
+             findSubShapesWithSharedVertex(first, nullptr, options, tol, atol)) {
+            for (int idx : findAncestors(child.getShape(), shapeType)) {
+                auto shape = getSubTopoShape(shapeType, idx);
+                if (shape.countSubShapes(childType) != count) {
+                    continue;
+                }
+                bool found = true;
+                for (unsigned long i = 2; i < count; ++i) {
+                    if (shape
+                            .findSubShapesWithSharedVertex(subshape.getSubTopoShape(childType, i),
+                                                           nullptr,
+                                                           options,
+                                                           tol,
+                                                           atol)
+                            .empty()) {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found) {
+                    res.push_back(shape);
+                    if (names) {
+                        names->push_back(shapeName(shapeType) + std::to_string(idx));
+                    }
+                    if (singleSearch) {
+                        return;
+                    }
+                }
+            }
+        }
+    };
+
     switch (shapeType) {
+        case TopAbs_WIRE:
+            searchCompositeShape(TopAbs_EDGE);
+            break;
+        case TopAbs_SHELL:
+            searchCompositeShape(TopAbs_FACE);
+            break;
+        case TopAbs_SOLID:
+            searchCompositeShape(TopAbs_SHELL);
+            break;
+        case TopAbs_COMPSOLID:
+            searchCompositeShape(TopAbs_SOLID);
+            break;
+        case TopAbs_COMPOUND:
+            // special treatment of single sub-shape compound, that is, search
+            // its extracting the compound
+            if (countSubShapes(TopAbs_SHAPE) == 1) {
+                return findSubShapesWithSharedVertex(subshape.getSubTopoShape(TopAbs_SHAPE, 1),
+                                                     names,
+                                                     options,
+                                                     tol,
+                                                     atol);
+            }
+            else if (unsigned long count = countSubShapes(TopAbs_SHAPE)) {
+                // For multi-sub-shape compound, only search for compound with the same
+                // structure
+                int idx = 0;
+                for (const auto& compound : getSubTopoShapes(shapeType)) {
+                    ++idx;
+                    if (compound.countSubShapes(TopAbs_SHAPE) != count) {
+                        continue;
+                    }
+                    int i = 0;
+                    bool found = true;
+                    for (const auto& s : compound.getSubTopoShapes(TopAbs_SHAPE)) {
+                        ++i;
+                        auto ss = subshape.getSubTopoShape(TopAbs_SHAPE, i);
+                        if (ss.isNull() && s.isNull()) {
+                            continue;
+                        }
+                        auto options2 = options;
+                        options2.setFlag(Data::SearchOption::SingleResult);
+                        if (ss.isNull() || s.isNull() || ss.shapeType() != s.shapeType()
+                            || ss.findSubShapesWithSharedVertex(s, nullptr, options2, tol, atol)
+                                   .empty()) {
+                            found = false;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        if (names) {
+                            names->push_back(shapeName(shapeType) + std::to_string(idx));
+                        }
+                        res.push_back(compound);
+                        if (singleSearch) {
+                            return res;
+                        }
+                    }
+                }
+            }
+            break;
         case TopAbs_VERTEX:
             // Vertex search will do comparison with tolerance to account for
             // rounding error inccured through transformation.
@@ -345,6 +443,9 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                         names->push_back(std::string("Vertex") + std::to_string(index));
                     }
                     res.push_back(shape);
+                    if (singleSearch) {
+                        return res;
+                    }
                 }
             }
             break;
@@ -364,8 +465,8 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                 vertices = subshape.getSubShapes(TopAbs_VERTEX);
             }
 
-            if (vertices.empty() || checkGeometry == CheckGeometry::checkGeometry) {
-                geom = Geometry::fromShape(subshape.getShape());
+            if (vertices.empty() || checkGeometry) {
+                geom = Geometry::fromShape(subshape.getShape(), true);
                 if (!geom) {
                     return res;
                 }
@@ -379,7 +480,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
             }
 
             auto compareGeometry = [&](const TopoShape& s, bool strict) {
-                std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape()));
+                std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape(), true));
                 if (!g2) {
                     return false;
                 }
@@ -416,6 +517,9 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                             names->push_back(shapeName(shapeType) + std::to_string(idx));
                         }
                         res.push_back(shape);
+                        if (singleSearch) {
+                            return res;
+                        }
                     }
                 }
                 break;
@@ -429,7 +533,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
             //      * For face, perform addition geometry comparison of each edge.
             std::unordered_set<TopoShape, ShapeHasher, ShapeHasher> shapeSet;
             for (auto& vert :
-                 findSubShapesWithSharedVertex(vertices[0], nullptr, checkGeometry, tol, atol)) {
+                 findSubShapesWithSharedVertex(vertices[0], nullptr, options, tol, atol)) {
                 for (auto idx : findAncestors(vert.getShape(), shapeType)) {
                     auto shape = getSubTopoShape(shapeType, idx);
                     if (!shapeSet.insert(shape).second) {
@@ -451,8 +555,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                     if (otherVertices.size() != vertices.size()) {
                         continue;
                     }
-                    if (checkGeometry == CheckGeometry::checkGeometry
-                        && !compareGeometry(shape, false)) {
+                    if (checkGeometry && !compareGeometry(shape, false)) {
                         continue;
                     }
                     unsigned ind = 0;
@@ -480,7 +583,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                         continue;
                     }
 
-                    if (shapeType == TopAbs_FACE && checkGeometry == CheckGeometry::checkGeometry) {
+                    if (shapeType == TopAbs_FACE && checkGeometry) {
                         // Is it really necessary to check geometries of each edge of a face?
                         // Right now we only do outer wire check
                         auto otherEdges = otherWire.getSubShapes(TopAbs_EDGE);
@@ -490,7 +593,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                         unsigned i = 0;
                         auto edges = wire.getSubShapes(TopAbs_EDGE);
                         for (auto& edge : edges) {
-                            std::unique_ptr<Geometry> geom2(Geometry::fromShape(edge));
+                            std::unique_ptr<Geometry> geom2(Geometry::fromShape(edge, true));
                             if (!geom2) {
                                 matched2 = false;
                                 break;
@@ -512,7 +615,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(const TopoShape&
                                     i = 0;
                                 }
                                 if (!g1) {
-                                    g1 = Geometry::fromShape(e1);
+                                    g1 = Geometry::fromShape(e1, true);
                                     if (!g1) {
                                         break;
                                     }
@@ -689,41 +792,6 @@ void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
     setMappedChildElements(children);
 }
 
-#ifndef FC_USE_TNP_FIX
-namespace
-{
-void warnIfLogging()
-{
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        FC_WARN("hasher mismatch");  // NOLINT
-    }
-}
-
-void hasherMismatchError()
-{
-    FC_ERR("hasher mismatch");  // NOLINT
-}
-
-
-void checkAndMatchHasher(TopoShape& topoShape1, const TopoShape& topoShape2)
-{
-    if (topoShape1.Hasher) {
-        if (topoShape2.Hasher != topoShape1.Hasher) {
-            if (topoShape1.getElementMapSize(false) == 0U) {
-                warnIfLogging();
-            }
-            else {
-                hasherMismatchError();
-            }
-            topoShape1.Hasher = topoShape2.Hasher;
-        }
-    }
-    else {
-        topoShape1.Hasher = topoShape2.Hasher;
-    }
-}
-}  // namespace
-#endif
 
 // TODO: Refactor mapSubElementTypeForShape to reduce complexity
 void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
@@ -775,16 +843,8 @@ void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
             }
             char elementType {shapeName(type)[0]};
 
-            // Originally in ComplexGeoData::setElementName
-            // LinkStable/src/App/ComplexGeoData.cpp#L1631
-            // No longer possible after map separated in ElementMap.cpp
-
-            if (!elementMap()) {
-                resetElementMap(std::make_shared<Data::ElementMap>());
-            }
-
             std::ostringstream ss;
-            elementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
+            ensureElementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
             elementMap()->setElementName(element, name, Tag, &sids);
         }
     }
@@ -818,25 +878,6 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
 
 void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool forceHasher)
 {
-#ifndef FC_USE_TNP_FIX
-    if (!canMapElement(other)) {
-        return;
-    }
-
-    if ((getElementMapSize(false) == 0U) && this->_Shape.IsPartner(other._Shape)) {
-        if (!this->Hasher) {
-            this->Hasher = other.Hasher;
-        }
-        copyElementMap(other, op);
-        return;
-    }
-
-    if (!forceHasher && other.Hasher) {
-        checkAndMatchHasher(*this, other);
-    }
-
-    mapSubElementForShape(other, op);
-#else
     if (!canMapElement(other)) {
         return;
     }
@@ -930,21 +971,11 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 }
                 ss.str("");
 
-                // Originally in ComplexGeoData::setElementName
-                // LinkStable/src/App/ComplexGeoData.cpp#L1631
-                // No longer possible after map separated in ElementMap.cpp
-
-                if (!elementMap()) {
-                    resetElementMap(std::make_shared<Data::ElementMap>());
-                }
-
-                elementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
+                ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
                 elementMap()->setElementName(element, name, Tag, &sids);
             }
         }
     }
-
-#endif
 }
 
 void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op) const
@@ -1006,20 +1037,6 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
 
 void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op)
 {
-#ifndef FC_USE_TNP_FIX
-    if (shapes.empty()) {
-        return;
-    }
-
-    if (shapeType(true) == TopAbs_COMPOUND) {
-        mapCompoundSubElements(shapes, op);
-    }
-    else {
-        for (auto& shape : shapes) {
-            mapSubElement(shape, op);
-        }
-    }
-#else
     if (shapes.empty()) {
         return;
     }
@@ -1071,7 +1088,6 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
     for (auto& shape : shapes) {
         mapSubElement(shape, op);
     }
-#endif
 }
 
 std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type,
@@ -1681,15 +1697,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     }
                     Data::MappedName other_name = other_key.name;
 
-                    // Originally in ComplexGeoData::setElementName
-                    // LinkStable/src/App/ComplexGeoData.cpp#L1631
-                    // No longer possible after map separated in ElementMap.cpp
-
-                    if (!elementMap()) {
-                        resetElementMap(std::make_shared<Data::ElementMap>());
-                    }
-
-                    elementMap()->encodeElementName(*other_info.shapetype,
+                    ensureElementMap()->encodeElementName(*other_info.shapetype,
                                                     other_name,
                                                     ss2,
                                                     &sids,
@@ -1742,15 +1750,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             }
             ss << postfix;
 
-            // Originally in ComplexGeoData::setElementName
-            // LinkStable/src/App/ComplexGeoData.cpp#L1631
-            // No longer possible after map separated in ElementMap.cpp
-
-            if (!elementMap()) {
-                resetElementMap(std::make_shared<Data::ElementMap>());
-            }
-
-            elementMap()
+            ensureElementMap()
                 ->encodeElementName(element[0], first_name, ss, &sids, Tag, op, first_key.tag);
             elementMap()->setElementName(element, first_name, Tag, &sids);
             if (!delayed && first_key.shapetype < 3) {
@@ -1840,15 +1840,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         ss << nameInfo.index;
                     }
 
-                    // Originally in ComplexGeoData::setElementName
-                    // LinkStable/src/App/ComplexGeoData.cpp#L1631
-                    // No longer possible after map separated in ElementMap.cpp
-
-                    if (!elementMap()) {
-                        resetElementMap(std::make_shared<Data::ElementMap>());
-                    }
-
-                    elementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
+                    ensureElementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
                     elementMap()->setElementName(indexedName, newName, Tag, &sids);
                }
             }
@@ -1946,15 +1938,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     }
                 }
 
-                // Originally in ComplexGeoData::setElementName
-                // LinkStable/src/App/ComplexGeoData.cpp#L1631
-                // No longer possible after map separated in ElementMap.cpp
-
-                if (!elementMap()) {
-                    resetElementMap(std::make_shared<Data::ElementMap>());
-                }
-
-                elementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
+                ensureElementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
                 elementMap()->setElementName(element, newName, Tag, &sids);
             }
         }
@@ -2026,11 +2010,7 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
         }
         return TopoShape();
     }
-#ifdef FC_USE_TNP_FIX
     auto res = shapeTypeAndIndex(mapped.index);
-#else
-    auto res = shapeTypeAndIndex(Type);
-#endif
     if (res.second <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));
@@ -3611,7 +3591,7 @@ struct MapperPrism: MapperMaker
             }
         }
     }
-    virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
     {
         _res.clear();
         switch (s.ShapeType()) {
@@ -4384,6 +4364,10 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
                 srcShapes.push_back(result);
 
+                if (result.isInfinite()){
+                    result = face;
+                }
+
                 PrismMaker.Init(result.getShape(),
                                 face.getShape(),
                                 TopoDS::Face(supportFace.getShape()),
@@ -4671,6 +4655,23 @@ TopoShape& TopoShape::makeElementRefine(const TopoShape& shape, const char* op, 
     *this = shape;
     return *this;
 }
+
+    std::vector<Data::IndexedName>
+    TopoShape::getHigherElements(const char *element, bool silent) const
+    {
+        TopoShape shape = getSubTopoShape(element, silent);
+        if(shape.isNull())
+            return {};
+
+        std::vector<Data::IndexedName> res;
+
+        for (int type = shape.shapeType() - 1; type >= 0; type--) {
+            const char* shapetype = shapeName((TopAbs_ShapeEnum)type).c_str();
+            for (int idx : findAncestors(shape.getShape(), (TopAbs_ShapeEnum)type))
+                res.emplace_back(shapetype, idx);
+        }
+        return res;
+    }
 
 TopoShape& TopoShape::makeElementBSplineFace(const TopoShape& shape,
                                              FillingStyle style,
@@ -4972,15 +4973,7 @@ Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element
         }
     }
 
-    // Originally in ComplexGeoData::setElementName
-    // LinkStable/src/App/ComplexGeoData.cpp#L1631
-    // No longer possible after map separated in ElementMap.cpp
-
-    if (!elementMap()) {
-        resetElementMap(std::make_shared<Data::ElementMap>());
-    }
-
-    elementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
+    ensureElementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
     return elementMap()->setElementName(element, newName, Tag, &sids);
 }
 
@@ -5756,6 +5749,50 @@ bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
     const auto& other = static_cast<const TopoShape&>(_other);
     return Tag == other.Tag && Hasher == other.Hasher && _Shape.IsEqual(other._Shape);
 }
+
+long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) const
+{
+    long res = 0;
+    long tag = 0;
+    traceElement(_name, [&](const Data::MappedName& name, int offset, long tag2, long) {
+        (void)offset;
+        if (tag2 < 0) {
+            tag2 = -tag2;
+        }
+        if (tag && tag2 != tag) {
+            if (--depth < 1) {
+                return true;
+            }
+        }
+        tag = tag2;
+        if (depth == 1 && name.startsWith(genPostfix(), offset)) {
+            res = tag;
+            return true;
+        }
+        return false;
+    });
+
+    return res;
+}
+
+void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix)
+{
+    if (!tag) {
+        FC_WARN("invalid shape tag for re-tagging");
+        return;
+    }
+
+    if (_Shape.IsNull())
+        return;
+
+    TopoShape tmp(*this);
+    initCache(1);
+    Hasher = hasher;
+    Tag = tag;
+    resetElementMap();
+    copyElementMap(tmp, postfix);
+}
+
 void TopoShape::cacheRelatedElements(const Data::MappedName& name,
                                      HistoryTraceType sameType,
                                      const QVector<Data::MappedElement>& names) const

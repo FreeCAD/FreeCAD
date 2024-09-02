@@ -60,11 +60,11 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
               true,
               parent)
     , proxy(nullptr)
-    , DressUpView(DressUpView)
     , deleteAction(nullptr)
     , addAllEdgesAction(nullptr)
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
+    , DressUpView(DressUpView)
 {
     // remember initial transaction ID
     App::GetApplication().getActiveTransaction(&transactionID);
@@ -93,7 +93,7 @@ const QString TaskDressUpParameters::btnSelectStr()
 
 void TaskDressUpParameters::setupTransaction()
 {
-    if (!DressUpView)
+    if (DressUpView.expired())
         return;
 
     int tid = 0;
@@ -140,10 +140,9 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
-#ifdef FC_USE_TNP_FIX
     Q_UNUSED(widget)
 
-    if (!DressUpView) {
+    if (DressUpView.expired()) {
         return;
     }
 
@@ -172,28 +171,6 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     catch (Base::Exception& e) {
         e.ReportException();
     }
-#else
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-
-    Gui::WaitCursor wait;
-    int count = pcDressUp->getBaseTopoShape().countSubElements("Edge");
-    std::vector<std::string> edgeNames;
-    for (int ii = 0; ii < count; ii++){
-        std::ostringstream edgeName;
-        edgeName << "Edge" << ii+1;
-        edgeNames.push_back(edgeName.str());
-    }
-
-    //First we need to clear the widget in case the user had faces selected. Else the faces will still be in widget but not in the feature refs!
-    QSignalBlocker block(widget);
-    widget->clear();
-
-    for (const auto & it : edgeNames){
-        widget->addItem(QLatin1String(it.c_str()));
-    }
-
-    updateFeature(pcDressUp, edgeNames);
-#endif
 }
 
 void TaskDressUpParameters::deleteRef(QListWidget* widget)
@@ -401,18 +378,31 @@ void TaskDressUpParameters::showObject()
     }
 }
 
+ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
+{
+    return DressUpView.expired() ? nullptr : DressUpView.get();
+}
+
 Part::Feature* TaskDressUpParameters::getBase() const
 {
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-    // Unlikely but this may throw an exception in case we are started to edit an object which base feature
-    // was deleted. This exception will be likely unhandled inside the dialog and pass upper, But an error
-    // message inside the report view is better than a SEGFAULT.
-    // Generally this situation should be prevented in ViewProviderDressUp::setEdit()
-    return pcDressUp->getBaseObject();
+    if (ViewProviderDressUp* vp = getDressUpView()) {
+        auto dressUp = dynamic_cast<PartDesign::DressUp*>(vp->getObject());
+        // Unlikely but this may throw an exception in case we are started to edit an object which
+        // base feature was deleted. This exception will be likely unhandled inside the dialog and
+        // pass upper. But an error message inside the report view is better than a SEGFAULT.
+        // Generally this situation should be prevented in ViewProviderDressUp::setEdit()
+        return dressUp->getBaseObject();
+    }
+
+    return nullptr;
 }
 
 void TaskDressUpParameters::setSelectionMode(selectionModes mode)
 {
+    if (DressUpView.expired()) {
+        return;
+    }
+
     selectionMode = mode;
     setButtons(mode);
 
@@ -448,6 +438,22 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpV
     , parameter(nullptr)
 {
     assert(DressUpView);
+    auto pcDressUp = dynamic_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    auto base = pcDressUp->Base.getValue();
+    std::vector<std::string> newSubList;
+    bool changed = false;
+    auto& shadowSubs = pcDressUp->Base.getShadowSubs();
+    for ( auto &shadowSub : shadowSubs ) {
+        auto displayName = shadowSub.oldName;
+        // If there is a missing tag on the shadow sub, take a guess at a new name.
+        if ( boost::starts_with(shadowSub.oldName,Data::MISSING_PREFIX)) {
+            Part::Feature::guessNewLink(displayName, base, shadowSub.newName.c_str());
+            newSubList.emplace_back(displayName);
+            changed = true;
+        }
+    }
+    if ( changed )
+        pcDressUp->Base.setValue(base, newSubList);
 }
 
 TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
@@ -456,10 +462,10 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
 
 bool TaskDlgDressUpParameters::accept()
 {
-    getDressUpView()->highlightReferences(false);
+    getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
-    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = ("
+    str << Gui::Command::getObjectCmd(getObject()) << ".Base = ("
         << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
     for (const auto & ref : refs)
         str << "\"" << ref << "\",";
@@ -470,7 +476,7 @@ bool TaskDlgDressUpParameters::accept()
 
 bool TaskDlgDressUpParameters::reject()
 {
-    getDressUpView()->highlightReferences(false);
+    getViewObject<ViewProviderDressUp>()->highlightReferences(false);
     return TaskDlgFeatureParameters::reject();
 }
 

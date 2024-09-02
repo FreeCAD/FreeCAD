@@ -34,22 +34,16 @@ from PySide import QtGui
 
 import FreeCAD
 import FreeCADGui
+from . import base_femtaskpanel
 
 
-unicode = str
-
-
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The editmode TaskPanel for MaterialReinforced objects
     """
 
-    unicode = str
-
     def __init__(self, obj):
-
-        FreeCAD.Console.PrintMessage("\n")  # empty line on start task panel
-        self.obj = obj
+        super().__init__(obj)
 
         # init matrix and reinforcement material
         self.material_m = self.obj.Material
@@ -174,31 +168,10 @@ class _TaskPanel:
             )
             FreeCAD.Console.PrintError(error_message)
             QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
-        self.recompute_and_set_back_all()
-        return True
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        guidoc = FreeCADGui.getDocument(self.obj.Document)
-        guidoc.Document.recompute()
-        guidoc.resetEdit()
-        self.output_obj_mat_param()
-
-    def output_obj_mat_param(self):
-        self.print_mat_dict(self.obj.Material)
-        self.print_mat_dict(self.obj.Reinforcement)
-        print("\n")
-
-    def print_mat_dict(self, mat_dict):
-        if "Name" in mat_dict:
-            print("Material: {}".format(mat_dict["Name"]))
-        else:
-            print("Matrix material: no Name")
-        for key in mat_dict:
-            print(f"    {key}: {mat_dict[key]}")
+        return super().reject()
 
     # choose material card ***********************************************************************
     def get_material_card(self, material):

@@ -100,7 +100,9 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
 
     // don't save invalid parameter values
     // the comboboxes are properly loaded.
-    ui->pcbLineGroup->onSave();
+    if (ui->pcbLineGroup->currentIndex() >= 0) {
+        ui->pcbLineGroup->onSave();
+    }
     if (ui->pcbLineStandard->currentIndex() >= 0) {
         ui->pcbLineStandard->onSave();
     }
@@ -134,27 +136,13 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     // QAbstractSpinBox
     double kinkDefault = 5.0;
     ui->pdsbBalloonKink->setValue(kinkDefault);
-    // re-read the available LineGroup files
-    ui->pcbLineGroup->clear();
-    std::string lgFileName = Preferences::lineGroupFile();
-    std::string lgRecord = LineGroup::getGroupNamesFromFile(lgFileName);
-    // split collected groups
-    std::stringstream ss(lgRecord);
-    std::vector<std::string> lgNames;
-    while (std::getline(ss, lgRecord, ',')) {
-        lgNames.push_back(lgRecord);
-    }
-    // fill the combobox with the found names
-    for (auto it = lgNames.begin(); it < lgNames.end(); ++it) {
-        ui->pcbLineGroup->addItem(tr((*it).c_str()));
-    }
 
     ui->cbAutoHoriz->onRestore();
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
     ui->cbComplexMarks->onRestore();
     ui->cbShowCenterMarks->onRestore();
-    ui->pcbLineGroup->onRestore();
+
     ui->pdsbBalloonKink->onRestore();
     ui->cbCutSurface->onRestore();
     ui->pcbDetailMatting->onRestore();
@@ -162,6 +150,10 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
 
     ui->cb_ShowSectionLine->onRestore();
     ui->cb_IncludeCutLine->onRestore();
+
+    ui->pcbLineGroup->onRestore();
+    DrawGuiUtil::loadLineGroupChoices(ui->pcbLineGroup);
+    ui->pcbLineGroup->setCurrentIndex(Preferences::lineGroup());
 
     ui->pcbMatting->onRestore();
     DrawGuiUtil::loadMattingStyleBox(ui->pcbMatting);
@@ -246,7 +238,7 @@ void DlgPrefsTechDrawAnnotationImp::onLineGroupChanged(int index)
     }
     ui->pcbLineGroup->setToolTip(
         QObject::tr("%1 defines these line widths:\n thin: %2\n graphic: %3\n"
-                    "thick: %4")
+                    " thick: %4")
             .arg(QString::fromStdString(lgNames.at(0).substr(1)),
                  QString::fromStdString(lgNames.at(1)),
                  QString::fromStdString(lgNames.at(2)),

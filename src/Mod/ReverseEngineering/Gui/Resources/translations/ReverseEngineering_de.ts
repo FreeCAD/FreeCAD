@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="605"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson Oberflächenrekonstruktion</translation>
+      <translation>Poisson-Oberflächenrekonstruktion</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <source>Fit B-Spline</source>
+      <source>Fit B-spline</source>
       <translation>B-Spline einpassen</translation>
     </message>
     <message>
@@ -398,7 +398,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation>Bitte wählen Sie eine Punktwolke oder ein Netz.</translation>
+      <translation>Bitte eine Punktwolke oder ein Netz auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>

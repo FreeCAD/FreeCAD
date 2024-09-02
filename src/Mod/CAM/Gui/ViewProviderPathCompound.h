@@ -48,7 +48,7 @@ protected:
 
 };
 
-using ViewProviderPathCompoundPython = Gui::ViewProviderPythonFeatureT<ViewProviderPathCompound>;
+using ViewProviderPathCompoundPython = Gui::ViewProviderFeaturePythonT<ViewProviderPathCompound>;
 
 } //namespace PathGui
 

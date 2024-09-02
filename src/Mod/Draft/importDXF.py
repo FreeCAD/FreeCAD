@@ -134,7 +134,7 @@ from menu Tools -> Addon Manager""")
         if gui:
             message = translate('draft', """The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
+Please either allow FreeCAD to download these libraries:
   1 - Load Draft workbench
   2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads
 Or download these libraries manually, as explained on

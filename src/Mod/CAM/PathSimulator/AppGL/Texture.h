@@ -33,6 +33,7 @@ public:
     Texture()
     {}
     ~Texture();
+    void DestroyTexture();
     bool LoadImage(unsigned int* image, int x, int y);
     bool Activate();
     bool unbind();
@@ -51,7 +52,7 @@ public:
 
 
 protected:
-    unsigned int mTextureId = -1;
+    unsigned int mTextureId = 0;
 };
 
 

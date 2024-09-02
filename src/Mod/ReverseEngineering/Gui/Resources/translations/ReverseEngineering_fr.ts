@@ -235,8 +235,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <source>Fit B-Spline</source>
-      <translation>Ajuster la B-spline</translation>
+      <source>Fit B-spline</source>
+      <translation>Ajuster la courbe B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>

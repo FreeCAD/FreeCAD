@@ -154,8 +154,6 @@ void PropertyTopoShapeList::setPyObject(PyObject *value)
     }
 }
 
-#ifdef FC_USE_TNP_FIX
-
 void PropertyTopoShapeList::Save(Writer& writer) const
 {
     writer.Stream() << writer.ind() << "<ShapeList count=\"" << getSize() << "\">" << endl;
@@ -251,32 +249,6 @@ void PropertyTopoShapeList::RestoreDocFile(Base::Reader& reader)
     }
 }
 
-#else
-void PropertyTopoShapeList::Save(Writer &writer) const
-{
-    writer.Stream() << writer.ind() << "<ShapeList count=\"" << getSize() <<"\">" << endl;
-    writer.incInd();
-    for (int i = 0; i < getSize(); i++) {
-        _lValueList[i].Save(writer);
-    }
-    writer.decInd();
-    writer.Stream() << writer.ind() << "</ShapeList>" << endl ;
-}
-
-void PropertyTopoShapeList::Restore(Base::XMLReader &reader)
-{
-    reader.readElement("ShapeList");
-    int count = reader.getAttributeAsInteger("count");
-    m_restorePointers.clear();      // just in case
-    m_restorePointers.reserve(count);
-    for (int i = 0; i < count; i++) {
-        auto newShape = std::make_shared<TopoShape>();
-        newShape->Restore(reader);
-        m_restorePointers.push_back(newShape);
-    }
-    reader.readEndElement("ShapeList");
-}
-#endif
 App::Property *PropertyTopoShapeList::Copy() const
 {
     PropertyTopoShapeList *p = new PropertyTopoShapeList();

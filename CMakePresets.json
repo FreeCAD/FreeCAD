@@ -10,6 +10,10 @@
         "name": "common",
         "hidden": true,
         "cacheVariables": {
+          "CMAKE_EXPORT_COMPILE_COMMANDS": {
+            "type": "BOOL",
+            "value": "ON"
+          }
         }
       },
       {
@@ -272,7 +276,13 @@
         "inherits": [
           "conda-debug",
           "conda-windows"
-        ]
+        ],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": {
+            "type": "STRING",
+            "value": "RelWithDebInfo"
+          }
+        }
       },
       {
         "name": "conda-windows-release",

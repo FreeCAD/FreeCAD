@@ -1438,6 +1438,12 @@ public:
                                                          const char* marker = nullptr,
                                                          std::string* postfix = nullptr) const;
 
+    void reTagElementMap(long tag,  // NOLINT google-default-arguments
+                         App::StringHasherRef hasher,
+                         const char* postfix = nullptr) override;
+
+    long isElementGenerated(const Data::MappedName &name, int depth=1) const;
+
     /** @name sub shape cached functions
      *
      * Mapped element names introduces some overhead when getting sub shapes
@@ -1470,7 +1476,7 @@ public:
      */
      std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
                                           std::vector<std::string> *names=nullptr,
-                                          CheckGeometry checkGeometry=CheckGeometry::checkGeometry,
+                                          Data::SearchOptions = Data::SearchOption::CheckGeometry,
                                           double tol=1e-7, double atol=1e-12) const;
     //@}
 
@@ -1493,6 +1499,9 @@ public:
 
     Data::ElementMapPtr resetElementMap(
         Data::ElementMapPtr elementMap=Data::ElementMapPtr()) override;
+
+    std::vector<Data::IndexedName> getHigherElements(const char *element,
+                                                     bool silent = false) const override;
 
     /** Helper class to return the generated and modified shape given an input shape
      *

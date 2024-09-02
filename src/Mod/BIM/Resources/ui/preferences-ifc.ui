@@ -17,16 +17,7 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>9</number>
    </property>
    <item>
@@ -179,12 +170,12 @@ if you start getting crashes when you set multiple cores.</string>
           </property>
           <item>
            <property name="text">
-            <string>Parametric Arch objects</string>
+            <string>Parametric BIM objects</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Non-parametric Arch objects</string>
+            <string>Non-parametric BIM objects</string>
            </property>
           </item>
           <item>
@@ -228,7 +219,7 @@ if you start getting crashes when you set multiple cores.</string>
           </property>
           <item>
            <property name="text">
-            <string>Non-parametric Arch objects</string>
+            <string>Non-parametric BIM objects</string>
            </property>
           </item>
           <item>

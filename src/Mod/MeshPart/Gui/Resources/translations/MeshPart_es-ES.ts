@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>MeshPart</source>
       <translation>MeshPart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Cross-sections...</source>
       <translation>Cortes transversales...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Cross-sections</source>
       <translation>Cortes transversales</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Curve on mesh...</source>
       <translation>Curva en malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Crea una curva aproximada encima de una malla.
@@ -222,7 +222,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Pulse 'Empezar', luego seleccione puntos en la malla; cuando se hayan establecido suficientes puntos, haga clic derecho y seleccione 'Crear'. Repetir este proceso para crear más curvas. Cierre este panel de tareas para completar la operación.
 
-Este comando solo funciona con un objeto 'malla', no con una cara regular o superficie. Para convertir un objeto a una malla utilice las herramientas del entorno de trabajo Mesh.</translation>
+Este comando solo funciona con un objeto 'malla', no con una cara regular o superficie. Para convertir un objeto a una malla utilice las herramientas del banco de trabajo Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -267,7 +267,7 @@ Este comando solo funciona con un objeto 'malla', no con una cara regular o supe
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>Comenzar</translation>
+      <translation>Inicio</translation>
     </message>
   </context>
   <context>

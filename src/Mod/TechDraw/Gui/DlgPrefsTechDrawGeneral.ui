@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>546</width>
-    <height>897</height>
+    <width>547</width>
+    <height>915</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,18 +30,6 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>200</height>
-      </size>
      </property>
      <property name="title">
       <string>Drawing Update</string>
@@ -81,12 +69,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Whether or not a page's 'Keep Updated' property
@@ -145,12 +127,6 @@ This can slow down the response time.</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -187,12 +163,6 @@ for ProjectionGroups</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>85</height>
-      </size>
-     </property>
      <property name="title">
       <string>Labels</string>
      </property>
@@ -201,12 +171,6 @@ for ProjectionGroups</string>
        <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0" columnstretch="1,0,1">
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_LabelFont">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="baseSize">
            <size>
             <width>0</width>
@@ -245,18 +209,6 @@ for ProjectionGroups</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
           </property>
           <property name="baseSize">
            <size>
@@ -339,18 +291,6 @@ for ProjectionGroups</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>85</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>500</height>
-      </size>
-     </property>
      <property name="baseSize">
       <size>
        <width>0</width>
@@ -391,12 +331,6 @@ for ProjectionGroups</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>184</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Use first- or third-angle multiview projection convention</string>
           </property>
@@ -411,12 +345,12 @@ for ProjectionGroups</string>
           </property>
           <item>
            <property name="text">
-            <string>First</string>
+            <string>First-angle</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Third</string>
+            <string>Third-angle</string>
            </property>
           </item>
           <item>
@@ -433,12 +367,6 @@ for ProjectionGroups</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>184</width>
-            <height>22</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Standard to be used to draw section lines.  This affects the position of arrows and symbol.</string>
@@ -489,12 +417,6 @@ for ProjectionGroups</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>481</width>
-       <height>225</height>
-      </size>
-     </property>
      <property name="title">
       <string>Files</string>
      </property>
@@ -516,12 +438,6 @@ for ProjectionGroups</string>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_9">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -539,12 +455,6 @@ for ProjectionGroups</string>
             <horstretch>1</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</string>
@@ -565,12 +475,6 @@ for ProjectionGroups</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Alternate file for personal LineGroup definition</string>
           </property>
@@ -590,12 +494,6 @@ for ProjectionGroups</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Default template file for new pages</string>
           </property>
@@ -609,12 +507,6 @@ for ProjectionGroups</string>
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="label_11">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -632,12 +524,6 @@ for ProjectionGroups</string>
             <horstretch>1</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Default PAT pattern definition file for geometric hatching</string>
@@ -657,12 +543,6 @@ for ProjectionGroups</string>
             <horstretch>1</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Default directory for welding symbols</string>
@@ -686,12 +566,6 @@ for ProjectionGroups</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Starting directory for menu 'Insert Page using Template'</string>
           </property>
@@ -708,12 +582,6 @@ for ProjectionGroups</string>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Template Directory</string>
           </property>
@@ -728,7 +596,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Alternate directory to search for Svg symbol files.</string>
+           <string>Alternate directory to search for SVG symbol files.</string>
           </property>
           <property name="mode">
            <enum>Gui::FileChooser::Directory</enum>
@@ -743,12 +611,6 @@ for ProjectionGroups</string>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_Hatch">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -761,12 +623,6 @@ for ProjectionGroups</string>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Default Template</string>
           </property>
@@ -792,12 +648,6 @@ for ProjectionGroups</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>191</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Name of the default PAT pattern</string>
           </property>
@@ -817,12 +667,6 @@ for ProjectionGroups</string>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_10">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -835,12 +679,6 @@ for ProjectionGroups</string>
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="label_8">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -945,18 +783,6 @@ for ProjectionGroups</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>100</height>
-      </size>
-     </property>
      <property name="title">
       <string>Selection</string>
      </property>
@@ -994,6 +820,73 @@ for ProjectionGroups</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="gbViewDefaut">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>View Defaults</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_8">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="cb_useCameraDirection">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the 3d camera direction (or normal of a selected face) will be used as the view direction.  If not checked, Views will be created as Front Views.</string>
+          </property>
+          <property name="text">
+           <string>Use 3d Camera Direction</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseCameraDirection</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="cb_alwaysShowLabel">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>If checked, view labels will be displayed even when frames are suppressed.</string>
+          </property>
+          <property name="text">
+           <string>Always Show Label</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AlwaysShowLabel</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_12">
      <property name="font">
       <font>
@@ -1008,19 +901,6 @@ for ProjectionGroups</string>
       <bool>true</bool>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

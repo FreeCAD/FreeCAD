@@ -79,7 +79,7 @@ LOGTXT = translate(
 )
 CONVERTTXT = translate(
     "Help",
-    "There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.",
+    "There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.",
 )
 PREFS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Help")
 ICON = ":/icons/help-browser.svg"

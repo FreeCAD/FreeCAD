@@ -22,18 +22,6 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="baseSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="title">
       <string>Advanced</string>
      </property>
@@ -47,12 +35,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
           </property>
           <property name="font">
            <font>
@@ -109,12 +91,6 @@
             <height>0</height>
            </size>
           </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</string>
@@ -138,18 +114,6 @@ Each unit is approx. 0.1 mm wide</string>
         </item>
         <item row="7" column="0">
          <widget class="QLabel" name="label_5">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Edge Fuzz</string>
           </property>
@@ -179,12 +143,6 @@ Each unit is approx. 0.1 mm wide</string>
         </item>
         <item row="10" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxPat">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</string>
@@ -214,12 +172,6 @@ when hatching a face with a PAT pattern</string>
         </item>
         <item row="8" column="0">
          <widget class="QLabel" name="label_4">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Mark Fuzz</string>
           </property>
@@ -249,12 +201,6 @@ when hatching a face with a PAT pattern</string>
           <property name="minimumSize">
            <size>
             <width>174</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
             <height>0</height>
            </size>
           </property>
@@ -288,15 +234,9 @@ Each unit is approx. 0.1 mm wide</string>
         </item>
         <item row="9" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings you might get an error about to many SVG tiles.
+For large scalings you might get an error about too many SVG tiles.
 Then you need to increase the tile limit.</string>
           </property>
           <property name="alignment">
@@ -330,12 +270,6 @@ Then you need to increase the tile limit.</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Dump intermediate results during Detail view processing</string>
           </property>
@@ -357,12 +291,6 @@ Then you need to increase the tile limit.</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Highlights border of section cut in section views</string>

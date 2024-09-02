@@ -155,6 +155,7 @@ private:
     using ObjectItemSubname = std::pair<DocumentObjectItem*, std::vector<std::string>>;
     bool dropInObject(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
     bool dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo, std::vector<ObjectItemSubname> items);
+    bool canDragFromParents(DocumentObjectItem* parentItem, App::DocumentObject* obj, App::DocumentObject* target);
     void sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App::DocumentObject*> draggedObjects);
     //@}
 

@@ -315,7 +315,7 @@ StdCmdPythonHelp::StdCmdPythonHelp()
   : Command("Std_PythonHelp"), server(nullptr)
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Automatic python modules documentation");
+    sMenuText     = QT_TR_NOOP("Automatic Python modules documentation");
     sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
     sWhatsThis    = "Std_PythonHelp";
     sStatusTip    = QT_TR_NOOP("Opens a browser to show the Python modules documentation");

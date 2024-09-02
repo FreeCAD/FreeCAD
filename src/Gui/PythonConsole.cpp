@@ -1264,7 +1264,7 @@ void PythonConsole::runSourceFromMimeData(const QString& source)
 #elif defined(Q_OS_WIN32)
     // Need to convert CRLF to LF
     text.replace(QLatin1String("\r\n"), QLatin1String("\n"));
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_MACOS)
     //need to convert CR to LF
     text.replace(QLatin1Char('\r'), QLatin1Char('\n'));
 #endif

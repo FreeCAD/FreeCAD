@@ -27,6 +27,7 @@
 
 
 import FreeCAD, Arch, Draft, os, sys, time, Part, DraftVecUtils, uuid, math, re
+from builtins import open as pyopen
 from draftutils import params
 from draftutils.translate import translate
 
@@ -53,9 +54,6 @@ supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "
                      "IfcWallStandardCase", "IfcWindow", "IfcWindowStandardCase", "IfcBuildingElementProxy",
                      "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
 # TODO : shading device not supported?
-
-if open.__module__ in ['__builtin__','io']:
-    pyopen = open # because we'll redefine open below
 
 def open(filename,skip=None):
     "called when freecad opens a file"
@@ -935,7 +933,7 @@ def export(exportList,filename):
 
     if (not hasattr(ifcw,"IfcFile")) and (not hasattr(ifcw,"file")):
         FreeCAD.Console.PrintError(translate("Arch","Error: your IfcOpenShell version is too old")+"\n")
-        print("""importIFC: The version of ifcOpenShell installed on this system doesn't
+        print("""importIFC: The version of IfcOpenShell installed on this system doesn't
                  have IFC export capabilities. IFC export currently requires an experimental
                  version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell""")
         return
@@ -1852,7 +1850,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
 
     d = QtGui.QDialog()
     d.setObjectName("IfcExplorer")
-    d.setWindowTitle("Ifc Explorer")
+    d.setWindowTitle("IFC Explorer")
     d.resize(640, 480)
     layout = QtGui.QVBoxLayout(d)
     layout.addWidget(tree)

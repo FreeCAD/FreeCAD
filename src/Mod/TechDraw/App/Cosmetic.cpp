@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <boost/random.hpp>
 # include <boost/uuid/uuid_generators.hpp>
 # include <boost/uuid/uuid_io.hpp>
 #endif
@@ -77,7 +78,7 @@ CosmeticEdge::CosmeticEdge(const Base::Vector3d& pt1, const Base::Vector3d& pt2)
 }
 
 CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) :
-        CosmeticEdge(TechDraw::BaseGeom::baseFactory(e))
+        CosmeticEdge(TechDraw::BaseGeom::baseFactory(e, true))
 {
 }
 

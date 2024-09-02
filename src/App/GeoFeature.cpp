@@ -81,78 +81,70 @@ PyObject* GeoFeature::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-std::pair<std::string,std::string>
+ElementNamePair
 GeoFeature::getElementName(const char *name, ElementNameType type) const
 {
     (void)type;
 
-    std::pair<std::string,std::string> ret;
     if(!name)
-        return ret;
+        return {};
 
-#ifndef FC_USE_TNP_FIX
-    ret.second = name;
-
-    return ret;
-#else
     auto prop = getPropertyOfGeometry();
     if (!prop) {
-        return std::make_pair("", name);
+        return ElementNamePair("",name);
     }
 
     auto geo = prop->getComplexData();
     if (!geo) {
-        return std::make_pair("", name);
+        return ElementNamePair("", name);
     }
 
     return _getElementName(name, geo->getElementName(name));
-#endif
 }
 
-std::pair<std::string, std::string>
+ElementNamePair
 GeoFeature::_getElementName(const char* name, const Data::MappedElement& mapped) const
 {
-    std::pair<std::string, std::string> ret;
+    ElementNamePair ret;
     if (mapped.index && mapped.name) {
         std::ostringstream ss;
         ss << Data::ComplexGeoData::elementMapPrefix() << mapped.name << '.' << mapped.index;
-        ret.first = ss.str();
-        mapped.index.appendToStringBuffer(ret.second);
+        std::string result;
+        mapped.index.appendToStringBuffer(result);
+        return ElementNamePair(ss.str().c_str(), result.c_str());
     }
     else if (mapped.name) {
         //        FC_TRACE("element mapped name " << name << " not found in " << getFullName());
-        ret.first = name;
         const char* dot = strrchr(name, '.');
         if (dot) {
             // deliberately mangle the old style element name to signal a
             // missing reference
-            ret.second = Data::MISSING_PREFIX;
-            ret.second += dot + 1;
+            std::ostringstream ss;
+            ss << Data::MISSING_PREFIX << dot + 1;
+            return ElementNamePair(name, ss.str().c_str() );
         }
+        return ElementNamePair(name,"");
     }
     else {
-        mapped.index.appendToStringBuffer(ret.second);
+        std::string oldName;
+        mapped.index.appendToStringBuffer(oldName);
+        return ElementNamePair("", oldName.c_str());
     }
-
-    return ret;
 }
 
 DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
-        std::pair<std::string,std::string> &elementName, bool append, 
+        ElementNamePair &elementName, bool append,
         ElementNameType type, const DocumentObject *filter, 
         const char **_element, GeoFeature **geoFeature)
 {
-#ifdef FC_USE_TNP_FIX
-    elementName.first.clear();
-    elementName.second.clear();
-#endif
+    elementName.newName.clear();
+    elementName.oldName.clear();
     if(!obj || !obj->isAttachedToDocument())
         return nullptr;
     if(!subname)
         subname = "";
     const char *element = Data::findElementName(subname);
     if(_element) *_element = element;
-#ifdef FC_USE_TNP_FIX
     auto sobj = obj->getSubObject(std::string(subname, element).c_str());
     if(!sobj)
         return nullptr;
@@ -163,28 +155,21 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         if(ext)
             geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
     }
-#else
-    auto sobj = obj->getSubObject(subname);
-    if(!sobj)
-        return nullptr;
-    obj = sobj->getLinkedObject(true);
-    auto geo = dynamic_cast<GeoFeature*>(obj);
-#endif
     if(geoFeature)
         *geoFeature = geo;
     if(!obj || (filter && obj!=filter))
         return nullptr;
     if(!element || !element[0]) {
         if(append) 
-            elementName.second = Data::oldElementName(subname);
+            elementName.oldName = Data::oldElementName(subname);
         return sobj;
     }
 
     if(!geo || hasHiddenMarker(element)) {
         if(!append) 
-            elementName.second = element;
+            elementName.oldName = element;
         else
-            elementName.second = Data::oldElementName(subname);
+            elementName.oldName = Data::oldElementName(subname);
         return sobj;
     }
     if(!append) 
@@ -192,9 +177,9 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     else{
         const auto &names = geo->getElementName(element,type);
         std::string prefix(subname,element-subname);
-        if(!names.first.empty())
-            elementName.first = prefix + names.first;
-        elementName.second = prefix + names.second;
+        if(!names.newName.empty())
+            elementName.newName = prefix + names.newName;
+        elementName.oldName = prefix + names.oldName;
     }
     return sobj;
 }
@@ -216,7 +201,6 @@ bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const ch
     return false;
 }
 
-#ifdef FC_USE_TNP_FIX
 bool GeoFeature::hasMissingElement(const char* subname)
 {
     return Data::hasMissingElement(subname);
@@ -278,4 +262,11 @@ std::vector<const char*> GeoFeature::getElementTypes(bool /*all*/) const
     return prop->getComplexData()->getElementTypes();
 }
 
-#endif
+std::vector<Data::IndexedName>
+GeoFeature::getHigherElements(const char *element, bool silent) const
+{
+    auto prop = getPropertyOfGeometry();
+    if (!prop)
+        return {};
+    return prop->getComplexData()->getHigherElements(element, silent);
+}

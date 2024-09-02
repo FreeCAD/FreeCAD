@@ -31,6 +31,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 #include <App/Expression.h>
 #include <App/ExpressionParser.h>
 #include <App/ExpressionVisitors.h>
@@ -2250,9 +2251,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier& path, const boost::any&
         }
     }
 
-    FC_THROWM(Base::TypeError,
-              "Invalid path value '"
-                  << "' for " << getFullName());
+    FC_THROWM(Base::TypeError, "Invalid path value '" << "' for " << getFullName());
 }
 
 const boost::any PropertySheet::getPathValue(const App::ObjectIdentifier& path) const
@@ -2266,4 +2265,48 @@ const boost::any PropertySheet::getPathValue(const App::ObjectIdentifier& path) 
 bool PropertySheet::hasSpan() const
 {
     return !mergedCells.empty();
+}
+
+void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
+                               App::DocumentObject* obj,
+                               const char* subname,
+                               bool all) const
+{
+    Expression::DepOption option =
+        all ? Expression::DepOption::DepAll : Expression::DepOption::DepNormal;
+
+    App::SubObjectT objT(obj, subname);
+    auto subObject = objT.getSubObject();
+    auto subElement = objT.getOldElementName();
+
+    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    for (const auto& [cellName, cellExpression] : data) {
+        if (auto expr = cellExpression->getExpression()) {
+            const auto& deps = expr->getDeps(option);
+            auto it = deps.find(obj);
+            if (it == deps.end()) {
+                continue;
+            }
+            const auto [docObj, depsList] = *it;
+            for (auto& [depName, paths] : depsList) {
+                if (!subname) {
+                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                    break;
+                }
+                if (std::any_of(paths.begin(),
+                                paths.end(),
+                                [subname, obj, subObject, &subElement](const auto& path) {
+                                    if (path.getSubObjectName() == subname) {
+                                        return true;
+                                    }
+
+                                    App::SubObjectT sobjT(obj, path.getSubObjectName().c_str());
+                                    return (sobjT.getSubObject() == subObject
+                                            && sobjT.getOldElementName() == subElement);
+                                })) {
+                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                }
+            }
+        }
+    }
 }

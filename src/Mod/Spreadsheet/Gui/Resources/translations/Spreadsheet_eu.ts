@@ -663,8 +663,8 @@ eta propietate-izena zehazteko. Propietatea sortu egingo da lehendik ez badago.<
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Unitate-katea</translation>
+      <source>Text for the unit</source>
+      <translation type="unfinished">Text for the unit</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -728,12 +728,12 @@ eta propietate-izena zehazteko. Propietatea sortu egingo da lehendik ez badago.<
       <translation>Kopiatu eta itsasteak huts egin du</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Aliasak karaktere baliogabeak ditu!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Egin erreferentzia gelaxkei aliasa erabilita, adibidez
@@ -1129,12 +1129,12 @@ Lehenespenak: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Esportatu PDFa</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>PDF fitxategia</translation>
     </message>

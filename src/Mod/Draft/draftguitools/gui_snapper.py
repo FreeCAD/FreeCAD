@@ -1133,12 +1133,6 @@ class Snapper:
             if self.dim2.Distance:
                 self.dim2.on()
 
-    def get_cursor_size(self):
-        # TODO Unfortunately, there's no way to get the cursor size in Qt
-        # Either provide platform-specific implementation or make it a user preference
-        # This should be in device-independent pixels
-        return 32
-
     def get_quarter_widget(self, mw):
         views = []
         for w in mw.findChild(QtWidgets.QMdiArea).findChildren(QtWidgets.QWidget):
@@ -1153,28 +1147,41 @@ class Snapper:
         return device_pixel_ratio
 
     def get_cursor_with_tail(self, base_icon_name, tail_icon_name=None):
-        base_icon = QtGui.QPixmap(base_icon_name)
-        device_pixel_ratio = self.device_pixel_ratio()
-        full_icon_size = self.get_cursor_size()
-        new_icon_width = full_icon_size * device_pixel_ratio
-        new_icon_height = 0.75 * full_icon_size * device_pixel_ratio
-        new_icon = QtGui.QPixmap(new_icon_width, new_icon_height)
+        # Other cursor code in scr:
+        # src/Gui/CommandView.cpp
+        # src/Mod/Mesh/Gui/MeshSelection.cpp
+        # src/Mod/Sketcher/Gui/CommandConstraints.cpp
+
+        # The code below follows the Sketcher example.
+
+        #   +--------+
+        #   |  base  |          vertical offset = 0.5*w
+        # w |        +--------+
+        #   |   w    |  tail  |
+        #   +--------+        | w = width = 16
+        #            |   w    |
+        #            +--------+
+
+        dpr = self.device_pixel_ratio()
+        width = 16 * dpr
+        new_icon = QtGui.QPixmap(2 * width, 1.5 * width)
         new_icon.fill(QtCore.Qt.transparent)
+        base_icon = QtGui.QPixmap(base_icon_name).scaledToWidth(width)
         qp = QtGui.QPainter()
         qp.begin(new_icon)
-        base_icon = base_icon.scaledToWidth(0.5 * full_icon_size * device_pixel_ratio)
         qp.drawPixmap(0, 0, base_icon)
-        if tail_icon_name:
-            tail_icon_width = 0.5 * full_icon_size * device_pixel_ratio
-            tail_icon_x = 0.5 * full_icon_size * device_pixel_ratio
-            tail_icon_y = 0.25 * full_icon_size * device_pixel_ratio
-            tail_pixmap = QtGui.QPixmap(tail_icon_name).scaledToWidth(tail_icon_width)
-            qp.drawPixmap(QtCore.QPoint(tail_icon_x, tail_icon_y), tail_pixmap)
+        if tail_icon_name is not None:
+            tail_icon = QtGui.QPixmap(tail_icon_name).scaledToWidth(width)
+            qp.drawPixmap(width, 0.5 * width, tail_icon)
         qp.end()
-        cur_hot_x = 0.25 * full_icon_size * device_pixel_ratio
-        cur_hot_y = 0.25 * full_icon_size * device_pixel_ratio
-        cur = QtGui.QCursor(new_icon, cur_hot_x, cur_hot_y)
-        return cur
+        hot_x = 8
+        hot_y = 8
+        new_icon.setDevicePixelRatio(dpr)
+        # Only X11 needs hot point coordinates to be scaled:
+        if QtGui.QGuiApplication.platformName() == "xcb":
+            hot_x *= dpr
+            hot_x *= dpr
+        return QtGui.QCursor(new_icon, hot_x, hot_y)
 
     def setCursor(self, mode=None):
         """Set or reset the cursor to the given mode or resets."""

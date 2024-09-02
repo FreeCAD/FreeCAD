@@ -72,6 +72,10 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <QBitmap>
 # include <QEventLoop>
+#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0) && QT_VERSION >= QT_VERSION_CHECK(5,13,0)
+# include <QGuiApplication>
+# define HAS_QTBUG_95434
+#endif
 # include <QKeyEvent>
 # include <QMessageBox>
 # include <QMimeData>
@@ -95,6 +99,7 @@
 #include "Document.h"
 #include "GLPainter.h"
 #include "MainWindow.h"
+#include "Multisample.h"
 #include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "Selection.h"
@@ -262,7 +267,7 @@ public:
 
 class SpaceNavigatorDevice : public Quarter::InputDevice {
 public:
-    SpaceNavigatorDevice() = default;
+    SpaceNavigatorDevice() : InputDevice(nullptr) {}
     ~SpaceNavigatorDevice() override = default;
     const SoEvent* translateEvent(QEvent* event) override {
 
@@ -642,35 +647,41 @@ View3DInventorViewer::~View3DInventorViewer()
     delete glAction;
 }
 
-void View3DInventorViewer::createStandardCursors(double dpr)
+static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, double dpr)
 {
-    // NOLINTBEGIN
-    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
-    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
 #if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
+    bitmap.setDevicePixelRatio(dpr);
     mask.setDevicePixelRatio(dpr);
 #else
     Q_UNUSED(dpr)
 #endif
-    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+#ifdef HAS_QTBUG_95434
+    QPixmap pixmap;
+    if (qGuiApp->platformName() == QLatin1String("wayland")) {
+        QImage img = bitmap.toImage();
+        img.convertTo(QImage::Format_ARGB32);
+        pixmap = QPixmap::fromImage(img);
+        pixmap.setMask(mask);
+        return QCursor(pixmap, hotX, hotY);
+    }
+#endif
+
+    return QCursor(bitmap, mask, hotX, hotY);
+}
+
+void View3DInventorViewer::createStandardCursors(double dpr)
+{
+    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
+    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+    spinCursor = createCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y, dpr);
 
     cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
     mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+    zoomCursor = createCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y, dpr);
 
     cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
     mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-#if defined(Q_OS_WIN32)
-    cursor.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#endif
-    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
-    // NOLINTEND
+    panCursor = createCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y, dpr);
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()
@@ -1965,25 +1976,8 @@ void View3DInventorViewer::clearGraphicsItems()
 
 int View3DInventorViewer::getNumSamples()
 {
-    long samples = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View")->GetInt("AntiAliasing", 0);
-
-    // NOLINTBEGIN
-    switch (samples) {
-    case View3DInventorViewer::MSAA2x:
-        return 2;
-    case View3DInventorViewer::MSAA4x:
-        return 4;
-    case View3DInventorViewer::MSAA6x:
-        return 6;
-    case View3DInventorViewer::MSAA8x:
-        return 8;
-    case View3DInventorViewer::Smoothing:
-        return 1;
-    default:
-        return 0;
-    }
-    // NOLINTEND
+    Gui::AntiAliasing msaa = Multisample::readMSAAFromSettings();
+    return Multisample::toSamples(msaa);
 }
 
 GLenum View3DInventorViewer::getInternalTextureFormat()
@@ -3372,7 +3366,7 @@ void View3DInventorViewer::alignToSelection()
 
     // Get the geo feature
     App::GeoFeature* geoFeature = nullptr;
-    std::pair<std::string, std::string> elementName;
+    App::ElementNamePair elementName;
     App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
     if (!geoFeature) {
         return;
@@ -3600,7 +3594,7 @@ void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
             for (unsigned y = 0; y < height; y++) {
                 for (unsigned x = 0; x < width; x++) {
                     unsigned offset = (y * width + x) * bitdepth;
-                    
+
                     const unsigned char* src = &mask[offset];
                     unsigned char* dst = &data[offset];
 

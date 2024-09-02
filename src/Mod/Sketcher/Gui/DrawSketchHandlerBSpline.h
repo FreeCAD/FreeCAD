@@ -88,6 +88,12 @@ public:
         , resetSeekSecond(false) {};
     ~DrawSketchHandlerBSpline() override = default;
 
+    void activated() override
+    {
+        DrawSketchHandlerBSplineBase::activated();
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
+    }
+
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
@@ -97,10 +103,9 @@ private:
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, getLastPoint());
@@ -111,10 +116,9 @@ private:
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             default:
                 break;
@@ -444,7 +448,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("BSpline parameters"));
+        return QString(QObject::tr("B-spline parameters"));
     }
 
     bool canGoToNextMode() override
@@ -453,7 +457,6 @@ private:
             ? Sketcher::PointPos::mid
             : Sketcher::PointPos::start;
         if (state() == SelectMode::SeekFirst) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
             // insert point for pole/knot, defer internal alignment constraining.
             if (!addPos()) {
                 return false;
@@ -528,9 +531,15 @@ private:
         // We must see if we need to create a B-spline before cancelling everything
 
         if (state() == SelectMode::SeekSecond) {
-            // create B-spline from existing poles/knots
-            setState(SelectMode::End);
-            finish();
+            if (geoIds.size() > 1) {
+                // create B-spline from existing poles/knots
+                setState(SelectMode::End);
+                finish();
+            }
+            else {
+                // We don't want to finish() as that'll create auto-constraints
+                handleContinuousMode();
+            }
         }
         else {
             DrawSketchHandler::quit();
@@ -546,6 +555,7 @@ private:
     {
         Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch B-spline"));
 
         SplineDegree = 3;
         geoIds.clear();
@@ -667,7 +677,7 @@ private:
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Error adding B-Spline pole/knot"));
+                             QT_TRANSLATE_NOOP("Notifications", "Error adding B-spline pole/knot"));
 
             Gui::Command::abortCommand();
 
@@ -683,7 +693,7 @@ private:
         // Restart the command
         Gui::Command::abortCommand();
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch bSpline"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch B-spline"));
 
         // Add the necessary alignment geometries and constraints
         for (size_t i = 0; i < geoIds.size(); ++i) {
@@ -845,7 +855,7 @@ void DSHBSplineController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (R)"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Create a periodic bspline."));
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Create a periodic B-spline."));
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->periodic);
 
         if (isConstructionMode()) {
@@ -878,14 +888,21 @@ void DSHBSplineController::configureToolWidget()
         toolWidget->setParameterLabel(
             WParameter::First,
             QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')"));
-        toolWidget->setParameter(WParameter::First, handler->SplineDegree);
         toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT
-        // We set a reasonable max to avoid the spinbox from being very large
+        toolWidget->configureParameterMax(WParameter::First, Geom_BSplineCurve::MaxDegree());
         toolWidget->configureParameterDecimals(WParameter::First, 0);
     }
 
-    toolWidget->configureParameterMax(WParameter::First, Geom_BSplineCurve::MaxDegree());  // NOLINT
+    if (handler->constructionMethod() == ConstructionMethod::ControlPoints) {
+        toolWidget->setParameter(WParameter::First, handler->SplineDegree);
+        toolWidget->setParameterVisible(WParameter::First, true);
+    }
+    else {
+        // We still set the value in case user change of mode.
+        toolWidget->setParameterWithoutPassingFocus(WParameter::First, handler->SplineDegree);
+        toolWidget->setParameterVisible(WParameter::First, false);
+    }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
@@ -1064,9 +1081,19 @@ void DSHBSplineController::doChangeDrawSketchHandlerMode()
 
 
 template<>
-bool DSHBSplineControllerBase::resetOnConstructionMethodeChanged()
+void DSHBSplineController::doConstructionMethodChanged()
 {
     handler->changeConstructionMethode();
+
+    syncConstructionMethodComboboxToHandler();
+    bool byCtrlPoints = handler->constructionMethod() == ConstructionMethod::ControlPoints;
+    toolWidget->setParameterVisible(WParameter::First, byCtrlPoints);
+}
+
+
+template<>
+bool DSHBSplineControllerBase::resetOnConstructionMethodeChanged()
+{
     return false;
 }
 

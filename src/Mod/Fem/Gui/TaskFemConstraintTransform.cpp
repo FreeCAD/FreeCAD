@@ -555,11 +555,6 @@ std::string TaskFemConstraintTransform::get_transform_type() const
     return transform;
 }
 
-bool TaskFemConstraintTransform::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintTransform::changeEvent(QEvent*)
 {}
 

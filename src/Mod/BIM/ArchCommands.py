@@ -204,7 +204,7 @@ def removeComponents(objectsList,host=None):
                         h.Objects = a
 
 def makeComponent(baseobj=None,name=None,delete=False):
-    '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric Arch
+    '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric BIM
     component from the given base object'''
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -405,7 +405,7 @@ def getCutVolume(cutplane,shapes,clip=False,depth=None):
         else:
             p = cutplane.copy().Faces[0]
     except Part.OCCError:
-        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane")+"\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cut plane")+"\n")
         return None,None,None
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
@@ -870,7 +870,6 @@ def survey(callback=False):
                                 else:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
                                     t = u.getUserPreferred()[0]
-                                    t = t.encode("utf8")
                                     anno.LabelText = "l " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t + "\n")
                                     FreeCAD.SurveyObserver.totalLength += u.Value
@@ -1134,19 +1133,19 @@ def toggleIfcBrepFlag(obj):
     """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
     to be exported as brep geometry or not."""
     if not hasattr(obj,"IfcData"):
-        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFCData"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC attributes"))
     else:
         d = obj.IfcData
         if "FlagForceBrep" in d:
             if d["FlagForceBrep"] == "True":
                 d["FlagForceBrep"] = "False"
-                FreeCAD.Console.PrintMessage(translate("Arch","Disabling Brep force flag of object")+" "+obj.Label+"\n")
+                FreeCAD.Console.PrintMessage(translate("Arch","Disabling B-rep force flag of object")+" "+obj.Label+"\n")
             else:
                 d["FlagForceBrep"] = "True"
-                FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
+                FreeCAD.Console.PrintMessage(translate("Arch","Enabling B-rep force flag of object")+" "+obj.Label+"\n")
         else:
             d["FlagForceBrep"] = "True"
-            FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
+            FreeCAD.Console.PrintMessage(translate("Arch","Enabling B-rep force flag of object")+" "+obj.Label+"\n")
         obj.IfcData = d
 
 

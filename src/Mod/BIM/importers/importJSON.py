@@ -22,6 +22,7 @@
 """FreeCAD JSON exporter"""
 
 import json
+from builtins import open as pyopen
 
 import FreeCAD
 import Draft
@@ -37,10 +38,6 @@ else:
     def translate(ctxt, txt): return txt
 
 
-if open.__module__ in ['__builtin__','io']:
-    pythonopen = open
-
-
 def export(exportList, filename):
     "exports the given objects to a .json file"
 
@@ -52,7 +49,7 @@ def export(exportList, filename):
         }
 
     # Write file
-    outfile = pythonopen(filename, "w")
+    outfile = pyopen(filename, "w")
     json.dump(data, outfile, separators = (',', ':'))
     outfile.close()
 

@@ -37,7 +37,6 @@
         var[idx++] = z;                                                                            \
     }
 
-
 #define SET_TRIPLE_OFFS(var, idx, offs, x, y, z)                                                   \
     {                                                                                              \
         var[idx++] = x + offs;                                                                     \
@@ -51,6 +50,18 @@ typedef unsigned int uint;
 
 struct Vertex
 {
+    Vertex()
+        : Vertex(0, 0, 0)
+    {}
+    Vertex(float _x, float _y, float _z, float _nx = 0, float _ny = 0, float _nz = 0)
+    {
+        x = _x;
+        y = _y;
+        z = _z;
+        nx = _nx;
+        ny = _ny;
+        nz = _nz;
+    }
     float x, y, z;
     float nx, ny, nz;
 };
@@ -72,9 +83,11 @@ public:
     void Render();
     void Render(mat4x4 modelMat, mat4x4 normallMat);
     void FreeResources();
+    void SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer);
     void RotateProfile(float* profPoints,
                        int nPoints,
                        float distance,
+                       float deltaHeight,
                        int nSlices,
                        bool isHalfTurn);
     void ExtrudeProfileRadial(float* profPoints,
@@ -93,6 +106,11 @@ public:
                               bool capStart,
                               bool capEnd);
 
+    static void GenerateSinTable(int nSlices);
+    static std::vector<float> sinTable;
+    static std::vector<float> cosTable;
+    static int lastNumSlices;
+
 protected:
     void GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int numIndices);
     void CalculateExtrudeBufferSizes(int nProfilePoints,
@@ -104,6 +122,7 @@ protected:
                                      int* vc2idx,
                                      int* ic1idx,
                                      int* ic2idx);
+
 };
 
 }  // namespace MillSim

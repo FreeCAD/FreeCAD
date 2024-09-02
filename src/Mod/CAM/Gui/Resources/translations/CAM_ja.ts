@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
-      <translation type="unfinished">Creates a feature area from selected objects</translation>
+      <translation>選択したオブジェクトからフィーチャー領域を作成</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
-      <translation type="unfinished">Area workplane</translation>
+      <translation>ワークプレーン領域</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>フィーチャー領域用の作業面を選択</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected toolpaths</source>
-      <translation type="unfinished">Creates a compound from selected toolpaths</translation>
+      <translation>選択したツールパスからコンパウンドを作成</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Creates a toolpath from a selected shape</source>
-      <translation type="unfinished">Creates a toolpath from a selected shape</translation>
+      <translation>選択したシェイプからツールパスを作成</translation>
     </message>
   </context>
   <context>
@@ -78,27 +78,27 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
-      <translation type="unfinished">Create Path Area View</translation>
+      <translation>パス領域ビューを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
-      <translation type="unfinished">Create Path Area</translation>
+      <translation>パス領域を作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Select Workplane for Path Area</source>
-      <translation type="unfinished">Select Workplane for Path Area</translation>
+      <translation>パス領域用の作業面を選択</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Create Path Compound</source>
-      <translation type="unfinished">Create Path Compound</translation>
+      <translation>パス・コンパウンドを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create Path Shape</source>
-      <translation type="unfinished">Create Path Shape</translation>
+      <translation>パス・シェイプを作成</translation>
     </message>
   </context>
   <context>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation type="unfinished">Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</translation>
+      <translation>ジョブに使用するテンプレートを選択してください。 テンプレートがない場合は、既存のジョブのポップアップメニューから作成できます。 job_*.json ファイルに名前を付け、このリストから選択できるようにするには ファイル名を job_*.json としてマクロまたはパスディレクトリ (環境設定を参照) に配置してください。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation type="unfinished">Select Base Models</translation>
+      <translation>ベースモデルを選択</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -141,17 +141,17 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
       <source>Base Models</source>
-      <translation type="unfinished">Base Models</translation>
+      <translation>ベースモデル</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation type="unfinished">Job Template Export</translation>
+      <translation>ジョブテンプレートのエクスポート</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
       <source>Post Processing</source>
-      <translation type="unfinished">Post Processing</translation>
+      <translation>後処理</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -161,27 +161,27 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="75"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>シートをセットアップ</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>If enabled include all post processing settings in the template.</source>
-      <translation type="unfinished">If enabled include all post processing settings in the template.</translation>
+      <translation>有効な場合、テンプレートにすべての後処理設定を含めます。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>Hint about the current post processing configuration.</source>
-      <translation type="unfinished">Hint about the current post processing configuration.</translation>
+      <translation>現在の後処理設定に関するヒント。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>If enabled tool controller definitions are stored in the template.</source>
-      <translation type="unfinished">If enabled tool controller definitions are stored in the template.</translation>
+      <translation>有効な場合、ツールコントローラー定義がテンプレートに保存されます。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>Check all tool controllers which should be included in the template.</source>
-      <translation type="unfinished">Check all tool controllers which should be included in the template.</translation>
+      <translation>テンプレートに含めるツールコントローラーをすべてチェック。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
@@ -200,22 +200,22 @@ Any values of the SetupSheet that are changed from their default are preselected
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="87"/>
       <source>Operation Heights</source>
-      <translation type="unfinished">Operation Heights</translation>
+      <translation>工程の高さ</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="97"/>
       <source>Operation Depths</source>
-      <translation type="unfinished">Operation Depths</translation>
+      <translation>工程の深さ</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="107"/>
       <source>Enable to include the default rapid tool speeds in the template.</source>
-      <translation type="unfinished">Enable to include the default rapid tool speeds in the template.</translation>
+      <translation>テンプレートにデフォルトのラピッドツール速度を含める。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="120"/>
       <source>Enable to include the default coolant mode in the template.</source>
-      <translation type="unfinished">Enable to include the default coolant mode in the template.</translation>
+      <translation>テンプレートにデフォルトの冷却モードを含める。</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="145"/>
@@ -253,7 +253,7 @@ Note that this option is disabled if a stock object from an existing solid is us
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="123"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷却モード</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="133"/>
@@ -267,7 +267,7 @@ Note that only operations which currently have configuration values set are list
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="152"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>ストック</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="161"/>
@@ -300,7 +300,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>後処理</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
@@ -325,12 +325,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation type="unfinished">Horiz. Feed</translation>
+      <translation>水平フィード</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation type="unfinished">Vert. Feed</translation>
+      <translation>垂直フィード</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
@@ -370,12 +370,12 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation type="unfinished">Tool Editor</translation>
+      <translation>ツールエディター</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
       <source>Create Property</source>
-      <translation type="unfinished">Create Property</translation>
+      <translation>プロパティを作成</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
@@ -501,11 +501,6 @@ For stock from the Base object&apos;s bounding box it means the extra material i
   <context>
     <name>DlgJobChooser</name>
     <message>
-      <location filename="../../DlgJobChooser.ui" line="17"/>
-      <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
-    </message>
-    <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
       <translation type="unfinished">Choose a Tool Controller</translation>
@@ -524,6 +519,11 @@ For stock from the Base object&apos;s bounding box it means the extra material i
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
       <source>Destination</source>
       <translation>コピー先</translation>
+    </message>
+    <message>
+      <location filename="../../DlgJobChooser.ui" line="17"/>
+      <source>Choose a CAM Job</source>
+      <translation type="unfinished">Choose a CAM Job</translation>
     </message>
   </context>
   <context>
@@ -749,7 +749,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="33"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>フィーチャー</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="38"/>
@@ -940,12 +940,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
-      <source>G Gode</source>
-      <translation type="unfinished">G Gode</translation>
+      <translation>冷却モード</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
@@ -964,14 +959,14 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>ツールコントローラー</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
       <source>Coolant</source>
-      <translation>冷却剤</translation>
+      <translation>冷却</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
@@ -1201,7 +1196,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="115"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>ドリルのヒント</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="120"/>
@@ -1302,7 +1297,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>Set the extent of the dimension -the default value is half the tool diameter</source>
-      <translation type="unfinished">Set the extent of the dimension -the default value is half the tool diameter</translation>
+      <translation>寸法の範囲を設定します。既定の値はツールの直径の半分です。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
@@ -1402,7 +1397,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="126"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="136"/>
@@ -1412,7 +1407,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="141"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>ジグザグのオフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="146"/>
@@ -1722,7 +1717,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
       <source>Layer Mode</source>
-      <translation type="unfinished">Layer Mode</translation>
+      <translation>レイヤーモード</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
@@ -1875,7 +1870,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="184"/>
       <source>Drop Cutter Direction</source>
-      <translation type="unfinished">Drop Cutter Direction</translation>
+      <translation>ドロップカッターの方向</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
@@ -1896,7 +1891,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
       <source>Step over</source>
-      <translation>ステップ オーバー</translation>
+      <translation>ステップオーバー</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
@@ -2087,18 +2082,18 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>ピッチ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
       <source>TPI</source>
-      <translation type="unfinished">TPI</translation>
+      <translation>1インチあたりの山数</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="24"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="144"/>
       <source>Operation</source>
-      <translation>オペレーション</translation>
+      <translation>工程</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="150"/>
@@ -2123,7 +2118,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
       <source>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
-      <translation type="unfinished">Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</translation>
+      <translation>ボロノイ図から積極的にコリニアセグメントをフィルタリングする方法を設定します。有効な値は 0 - 90 °（大きい数値でフィルタリングします）です。既定の値 = 10</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="117"/>
@@ -2163,7 +2158,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="59"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>アルゴリズム</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="66"/>
@@ -2269,12 +2264,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="20"/>
       <source>Tag Parameters</source>
-      <translation type="unfinished">Tag Parameters</translation>
+      <translation>タグのパラメーター</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default Width</source>
-      <translation type="unfinished">Default Width</translation>
+      <translation>既定の幅</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -2321,22 +2316,27 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="42"/>
       <source>Default Height</source>
-      <translation type="unfinished">Default Height</translation>
+      <translation>既定の高さ</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="58"/>
       <source>Default Angle</source>
-      <translation type="unfinished">Default Angle</translation>
+      <translation>既定の角度</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="84"/>
       <source>Default Radius</source>
-      <translation type="unfinished">Default Radius</translation>
+      <translation>既定の半径</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="103"/>
       <source>Tag Generation</source>
       <translation type="unfinished">Tag Generation</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
+      <source>G-Code</source>
+      <translation type="unfinished">G-Code</translation>
     </message>
   </context>
   <context>
@@ -2369,12 +2369,12 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="95"/>
       <source>Geometry</source>
-      <translation>ジオメトリー</translation>
+      <translation>ジオメトリ</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="103"/>
       <source>Default Geometry Tolerance</source>
-      <translation type="unfinished">Default Geometry Tolerance</translation>
+      <translation>既定の幾何公差</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="110"/>
@@ -2390,70 +2390,17 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <location filename="../preferences/PathJob.ui" line="154"/>
       <location filename="../preferences/PathJob.ui" line="279"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>後処理</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="166"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>出力ファイル</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="177"/>
       <source>Default Path</source>
       <translation type="unfinished">Default Path</translation>
-    </message>
-    <message>
-      <location filename="../preferences/PathJob.ui" line="188"/>
-      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&amp;quot;/home/cnc/%d.g-code&amp;quot;
-See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="230"/>
@@ -2495,9 +2442,9 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <source>Path to look for templates, post processors, tool tables and other external files.
 
 If left empty the macro directory is used.</source>
-      <translation type="unfinished">Path to look for templates, post processors, tool tables and other external files.
+      <translation>テンプレート、ポストプロセッサ、ツールテーブル、その他の外部ファイルを探すパスです。
 
-If left empty the macro directory is used.</translation>
+空の場合はマクロのディレクトリを使用します。</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="74"/>
@@ -2511,6 +2458,59 @@ If left empty no template will be preselected.</source>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</translation>
+    </message>
+    <message>
+      <location filename="../preferences/PathJob.ui" line="188"/>
+      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+See the file save policy below on how to deal with name conflicts.</source>
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&amp;quot;/home/cnc/%d.g-code&amp;quot;
+See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="247"/>
@@ -2545,7 +2545,7 @@ If left empty no template will be preselected.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="376"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>ストック</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
@@ -2692,12 +2692,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="261"/>
       <source>Default pathline width</source>
-      <translation>デフォルトのパスライン幅</translation>
+      <translation>既定のパスライン幅</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="42"/>
       <source>The default line thickness for new shapes</source>
-      <translation>新規図形での既定の線の太さ</translation>
+      <translation>新規シェイプでの既定の線幅</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="45"/>
@@ -2717,7 +2717,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../../DlgSettingsPathColor.ui" line="268"/>
       <location filename="../../DlgSettingsPathColor.ui" line="288"/>
       <source>The default line color for new shapes</source>
-      <translation>新規図形での既定の線色</translation>
+      <translation>新規シェイプでの既定の線の色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="182"/>
@@ -3028,8 +3028,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3064,7 +3064,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
       <source>Offset Distance</source>
-      <translation type="unfinished">Offset Distance</translation>
+      <translation>オフセットの距離</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="63"/>
@@ -3124,7 +3124,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>編集...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
@@ -3134,7 +3134,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>自動生成</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
@@ -3155,7 +3155,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="45"/>
       <source>Base Geometry</source>
-      <translation>ベースジオメトリー</translation>
+      <translation>ベースジオメトリ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
@@ -3240,7 +3240,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
       <source>Operation</source>
-      <translation>オペレーション</translation>
+      <translation>工程</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="263"/>
@@ -3255,12 +3255,12 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷却モード</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="299"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>アルゴリズム</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="307"/>
@@ -3305,7 +3305,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
       <source>Stop running simulation</source>
-      <translation type="unfinished">Stop running simulation</translation>
+      <translation>シミュレーションの実行を停止</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
@@ -3313,13 +3313,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <translation>停止</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="115"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation type="unfinished">Activate / resume simulation</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="118"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>再生</translation>
@@ -3365,13 +3365,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <translation type="unfinished">G/s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="50"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
       <translation type="unfinished">Accuracy:</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="105"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
       <translation type="unfinished">Job:</translation>
@@ -3388,13 +3388,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
-      <source>Launch Camotics</source>
-      <translation type="unfinished">Launch Camotics</translation>
+      <source>Launch CAMotics</source>
+      <translation type="unfinished">Launch CAMotics</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
-      <source>Make Camotics File</source>
-      <translation type="unfinished">Make Camotics File</translation>
+      <source>Make CAMotics File</source>
+      <translation type="unfinished">Make CAMotics File</translation>
     </message>
   </context>
   <context>
@@ -3565,7 +3565,60 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>出力ファイル</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="141"/>
+      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</source>
+      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
+The following substitutions are performed before the name is resolved at the time of the post processing:
+Substitution allows the following:
+%D ... directory of the active document
+%d ... name of the active document (with extension)
+%M ... user macro directory
+%j ... name of the active Job object
+
+The Following can be used if output is being split. If Output is not split
+these will be ignored.
+%T ... Tool Number
+%t ... Tool Controller label
+
+%W ... Work Coordinate System
+%O ... Operation Label
+
+When splitting output, a sequence number will always be added.
+
+if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
+
+%S ... Sequence Number
+
+The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
+&quot;/home/cnc/%d.g-code&quot;
+See the file save policy below on how to deal with name conflicts.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="179"/>
@@ -3617,9 +3670,9 @@ Ordering by operation will do each operation in all coordinate systems before mo
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3639,7 +3692,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="457"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>ストック</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
@@ -3750,7 +3803,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="729"/>
       <source>Z-Axis</source>
-      <translation type="unfinished">Z-Axis</translation>
+      <translation>Z軸</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="736"/>
@@ -3861,59 +3914,6 @@ Default: &quot;5mm&quot;</translation>
       <translation type="unfinished">Final Depth</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="141"/>
-      <source>Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</source>
-      <translation type="unfinished">Enter a path and optionally file name (see below) to be used as the default for the post processor export.
-The following substitutions are performed before the name is resolved at the time of the post processing:
-Substitution allows the following:
-%D ... directory of the active document
-%d ... name of the active document (with extension)
-%M ... user macro directory
-%j ... name of the active Job object
-
-The Following can be used if output is being split. If Output is not split
-these will be ignored.
-%T ... Tool Number
-%t ... Tool Controller label
-
-%W ... Work Coordinate System
-%O ... Operation Label
-
-When splitting output, a sequence number will always be added.
-
-if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.
-
-%S ... Sequence Number
-
-The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):
-&quot;/home/cnc/%d.g-code&quot;
-See the file save policy below on how to deal with name conflicts.</translation>
-    </message>
-    <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
       <translation type="unfinished">If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</translation>
@@ -4004,12 +4004,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1183"/>
       <source>Coolant</source>
-      <translation>冷却剤</translation>
+      <translation>冷却</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1189"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷却モード</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1220"/>
@@ -4089,7 +4089,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../InitGui.py" line="188"/>
       <source>Tool Commands</source>
-      <translation type="unfinished">Tool Commands</translation>
+      <translation>ツールコマンド</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="190"/>
@@ -4160,8 +4160,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
-      <source>Camotics Project (*.camotics)</source>
-      <translation type="unfinished">Camotics Project (*.camotics)</translation>
+      <source>CAMotics Project (*.camotics)</source>
+      <translation type="unfinished">CAMotics Project (*.camotics)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
@@ -4196,11 +4196,6 @@ Default: 3 mm</translation>
       <translation type="unfinished">Spindle RPM</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
-      <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="548"/>
       <source>Selected tool is not a drill</source>
       <translation type="unfinished">Selected tool is not a drill</translation>
@@ -4229,6 +4224,11 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Deburr.py" line="183"/>
       <source>Conventional</source>
       <translation type="unfinished">Conventional</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
+      <source>Choose a CAM Job</source>
+      <translation type="unfinished">Choose a CAM Job</translation>
     </message>
   </context>
   <context>
@@ -4285,13 +4285,13 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Base/SetupSheet.py" line="131"/>
       <location filename="../../../Path/Base/SetupSheet.py" line="413"/>
       <source>Coolant Modes</source>
-      <translation type="unfinished">Coolant Modes</translation>
+      <translation>冷却モード</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="137"/>
       <location filename="../../../Path/Base/SetupSheet.py" line="422"/>
       <source>Default coolant mode.</source>
-      <translation type="unfinished">Default coolant mode.</translation>
+      <translation>デフォルトの冷却モード</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="146"/>
@@ -4681,37 +4681,32 @@ Default: 3 mm</translation>
       <translation type="unfinished">Extra allowance from part bound box in positive Z direction</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation type="unfinished">Length of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation type="unfinished">Width of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation type="unfinished">Height of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation type="unfinished">Radius of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation type="unfinished">Height of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation type="unfinished">Internal representation of stock type</translation>
     </message>
@@ -4874,7 +4869,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="226"/>
       <source>Coolant mode for this operation</source>
-      <translation type="unfinished">Coolant mode for this operation</translation>
+      <translation>この工程の冷却モード</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="236"/>
@@ -4938,7 +4933,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="443"/>
       <source>Coolant option for this operation</source>
-      <translation type="unfinished">Coolant option for this operation</translation>
+      <translation>この工程の冷却オプション</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="80"/>
@@ -5141,7 +5136,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="162"/>
       <source>Angle of the zigzag pattern</source>
-      <translation type="unfinished">Angle of the zigzag pattern</translation>
+      <translation>ジグザグパターンの角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="168"/>
@@ -5208,8 +5203,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="134"/>
-      <source>Maximum distance before a miter join is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter join is truncated</translation>
+      <source>Maximum distance before a miter joint is truncated</source>
+      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="151"/>
@@ -5298,8 +5293,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="210"/>
-      <source>For arcs/circlular edges, offset the radius for the toolpath.</source>
-      <translation type="unfinished">For arcs/circlular edges, offset the radius for the toolpath.</translation>
+      <source>For arcs/circular edges, offset the radius for the toolpath.</source>
+      <translation type="unfinished">For arcs/circular edges, offset the radius for the toolpath.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="219"/>
@@ -5515,7 +5510,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="372"/>
       <source>Set thread&apos;s TPI (turns per inch) - used for imperial threads</source>
-      <translation type="unfinished">Set thread&apos;s TPI (turns per inch) - used for imperial threads</translation>
+      <translation>ねじのTPI（1インチあたりの山数）の設定。インチねじで使われます。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="381"/>
@@ -5540,7 +5535,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="412"/>
       <source>Operation to clear the inside of the thread</source>
-      <translation type="unfinished">Operation to clear the inside of the thread</translation>
+      <translation>ねじ山の内側をきれいにする操作</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="293"/>
@@ -5669,7 +5664,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Comment.py" line="41"/>
       <source>Comment or note for CNC program</source>
-      <translation type="unfinished">Comment or note for CNC program</translation>
+      <translation>CNCプログラムのコメントまたはメモ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="42"/>
@@ -5740,7 +5735,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="304"/>
       <source>The tool used by this controller</source>
-      <translation type="unfinished">The tool used by this controller</translation>
+      <translation>このコントローラーが使用するツール</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="41"/>
@@ -5774,12 +5769,12 @@ Default: 3 mm</translation>
       <translation type="unfinished">Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation type="unfinished">Unsupported stock type named {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation type="unfinished">Unsupported PathStock template version {}</translation>
     </message>
@@ -5914,8 +5909,8 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="786"/>
-      <source>No JOB</source>
-      <translation type="unfinished">No JOB</translation>
+      <source>No job</source>
+      <translation type="unfinished">No job</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="811"/>
@@ -6018,7 +6013,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2654"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation type="unfinished">Diameter dimension missing from ToolBit shape.</translation>
+      <translation>ツールビットシェイプにない直径寸法</translation>
     </message>
   </context>
   <context>
@@ -6054,7 +6049,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="103"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>ストック</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="106"/>
@@ -6091,13 +6086,13 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="114"/>
       <location filename="../../../Path/Op/Waterline.py" line="127"/>
       <source>CircularZigZag</source>
-      <translation type="unfinished">CircularZigZag</translation>
+      <translation>円形ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="115"/>
       <location filename="../../../Path/Op/Waterline.py" line="128"/>
       <source>Line</source>
-      <translation>直線</translation>
+      <translation>線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="116"/>
@@ -6115,7 +6110,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="118"/>
       <location filename="../../../Path/Op/Waterline.py" line="131"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="121"/>
@@ -6214,7 +6209,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="1040"/>
       <source>operation time is</source>
-      <translation type="unfinished">operation time is</translation>
+      <translation>工程時間:</translation>
     </message>
   </context>
   <context>
@@ -6223,7 +6218,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Gui/Array.py" line="142"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="205"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation type="unfinished">Make False, to prevent operation from generating code</translation>
+      <translation>生成されたコードの工程を止めるにはFalseにします。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="189"/>
@@ -6233,12 +6228,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="502"/>
       <source>Base Geometry</source>
-      <translation>ベースジオメトリー</translation>
+      <translation>ベースジオメトリ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="630"/>
       <source>Multiple operations are labeled as</source>
-      <translation type="unfinished">Multiple operations are labeled as</translation>
+      <translation>複数の工程が以下のようにラベル付けされています:</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="707"/>
@@ -6254,8 +6249,8 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Gui/Base.py" line="904"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation type="unfinished">FinalDepth cannot be modified for this operation.
-If it is necessary to set the FinalDepth manually please select a different operation.</translation>
+      <translation>この操作のためにFinalDepthを変更することができません。
+FinalDepthを手動で設定する必要がある場合は別の操作を選択してください。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="929"/>
@@ -6270,17 +6265,17 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1066"/>
       <source>AreaOp Operation</source>
-      <translation type="unfinished">AreaOp Operation</translation>
+      <translation>AreaOp工程</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1131"/>
       <source>Operation</source>
-      <translation>オペレーション</translation>
+      <translation>工程</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1198"/>
       <source>Uncreate AreaOp Operation</source>
-      <translation type="unfinished">Uncreate AreaOp Operation</translation>
+      <translation>AreaOp工程を破棄</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1337"/>
@@ -6341,8 +6336,8 @@ Aborting op creation</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="188"/>
-      <source>Invalid Gcode line: %s</source>
-      <translation type="unfinished">Invalid Gcode line: %s</translation>
+      <source>Invalid G-code line: %s</source>
+      <translation type="unfinished">Invalid G-code line: %s</translation>
     </message>
   </context>
   <context>
@@ -6361,7 +6356,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../InitGui.py" line="143"/>
       <source>Engraving Operations</source>
-      <translation type="unfinished">Engraving Operations</translation>
+      <translation>彫刻工程</translation>
     </message>
   </context>
   <context>
@@ -6369,7 +6364,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../InitGui.py" line="180"/>
       <source>3D Operations</source>
-      <translation type="unfinished">3D Operations</translation>
+      <translation>3D工程</translation>
     </message>
   </context>
   <context>
@@ -6446,7 +6441,7 @@ Aborting op creation</translation>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="81"/>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="155"/>
       <source>Extend</source>
-      <translation type="unfinished">Extend</translation>
+      <translation>延長</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="88"/>
@@ -6573,7 +6568,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="259"/>
       <source>Boundary</source>
-      <translation type="unfinished">Boundary</translation>
+      <translation>境界</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="263"/>
@@ -6611,7 +6606,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="562"/>
       <source>Tag</source>
-      <translation type="unfinished">Tag</translation>
+      <translation>タグ</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="565"/>
@@ -6804,7 +6799,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Op/Gui/Probe.py" line="106"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="294"/>
       <source>All Files (*.*)</source>
-      <translation>すべてのファイル (*.*)</translation>
+      <translation>全てのファイル (*.*)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="104"/>
@@ -6850,7 +6845,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="259"/>
       <source>Operation</source>
-      <translation>オペレーション</translation>
+      <translation>工程</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="262"/>
@@ -6891,7 +6886,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1069"/>
       <source>All Files (*.*)</source>
-      <translation>すべてのファイル (*.*)</translation>
+      <translation>全てのファイル (*.*)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1450"/>
@@ -6912,7 +6907,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
       <location filename="../../../Path/Main/Gui/Job.py" line="1746"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>警告</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1747"/>
@@ -6963,17 +6958,15 @@ For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema: 
-     &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
-Select a minute-based schema in preferences.
-For example:
-    &apos;Metric, Small Parts &amp; CNC&apos;
-    &apos;US Customary&apos;
-    &apos;Imperial Decimal&apos;</translation>
+      <translation>現在使用している単位系「{}」では
+1分間当たりの速さを設定できません。
+
+CNC工作機械に指令を送るGコードでは、送り速度を1分間当たりの速さで設定する必要があります。
+「設定」で1分間当たりの速さを設定できる単位系を選択してください。
+1分間当たりの速さを設定できる単位系の例：
+・パーツ、CNC工作機械（mm、mm/分）
+・米国慣用単位（in, lb）
+・帝国単位（in, lb）</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
@@ -7019,19 +7012,6 @@ For example:
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="383"/>
       <source>Unsupported stock type</source>
       <translation type="unfinished">Unsupported stock type</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_Camotics</name>
-    <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
-      <source>Camotics</source>
-      <translation type="unfinished">Camotics</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
-      <source>Simulate using Camotics</source>
-      <translation type="unfinished">Simulate using Camotics</translation>
     </message>
   </context>
   <context>
@@ -7110,7 +7090,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
       <source>Part Information</source>
-      <translation type="unfinished">Part Information</translation>
+      <translation>パーツ情報</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
@@ -7150,7 +7130,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
       <source>Operation</source>
-      <translation>オペレーション</translation>
+      <translation>工程</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
@@ -7173,9 +7153,19 @@ For example:
       <translation type="unfinished">Manufacturer</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
+      <source>Output (G-code)</source>
+      <translation type="unfinished">Output (G-code)</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
       <source>Part Number</source>
       <translation type="unfinished">Part Number</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
+      <source>Surface Speed HSS</source>
+      <translation type="unfinished">Surface Speed HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
@@ -7218,19 +7208,9 @@ For example:
       <translation type="unfinished">Setup Report for CAM Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
-      <source>Output (Gcode)</source>
-      <translation type="unfinished">Output (Gcode)</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Surface Speed Carbide</source>
       <translation type="unfinished">Surface Speed Carbide</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
-      <source>Surace Speed HSS</source>
-      <translation type="unfinished">Surace Speed HSS</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
@@ -7260,7 +7240,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷却モード</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
@@ -7275,7 +7255,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
       <source>CAD File</source>
-      <translation type="unfinished">CAD File</translation>
+      <translation>CADファイル</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
@@ -7418,28 +7398,28 @@ For example:
       <translation type="unfinished">CAM Simulator</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="311"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="367"/>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="635"/>
       <source>Simulate G-code on stock</source>
       <translation type="unfinished">Simulate G-code on stock</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="270"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="316"/>
       <source>High</source>
       <translation type="unfinished">High</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="272"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="318"/>
       <source>Low</source>
       <translation type="unfinished">Low</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="274"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="320"/>
       <source>Medium</source>
       <translation type="unfinished">Medium</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="307"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="363"/>
       <source>New CAM Simulator</source>
       <translation type="unfinished">New CAM Simulator</translation>
     </message>
@@ -7500,7 +7480,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="644"/>
       <source>No parent job found for operation.</source>
-      <translation type="unfinished">No parent job found for operation.</translation>
+      <translation>工程の親ジョブが見つかりません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="650"/>
@@ -7555,7 +7535,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="915"/>
       <source>Base object %s.%s rejected by operation</source>
-      <translation type="unfinished">Base object %s.%s rejected by operation</translation>
+      <translation>ベースオブジェクト %s.%s は操作によって拒否されました。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="117"/>
@@ -7599,7 +7579,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="188"/>
       <source>This operation requires a tool controller with a v-bit tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a v-bit tool</translation>
+      <translation>この工程にはvビットツールを持つツールコントローラが必要です。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="83"/>
@@ -7652,7 +7632,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="74"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>ドリルのヒント</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="75"/>
@@ -7713,7 +7693,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="71"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>ストック</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="117"/>
@@ -7748,7 +7728,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="69"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="70"/>
@@ -7758,7 +7738,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>ジグザグのオフセット</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
@@ -7811,7 +7791,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="255"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="258"/>
@@ -7992,7 +7972,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>ストック</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="453"/>
@@ -8032,7 +8012,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="464"/>
       <source>CircularZigZag</source>
-      <translation type="unfinished">CircularZigZag</translation>
+      <translation>円形ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="465"/>
@@ -8052,7 +8032,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="468"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ジグザグ線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="471"/>
@@ -8162,7 +8142,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="269"/>
       <source>Metric External (4G6G)</source>
-      <translation type="unfinished">Metric External (4G6G)</translation>
+      <translation>外部メトリック（4G6G）</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="273"/>
@@ -8387,7 +8367,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="177"/>
       <source>Waterline</source>
-      <translation>ウォーターライン</translation>
+      <translation>水準面線</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="178"/>
@@ -8551,8 +8531,8 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="881"/>
-      <source>Camotics tooltable (*.json)</source>
-      <translation type="unfinished">Camotics tooltable (*.json)</translation>
+      <source>CAMotics tooltable (*.json)</source>
+      <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>
   </context>
   <context>
@@ -8625,6 +8605,19 @@ For example:
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="480"/>
       <source>No library selected</source>
       <translation type="unfinished">No library selected</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Camotics</name>
+    <message>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
+      <source>CAMotics</source>
+      <translation type="unfinished">CAMotics</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
+      <source>Simulate using CAMotics</source>
+      <translation type="unfinished">Simulate using CAMotics</translation>
     </message>
   </context>
 </TS>

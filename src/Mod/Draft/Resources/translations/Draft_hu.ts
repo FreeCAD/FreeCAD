@@ -1602,6 +1602,7 @@ a szabványos mintákhoz hozzáadandó mintadefiníciókkal</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>Szövegek és méretek</translation>
     </message>
@@ -1623,7 +1624,7 @@ a szabványos mintákhoz hozzáadandó mintadefiníciókkal</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1994,41 +1995,31 @@ Ez az érték egy szegmens maximális hossza.</translation>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Ez a beállítás párbeszédpanel a DXF-fájlok importálása/exportálásakor jelenik meg</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Importálás és Exportálás alatt ezt a párbeszédpanelt mutassa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Python importőrt használnak, ellenkező esetben az újabb C++-t használják.
 Megjegyzés: A C++ importőr gyorsabb, de még nem olyan jellemző</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
-      <source>Use legacy python importer</source>
-      <translation>Használj örökölt python importálót</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Ha a lehetőséget választja, a Python exportőrt használja, ellenkező esetben egy újabb C++ exportőrt használ.
 Megjegyzés: A C++ exportőr gyorsabb, de még nem olyan funkcionális</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
-      <source>Use legacy python exporter</source>
-      <translation>Használj örökölt python exportálót</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -2037,104 +2028,89 @@ Ezt manuálisan is megteheti a "dxf_library" munkafelülettel
 a Kiegészítők kezelőjéből.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Engedélyezze a FreeCAD-hoz az automatikus DXF-könyvtárak letöltését és frissítését</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>Importálási beállítások</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>Importálás</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Ha nincs bejelölve, a szövegeket és az bekezdéseket nem importálja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
-      <source>texts and dimensions</source>
-      <translation>szövegek és méretek</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Ha nincs bejelölve, a pontokat nem importálja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>pontok</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Ha bejelölt, a papír területek tárgyait is importálja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
-      <source>layouts</source>
-      <translation>elrendezések</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Ha importálni szeretné a név nélküli blokkokat (*-al kezdődő) is</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation>*blokkok</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>Létrehozás</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Csak az általános alkatrész tárgyakat hozza létre (leggyorsabb)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
-      <source>simple Part shapes</source>
-      <translation>egyszerű alkatrész alakzatok</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Parametrikus tervrajt tárgyak jönnek létre, amikor csak lehetséges</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
       <translation>Tervezet tárgyak</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Vázlatok jönnek létre, amikor csak lehetséges</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>Vázlatok</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Importált fájlokra vonatkozó méretezési léptéktényező</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2145,116 +2121,136 @@ Példa: milliméterben lévő fájlokhoz: 1, centiméterben: 10,
                              méterben: 1000, hüvelykben: 25,4, lábban: 304,8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation>Az azonos rétegeken lévő tárgyakat összeköti tervrajz blokká, gyorsabb kijelzéshez, de így nehezebben szerkeszthető.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation>Exportált tárgyak kivetítése az aktuális nézeti irány mentén</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>A FreeCAD megpróbálja az egybeeső tárgyakat dróthálóba illeszteni.
 Ne feledje, hogy ez egy ideig is tart!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation>A színek a DXF-fájlban megadottak szerint lesznek beállítva, amikor csak lehetséges.
 Ellenkező esetben az alapértelmezett színeket alkalmazza.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation>Automatikus frissítés (csak régi importőr/exportőr esetén)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
+      <source>Use legacy Python importer</source>
+      <translation>Használj örökölt Python importálót</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
+      <source>Use legacy Python exporter</source>
+      <translation>Használj örökölt Python exportálót</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation>Néhány opció még nem érhető el az új importőr számára</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
+      <source>Layouts</source>
+      <translation>Elrendezések</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
+      <source>Simple Part shapes</source>
+      <translation>Egyszerű alkatrész alakzatok</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
       <translation>Színek használata a DXF fájlból</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
       <translation>Geometria csatlakoztatása</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
       <translation>Csoport rétegek tömbökké</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Az importált szövegek a szabványos tervrajz szöveg méretet kapják,
 a DXF-dokumentumban található méret helyett</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>Használja az alap betűméretet a szövegekhez</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Ha ez bejelölt, a DXF-rétegek tervrajz rétegekként kerülnek importálva</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>A straffozási minták egyszerű vonalakká alakulnak át</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Importálja a kitöltött határokat vonalként</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Ha a megadott vonalláncnak van szélesség meghatározva, 
 akkor összeolvasztja a vonalakat a megfelelő vastagság használatával</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation>Vonalláncok igazítása vastagsággal</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation>Néhány opció még nem áll rendelkezésre az új exportőr számára</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Ellipszis exportot kevésbé támogatja. Ennek segítségével exportálhatja vonalláncokként.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Ellipsziseket és görbe vonalakat vonalláncokként kezelje</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation>Max görbületi szegmens:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Az egyes vonalláncszegmensek maximális hossza.
@@ -2262,39 +2258,39 @@ Ha '0'-ra van állítva, a teljes csíkozást egyenes szakaszként kezeli.</tran
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>Exportálási beállítások</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
       <translation>Rétegek használata</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>A felületeket tartalmazó összes objektum 3D többfelületűként exportálja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>3D objektum exportálása többfelületű hálórajzzá</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>A műszaki rajz nézetek blokként exportálja.
 Ez sikertelen lehet a DXF R12 utáni sablonokon.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Rajz műszaki rajz nézetek exportálása blokkokként</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Az exportált objektumok kivetítve az aktuális nézet irányát tükrözik</translation>
     </message>
@@ -3435,25 +3431,6 @@ vagy próbáld meg alacsonyabb DWG verzióra menteni.</translation>
       <translation>A kijelölt alakzatoknak síkot kell meghatároznia</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>A DXF import/export könyvtárak szükségesek a FreeCAD részére
-a rendszerben nem található DXF formátum kezeléséhez.
-Kérem vagy a FreeCAD könyvtárak letöltésének engedélyezését:
-  1 - Tervrajz  munkafelület kiválasztása
-  2 - Szerkesztés menü &gt; Beállítások &gt; Import-Export &gt; DXF &gt; Letöltések bekapcsolása
-Vagy töltse le kézzel ezeket a könyvtárakat, itt leírtak szerint:
-https://github.com/yorikvanhavre/Draft-dxf-importer
-A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
-    </message>
-    <message>
       <location filename="../../WorkingPlane.py" line="1296"/>
       <location filename="../../WorkingPlane.py" line="1297"/>
       <location filename="../../WorkingPlane.py" line="1566"/>
@@ -3715,7 +3692,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="91"/>
       <source>Only Draft Lines and Wires can be joined</source>
-      <translation type="unfinished">Only Draft Lines and Wires can be joined</translation>
+      <translation>Csak a tervrajz vonalak és a vezetékek csatlakoztathatók</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="101"/>
@@ -4095,11 +4072,6 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
       <translation>Méretek megfordítása</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Vázlatot túl bonyolult szerkeszteni: azt javasoljuk, hogy használja vázlatkészítő alapértelmezett szerkesztőt</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Lekerekítés sugara</translation>
@@ -4328,8 +4300,8 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>Bezgörbe végpontja nem simítható</translation>
+      <source>Endpoint of Bézier curve can't be smoothed</source>
+      <translation>Bézier görbe végpontja nem simítható</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -4946,7 +4918,7 @@ A végső szög lesz az alapszög plusz ennek összege.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>Az élek nincsenek összekötve, vagy a sugár túl nagy.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
@@ -5572,12 +5544,36 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftobjects/layer.py" line="75"/>
       <source>changed 'Group' property type</source>
-      <translation type="unfinished">changed 'Group' property type</translation>
+      <translation>megváltoztatta a 'Csoport' tulajdonság típusát</translation>
     </message>
     <message>
       <location filename="../../draftobjects/layer.py" line="99"/>
       <source>updated view properties</source>
       <translation>frissített nézeti tulajdonságok</translation>
+    </message>
+    <message>
+      <location filename="../../importDXF.py" line="143"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation>A DXF import/export könyvtárak szükségesek a FreeCAD részére
+a rendszerben nem található DXF formátum kezeléséhez.
+Kérjük, engedélyezze, hogy a FreeCAD letöltse ezeket a könyvtárakat:
+  1 - Tervrajz  munkafelület kiválasztása
+  2 - Szerkesztés menü &gt; Beállítások &gt; Import-Export &gt; DXF &gt; Letöltések bekapcsolása
+Vagy töltse le kézzel ezeket a könyvtárakat, itt leírtak szerint:
+https://github.com/yorikvanhavre/Draft-dxf-importer
+A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
+      <translation>A vázlat túl bonyolult a szerkesztéshez: javasolt az alapértelmezett vázlatszerkesztő használata</translation>
     </message>
   </context>
   <context>
@@ -6412,10 +6408,10 @@ CTRL illesztéshez, a SHIFT a kényszerítéshez.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
       <source>Edits the active object.
-Press E or ALT+LeftClick to display context menu
+Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
       <translation>Az aktív tárgy szerkesztése.
-A helyi menü megjelenítéséhez nyomja le az E vagy az ALT+LeftClick billentyűkombinációt
+A helyi menü megjelenítéséhez nyomja le az E vagy az ALT+Balra kattintás billentyűkombinációt
 támogatott csomópontokon és támogatott tárgyakon.</translation>
     </message>
   </context>
@@ -6518,8 +6514,8 @@ Először hozzon létre egy csoportot az eszköz használatára.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
-      <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Jelöljön ki egy csoportot, amelyhez az összes tervrajz- és íves tárgyakat hozzá szeretné adni.</translation>
+      <source>Select a group to add all Draft and BIM objects to.</source>
+      <translation>Jelöljön ki egy csoportot, amelyhez az összes tervrajz- és BIM tárgyakat hozzá szeretné adni.</translation>
     </message>
   </context>
   <context>
@@ -7756,12 +7752,12 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="97"/>
       <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
+      <translation>A Vonalvágás és Felületvágás módhoz, ez a felületeket a vágási helynél meghagyja</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="103"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>Vonalszakaszok hosszai, ha mozaikos ellipsziseket vagy B-görbéket a vonalszakaszokba</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="109"/>

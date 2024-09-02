@@ -53,12 +53,14 @@ def get_psets(element):
     psets = [p.RelatingPropertyDefinition for p in psets]
     if not psets:
         psets = getattr(element, "HasProperties", [])
+    if not psets:
+        return result
     for pset in psets:
         pset_dict = {}
-        if pset.is_a("IfcPropertySet"):
+        if pset.is_a("IfcPropertySet") and pset.HasProperties:
             for prop in pset.HasProperties:
                 pset_dict[prop.Name] = str(prop.NominalValue)
-        if pset.is_a("IfcMaterialProperties"):
+        if pset.is_a("IfcMaterialProperties") and pset.Properties:
             for prop in pset.Properties:
                 pset_dict[prop.Name] = str(prop.NominalValue)
         elif pset.is_a("IfcElementQuantity"):

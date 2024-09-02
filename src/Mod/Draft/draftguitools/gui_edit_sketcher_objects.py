@@ -59,7 +59,7 @@ class SketcherSketchObjectGuiTools(GuiTools):
             return editpoints
         else:
             _wrn = translate("draft", "Sketch is too complex to edit: "
-                                    "it is suggested to use sketcher default editor")
+                                    "it is suggested to use the default Sketcher editor")
             App.Console.PrintWarning(_wrn + "\n")
             return None
 

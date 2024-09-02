@@ -421,15 +421,18 @@ class CommandAddonManager(QtCore.QObject):
                     "You must restart FreeCAD for changes to take effect.",
                 )
             )
-            m.setIcon(m.Warning)
-            m.setStandardButtons(m.Ok | m.Cancel)
-            m.setDefaultButton(m.Cancel)
+            m.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+            m.setStandardButtons(
+                QtWidgets.QMessageBox.StandardButton.Ok
+                | QtWidgets.QMessageBox.StandardButton.Cancel
+            )
+            m.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Cancel)
             ok_btn = m.button(QtWidgets.QMessageBox.StandardButton.Ok)
-            cancelBtn = m.button(QtWidgets.QMessageBox.StandardButton.Cancel)
+            cancel_btn = m.button(QtWidgets.QMessageBox.StandardButton.Cancel)
             ok_btn.setText(translate("AddonsInstaller", "Restart now"))
-            cancelBtn.setText(translate("AddonsInstaller", "Restart later"))
+            cancel_btn.setText(translate("AddonsInstaller", "Restart later"))
             ret = m.exec_()
-            if ret == m.Ok:
+            if ret == QtWidgets.QMessageBox.StandardButton.Ok:
                 # restart FreeCAD after a delay to give time to this dialog to close
                 QtCore.QTimer.singleShot(1000, utils.restart_freecad)
 
@@ -731,7 +734,7 @@ class CommandAddonManager(QtCore.QObject):
         self.do_next_startup_phase()
 
     def show_python_updates_dialog(self) -> None:
-        if not hasattr(self, "manage_python_packages_dialog"):
+        if not self.manage_python_packages_dialog:
             self.manage_python_packages_dialog = PythonPackageManager(self.item_model.repos)
         self.manage_python_packages_dialog.show()
 

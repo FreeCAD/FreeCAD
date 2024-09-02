@@ -206,7 +206,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "For arcs/circlular edges, offset the radius for the toolpath.",
+                    "For arcs/circular edges, offset the radius for the toolpath.",
                 ),
             ),
             (

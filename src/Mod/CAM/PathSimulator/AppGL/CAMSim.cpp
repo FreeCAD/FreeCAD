@@ -20,10 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include "PreCompiled.h"  // NOLINT
+#ifndef _PreComp_
+#include <string>
+#include <vector>
+#endif
+
 #include "CAMSim.h"
 #include "DlgCAMSimulator.h"
-#include <stdio.h>
+#include <Mod/Part/App/BRepMesh.h>
+
 
 
 using namespace Base;
@@ -31,25 +37,9 @@ using namespace CAMSimulator;
 
 TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
 
-#define MAX_GCODE_LINE_LEN 120
-
-CAMSim::CAMSim()
-{}
-
-CAMSim::~CAMSim()
-{}
-
-void CAMSim::BeginSimulation(Part::TopoShape* stock, float quality)
+void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 {
-    Base::BoundBox3d bbox = stock->getBoundBox();
-    SimStock stk = {(float)bbox.MinX,
-                    (float)bbox.MinY,
-                    (float)bbox.MinZ,
-                    (float)bbox.LengthX(),
-                    (float)bbox.LengthY(),
-                    (float)bbox.LengthZ(),
-                    quality};
-    DlgCAMSimulator::GetInstance()->startSimulation(&stk, quality);
+    DlgCAMSimulator::GetInstance()->startSimulation(stock, quality);
 }
 
 void CAMSimulator::CAMSim::resetSimulation()
@@ -57,12 +47,21 @@ void CAMSimulator::CAMSim::resetSimulation()
     DlgCAMSimulator::GetInstance()->resetSimulation();
 }
 
-void CAMSim::addTool(const std::vector<float> toolProfilePoints,
+void CAMSim::addTool(const std::vector<float> &toolProfilePoints,
                      int toolNumber,
                      float diameter,
                      float resolution)
 {
     DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
+}
+
+void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float resolution)
+{
+    if (baseShape.isNull()) {
+        return;
+    }
+
+    DlgCAMSimulator::GetInstance()->SetBaseShape(baseShape, resolution);
 }
 
 void CAMSim::AddCommand(Command* cmd)

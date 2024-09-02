@@ -34,41 +34,35 @@ using namespace Measure;
 PROPERTY_SOURCE(Measure::MeasureArea, Measure::MeasureBase)
 
 
-
 MeasureArea::MeasureArea()
 {
-    ADD_PROPERTY_TYPE(Elements,(nullptr), "Measurement", App::Prop_None, "Element to get the area from");
+    ADD_PROPERTY_TYPE(Elements,
+                      (nullptr),
+                      "Measurement",
+                      App::Prop_None,
+                      "Element to get the area from");
     Elements.setScope(App::LinkScope::Global);
     Elements.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Area,(0.0), "Measurement", App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                            "Area of element");
-
+    ADD_PROPERTY_TYPE(Area,
+                      (0.0),
+                      "Measurement",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Area of element");
 }
 
 MeasureArea::~MeasureArea() = default;
 
 
-bool MeasureArea::isValidSelection(const App::MeasureSelection& selection){
+bool MeasureArea::isValidSelection(const App::MeasureSelection& selection)
+{
 
     if (selection.empty()) {
         return false;
     }
 
     for (auto element : selection) {
-        auto objT = element.object;
-        
-        App::DocumentObject* ob = objT.getObject();
-        const std::string& subName = objT.getSubName();
-        const char* className = objT.getSubObject()->getTypeId().getName();
-        std::string mod = Base::Type::getModuleName(className);
-
-        if (!hasGeometryHandler(mod)) {
-            return false;
-        }
-
-        App::MeasureHandler handler = App::MeasureManager::getMeasureHandler(mod.c_str());
-        App::MeasureElementType type = handler.typeCb(ob, subName.c_str());
+        auto type = App::MeasureManager::getMeasureElementType(element);
 
         if (type == App::MeasureElementType::INVALID) {
             return false;
@@ -82,7 +76,8 @@ bool MeasureArea::isValidSelection(const App::MeasureSelection& selection){
     return true;
 }
 
-void MeasureArea::parseSelection(const App::MeasureSelection& selection) {
+void MeasureArea::parseSelection(const App::MeasureSelection& selection)
+{
     // Set properties from selection, method is only invoked when isValid Selection returns true
 
     std::vector<App::DocumentObject*> objects;
@@ -99,7 +94,7 @@ void MeasureArea::parseSelection(const App::MeasureSelection& selection) {
 }
 
 
-App::DocumentObjectExecReturn *MeasureArea::execute()
+App::DocumentObjectExecReturn* MeasureArea::execute()
 {
     recalculateArea();
     return DocumentObject::StdReturn;
@@ -113,20 +108,13 @@ void MeasureArea::recalculateArea()
     double result(0.0);
 
     // Loop through Elements and call the valid geometry handler
-    for (std::vector<App::DocumentObject*>::size_type i=0; i<objects.size(); i++) {
-        App::DocumentObject *object = objects.at(i);
-        std::string subElement = subElements.at(i);
+    for (std::vector<App::DocumentObject*>::size_type i = 0; i < objects.size(); i++) {
+        App::SubObjectT subject {objects.at(i), subElements.at(i).c_str()};
 
-        // Get the Geometry handler based on the module
-        const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
-        const std::string& mod = Base::Type::getModuleName(className);
-        auto handler = getGeometryHandler(mod);
-        if (!handler) {
-            throw Base::RuntimeError("No geometry handler available for submitted element type");
+        auto info = getMeasureInfo(subject);
+        if (!info || !info->valid) {
+            continue;
         }
-
-        App::SubObjectT subject{object, subElement.c_str()};
-        auto info = handler(subject);
         auto areaInfo = std::dynamic_pointer_cast<Part::MeasureAreaInfo>(info);
         result += areaInfo->area;
     }
@@ -143,12 +131,13 @@ void MeasureArea::onChanged(const App::Property* prop)
     if (prop == &Elements) {
         recalculateArea();
     }
-    
+
     MeasureBase::onChanged(prop);
 }
 
 
-Base::Placement MeasureArea::getPlacement() {
+Base::Placement MeasureArea::getPlacement()
+{
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();
 
@@ -156,18 +145,12 @@ Base::Placement MeasureArea::getPlacement() {
         return Base::Placement();
     }
 
-    App::DocumentObject* object = objects.front();
-    std::string subElement = subElements.front();
-    const char* className = object->getSubObject(subElement.c_str())->getTypeId().getName();
-    const std::string& mod = Base::Type::getModuleName(className);
+    App::SubObjectT subject {objects.front(), subElements.front().c_str()};
 
-    auto handler = getGeometryHandler(mod);
-    if (!handler) {
-        throw Base::RuntimeError("No geometry handler available for submitted element type");
+    auto info = getMeasureInfo(subject);
+    if (!info) {
+        return {};
     }
-
-    App::SubObjectT subject{object, subElement.c_str()};
-    auto info = handler(subject);
     auto areaInfo = std::dynamic_pointer_cast<Part::MeasureAreaInfo>(info);
     return areaInfo->placement;
 }

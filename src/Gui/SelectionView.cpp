@@ -159,12 +159,12 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
             str << subName;
             */
             /* Remove the history from the displayed subelement name */
-            std::pair<std::string, std::string> elementName;
+            App::ElementNamePair elementName;
             App::GeoFeature::resolveElement(obj, subName, elementName);
-            str << elementName.second.c_str();  // Use the shortened element name not the full one.
+            str << elementName.oldName.c_str();  // Use the shortened element name not the full one.
             /* Mark it visually if there was a history as a "tell" for if a given selection has TNP
              * fixes in it. */
-            if (elementName.first.size() > 0) {
+            if (elementName.newName.size() > 0) {
                 str << " []";
             }
             auto subObj = obj->getSubObject(subName);

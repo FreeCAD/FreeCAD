@@ -453,7 +453,7 @@ void DrawViewPart::postHlrTasks()
         }
     }
 
-    //second pass if required
+    // rescale if view doesn't fit on page
     if (ScaleType.isValue("Automatic") && !checkFit()) {
         double newScale = autoScale();
         Scale.setValue(newScale);

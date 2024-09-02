@@ -36,14 +36,14 @@ import FreeCADGui
 
 from femguiutils import selection_widgets
 
-from femtools import femutils
 from femtools import membertools
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def __init__(self, obj):
-        self.obj = obj
+        super().__init__(obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/BodyHeatSource.ui"
@@ -84,7 +84,7 @@ class _TaskPanel:
         if analysis is not None:
             self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         if self._mesh is not None:
-            self._part = femutils.get_part_to_mesh(self._mesh)
+            self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
 
@@ -98,8 +98,7 @@ class _TaskPanel:
     def reject(self):
         self.restore_visibility()
         self.selection_widget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        return super().reject()
 
     def accept(self):
         self.obj.References = self.selection_widget.references
@@ -107,11 +106,9 @@ class _TaskPanel:
         self.obj.TotalPower = self.total_power
         self.obj.Mode = self.mode
 
-        self.obj.Document.recompute()
         self.selection_widget.finish_selection()
-        FreeCADGui.ActiveDocument.resetEdit()
         self.restore_visibility()
-        return True
+        return super().accept()
 
     def restore_visibility(self):
         if self._mesh is not None and self._part is not None:

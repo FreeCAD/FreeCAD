@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #include <App/Application.h>
+#include <App/MeasureManager.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
@@ -72,6 +73,11 @@ PyMOD_INIT_FUNC(Mesh)
     Base::Interpreter().addType(&Mesh::MeshFeaturePy::Type,meshModule,"Feature");
 
     Mesh::Extension3MFFactory::addProducer(new Mesh::GuiExtension3MFProducer);
+
+    // This registration is sufficient to allow to measure free distances with a mesh
+    App::MeasureManager::addMeasureHandler("Mesh", [](App::DocumentObject*, const char*) {
+        return App::MeasureElementType::INVALID;
+    });
 
     // init Type system
     Mesh::PropertyNormalList    ::init();

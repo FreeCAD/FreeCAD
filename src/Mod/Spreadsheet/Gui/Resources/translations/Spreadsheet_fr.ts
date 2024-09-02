@@ -662,8 +662,8 @@ créée si elle n'existe pas.</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Texte pour l'unité</translation>
+      <source>Text for the unit</source>
+      <translation>Texte pour l'unité de mesure</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -727,12 +727,12 @@ créée si elle n'existe pas.</translation>
       <translation>Le copier-coller a échoué</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>L'alias contient des caractères invalides !</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>La cellule est désignée par un alias, par exemple
@@ -1127,12 +1127,12 @@ Par défaut : %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Exporter au format PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>Fichier PDF</translation>
     </message>
@@ -1165,7 +1165,7 @@ Par défaut : %V = %A
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
       <source>Unnamed</source>
-      <translation>Sans nom</translation>
+      <translation>Nouveau</translation>
     </message>
   </context>
 </TS>

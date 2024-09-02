@@ -493,7 +493,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         pathlist = []
         pathlist.append(Path.Command("(starting)"))
 
-        # iterate over each face separatedly
+        # iterate over each face separately
         for face, wires in self.buildMedialWires(obj, faces).items():
 
             geom = _Geometry.FromObj(obj, self.model[0])

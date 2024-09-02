@@ -23,7 +23,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>This section let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
+         <string>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -199,7 +199,7 @@
      <property name="title">
       <string>Tree view</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout" columnstretch="2,1">
+     <layout class="QGridLayout" name="gridLayout1" columnstretch="2,1">
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideInternalNamesCheckBox">
         <property name="toolTip">
@@ -207,6 +207,9 @@
         </property>
         <property name="text">
          <string>Hide Internal Names</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideInternalNames</cstring>
@@ -293,10 +296,13 @@
       <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="showVisibilityIconCheckBox">
         <property name="toolTip">
-         <string>If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled.</string>
+         <string>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
         </property>
         <property name="text">
          <string>Show visibility icon</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>VisibilityIcon</cstring>
@@ -314,6 +320,9 @@
         <property name="text">
          <string>Hide header</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideHeaderView</cstring>
         </property>
@@ -330,6 +339,9 @@
         <property name="text">
          <string>Hide scroll bar</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideScrollBar</cstring>
         </property>
@@ -345,6 +357,9 @@
         </property>
         <property name="text">
          <string>Hide description</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>HideColumn</cstring>
@@ -370,6 +385,9 @@
         </property>
         <property name="text">
          <string>Hide tab bar</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayHideTabBar</cstring>
@@ -419,6 +437,9 @@
         <property name="text">
          <string>Auto hide in non 3D view</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayAutoView</cstring>
         </property>
@@ -435,6 +456,9 @@
         <property name="text">
          <string>Auto mouse pass through</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayAutoMouseThrough</cstring>
         </property>
@@ -450,6 +474,9 @@
         </property>
         <property name="text">
          <string>Auto mouse wheel pass through</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DockOverlayWheelPassThrough</cstring>

@@ -356,7 +356,7 @@ void CmdTechDrawView::activated(int iMsg)
         else if (DrawGuiUtil::isArchSection(obj)) {
             std::string FeatName = getUniqueObjectName("ArchView");
             std::string SourceName = obj->getNameInDocument();
-            openCommand(QT_TRANSLATE_NOOP("Command", "Create ArchView"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create BIM View"));
             doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewArch', '%s')",
                 FeatName.c_str());
             doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewArch', 'ArchView', '%s')",
@@ -545,11 +545,13 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     std::vector<App::DocumentObject*> xShapesFromBase;
     std::vector<App::DocumentObject*> baseViews =
         getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
+    TechDraw::DrawViewPart* dvp{nullptr};
     if (!baseViews.empty()) {
-        TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseViews.begin());
+        dvp = static_cast<TechDraw::DrawViewPart*>(*baseViews.begin());
         shapesFromBase = dvp->Source.getValues();
         xShapesFromBase = dvp->XSource.getValues();
     }
+
 
     // get the shape objects from the selection
     std::vector<App::DocumentObject*> shapes;
@@ -560,12 +562,13 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
     shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
 
-    if (shapes.empty() &&
-        xShapes.empty()) {
+    if (!dvp || (shapes.empty() && xShapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
             QObject::tr("Please select objects to break or a base view and break definition objects."));
         return;
     }
+
+    auto doc = dvp->getDocument();
 
     // pick the Break objects out of the selected pile
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
@@ -574,8 +577,26 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     std::vector<App::DocumentObject*> breakObjects;
     for (auto& selObj : selection) {
         auto temp = selObj.getObject();
-        if (DrawBrokenView::isBreakObject(*temp)) {
-            breakObjects.push_back(selObj.getObject());
+        // a sketch outside a body is returned as an independent object in the selection
+        if (selObj.getSubNames().empty()) {
+            if (DrawBrokenView::isBreakObject(*temp)) {
+                breakObjects.push_back(selObj.getObject());
+            }
+            continue;
+        }
+        // a sketch inside a body is returned as body + subelement, so we have to search through
+        // subnames to find it.  This may(?) apply to App::Part and Group also?
+        auto subname = selObj.getSubNames().front();
+        if (subname.back() == '.') {
+            subname = subname.substr(0, subname.length() - 1);
+            auto objects = doc->getObjects();
+            for (auto& obj : objects) {
+                std::string objname{obj->getNameInDocument()};
+                if (subname == objname  &&
+                    DrawBrokenView::isBreakObject(*obj)) {
+                    breakObjects.push_back(obj);
+                }
+            }
         }
     }
     if (breakObjects.empty()) {
@@ -627,8 +648,6 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
 
     commitCommand();
-
-//    Gui::Control().showDialog(new TaskDlgBrokenView(dbv));
 
     dbv->recomputeFeature();
 }
@@ -834,8 +853,8 @@ CmdTechDrawComplexSection::CmdTechDrawComplexSection() : Command("TechDraw_Compl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Complex Section");
-    sToolTipText = QT_TR_NOOP("Insert a Complex Section");
+    sMenuText = QT_TR_NOOP("Insert Complex Section View");
+    sToolTipText = QT_TR_NOOP("Insert a Complex Section View");
     sWhatsThis = "TechDraw_ComplexSection";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ComplexSection";
@@ -1601,8 +1620,8 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Arch Workbench Object");
-    sToolTipText = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
+    sMenuText = QT_TR_NOOP("Insert BIM Workbench Object");
+    sToolTipText = QT_TR_NOOP("Insert a View of a Section Plane from BIM Workbench");
     sWhatsThis = "TechDraw_NewArch";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ArchView";
@@ -1629,13 +1648,13 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
     if (archCount > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Please select only 1 Arch Section."));
+                             QObject::tr("Please select only 1 BIM Section."));
         return;
     }
 
     if (!archObject) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No Arch Sections in selection."));
+                             QObject::tr("No BIM Sections in selection."));
         return;
     }
 
@@ -1819,7 +1838,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     }
 
     std::string PageName = page->getNameInDocument();
-    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),

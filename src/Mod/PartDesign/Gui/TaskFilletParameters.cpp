@@ -95,7 +95,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
         this, &TaskFilletParameters::doubleClicked);
 
-    if (strings.size() == 0)
+    if (strings.empty())
         setSelectionMode(refSel);
     else
         hideOnError();
@@ -115,13 +115,16 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
 {
-    if (checked)
-        setSelectionMode(none);
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
-    ui->buttonRefSel->setEnabled(!checked);
-    ui->listWidgetReferences->setEnabled(!checked);
-    pcFillet->UseAllEdges.setValue(checked);
-    pcFillet->getDocument()->recomputeFeature(pcFillet);
+    if (auto fillet = getObject<PartDesign::Fillet>()) {
+        if (checked) {
+            setSelectionMode(none);
+        }
+
+        ui->buttonRefSel->setEnabled(!checked);
+        ui->listWidgetReferences->setEnabled(!checked);
+        fillet->UseAllEdges.setValue(checked);
+        fillet->recomputeFeature();
+    }
 }
 
 void TaskFilletParameters::setButtons(const selectionModes mode)
@@ -142,13 +145,14 @@ void TaskFilletParameters::onAddAllEdges()
 
 void TaskFilletParameters::onLengthChanged(double len)
 {
-    setSelectionMode(none);
-    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
-    setupTransaction();
-    pcFillet->Radius.setValue(len);
-    pcFillet->getDocument()->recomputeFeature(pcFillet);
-    // hide the fillet if there was a computation error
-    hideOnError();
+    if (auto fillet = getObject<PartDesign::Fillet>()) {
+        setSelectionMode(none);
+        setupTransaction();
+        fillet->Radius.setValue(len);
+        fillet->recomputeFeature();
+        // hide the fillet if there was a computation error
+        hideOnError();
+    }
 }
 
 double TaskFilletParameters::getLength() const
@@ -209,20 +213,12 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters() = default;
 
 //==== calls from the TaskView ===============================================================
 
-
-//void TaskDlgFilletParameters::open()
-//{
-//    // a transaction is already open at creation time of the fillet
-//    if (!Gui::Command::hasPendingCommand()) {
-//        QString msg = tr("Edit fillet");
-//        Gui::Command::openCommand((const char*)msg.toUtf8());
-//    }
-//}
 bool TaskDlgFilletParameters::accept()
 {
-    auto obj = vp->getObject();
-    if (!obj->isError())
+    auto obj = getObject();
+    if (!obj->isError()) {
         parameter->showObject();
+    }
 
     parameter->apply();
 

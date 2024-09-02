@@ -128,8 +128,11 @@ void TaskLoftParameters::updateUI()
 {
     // we must assure the changed loft is kept visible on section changes,
     // see https://forum.freecad.org/viewtopic.php?f=3&t=63252
-    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
-    vp->makeTemporaryVisible(!loft->Sections.getValues().empty());
+    auto loft = getObject<PartDesign::Loft>();
+    if (loft) {
+        auto view = getViewObject();
+        view->makeTemporaryVisible(!loft->Sections.getValues().empty());
+    }
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -173,11 +176,11 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
 
     if (msg.Type == Gui::SelectionChanges::AddSelection && selectionMode != none) {
 
-        if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
+        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
+        const char* fname = getObject()->getNameInDocument();
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
 
@@ -185,11 +188,13 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
         //supported, not individual edges of a part
 
         //change the references
-        PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
-        App::DocumentObject* obj = loft->getDocument()->getObject(msg.pObjectName);
+        auto loft = getObject<PartDesign::Loft>();
+        App::Document* doc = loft->getDocument();
+        App::DocumentObject* obj = doc->getObject(msg.pObjectName);
 
         if (selectionMode == refProfile) {
-            static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Profile, false);
+            auto view = getViewObject<ViewProviderLoft>();
+            view->highlightReferences(ViewProviderLoft::Profile, false);
             loft->Profile.setValue(obj, {msg.pSubName});
             return true;
         }
@@ -199,18 +204,18 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
             std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
 
             if (selectionMode == refAdd) {
-                if (f == refs.end())
-                    loft->Sections.addValue(obj, {msg.pSubName});
-                else
+                if (f != refs.end()) {
                     return false; // duplicate selection
+                }
+
+                loft->Sections.addValue(obj, {msg.pSubName});
             }
             else if (selectionMode == refRemove) {
-                if (f != refs.end())
-                    // Removing just the object this way instead of `refs.erase` and
-                    // `setValues(ref)` cleanly ensures subnames are preserved.
-                    loft->Sections.removeValue(obj);
-                else
+                if (f == refs.end()) {
                     return false;
+                }
+
+                loft->Sections.removeValue(obj);
             }
 
             return true;
@@ -241,17 +246,16 @@ void TaskLoftParameters::onDeleteSection()
         delete item;
 
         // search inside the list of sections
-        PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
-        std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
-        App::DocumentObject* obj = loft->getDocument()->getObject(data.constData());
-        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
-        if (f != refs.end()) {
-            // Removing just the object this way instead of `refs.erase` and
-            // `setValues(ref)` cleanly ensures subnames are preserved.
-            loft->Sections.removeValue(obj);
+        if (auto loft = getObject<PartDesign::Loft>()) {
+            std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
+            App::DocumentObject* obj = loft->getDocument()->getObject(data.constData());
+            std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+            if (f != refs.end()) {
+                loft->Sections.removeValue(obj);
 
-            recomputeFeature();
-            updateUI();
+                recomputeFeature();
+                updateUI();
+            }
         }
     }
 }
@@ -259,31 +263,36 @@ void TaskLoftParameters::onDeleteSection()
 void TaskLoftParameters::indexesMoved()
 {
     QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
-    if (!model)
+    if (!model) {
         return;
-
-    PartDesign::Loft* loft = static_cast<PartDesign::Loft*>(vp->getObject());
-    auto originals = loft->Sections.getSubListValues();
-
-    int rows = model->rowCount();
-    for (int i = 0; i < rows; i++) {
-        QModelIndex index = model->index(i, 0);
-        originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
     }
 
-    loft->Sections.setSubListValues(originals);
-    recomputeFeature();
-    updateUI();
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        auto originals = loft->Sections.getSubListValues();
+
+        int rows = model->rowCount();
+        for (int i = 0; i < rows; i++) {
+            QModelIndex index = model->index(i, 0);
+            originals[i] = index.data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>();
+        }
+
+        loft->Sections.setSubListValues(originals);
+        recomputeFeature();
+        updateUI();
+    }
 }
 
 void TaskLoftParameters::clearButtons(const selectionModes notThis)
 {
-    if (notThis != refProfile)
+    if (notThis != refProfile) {
         ui->buttonProfileBase->setChecked(false);
-    if (notThis != refAdd)
+    }
+    if (notThis != refAdd) {
         ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove)
+    }
+    if (notThis != refRemove) {
         ui->buttonRefRemove->setChecked(false);
+    }
 }
 
 void TaskLoftParameters::exitSelectionMode()
@@ -297,62 +306,52 @@ void TaskLoftParameters::changeEvent(QEvent * /*e*/)
 {
 }
 
-void TaskLoftParameters::onClosed(bool val) {
-    static_cast<PartDesign::Loft*>(vp->getObject())->Closed.setValue(val);
-    recomputeFeature();
+void TaskLoftParameters::onClosed(bool val)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Closed.setValue(val);
+        recomputeFeature();
+    }
 }
 
-void TaskLoftParameters::onRuled(bool val) {
-    static_cast<PartDesign::Loft*>(vp->getObject())->Ruled.setValue(val);
-    recomputeFeature();
+void TaskLoftParameters::onRuled(bool val)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Ruled.setValue(val);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::setSelectionMode(selectionModes mode, bool checked)
+{
+    if (checked) {
+        clearButtons(mode);
+        Gui::Selection().clearSelection();
+        selectionMode = mode;
+        this->blockSelection(false);
+    }
+    else {
+        Gui::Selection().clearSelection();
+        selectionMode = none;
+    }
+
+    auto view = getViewObject<ViewProviderLoft>();
+    view->highlightReferences(ViewProviderLoft::Both, checked);
 }
 
 void TaskLoftParameters::onProfileButton(bool checked)
 {
-    if (checked) {
-        clearButtons(refProfile);
-        Gui::Selection().clearSelection();
-        selectionMode = refProfile;
-        this->blockSelection(false);
-        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, true);
-    }
-    else {
-        Gui::Selection().clearSelection();
-        selectionMode = none;
-        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
-    }
+    setSelectionMode(refProfile, checked);
 }
 
 void TaskLoftParameters::onRefButtonAdd(bool checked)
 {
-    if (checked) {
-        clearButtons(refAdd);
-        Gui::Selection().clearSelection();
-        selectionMode = refAdd;
-        this->blockSelection(false);
-        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, true);
-    }
-    else {
-        Gui::Selection().clearSelection();
-        selectionMode = none;
-        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
-    }
+    setSelectionMode(refAdd, checked);
 }
 
 void TaskLoftParameters::onRefButtonRemove(bool checked)
 {
-    if (checked) {
-        clearButtons(refRemove);
-        Gui::Selection().clearSelection();
-        selectionMode = refRemove;
-        this->blockSelection(false);
-        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, true);
-    }
-    else {
-        Gui::Selection().clearSelection();
-        selectionMode = none;
-        static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
-    }
+    setSelectionMode(refRemove, checked);
 }
 
 
@@ -375,17 +374,18 @@ TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;
 
 bool TaskDlgLoftParameters::accept()
 {
-    PartDesign::Loft* pcLoft = static_cast<PartDesign::Loft*>(vp->getObject());
-    static_cast<ViewProviderLoft*>(vp)->highlightReferences(ViewProviderLoft::Both, false);
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        getViewObject<ViewProviderLoft>()->highlightReferences(ViewProviderLoft::Both, false);
 
-    // First verify that the loft can be built and then hide the sections as otherwise
-    // they will remain hidden if the loft's recompute fails
-    if (TaskDlgSketchBasedParameters::accept()) {
-        for (App::DocumentObject* obj : pcLoft->Sections.getValues()) {
-            Gui::cmdAppObjectHide(obj);
+        // First verify that the loft can be built and then hide the sections as otherwise
+        // they will remain hidden if the loft's recompute fails
+        if (TaskDlgSketchBasedParameters::accept()) {
+            for (App::DocumentObject* obj : loft->Sections.getValues()) {
+                Gui::cmdAppObjectHide(obj);
+            }
+
+            return true;
         }
-
-        return true;
     }
 
     return false;

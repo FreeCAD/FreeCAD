@@ -46,7 +46,7 @@
            <cstring>UseStandardMystranLocation</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/mystran</cstring>
+           <cstring>Mod/Fem/Mystran</cstring>
           </property>
          </widget>
         </item>
@@ -99,10 +99,10 @@
            <string>Leave blank to use default Mystran binary file location</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>MystranBinaryPath</cstring>
+           <cstring>mystranBinaryPath</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/mystran</cstring>
+           <cstring>Mod/Fem/Mystran</cstring>
           </property>
          </widget>
         </item>
@@ -125,7 +125,7 @@
            <cstring>writeCommentsToInputFile</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/mystran</cstring>
+           <cstring>Mod/Fem/Mystran</cstring>
           </property>
          </widget>
         </item>

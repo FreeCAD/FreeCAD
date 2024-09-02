@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
-      <source>Fit B-Spline</source>
+      <source>Fit B-spline</source>
       <translation>Ajustar B-Spline</translation>
     </message>
     <message>

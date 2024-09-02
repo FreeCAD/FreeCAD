@@ -887,7 +887,7 @@ CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Select unconstrained DoF");
+    sMenuText = QT_TR_NOOP("Select under-constrained elements");
     sToolTipText = QT_TR_NOOP("Select geometrical elements where the solver still detects "
                               "unconstrained degrees of freedom.");
     sWhatsThis = "Sketcher_SelectElementsWithDoFs";
@@ -1107,7 +1107,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSymmetry(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerSymmetry>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }
@@ -1387,7 +1387,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
         int GeoId;
         Sketcher::PointPos PosId;
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-        if (Obj->getGeometry(GeoId)->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+        if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
             LastPointPos = PosId;
         }
@@ -1440,7 +1440,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
 */
 
     ActivateHandler(getActiveGuiDocument(),
-                    new DrawSketchHandlerCopy(geoIdList, LastGeoId, LastPointPos, geoids, op));
+                    std::make_unique<DrawSketchHandlerCopy>(geoIdList, LastGeoId, LastPointPos, geoids, op));
 }
 
 
@@ -1990,7 +1990,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
         int GeoId;
         Sketcher::PointPos PosId;
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-        if (Obj->getGeometry(GeoId)->getTypeId() != Part::GeomPoint::getClassTypeId()) {
+        if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
             LastPointPos = PosId;
         }
@@ -2031,7 +2031,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
     if (slad.exec() == QDialog::Accepted) {
         ActivateHandler(getActiveGuiDocument(),
-                        new DrawSketchHandlerRectangularArray(geoIdList,
+                        std::make_unique<DrawSketchHandlerRectangularArray>(geoIdList,
                                                               LastGeoId,
                                                               LastPointPos,
                                                               geoids,
@@ -2363,13 +2363,13 @@ void CmdSketcherOffset::activated(int iMsg)
     }
 
     if (listOfGeoIds.size() != 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOffset(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerOffset>(listOfGeoIds));
     }
     else {
         getSelection().clearSelection();
         Gui::NotifyUserError(Obj,
             QT_TRANSLATE_NOOP("Notifications", "Invalid selection"),
-            QT_TRANSLATE_NOOP("Notifications", "Selection has no valid geometries. BSplines, Points are not supported yet."));
+            QT_TRANSLATE_NOOP("Notifications", "Selection has no valid geometries. B-splines and points are not supported yet."));
     }
 }
 
@@ -2402,7 +2402,7 @@ void CmdSketcherRotate::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRotate(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerRotate>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }
@@ -2436,7 +2436,7 @@ void CmdSketcherScale::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerScale(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerScale>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }
@@ -2470,7 +2470,7 @@ void CmdSketcherTranslate::activated(int iMsg)
     std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
 
     if (!listOfGeoIds.empty()) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerTranslate(listOfGeoIds));
+        ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerTranslate>(listOfGeoIds));
     }
     getSelection().clearSelection();
 }

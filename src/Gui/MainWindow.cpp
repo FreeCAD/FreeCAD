@@ -52,6 +52,7 @@
 # include <QToolBar>
 # include <QUrlQuery>
 # include <QWhatsThis>
+# include <QWindow>
 # include <QPushButton>
 #endif
 
@@ -1556,16 +1557,16 @@ void MainWindow::hideEvent(QHideEvent* e)
     QMainWindow::hideEvent(e);
 }
 
-void MainWindow::processMessages(const QList<QByteArray> & msg)
+void MainWindow::processMessages(const QList<QString> & msg)
 {
     // handle all the messages to open files
     try {
         WaitCursor wc;
         std::list<std::string> files;
-        QByteArray action("OpenFile:");
+        QString action = QString::fromStdString("OpenFile:");
         for (const auto & it : msg) {
             if (it.startsWith(action))
-                files.emplace_back(it.mid(action.size()).constData());
+                files.emplace_back(it.mid(action.size()).toStdString());
         }
         files = App::Application::processFiles(files);
         for (const auto & file : files) {
@@ -1583,7 +1584,7 @@ void MainWindow::delayedStartup()
     if (App::Application::Config()["RunMode"] == "Internal") {
         QTimer::singleShot(1000, this, []{
             try {
-                Base::Interpreter().runString(
+                    string command =
                     "import sys\n"
                     "import FreeCAD\n"
                     "import QtUnitGui\n\n"
@@ -1591,8 +1592,11 @@ void MainWindow::delayedStartup()
                     "QtUnitGui.addTest(testCase)\n"
                     "QtUnitGui.setTest(testCase)\n"
                     "result = QtUnitGui.runTest()\n"
-                    "sys.stdout.flush()\n"
-                    "sys.exit(0 if result else 1)");
+                    "sys.stdout.flush()\n";
+                    if (App::Application::Config()["ExitTests"] == "yes") {
+                        command += "sys.exit(0 if result else 1)";
+                    }
+                    Base::Interpreter().runString(command.c_str());
             }
             catch (const Base::SystemExitException&) {
                 throw;

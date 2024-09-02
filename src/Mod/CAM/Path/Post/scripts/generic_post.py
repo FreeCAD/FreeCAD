@@ -66,7 +66,7 @@ class Generic(PostProcessor):
     def tooltip(self):
 
         tooltip = """
-        This is a generic post processor. 
+        This is a generic post processor.
         It doesn't do anything yet because we haven't immplemented it.
 
         Implementing it would be a good idea

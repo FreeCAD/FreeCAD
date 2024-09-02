@@ -47,17 +47,13 @@ TEST_F(FeaturePartTest, testGetElementName)
     auto namePairExport = _common->getElementName("test", App::GeoFeature::Export);
     auto namePairSelf = _common->getElementName(nullptr);
     // Assert
-    EXPECT_STREQ(namePair.first.c_str(), "");
-    EXPECT_STREQ(namePair.second.c_str(), "test");
-    EXPECT_STREQ(namePairExport.first.c_str(), "");
-    EXPECT_STREQ(namePairExport.second.c_str(), "test");
-    EXPECT_STREQ(namePairSelf.first.c_str(), "");
-    EXPECT_STREQ(namePairSelf.second.c_str(), "");
-#ifndef FC_USE_TNP_FIX
-    EXPECT_EQ(ts.getElementMap().size(), 0);
-#else
+    EXPECT_STREQ(namePair.newName.c_str(), "");
+    EXPECT_STREQ(namePair.oldName.c_str(), "test");
+    EXPECT_STREQ(namePairExport.newName.c_str(), "");
+    EXPECT_STREQ(namePairExport.oldName.c_str(), "test");
+    EXPECT_STREQ(namePairSelf.newName.c_str(), "");
+    EXPECT_STREQ(namePairSelf.oldName.c_str(), "");
     EXPECT_EQ(ts.getElementMap().size(), 26);
-#endif
     // TBD
 }
 
@@ -166,14 +162,10 @@ TEST_F(FeaturePartTest, getRelatedElements)
                                                HistoryTraceType::followTypeChange,
                                                true);
     // Assert
-#ifdef FC_USE_TNP_FIX
     EXPECT_EQ(result.size(), 1);   // Found the one.
     EXPECT_EQ(result2.size(), 0);  // No element map, so no related elements
     // The results are always going to vary, so we can't test for specific values:
     // EXPECT_STREQ(result.front().name.toString().c_str(),"Edge3;:M;CMN;:H38d:7,E");
-#else
-    EXPECT_EQ(result.size(), 0);
-#endif
 }
 
 // Note that this test is pretty trivial and useless .. but the method in question is never

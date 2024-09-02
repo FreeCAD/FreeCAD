@@ -130,7 +130,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "MiterLimit",
                 "Profile",
                 QT_TRANSLATE_NOOP(
-                    "App::Property", "Maximum distance before a miter join is truncated"
+                    "App::Property", "Maximum distance before a miter joint is truncated"
                 ),
             ),
             (

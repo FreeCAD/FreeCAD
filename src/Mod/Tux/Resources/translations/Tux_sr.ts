@@ -81,7 +81,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="581"/>
       <source>Turntable</source>
-      <translation>Ротирајући сто</translation>
+      <translation>Обртни сто</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="582"/>

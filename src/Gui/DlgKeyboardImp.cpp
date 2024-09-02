@@ -457,10 +457,10 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
     QVariant data = item->data(1, Qt::UserRole);
     QByteArray name = data.toByteArray(); // command name
 
-    QString nativeText;
+    QString portableText;
     if (!accelText.isEmpty()) {
         QKeySequence shortcut = accelText;
-        nativeText = shortcut.toString(QKeySequence::NativeText);
+        portableText = shortcut.toString(QKeySequence::PortableText);
         ui->accelLineEditShortcut->setText(accelText);
         ui->editShortcut->clear();
     }
@@ -468,7 +468,7 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
         ui->accelLineEditShortcut->clear();
         ui->editShortcut->clear();
     }
-    ShortcutManager::instance()->setShortcut(name, nativeText.toLatin1());
+    ShortcutManager::instance()->setShortcut(name, portableText.toLatin1());
 
     ui->buttonAssign->setEnabled(false);
     ui->buttonReset->setEnabled(true);

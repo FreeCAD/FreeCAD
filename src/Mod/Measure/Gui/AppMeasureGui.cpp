@@ -37,6 +37,7 @@
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderMeasureBase.h"
+#include "WorkbenchManipulator.h"
 
 
 // use a different name to CreateCommand()
@@ -51,7 +52,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("MeasureGui")
     {
-        initialize("This module is the MeasureGui module.");// register with Python
+        initialize("This module is the MeasureGui module.");  // register with Python
     }
 
     ~Module() override = default;
@@ -64,7 +65,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace MeasureGui
+}  // namespace MeasureGui
 
 /* Python entry */
 PyMOD_INIT_FUNC(MeasureGui)
@@ -78,7 +79,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     try {
         Base::Interpreter().loadModule("Measure");
     }
-    catch(const Base::Exception& e) {
+    catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
@@ -86,8 +87,14 @@ PyMOD_INIT_FUNC(MeasureGui)
     PyObject* mod = MeasureGui::initModule();
     Base::Console().Log("Loading GUI of Measure module... done\n");
 
+    auto manip = std::make_shared<MeasureGui::WorkbenchManipulator>();
+    Gui::WorkbenchManipulator::installManipulator(manip);
+
     // instantiating the commands
     CreateMeasureCommands();
+
+    // clang-format off
+    MeasureGui::DimensionLinear::initClass();
 
     MeasureGui::ViewProviderMeasureGroup               ::init();
     MeasureGui::ViewProviderMeasureBase                ::init();
@@ -99,11 +106,13 @@ PyMOD_INIT_FUNC(MeasureGui)
     MeasureGui::ViewProviderMeasureLength              ::init();
     MeasureGui::ViewProviderMeasurePosition            ::init();
     MeasureGui::ViewProviderMeasureRadius              ::init();
+    // clang-format on
 
     // register preferences pages
-    new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(QT_TRANSLATE_NOOP("QObject", "Measure"));
+    new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(
+        QT_TRANSLATE_NOOP("QObject", "Measure"));
 
-//    Q_INIT_RESOURCE(Measure);
+    //    Q_INIT_RESOURCE(Measure);
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
 

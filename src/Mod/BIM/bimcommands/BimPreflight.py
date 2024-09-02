@@ -350,7 +350,7 @@ class BIM_Preflight_TaskPanel:
                             msg = (
                                 translate(
                                     "BIM",
-                                    "The version of ifcopenshell installed on your system could not be parsed",
+                                    "The version of Ifcopenshell installed on your system could not be parsed",
                                 )
                                 + " "
                             )
@@ -362,7 +362,7 @@ class BIM_Preflight_TaskPanel:
                     msg += (
                         translate(
                             "BIM",
-                            "The version of ifcopenshell installed on your system will produce files with this schema version:",
+                            "The version of Ifcopenshell installed on your system will produce files with this schema version:",
                         )
                         + "\n\n"
                     )
@@ -647,7 +647,7 @@ class BIM_Preflight_TaskPanel:
                         msg += o.Label + "\n"
                         msg += translate(
                             "BIM",
-                            "You can turn these objects into BIM objects by using the Utils -> Make Component tool.",
+                            "You can turn these objects into BIM objects by using the Modify -> Add Component tool.",
                         )
             if msg:
                 self.failed(test)

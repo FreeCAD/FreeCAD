@@ -64,8 +64,6 @@ class MeshSetsGetter:
         if self.mesh_object:
             if hasattr(self.mesh_object, "Shape"):
                 self.theshape = self.mesh_object.Shape
-            elif hasattr(self.mesh_object, "Part"):
-                self.theshape = self.mesh_object.Part
             else:
                 FreeCAD.Console.PrintWarning(
                     "A finite mesh without a link to a Shape was given. "

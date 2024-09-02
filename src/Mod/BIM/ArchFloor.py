@@ -103,7 +103,7 @@ class _CommandFloor:
 
     Create a floor from the objects selected by the user, if any. Exclude
     objects that appear higher in the object hierarchy, such as sites or
-    buildings. If free linking is enabled in the Arch preferences, allow higher
+    buildings. If free linking is enabled in the BIM preferences, allow higher
     hierarchy objects to be part of floors.
 
     Find documentation on the end user usage of Arch Floor here:
@@ -132,7 +132,7 @@ class _CommandFloor:
 
         Create a floor from the objects selected by the user, if any. Exclude
         objects that appear higher in the object hierarchy, such as sites or
-        buildings. If free linking is enabled in the Arch preferences, allow
+        buildings. If free linking is enabled in the BIM preferences, allow
         higher hierarchy objects to be part of floors.
         """
 
