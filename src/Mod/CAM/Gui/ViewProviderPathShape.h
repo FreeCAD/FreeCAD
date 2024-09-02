@@ -34,11 +34,10 @@ class PathGuiExport ViewProviderPathShape: public ViewProviderPath
     PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderPathShape);
 
 public:
-
     /// grouping handling
     std::vector<App::DocumentObject*> claimChildren() const override;
     void updateData(const App::Property*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// drag and drop
     bool canDragObjects() const override;
@@ -51,7 +50,7 @@ public:
     QIcon getIcon() const override;
 };
 
-} //namespace PathGui
+}  // namespace PathGui
 
 
-#endif // PATH_ViewProviderPathShape_H
+#endif  // PATH_ViewProviderPathShape_H

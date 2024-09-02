@@ -92,9 +92,7 @@ class _CommandSelectLoop:
         obj = sel.Object
         edge1 = sel.SubObjects[0]
         if "Face" in sel.SubElementNames[0]:
-            loop = horizontalFaceLoop(
-                sel.Object, sel.SubObjects[0], sel.SubElementNames
-            )
+            loop = horizontalFaceLoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
             if loop:
                 FreeCADGui.Selection.clearSelection()
                 FreeCADGui.Selection.addSelection(sel.Object, loop)
@@ -111,9 +109,7 @@ class _CommandSelectLoop:
             for i in loopwire.Edges:
                 for e in elist:
                     if e.hashCode() == i.hashCode():
-                        FreeCADGui.Selection.addSelection(
-                            obj, "Edge" + str(elist.index(e) + 1)
-                        )
+                        FreeCADGui.Selection.addSelection(obj, "Edge" + str(elist.index(e) + 1))
         elif FreeCAD.GuiUp:
             QtGui.QMessageBox.information(
                 None,
@@ -189,12 +185,8 @@ class _CopyOperation:
     def GetResources(self):
         return {
             "Pixmap": "CAM_OpCopy",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "CAM_OperationCopy", "Copy the operation in the job"
-            ),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_OperationCopy", "Copy the operation in the job"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy the operation in the job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy the operation in the job"),
             "CmdType": "ForEdit",
         }
 

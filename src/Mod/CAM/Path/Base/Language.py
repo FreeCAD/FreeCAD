@@ -59,9 +59,7 @@ class Instruction(object):
 
     def positionEnd(self):
         """positionEnd() ... returns a Vector of the end position"""
-        return FreeCAD.Vector(
-            self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z)
-        )
+        return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z))
 
     def pathLength(self):
         """pathLength() ... returns the length in mm"""
@@ -75,9 +73,7 @@ class Instruction(object):
 
     def isPlunge(self):
         """isPlunge() ... return true if this moves up or down"""
-        return self.isMove() and not Path.Geom.isRoughly(
-            self.begin.z, self.z(self.begin.z)
-        )
+        return self.isMove() and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
 
     def leadsInto(self, instr):
         """leadsInto(instr) ... return true if instr is a continuation of self"""

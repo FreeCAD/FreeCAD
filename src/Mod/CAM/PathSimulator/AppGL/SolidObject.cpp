@@ -60,8 +60,7 @@ void SolidObject::GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort
     // calculate object's bounding box:
     float x = 999999.0f, y = 999999.0f, z = 999999.0f;
     float l = -999999.0f, w = -999999.0f, h = -999999.0f;
-    for (auto& vert : verts)
-    {
+    for (auto& vert : verts) {
         x = std::fminf(x, vert.x);
         y = std::fminf(y, vert.y);
         z = std::fminf(z, vert.z);

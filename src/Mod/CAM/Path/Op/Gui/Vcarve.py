@@ -63,17 +63,12 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             base = job.Proxy.resourceClone(job, sel.Object)
             if not base:
                 Path.Log.notice(
-                    (
-                        translate("CAM", "%s is not a Base Model object of the job %s")
-                        + "\n"
-                    )
+                    (translate("CAM", "%s is not a Base Model object of the job %s") + "\n")
                     % (sel.Object.Label, job.Label)
                 )
                 continue
             if base in shapes:
-                Path.Log.notice(
-                    "Base shape %s already in the list".format(sel.Object.Label)
-                )
+                Path.Log.notice("Base shape %s already in the list".format(sel.Object.Label))
                 continue
             if base.isDerivedFrom("Part::Part2DObject"):
                 if sel.HasSubObjects:
@@ -117,9 +112,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             sub = item.data(self.super().DataObjectSub)
             if not sub:
                 shapes.append(obj)
-        Path.Log.debug(
-            "Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes)
-        )
+        Path.Log.debug("Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes))
         self.obj.BaseShapes = shapes
         return self.super().updateBase()
 

@@ -27,17 +27,17 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-# define PathExport  __declspec(dllexport)
-//# define RobotExport __declspec(dllexport) uncomment this to use KDL
-# define PartExport __declspec(dllimport)
-#else // for Linux
-# define PathExport
-//# define RobotExport uncomment this to use KDL
-# define PartExport
+#define PathExport __declspec(dllexport)
+// # define RobotExport __declspec(dllexport) uncomment this to use KDL
+#define PartExport __declspec(dllimport)
+#else  // for Linux
+#define PathExport
+// # define RobotExport uncomment this to use KDL
+#define PartExport
 #endif
 
 #ifdef _MSC_VER
-#pragma warning( disable : 5208 )
+#pragma warning(disable : 5208)
 #endif
 
 #ifdef _PreComp_
@@ -57,7 +57,7 @@
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/range/adaptor/transformed.hpp>
 
-//OCC
+// OCC
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
@@ -100,5 +100,5 @@
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 
-#endif // _PreComp_
+#endif  // _PreComp_
 #endif

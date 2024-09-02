@@ -30,7 +30,7 @@
 namespace PathGui
 {
 
-class PathGuiExport ViewProviderArea : public PartGui::ViewProviderPlaneParametric
+class PathGuiExport ViewProviderArea: public PartGui::ViewProviderPlaneParametric
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderArea);
 
@@ -41,7 +41,7 @@ public:
     /// grouping handling
     std::vector<App::DocumentObject*> claimChildren() const override;
     void updateData(const App::Property*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// drag and drop
     bool canDragObjects() const override;
@@ -55,7 +55,7 @@ public:
 using ViewProviderAreaPython = Gui::ViewProviderFeaturePythonT<ViewProviderArea>;
 
 
-class PathGuiExport ViewProviderAreaView : public PartGui::ViewProviderPlaneParametric
+class PathGuiExport ViewProviderAreaView: public PartGui::ViewProviderPlaneParametric
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderAreaView);
 
@@ -64,7 +64,7 @@ public:
     ~ViewProviderAreaView() override;
     std::vector<App::DocumentObject*> claimChildren() const override;
     void updateData(const App::Property*) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>&) override;
 
     /// drag and drop
     bool canDragObjects() const override;
@@ -77,7 +77,7 @@ public:
 
 using ViewProviderAreaViewPython = Gui::ViewProviderFeaturePythonT<ViewProviderAreaView>;
 
-} //namespace PathGui
+}  // namespace PathGui
 
 
-#endif // PATH_ViewProviderArea_H
+#endif  // PATH_ViewProviderArea_H

@@ -134,9 +134,7 @@ class TestFileNameGenerator(unittest.TestCase):
         FreeCAD.setActiveDocument(self.doc.Label)
         teststring = ""
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
@@ -149,15 +147,15 @@ class TestFileNameGenerator(unittest.TestCase):
 
         # filename = PathPost.resolveFileName(self.job, subpart, 0)
         # self.assertEqual(filename, os.path.normpath(f"{self.testfilename}.nc"))
-        assertFilePathsEqual( self, filename, os.path.join(self.testfilepath, f"{self.testfilename}.nc"))
+        assertFilePathsEqual(
+            self, filename, os.path.join(self.testfilepath, f"{self.testfilename}.nc")
+        )
 
     def test010(self):
         # Substitute current file path
         teststring = "%D/testfile.nc"
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
@@ -170,9 +168,7 @@ class TestFileNameGenerator(unittest.TestCase):
         # Test basic string substitution without splitting
         teststring = "~/Desktop/%j.nc"
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
         # outlist = PathPost.buildPostList(self.job)
 
         # self.assertTrue(len(outlist) == 1)
@@ -188,9 +184,7 @@ class TestFileNameGenerator(unittest.TestCase):
     def test020(self):
         teststring = "%d.nc"
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
@@ -203,9 +197,7 @@ class TestFileNameGenerator(unittest.TestCase):
     def test030(self):
         teststring = "%M/outfile.nc"
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
@@ -217,9 +209,7 @@ class TestFileNameGenerator(unittest.TestCase):
         # unused substitution strings should be ignored
         teststring = "%d%T%t%W%O/testdoc.nc"
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
@@ -255,9 +245,7 @@ class TestFileNameGenerator(unittest.TestCase):
         # explicitly using the sequence number should include it where indicated.
         teststring = "%S-%d.nc"
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
@@ -271,9 +259,7 @@ class TestFileNameGenerator(unittest.TestCase):
         """Test subpart naming"""
         teststring = "%M/outfile.nc"
         self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(
-            teststring, "Append Unique ID on conflict"
-        )
+        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         generator.set_subpartname("Tool")
@@ -589,15 +575,11 @@ class TestPathPostUtils(unittest.TestCase):
 
         testpath = Path.Path(commands)
         self.assertTrue(len(testpath.Commands) == 9)
-        self.assertTrue(
-            len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4
-        )
+        self.assertTrue(len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4)
 
         results = PostUtils.splitArcs(testpath)
         # self.assertTrue(len(results.Commands) == 117)
-        self.assertTrue(
-            len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
-        )
+        self.assertTrue(len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0)
 
 
 class TestBuildPostList(unittest.TestCase):

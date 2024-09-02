@@ -91,9 +91,7 @@ class CommandPathCopy:
         return {
             "Pixmap": "CAM_Copy",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Copy", "Copy"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_Copy", "Creates a linked copy of another toolpath"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Copy", "Creates a linked copy of another toolpath"),
         }
 
     def IsActive(self):

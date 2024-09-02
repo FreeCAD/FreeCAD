@@ -31,7 +31,6 @@
 #include <Mod/Part/App/BRepMesh.h>
 
 
-
 using namespace Base;
 using namespace CAMSimulator;
 
@@ -47,7 +46,7 @@ void CAMSimulator::CAMSim::resetSimulation()
     DlgCAMSimulator::GetInstance()->resetSimulation();
 }
 
-void CAMSim::addTool(const std::vector<float> &toolProfilePoints,
+void CAMSim::addTool(const std::vector<float>& toolProfilePoints,
                      int toolNumber,
                      float diameter,
                      float resolution)

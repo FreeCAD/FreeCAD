@@ -127,9 +127,6 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """"""
 
 
-
-
-
 def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
@@ -303,9 +300,7 @@ def parse(pathobj):
                             "G0",
                             "G00",
                         ]:  # centroid doesn't use rapid speeds
-                            speed = Units.Quantity(
-                                c.Parameters["F"], FreeCAD.Units.Velocity
-                            )
+                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             commandlist.append(
                                 param
                                 + format(
@@ -317,8 +312,7 @@ def parse(pathobj):
                         commandlist.append(param + str(int(c.Parameters["H"])))
                     elif param == "S":
                         commandlist.append(
-                            param
-                            + PostUtils.fmt(c.Parameters["S"], SPINDLE_DECIMALS, "G21")
+                            param + PostUtils.fmt(c.Parameters["S"], SPINDLE_DECIMALS, "G21")
                         )
                     elif param == "T":
                         commandlist.append(param + str(int(c.Parameters["T"])))

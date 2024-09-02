@@ -80,7 +80,6 @@ void SimDisplay::InitShaders()
 
     // Mill Path Line Shader
     shaderLinePath.CompileShader(VertShader3DLine, FragShader3DLine);
-
 }
 
 void SimDisplay::CreateFboQuad()
@@ -111,7 +110,15 @@ void SimDisplay::CreateDisplayFbos()
     // a color texture for the frame buffer
     glGenTextures(1, &mFboColTexture);
     glBindTexture(GL_TEXTURE_2D, mFboColTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, gWindowSizeW, gWindowSizeH, 0, GL_RGBA, GL_UBYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D,
+                 0,
+                 GL_RGBA8,
+                 gWindowSizeW,
+                 gWindowSizeH,
+                 0,
+                 GL_RGBA,
+                 GL_UBYTE,
+                 NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mFboColTexture, 0);
@@ -119,7 +126,15 @@ void SimDisplay::CreateDisplayFbos()
     // a position texture for the frame buffer
     glGenTextures(1, &mFboPosTexture);
     glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, gWindowSizeW, gWindowSizeH, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D,
+                 0,
+                 GL_RGBA16F,
+                 gWindowSizeW,
+                 gWindowSizeH,
+                 0,
+                 GL_RGBA,
+                 GL_FLOAT,
+                 NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mFboPosTexture, 0);
@@ -127,7 +142,15 @@ void SimDisplay::CreateDisplayFbos()
     // a normal texture for the frame buffer
     glGenTextures(1, &mFboNormTexture);
     glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, gWindowSizeW, gWindowSizeH, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D,
+                 0,
+                 GL_RGBA16F,
+                 gWindowSizeW,
+                 gWindowSizeH,
+                 0,
+                 GL_RGBA,
+                 GL_FLOAT,
+                 NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mFboNormTexture, 0);
@@ -206,7 +229,7 @@ void SimDisplay::CreateSsaoFbos()
         vec3_set(sample,
                  randomFloats(generator) * 2.0f - 1.0f,
                  randomFloats(generator) * 2.0f - 1.0f,
-                 randomFloats(generator));// * 2.0f - 1.0f);
+                 randomFloats(generator));  // * 2.0f - 1.0f);
         vec3_norm(sample, sample);
         vec3_scale(sample, sample, randomFloats(generator));
         float scale = float(i) / 64.0f;

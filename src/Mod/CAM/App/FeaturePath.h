@@ -33,7 +33,7 @@
 namespace Path
 {
 
-class PathExport Feature : public App::GeoFeature
+class PathExport Feature: public App::GeoFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Path::Feature);
 
@@ -43,27 +43,28 @@ public:
     ~Feature() override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PathGui::ViewProviderPath";
     }
-    App::DocumentObjectExecReturn *execute() override {
+    App::DocumentObjectExecReturn* execute() override
+    {
         return App::DocumentObject::StdReturn;
     }
     short mustExecute() const override;
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 
-    PropertyPath           Path;
+    PropertyPath Path;
 
 
 protected:
     /// get called by the container when a property has changed
-    void onChanged (const App::Property* prop) override;
-
+    void onChanged(const App::Property* prop) override;
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;
 
-} //namespace Path
+}  // namespace Path
 
 
-#endif // PATH_FeaturePath_H
+#endif  // PATH_FeaturePath_H

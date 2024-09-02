@@ -48,14 +48,11 @@ class TestPathAdaptive(PathTestBase):
         """
         cls.needsInit = True
 
-
     @classmethod
     def initClass(cls):
         # Open existing FreeCAD document with test geometry
         cls.needsInit = False
-        cls.doc = FreeCAD.open(
-            FreeCAD.getHomePath() + "Mod/CAM/Tests/test_adaptive.fcstd"
-        )
+        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "Mod/CAM/Tests/test_adaptive.fcstd")
 
         # Create Job object, adding geometry objects from file opened above
         cls.job = PathJob.Create("Job", [cls.doc.Fusion], None)
@@ -137,9 +134,7 @@ class TestPathAdaptive(PathTestBase):
 
         # self.assertTrue(expected_moves_test01 == operationMoves,
         #                "expected_moves_test01: {}\noperationMoves: {}".format(expected_moves_test01, operationMoves))
-        self.assertTrue(
-            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
-        )
+        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
     def test02(self):
         """test02() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."""
@@ -166,9 +161,7 @@ class TestPathAdaptive(PathTestBase):
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(
-            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
-        )
+        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
     def test03(self):
         """test03() Verify path generated on adjacent, combined Face3 and Face10.  The Z heights are different."""
@@ -195,9 +188,7 @@ class TestPathAdaptive(PathTestBase):
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(
-            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
-        )
+        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
     def test04(self):
         """test04() Verify path generated non-closed edges with differing Z-heights that are closed with Z=1 projection: "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"."""
@@ -238,9 +229,7 @@ class TestPathAdaptive(PathTestBase):
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(
-            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
-        )
+        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
     def test05(self):
         """test05() Verify path generated closed wire with differing Z-heights: "Edge13", "Edge7", "Edge9", "Edge2", "Edge8", "Edge15", "Edge30", "Edge31", "Edge29", "Edge19"."""
@@ -283,9 +272,7 @@ class TestPathAdaptive(PathTestBase):
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(
-            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
-        )
+        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
     def test06(self):
         """test06() Verify path generated with outer and inner edge loops at same Z height: "Edge15", "Edge30", "Edge31", "Edge29", "Edge19", "Edge18", "Edge35", "Edge32", "Edge34", "Edge33"."""
@@ -329,15 +316,12 @@ class TestPathAdaptive(PathTestBase):
         self.doc.recompute()
 
         # Check command count
-        self.assertTrue(
-            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
-        )
+        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
         # Check if any paths originate inside inner hole of donut.  They should not.
         isInBox = False
         edges = [
-            self.doc.Fusion.Shape.getElement(e)
-            for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
+            self.doc.Fusion.Shape.getElement(e) for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
         ]
         square = Part.Wire(edges)
         sqrBB = square.BoundBox
@@ -374,15 +358,12 @@ class TestPathAdaptive(PathTestBase):
         _addViewProvider(adaptive)
         self.doc.recompute()
 
-        self.assertTrue(
-            len(adaptive.Path.Commands) > 100, "Command count not greater than 100."
-        )
+        self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
         # Check if any paths originate inside inner hole of donut.  They should not.
         isInBox = False
         edges = [
-            self.doc.Fusion.Shape.getElement(e)
-            for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
+            self.doc.Fusion.Shape.getElement(e) for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
         ]
         square = Part.Wire(edges)
         sqrBB = square.BoundBox
@@ -401,8 +382,7 @@ class TestPathAdaptive(PathTestBase):
         # Check if any paths originate inside inner hole of donut.  They should not.
         isInBox = False
         edges = [
-            self.doc.Fusion.Shape.getElement(e)
-            for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
+            self.doc.Fusion.Shape.getElement(e) for e in ["Edge35", "Edge32", "Edge33", "Edge34"]
         ]
         square = Part.Wire(edges)
         sqrBB = square.BoundBox
@@ -531,9 +511,7 @@ def _addViewProvider(adaptiveOp):
     if FreeCAD.GuiUp:
         PathOpGui = PathAdaptiveGui.PathOpGui
         cmdRes = PathAdaptiveGui.Command.res
-        adaptiveOp.ViewObject.Proxy = PathOpGui.ViewProvider(
-            adaptiveOp.ViewObject, cmdRes
-        )
+        adaptiveOp.ViewObject.Proxy = PathOpGui.ViewProvider(adaptiveOp.ViewObject, cmdRes)
 
 
 # Example string literal of expected path moves from an operation

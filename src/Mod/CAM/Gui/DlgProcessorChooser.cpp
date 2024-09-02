@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QDialog>
+#include <QDialog>
 #endif
 
 #include <Gui/MainWindow.h>
@@ -35,17 +35,20 @@ using namespace PathGui;
 
 /* TRANSLATOR PathGui::DlgProcessorChooser */
 
-DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments)
-  : QDialog(Gui::getMainWindow()), ui(new Ui_DlgProcessorChooser)
+DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string>& scriptnames, bool withArguments)
+    : QDialog(Gui::getMainWindow())
+    , ui(new Ui_DlgProcessorChooser)
 {
     ui->setupUi(this);
     ui->comboBox->addItem(tr("None"));
-    for (std::vector<std::string>::const_iterator it = scriptnames.begin(); it != scriptnames.end(); ++it)
+    for (std::vector<std::string>::const_iterator it = scriptnames.begin(); it != scriptnames.end();
+         ++it) {
         ui->comboBox->addItem(QString::fromUtf8((*it).c_str()));
+    }
     QMetaObject::connectSlotsByName(this);
     if (withArguments) {
-      ui->argsLabel->setEnabled(true);
-      ui->argsLineEdit->setEnabled(true);
+        ui->argsLabel->setEnabled(true);
+        ui->argsLineEdit->setEnabled(true);
     }
 }
 
@@ -61,7 +64,7 @@ std::string DlgProcessorChooser::getProcessor()
 
 std::string DlgProcessorChooser::getArguments()
 {
-  return arguments;
+    return arguments;
 }
 
 void DlgProcessorChooser::accept()
@@ -69,7 +72,8 @@ void DlgProcessorChooser::accept()
     if (ui->comboBox->currentText() == tr("None")) {
         processor = "";
         arguments = "";
-    } else {
+    }
+    else {
         processor = ui->comboBox->currentText().toUtf8().data();
         arguments = ui->argsLineEdit->text().toUtf8().data();
     }

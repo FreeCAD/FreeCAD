@@ -185,9 +185,7 @@ class CamoticsSimulation(QtCore.QObject):
         self.SIM.set_resolution("high")
 
         bb = self.job.Stock.Shape.BoundBox
-        self.SIM.set_workpiece(
-            min=(bb.XMin, bb.YMin, bb.ZMin), max=(bb.XMax, bb.YMax, bb.ZMax)
-        )
+        self.SIM.set_workpiece(min=(bb.XMin, bb.YMin, bb.ZMin), max=(bb.XMax, bb.YMax, bb.ZMax))
 
         for t in self.job.Tools.Group:
             self.SIM.set_tool(
@@ -272,9 +270,7 @@ class CamoticsSimulation(QtCore.QObject):
             "files": [],
         }
 
-        unitstring = (
-            "imperial" if FreeCAD.Units.getSchema() in [2, 3, 5, 7] else "metric"
-        )
+        unitstring = "imperial" if FreeCAD.Units.getSchema() in [2, 3, 5, 7] else "metric"
 
         camoticstemplate["units"] = unitstring
         camoticstemplate["resolution-mode"] = "medium"

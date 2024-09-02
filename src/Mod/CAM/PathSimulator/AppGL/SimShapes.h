@@ -122,7 +122,6 @@ protected:
                                      int* vc2idx,
                                      int* ic1idx,
                                      int* ic2idx);
-
 };
 
 }  // namespace MillSim
