@@ -305,5 +305,5 @@ PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemConstraintPython, FemGui::ViewPr
 /// @endcond
 
 // explicit template instantiation
-template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
+template class FemGuiExport ViewProviderFeaturePythonT<ViewProviderFemConstraint>;
 }  // namespace Gui

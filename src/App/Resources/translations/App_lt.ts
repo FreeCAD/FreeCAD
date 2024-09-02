@@ -7,14 +7,13 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>Išsaugo paskutinį vartotojo pasirinkimą, ar taikyti KopijuotiPakeitus sąranką visoms nuorodoms kurios nurodo tą patį konfigūruojamą daiktą</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="455"/>
+      <location filename="../../Application.cpp" line="459"/>
       <source>Unnamed</source>
       <translation>Be pavadinimo</translation>
     </message>
@@ -24,12 +23,12 @@ that reference the same configurable object</translation>
     <message>
       <location filename="../../Origin.cpp" line="142"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>X ašis</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="143"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Y ašis</translation>
     </message>
     <message>
       <location filename="../../Origin.cpp" line="144"/>

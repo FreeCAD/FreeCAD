@@ -257,25 +257,6 @@ void PropertyPartShape::beforeSave() const
         _Shape.beforeSave();
     }
 }
-#ifndef FC_USE_TNP_FIX
-void PropertyPartShape::Save (Base::Writer &writer) const
-{
-    if(!writer.isForceXML()) {
-        //See SaveDocFile(), RestoreDocFile()
-        if (writer.getMode("BinaryBrep")) {
-            writer.Stream() << writer.ind() << "<Part file=\""
-                            << writer.addFile("PartShape.bin", this)
-                            << "\"/>" << std::endl;
-        }
-        else {
-            writer.Stream() << writer.ind() << "<Part file=\""
-                            << writer.addFile("PartShape.brp", this)
-                            << "\"/>" << std::endl;
-        }
-    }
-}
-
-#else
 void PropertyPartShape::Save (Base::Writer &writer) const
 {
     //See SaveDocFile(), RestoreDocFile()
@@ -328,7 +309,6 @@ void PropertyPartShape::Save (Base::Writer &writer) const
         _Shape.Save(writer);
     }
 }
-#endif
 
 std::string PropertyPartShape::getElementMapVersion(bool restored) const {
     if(restored)
@@ -336,19 +316,6 @@ std::string PropertyPartShape::getElementMapVersion(bool restored) const {
     return PropertyComplexGeoData::getElementMapVersion(false);
 }
 
-#ifndef FC_USE_TNP_FIX
-void PropertyPartShape::Restore(Base::XMLReader &reader)
-{
-    reader.readElement("Part");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
-}
-
-#else
 void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
@@ -450,7 +417,6 @@ void PropertyPartShape::afterRestore()
     }
     PropertyComplexGeoData::afterRestore();
 }
-#endif
 
 // The following function is copied from OCCT BRepTools.cxx and modified
 // to disable saving of triangulation

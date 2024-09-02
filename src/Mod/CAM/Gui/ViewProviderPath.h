@@ -26,7 +26,7 @@
 #include <App/PropertyGeo.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/CAM/PathGlobal.h>
 
@@ -117,7 +117,7 @@ protected:
 
  };
 
- using ViewProviderPathPython = Gui::ViewProviderPythonFeatureT<ViewProviderPath>;
+ using ViewProviderPathPython = Gui::ViewProviderFeaturePythonT<ViewProviderPath>;
 
 } //namespace PathGui
 

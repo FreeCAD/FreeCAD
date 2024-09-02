@@ -786,9 +786,7 @@ class _MeshGmshFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class _MeshGroup(CommandManager):
@@ -844,7 +842,6 @@ class _MeshNetgenFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
@@ -954,7 +951,7 @@ class _SolverCalculixContextManager:
         )
         FreeCADGui.doCommand(
             "{}.IterationsControlParameterTimeUse = {}".format(
-                self.cli_name, ccx_prefs.GetInt("UseNonCcxIterationParam", False)
+                self.cli_name, ccx_prefs.GetBool("UseNonCcxIterationParam", False)
             )
         )
         FreeCADGui.doCommand(

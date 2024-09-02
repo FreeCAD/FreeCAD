@@ -404,7 +404,6 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
-#ifdef FC_USE_TNP_FIX
 TopoShape ProfileBased::getProfileShape() const
 {
     TopoShape shape;
@@ -426,19 +425,6 @@ TopoShape ProfileBased::getProfileShape() const
     }
     return shape;
 }
-#else
-Part::TopoShape ProfileBased::getProfileShape() const
-{
-    auto shape = getTopoShape(Profile.getValue());
-    if (!shape.isNull() && !Profile.getSubValues().empty()) {
-        std::vector<Part::TopoShape> shapes;
-        for (auto& sub : Profile.getSubValues(true))
-            shapes.emplace_back(shape.getSubShape(sub.c_str()));
-        shape = Part::TopoShape().makeCompound(shapes);
-    }
-    return shape;
-}
-#endif
 
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
@@ -758,7 +744,8 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
         throw Base::TypeError("SketchBased: Must be face of a feature");
     Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
 
-    if (subStrings.empty() || subStrings[0].empty())
+    // Allow an empty sub here - example is a sketch reference (no sub) that creates a face.
+    if (subStrings.empty() )
         throw Base::ValueError("SketchBased: No face selected");
     // TODO: Check for multiple UpToFaces?
 
@@ -1133,105 +1120,11 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
 
 void ProfileBased::remapSupportShape(const TopoDS_Shape & newShape)
 {
-#if FC_USE_TNP_FIX
     (void)newShape;
     // Realthunder: with the new topological naming, I don't think this function
     // is necessary. A missing element will cause an explicitly error, and the
     // user will be force to manually select the element. Various editors, such
     // as dress up editors, can perform element guessing when activated.
-#else
-    TopTools_IndexedMapOfShape faceMap;
-    TopExp::MapShapes(newShape, TopAbs_FACE, faceMap);
-
-    // here we must reset the placement otherwise the geometric matching doesn't work
-    Part::TopoShape shape = this->Shape.getValue();
-    TopoDS_Shape sh = shape.getShape();
-    sh.Location(TopLoc_Location());
-    shape.setShape(sh);
-
-    std::vector<App::DocumentObject*> refs = this->getInList();
-    for (auto ref : refs) {
-        std::vector<App::Property*> props;
-        ref->getPropertyList(props);
-        for (auto prop : props) {
-            if (!prop->isDerivedFrom(App::PropertyLinkSub::getClassTypeId()))
-                continue;
-            App::PropertyLinkSub* link = static_cast<App::PropertyLinkSub*>(prop);
-            if (link->getValue() != this)
-                continue;
-            std::vector<std::string> subValues = link->getSubValues();
-            std::vector<std::string> newSubValues;
-
-            for (auto & subValue : subValues) {
-                std::string shapetype;
-                if (subValue.compare(0, 4, "Face") == 0) {
-                    shapetype = "Face";
-                }
-                else if (subValue.compare(0, 4, "Edge") == 0) {
-                    shapetype = "Edge";
-                }
-                else if (subValue.compare(0, 6, "Vertex") == 0) {
-                    shapetype = "Vertex";
-                }
-                else {
-                    newSubValues.push_back(subValue);
-                    continue;
-                }
-
-                bool success = false;
-                TopoDS_Shape element;
-                try {
-                    element = shape.getSubShape(subValue.c_str());
-                }
-                catch (Standard_Failure&) {
-                    // This shape doesn't even exist, so no chance to do some tests
-                    newSubValues.push_back(subValue);
-                    continue;
-                }
-                try {
-                    // as very first test check if old face and new face are parallel planes
-                    TopoDS_Shape newElement = Part::TopoShape(newShape).getSubShape(subValue.c_str());
-                    if (isParallelPlane(element, newElement)) {
-                        newSubValues.push_back(subValue);
-                        success = true;
-                    }
-                }
-                catch (Standard_Failure&) {
-                }
-                // try an exact matching
-                if (!success) {
-                    for (int i = 1; i < faceMap.Extent(); i++) {
-                        if (isQuasiEqual(element, faceMap.FindKey(i))) {
-                            std::stringstream str;
-                            str << shapetype << i;
-                            newSubValues.push_back(str.str());
-                            success = true;
-                            break;
-                        }
-                    }
-                }
-                // if an exact matching fails then try to compare only the geometries
-                if (!success) {
-                    for (int i = 1; i < faceMap.Extent(); i++) {
-                        if (isEqualGeometry(element, faceMap.FindKey(i))) {
-                            std::stringstream str;
-                            str << shapetype << i;
-                            newSubValues.push_back(str.str());
-                            success = true;
-                            break;
-                        }
-                    }
-                }
-
-                // the new shape couldn't be found so keep the old sub-name
-                if (!success)
-                    newSubValues.push_back(subValue);
-            }
-
-            link->setValue(this, newSubValues);
-        }
-    }
-#endif
 }
 
 namespace PartDesign {
@@ -1513,7 +1406,6 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         Base::Placement SketchPos = obj->Placement.getValue();
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector, SketchVector);
-#ifdef FC_USE_TNP_FIX
         return SketchVector;
     }
 
@@ -1591,31 +1483,6 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
         }
         return dir.Normalize();
     }
-
-#else
-    }
-    else {
-        TopoDS_Shape shape = getVerifiedFace(true);
-        if (shape.IsNull())
-            return SketchVector;
-
-        // the shape can be a single face or a compound of faces, only consider the first face
-        TopExp_Explorer ex(shape, TopAbs_FACE);
-        if (ex.More()) {
-            TopoDS_Face face = TopoDS::Face(ex.Current());
-            BRepAdaptor_Surface adapt(face);
-            double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter()) / 2.;
-            double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter()) / 2.;
-            BRepLProp_SLProps prop(adapt, u, v, 2, Precision::Confusion());
-            if (prop.IsNormalDefined()) {
-                gp_Pnt pnt; gp_Vec vec;
-                // handles the orientation state of the shape
-                BRepGProp_Face(face).Normal(u, v, pnt, vec);
-                SketchVector = Base::Vector3d(vec.X(), vec.Y(), vec.Z());
-            }
-        }
-    }
-#endif
     return SketchVector;
 }
 

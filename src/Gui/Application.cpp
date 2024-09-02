@@ -119,7 +119,7 @@
 #include "ViewProviderPlacement.h"
 #include "ViewProviderPlane.h"
 #include "ViewProviderPart.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 #include "ViewProviderTextDocument.h"
 #include "ViewProviderTextureExtension.h"
 #include "ViewProviderVRMLObject.h"
@@ -1928,8 +1928,8 @@ void Application::initTypes()
     Gui::ViewProviderVRMLObject                 ::init();
     Gui::ViewProviderAnnotation                 ::init();
     Gui::ViewProviderAnnotationLabel            ::init();
-    Gui::ViewProviderPythonFeature              ::init();
-    Gui::ViewProviderPythonGeometry             ::init();
+    Gui::ViewProviderFeaturePython              ::init();
+    Gui::ViewProviderGeometryPython             ::init();
     Gui::ViewProviderPlacement                  ::init();
     Gui::ViewProviderPlacementPython            ::init();
     Gui::ViewProviderOriginFeature              ::init();

@@ -727,5 +727,5 @@ PROPERTY_SOURCE_TEMPLATE(PathGui::ViewProviderPathPython, PathGui::ViewProviderP
 /// @endcond
 
 // explicit template instantiation
-template class PathGuiExport ViewProviderPythonFeatureT<PathGui::ViewProviderPath>;
+template class PathGuiExport ViewProviderFeaturePythonT<PathGui::ViewProviderPath>;
 }

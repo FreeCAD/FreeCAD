@@ -157,13 +157,10 @@ public:
 
     static void guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink);
 
-#ifdef FC_USE_TNP_FIX
-
     const std::vector<std::string>& searchElementCache(const std::string &element,
                                                        Data::SearchOptions options = Data::SearchOption::CheckGeometry,
                                                        double tol = 1e-7,
                                                        double atol = 1e-10) const override;
-#endif
 protected:
     /// recompute only this object
     App::DocumentObjectExecReturn *recompute() override;

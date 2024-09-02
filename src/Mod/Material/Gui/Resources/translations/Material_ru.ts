@@ -801,7 +801,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Родитель</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>

@@ -398,14 +398,12 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
                 auto subName = selaction->SelChange.pSubName;
-#ifdef FC_USE_TNP_FIX
                 App::ElementNamePair elementName;;
                 App::GeoFeature::resolveElement(obj, subName, elementName);
                 if (Data::isMappedElement(subName)
                     && !elementName.oldName.empty()) {      // If we have a shortened element name
                     subName = elementName.oldName.c_str();  // use it.
                 }
-#endif
                 if(!selaction->SelChange.pSubName || !selaction->SelChange.pSubName[0] ||
                     vp->getDetailPath(subName,detailPath,true,detail))
                 {
@@ -625,7 +623,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     std::string subName = info.element;
     std::string objectName = objname;
 
-#ifdef FC_USE_TNP_FIX
     // We need to convert the short name in the selection to a full element path to look it up
     // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
     App::ElementNamePair elementName;
@@ -635,7 +632,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         subName.erase(subName.find(elementNameSuffix)); // Everything except original suffix suffix
         subName = subName.append(elementName.newName);  // Add the mapped name suffix,
     }
-#endif
     const char *subSelected = Gui::Selection().getSelectedElement(
                                 vpd->getObject(),subName.c_str());
 

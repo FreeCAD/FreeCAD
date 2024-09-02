@@ -206,12 +206,12 @@
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
       <source>Basic Appearance</source>
-      <translation>Apparences de base</translation>
+      <translation>Apparence de base</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
       <source>Texture Appearance</source>
-      <translation>Apparences des textures</translation>
+      <translation>Apparence des textures</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
@@ -254,7 +254,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID/TypeID</translation>
+      <translation>Forme.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -332,7 +332,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID/TypeID</translation>
+      <translation>Forme.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -541,7 +541,7 @@ will be listed as available.</source>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="152"/>
       <source>Card sorting and duplicates</source>
-      <translation>Tri des jeux de paramètres et duplicatas</translation>
+      <translation>Tri des jeux de paramètres et doublons</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="158"/>
@@ -616,7 +616,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="30"/>
       <source>Thumbnail</source>
-      <translation>Miniature</translation>
+      <translation>Vignette</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
@@ -747,7 +747,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="241"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation>Enregistrer une copie n'est pas recommandé car cela peut casser d'autres documents. Il est recommandé de l'enregistrer comme un nouveau matériau.</translation>
+      <translation>Enregistrer une copie n'est pas recommandé car cela peut endommager d'autres documents. Il est recommandé de l'enregistrer comme un nouveau matériau.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="244"/>
@@ -885,7 +885,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="481"/>
       <source>Unnamed</source>
-      <translation>Sans nom</translation>
+      <translation>Nouveau</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="603"/>
@@ -1165,7 +1165,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1311"/>
       <source>Do you want to save your changes to the material before closing?</source>
-      <translation>Voulez-vous enregistrer les modifications apportées à ce matériau avant de le fermer ?</translation>
+      <translation>Voulez-vous enregistrer les modifications apportées à ce matériau avant de fermer ?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1313"/>
