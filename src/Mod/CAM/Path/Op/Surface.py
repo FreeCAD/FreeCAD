@@ -28,6 +28,7 @@ __doc__ = "Class and implementation of 3D Surface operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
 import FreeCAD
+from Path import troubleshooting
 
 translate = FreeCAD.Qt.translate
 
@@ -969,6 +970,7 @@ class ObjectSurface(PathOp.ObjectOp):
             self.commandlist.extend(CMDS)
         else:
             Path.Log.error("Failed to pre-process model and/or selected face(s).")
+            Path.Log.error(troubleshooting.TROUBLESHOOTING_GENERAL)
 
         # ######  CLOSING COMMANDS FOR OPERATION ######
 
