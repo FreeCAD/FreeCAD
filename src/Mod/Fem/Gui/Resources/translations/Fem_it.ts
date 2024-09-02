@@ -5865,7 +5865,7 @@ usata per il solutore Elmer</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
+      <translation>Per aggiungere riferimenti: selezionarli nella vista 3D e fare clic su "Aggiungi".</translation>
     </message>
   </context>
   <context>

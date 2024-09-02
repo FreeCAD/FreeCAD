@@ -45,8 +45,8 @@ Gui--OverlayTabWidget#OverlayLeft {}
 */
 
 Gui--OverlayTabWidget {
-  qproperty-effectColor: rgba(225, 225, 225, 220);
-  qproperty-effectBlurRadius: 5;
+  qproperty-effectColor: rgba(255, 255, 255, 200);
+  qproperty-effectBlurRadius: 0;
   qproperty-effectOffsetX: 0;
   qproperty-effectOffsetY: 0;
   qproperty-effectWidth: 1;
@@ -54,8 +54,8 @@ Gui--OverlayTabWidget {
   qproperty-enableEffect: 1;
 }
  Gui--OverlayTabWidget#OverlayBottom {
-  qproperty-effectColor: rgba(225, 225, 225, 220);
-  qproperty-effectBlurRadius: 5;
+  qproperty-effectColor: rgba(225, 225, 225, 200);
+  qproperty-effectBlurRadius: 0;
   qproperty-effectOffsetX: 0.0;
   qproperty-effectOffsetY: 0.0;
   qproperty-effectWidth: 1;

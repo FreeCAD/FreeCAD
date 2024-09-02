@@ -278,18 +278,16 @@ FaceAppearances::~FaceAppearances()
 
 void FaceAppearances::setupConnections()
 {
+    // clang-format off
     connect(d->ui->defaultButton, &QPushButton::clicked,
             this, &FaceAppearances::onDefaultButtonClicked);
     connect(d->ui->boxSelection, &QPushButton::toggled,
             this, &FaceAppearances::onBoxSelectionToggled);
-    connect(d->ui->widgetMaterial,
-            &MatGui::MaterialTreeWidget::materialSelected,
-            this,
-            &FaceAppearances::onMaterialSelected);
-    connect(d->ui->buttonCustomAppearance,
-            &QPushButton::clicked,
-            this,
-            &FaceAppearances::onButtonCustomAppearanceClicked);
+    connect(d->ui->widgetMaterial, &MatGui::MaterialTreeWidget::materialSelected,
+            this, &FaceAppearances::onMaterialSelected);
+    connect(d->ui->buttonCustomAppearance, &QPushButton::clicked,
+            this, &FaceAppearances::onButtonCustomAppearanceClicked);
+    // clang-format on
 }
 
 void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)

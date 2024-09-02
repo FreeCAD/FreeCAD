@@ -41,6 +41,7 @@ class TestLinearPattern(unittest.TestCase):
         self.LinearPattern.Direction = (self.Doc.X_Axis,[""])
         self.LinearPattern.Length = 90.0
         self.LinearPattern.Occurrences = 10
+        self.LinearPattern.Refine = True
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
@@ -69,6 +70,7 @@ class TestLinearPattern(unittest.TestCase):
         self.LinearPattern.Direction = (self.Doc.Y_Axis,[""])
         self.LinearPattern.Length = 90.0
         self.LinearPattern.Occurrences = 10
+        self.LinearPattern.Refine = True
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
@@ -88,6 +90,7 @@ class TestLinearPattern(unittest.TestCase):
         self.LinearPattern.Direction = (self.Doc.Z_Axis,[""])
         self.LinearPattern.Length = 90.0
         self.LinearPattern.Occurrences = 10
+        self.LinearPattern.Refine = True
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
@@ -110,6 +113,7 @@ class TestLinearPattern(unittest.TestCase):
         self.LinearPattern.Direction = (self.PadSketch,["N_Axis"])
         self.LinearPattern.Length = 90.0
         self.LinearPattern.Occurrences = 10
+        self.LinearPattern.Refine = True
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
@@ -132,6 +136,7 @@ class TestLinearPattern(unittest.TestCase):
         self.LinearPattern.Direction = (self.PadSketch,["V_Axis"])
         self.LinearPattern.Length = 90.0
         self.LinearPattern.Occurrences = 10
+        self.LinearPattern.Refine = True
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
@@ -154,6 +159,7 @@ class TestLinearPattern(unittest.TestCase):
         self.LinearPattern.Direction = (self.PadSketch,["H_Axis"])
         self.LinearPattern.Length = 90.0
         self.LinearPattern.Occurrences = 10
+        self.LinearPattern.Refine = True
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)

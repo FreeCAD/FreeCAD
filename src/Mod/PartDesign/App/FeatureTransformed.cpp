@@ -324,22 +324,12 @@ App::DocumentObjectExecReturn* Transformed::execute()
                                           "Shape of additive/subtractive feature is empty"));
                 }
                 gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-#ifdef FC_USE_TNP_FIX
                 if (!fuseShape.isNull()) {
                     fuseShape = fuseShape.makeElementTransform(trsf);
                 }
                 if (!cutShape.isNull()) {
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
-#else
-                if (!fuseShape.isNull()) {
-                    fuseShape = fuseShape.makeTransform(trsf);
-                }
-                if (!cutShape.isNull()) {
-                    cutShape = cutShape.makeTransform(trsf);
-                }
-
-#endif
                 if (!fuseShape.isNull()) {
                     supportShape.makeElementFuse(getTransformedCompShape(supportShape, fuseShape));
                 }
@@ -371,26 +361,6 @@ TopoShape Transformed::refineShapeIfActive(const TopoShape& oldShape) const
     if (this->Refine.getValue()) {
         return oldShape.makeElementRefine();
     }
-    return oldShape;
-}
-
-// Deprecated, prefer the TopoShape method
-TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            if (!TopoShape(resShape).isClosed()) {
-                return oldShape;
-            }
-            return resShape;
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
     return oldShape;
 }
 

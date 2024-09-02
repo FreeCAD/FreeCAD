@@ -87,7 +87,7 @@ aangepast stylesheet hieronder en kan er mooier uitzien dan de wiki-optie. De &a
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Opmerking: als PySide Web componenten niet gevonden zijn in uw systeem, dan worden help pagina's geopend in uw standaard web browser, ongeacht de onderstaande opties</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -103,8 +103,8 @@ aangepast stylesheet hieronder en kan er mooier uitzien dan de wiki-optie. De &a
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
-which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
+      <translation>De documentatie wordt geopend in een apart dialoogvenster in het FreeCAD venster,
+zodat je het open kunt houden tijdens het werken in de 3D-weergave. Dit vereist de PySide QtWebengineWidgets component</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
@@ -159,7 +159,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Er is geen markdown renderer geïnstalleerd op uw systeem, dus deze help pagina wordt weergegeven -als is-. Installeer de -markdown- of -pandoc- python modules om de weergave van deze pagina te verbeteren.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

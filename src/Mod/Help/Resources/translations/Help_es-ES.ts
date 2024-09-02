@@ -84,12 +84,12 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>
       <source>Display</source>
-      <translation>Mostrar</translation>
+      <translation>Visualización</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Nota: si los componentes Web de PySide no se encuentran en su sistema, las páginas de ayuda se abrirán en su navegador web por defecto independientemente de las opciones a continuación</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -161,7 +161,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>No hay ningún renderizador Markdown instalado en su sistema, así que esta página de ayuda se muestra como tal. Por favor, instale los módulos python de Markdown o Pandoc para mejorar la presentación de esta página.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

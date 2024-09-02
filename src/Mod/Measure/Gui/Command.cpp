@@ -60,26 +60,26 @@ void StdCmdMeasure::activated(int iMsg)
     Gui::Control().showDialog(task);
 }
 
-bool StdCmdMeasure::isActive() {
+bool StdCmdMeasure::isActive()
+{
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc || doc->countObjectsOfType(App::GeoFeature::getClassTypeId()) == 0) {
         return false;
     }
 
-    Gui::MDIView *view = Gui::getMainWindow()->activeWindow();
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer *viewer =
-            dynamic_cast<Gui::View3DInventor *>(view)->getViewer();
+        Gui::View3DInventorViewer* viewer = dynamic_cast<Gui::View3DInventor*>(view)->getViewer();
         return !viewer->isEditing();
     }
     return false;
 }
 
-void CreateMeasureCommands() {
+void CreateMeasureCommands()
+{
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     auto cmd = new StdCmdMeasure();
     cmd->initAction();
     rcCmdMgr.addCommand(cmd);
-
 }

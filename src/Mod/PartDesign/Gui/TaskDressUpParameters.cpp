@@ -140,7 +140,6 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 
 void TaskDressUpParameters::addAllEdges(QListWidget* widget)
 {
-#ifdef FC_USE_TNP_FIX
     Q_UNUSED(widget)
 
     if (DressUpView.expired()) {
@@ -172,28 +171,6 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     catch (Base::Exception& e) {
         e.ReportException();
     }
-#else
-    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
-
-    Gui::WaitCursor wait;
-    int count = pcDressUp->getBaseTopoShape().countSubElements("Edge");
-    std::vector<std::string> edgeNames;
-    for (int ii = 0; ii < count; ii++){
-        std::ostringstream edgeName;
-        edgeName << "Edge" << ii+1;
-        edgeNames.push_back(edgeName.str());
-    }
-
-    //First we need to clear the widget in case the user had faces selected. Else the faces will still be in widget but not in the feature refs!
-    QSignalBlocker block(widget);
-    widget->clear();
-
-    for (const auto & it : edgeNames){
-        widget->addItem(QLatin1String(it.c_str()));
-    }
-
-    updateFeature(pcDressUp, edgeNames);
-#endif
 }
 
 void TaskDressUpParameters::deleteRef(QListWidget* widget)

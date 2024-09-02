@@ -5617,7 +5617,7 @@ użyta przez solver Elmer</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="704"/>
       <source>Clear FEM mesh</source>
-      <translation>Wyczyść dane siatki MES</translation>
+      <translation>Wyczyść siatkę MES</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="705"/>

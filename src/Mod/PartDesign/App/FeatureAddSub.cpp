@@ -64,27 +64,6 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-#ifndef FC_USE_TNP_FIX
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) const
-{
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            if (!TopoShape(resShape).isClosed()) {
-                return oldShape;
-            }
-            return resShape;
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
-    return oldShape;
-}
-#endif
 
 TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
 {

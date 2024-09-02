@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
-#define GUI_VIEWPROVIDERPYTHONFEATURE_H
+#ifndef GUI_VIEWPROVIDERFEATUREPYTHON_H
+#define GUI_VIEWPROVIDERFEATUREPYTHON_H
 
 #include <App/AutoTransaction.h>
 #include <App/PropertyPythonObject.h>
@@ -37,7 +37,7 @@ class SoNode;
 
 namespace Gui {
 
-class GuiExport ViewProviderPythonFeatureImp
+class GuiExport ViewProviderFeaturePythonImp
 {
 public:
     enum ValueT {
@@ -47,9 +47,9 @@ public:
     };
 
     /// constructor.
-    ViewProviderPythonFeatureImp(ViewProviderDocumentObject*, App::PropertyPythonObject &);
+    ViewProviderFeaturePythonImp(ViewProviderDocumentObject*, App::PropertyPythonObject &);
     /// destructor.
-    ~ViewProviderPythonFeatureImp();
+    ~ViewProviderFeaturePythonImp();
 
     // Returns the icon
     QIcon getIcon() const;
@@ -193,18 +193,18 @@ public:
 };
 
 template <class ViewProviderT>
-class ViewProviderPythonFeatureT : public ViewProviderT
+class ViewProviderFeaturePythonT : public ViewProviderT
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPythonFeatureT<ViewProviderT>);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderFeaturePythonT<ViewProviderT>);
 
 public:
     /// constructor.
-    ViewProviderPythonFeatureT() {
+    ViewProviderFeaturePythonT() {
         ADD_PROPERTY(Proxy,(Py::Object()));
-        imp = new ViewProviderPythonFeatureImp(this,Proxy);
+        imp = new ViewProviderFeaturePythonImp(this,Proxy);
     }
     /// destructor.
-    ~ViewProviderPythonFeatureT() override {
+    ~ViewProviderFeaturePythonT() override {
         delete imp;
     }
 
@@ -243,9 +243,9 @@ public:
     //@{
     bool useNewSelectionModel() const override {
         switch(imp->useNewSelectionModel()) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::useNewSelectionModel();
@@ -253,9 +253,9 @@ public:
     }
     bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override {
         auto ret = imp->getElementPicked(pp,subname);
-        if(ret == ViewProviderPythonFeatureImp::NotImplemented)
+        if(ret == ViewProviderFeaturePythonImp::NotImplemented)
             return ViewProviderT::getElementPicked(pp,subname);
-        else if(ret == ViewProviderPythonFeatureImp::Accepted)
+        else if(ret == ViewProviderFeaturePythonImp::Accepted)
             return true;
         return false;
     }
@@ -273,9 +273,9 @@ public:
     }
     bool getDetailPath(const char *name, SoFullPath *path, bool append,SoDetail *&det) const override {
         auto ret = imp->getDetailPath(name,path,append,det);
-        if(ret == ViewProviderPythonFeatureImp::NotImplemented)
+        if(ret == ViewProviderFeaturePythonImp::NotImplemented)
             return ViewProviderT::getDetailPath(name,path,append,det);
-        return ret == ViewProviderPythonFeatureImp::Accepted;
+        return ret == ViewProviderFeaturePythonImp::Accepted;
     }
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override {
         return ViewProviderT::getSelectionShape(Element);
@@ -298,9 +298,9 @@ public:
     }
     bool onDelete(const std::vector<std::string> & sub) override {
         switch(imp->onDelete(sub)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::onDelete(sub);
@@ -308,9 +308,9 @@ public:
     }
     bool canDelete(App::DocumentObject *obj) const override {
         switch(imp->canDelete(obj)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canDelete(obj);
@@ -335,9 +335,9 @@ public:
     /// Returns true if the view provider generally supports dragging objects
     bool canDragObjects() const override {
         switch (imp->canDragObjects()) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canDragObjects();
@@ -346,9 +346,9 @@ public:
     /// Check whether the object can be removed from the view provider by drag and drop
     bool canDragObject(App::DocumentObject* obj) const override {
         switch (imp->canDragObject(obj)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canDragObject(obj);
@@ -358,8 +358,8 @@ public:
     void dragObject(App::DocumentObject* obj) override {
         App::AutoTransaction committer;
         switch (imp->dragObject(obj)) {
-        case ViewProviderPythonFeatureImp::Accepted:
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Accepted:
+        case ViewProviderFeaturePythonImp::Rejected:
             return;
         default:
             return ViewProviderT::dragObject(obj);
@@ -368,9 +368,9 @@ public:
     /// Returns true if the view provider generally accepts dropping of objects
     bool canDropObjects() const override {
         switch (imp->canDropObjects()) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canDropObjects();
@@ -379,9 +379,9 @@ public:
     /// Check whether the object can be dropped to the view provider by drag and drop
     bool canDropObject(App::DocumentObject* obj) const override {
         switch (imp->canDropObject(obj)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canDropObject(obj);
@@ -391,8 +391,8 @@ public:
     void dropObject(App::DocumentObject* obj) override {
         App::AutoTransaction committer;
         switch (imp->dropObject(obj)) {
-        case ViewProviderPythonFeatureImp::Accepted:
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Accepted:
+        case ViewProviderFeaturePythonImp::Rejected:
             return;
         default:
             return ViewProviderT::dropObject(obj);
@@ -401,9 +401,9 @@ public:
     /** Return false to force drop only operation for a give object*/
     bool canDragAndDropObject(App::DocumentObject *obj) const override {
         switch (imp->canDragAndDropObject(obj)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canDragAndDropObject(obj);
@@ -413,9 +413,9 @@ public:
             const char *subname, const std::vector<std::string> &elements) const override
     {
         switch (imp->canDropObjectEx(obj,owner,subname,elements)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canDropObjectEx(obj,owner,subname,elements);
@@ -438,9 +438,9 @@ public:
     /// Returns true if the icon must always appear enabled in the tree view
     bool isShow() const override {
         switch(imp->isShow()) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::isShow();
@@ -470,9 +470,9 @@ public:
 
     bool canRemoveChildrenFromRoot() const override {
         switch(imp->canRemoveChildrenFromRoot()) {
-        case ViewProviderPythonFeatureImp::NotImplemented:
+        case ViewProviderFeaturePythonImp::NotImplemented:
             return ViewProviderT::canRemoveChildrenFromRoot();
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
         default:
             return false;
@@ -485,9 +485,9 @@ public:
 
     bool canAddToSceneGraph() const override {
         switch(imp->canAddToSceneGraph()) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::canAddToSceneGraph();
@@ -522,9 +522,9 @@ protected:
     bool setEdit(int ModNum) override
     {
         switch (imp->setEdit(ModNum)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::setEdit(ModNum);
@@ -534,19 +534,19 @@ protected:
     void unsetEdit(int ModNum) override
     {
         switch (imp->unsetEdit(ModNum)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
         default:
             return ViewProviderT::unsetEdit(ModNum);
         }
     }
     void setEditViewer(View3DInventorViewer *viewer, int ModNum) override {
-        if (imp->setEditViewer(viewer,ModNum) == ViewProviderPythonFeatureImp::NotImplemented)
+        if (imp->setEditViewer(viewer,ModNum) == ViewProviderFeaturePythonImp::NotImplemented)
             ViewProviderT::setEditViewer(viewer,ModNum);
     }
     void unsetEditViewer(View3DInventorViewer *viewer) override {
-        if (imp->unsetEditViewer(viewer) == ViewProviderPythonFeatureImp::NotImplemented)
+        if (imp->unsetEditViewer(viewer) == ViewProviderFeaturePythonImp::NotImplemented)
             ViewProviderT::unsetEditViewer(viewer);
     }
 
@@ -560,9 +560,9 @@ protected:
     int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override {
         App::AutoTransaction committer;
         switch (imp->replaceObject(oldObj,newObj)) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return 1;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return 0;
         default:
             return ViewProviderT::replaceObject(oldObj,newObj);
@@ -594,9 +594,9 @@ protected:
     {
         App::AutoTransaction committer;
         switch (imp->doubleClicked()) {
-        case ViewProviderPythonFeatureImp::Accepted:
+        case ViewProviderFeaturePythonImp::Accepted:
             return true;
-        case ViewProviderPythonFeatureImp::Rejected:
+        case ViewProviderFeaturePythonImp::Rejected:
             return false;
         default:
             return ViewProviderT::doubleClicked();
@@ -609,13 +609,13 @@ protected:
     }
 
 public:
-    ViewProviderPythonFeatureT(const ViewProviderPythonFeatureT&) = delete;
-    ViewProviderPythonFeatureT(ViewProviderPythonFeatureT&&) = delete;
-    ViewProviderPythonFeatureT& operator= (const ViewProviderPythonFeatureT&) = delete;
-    ViewProviderPythonFeatureT& operator= (ViewProviderPythonFeatureT&&) = delete;
+    ViewProviderFeaturePythonT(const ViewProviderFeaturePythonT&) = delete;
+    ViewProviderFeaturePythonT(ViewProviderFeaturePythonT&&) = delete;
+    ViewProviderFeaturePythonT& operator= (const ViewProviderFeaturePythonT&) = delete;
+    ViewProviderFeaturePythonT& operator= (ViewProviderFeaturePythonT&&) = delete;
 
 private:
-    ViewProviderPythonFeatureImp* imp;
+    ViewProviderFeaturePythonImp* imp;
     App::PropertyPythonObject Proxy;
     mutable std::string defaultMode;
     std::string viewerMode;
@@ -623,10 +623,10 @@ private:
 };
 
 // Special Feature-Python classes
-using ViewProviderPythonFeature  = ViewProviderPythonFeatureT<ViewProviderDocumentObject>;
-using ViewProviderPythonGeometry = ViewProviderPythonFeatureT<ViewProviderGeometryObject>;
+using ViewProviderFeaturePython  = ViewProviderFeaturePythonT<ViewProviderDocumentObject>;
+using ViewProviderGeometryPython = ViewProviderFeaturePythonT<ViewProviderGeometryObject>;
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDERPYTHONFEATURE_H
+#endif // GUI_VIEWPROVIDERFEATUREPYTHON_H
 

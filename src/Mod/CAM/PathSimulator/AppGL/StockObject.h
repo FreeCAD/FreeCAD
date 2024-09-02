@@ -22,30 +22,21 @@
 
 #ifndef __stock_object_h__
 #define __stock_object_h__
-#include "SimShapes.h"
+#include "SolidObject.h"
 #include "linmath.h"
 
 namespace MillSim
 {
 
-class StockObject
+class StockObject : public SolidObject
 {
 public:
     StockObject();
-    virtual ~StockObject();
 
-
-    /// Calls the display list.
-    virtual void render();
-    Shape shape;
-    void SetPosition(vec3 position);
     void GenerateBoxStock(float x, float y, float z, float l, float w, float h);
-    vec3 center = {};
-    vec3 size = {};
 
 private:
     float mProfile[8] = {};
-    mat4x4 mModelMat;
 };
 }  // namespace MillSim
 

@@ -22,6 +22,7 @@
 from abc import ABC, abstractmethod, abstractclassmethod
 from typing import List, Tuple
 
+
 class MeasureBasePython(ABC):
 
     @abstractclassmethod
@@ -48,5 +49,3 @@ class MeasureBasePython(ABC):
     def parseSelection(self, obj, selection):
         """Sets the measurements properties from the given selection"""
         pass
-
-

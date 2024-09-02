@@ -40,7 +40,7 @@ generate_from_xml(MaterialTreeWidgetPy)
 
 SET(Python_SRCS
     MaterialTreeWidgetPy.xml
-    MaterialTreeWidgetPyImpl.cpp
+    MaterialTreeWidgetPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 

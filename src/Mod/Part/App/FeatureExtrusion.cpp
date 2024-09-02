@@ -303,83 +303,6 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
 void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params)
 {
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);//total vector of extrusion
-#ifndef FC_USE_TNP_FIX
-    if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
-        std::fabs(params.taperAngleRev) >= Precision::Angular()) {
-        //Tapered extrusion!
-#if defined(__GNUC__) && defined (FC_OS_LINUX)
-        Base::SignalException se;
-#endif
-        TopoDS_Shape myShape = source.getShape();
-        if (myShape.IsNull())
-            Standard_Failure::Raise("Cannot extrude empty shape");
-        // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
-        myShape = BRepBuilderAPI_Copy(myShape).Shape();
-
-        std::list<TopoDS_Shape> drafts;
-        bool isPartDesign = false; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
-        ExtrusionHelper::makeDraft(myShape, params.dir, params.lengthFwd, params.lengthRev,
-                                   params.taperAngleFwd, params.taperAngleRev, params.solid, drafts, isPartDesign);
-        if (drafts.empty()) {
-            Standard_Failure::Raise("Drafting shape failed");
-        }
-        else if (drafts.size() == 1) {
-            result = drafts.front();
-        }
-        else {
-            TopoDS_Compound comp;
-            BRep_Builder builder;
-            builder.MakeCompound(comp);
-            for (const auto & draft : drafts)
-                builder.Add(comp, draft);
-            result = comp;
-        }
-    }
-    else {
-        //Regular (non-tapered) extrusion!
-        TopoDS_Shape myShape = source.getShape();
-        if (myShape.IsNull())
-            Standard_Failure::Raise("Cannot extrude empty shape");
-
-        // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
-        myShape = BRepBuilderAPI_Copy(myShape).Shape();
-
-        //apply reverse part of extrusion by shifting the source shape
-        if (fabs(params.lengthRev) > Precision::Confusion()) {
-            gp_Trsf mov;
-            mov.SetTranslation(gp_Vec(params.dir) * (-params.lengthRev));
-            TopLoc_Location loc(mov);
-            myShape.Move(loc);
-        }
-
-        //make faces from wires
-        if (params.solid) {
-            //test if we need to make faces from wires. If there are faces - we don't.
-            TopExp_Explorer xp(myShape, TopAbs_FACE);
-            if (xp.More()) {
-                //source shape has faces. Just extrude as-is.
-            }
-            else {
-                std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(params.faceMakerClass.c_str());
-
-                if (myShape.ShapeType() == TopAbs_COMPOUND)
-                    mkFace->useCompound(TopoDS::Compound(myShape));
-                else
-                    mkFace->addShape(myShape);
-                mkFace->Build();
-                myShape = mkFace->Shape();
-            }
-        }
-
-        //extrude!
-        BRepPrimAPI_MakePrism mkPrism(myShape, vec);
-        result = mkPrism.Shape();
-    }
-
-    if (result.isNull())
-        throw NullShapeException("Result of extrusion is null shape.");
-//    return TopoShape(result);
-#else
 
     // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
     TopoShape myShape(source.makeElementCopy());
@@ -428,7 +351,6 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const E
         // extrude!
         result.makeElementPrism(myShape, vec);
     }
-#endif
 }
 
 App::DocumentObjectExecReturn* Extrusion::execute()

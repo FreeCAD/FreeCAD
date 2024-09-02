@@ -28,7 +28,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 
 class SoBase;
@@ -339,7 +339,7 @@ protected:
     mutable qint64 overlayCacheKey;
 };
 
-using ViewProviderLinkPython = ViewProviderPythonFeatureT<ViewProviderLink>;
+using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;
 
 } //namespace Gui
 

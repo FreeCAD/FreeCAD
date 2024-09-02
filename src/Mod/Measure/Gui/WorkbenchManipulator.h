@@ -25,7 +25,8 @@
 
 #include <Gui/WorkbenchManipulator.h>
 
-namespace MeasureGui {
+namespace MeasureGui
+{
 
 class WorkbenchManipulator: public Gui::WorkbenchManipulator
 {
@@ -34,7 +35,7 @@ protected:
     void modifyToolBars(Gui::ToolBarItem* toolBar) override;
 };
 
-} // namespace MeasureGui
+}  // namespace MeasureGui
 
 
-#endif // MEASUREGUI_WORKBENCHMANIPULATOR_H
+#endif  // MEASUREGUI_WORKBENCHMANIPULATOR_H

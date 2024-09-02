@@ -32,6 +32,7 @@ import os
 import time
 import tempfile
 import math
+from builtins import open as pyopen
 
 import FreeCAD
 import Part
@@ -53,10 +54,6 @@ if FreeCAD.GuiUp:
 __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
 __url__    = "https://www.freecad.org"
-
-# Save the Python open function because it will be redefined
-if open.__module__ in ['__builtin__', 'io']:
-    pyopen = open
 
 # Templates and other definitions ****
 # Specific FreeCAD <-> IFC slang translations
@@ -2078,6 +2075,7 @@ def getRepresentation(
                             pstr = str([v.Point for v in p[i].Vertexes])
                             if pstr in profiledefs:
                                 profile = profiledefs[pstr]
+                                profiles = [profile]
                                 shapetype = "reusing profile"
                             else:
                                 # Fix bug in Forum Discussion

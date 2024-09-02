@@ -27,8 +27,6 @@
 #endif
 
 #include "GCodeParser.h"
-#include <ctype.h>
-#include <stdio.h>
 
 using namespace MillSim;
 
@@ -43,7 +41,7 @@ GCodeParser::~GCodeParser()
 bool GCodeParser::Parse(const char* filename)
 {
     Operations.clear();
-    lastState = {eNop, -1, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F};
+    lastState = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
     lastTool = -1;
 
     FILE* fl;
@@ -222,6 +220,7 @@ bool GCodeParser::AddLine(const char* ptr)
             Operations.push_back(lastState);
             lastState.z = rPlane;
             Operations.push_back(lastState);
+            lastState.cmd = eDril;
         }
         else {
             Operations.push_back(lastState);

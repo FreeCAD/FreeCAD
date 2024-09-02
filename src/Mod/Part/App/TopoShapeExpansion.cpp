@@ -792,41 +792,6 @@ void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
     setMappedChildElements(children);
 }
 
-#ifndef FC_USE_TNP_FIX
-namespace
-{
-void warnIfLogging()
-{
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        FC_WARN("hasher mismatch");  // NOLINT
-    }
-}
-
-void hasherMismatchError()
-{
-    FC_ERR("hasher mismatch");  // NOLINT
-}
-
-
-void checkAndMatchHasher(TopoShape& topoShape1, const TopoShape& topoShape2)
-{
-    if (topoShape1.Hasher) {
-        if (topoShape2.Hasher != topoShape1.Hasher) {
-            if (topoShape1.getElementMapSize(false) == 0U) {
-                warnIfLogging();
-            }
-            else {
-                hasherMismatchError();
-            }
-            topoShape1.Hasher = topoShape2.Hasher;
-        }
-    }
-    else {
-        topoShape1.Hasher = topoShape2.Hasher;
-    }
-}
-}  // namespace
-#endif
 
 // TODO: Refactor mapSubElementTypeForShape to reduce complexity
 void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
@@ -913,25 +878,6 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
 
 void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool forceHasher)
 {
-#ifndef FC_USE_TNP_FIX
-    if (!canMapElement(other)) {
-        return;
-    }
-
-    if ((getElementMapSize(false) == 0U) && this->_Shape.IsPartner(other._Shape)) {
-        if (!this->Hasher) {
-            this->Hasher = other.Hasher;
-        }
-        copyElementMap(other, op);
-        return;
-    }
-
-    if (!forceHasher && other.Hasher) {
-        checkAndMatchHasher(*this, other);
-    }
-
-    mapSubElementForShape(other, op);
-#else
     if (!canMapElement(other)) {
         return;
     }
@@ -1030,8 +976,6 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
             }
         }
     }
-
-#endif
 }
 
 void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op) const
@@ -1093,20 +1037,6 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
 
 void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op)
 {
-#ifndef FC_USE_TNP_FIX
-    if (shapes.empty()) {
-        return;
-    }
-
-    if (shapeType(true) == TopAbs_COMPOUND) {
-        mapCompoundSubElements(shapes, op);
-    }
-    else {
-        for (auto& shape : shapes) {
-            mapSubElement(shape, op);
-        }
-    }
-#else
     if (shapes.empty()) {
         return;
     }
@@ -1158,7 +1088,6 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
     for (auto& shape : shapes) {
         mapSubElement(shape, op);
     }
-#endif
 }
 
 std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type,
@@ -2081,11 +2010,7 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
         }
         return TopoShape();
     }
-#ifdef FC_USE_TNP_FIX
     auto res = shapeTypeAndIndex(mapped.index);
-#else
-    auto res = shapeTypeAndIndex(Type);
-#endif
     if (res.second <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));
@@ -4438,6 +4363,10 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
                 //     srcShapes.push_back(uptoface);
 
                 srcShapes.push_back(result);
+
+                if (result.isInfinite()){
+                    result = face;
+                }
 
                 PrismMaker.Init(result.getShape(),
                                 face.getShape(),

@@ -24,6 +24,7 @@
 
 #include "DlgCAMSimulator.h"
 #include "MillSimulation.h"
+#include <Mod/Part/App/BRepMesh.h>
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QPoint>
@@ -64,8 +65,9 @@ bool DlgCAMSimulator::event(QEvent* event)
             renderNow();
             return true;
         default:
-            return QWindow::event(event);
+            break;
     }
+    return QWindow::event(event);
 }
 
 void DlgCAMSimulator::exposeEvent(QExposeEvent* event)
@@ -99,7 +101,6 @@ void DlgCAMSimulator::wheelEvent(QWheelEvent* ev)
 
 void DlgCAMSimulator::resetSimulation()
 {
-    mMillSimulator->Clear();
 }
 
 void DlgCAMSimulator::addGcodeCommand(const char* cmd)
@@ -122,35 +123,107 @@ void DlgCAMSimulator::addTool(const std::vector<float> toolProfilePoints,
 
 void DlgCAMSimulator::hideEvent(QHideEvent* ev)
 {
-    Q_UNUSED(ev)
+    mMillSimulator->Clear();
+    doGlCleanup();
     mAnimating = false;
+    QWindow::hideEvent(ev);
+    close();
+    mInstance = nullptr;
 }
 
-void DlgCAMSimulator::startSimulation(const SimStock* stock, float quality)
+void DlgCAMSimulator::resizeEvent(QResizeEvent* event)
 {
-    mStock = *stock;
+    if (!mContext) {
+        return;
+    }
+    QSize newSize = event->size();
+    int newWidth = newSize.width();
+    int newHeight = newSize.height();
+    if (mMillSimulator != nullptr) {
+        mMillSimulator->UpdateWindowScale(newWidth, newHeight);
+    }
+    const qreal retinaScale = devicePixelRatio();
+    glViewport(0, 0, newWidth * retinaScale, newHeight * retinaScale);
+}
+
+void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
+                                  float resolution,
+                                  std::vector<Vertex>& verts,
+                                  std::vector<GLushort>& indices)
+{
+    std::vector<int> normalCount;
+    int nVerts = 0;
+    for (auto& shape : tshape.getSubTopoShapes(TopAbs_FACE)) {
+        std::vector<Base::Vector3d> points;
+        std::vector<Data::ComplexGeoData::Facet> facets;
+        shape.getFaces(points, facets, resolution);
+
+        std::vector<Base::Vector3d> normals(points.size());
+        std::vector<int> normalCount(points.size());
+
+        // copy triangle indices and calculate normals
+        for (auto face : facets) {
+            indices.push_back(face.I1 + nVerts);
+            indices.push_back(face.I2 + nVerts);
+            indices.push_back(face.I3 + nVerts);
+
+            // calculate normal
+            Base::Vector3d vAB = points[face.I2] - points[face.I1];
+            Base::Vector3d vAC = points[face.I3] - points[face.I1];
+            Base::Vector3d vNorm = vAB.Cross(vAC).Normalize();
+
+            normals[face.I1] += vNorm;
+            normals[face.I2] += vNorm;
+            normals[face.I3] += vNorm;
+
+            normalCount[face.I1]++;
+            normalCount[face.I2]++;
+            normalCount[face.I3]++;
+        }
+
+        // copy points and set normals
+        for (unsigned int i = 0; i < points.size(); i++) {
+            Base::Vector3d& point = points[i];
+            Base::Vector3d& normal = normals[i];
+            int count = normalCount[i];
+            normal /= count;
+            verts.push_back(Vertex(point.x, point.y, point.z, normal.x, normal.y, normal.z));
+        }
+
+        nVerts = verts.size();
+    }
+}
+
+void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality)
+{
     mQuality = quality;
     mNeedsInitialize = true;
     show();
+    checkInitialization();
+    SetStockShape(stock, 1);
     setAnimating(true);
 }
 
 void DlgCAMSimulator::initialize()
 {
-    mMillSimulator
-        ->SetBoxStock(mStock.mPx, mStock.mPy, mStock.mPz, mStock.mLx, mStock.mLy, mStock.mLz);
     mMillSimulator->InitSimulation(mQuality);
 
     const qreal retinaScale = devicePixelRatio();
     glViewport(0, 0, width() * retinaScale, height() * retinaScale);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void DlgCAMSimulator::checkInitialization()
 {
     if (!mContext) {
+        mLastContext = QOpenGLContext::currentContext();
         mContext = new QOpenGLContext(this);
         mContext->setFormat(requestedFormat());
         mContext->create();
+        QSurfaceFormat format;
+        format.setSamples(16);
+        format.setSwapInterval(2);
+        mContext->setFormat(format);
         gOpenGlContext = mContext;
         mNeedsInitialize = true;
     }
@@ -161,6 +234,17 @@ void DlgCAMSimulator::checkInitialization()
         initializeOpenGLFunctions();
         initialize();
         mNeedsInitialize = false;
+    }
+}
+
+void DlgCAMSimulator::doGlCleanup()
+{
+    if (mLastContext != nullptr) {
+        mLastContext->makeCurrent(this);
+    }
+    if (mContext != nullptr) {
+        mContext->deleteLater();
+        mContext = nullptr;
     }
 }
 
@@ -213,11 +297,28 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
         format.setStencilBufferSize(8);
         mInstance = new DlgCAMSimulator();
         mInstance->setFormat(format);
-        mInstance->resize(800, 600);
+        mInstance->resize(MillSim::gWindowSizeW, MillSim::gWindowSizeH);
         mInstance->setModality(Qt::ApplicationModal);
-        mInstance->show();
+        mInstance->setMinimumWidth(700);
+        mInstance->setMinimumHeight(400);
     }
     return mInstance;
+}
+
+void DlgCAMSimulator::SetStockShape(const Part::TopoShape& shape, float resolution)
+{
+    std::vector<Vertex> verts;
+    std::vector<GLushort> indices;
+    GetMeshData(shape, resolution, verts, indices);
+    mMillSimulator->SetArbitraryStock(verts, indices);
+}
+
+void DlgCAMSimulator::SetBaseShape(const Part::TopoShape& tshape, float resolution)
+{
+    std::vector<Vertex> verts;
+    std::vector<GLushort> indices;
+    GetMeshData(tshape, resolution, verts, indices);
+    mMillSimulator->SetBaseObject(verts, indices);
 }
 
 DlgCAMSimulator* DlgCAMSimulator::mInstance = nullptr;

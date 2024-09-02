@@ -4,22 +4,22 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="101"/>
+      <location filename="../../FirstStartWidget.cpp" line="95"/>
       <source>Done</source>
       <translation>Gotovo</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="103"/>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Welcome to %1</source>
       <translation type="unfinished">Welcome to %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="106"/>
+      <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>To get started, set your basic configuration options below.</source>
       <translation type="unfinished">To get started, set your basic configuration options below.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="107"/>
+      <location filename="../../FirstStartWidget.cpp" line="101"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
       <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
     </message>
@@ -59,82 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="189"/>
+      <location filename="../../StartView.cpp" line="208"/>
       <source>Empty file</source>
       <translation type="unfinished">Empty file</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="190"/>
+      <location filename="../../StartView.cpp" line="209"/>
       <source>Create a new empty FreeCAD file</source>
       <translation type="unfinished">Create a new empty FreeCAD file</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="192"/>
+      <location filename="../../StartView.cpp" line="211"/>
       <source>Open File</source>
       <translation type="unfinished">Open File</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="193"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation type="unfinished">Open an existing CAD file or 3D model</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="195"/>
+      <location filename="../../StartView.cpp" line="214"/>
       <source>Parametric Part</source>
       <translation type="unfinished">Parametric Part</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="196"/>
+      <location filename="../../StartView.cpp" line="215"/>
       <source>Create a part with the Part Design workbench</source>
       <translation type="unfinished">Create a part with the Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="198"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Assembly</source>
       <translation>Montaža</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="199"/>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Create an assembly project</source>
       <translation type="unfinished">Create an assembly project</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="201"/>
+      <location filename="../../StartView.cpp" line="220"/>
       <source>2D Draft</source>
       <translation type="unfinished">2D Draft</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="202"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation type="unfinished">Create a 2D Draft with the Draft workbench</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="204"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>BIM/Architecture</source>
       <translation type="unfinished">BIM/Architecture</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="224"/>
       <source>Create an architectural project</source>
       <translation type="unfinished">Create an architectural project</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="447"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>New File</source>
       <translation type="unfinished">New File</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="448"/>
+      <location filename="../../StartView.cpp" line="489"/>
       <source>Examples</source>
       <translation type="unfinished">Examples</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="449"/>
+      <location filename="../../StartView.cpp" line="490"/>
       <source>Recent Files</source>
       <translation type="unfinished">Recent Files</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="453"/>
+      <location filename="../../StartView.cpp" line="493"/>
+      <source>Open first start setup</source>
+      <translation type="unfinished">Open first start setup</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
     </message>
@@ -142,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="441"/>
+      <location filename="../../StartView.cpp" line="482"/>
       <source>Start</source>
       <translation>Počni</translation>
     </message>

@@ -3480,7 +3480,7 @@ Poznámka: pro 2D je možné pouze nastavení pro x,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation>FEM Mesh od Gmsh</translation>
+      <translation>Síť MKP od Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>

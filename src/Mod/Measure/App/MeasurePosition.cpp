@@ -35,23 +35,29 @@ using namespace Measure;
 PROPERTY_SOURCE(Measure::MeasurePosition, Measure::MeasureBase)
 
 
-
 MeasurePosition::MeasurePosition()
 {
-    ADD_PROPERTY_TYPE(Element,(nullptr), "Measurement", App::Prop_None, "Element to get the position from");
+    ADD_PROPERTY_TYPE(Element,
+                      (nullptr),
+                      "Measurement",
+                      App::Prop_None,
+                      "Element to get the position from");
     Element.setScope(App::LinkScope::Global);
     Element.setAllowExternal(true);
 
 
-    ADD_PROPERTY_TYPE(Position,(0.0, 0.0, 0.0), "Measurement", App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                            "The absolute position");
-
+    ADD_PROPERTY_TYPE(Position,
+                      (0.0, 0.0, 0.0),
+                      "Measurement",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "The absolute position");
 }
 
 MeasurePosition::~MeasurePosition() = default;
 
 
-bool MeasurePosition::isValidSelection(const App::MeasureSelection& selection){
+bool MeasurePosition::isValidSelection(const App::MeasureSelection& selection)
+{
 
     if (selection.empty() || selection.size() > 1) {
         return false;
@@ -71,7 +77,8 @@ bool MeasurePosition::isValidSelection(const App::MeasureSelection& selection){
     return true;
 }
 
-void MeasurePosition::parseSelection(const App::MeasureSelection& selection) {
+void MeasurePosition::parseSelection(const App::MeasureSelection& selection)
+{
     // Set properties from selection, method is only invoked when isValid Selection returns true
 
     for (auto element : selection) {
@@ -84,7 +91,7 @@ void MeasurePosition::parseSelection(const App::MeasureSelection& selection) {
 }
 
 
-App::DocumentObjectExecReturn *MeasurePosition::execute()
+App::DocumentObjectExecReturn* MeasurePosition::execute()
 {
     recalculatePosition();
     return DocumentObject::StdReturn;
@@ -95,9 +102,9 @@ void MeasurePosition::recalculatePosition()
     const App::DocumentObject* object = Element.getValue();
     const std::vector<std::string>& subElements = Element.getSubValues();
 
-    App::SubObjectT subject{object, subElements.front().c_str()};
+    App::SubObjectT subject {object, subElements.front().c_str()};
     auto info = getMeasureInfo(subject);
-    
+
     if (!info || !info->valid) {
         return;
     }
@@ -119,7 +126,8 @@ void MeasurePosition::onChanged(const App::Property* prop)
 }
 
 
-QString MeasurePosition::getResultString() {
+QString MeasurePosition::getResultString()
+{
     App::Property* prop = this->getResultProp();
     if (prop == nullptr) {
         return {};
@@ -129,22 +137,23 @@ QString MeasurePosition::getResultString() {
     QString unit = Position.getUnit().getString();
     int precision = 2;
     QString text;
-    #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    QTextStream(&text)
-        << "X: " << QString::number(value.x, 'f', precision) << " " << unit << endl
-        << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << endl
-        << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
-    #else
-    QTextStream(&text)
-        << "X: " << QString::number(value.x, 'f', precision) << " " << unit << Qt::endl
-        << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << Qt::endl
-        << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
-    #endif
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit << endl
+                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << endl
+                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
+#else
+    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit
+                       << Qt::endl
+                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit
+                       << Qt::endl
+                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
+#endif
     return text;
 }
 
 
-Base::Placement MeasurePosition::getPlacement() {
+Base::Placement MeasurePosition::getPlacement()
+{
     Base::Placement placement;
     placement.setPosition(Position.getValue());
     return placement;

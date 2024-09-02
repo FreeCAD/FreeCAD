@@ -232,6 +232,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
     if (strcmp("ViewFit", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
     else if (strcmp("CanPan",pMsg) == 0) {
         return true;
     }
