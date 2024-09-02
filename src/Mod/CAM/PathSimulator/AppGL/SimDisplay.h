@@ -97,7 +97,7 @@ protected:
     vec3 pathLineColorPassed = {0.9f, 0.3f, 0.3f};
 
     vec3 eye = {0, 100, 40};
-    vec3 target = {0, 0, -10};
+    vec3 target = {0, 0, 0};
     vec3 upvec = {0, 0, 1};
 
     mat4x4 mMatLookAt;

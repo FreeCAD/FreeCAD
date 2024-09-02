@@ -25,6 +25,8 @@
 #include <vector>
 #include <iostream>
 
+#define DRAG_ZOOM_FACTOR 10
+
 namespace MillSim
 {
 
@@ -530,23 +532,33 @@ void MillSimulation::SetBaseObject(std::vector<Vertex>& verts, std::vector<GLush
 
 void MillSimulation::MouseDrag(int buttons, int dx, int dy)
 {
-    if (buttons == (MS_MOUSE_MID | MS_MOUSE_LEFT)) {
+    if (buttons == (MS_MOUSE_MID | MS_MOUSE_LEFT) || buttons == MS_KBD_ALT) {
         simDisplay.TiltEye((float)dy / 100.0f);
         simDisplay.RotateEye((float)dx / 100.0f);
     }
-    else if (buttons == MS_MOUSE_MID) {
+    else if (buttons == MS_MOUSE_MID || buttons == MS_KBD_SHIFT) {
         simDisplay.MoveEye(dx, -dy);
+    }
+    else if (buttons == (MS_KBD_CONTROL | MS_KBD_SHIFT)) {
+        Zoom(0.003 * dy);
     }
     guiDisplay.MouseDrag(buttons, dx, dy);
 }
 
-void MillSimulation::MouseMove(int px, int py)
+void MillSimulation::MouseMove(int px, int py, int modifiers)
 {
-    if (mMouseButtonState > 0) {
+    if (modifiers != mLastModifiers) {
+        mLastMouseX = px;
+        mLastMouseY = py;
+        mLastModifiers = modifiers;
+    }
+
+    int buttons = mMouseButtonState | modifiers;
+    if (buttons > 0) {
         int dx = px - mLastMouseX;
         int dy = py - mLastMouseY;
         if (dx != 0 || dy != 0) {
-            MouseDrag(mMouseButtonState, dx, dy);
+            MouseDrag(buttons, dx, dy);
             mLastMouseX = px;
             mLastMouseY = py;
         }
@@ -558,15 +570,7 @@ void MillSimulation::MouseMove(int px, int py)
 
 void MillSimulation::MouseScroll(float dy)
 {
-    float f = simDisplay.GetEyeFactor();
-    f += 0.05f * dy;
-    if (f > 0.6f) {
-        f = 0.6f;
-    }
-    else if (f < 0.05f) {
-        f = 0.05f;
-    }
-    simDisplay.UpdateEyeFactor(f);
+    Zoom(-0.02f * dy);
 }
 
 
@@ -589,6 +593,18 @@ void MillSimulation::MousePress(int button, bool isPressed, int px, int py)
         mLastMouseY = py;
     }
     guiDisplay.MousePressed(button, isPressed, mSimPlaying);
+}
+
+void MillSimulation::Zoom(float factor)
+{
+    factor += simDisplay.GetEyeFactor();
+    if (factor > 0.6f) {
+        factor = 0.6f;
+    }
+    else if (factor < 0.01f) {
+        factor = 0.01f;
+    }
+    simDisplay.UpdateEyeFactor(factor);
 }
 
 void MillSimulation::UpdateWindowScale(int width, int height)

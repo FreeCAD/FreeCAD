@@ -363,10 +363,10 @@ void SimDisplay::RenderLightObject()
 void SimDisplay::ScaleViewToStock(StockObject* obj)
 {
     mMaxStockDim = fmaxf(obj->size[0], obj->size[1]);
-    maxFar = mMaxStockDim * 4;
+    maxFar = mMaxStockDim * 16;
     UpdateProjection();
     vec3_set(eye, 0, 0, 0);
-    UpdateEyeFactor(0.4f);
+    UpdateEyeFactor(0.1f);
     vec3_set(lightPos, obj->position[0], obj->position[1], obj->position[2] + mMaxStockDim / 3);
     mlightObject.SetPosition(lightPos);
 }

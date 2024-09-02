@@ -75,7 +75,7 @@ public:
     void startSimulation(const Part::TopoShape& stock, float quality);
     void resetSimulation();
     void addGcodeCommand(const char* cmd);
-    void addTool(const std::vector<float> toolProfilePoints,
+    void addTool(const std::vector<float>& toolProfilePoints,
                  int toolNumber,
                  float diameter,
                  float resolution);
