@@ -2226,15 +2226,15 @@ TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shap
 
         if (!a1.IsNull() && !a2.IsNull()) {
             // get end points of 1st curve
-            gp_Pnt p1 = a1->Value(a1->FirstParameter());
-            gp_Pnt p2 = a1->Value(a1->LastParameter());
+            gp_Pnt p1 = a1->Value(0.9 * a1->FirstParameter() + 0.1 * a1->LastParameter());
+            gp_Pnt p2 = a1->Value(0.1 * a1->FirstParameter() + 0.9 * a1->LastParameter());
             if (S1.getShape().Orientation() == TopAbs_REVERSED) {
                 std::swap(p1, p2);
             }
 
             // get end points of 2nd curve
-            gp_Pnt p3 = a2->Value(a2->FirstParameter());
-            gp_Pnt p4 = a2->Value(a2->LastParameter());
+            gp_Pnt p3 = a2->Value(0.9 * a2->FirstParameter() + 0.1 * a2->LastParameter());
+            gp_Pnt p4 = a2->Value(0.1 * a2->FirstParameter() + 0.9 * a2->LastParameter());
             if (S2.getShape().Orientation() == TopAbs_REVERSED) {
                 std::swap(p3, p4);
             }
