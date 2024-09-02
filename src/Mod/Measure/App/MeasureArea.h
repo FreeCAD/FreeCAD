@@ -53,7 +53,6 @@ public:
     App::PropertyArea Area;
 
     App::DocumentObjectExecReturn* execute() override;
-    void recalculateArea();
 
     const char* getViewProviderName() const override
     {

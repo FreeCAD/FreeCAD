@@ -58,8 +58,6 @@ public:
         return "MeasureGui::ViewProviderMeasureRadius";
     }
 
-    void recalculateRadius();
-
     static bool isValidSelection(const App::MeasureSelection& selection);
     static bool isPrioritizedSelection(const App::MeasureSelection& selection);
     void parseSelection(const App::MeasureSelection& selection) override;

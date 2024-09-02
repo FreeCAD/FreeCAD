@@ -50,7 +50,6 @@ public:
     App::PropertyDistance Length;
 
     App::DocumentObjectExecReturn* execute() override;
-    void recalculateLength();
 
     const char* getViewProviderName() const override
     {
