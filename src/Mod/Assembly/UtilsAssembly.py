@@ -28,12 +28,10 @@ import Part
 
 if App.GuiUp:
     import FreeCADGui as Gui
-
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+    from PySide import QtCore, QtGui, QtWidgets
 
 
-# translate = App.Qt.translate
+translate = App.Qt.translate
 
 __title__ = "Assembly utilitary functions"
 __author__ = "Ondsel"
@@ -786,6 +784,21 @@ def findCylindersIntersection(obj, surface, edge, elt_index):
                 if res:
                     return App.Vector(res[0].X, res[0].Y, res[0].Z)
     return surface.Center
+
+
+def openEditingPlacementDialog(obj, propName):
+    task_placement = Gui.TaskPlacement()
+    dialog = task_placement.form
+
+    # Connect to the placement property
+    task_placement.setPlacement(getattr(obj, propName))
+    task_placement.setSelection([obj])
+    task_placement.setPropertyName(propName)
+    task_placement.bindObject()
+    task_placement.setIgnoreTransactions(True)
+
+    dialog.findChild(QtWidgets.QPushButton, "selectedVertex").hide()
+    dialog.exec_()
 
 
 def applyOffsetToPlacement(plc, offset):
