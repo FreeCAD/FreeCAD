@@ -40,7 +40,7 @@ class DrawPage;
 class DrawViewCollection;
 class DrawViewClip;
 class DrawLeaderLine;
-/*class CosmeticVertex;*/
+class DrawViewPart;
 
 /** Base class of all View Features in the drawing module
  */
@@ -122,6 +122,8 @@ public:
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
     virtual App::PropertyLink *getOwnerProperty() { return nullptr; }
+
+    static bool isProjGroupItem(DrawViewPart* item);
 
 protected:
     void onBeforeChange(const App::Property *prop) override;

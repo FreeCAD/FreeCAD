@@ -55,6 +55,8 @@ class ViewProvider;
 namespace TechDraw
 {
 class DrawView;
+class DrawViewSection;
+class DrawViewPart;
 }
 
 namespace TechDrawGui
@@ -124,7 +126,9 @@ public:
 
     bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);
-
+    void snapSectionView(const TechDraw::DrawViewSection* sectionView,
+                         QPointF& newPosition);
+    Base::Vector3d projItemPagePos(TechDraw::DrawViewPart* item);
     void alignTo(QGraphicsItem*, const QString &alignment);
 
     QColor prefNormalColor(); //preference
@@ -201,6 +205,8 @@ private:
     double m_lockWidth;
     double m_lockHeight;
     int m_zOrder;
+
+    bool m_snapped{false};
 
 };
 

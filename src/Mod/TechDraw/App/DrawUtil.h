@@ -275,6 +275,9 @@ public:
     static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const Base::Vector3d& inPoint);
     static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const QPointF& inPoint);
 
+    static bool isWithinRange(double actualAngleIn, double targetAngleIn, double allowableError);
+
+
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);
     static void dumpEdge(const char* label, int i, TopoDS_Edge e);
