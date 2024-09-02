@@ -91,7 +91,7 @@ namespace PartApp = Part;
 
 using namespace Assembly;
 using namespace MbD;
-
+/*
 static void printPlacement(Base::Placement plc, const char* name)
 {
     Base::Vector3d pos = plc.getPosition();
@@ -109,7 +109,7 @@ static void printPlacement(Base::Placement plc, const char* name)
         axis.y,
         axis.z,
         angle);
-}
+}*/
 
 static bool isLink(App::DocumentObject* obj)
 {
