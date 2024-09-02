@@ -1294,6 +1294,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         global activeTask
         activeTask = self
+        self.blockOffsetRotation = False
 
         self.assembly = UtilsAssembly.activeAssembly()
         if not self.assembly:
@@ -1331,7 +1332,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
-        self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
+        self.form.offset1Button.clicked.connect(self.onOffset1Clicked)
+        self.form.offset2Button.clicked.connect(self.onOffset2Clicked)
 
         self.form.limitCheckbox1.stateChanged.connect(self.adaptUi)
         self.form.limitCheckbox2.stateChanged.connect(self.adaptUi)
@@ -1344,6 +1346,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.form.reverseRotCheckbox.setChecked(self.jType == "Gears")
         self.form.reverseRotCheckbox.stateChanged.connect(self.reverseRotToggled)
+
+        self.form.offsetTabs.currentChanged.connect(self.on_offset_tab_changed)
 
         if jointObj:
             Gui.Selection.clearSelection()
@@ -1504,9 +1508,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Distance2 = self.form.distanceSpinbox2.property("rawValue")
 
     def onOffsetChanged(self, quantity):
+        if self.blockOffsetRotation:
+            return
+
         self.joint.Offset2.Base = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
 
     def onRotationChanged(self, quantity):
+        if self.blockOffsetRotation:
+            return
+
         yaw = self.form.rotationSpinbox.property("rawValue")
         ypr = self.joint.Offset2.Rotation.getYawPitchRoll()
         self.joint.Offset2.Rotation.setYawPitchRoll(yaw, ypr[1], ypr[2])
@@ -1646,6 +1656,34 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         else:
             self.form.groupBox_limits.hide()
+
+        self.updateOffsetWidgets()
+
+    def updateOffsetWidgets(self):
+        # Makes sure the values in both the simplified and advanced tabs are sync.
+        pos = self.joint.Offset1.Base
+        self.form.offset1Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
+
+        pos = self.joint.Offset2.Base
+        self.form.offset2Button.setText(f"({pos.x}, {pos.y}, {pos.z})")
+
+        self.blockOffsetRotation = True
+        self.form.offsetSpinbox.setProperty("rawValue", pos.z)
+        self.form.rotationSpinbox.setProperty(
+            "rawValue", self.joint.Offset2.Rotation.getYawPitchRoll()[0]
+        )
+        self.blockOffsetRotation = False
+
+    def on_offset_tab_changed(self):
+        self.updateOffsetWidgets()
+
+    def onOffset1Clicked(self):
+        UtilsAssembly.openEditingPlacementDialog(self.joint, "Offset1")
+        self.updateOffsetWidgets()
+
+    def onOffset2Clicked(self):
+        UtilsAssembly.openEditingPlacementDialog(self.joint, "Offset2")
+        self.updateOffsetWidgets()
 
     def updateTaskboxFromJoint(self):
         self.refs = []
