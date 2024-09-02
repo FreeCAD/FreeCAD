@@ -14,18 +14,245 @@
    <string>Light Sources</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="4" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+   <item row="1" column="0" rowspan="2">
+    <widget class="QGroupBox" name="groupBoxDirection">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>2</verstretch>
+      </sizepolicy>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>428</width>
-       <height>376</height>
-      </size>
+     <property name="toolTip">
+      <string>Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</string>
      </property>
-    </spacer>
+     <property name="title">
+      <string>Direction</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="z_spnBox">
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="y_spnBox">
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="z_label">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;z&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="x_label">
+        <property name="text">
+         <string>x</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QDoubleSpinBox" name="q1_spnBox">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QDoubleSpinBox" name="q2_spnBox">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QDoubleSpinBox" name="q0_spnBox">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="y_label">
+        <property name="text">
+         <string>y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLabel" name="q2_label">
+        <property name="text">
+         <string>q2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="q0_label">
+        <property name="text">
+         <string>q0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QDoubleSpinBox" name="q3_spnBox">
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLabel" name="q1_label">
+        <property name="text">
+         <string>q1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QLabel" name="q3_label">
+        <property name="text">
+         <string>q3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="x_spnBox">
+        <property name="minimum">
+         <double>-100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" rowspan="5">
+       <widget class="Gui::View3DInventorViewer" name="viewer" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="rightMargin">
+          <number>2</number>
+         </property>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QToolButton" name="pushInTB">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="toolTip">
+              <string>Push In</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Icons/resource.qrc">
+               <normaloff>:/icons/FreeCAD-default/scalable/zoom-in.svg</normaloff>:/icons/FreeCAD-default/scalable/zoom-in.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="pullOutTB">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="toolTip">
+              <string>Pull Out</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Icons/resource.qrc">
+               <normaloff>:/icons/FreeCAD-default/scalable/zoom-out.svg</normaloff>:/icons/FreeCAD-default/scalable/zoom-out.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
@@ -114,155 +341,18 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBoxDirection">
-     <property name="toolTip">
-      <string>Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</string>
+   <item row="3" column="0">
+    <spacer name="bottomSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="title">
-      <string>Direction</string>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="2" rowspan="7">
-       <widget class="Gui::View3DInventorViewer" name="viewer" native="true">
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="z_spnBox">
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QDoubleSpinBox" name="q0_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLabel" name="q1_label">
-        <property name="text">
-         <string>q1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QDoubleSpinBox" name="q1_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="z_label">
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;z&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="QLabel" name="q2_label">
-        <property name="text">
-         <string>q2</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QLabel" name="q3_label">
-        <property name="text">
-         <string>q3</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="x_spnBox">
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="y_label">
-        <property name="text">
-         <string>y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="4">
-       <widget class="QDoubleSpinBox" name="q2_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="4">
-       <widget class="QDoubleSpinBox" name="q3_spnBox">
-        <property name="decimals">
-         <number>2</number>
-        </property>
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="y_spnBox">
-        <property name="minimum">
-         <double>-100.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLabel" name="q0_label">
-        <property name="text">
-         <string>q0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="x_label">
-        <property name="text">
-         <string>x</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    </spacer>
    </item>
   </layout>
  </widget>
@@ -305,7 +395,9 @@
   <tabstop>q2_spnBox</tabstop>
   <tabstop>q3_spnBox</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../Icons/resource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>checkBoxLight1</sender>
@@ -515,9 +607,43 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushInTB</sender>
+   <signal>clicked()</signal>
+   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
+   <slot>pushIn(void)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>224</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pullOutTB</sender>
+   <signal>clicked()</signal>
+   <receiver>Gui::Dialog::DlgSettingsLightSources</receiver>
+   <slot>pullOut(void)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>updateDraggerQS(void)</slot>
   <slot>updateDraggerXYZ(void)</slot>
+  <slot>pushIn(void)</slot>
+  <slot>pullOut(void)</slot>
  </slots>
 </ui>
