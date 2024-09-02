@@ -82,52 +82,121 @@
     </layout>
    </item>
    <item row="4" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="hLayout">
-     <item>
-      <widget class="QLabel" name="offsetLabel">
-       <property name="text">
-        <string>Offset</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Gui::QuantitySpinBox" name="offsetSpinbox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="5" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="hLayoutRotation">
-     <item>
-      <widget class="QLabel" name="rotationLabel">
-       <property name="text">
-        <string>Rotation</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Gui::QuantitySpinBox" name="rotationSpinbox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">deg</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="groupBox_offsets">
+     <property name="title">
+      <string>Attachement offsets</string>
+     </property>
+     <layout class="QVBoxLayout" name="layout_offset_group">
+      <item>
+       <widget class="QTabWidget" name="offsetTabs">
+        <widget class="QWidget" name="tabSimple">
+         <attribute name="title">
+          <string>Simple</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="layout_tabSimple">
+          <item>
+           <layout class="QHBoxLayout" name="hLayout">
+            <item>
+             <widget class="QLabel" name="offsetLabel">
+              <property name="text">
+               <string>Offset</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::QuantitySpinBox" name="offsetSpinbox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutRotation">
+            <item>
+             <widget class="QLabel" name="rotationLabel">
+              <property name="text">
+               <string>Rotation</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::QuantitySpinBox" name="rotationSpinbox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">deg</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tabAdvanced">
+         <attribute name="title">
+          <string>Advanced</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="layout_tabAdvanced">
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutOffset1">
+            <item>
+             <widget class="QLabel" name="offset1Label">
+              <property name="text">
+               <string>Offset1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="offset1Button">
+              <property name="toolTip">
+               <string>By clicking this button, you can set the attachement offset of the first marker (coordinate system) of the joint.</string>
+              </property>
+              <property name="text">
+               <string></string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutOffset2">
+            <item>
+             <widget class="QLabel" name="offset2Label">
+              <property name="text">
+               <string>Offset2</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="offset2Button">
+              <property name="toolTip">
+               <string>By clicking this button, you can set the attachement offset of the second marker (coordinate system) of the joint.</string>
+              </property>
+              <property name="text">
+               <string></string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item row="6" column="0">
     <widget class="QToolButton" name="PushButtonReverse">
