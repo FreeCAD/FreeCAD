@@ -93,12 +93,6 @@ void MeasurePosition::parseSelection(const App::MeasureSelection& selection)
 
 App::DocumentObjectExecReturn* MeasurePosition::execute()
 {
-    recalculatePosition();
-    return DocumentObject::StdReturn;
-}
-
-void MeasurePosition::recalculatePosition()
-{
     const App::DocumentObject* object = Element.getValue();
     const std::vector<std::string>& subElements = Element.getSubValues();
 
@@ -106,12 +100,14 @@ void MeasurePosition::recalculatePosition()
     auto info = getMeasureInfo(subject);
 
     if (!info || !info->valid) {
-        return;
+        return new App::DocumentObjectExecReturn("Cannot calculate position");
     }
 
     auto positionInfo = std::dynamic_pointer_cast<Part::MeasurePositionInfo>(info);
     Position.setValue(positionInfo->position);
+    return DocumentObject::StdReturn;
 }
+
 
 void MeasurePosition::onChanged(const App::Property* prop)
 {
@@ -120,7 +116,8 @@ void MeasurePosition::onChanged(const App::Property* prop)
     }
 
     if (prop == &Element) {
-        recalculatePosition();
+        auto ret = recompute();
+        delete ret;
     }
     DocumentObject::onChanged(prop);
 }

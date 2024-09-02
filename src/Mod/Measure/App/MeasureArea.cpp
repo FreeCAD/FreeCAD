@@ -96,12 +96,6 @@ void MeasureArea::parseSelection(const App::MeasureSelection& selection)
 
 App::DocumentObjectExecReturn* MeasureArea::execute()
 {
-    recalculateArea();
-    return DocumentObject::StdReturn;
-}
-
-void MeasureArea::recalculateArea()
-{
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();
 
@@ -113,14 +107,16 @@ void MeasureArea::recalculateArea()
 
         auto info = getMeasureInfo(subject);
         if (!info || !info->valid) {
-            continue;
+            return new App::DocumentObjectExecReturn("Cannot calculate area");
         }
         auto areaInfo = std::dynamic_pointer_cast<Part::MeasureAreaInfo>(info);
         result += areaInfo->area;
     }
 
     Area.setValue(result);
+    return DocumentObject::StdReturn;
 }
+
 
 void MeasureArea::onChanged(const App::Property* prop)
 {
@@ -129,7 +125,8 @@ void MeasureArea::onChanged(const App::Property* prop)
     }
 
     if (prop == &Elements) {
-        recalculateArea();
+        auto ret = recompute();
+        delete ret;
     }
 
     MeasureBase::onChanged(prop);
