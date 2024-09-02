@@ -35,8 +35,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgMaterialPropertiesImp */
 
 DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
-  , ui(new Ui_DlgMaterialProperties)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgMaterialProperties)
 {
     ui->setupUi(this);
     setupConnections();
@@ -51,6 +51,7 @@ DlgMaterialPropertiesImp::~DlgMaterialPropertiesImp() = default;
 
 void DlgMaterialPropertiesImp::setupConnections()
 {
+    // clang-format off
     connect(ui->ambientColor, &ColorButton::changed,
             this, &DlgMaterialPropertiesImp::onAmbientColorChanged);
     connect(ui->diffuseColor, &ColorButton::changed,
@@ -65,6 +66,7 @@ void DlgMaterialPropertiesImp::setupConnections()
             this, &DlgMaterialPropertiesImp::onButtonReset);
     connect(ui->buttonDefault, &QPushButton::clicked,
             this, &DlgMaterialPropertiesImp::onButtonDefault);
+    // clang-format on
 }
 
 void DlgMaterialPropertiesImp::setCustomMaterial(const App::Material& mat)
