@@ -330,6 +330,15 @@ class ViewProviderLayer:
             self.icondata = byte_array.data().decode("latin1")
             vobj.signalChangeIcon()
 
+    def _get_layer(self, obj):
+        """Get the layer the object belongs to.
+        """
+        from draftmake.make_layer import get_layer_container
+        for layer in get_layer_container().Group:
+            if utils.get_type(layer) == "Layer" and obj in layer.Group:
+                return layer
+        return None
+
     def canDragObject(self, obj):
         """Return True to allow dragging one object from the Layer.
 
@@ -342,6 +351,10 @@ class ViewProviderLayer:
         for parent in obj.InList:
             if hasattr(parent, "Group"):
                 old_data.append([parent, parent.Group])
+        # Layers are not in the Inlist because a layer's Group is App::PropertyLinkListHidden:
+        layer = self._get_layer(obj)
+        if layer is not None:
+            old_data.append([layer, layer.Group])
         if old_data:
             self.old_parent_data.setdefault(obj, old_data)
             QtCore.QTimer.singleShot(0, self.update_groups_after_drag_drop)
@@ -354,10 +367,11 @@ class ViewProviderLayer:
 
     def dragObject(self, vobj, otherobj):
         """Remove the object that was dragged from the layer."""
-        if hasattr(vobj.Object, "Group") and otherobj in vobj.Object.Group:
-            group = vobj.Object.Group
+        layer = vobj.Object
+        if otherobj in layer.Group:
+            group = layer.Group
             group.remove(otherobj)
-            vobj.Object.Group = group
+            layer.Group = group
             App.ActiveDocument.recompute()
 
     def canDropObject(self, obj):
@@ -371,18 +385,7 @@ class ViewProviderLayer:
         """
         if utils.get_type(obj) == "Layer":
             return False
-
-        if not hasattr(self, "old_parent_data"):
-            self.old_parent_data = {}
-        old_data = []
-        for parent in obj.InList:
-            if hasattr(parent, "Group"):
-                old_data.append([parent, parent.Group])
-        if old_data:
-            self.old_parent_data.setdefault(obj, old_data)
-            QtCore.QTimer.singleShot(0, self.update_groups_after_drag_drop)
-
-        return True
+        return self.canDragObject(obj)
 
     def canDropObjects(self):
         """Return true to allow dropping many objects."""
@@ -398,23 +401,21 @@ class ViewProviderLayer:
         if utils.get_type(otherobj) == "Layer":
             return
 
-        obj = vobj.Object
+        # We assume a single old layer...
 
-        if hasattr(obj, "Group") and otherobj not in obj.Group:
-            group = obj.Group
+        old_layer = self._get_layer(otherobj)
+        if old_layer is not None:
+            group = old_layer.Group
+            group.remove(otherobj)
+            old_layer.Group = group
+
+        new_layer = vobj.Object
+        if otherobj not in new_layer.Group:
+            group = new_layer.Group
             group.append(otherobj)
-            obj.Group = group
+            new_layer.Group = group
 
-            # Remove from all other layers (not automatic)
-            for parent in otherobj.InList:
-                if (parent != obj
-                        and utils.get_type(parent) == "Layer"
-                        and otherobj in parent.Group):
-                    p_group = parent.Group
-                    p_group.remove(otherobj)
-                    parent.Group = p_group
-
-            App.ActiveDocument.recompute()
+        App.ActiveDocument.recompute()
 
     def update_groups_after_drag_drop(self):
         """Workaround function to improve the drag and drop behavior of Layer
@@ -445,12 +446,7 @@ class ViewProviderLayer:
                     old_layer = old_parent
                     break
 
-            new_layer = None
-            for new_parent in child.InList:
-                if utils.get_type(new_parent) == "Layer":
-                    new_layer = new_parent
-                    break
-
+            new_layer = self._get_layer(child)
             if new_layer == old_layer:
                 continue
 
