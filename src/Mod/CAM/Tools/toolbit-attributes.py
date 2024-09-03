@@ -83,9 +83,7 @@ parser.add_argument(
 parser.add_argument(
     "--save-changes", action="store_true", help="Unless specified the file is not saved"
 )
-parser.add_argument(
-    "--freecad", help="Directory FreeCAD binaries (libFreeCAD.so) if not installed"
-)
+parser.add_argument("--freecad", help="Directory FreeCAD binaries (libFreeCAD.so) if not installed")
 args = parser.parse_args()
 
 if args.freecad:
@@ -158,11 +156,7 @@ for i, fname in enumerate(args.path):
                 if not args.print_all and grp == "Shape":
                     continue
                 if args.print or args.print_all:
-                    print(
-                        "    {:10} {:20} {:20} {:10} {}".format(
-                            grp, p, ttp, str(val), enm
-                        )
-                    )
+                    print("    {:10} {:20} {:20} {:10} {}".format(grp, p, ttp, str(val), enm))
             o.Proxy.refreshCustomPropertyGroups()
     if args.save_changes:
         doc.recompute()

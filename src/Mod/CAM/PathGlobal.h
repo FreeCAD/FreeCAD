@@ -29,18 +29,18 @@
 // Path
 #ifndef PathExport
 #ifdef Path_EXPORTS
-#  define PathExport      FREECAD_DECL_EXPORT
+#define PathExport FREECAD_DECL_EXPORT
 #else
-#  define PathExport      FREECAD_DECL_IMPORT
+#define PathExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
 // PathGui
 #ifndef PathGuiExport
 #ifdef PathGui_EXPORTS
-#  define PathGuiExport   FREECAD_DECL_EXPORT
+#define PathGuiExport FREECAD_DECL_EXPORT
 #else
-#  define PathGuiExport   FREECAD_DECL_IMPORT
+#define PathGuiExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
@@ -62,4 +62,4 @@
 #endif
 #endif
 
-#endif //PATH_GLOBAL_H
+#endif  // PATH_GLOBAL_H

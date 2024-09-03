@@ -44,18 +44,10 @@ class TestPathGeom(PathTestBase):
 
     def test01(self):
         """Verify diffAngle functionality."""
-        self.assertRoughly(
-            Path.Geom.diffAngle(0, +0 * math.pi / 4, "Climb") / math.pi, 0 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(0, +3 * math.pi / 4, "Climb") / math.pi, 5 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(0, -3 * math.pi / 4, "Climb") / math.pi, 3 / 4.0
-        )
-        self.assertRoughly(
-            Path.Geom.diffAngle(0, +4 * math.pi / 4, "Climb") / math.pi, 4 / 4.0
-        )
+        self.assertRoughly(Path.Geom.diffAngle(0, +0 * math.pi / 4, "Climb") / math.pi, 0 / 4.0)
+        self.assertRoughly(Path.Geom.diffAngle(0, +3 * math.pi / 4, "Climb") / math.pi, 5 / 4.0)
+        self.assertRoughly(Path.Geom.diffAngle(0, -3 * math.pi / 4, "Climb") / math.pi, 3 / 4.0)
+        self.assertRoughly(Path.Geom.diffAngle(0, +4 * math.pi / 4, "Climb") / math.pi, 4 / 4.0)
         self.assertRoughly(
             Path.Geom.diffAngle(0, +0 * math.pi / 4, "Conventional") / math.pi, 0 / 4.0
         )
@@ -139,19 +131,13 @@ class TestPathGeom(PathTestBase):
 
         # lines
         self.assertTrue(
-            Path.Geom.isVertical(
-                Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(-1, -1, 8)))
-            )
+            Path.Geom.isVertical(Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(-1, -1, 8))))
         )
         self.assertFalse(
-            Path.Geom.isVertical(
-                Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(1, -1, 8)))
-            )
+            Path.Geom.isVertical(Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(1, -1, 8))))
         )
         self.assertFalse(
-            Path.Geom.isVertical(
-                Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(-1, 1, 8)))
-            )
+            Path.Geom.isVertical(Part.Edge(Part.LineSegment(Vector(-1, -1, -1), Vector(-1, 1, 8))))
         )
 
         self.assertTrue(
@@ -170,57 +156,37 @@ class TestPathGeom(PathTestBase):
             )
         )
         self.assertFalse(
-            Path.Geom.isHorizontal(
-                Part.Edge(Part.LineSegment(Vector(1, -1, -1), Vector(1, -1, 8)))
-            )
+            Path.Geom.isHorizontal(Part.Edge(Part.LineSegment(Vector(1, -1, -1), Vector(1, -1, 8))))
         )
         self.assertFalse(
-            Path.Geom.isHorizontal(
-                Part.Edge(Part.LineSegment(Vector(-1, 1, -1), Vector(-1, 1, 8)))
-            )
+            Path.Geom.isHorizontal(Part.Edge(Part.LineSegment(Vector(-1, 1, -1), Vector(-1, 1, 8))))
         )
 
         # circles
         self.assertTrue(
-            Path.Geom.isVertical(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 1, 0)))
-            )
+            Path.Geom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 1, 0))))
         )
         self.assertTrue(
-            Path.Geom.isVertical(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 0, 0)))
-            )
+            Path.Geom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 0, 0))))
         )
         self.assertTrue(
-            Path.Geom.isVertical(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 0)))
-            )
+            Path.Geom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 0))))
         )
         self.assertFalse(
-            Path.Geom.isVertical(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 1)))
-            )
+            Path.Geom.isVertical(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 1))))
         )
 
         self.assertTrue(
-            Path.Geom.isHorizontal(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 0, 1)))
-            )
+            Path.Geom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 0, 1))))
         )
         self.assertFalse(
-            Path.Geom.isHorizontal(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 1, 1)))
-            )
+            Path.Geom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(0, 1, 1))))
         )
         self.assertFalse(
-            Path.Geom.isHorizontal(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 0, 1)))
-            )
+            Path.Geom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 0, 1))))
         )
         self.assertFalse(
-            Path.Geom.isHorizontal(
-                Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 1)))
-            )
+            Path.Geom.isHorizontal(Part.Edge(Part.makeCircle(4, Vector(), Vector(1, 1, 1))))
         )
 
         # bezier curves
@@ -311,37 +277,21 @@ class TestPathGeom(PathTestBase):
     def test07(self):
         """Verify speed interpolation works for different pitches"""
         # horizontal
-        self.assertRoughly(
-            100, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 1, 0), 100, 50)
-        )
-        self.assertRoughly(
-            100, Path.Geom.speedBetweenPoints(Vector(1, 1, 0), Vector(), 100, 50)
-        )
+        self.assertRoughly(100, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 1, 0), 100, 50))
+        self.assertRoughly(100, Path.Geom.speedBetweenPoints(Vector(1, 1, 0), Vector(), 100, 50))
         # vertical
-        self.assertRoughly(
-            50, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 0, 1), 100, 50)
-        )
-        self.assertRoughly(
-            50, Path.Geom.speedBetweenPoints(Vector(0, 0, 1), Vector(), 100, 50)
-        )
+        self.assertRoughly(50, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 0, 1), 100, 50))
+        self.assertRoughly(50, Path.Geom.speedBetweenPoints(Vector(0, 0, 1), Vector(), 100, 50))
         # 45°
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 0, 1), 100, 50)
-        )
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 1, 1), 100, 50)
-        )
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 0, 1), 100, 50))
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 1, 1), 100, 50))
         self.assertRoughly(
             75,
             Path.Geom.speedBetweenPoints(Vector(), Vector(0.707, 0.707, 1), 100, 50),
             0.01,
         )
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(1, 0, 1), Vector(), 100, 50)
-        )
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(0, 1, 1), Vector(), 100, 50)
-        )
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(1, 0, 1), Vector(), 100, 50))
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(0, 1, 1), Vector(), 100, 50))
         self.assertRoughly(
             75,
             Path.Geom.speedBetweenPoints(Vector(0.707, 0.707, 1), Vector(), 100, 50),
@@ -393,37 +343,21 @@ class TestPathGeom(PathTestBase):
     def test08(self):
         """Verify speed interpolation works for different pitches if vSpeed > hSpeed"""
         # horizontal
-        self.assertRoughly(
-            50, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 1, 0), 50, 100)
-        )
-        self.assertRoughly(
-            50, Path.Geom.speedBetweenPoints(Vector(1, 1, 0), Vector(), 50, 100)
-        )
+        self.assertRoughly(50, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 1, 0), 50, 100))
+        self.assertRoughly(50, Path.Geom.speedBetweenPoints(Vector(1, 1, 0), Vector(), 50, 100))
         # vertical
-        self.assertRoughly(
-            100, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 0, 1), 50, 100)
-        )
-        self.assertRoughly(
-            100, Path.Geom.speedBetweenPoints(Vector(0, 0, 1), Vector(), 50, 100)
-        )
+        self.assertRoughly(100, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 0, 1), 50, 100))
+        self.assertRoughly(100, Path.Geom.speedBetweenPoints(Vector(0, 0, 1), Vector(), 50, 100))
         # 45°
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 0, 1), 50, 100)
-        )
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 1, 1), 50, 100)
-        )
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(), Vector(1, 0, 1), 50, 100))
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(), Vector(0, 1, 1), 50, 100))
         self.assertRoughly(
             75,
             Path.Geom.speedBetweenPoints(Vector(), Vector(0.707, 0.707, 1), 50, 100),
             0.01,
         )
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(1, 0, 1), Vector(), 50, 100)
-        )
-        self.assertRoughly(
-            75, Path.Geom.speedBetweenPoints(Vector(0, 1, 1), Vector(), 50, 100)
-        )
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(1, 0, 1), Vector(), 50, 100))
+        self.assertRoughly(75, Path.Geom.speedBetweenPoints(Vector(0, 1, 1), Vector(), 50, 100))
         self.assertRoughly(
             75,
             Path.Geom.speedBetweenPoints(Vector(0.707, 0.707, 1), Vector(), 50, 100),
@@ -492,9 +426,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(-1, 0, 2)
         self.assertArc(
             Path.Geom.edgeForCmd(
-                Path.Command(
-                    "G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": 0}
-                ),
+                Path.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": 0}),
                 p1,
             ),
             p1,
@@ -503,9 +435,7 @@ class TestPathGeom(PathTestBase):
         )
         self.assertArc(
             Path.Geom.edgeForCmd(
-                Path.Command(
-                    "G3", {"X": p1.x, "Y": p1.y, "z": p1.z, "I": -1, "J": 0, "K": 0}
-                ),
+                Path.Command("G3", {"X": p1.x, "Y": p1.y, "z": p1.z, "I": -1, "J": 0, "K": 0}),
                 p2,
             ),
             p2,
@@ -520,9 +450,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(1, 0, 2)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command(
-                    "G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": -1, "K": 1}
-                ),
+                Path.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": -1, "K": 1}),
                 p1,
             ),
             p1,
@@ -533,9 +461,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(0, -1, 2)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command(
-                    "G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": 1}
-                ),
+                Path.Command("G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": 1}),
                 p1,
             ),
             p1,
@@ -548,9 +474,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(-1, 0, 0)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command(
-                    "G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": -1}
-                ),
+                Path.Command("G2", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 0, "J": 1, "K": -1}),
                 p1,
             ),
             p1,
@@ -561,9 +485,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(0, -1, 0)
         self.assertCurve(
             Path.Geom.edgeForCmd(
-                Path.Command(
-                    "G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": -1}
-                ),
+                Path.Command("G3", {"X": p2.x, "Y": p2.y, "Z": p2.z, "I": 1, "J": 0, "K": -1}),
                 p1,
             ),
             p1,
@@ -594,28 +516,18 @@ class TestPathGeom(PathTestBase):
                 },
             )
 
-        self.assertCommandEqual(
-            cmds(p1, p2, p3, False), cmd("G2", p3, Vector(0, 10, 0))
-        )
-        self.assertCommandEqual(
-            cmds(p1, p4, p3, False), cmd("G3", p3, Vector(0, 10, 0))
-        )
+        self.assertCommandEqual(cmds(p1, p2, p3, False), cmd("G2", p3, Vector(0, 10, 0)))
+        self.assertCommandEqual(cmds(p1, p4, p3, False), cmd("G3", p3, Vector(0, 10, 0)))
 
-        self.assertCommandEqual(
-            cmds(p1, p2, p3, True), cmd("G3", p1, Vector(0, -10, 0))
-        )
-        self.assertCommandEqual(
-            cmds(p1, p4, p3, True), cmd("G2", p1, Vector(0, -10, 0))
-        )
+        self.assertCommandEqual(cmds(p1, p2, p3, True), cmd("G3", p1, Vector(0, -10, 0)))
+        self.assertCommandEqual(cmds(p1, p4, p3, True), cmd("G2", p1, Vector(0, -10, 0)))
 
     def test41(self):
         """Verify circle results in proper G2/G3 commands."""
 
         def cmds(center, radius, up=True):
             norm = Vector(0, 0, 1) if up else Vector(0, 0, -1)
-            return Path.Geom.cmdsForEdge(Part.Edge(Part.Circle(center, norm, radius)))[
-                0
-            ]
+            return Path.Geom.cmdsForEdge(Part.Edge(Part.Circle(center, norm, radius)))[0]
 
         def cmd(g, end, off):
             return Path.Command(
@@ -680,14 +592,10 @@ class TestPathGeom(PathTestBase):
         self.assertCurve(e, p1, p2 + Vector(0, 0, 1), p3 + Vector(0, 0, 2))
 
         e = Path.Geom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 3, 7)
-        self.assertCurve(
-            e, p1 + Vector(0, 0, 3), p2 + Vector(0, 0, 5), p3 + Vector(0, 0, 7)
-        )
+        self.assertCurve(e, p1 + Vector(0, 0, 3), p2 + Vector(0, 0, 5), p3 + Vector(0, 0, 7))
 
         e = Path.Geom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 9, 1)
-        self.assertCurve(
-            e, p1 + Vector(0, 0, 9), p2 + Vector(0, 0, 5), p3 + Vector(0, 0, 1)
-        )
+        self.assertCurve(e, p1 + Vector(0, 0, 9), p2 + Vector(0, 0, 5), p3 + Vector(0, 0, 1))
 
         dz = Vector(0, 0, 3)
         p11 = p1 + dz
@@ -704,9 +612,7 @@ class TestPathGeom(PathTestBase):
         p2 = Vector(10 - 10 * math.sin(math.pi / 4), -10 * math.cos(math.pi / 4), 1)
         p3 = Vector(0, 0, 1)
         e = Path.Geom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 0, 5)
-        self.assertCurve(
-            e, Vector(10, -10, 0), Vector(p2.x, p2.y, 2.5), Vector(0, 0, 5)
-        )
+        self.assertCurve(e, Vector(10, -10, 0), Vector(p2.x, p2.y, 2.5), Vector(0, 0, 5))
 
     def test62(self):
         """Verify splitArcAt returns proper subarcs."""
@@ -724,12 +630,8 @@ class TestPathGeom(PathTestBase):
         self.assertCurve(e[0], p1, p12, p2)
         self.assertCurve(e[1], p2, p23, p3)
 
-        p34 = Vector(
-            10 - 10 * math.sin(1 * math.pi / 8), -10 * math.cos(1 * math.pi / 8), 0
-        )
-        p45 = Vector(
-            10 - 10 * math.sin(5 * math.pi / 8), -10 * math.cos(5 * math.pi / 8), 0
-        )
+        p34 = Vector(10 - 10 * math.sin(1 * math.pi / 8), -10 * math.cos(1 * math.pi / 8), 0)
+        p45 = Vector(10 - 10 * math.sin(5 * math.pi / 8), -10 * math.cos(5 * math.pi / 8), 0)
 
         e = Path.Geom.splitArcAt(arc, p12)
         self.assertCurve(e[0], p1, p34, p12)
@@ -791,12 +693,8 @@ class TestPathGeom(PathTestBase):
         self.assertCoincide(s, tail.valueAt(tail.FirstParameter), 0.005)
         i = arc.valueAt(arc.LastParameter)
         j = tail.valueAt(tail.LastParameter)
-        print(
-            "(%.2f, %.2f, %.2f) vs. (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z, j.x, j.y, j.z)
-        )
-        self.assertCoincide(
-            arc.valueAt(arc.LastParameter), tail.valueAt(tail.LastParameter), 0.005
-        )
+        print("(%.2f, %.2f, %.2f) vs. (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z, j.x, j.y, j.z))
+        self.assertCoincide(arc.valueAt(arc.LastParameter), tail.valueAt(tail.LastParameter), 0.005)
 
         # make sure the radii match
         self.assertRoughly(arc.Curve.Radius, head.Curve.Radius, 0.001)
@@ -866,9 +764,7 @@ class TestPathGeom(PathTestBase):
     def test75(self):
         """Flip a B-spline"""
         spline = Part.BSplineCurve()
-        spline.interpolate(
-            [Vector(1, 2, 3), Vector(-3, 0, 7), Vector(-3, 1, 9), Vector(1, 3, 5)]
-        )
+        spline.interpolate([Vector(1, 2, 3), Vector(-3, 0, 7), Vector(-3, 1, 9), Vector(1, 3, 5)])
         edge = Part.Edge(spline)
         self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
 

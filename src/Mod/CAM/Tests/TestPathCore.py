@@ -58,9 +58,7 @@ class TestPathCore(PathTestBase):
         self.assertEqual(str(c4), "Command G1 [ X:4 Y:5 ]")
 
         # use placement
-        self.assertEqual(
-            str(c3.Placement), "Placement [Pos=(34,1.2,0), Yaw-Pitch-Roll=(0,0,0)]"
-        )
+        self.assertEqual(str(c3.Placement), "Placement [Pos=(34,1.2,0), Yaw-Pitch-Roll=(0,0,0)]")
         self.assertEqual(c3.toGCode(), "G1 X34.000000 Y1.200000")
         p1 = FreeCAD.Placement()
         p1.Base = FreeCAD.Vector(3, 2, 1)
@@ -93,9 +91,7 @@ class TestPathCore(PathTestBase):
         p = Path.Path([c1, c2])
         self.assertAlmostEqual(str(p), "Path [ size:2 length:3.2361 ]", places=4)
 
-        self.assertEqual(
-            str(p.Commands), "[Command G1 [ X:1 Y:0 ], Command G1 [ X:0 Y:2 ]]"
-        )
+        self.assertEqual(str(p.Commands), "[Command G1 [ X:1 Y:0 ], Command G1 [ X:0 Y:2 ]]")
         self.assertAlmostEqual(p.Length, 3.2361, places=4)
         p.addCommands(c1)
         self.assertEqual(

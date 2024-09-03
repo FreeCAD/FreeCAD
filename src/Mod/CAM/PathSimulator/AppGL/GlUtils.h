@@ -32,12 +32,12 @@
 constexpr auto EPSILON = 0.00001f;
 #define EQ_FLOAT(x, y) (fabs((x) - (y)) < EPSILON)
 
-#define MS_MOUSE_LEFT  0x01
+#define MS_MOUSE_LEFT 0x01
 #define MS_MOUSE_RIGHT 0x02
-#define MS_MOUSE_MID   0x04
-#define MS_KBD_SHIFT   0x08
+#define MS_MOUSE_MID 0x04
+#define MS_KBD_SHIFT 0x08
 #define MS_KBD_CONTROL 0x10
-#define MS_KBD_ALT     0x20
+#define MS_KBD_ALT 0x20
 
 #define GL(x)                                                                                      \
     {                                                                                              \

@@ -1908,7 +1908,7 @@ Ovo se može koristiti za obradu cijelog područja obrade kako bi se osigurala u
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
-      <translation>Količina pomaka alata u bočnom smjeru u svakom ciklusu uzorka (step over), specificirana u procentima promjera alata. 
+      <translation>Količina pomaka alata u bočnom smjeru u svakom ciklusu uzorka (step over), specificirana u procentima promjera alata.
 
 Preklapanje od 100% rezultira bez preklapanja između dva različita ciklusa.</translation>
     </message>
@@ -1949,7 +1949,7 @@ Preklapanje od 100% rezultira bez preklapanja između dva različita ciklusa.</t
       <source>Expression set as the StartDepth of a newly created operation.
 
 Default: OpStartDepth</source>
-      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije. 
+      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije.
 
 Zadano: OpStartDepth.</translation>
     </message>
@@ -1958,7 +1958,7 @@ Zadano: OpStartDepth.</translation>
       <source>Expression set as the FinalDepth for a newly created operation.
 
 Default: OpFinalDepth</source>
-      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije. 
+      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije.
 
 Zadano: OpFinalDepth</translation>
     </message>
@@ -1967,7 +1967,7 @@ Zadano: OpFinalDepth</translation>
       <source>Expression set as the StepDown of a newly created operation.
 
 Default: OpToolDiameter</source>
-      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije. 
+      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije.
 
 Zadano: OpToolDiameter</translation>
     </message>
@@ -2295,7 +2295,7 @@ Ako je zadana visina 0, priprema će koristiti polovicu visine dijela. Ako je vi
       <source>Default height of holding tags.
 
 If the specified height is 0 the dressup will use half the height of the part. Should the height be bigger than the height of the part the dressup will reduce the height to the height of the part.</source>
-      <translation>Zadana visina mostića držača. 
+      <translation>Zadana visina mostića držača.
 
 Ako je zadana visina 0, priprema će koristiti polovicu visine dijela. Ako je visina veća od visine dijela, priprema će smanjiti visinu na visinu dijela.</translation>
     </message>
@@ -2452,7 +2452,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <source>Path to look for templates, post processors, tool tables and other external files.
 
 If left empty the macro directory is used.</source>
-      <translation>Putanja za traženje predložaka, post-procesora, tablica alata i drugih vanjskih datoteka. 
+      <translation>Putanja za traženje predložaka, post-procesora, tablica alata i drugih vanjskih datoteka.
 
 Ako je prazno koristi se mapa makroa.</translation>
     </message>
@@ -2463,9 +2463,9 @@ Ako je prazno koristi se mapa makroa.</translation>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</source>
-      <translation>Zadani predložak koji će se odabrati prilikom stvaranja novog posla. 
+      <translation>Zadani predložak koji će se odabrati prilikom stvaranja novog posla.
 
-To može biti korisno kada su gotovo svi poslovi obrađeni istim strojem sa sličnim postavkama. 
+To može biti korisno kada su gotovo svi poslovi obrađeni istim strojem sa sličnim postavkama.
 
 Ako se ostavi prazno, nijedan predložak neće biti unaprijed odabran.</translation>
     </message>
@@ -2638,8 +2638,8 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <source>References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
 Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.
 Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths.</source>
-      <translation>Reference na alatne nastavake i njihove oblike mogu se pohraniti s apsolutnom putanjom ili relativnom putanjom do putanje pretraživanja. 
-Općenito se preporučuje korištenje relativnih putanja zbog njihove fleksibilnosti i otpornosti na promjene rasporeda. 
+      <translation>Reference na alatne nastavake i njihove oblike mogu se pohraniti s apsolutnom putanjom ili relativnom putanjom do putanje pretraživanja.
+Općenito se preporučuje korištenje relativnih putanja zbog njihove fleksibilnosti i otpornosti na promjene rasporeda.
 Ako u različitim direktorijima postoje više alata ili oblika alata s istim imenom, možda će biti potrebno koristiti apsolutne putanje.</translation>
     </message>
     <message>
@@ -3950,7 +3950,7 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
       <source>Expression set as the StartDepth of a newly created operation.
 
 Default: OpStartDepth</source>
-      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije. 
+      <translation>Izraz postavljen kao Početna dubina novo kreirane operacije.
 
 Zadano: OpStartDepth.</translation>
     </message>
@@ -3959,7 +3959,7 @@ Zadano: OpStartDepth.</translation>
       <source>Expression set as the FinalDepth for a newly created operation.
 
 Default: OpFinalDepth</source>
-      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije. 
+      <translation>Izraz postavljen kao Završna dubina novo kreirane operacije.
 
 Zadano: OpFinalDepth</translation>
     </message>
@@ -3973,7 +3973,7 @@ Zadano: OpFinalDepth</translation>
       <source>Expression set as the StepDown of a newly created operation.
 
 Default: OpToolDiameter</source>
-      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije. 
+      <translation>Izraz postavljen kao Korak upuštanja novo kreirane operacije.
 
 Zadano: OpToolDiameter</translation>
     </message>
@@ -4941,7 +4941,7 @@ Visina potpornih mostića.</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="324"/>
       <source>Lower limit of the turning diameter</source>
-      <translation>Donja granica okretnog promjera 
+      <translation>Donja granica okretnog promjera
 </translation>
     </message>
     <message>
@@ -5433,7 +5433,7 @@ Visina potpornih mostića.</translation>
       <location filename="../../../Path/Op/Surface.py" line="308"/>
       <location filename="../../../Path/Op/Waterline.py" line="346"/>
       <source>Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.</source>
-      <translation>Obrnite redoslijed glodanja preklapajućih staza. Za kružne uzorke glodanja, 
+      <translation>Obrnite redoslijed glodanja preklapajućih staza. Za kružne uzorke glodanja,
 započnite s vanjske strane i radite prema sredini.</translation>
     </message>
     <message>
@@ -5582,9 +5582,9 @@ započnite s vanjske strane i radite prema sredini.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="331"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
-      <translation>Gornja granica za uklanjanje kolinearnih segmenata (u stupnjevima). 
+      <translation>Gornja granica za uklanjanje kolinearnih segmenata (u stupnjevima).
                 zadana vrijednost = 10,0. </translation>
     </message>
     <message>
@@ -6979,23 +6979,23 @@ Prekidam OP-stvaranje.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema: 
+      <source>The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema: 
+      <translation type="unfinished">The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -7065,7 +7065,7 @@ For example:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b>Napomena&lt;b>: Ovaj dijalog prikazuje Naredbe staze u osnovnim jedinicama FreeCAD-a (mm/s). Vrijednosti će se pretvoriti u željenu jedinicu tijekom naknadne obrade.</translation>
     </message>
@@ -7382,9 +7382,9 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="382"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
+      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</translation>
     </message>
     <message>
@@ -8532,10 +8532,10 @@ Razmotrite specificiranje Materijala obrade</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Radni direktorij alatnih nastavaka {} treba poddirektorije:
- {} 
+ {}
  Stvori ih?</translation>
     </message>
     <message>

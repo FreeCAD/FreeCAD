@@ -67,7 +67,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.form.baseList.blockSignals(True)
         self.form.baseList.clearContents()
         self.form.baseList.setRowCount(0)
-        for (base, subs) in obj.Base:
+        for base, subs in obj.Base:
             for sub in subs:
                 self.form.baseList.insertRow(self.form.baseList.rowCount())
 
@@ -118,9 +118,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     def deleteBase(self):
         """deleteBase() ... callback for push button"""
         Path.Log.track()
-        selected = [
-            self.form.baseList.row(item) for item in self.form.baseList.selectedItems()
-        ]
+        selected = [self.form.baseList.row(item) for item in self.form.baseList.selectedItems()]
         self.form.baseList.blockSignals(True)
         for row in sorted(list(set(selected)), key=lambda row: -row):
             self.form.baseList.removeRow(row)

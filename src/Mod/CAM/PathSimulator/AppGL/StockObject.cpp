@@ -27,8 +27,7 @@
 using namespace MillSim;
 
 StockObject::StockObject()
-{
-}
+{}
 
 void StockObject::GenerateBoxStock(float x, float y, float z, float l, float w, float h)
 {

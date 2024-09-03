@@ -28,16 +28,22 @@ void MillPathLine::GenerateModel()
 
     // vertex attribs
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MillPathPosition),
-        (void*)offsetof(MillPathPosition, X));
+    glVertexAttribPointer(0,
+                          3,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(MillPathPosition),
+                          (void*)offsetof(MillPathPosition, X));
     glEnableVertexAttribArray(1);
-    glVertexAttribIPointer(1, 1, GL_INT, sizeof(MillPathPosition),
-        (void*)offsetof(MillPathPosition, SegmentId));
+    glVertexAttribIPointer(1,
+                           1,
+                           GL_INT,
+                           sizeof(MillPathPosition),
+                           (void*)offsetof(MillPathPosition, SegmentId));
 
     // unbind and free
     glBindVertexArray(0);
     MillPathPointsBuffer.clear();
-
 }
 
 void MillPathLine::Clear()
@@ -55,6 +61,4 @@ void MillPathLine::Render()
     glDrawArrays(GL_LINE_STRIP, 0, mNumVerts);
 }
 
-}  // namespace Millsim
-
-
+}  // namespace MillSim

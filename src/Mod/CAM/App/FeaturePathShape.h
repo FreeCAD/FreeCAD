@@ -35,7 +35,7 @@
 namespace Path
 {
 
-class PathExport FeatureShape : public Path::Feature
+class PathExport FeatureShape: public Path::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Path::FeatureShape);
 
@@ -52,23 +52,23 @@ public:
 
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     //@}
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PathGui::ViewProviderPathShape";
     }
 
 protected:
     /// get called by the container when a property has changed
-    //void onChanged (const App::Property* prop) override;
-
+    // void onChanged (const App::Property* prop) override;
 };
 
 using FeatureShapePython = App::FeaturePythonT<FeatureShape>;
 
-} //namespace Path
+}  // namespace Path
 
 
-#endif // PATH_FeaturePathShape_H
+#endif  // PATH_FeaturePathShape_H

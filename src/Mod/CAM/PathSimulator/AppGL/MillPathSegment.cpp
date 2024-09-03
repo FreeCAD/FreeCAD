@@ -103,9 +103,9 @@ MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion
         }
         else {
             endmill->GenerateArcSegmentDL(mRadius,
-                                           mStepAngRad * SWEEP_ARC_PAD,
-                                           mDiff[PZ] / numSimSteps,
-                                           &mShape);
+                                          mStepAngRad * SWEEP_ARC_PAD,
+                                          mDiff[PZ] / numSimSteps,
+                                          &mShape);
             numSimSteps++;
         }
 

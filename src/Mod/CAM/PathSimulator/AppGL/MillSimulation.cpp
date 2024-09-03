@@ -493,7 +493,6 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
 
         default:
             break;
-
     }
     guiDisplay.UpdatePlayState(mSimPlaying);
 }
@@ -623,7 +622,7 @@ void MillSimulation::UpdateWindowScale(int width, int height)
 bool MillSimulation::LoadGCodeFile(const char* fileName)
 {
     if (mCodeParser.Parse(fileName)) {
-            std::cout << "GCode file loaded successfully" << std::endl;
+        std::cout << "GCode file loaded successfully" << std::endl;
         return true;
     }
     return false;

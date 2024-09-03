@@ -22,7 +22,6 @@
 # ***************************************************************************
 
 
-
 import FreeCAD
 import Part
 import Path
@@ -92,9 +91,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         """circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations."""
-        return (
-            PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
-        )
+        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
     def onDocumentRestored(self, obj):
         if not hasattr(obj, "chipBreakEnabled"):
@@ -107,10 +104,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         if not hasattr(obj, "feedRetractEnabled"):
             obj.addProperty(
-                "App::PropertyBool", "feedRetractEnabled", "Drill",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Use G85 boring cycle with feed out")
+                "App::PropertyBool",
+                "feedRetractEnabled",
+                "Drill",
+                QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
             )
 
     def initCircularHoleOperation(self, obj):
@@ -162,7 +159,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "RetractMode",
             "Drill",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Controls tool retract height between holes in same op, Default=G98: safety height"
+                "App::Property",
+                "Controls tool retract height between holes in same op, Default=G98: safety height",
             ),
         )
         obj.addProperty(
@@ -181,16 +179,19 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "How far the drilling depth is extended"),
         )
         obj.addProperty(
-            "App::PropertyBool", "KeepToolDown", "Drill",
+            "App::PropertyBool",
+            "KeepToolDown",
+            "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Apply G99 retraction: only retract to RetractHeight between holes in this operation")
+                "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+            ),
         )
         obj.addProperty(
-            "App::PropertyBool", "feedRetractEnabled", "Drill",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Use G85 boring cycle with feed out")
+            "App::PropertyBool",
+            "feedRetractEnabled",
+            "Drill",
+            QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
         )
 
         for n in self.propertyEnumerations():
@@ -219,10 +220,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         if not hasattr(obj, "KeepToolDown"):
             obj.addProperty(
-                "App::PropertyBool", "KeepToolDown", "Drill",
+                "App::PropertyBool",
+                "KeepToolDown",
+                "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation")
+                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                ),
             )
 
         if not hasattr(obj, "RetractMode"):
@@ -232,7 +236,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Controls tool retract height between holes in same op, Default=G98: safety height"
+                    "Controls tool retract height between holes in same op, Default=G98: safety height",
                 ),
             )
             # ensure new enums exist in old class
@@ -240,8 +244,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 setattr(obj, n[0], n[1])
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
-        if obj.KeepToolDown: obj.RetractMode = "G99"
-        else: obj.RetractMode = "G98"
+        if obj.KeepToolDown:
+            obj.RetractMode = "G99"
+        else:
+            obj.RetractMode = "G98"
         self.commandlist.append(Path.Command(obj.RetractMode))
 
         holes = PathUtils.sort_locations(holes, ["x", "y"])
@@ -290,7 +296,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     repeat,
                     obj.RetractHeight.Value,
                     chipBreak=chipBreak,
-                    feedRetract=obj.feedRetractEnabled
+                    feedRetract=obj.feedRetractEnabled,
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
@@ -317,9 +323,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         if hasattr(job.SetupSheet, "RetractHeight"):
             obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(
-            obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"
-        ):
+        elif self.applyExpression(obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"):
             if not job:
                 obj.RetractHeight = 10
             else:

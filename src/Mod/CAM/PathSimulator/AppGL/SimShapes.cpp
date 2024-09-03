@@ -102,7 +102,7 @@ void Shape::RotateProfile(float* profPoints,
             float nx = ny * sx;
             ny *= sy;
 
-            vbuffer[vidx++] = {x1, y1, prevz, nx, ny, nz };
+            vbuffer[vidx++] = {x1, y1, prevz, nx, ny, nz};
             vbuffer[vidx++] = {x2, y2, z2, nx, ny, nz};
 
             if (j != nSlices) {

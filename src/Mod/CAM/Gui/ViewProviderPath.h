@@ -44,7 +44,7 @@ namespace PathGui
 
 class PathSelectionObserver;
 
-class PathGuiExport ViewProviderPath : public Gui::ViewProviderGeometryObject
+class PathGuiExport ViewProviderPath: public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderPath);
     using inherited = ViewProviderGeometryObject;
@@ -58,17 +58,17 @@ public:
 
     // Display properties
     App::PropertyInteger LineWidth;
-    App::PropertyColor   NormalColor;
-    App::PropertyColor   MarkerColor;
-    App::PropertyBool    ShowNodes;
-    App::PropertyVector  StartPosition;
+    App::PropertyColor NormalColor;
+    App::PropertyColor MarkerColor;
+    App::PropertyBool ShowNodes;
+    App::PropertyVector StartPosition;
 
     App::PropertyIntegerConstraint StartIndex;
-    App::PropertyIntegerConstraint::Constraints  StartIndexConstraints;
+    App::PropertyIntegerConstraint::Constraints StartIndexConstraints;
     App::PropertyIntegerConstraint ShowCount;
-    App::PropertyIntegerConstraint::Constraints  ShowCountConstraints;
+    App::PropertyIntegerConstraint::Constraints ShowCountConstraints;
 
-    void attach(App::DocumentObject *pcObject) override;
+    void attach(App::DocumentObject* pcObject) override;
     void setDisplayMode(const char* ModeName) override;
     std::vector<std::string> getDisplayModes() const override;
     void updateData(const App::Property*) override;
@@ -76,7 +76,7 @@ public:
     QIcon getIcon() const override;
 
     bool useNewSelectionModel() const override;
-    std::string getElement(const SoDetail *) const override;
+    std::string getElement(const SoDetail*) const override;
     SoDetail* getDetail(const char* subelement) const override;
 
     void updateShowConstraints();
@@ -88,38 +88,36 @@ public:
     friend class PathSelectionObserver;
 
 protected:
-
     void onChanged(const App::Property* prop) override;
     unsigned long getBoundColor() const override;
 
-    SoCoordinate3         * pcLineCoords;
-    SoCoordinate3         * pcMarkerCoords;
-    SoDrawStyle           * pcDrawStyle;
-    SoDrawStyle           * pcMarkerStyle;
-    PartGui::SoBrepEdgeSet         * pcLines;
-    SoMaterial            * pcLineColor;
-    SoBaseColor           * pcMarkerColor;
-    SoMaterialBinding     * pcMatBind;
-    std::vector<int>        colorindex;
-    SoSwitch              * pcMarkerSwitch;
-    SoSwitch              * pcArrowSwitch;
-    SoTransform           * pcArrowTransform;
+    SoCoordinate3* pcLineCoords;
+    SoCoordinate3* pcMarkerCoords;
+    SoDrawStyle* pcDrawStyle;
+    SoDrawStyle* pcMarkerStyle;
+    PartGui::SoBrepEdgeSet* pcLines;
+    SoMaterial* pcLineColor;
+    SoBaseColor* pcMarkerColor;
+    SoMaterialBinding* pcMatBind;
+    std::vector<int> colorindex;
+    SoSwitch* pcMarkerSwitch;
+    SoSwitch* pcArrowSwitch;
+    SoTransform* pcArrowTransform;
 
-    std::vector<int>   command2Edge;
-    std::deque<int>   edge2Command;
-    std::deque<int>   edgeIndices;
+    std::vector<int> command2Edge;
+    std::deque<int> edge2Command;
+    std::deque<int> edgeIndices;
 
     mutable int pt0Index;
     bool blockPropertyChange;
     int edgeStart;
     int coordStart;
     int coordEnd;
+};
 
- };
+using ViewProviderPathPython = Gui::ViewProviderFeaturePythonT<ViewProviderPath>;
 
- using ViewProviderPathPython = Gui::ViewProviderFeaturePythonT<ViewProviderPath>;
-
-} //namespace PathGui
+}  // namespace PathGui
 
 
-#endif // PATH_VIEWPROVIDERPATH_H
+#endif  // PATH_VIEWPROVIDERPATH_H
