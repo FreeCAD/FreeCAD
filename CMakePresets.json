@@ -98,10 +98,6 @@
           "OCCT_CMAKE_FALLBACK": {
             "type": "BOOL",
             "value": "ON"
-          },
-          "USE_BOOST_PYTHON": {
-            "type": "BOOL",
-            "value": "OFF"
           }
         }
       },
