@@ -499,49 +499,6 @@ class Joint:
 
             joint.Reference2 = [obj, [elt, vtx]]
 
-        def getSubnameForSelection(self, obj, part, elName):
-            # We need the subname starting from the part.
-            # Example for : Assembly.Part1.LinkToPart2.Part3.Body.Tip.Face1
-            # part is Part1 and obj is Body
-            # we should get : LinkToPart2.Part3.Body.Tip.Face1
-
-            if obj is None or part is None:
-                return elName
-
-            if obj.TypeId == "PartDesign::Body":
-                elName = obj.Tip.Name + "." + elName
-            elif obj.TypeId == "App::Link":
-                linked_obj = obj.getLinkedObject()
-                if linked_obj.TypeId == "PartDesign::Body":
-                    elName = linked_obj.Tip.Name + "." + elName
-
-            if obj != part and obj in part.OutListRecursive:
-                bSub = ""
-                currentObj = part
-
-                limit = 0
-                while limit < 1000:
-                    limit = limit + 1
-
-                    if currentObj != part:
-                        if bSub != "":
-                            bSub = bSub + "."
-                        bSub = bSub + currentObj.Name
-
-                    if currentObj == obj:
-                        break
-
-                    if currentObj.TypeId == "App::Link":
-                        currentObj = currentObj.getLinkedObject()
-
-                    for obji in currentObj.OutList:
-                        if obji == obj or obj in obji.OutListRecursive:
-                            currentObj = obji
-                            break
-
-                elName = bSub + "." + elName
-            return elName
-
     def dumps(self):
         return None
 
@@ -716,6 +673,13 @@ class Joint:
             )
             if not sameDir:
                 jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
+
+            # For link groups and sub-assemblies we have to take into account
+            # the parent placement (ie the linkgroup plc) as the linkgroup is not the moving part
+            # But instead of doing as follow, we rather enforce identity placement for linkgroups.
+            # parentPlc = UtilsAssembly.getParentPlacementIfNeeded(part2)
+            # part2.Placement = globalJcsPlc1 * jcsPlc2.inverse() * parentPlc.inverse()
+
             part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
 
@@ -730,6 +694,7 @@ class Joint:
             )
             if not sameDir:
                 jcsPlc1 = UtilsAssembly.flipPlacement(jcsPlc1)
+
             part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
             return True
         return False
@@ -1288,7 +1253,7 @@ class MakeJointSelGate:
             selected_object.isDerivedFrom("Part::Feature")
             or selected_object.isDerivedFrom("App::Part")
         ):
-            if selected_object.isDerivedFrom("App::Link"):
+            if UtilsAssembly.isLink(selected_object):
                 linked = selected_object.getLinkedObject()
 
                 if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
@@ -1315,6 +1280,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.activeType = "Part"
         else:
             self.activeType = "Assembly"
+            self.assembly.ensureIdentityPlacements()
 
         self.doc = self.assembly.Document
         self.gui_doc = Gui.getDocument(self.doc)

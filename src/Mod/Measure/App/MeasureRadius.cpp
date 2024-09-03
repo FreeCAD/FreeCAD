@@ -119,15 +119,15 @@ void MeasureRadius::parseSelection(const App::MeasureSelection& selection)
 
 App::DocumentObjectExecReturn* MeasureRadius::execute()
 {
-    recalculateRadius();
+    auto info = getMeasureInfoFirst();
+    if (!info || !info->valid) {
+        return new App::DocumentObjectExecReturn("Cannot calculate radius");
+    }
+
+    Radius.setValue(info->radius);
     return DocumentObject::StdReturn;
 }
 
-
-void MeasureRadius::recalculateRadius()
-{
-    Radius.setValue(getMeasureInfoFirst()->radius);
-}
 
 void MeasureRadius::onChanged(const App::Property* prop)
 {
@@ -136,7 +136,8 @@ void MeasureRadius::onChanged(const App::Property* prop)
     }
 
     if (prop == &Element) {
-        recalculateRadius();
+        auto ret = recompute();
+        delete ret;
     }
 
     MeasureBase::onChanged(prop);

@@ -36,30 +36,27 @@ using namespace MillSim;
 namespace CAMSimulator
 {
 
+static const float MouseScrollDelta = 120.0f;
+
 DlgCAMSimulator::DlgCAMSimulator(QWindow* parent)
-    : QWindow(parent)
-{
+    : QWindow(parent) {
     setSurfaceType(QWindow::OpenGLSurface);
     mMillSimulator = new MillSimulation();
 }
 
-void DlgCAMSimulator::render(QPainter* painter)
-{
+void DlgCAMSimulator::render(QPainter* painter) {
     Q_UNUSED(painter);
 }
 
-void DlgCAMSimulator::render()
-{
+void DlgCAMSimulator::render() {
     mMillSimulator->ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
 }
 
-void DlgCAMSimulator::renderLater()
-{
+void DlgCAMSimulator::renderLater() {
     requestUpdate();
 }
 
-bool DlgCAMSimulator::event(QEvent* event)
-{
+bool DlgCAMSimulator::event(QEvent* event) {
     switch (event->type()) {
         case QEvent::UpdateRequest:
             renderNow();
@@ -70,8 +67,7 @@ bool DlgCAMSimulator::event(QEvent* event)
     return QWindow::event(event);
 }
 
-void DlgCAMSimulator::exposeEvent(QExposeEvent* event)
-{
+void DlgCAMSimulator::exposeEvent(QExposeEvent* event) {
     Q_UNUSED(event);
 
     if (isExposed()) {
@@ -79,40 +75,36 @@ void DlgCAMSimulator::exposeEvent(QExposeEvent* event)
     }
 }
 
-void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
-{
-    mMillSimulator->MouseMove(ev->x(), ev->y());
+void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev) {
+    int modifiers = (ev->modifiers() & Qt::ShiftModifier) != 0 ? MS_KBD_SHIFT : 0;
+    modifiers |= (ev->modifiers() & Qt::ControlModifier) != 0 ? MS_KBD_CONTROL : 0;
+    modifiers |= (ev->modifiers() & Qt::AltModifier) != 0 ? MS_KBD_ALT : 0;
+    mMillSimulator->MouseMove(ev->x(), ev->y(), modifiers);
 }
 
-void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
-{
+void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev) {
     mMillSimulator->MousePress(ev->button(), true, ev->x(), ev->y());
 }
 
-void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev)
-{
+void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev) {
     mMillSimulator->MousePress(ev->button(), false, ev->x(), ev->y());
 }
 
-void DlgCAMSimulator::wheelEvent(QWheelEvent* ev)
-{
-    mMillSimulator->MouseScroll((float)ev->angleDelta().y() / 120.0f);
+void DlgCAMSimulator::wheelEvent(QWheelEvent* ev) {
+    mMillSimulator->MouseScroll((float)ev->angleDelta().y() / MouseScrollDelta);
 }
 
-void DlgCAMSimulator::resetSimulation()
-{
+void DlgCAMSimulator::resetSimulation() {
 }
 
-void DlgCAMSimulator::addGcodeCommand(const char* cmd)
-{
+void DlgCAMSimulator::addGcodeCommand(const char* cmd) {
     mMillSimulator->AddGcodeLine(cmd);
 }
 
-void DlgCAMSimulator::addTool(const std::vector<float> toolProfilePoints,
+void DlgCAMSimulator::addTool(const std::vector<float>& toolProfilePoints,
                               int toolNumber,
                               float diameter,
-                              float resolution)
-{
+                              float resolution) {
     Q_UNUSED(resolution)
     std::string toolCmd = "T" + std::to_string(toolNumber);
     mMillSimulator->AddGcodeLine(toolCmd.c_str());
@@ -121,8 +113,7 @@ void DlgCAMSimulator::addTool(const std::vector<float> toolProfilePoints,
     }
 }
 
-void DlgCAMSimulator::hideEvent(QHideEvent* ev)
-{
+void DlgCAMSimulator::hideEvent(QHideEvent* ev) {
     mMillSimulator->Clear();
     doGlCleanup();
     mAnimating = false;
@@ -131,8 +122,7 @@ void DlgCAMSimulator::hideEvent(QHideEvent* ev)
     mInstance = nullptr;
 }
 
-void DlgCAMSimulator::resizeEvent(QResizeEvent* event)
-{
+void DlgCAMSimulator::resizeEvent(QResizeEvent* event) {
     if (!mContext) {
         return;
     }
@@ -143,14 +133,13 @@ void DlgCAMSimulator::resizeEvent(QResizeEvent* event)
         mMillSimulator->UpdateWindowScale(newWidth, newHeight);
     }
     const qreal retinaScale = devicePixelRatio();
-    glViewport(0, 0, newWidth * retinaScale, newHeight * retinaScale);
+    glViewport(0, 0, (int)(newWidth * retinaScale), (int)(newHeight * retinaScale));
 }
 
 void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
                                   float resolution,
                                   std::vector<Vertex>& verts,
-                                  std::vector<GLushort>& indices)
-{
+                                  std::vector<GLushort>& indices) {
     std::vector<int> normalCount;
     int nVerts = 0;
     for (auto& shape : tshape.getSubTopoShapes(TopAbs_FACE)) {
@@ -194,8 +183,7 @@ void DlgCAMSimulator::GetMeshData(const Part::TopoShape& tshape,
     }
 }
 
-void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality)
-{
+void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality) {
     mQuality = quality;
     mNeedsInitialize = true;
     show();
@@ -204,8 +192,7 @@ void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float qualit
     setAnimating(true);
 }
 
-void DlgCAMSimulator::initialize()
-{
+void DlgCAMSimulator::initialize() {
     mMillSimulator->InitSimulation(mQuality);
 
     const qreal retinaScale = devicePixelRatio();
@@ -213,8 +200,7 @@ void DlgCAMSimulator::initialize()
     glEnable(GL_MULTISAMPLE);
 }
 
-void DlgCAMSimulator::checkInitialization()
-{
+void DlgCAMSimulator::checkInitialization() {
     if (!mContext) {
         mLastContext = QOpenGLContext::currentContext();
         mContext = new QOpenGLContext(this);
@@ -237,8 +223,7 @@ void DlgCAMSimulator::checkInitialization()
     }
 }
 
-void DlgCAMSimulator::doGlCleanup()
-{
+void DlgCAMSimulator::doGlCleanup() {
     if (mLastContext != nullptr) {
         mLastContext->makeCurrent(this);
     }
@@ -248,8 +233,7 @@ void DlgCAMSimulator::doGlCleanup()
     }
 }
 
-void DlgCAMSimulator::renderNow()
-{
+void DlgCAMSimulator::renderNow() {
     static unsigned int lastTime = 0;
     static int frameCount = 0;
     static int fps = 0;
@@ -276,8 +260,7 @@ void DlgCAMSimulator::renderNow()
     (void)fps;
 }
 
-void DlgCAMSimulator::setAnimating(bool animating)
-{
+void DlgCAMSimulator::setAnimating(bool animating) {
     mAnimating = animating;
 
     if (animating) {
@@ -285,8 +268,7 @@ void DlgCAMSimulator::setAnimating(bool animating)
     }
 }
 
-DlgCAMSimulator* DlgCAMSimulator::GetInstance()
-{
+DlgCAMSimulator* DlgCAMSimulator::GetInstance() {
     if (mInstance == nullptr) {
         QSurfaceFormat format;
         format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
@@ -305,16 +287,14 @@ DlgCAMSimulator* DlgCAMSimulator::GetInstance()
     return mInstance;
 }
 
-void DlgCAMSimulator::SetStockShape(const Part::TopoShape& shape, float resolution)
-{
+void DlgCAMSimulator::SetStockShape(const Part::TopoShape& shape, float resolution) {
     std::vector<Vertex> verts;
     std::vector<GLushort> indices;
     GetMeshData(shape, resolution, verts, indices);
     mMillSimulator->SetArbitraryStock(verts, indices);
 }
 
-void DlgCAMSimulator::SetBaseShape(const Part::TopoShape& tshape, float resolution)
-{
+void DlgCAMSimulator::SetBaseShape(const Part::TopoShape& tshape, float resolution) {
     std::vector<Vertex> verts;
     std::vector<GLushort> indices;
     GetMeshData(tshape, resolution, verts, indices);
@@ -332,12 +312,10 @@ SimStock::SimStock(float px, float py, float pz, float lx, float ly, float lz, f
     , mPz(pz + 0.005 * lz)
     , mLx(lx)
     , mLy(ly)
-    , mLz(1.01 * lz)
-{
+    , mLz(1.01 * lz) {
     (void)res;
 }
 
-SimStock::~SimStock()
-{}
+SimStock::~SimStock() {}
 
 }  // namespace CAMSimulator

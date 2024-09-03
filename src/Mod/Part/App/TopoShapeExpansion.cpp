@@ -97,6 +97,7 @@
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "Base/Tools.h"
+#include "Base/BoundBox.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -2225,15 +2226,15 @@ TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shap
 
         if (!a1.IsNull() && !a2.IsNull()) {
             // get end points of 1st curve
-            gp_Pnt p1 = a1->Value(a1->FirstParameter());
-            gp_Pnt p2 = a1->Value(a1->LastParameter());
+            gp_Pnt p1 = a1->Value(0.9 * a1->FirstParameter() + 0.1 * a1->LastParameter());
+            gp_Pnt p2 = a1->Value(0.1 * a1->FirstParameter() + 0.9 * a1->LastParameter());
             if (S1.getShape().Orientation() == TopAbs_REVERSED) {
                 std::swap(p1, p2);
             }
 
             // get end points of 2nd curve
-            gp_Pnt p3 = a2->Value(a2->FirstParameter());
-            gp_Pnt p4 = a2->Value(a2->LastParameter());
+            gp_Pnt p3 = a2->Value(0.9 * a2->FirstParameter() + 0.1 * a2->LastParameter());
+            gp_Pnt p4 = a2->Value(0.1 * a2->FirstParameter() + 0.9 * a2->LastParameter());
             if (S2.getShape().Orientation() == TopAbs_REVERSED) {
                 std::swap(p3, p4);
             }
@@ -2317,34 +2318,28 @@ static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape>& shap
 {
     std::vector<TopoShape> ret;
     for (size_t i = offset; i < shapes.size(); ++i) {
-        auto sh = shapes[i];
-        if (sh.isNull()) {
+        auto shape = shapes[i];
+        if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
-        auto shape = sh.getShape();
-        // Allow compounds with a single face, wire or vertex or
-        // if there are only edges building one wire
-        if (shape.ShapeType() == TopAbs_COMPOUND) {
-            sh = sh.makeElementWires();
-            if (sh.isNull()) {
-                FC_THROWM(NullShapeException, "Null input shape");
-            }
-            shape = sh.getShape();
+        if (shape.countSubShapes(TopAbs_FACE) == 1) {
+            shape = shape.getSubTopoShape(TopAbs_FACE, 1).splitWires();
         }
-        if (shape.ShapeType() == TopAbs_FACE) {
-            shape = sh.splitWires().getShape();
+        else if (shape.countSubShapes(TopAbs_WIRE) == 0 && shape.countSubShapes(TopAbs_EDGE) > 0) {
+            shape = shape.makeElementWires();
         }
-        else if (shape.ShapeType() == TopAbs_WIRE) {
-            // do nothing
+
+        if (shape.countSubShapes(TopAbs_WIRE) == 1) {
+            ret.push_back(shape.getSubTopoShape(TopAbs_WIRE, 1));
+            continue;
         }
-        else if (shape.ShapeType() == TopAbs_EDGE) {
-            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
-            shape = mkWire.Wire();
+        else if (shape.countSubShapes(TopAbs_VERTEX) == 1) {
+            ret.push_back(shape.getSubTopoShape(TopAbs_VERTEX, 1));
+            continue;
         }
-        else if (shape.ShapeType() != TopAbs_VERTEX) {
-            FC_THROWM(Base::CADKernelError, "Profile shape is not a vertex, edge, wire nor face.");
-        }
-        ret.push_back(shape);
+
+        FC_THROWM(Base::CADKernelError,
+                  "Profile shape is not a single vertex, edge, wire nor face.");
     }
     if (ret.empty()) {
         FC_THROWM(Base::CADKernelError, "No profile");
@@ -4436,6 +4431,7 @@ TopoShape& TopoShape::makeElementRevolve(const TopoShape& _base,
 }
 
 TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
+                                            const TopoDS_Shape& profile,
                                             const gp_Ax1& axis,
                                             const TopoDS_Face& supportface,
                                             const TopoDS_Face& uptoface,
@@ -4447,7 +4443,9 @@ TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
     if (!op) {
         op = Part::OpCodes::Revolve;
     }
-
+    if (Mode == RevolMode::None) {
+        Mode = RevolMode::FuseWithBase;
+    }
     TopoShape base(_base);
     if (base.isNull()) {
         FC_THROWM(NullShapeException, "Null shape");
@@ -4460,8 +4458,8 @@ TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
     }
 
     BRepFeat_MakeRevol mkRevol;
-    for (TopExp_Explorer xp(base.getShape(), TopAbs_FACE); xp.More(); xp.Next()) {
-        mkRevol.Init(_base.getShape(),
+    for (TopExp_Explorer xp(profile, TopAbs_FACE); xp.More(); xp.Next()) {
+        mkRevol.Init(base.getShape(),
                      xp.Current(),
                      supportface,
                      axis,
@@ -4472,9 +4470,6 @@ TopoShape& TopoShape::makeElementRevolution(const TopoShape& _base,
             throw Base::RuntimeError("Revolution: Up to face: Could not revolve the sketch!");
         }
         base = mkRevol.Shape();
-        if (Mode == RevolMode::None) {
-            Mode = RevolMode::FuseWithBase;
-        }
     }
     return makeElementShape(mkRevol, base, op);
 }

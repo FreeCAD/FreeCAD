@@ -96,7 +96,7 @@ protected:
      * Generates a revolution of the input sketchshape and stores it in the given \a revol.
      */
     void generateRevolution(TopoShape& revol,
-                            const TopoDS_Shape& sketchshape,
+                            const TopoShape& sketchshape,
                             const gp_Ax1& ax1,
                             const double angle,
                             const double angle2,
@@ -108,8 +108,8 @@ protected:
      * Generates a revolution of the input \a profileshape.
      * It will be a stand-alone solid created with BRepFeat_MakeRevol.
      */
-    void generateRevolution(TopoDS_Shape& revol,
-                            const TopoDS_Shape& baseshape,
+    void generateRevolution(TopoShape& revol,
+                            const TopoShape& baseshape,
                             const TopoDS_Shape& profileshape,
                             const TopoDS_Face& supportface,
                             const TopoDS_Face& uptoface,

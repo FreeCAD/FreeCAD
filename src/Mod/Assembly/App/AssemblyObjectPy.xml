@@ -49,6 +49,17 @@
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="ensureIdentityPlacements">
+      <Documentation>
+        <UserDocu>
+          Makes sure that LinkGroups or sub-assemblies have identity placements.
+
+          ensureIdentityPlacements()
+
+          Returns: None
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="clearUndo">
       <Documentation>
         <UserDocu>

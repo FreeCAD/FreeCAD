@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QFileDialog>
+#include <QFileDialog>
 #endif
 
 #include "DlgRunExternal.h"
@@ -41,12 +41,13 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WindowFlags fl )
+DlgRunExternal::DlgRunExternal(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
     , process(this)
     , advancedHidden(true)
     , ui(new Ui_DlgRunExternal)
 {
+    // clang-format off
     ui->setupUi(this);
     connect(ui->chooseProgram, &QPushButton::clicked, this, &DlgRunExternal::onChooseProgramClicked);
     connect(&process, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
@@ -55,6 +56,7 @@ DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WindowFlags fl )
     connect(ui->buttonDiscard, &QPushButton::clicked, this, &DlgRunExternal::reject);
     connect(ui->buttonAbort, &QPushButton::clicked, this, &DlgRunExternal::abort);
     connect(ui->buttonAdvanced, &QPushButton::clicked, this, &DlgRunExternal::advanced);
+    // clang-format on
 
     ui->gridLayout->setSizeConstraint(QLayout::SetFixedSize);
     ui->extensionWidget->hide();
@@ -72,36 +74,36 @@ void DlgRunExternal::addArgument(const QString& arg)
 
 int DlgRunExternal::runProcess()
 {
-    QFileInfo ifo (ProcName);
+    QFileInfo ifo(ProcName);
 
     ui->programName->setText(ifo.baseName());
     ui->programPath->setText(ProcName);
-    process.start(ProcName,arguments);
+    process.start(ProcName, arguments);
 
     ui->buttonAccept->setEnabled(false);
     ui->buttonDiscard->setEnabled(false);
     return exec();
 }
 
-void DlgRunExternal::reject ()
+void DlgRunExternal::reject()
 {
     QDialog::reject();
 }
 
-void DlgRunExternal::accept ()
+void DlgRunExternal::accept()
 {
     QDialog::accept();
 }
 
-void DlgRunExternal::abort ()
+void DlgRunExternal::abort()
 {
     process.terminate();
     DlgRunExternal::reject();
 }
 
-void DlgRunExternal::advanced ()
+void DlgRunExternal::advanced()
 {
-    if (advancedHidden){
+    if (advancedHidden) {
         ui->extensionWidget->show();
         advancedHidden = false;
     }
@@ -111,7 +113,7 @@ void DlgRunExternal::advanced ()
     }
 }
 
-void DlgRunExternal::finished (int exitCode, QProcess::ExitStatus exitStatus)
+void DlgRunExternal::finished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     Q_UNUSED(exitCode);
     Q_UNUSED(exitStatus);
@@ -130,4 +132,3 @@ void DlgRunExternal::onChooseProgramClicked()
 }
 
 #include "moc_DlgRunExternal.cpp"
-

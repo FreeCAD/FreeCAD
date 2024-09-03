@@ -49,7 +49,7 @@ bool IsArcMotion(MillMotion* m)
     if (m->cmd != eRotateCCW && m->cmd != eRotateCW) {
         return false;
     }
-    return fabs(m->i > EPSILON) || fabs(m->j) > EPSILON;
+    return fabs(m->i) > EPSILON || fabs(m->j) > EPSILON;
 }
 
 float MillPathSegment::mResolution = 1;

@@ -23,16 +23,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QDialog>
-# include <QPushButton>
-# include <QAction>
-# include <QKeyEvent>
-# include <map>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoButtonEvent.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
+#include <QDialog>
+#include <QPushButton>
+#include <QAction>
+#include <QKeyEvent>
+#include <map>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoButtonEvent.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/events/SoKeyboardEvent.h>
 #endif
 
 #include <Base/Console.h>
@@ -59,10 +59,10 @@ using namespace Gui;
 /* TRANSLATOR Gui::TaskImage */
 
 TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
-  : QWidget(parent)
-  , ui(new Ui_TaskImage)
-  , feature(obj)
-  , aspectRatio(1.0)
+    : QWidget(parent)
+    , ui(new Ui_TaskImage)
+    , feature(obj)
+    , aspectRatio(1.0)
 {
     ui->setupUi(this);
     ui->groupBoxCalibration->hide();
@@ -87,6 +87,7 @@ TaskImage::~TaskImage()
 
 void TaskImage::connectSignals()
 {
+    // clang-format off
     connect(ui->Reverse_checkBox, &QCheckBox::clicked,
         this, &TaskImage::onPreview);
     connect(ui->XY_radioButton, &QRadioButton::clicked,
@@ -118,6 +119,7 @@ void TaskImage::connectSignals()
         this, &TaskImage::acceptScale);
     connect(ui->pushButtonCancel, &QPushButton::clicked,
         this, &TaskImage::rejectScale);
+    // clang-format on
 }
 
 void TaskImage::initialiseTransparency()
@@ -179,7 +181,7 @@ View3DInventorViewer* TaskImage::getViewer() const
 {
     if (!feature.expired()) {
         auto vp = Application::Instance->getViewProvider(feature.get());
-        auto doc = static_cast<ViewProviderDocumentObject*>(vp)->getDocument(); // NOLINT
+        auto doc = static_cast<ViewProviderDocumentObject*>(vp)->getDocument();  // NOLINT
         auto view = dynamic_cast<View3DInventor*>(doc->getViewOfViewProvider(vp));
         if (view) {
             return view->getViewer();
@@ -241,12 +243,9 @@ void TaskImage::onInteractiveScale()
         if (viewer) {
             auto vp = Application::Instance->getViewProvider(feature.get());
             scale = new InteractiveScale(viewer, vp, feature->globalPlacement());
-            connect(scale, &InteractiveScale::scaleRequired,
-                this, &TaskImage::acceptScale);
-            connect(scale, &InteractiveScale::scaleCanceled,
-                this, &TaskImage::rejectScale);
-            connect(scale, &InteractiveScale::enableApplyBtn,
-                this, &TaskImage::enableApplyBtn);
+            connect(scale, &InteractiveScale::scaleRequired, this, &TaskImage::acceptScale);
+            connect(scale, &InteractiveScale::scaleCanceled, this, &TaskImage::rejectScale);
+            connect(scale, &InteractiveScale::enableApplyBtn, this, &TaskImage::enableApplyBtn);
         }
     }
 
@@ -289,9 +288,9 @@ void TaskImage::onPreview()
 // NOLINTNEXTLINE
 void TaskImage::restoreAngles(const Base::Rotation& rot)
 {
-    double yaw{};
-    double pitch{};
-    double roll{};
+    double yaw {};
+    double pitch {};
+    double roll {};
     rot.getYawPitchRoll(yaw, pitch, roll);
 
     bool reverse = false;
@@ -358,7 +357,7 @@ void TaskImage::restore(const Base::Placement& plm)
     ui->spinBoxWidth->setValue(feature->XSize.getValue());
     ui->spinBoxHeight->setValue(feature->YSize.getValue());
 
-    Base::Rotation rot = plm.getRotation(); // NOLINT
+    Base::Rotation rot = plm.getRotation();  // NOLINT
     Base::Vector3d pos = plm.getPosition();
 
     restoreAngles(rot);
@@ -399,7 +398,9 @@ void TaskImage::updatePlacement()
     }
     // NOLINTEND
 
-    Base::Vector3d offset = Base::Vector3d(ui->spinBoxX->value().getValue(), ui->spinBoxY->value().getValue(), ui->spinBoxZ->value().getValue());
+    Base::Vector3d offset = Base::Vector3d(ui->spinBoxX->value().getValue(),
+                                           ui->spinBoxY->value().getValue(),
+                                           ui->spinBoxZ->value().getValue());
     offset = rot.multVec(offset);
     Pos = Base::Placement(offset, rot);
 
@@ -426,22 +427,22 @@ void TaskImage::updateIcon()
     }
 
     ui->previewLabel->setPixmap(
-        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(),
-            ui->previewLabel->size()));
+        Gui::BitmapFactory().pixmapFromSvg(icon.c_str(), ui->previewLabel->size()));
 }
 
 // ----------------------------------------------------------------------------
 
 InteractiveScale::InteractiveScale(View3DInventorViewer* view,
                                    ViewProvider* vp,
-                                   const Base::Placement& plc) // NOLINT
+                                   const Base::Placement& plc)  // NOLINT
     : active(false)
     , placement(plc)
     , viewer(view)
     , viewProv(vp)
-    , midPoint(SbVec3f(0,0,0))
+    , midPoint(SbVec3f(0, 0, 0))
 {
-    measureLabel = new EditableDatumLabel(viewer, placement, SbColor(1.0F, 0.149F, 0.0F)); //NOLINT
+    measureLabel =
+        new EditableDatumLabel(viewer, placement, SbColor(1.0F, 0.149F, 0.0F));  // NOLINT
 }
 
 InteractiveScale::~InteractiveScale()
@@ -453,8 +454,12 @@ void InteractiveScale::activate()
 {
     if (viewer) {
         viewer->setEditing(true);
-        viewer->addEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
-        viewer->addEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
+        viewer->addEventCallback(SoLocation2Event::getClassTypeId(),
+                                 InteractiveScale::getMousePosition,
+                                 this);
+        viewer->addEventCallback(SoButtonEvent::getClassTypeId(),
+                                 InteractiveScale::soEventFilter,
+                                 this);
         viewer->setSelectionEnabled(false);
         viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
         active = true;
@@ -467,8 +472,12 @@ void InteractiveScale::deactivate()
         points.clear();
         measureLabel->deactivate();
         viewer->setEditing(false);
-        viewer->removeEventCallback(SoLocation2Event::getClassTypeId(), InteractiveScale::getMousePosition, this);
-        viewer->removeEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
+        viewer->removeEventCallback(SoLocation2Event::getClassTypeId(),
+                                    InteractiveScale::getMousePosition,
+                                    this);
+        viewer->removeEventCallback(SoButtonEvent::getClassTypeId(),
+                                    InteractiveScale::soEventFilter,
+                                    this);
         viewer->setSelectionEnabled(true);
         viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
         active = false;
@@ -499,8 +508,8 @@ void InteractiveScale::setDistance(const SbVec3f& pos3d)
     quantity.setValue(getDistance(pos3d));
     quantity.setUnit(Base::Unit::Length);
 
-    //Update the displayed distance
-    double factor{};
+    // Update the displayed distance
+    double factor {};
     QString unitStr;
     QString valueStr;
     valueStr = quantity.getUserString(factor, unitStr);
@@ -508,10 +517,10 @@ void InteractiveScale::setDistance(const SbVec3f& pos3d)
     measureLabel->label->setPoints(getCoordsOnImagePlane(points[0]), getCoordsOnImagePlane(pos3d));
 }
 
-void InteractiveScale::findPointOnImagePlane(SoEventCallback * ecb)
+void InteractiveScale::findPointOnImagePlane(SoEventCallback* ecb)
 {
-    const SoEvent * mbe = ecb->getEvent();
-    auto view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
+    const SoEvent* mbe = ecb->getEvent();
+    auto view = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
     std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(mbe->getPosition(), viewProv));
     if (pp) {
         auto pos3d = pp->getPoint();
@@ -540,16 +549,17 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
             Q_EMIT enableApplyBtn();
         }
         else {
-            Base::Console().Warning(std::string("Image scale"), "The second point is too close. Retry!\n");
+            Base::Console().Warning(std::string("Image scale"),
+                                    "The second point is too close. Retry!\n");
         }
     }
 }
 
-void InteractiveScale::getMousePosition(void * ud, SoEventCallback * ecb)
+void InteractiveScale::getMousePosition(void* ud, SoEventCallback* ecb)
 {
     auto scale = static_cast<InteractiveScale*>(ud);
     const SoEvent* l2e = ecb->getEvent();
-    auto view  = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
+    auto view = static_cast<Gui::View3DInventorViewer*>(ecb->getUserData());
 
     if (scale->points.size() == 1) {
         ecb->setHandled();
@@ -569,7 +579,7 @@ void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
     const SoEvent* soEvent = ecb->getEvent();
     if (soEvent->isOfType(SoKeyboardEvent::getClassTypeId())) {
         /* If user presses escape, then we cancel the tool.*/
-        const auto kbe = static_cast<const SoKeyboardEvent*>(soEvent); // NOLINT
+        const auto kbe = static_cast<const SoKeyboardEvent*>(soEvent);  // NOLINT
 
         if (kbe->getKey() == SoKeyboardEvent::ESCAPE && kbe->getState() == SoButtonEvent::UP) {
             ecb->setHandled();
@@ -577,15 +587,15 @@ void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
         }
     }
     else if (soEvent->isOfType(SoMouseButtonEvent::getClassTypeId())) {
-        const auto mbe = static_cast<const SoMouseButtonEvent*>(soEvent); // NOLINT
+        const auto mbe = static_cast<const SoMouseButtonEvent*>(soEvent);  // NOLINT
 
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN)
-        {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
+            && mbe->getState() == SoButtonEvent::DOWN) {
             ecb->setHandled();
             scale->findPointOnImagePlane(ecb);
         }
-        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::DOWN)
-        {
+        if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
+            && mbe->getState() == SoButtonEvent::DOWN) {
             ecb->setHandled();
             Q_EMIT scale->scaleCanceled();
         }
@@ -595,15 +605,16 @@ void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
 bool InteractiveScale::eventFilter(QObject* object, QEvent* event)
 {
     if (event->type() == QEvent::KeyRelease) {
-        auto keyEvent = static_cast<QKeyEvent*>(event); // NOLINT
+        auto keyEvent = static_cast<QKeyEvent*>(event);  // NOLINT
 
         /* If user press enter in the spinbox, then we validate the tool.*/
         if ((keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return)
-                && dynamic_cast<QuantitySpinBox*>(object)) {
+            && dynamic_cast<QuantitySpinBox*>(object)) {
             Q_EMIT scaleRequired();
         }
 
-        /* If user press escape, then we cancel the tool. Required here as well for when checkbox has focus.*/
+        /* If user press escape, then we cancel the tool. Required here as well for when checkbox
+         * has focus.*/
         if (keyEvent->key() == Qt::Key_Escape) {
             Q_EMIT scaleCanceled();
         }
@@ -640,7 +651,7 @@ SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point)
 // ----------------------------------------------------------------------------
 
 TaskImageDialog::TaskImageDialog(Image::ImagePlane* obj)
-    : widget{new TaskImage(obj)}
+    : widget {new TaskImage(obj)}
 {
     addTaskBox(Gui::BitmapFactory().pixmap("image-plane"), widget);
 

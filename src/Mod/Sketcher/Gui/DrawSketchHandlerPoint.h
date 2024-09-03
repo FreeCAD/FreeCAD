@@ -85,7 +85,7 @@ private:
                                   editPoint.x,
                                   editPoint.y);
 
-            if (!isConstructionMode()) {
+            if (isConstructionMode()) {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                       "toggleConstruction(%d)",
                                       getHighestCurveIndex());

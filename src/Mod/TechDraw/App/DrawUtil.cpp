@@ -271,6 +271,37 @@ double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double t
     return incidenceAngle;
 }
 
+
+//! true if actualAngle(degrees) is within allowableError [0,360] of
+//! targetAngle (degrees)
+bool DrawUtil::isWithinRange(double actualAngleIn, double targetAngleIn, double allowableError)
+{
+    constexpr double DegreesPerRevolution{360};
+    constexpr double DegreesPerHalfRevolution{180};
+    // map both angles from [0, 360] to [-180, 180].  This solves the problem of
+    // comparing angles near 0, such as 5deg & 355deg where the desired answer is
+    // 10, not 350;
+    double actualAngleDeg = actualAngleIn;
+    if (actualAngleDeg < DegreesPerRevolution &&
+        actualAngleDeg > DegreesPerHalfRevolution) {
+        actualAngleDeg = actualAngleDeg - DegreesPerRevolution;
+    }
+
+    double targetAngleDeg = targetAngleIn;
+    if (targetAngleDeg < DegreesPerRevolution &&
+        targetAngleDeg > DegreesPerHalfRevolution) {
+        targetAngleDeg = targetAngleDeg - DegreesPerRevolution;
+    }
+
+    double actualError = fabs(targetAngleDeg - actualAngleDeg);
+    if (actualError <= allowableError) {
+        return true;
+    }
+
+    return false;
+}
+
+
 bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     TopoDS_Vertex first = TopExp::FirstVertex(e);

@@ -54,7 +54,6 @@ public:
     App::PropertyPosition Position;
 
     App::DocumentObjectExecReturn* execute() override;
-    void recalculatePosition();
 
     const char* getViewProviderName() const override
     {

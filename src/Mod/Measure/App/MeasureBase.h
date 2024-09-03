@@ -116,6 +116,10 @@ public:
 
         // Resolve App::Link
         App::DocumentObject* sub = subObjT.getSubObject();
+        if (!sub) {
+            return nullptr;
+        }
+
         if (sub->isDerivedFrom<App::Link>()) {
             auto link = static_cast<App::Link*>(sub);
             sub = link->getLinkedObject(true);
