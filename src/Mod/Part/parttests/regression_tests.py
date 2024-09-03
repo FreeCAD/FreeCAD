@@ -75,7 +75,6 @@ class RegressionTests(unittest.TestCase):
         PointSketch.MapMode = "Deactivated"
 
         PointSketch.addGeometry(Part.Point(Base.Vector(0.000000, 0.000000, 0)))
-        PointSketch.toggleConstruction(0)
 
         PointSketch.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -1, 1))
 
