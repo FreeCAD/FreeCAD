@@ -86,8 +86,8 @@ std::string SvgString::finish()
 //===========================================================================
 
 TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName) :
-    ui(new Ui_TaskSurfaceFinishSymbols),
-    currentIcon(nullptr)
+    currentIcon(nullptr),
+    ui(new Ui_TaskSurfaceFinishSymbols)
 {
     App::Document *doc = App::GetApplication().getActiveDocument();
     if (doc) {
