@@ -137,7 +137,7 @@ void Shader::UpdateSsaoTexSlot(int ssaoSlot)
     }
 }
 
-void Shader::UpdateKernelVals(int nVals, float *vals)
+void Shader::UpdateKernelVals(int nVals, float* vals)
 {
     glUniform3fv(mSamplesPos, nVals, vals);
 }
@@ -372,7 +372,7 @@ const char* FragShaderFlat = R"(
 )";
 
 
-    const char* VertShader2DFbo = R"(
+const char* VertShader2DFbo = R"(
     #version 330 core
 
     layout(location = 0) in vec2 aPosition;
@@ -387,7 +387,7 @@ const char* FragShaderFlat = R"(
     }
 )";
 
-    const char* FragShader2dFbo = R"(
+const char* FragShader2dFbo = R"(
     #version 330
 
     out vec4 FragColor;
@@ -419,7 +419,7 @@ const char* VertShaderGeom = R"(
     void main()
     {
         vec4 viewPos = view * model * vec4(aPos, 1.0);
-        FragPos = viewPos.xyz; 
+        FragPos = viewPos.xyz;
 
         mat3 normalMatrix = transpose(inverse(mat3(view * model)));
         Normal = normalMatrix * (invertedNormals ? -aNormal : aNormal);
@@ -440,7 +440,7 @@ const char* FragShaderGeom = R"(
     uniform vec3 objectColor;
 
     void main()
-    {    
+    {
         // store the fragment position vector in the first gbuffer texture
         texPosition = FragPos;
         // also store the per-fragment normals into the gbuffer
@@ -468,7 +468,7 @@ const char* FragShaderSSAO = R"(
     float bias = 0.025;
 
     // tile noise texture over screen based on screen dimensions divided by noise size
-    const vec2 noiseScale = vec2(800.0/4.0, 600.0/4.0); 
+    const vec2 noiseScale = vec2(800.0/4.0, 600.0/4.0);
 
     uniform mat4 projection;
 
@@ -488,7 +488,7 @@ const char* FragShaderSSAO = R"(
         {
             // get sample position
             vec3 samplePos = TBN * ssaoSamples[i];  // from tangent to view-space
-            samplePos = fragPos + samplePos * radius; 
+            samplePos = fragPos + samplePos * radius;
 
             // project sample position (to sample texture) (to get position on screen/texture)
             vec4 offset = vec4(samplePos, 1.0);
@@ -527,7 +527,7 @@ const char* FragShaderSSAOLighting = R"(
     uniform float lightLinear;
 
     void main()
-    {             
+    {
         // retrieve data from gbuffer
         vec4 DiffuseA = texture(texAlbedo, texCoord);
         vec3 Diffuse = DiffuseA.rgb;
@@ -542,7 +542,7 @@ const char* FragShaderSSAOLighting = R"(
         vec3 lightDir = normalize(lightPos - FragPos);
         vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lightColor;
         // specular
-        vec3 halfwayDir = normalize(lightDir + viewDir);  
+        vec3 halfwayDir = normalize(lightDir + viewDir);
         float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
         vec3 specular = lightColor * spec;
         // attenuation
@@ -570,7 +570,7 @@ const char* FragShaderStdLighting = R"(
     uniform vec3 lightAmbient;
 
     void main()
-    {             
+    {
         // retrieve data from gbuffer
         vec4 DiffuseA = texture(texAlbedo, texCoord);
         vec3 Diffuse = DiffuseA.rgb;
@@ -578,13 +578,13 @@ const char* FragShaderStdLighting = R"(
         vec3 Normal = texture(texNormal, texCoord).rgb;
 
         // then calculate lighting as usual
-        vec3 lighting  = lightAmbient * Diffuse; 
+        vec3 lighting  = lightAmbient * Diffuse;
         vec3 viewDir  = normalize(-FragPos); // viewpos is (0.0.0)
         // diffuse
         vec3 lightDir = normalize(lightPos - FragPos);
         vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lightColor;
         // specular
-        vec3 halfwayDir = normalize(lightDir + viewDir);  
+        vec3 halfwayDir = normalize(lightDir + viewDir);
         float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
         vec3 specular = lightColor * spec;
         // attenuation
@@ -604,13 +604,13 @@ const char* FragShaderSSAOBlur = R"(
 
     uniform sampler2D texSsao;
 
-    void main() 
+    void main()
     {
         vec2 texelSize = 1.0 / vec2(textureSize(texSsao, 0));
         float result = 0.0;
-        for (int x = -2; x <= 1; ++x) 
+        for (int x = -2; x <= 1; ++x)
         {
-            for (int y = -2; y <= 1; ++y) 
+            for (int y = -2; y <= 1; ++y)
             {
                 vec2 offset = vec2(float(x), float(y)) * texelSize;
                 result += texture(texSsao, texCoord + offset).r;

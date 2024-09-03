@@ -51,9 +51,7 @@ class PathTestBase(unittest.TestCase):
     def assertLine(self, edge, pt1, pt2):
         """Verify that edge is a line from pt1 to pt2."""
         # Depending on the setting of LineOld ....
-        self.assertTrue(
-            type(edge.Curve) is Part.Line or type(edge.Curve) is Part.LineSegment
-        )
+        self.assertTrue(type(edge.Curve) is Part.Line or type(edge.Curve) is Part.LineSegment)
         self.assertCoincide(pt1, edge.valueAt(edge.FirstParameter))
         self.assertCoincide(pt2, edge.valueAt(edge.LastParameter))
 
@@ -90,9 +88,7 @@ class PathTestBase(unittest.TestCase):
         """Verify that the edge goes through the given 3 points, representing start, mid and end point respectively."""
         self.assertCoincide(edge.valueAt(edge.FirstParameter), p1)
         self.assertCoincide(edge.valueAt(edge.LastParameter), p3)
-        self.assertCoincide(
-            edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2), p2
-        )
+        self.assertCoincide(edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2), p2)
 
     def assertCylinderAt(self, solid, pt, r, h):
         """Verify that solid is a cylinder at the specified location."""
@@ -103,9 +99,7 @@ class PathTestBase(unittest.TestCase):
         base = solid.Edges[2]
 
         self.assertCircle(lid, Vector(pt.x, pt.y, pt.z + h), r)
-        self.assertLine(
-            hull, Vector(pt.x + r, pt.y, pt.z), Vector(pt.x + r, pt.y, pt.z + h)
-        )
+        self.assertLine(hull, Vector(pt.x + r, pt.y, pt.z), Vector(pt.x + r, pt.y, pt.z + h))
         self.assertCircle(base, Vector(pt.x, pt.y, pt.z), r)
 
     def assertConeAt(self, solid, pt, r1, r2, h):
@@ -117,9 +111,7 @@ class PathTestBase(unittest.TestCase):
         base = solid.Edges[2]
 
         self.assertCircle(lid, Vector(pt.x, pt.y, pt.z + h), r2)
-        self.assertLine(
-            hull, Vector(pt.x + r1, pt.y, pt.z), Vector(pt.x + r2, pt.y, pt.z + h)
-        )
+        self.assertLine(hull, Vector(pt.x + r1, pt.y, pt.z), Vector(pt.x + r2, pt.y, pt.z + h))
         self.assertCircle(base, Vector(pt.x, pt.y, pt.z), r1)
 
     def assertCommandEqual(self, c1, c2):
@@ -158,9 +150,7 @@ class PathTestBase(unittest.TestCase):
         else:
 
             def valueAt(e, fraction):
-                return e.valueAt(
-                    e.FirstParameter + (e.LastParameter - e.FirstParameter) * fraction
-                )
+                return e.valueAt(e.FirstParameter + (e.LastParameter - e.FirstParameter) * fraction)
 
             if Path.Geom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[0].Point):
                 self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[-1].Point)

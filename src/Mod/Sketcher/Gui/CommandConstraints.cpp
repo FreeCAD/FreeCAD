@@ -406,7 +406,7 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoE.x, PoE.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoE.x, PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -486,7 +486,7 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoE.x, PoE.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoE.x, PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -583,7 +583,7 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoH.x, PoH.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoH.x, PoH.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -673,7 +673,7 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoP.x, PoP.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoP.x, PoP.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -6150,7 +6150,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 try {
                     // Add a point
                     Gui::cmdAppObjectArgs(Obj,
-                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)",
                                           PoO.x,
                                           PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();
@@ -6351,7 +6351,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 try {
                     // Add a point
                     Gui::cmdAppObjectArgs(Obj,
-                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)",
                                           PoO.x,
                                           PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();

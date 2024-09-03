@@ -50,7 +50,6 @@
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
 #endif
-

@@ -34,7 +34,6 @@ class PathGuiExport ViewProviderPathCompound: public ViewProviderPath
     PROPERTY_HEADER_WITH_OVERRIDE(PathGui::ViewProviderPathCompound);
 
 public:
-
     std::vector<App::DocumentObject*> claimChildren() const override;
     bool canDragObjects() const override;
     void dragObject(App::DocumentObject*) override;
@@ -45,12 +44,11 @@ public:
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
-
 };
 
 using ViewProviderPathCompoundPython = Gui::ViewProviderFeaturePythonT<ViewProviderPathCompound>;
 
-} //namespace PathGui
+}  // namespace PathGui
 
 
-#endif // PATH_ViewProviderPathCompound_H
+#endif  // PATH_ViewProviderPathCompound_H

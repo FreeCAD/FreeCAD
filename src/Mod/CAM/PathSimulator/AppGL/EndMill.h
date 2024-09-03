@@ -35,7 +35,7 @@ namespace MillSim
 class EndMill
 {
 public:
-    std::vector<float>profilePoints;
+    std::vector<float> profilePoints;
     float radius;
     int nPoints = 0;
     int toolId = -1;

@@ -28,20 +28,20 @@
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {eGuiItemSlider,          0, 0, 240, -36, 0},
-    {eGuiItemThumb,           0, 0, 328, -50, 1},
-    {eGuiItemPause,           0, 0, 40, -50, 'P', true},
-    {eGuiItemPlay,            0, 0, 40, -50, 'S', false},
-    {eGuiItemSingleStep,      0, 0, 80, -50, 'T'},
-    {eGuiItemFaster,          0, 0, 120, -50, 'F'},
-    {eGuiItemRotate,          0, 0, -140, -50, ' ', false, GUIITEM_CHECKABLE},
-    {eGuiItemCharXImg,        0, 0, 160, -50, 0, false, 0},  // 620
-    {eGuiItemChar0Img,        0, 0, 200, -50, 0, false, 0},
-    {eGuiItemChar1Img,        0, 0, 185, -50, 0, false, 0},
-    {eGuiItemChar4Img,        0, 0, 180, -50, 0, true, 0},
-    {eGuiItemPath,            0, 0, -100, -50, 'L', false, GUIITEM_CHECKABLE},
+    {eGuiItemSlider, 0, 0, 240, -36, 0},
+    {eGuiItemThumb, 0, 0, 328, -50, 1},
+    {eGuiItemPause, 0, 0, 40, -50, 'P', true},
+    {eGuiItemPlay, 0, 0, 40, -50, 'S', false},
+    {eGuiItemSingleStep, 0, 0, 80, -50, 'T'},
+    {eGuiItemFaster, 0, 0, 120, -50, 'F'},
+    {eGuiItemRotate, 0, 0, -140, -50, ' ', false, GUIITEM_CHECKABLE},
+    {eGuiItemCharXImg, 0, 0, 160, -50, 0, false, 0},  // 620
+    {eGuiItemChar0Img, 0, 0, 200, -50, 0, false, 0},
+    {eGuiItemChar1Img, 0, 0, 185, -50, 0, false, 0},
+    {eGuiItemChar4Img, 0, 0, 180, -50, 0, true, 0},
+    {eGuiItemPath, 0, 0, -100, -50, 'L', false, GUIITEM_CHECKABLE},
     {eGuiItemAmbientOclusion, 0, 0, -60, -50, 'A', false, GUIITEM_CHECKABLE},
-    {eGuiItemView,            0, 0, -180, -50, 'V', false},
+    {eGuiItemView, 0, 0, -180, -50, 'V', false},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -197,9 +197,8 @@ void GuiDisplay::MouseCursorPos(int x, int y)
         if (g->actionKey == 0) {
             continue;
         }
-        bool mouseCursorContained = 
-            x > g->posx() && x < (g->posx() + g->texItem.w) &&
-            y > g->posy() && y < (g->posy() + g->texItem.h);
+        bool mouseCursorContained = x > g->posx() && x < (g->posx() + g->texItem.w) && y > g->posy()
+            && y < (g->posy() + g->texItem.h);
 
         g->mouseOver = !g->hidden && mouseCursorContained;
 

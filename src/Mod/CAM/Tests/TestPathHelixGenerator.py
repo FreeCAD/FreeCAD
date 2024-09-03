@@ -88,9 +88,7 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
 
         gcode = "".join([r.toGCode() for r in result])
         print(gcode)
-        self.assertTrue(
-            gcode == self.expectedHelixGCode, "Incorrect helix g-code generated"
-        )
+        self.assertTrue(gcode == self.expectedHelixGCode, "Incorrect helix g-code generated")
 
     def test01(self):
         """Test Value and Type checking"""

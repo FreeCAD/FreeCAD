@@ -78,18 +78,12 @@ class TestPathThreadMilling(PathTestBase):
 
     def test01(self):
         """Verify internal radii with tool crest."""
-        self.assertRadii(
-            PathThreadMilling.threadRadii(True, 20, 18, 2, 0.1), (8, 9.113397)
-        )
+        self.assertRadii(PathThreadMilling.threadRadii(True, 20, 18, 2, 0.1), (8, 9.113397))
 
     def test10(self):
         """Verify internal thread passes."""
-        self.assertList(
-            PathThreadMilling.threadPasses(1, radii, True, 10, 9, 0, 0), [10]
-        )
-        self.assertList(
-            PathThreadMilling.threadPasses(2, radii, True, 10, 9, 0, 0), [9.707107, 10]
-        )
+        self.assertList(PathThreadMilling.threadPasses(1, radii, True, 10, 9, 0, 0), [10])
+        self.assertList(PathThreadMilling.threadPasses(2, radii, True, 10, 9, 0, 0), [9.707107, 10])
         self.assertList(
             PathThreadMilling.threadPasses(5, radii, True, 10, 9, 0, 0),
             [9.447214, 9.632456, 9.774597, 9.894427, 10],
@@ -102,18 +96,12 @@ class TestPathThreadMilling(PathTestBase):
 
     def test21(self):
         """Verify external radii with tool crest."""
-        self.assertRadii(
-            PathThreadMilling.threadRadii(False, 20, 18, 2, 0.1), (11, 9.513397)
-        )
+        self.assertRadii(PathThreadMilling.threadRadii(False, 20, 18, 2, 0.1), (11, 9.513397))
 
     def test30(self):
         """Verify external thread passes."""
-        self.assertList(
-            PathThreadMilling.threadPasses(1, radii, False, 10, 9, 0, 0), [9]
-        )
-        self.assertList(
-            PathThreadMilling.threadPasses(2, radii, False, 10, 9, 0, 0), [9.292893, 9]
-        )
+        self.assertList(PathThreadMilling.threadPasses(1, radii, False, 10, 9, 0, 0), [9])
+        self.assertList(PathThreadMilling.threadPasses(2, radii, False, 10, 9, 0, 0), [9.292893, 9])
         self.assertList(
             PathThreadMilling.threadPasses(5, radii, False, 10, 9, 0, 0),
             [9.552786, 9.367544, 9.225403, 9.105573, 9],

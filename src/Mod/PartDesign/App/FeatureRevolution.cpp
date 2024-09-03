@@ -184,8 +184,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
             if (!Ex.More()) {
                 supportface = TopoDS_Face();
             }
-            RevolMode mode = RevolMode::None;
-            // revolve the face to a solid
+
             try {
                 result = base.makeElementRevolution(base,
                                     TopoDS::Face(sketchshape.getShape()),

@@ -55,17 +55,19 @@ struct GuiItem
 {
     eGuiItems name;
     unsigned int vbo, vao;
-    int sx, sy;     // screen location
-    int actionKey;  // action key when item pressed
+    int sx, sy;      // screen location
+    int actionKey;   // action key when item pressed
     bool hidden {};  // is item hidden
     unsigned int flags {};
     bool mouseOver {};
     TextureItem texItem {};
 
-    int posx() {
+    int posx()
+    {
         return sx >= 0 ? sx : gWindowSizeW + sx;
     }
-    int posy() {
+    int posy()
+    {
         return sy >= 0 ? sy : gWindowSizeH + sy;
     }
     void setPosx(int x)
@@ -78,8 +80,8 @@ struct GuiItem
     }
 };
 
-#define GUIITEM_CHECKABLE     0x01
-#define GUIITEM_CHECKED       0x02
+#define GUIITEM_CHECKABLE 0x01
+#define GUIITEM_CHECKED 0x02
 
 
 struct Vertex2D

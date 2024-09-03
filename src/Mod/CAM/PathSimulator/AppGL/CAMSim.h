@@ -59,7 +59,7 @@ public:
 
     void BeginSimulation(const Part::TopoShape& stock, float resolution);
     void resetSimulation();
-    void addTool(const std::vector<float> &toolProfilePoints,
+    void addTool(const std::vector<float>& toolProfilePoints,
                  int toolNumber,
                  float diameter,
                  float resolution);

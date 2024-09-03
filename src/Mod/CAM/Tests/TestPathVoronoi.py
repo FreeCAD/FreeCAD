@@ -109,9 +109,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape()
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(
-            Path.Geom.pointsCoincide(
-                e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
-            )
+            Path.Geom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter))
         )
         self.assertRoughly(e.valueAt(e.FirstParameter).z, 0)
         self.assertRoughly(e.valueAt(e.LastParameter).z, 0)
@@ -126,9 +124,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape(13.7)
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(
-            Path.Geom.pointsCoincide(
-                e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
-            )
+            Path.Geom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter))
         )
         self.assertRoughly(e.valueAt(e.FirstParameter).z, 13.7)
         self.assertRoughly(e.valueAt(e.LastParameter).z, 13.7)
@@ -143,9 +139,7 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e = e0.toShape(2.37, 5.14)
         self.assertTrue(type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line)
         self.assertFalse(
-            Path.Geom.pointsCoincide(
-                e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
-            )
+            Path.Geom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter))
         )
         self.assertRoughly(e.valueAt(e.FirstParameter).z, 2.37)
         self.assertRoughly(e.valueAt(e.LastParameter).z, 5.14)
@@ -158,13 +152,9 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e0 = edges[0]
 
         e = e0.toShape()
-        self.assertTrue(
-            type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve
-        )
+        self.assertTrue(type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve)
         self.assertFalse(
-            Path.Geom.pointsCoincide(
-                e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
-            )
+            Path.Geom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter))
         )
         self.assertRoughly(e.valueAt(e.FirstParameter).z, 0)
         self.assertRoughly(e.valueAt(e.LastParameter).z, 0)
@@ -177,13 +167,9 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e0 = edges[0]
 
         e = e0.toShape(13.7)
-        self.assertTrue(
-            type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve
-        )
+        self.assertTrue(type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve)
         self.assertFalse(
-            Path.Geom.pointsCoincide(
-                e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
-            )
+            Path.Geom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter))
         )
         self.assertRoughly(e.valueAt(e.FirstParameter).z, 13.7)
         self.assertRoughly(e.valueAt(e.LastParameter).z, 13.7)
@@ -196,13 +182,9 @@ class TestPathVoronoi(PathTestUtils.PathTestBase):
         e0 = edges[0]
 
         e = e0.toShape(2.37, 5.14)
-        self.assertTrue(
-            type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve
-        )
+        self.assertTrue(type(e.Curve) == Part.Parabola or type(e.Curve) == Part.BSplineCurve)
         self.assertFalse(
-            Path.Geom.pointsCoincide(
-                e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter)
-            )
+            Path.Geom.pointsCoincide(e.valueAt(e.FirstParameter), e.valueAt(e.LastParameter))
         )
         self.assertRoughly(e.valueAt(e.FirstParameter).z, 2.37)
         self.assertRoughly(e.valueAt(e.LastParameter).z, 5.14)

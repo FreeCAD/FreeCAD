@@ -86,7 +86,7 @@ CmdMoveRapid = ["G0", "G00"]
 CmdMoveStraight = ["G1", "G01"]
 CmdMoveCW = ["G2", "G02"]
 CmdMoveCCW = ["G3", "G03"]
-CmdMoveDrill = ["G73", "G81", "G82", "G83","G85"]
+CmdMoveDrill = ["G73", "G81", "G82", "G83", "G85"]
 CmdMoveArc = CmdMoveCW + CmdMoveCCW
 CmdMove = CmdMoveStraight + CmdMoveArc + CmdMoveDrill
 CmdMoveAll = CmdMove + CmdMoveRapid
@@ -122,9 +122,9 @@ def edgesMatch(e0, e1, error=Tolerance):
 def edgeConnectsTo(edge, vector, error=Tolerance):
     """edgeConnectsTop(edge, vector, error=Tolerance)
     Returns True if edge connects to given vector."""
-    return pointsCoincide(
-        edge.valueAt(edge.FirstParameter), vector, error
-    ) or pointsCoincide(edge.valueAt(edge.LastParameter), vector, error)
+    return pointsCoincide(edge.valueAt(edge.FirstParameter), vector, error) or pointsCoincide(
+        edge.valueAt(edge.LastParameter), vector, error
+    )
 
 
 def normalizeAngle(a):
@@ -287,27 +287,17 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vS
     no direct Path.Command mapping and will be approximated by straight segments.
     segm is a factor for the segmentation of arbitrary curves not mapped to G1/2/3
     commands. The higher the value the more segments will be used."""
-    pt = (
-        edge.valueAt(edge.LastParameter)
-        if not flip
-        else edge.valueAt(edge.FirstParameter)
-    )
+    pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
     params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
     if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
         if hSpeed > 0 and vSpeed > 0:
             pt2 = (
-                edge.valueAt(edge.FirstParameter)
-                if not flip
-                else edge.valueAt(edge.LastParameter)
+                edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
             )
             params.update({"F": speedBetweenPoints(pt, pt2, hSpeed, vSpeed)})
         commands = [Path.Command("G1", params)]
     else:
-        p1 = (
-            edge.valueAt(edge.FirstParameter)
-            if not flip
-            else edge.valueAt(edge.LastParameter)
-        )
+        p1 = edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
         p3 = pt
 
@@ -414,8 +404,7 @@ def edgeForCmd(cmd, startPoint):
 
         if isRoughly(d, 0, 0.005):
             Path.Log.debug(
-                "Half circle arc at: (%.2f, %.2f, %.2f)"
-                % (center.x, center.y, center.z)
+                "Half circle arc at: (%.2f, %.2f, %.2f)" % (center.x, center.y, center.z)
             )
             # we're dealing with half a circle here
             angle = getAngle(A) + math.pi / 2
@@ -434,9 +423,7 @@ def edgeForCmd(cmd, startPoint):
             "arc: p1=(%.2f, %.2f) p2=(%.2f, %.2f) -> center=(%.2f, %.2f)"
             % (startPoint.x, startPoint.y, endPoint.x, endPoint.y, center.x, center.y)
         )
-        Path.Log.debug(
-            "arc: A=(%.2f, %.2f) B=(%.2f, %.2f) -> d=%.2f" % (A.x, A.y, B.x, B.y, d)
-        )
+        Path.Log.debug("arc: A=(%.2f, %.2f) B=(%.2f, %.2f) -> d=%.2f" % (A.x, A.y, B.x, B.y, d))
         Path.Log.debug("arc: R=%.2f angle=%.2f" % (R, angle / math.pi))
         if isRoughly(startPoint.z, endPoint.z):
             midPoint = center + Vector(math.cos(angle), math.sin(angle), 0) * R
@@ -520,7 +507,8 @@ def wiresForPath(path, startPoint=Vector(0, 0, 0)):
 
 def arcToHelix(edge, z0, z1):
     """arcToHelix(edge, z0, z1)
-    Assuming edge is an arc it'll return a helix matching the arc starting at z0 and rising/falling to z1."""
+    Assuming edge is an arc it'll return a helix matching the arc starting at z0 and rising/falling to z1.
+    """
 
     p1 = edge.valueAt(edge.FirstParameter)
     # p2 = edge.valueAt(edge.LastParameter)
@@ -626,14 +614,10 @@ def flipEdge(edge):
 
     if Part.Line == type(edge.Curve) and not edge.Vertexes:
         return Part.Edge(
-            Part.Line(
-                edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter)
-            )
+            Part.Line(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
         )
     elif Part.Line == type(edge.Curve) or Part.LineSegment == type(edge.Curve):
-        return Part.Edge(
-            Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point)
-        )
+        return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
     elif Part.Circle == type(edge.Curve):
         # Create an inverted circle
         circle = Part.Circle(edge.Curve.Center, -edge.Curve.Axis, edge.Curve.Radius)
@@ -672,17 +656,13 @@ def flipEdge(edge):
         knots.reverse()
 
         flipped = Part.BSplineCurve()
-        flipped.buildFromPolesMultsKnots(
-            poles, mults, knots, perio, degree, weights, ratio
-        )
+        flipped.buildFromPolesMultsKnots(poles, mults, knots, perio, degree, weights, ratio)
 
         return Part.Edge(flipped, ma + mi - edge.LastParameter, ma + mi - edge.FirstParameter)
     elif type(edge.Curve) == Part.OffsetCurve:
         return edge.reversed()
 
-    Path.Log.warning(
-        translate("PathGeom", "%s not supported for flipping") % type(edge.Curve)
-    )
+    Path.Log.warning(translate("PathGeom", "%s not supported for flipping") % type(edge.Curve))
 
 
 def flipWire(wire):

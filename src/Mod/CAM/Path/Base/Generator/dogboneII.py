@@ -32,7 +32,8 @@ PI = math.pi
 
 class Kink(object):
     """A Kink represents the angle at which two moves connect.
-    A positive kink angle represents a move to the left, and a negative angle represents a move to the right."""
+    A positive kink angle represents a move to the left, and a negative angle represents a move to the right.
+    """
 
     def __init__(self, m0, m1):
         if m1 is None:
@@ -108,17 +109,13 @@ class Bone(object):
 
 
 def kink_to_path(kink, g0=False):
-    return Path.Path(
-        [PathLanguage.instruction_to_command(instr) for instr in [kink.m0, kink.m1]]
-    )
+    return Path.Path([PathLanguage.instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
 
 
 def bone_to_path(bone, g0=False):
     kink = bone.kink
     cmds = []
-    if g0 and not Path.Geom.pointsCoincide(
-        kink.m0.positionBegin(), FreeCAD.Vector(0, 0, 0)
-    ):
+    if g0 and not Path.Geom.pointsCoincide(kink.m0.positionBegin(), FreeCAD.Vector(0, 0, 0)):
         pos = kink.m0.positionBegin()
         param = {}
         if not Path.Geom.isRoughly(pos.x, 0):
@@ -145,12 +142,8 @@ def generate_bone(kink, length, angle):
         moveIn = PathLanguage.MoveStraight(kink.position(), "G1", {"X": p0.x + dx})
         moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), "G1", {"X": p0.x})
     else:
-        moveIn = PathLanguage.MoveStraight(
-            kink.position(), "G1", {"X": p0.x + dx, "Y": p0.y + dy}
-        )
-        moveOut = PathLanguage.MoveStraight(
-            moveIn.positionEnd(), "G1", {"X": p0.x, "Y": p0.y}
-        )
+        moveIn = PathLanguage.MoveStraight(kink.position(), "G1", {"X": p0.x + dx, "Y": p0.y + dy})
+        moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), "G1", {"X": p0.x, "Y": p0.y})
 
     return Bone(kink, angle, length, [moveIn, moveOut])
 

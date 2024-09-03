@@ -34,26 +34,25 @@
 #include <boost/polygon/voronoi.hpp>
 
 #if (SIZE_MAX == UINT_MAX)
-# define PATH_VORONOI_COLOR_MASK 0x07FFFFFFul
+#define PATH_VORONOI_COLOR_MASK 0x07FFFFFFul
 #else
-# define PATH_VORONOI_COLOR_MASK 0x07FFFFFFFFFFFFFFul
+#define PATH_VORONOI_COLOR_MASK 0x07FFFFFFFFFFFFFFul
 #endif
 
 namespace Path
 {
-  class PathExport Voronoi
-    : public Base::BaseClass
-  {
+class PathExport Voronoi: public Base::BaseClass
+{
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-  public:
-    //constructors
+public:
+    // constructors
     Voronoi();
     ~Voronoi() override;
 
     using color_type = std::size_t;
-    static const int        InvalidIndex = INT_MAX;
-    static const color_type ColorMask    = PATH_VORONOI_COLOR_MASK;
+    static const int InvalidIndex = INT_MAX;
+    static const color_type ColorMask = PATH_VORONOI_COLOR_MASK;
 
     // types
     using coordinate_type = double;
@@ -62,49 +61,47 @@ namespace Path
     using segment_type = boost::polygon::segment_data<coordinate_type>;
     using voronoi_diagram_type = boost::polygon::voronoi_diagram<double>;
 
-    class diagram_type
-      : public voronoi_diagram_type
-      , public Base::Handled
+    class diagram_type: public voronoi_diagram_type, public Base::Handled
     {
     public:
-      diagram_type();
+        diagram_type();
 
-      double getScale() const;
-      void   setScale(double s);
+        double getScale() const;
+        void setScale(double s);
 
-      Base::Vector3d scaledVector(double x, double y, double z) const;
-      Base::Vector3d scaledVector(const point_type &p, double z) const;
-      Base::Vector3d scaledVector(const vertex_type &v, double z) const;
+        Base::Vector3d scaledVector(double x, double y, double z) const;
+        Base::Vector3d scaledVector(const point_type& p, double z) const;
+        Base::Vector3d scaledVector(const vertex_type& v, double z) const;
 
-      using cell_map_type = std::map<intptr_t, int>;
-      using edge_map_type = std::map<intptr_t, int>;
-      using vertex_map_type = std::map<intptr_t, int>;
+        using cell_map_type = std::map<intptr_t, int>;
+        using edge_map_type = std::map<intptr_t, int>;
+        using vertex_map_type = std::map<intptr_t, int>;
 
-      int index(const cell_type   *cell)   const;
-      int index(const edge_type   *edge)   const;
-      int index(const vertex_type *vertex) const;
+        int index(const cell_type* cell) const;
+        int index(const edge_type* edge) const;
+        int index(const vertex_type* vertex) const;
 
-      void reIndex();
+        void reIndex();
 
-      std::vector<point_type>       points;
-      std::vector<segment_type>     segments;
+        std::vector<point_type> points;
+        std::vector<segment_type> segments;
 
-      point_type    retrievePoint(const cell_type *cell) const;
-      segment_type  retrieveSegment(const cell_type *cell) const;
+        point_type retrievePoint(const cell_type* cell) const;
+        segment_type retrieveSegment(const cell_type* cell) const;
 
-      using angle_map_t = std::map<int, double>;
-      double angleOfSegment(int i, angle_map_t *angle = nullptr) const;
-      bool segmentsAreConnected(int i, int j) const;
+        using angle_map_t = std::map<int, double>;
+        double angleOfSegment(int i, angle_map_t* angle = nullptr) const;
+        bool segmentsAreConnected(int i, int j) const;
 
     private:
-      double          scale;
-      cell_map_type   cell_index;
-      edge_map_type   edge_index;
-      vertex_map_type vertex_index;
+        double scale;
+        cell_map_type cell_index;
+        edge_map_type edge_index;
+        vertex_map_type vertex_index;
     };
 
-    void addPoint(const point_type &p);
-    void addSegment(const segment_type &p);
+    void addPoint(const point_type& p);
+    void addSegment(const segment_type& p);
     long numPoints() const;
     long numSegments() const;
 
@@ -119,19 +116,26 @@ namespace Path
     void colorColinear(color_type color, double degree);
 
     template<typename T>
-    T* create(int index) {
-      return new T(vd, index);
+    T* create(int index)
+    {
+        return new T(vd, index);
     }
 
-    double getScale() const { return vd->getScale(); }
-    void   setScale(double scale) { vd->setScale(scale); }
+    double getScale() const
+    {
+        return vd->getScale();
+    }
+    void setScale(double scale)
+    {
+        vd->setScale(scale);
+    }
 
-  private:
+private:
     Base::Reference<diagram_type> vd;
     friend class VoronoiPy;
-    void colorExterior(const Voronoi::diagram_type::edge_type *edge, std::size_t colorValue);
-  };
+    void colorExterior(const Voronoi::diagram_type::edge_type* edge, std::size_t colorValue);
+};
 
-} //namespace Path
+}  // namespace Path
 
-#endif // PATH_VORONOI_H
+#endif  // PATH_VORONOI_H

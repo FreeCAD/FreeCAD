@@ -28,7 +28,6 @@ protected:
     int mNumVerts;
 };
 
-}  // namespace Millsim
+}  // namespace MillSim
 
 #endif  // !__millpathline_h__
-

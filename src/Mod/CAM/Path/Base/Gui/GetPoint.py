@@ -80,15 +80,9 @@ class TaskPanel:
         self.formPoint.YGlobal.editingFinished.connect(self.updatePoint)
         self.formPoint.ZGlobal.editingFinished.connect(self.updatePoint)
 
-        self.formPoint.XGlobal.setProperty(
-            "unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2]
-        )
-        self.formPoint.YGlobal.setProperty(
-            "unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2]
-        )
-        self.formPoint.ZGlobal.setProperty(
-            "unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2]
-        )
+        self.formPoint.XGlobal.setProperty("unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2])
+        self.formPoint.YGlobal.setProperty("unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2])
+        self.formPoint.ZGlobal.setProperty("unit", FreeCAD.Units.MilliMetre.getUserPreferred()[2])
 
     def addEscapeShortcut(self):
         """addEscapeShortcut() ... internal function - do not call."""
@@ -97,9 +91,7 @@ class TaskPanel:
         self.escape = QtGui.QAction(self.formPoint)
         self.escape.setText("Done")
         self.escape.setShortcut(QtGui.QKeySequence.fromString("Esc"))
-        QtCore.QObject.connect(
-            self.escape, QtCore.SIGNAL("triggered()"), self.pointDone
-        )
+        QtCore.QObject.connect(self.escape, QtCore.SIGNAL("triggered()"), self.pointDone)
         self.formPoint.addAction(self.escape)
 
     def removeEscapeShortcut(self):
@@ -115,7 +107,8 @@ class TaskPanel:
         start is an optional Vector indicating from where to start Snapper. This is mostly used when editing existing points. Snapper also
         creates a dotted line indicating from where the original point started from.
         If start is specified the Snapper UI is closed on the first point the user enters. If start remains None, then Snapper is kept open
-        until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession."""
+        until the user explicitly closes Snapper. This lets the user enter multiple points in quick succession.
+        """
 
         # there's no get point without Snapper, if it's not loaded, need to do that explicitly
         if not hasattr(FreeCADGui, "Snapper"):
@@ -163,10 +156,7 @@ class TaskPanel:
 
         def click(cb):
             event = cb.getEvent()
-            if (
-                event.getButton() == 1
-                and event.getState() == coin.SoMouseButtonEvent.DOWN
-            ):
+            if event.getButton() == 1 and event.getState() == coin.SoMouseButtonEvent.DOWN:
                 if self.obj:
                     accept()
 
