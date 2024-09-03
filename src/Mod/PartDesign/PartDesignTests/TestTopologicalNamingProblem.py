@@ -914,6 +914,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         helix = self.Doc.addObject("PartDesign::SubtractiveHelix", "SubHelix")
         helix.Profile = sketch
         helix.ReferenceAxis = (self.Doc.getObject("Sketch"), ["V_Axis"])
+        helix.Reversed = True
         body.addObject(sketch)
         body.addObject(helix)
         self.Doc.recompute()
