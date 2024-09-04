@@ -218,6 +218,28 @@ QPointF QGCustomText::tightBoundingAdjust() const
     return QPointF(tight.x()-original.x(), tight.y()-original.y());
 }
 
+// TODO: when setting position, it doesn't take into account the tight bounding rect
+// Meaning top left corner has distance to pos(0, 0)
+// Here is a sketch for a fix
+// Note that the position adjustment will have to carried out every time the font changes
+// void QGCustomText::setPos(const QPointF &pos) {
+//     if(tightBounding) {
+//         QGraphicsTextItem::setPos(pos.x() - tightBoundingAdjust().x(), pos.y() - tightBoundingAdjust().y());
+//         return;
+//     }
+//     QGraphicsTextItem::setPos(pos);
+// }
+
+// void QGCustomText::setPos(qreal x, qreal y) {
+//     setPos(QPointF(x, y));
+// }
+
+// QPointF QGCustomText::pos() const
+// {
+//     // Native Qt pos function doesn't take into account the tight bounding rect
+//     return boundingRect().topLeft();
+// }
+
 QColor QGCustomText::getNormalColor()    //preference!
 {
     return PreferencesGui::normalQColor();
