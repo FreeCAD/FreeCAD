@@ -407,7 +407,7 @@ void MDIViewPage::print(QPrinter* printer)
         if (doPrint && printer->pageLayout().orientation() != m_pagePrinter->getOrientation()) {
             int ret = QMessageBox::warning(
                 this, tr("Different orientation"),
-                tr("The printer uses a different orientation  than the drawing.\n"
+                tr("The printer uses a different orientation than the drawing.\n"
                    "Do you want to continue?"),
                 QMessageBox::Yes | QMessageBox::No);
             if (ret != QMessageBox::Yes) {
@@ -499,7 +499,7 @@ void MDIViewPage::saveSVG(std::string filename)
 void MDIViewPage::saveSVG()
 {
     QStringList filter;
-    filter << QObject::tr("SVG (*.svg)");
+    filter << QStringLiteral("SVG (*.svg)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
@@ -524,7 +524,7 @@ void MDIViewPage::saveDXF()
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
+        QString::fromUtf8("DXF (*.dxf)"));
     if (fileName.isEmpty()) {
         return;
     }
@@ -545,7 +545,7 @@ void MDIViewPage::savePDF()
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save PDF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("PDF (*.pdf)")));
+        QString::fromUtf8("PDF (*.pdf)"));
     if (fileName.isEmpty()) {
         return;
     }

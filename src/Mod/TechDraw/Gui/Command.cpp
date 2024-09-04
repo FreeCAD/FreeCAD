@@ -1398,7 +1398,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "ClipGroupAdd"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add clip group"));
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = False", ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", ClipName.c_str(),
               ViewName.c_str());
@@ -1469,7 +1469,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "ClipGroupRemove"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Remove clip group"));
     doCommand(Doc, "App.activeDocument().%s.ViewObject.Visibility = False", ViewName.c_str());
     doCommand(Doc, "App.activeDocument().%s.removeView(App.activeDocument().%s)", ClipName.c_str(),
               ViewName.c_str());
@@ -1831,7 +1831,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
+        QString::fromUtf8("DXF (*.dxf)"));
 
     if (fileName.isEmpty()) {
         return;

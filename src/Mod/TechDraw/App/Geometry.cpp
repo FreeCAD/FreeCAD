@@ -592,7 +592,7 @@ TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
                 // If an arc of ellipse was provided, return full ellipse
                 return BRepBuilderAPI_MakeEdge(curve.Ellipse());
             default:
-                // Currently we are not extrapolating BSplines, though it is technically possible
+                // Currently we are not extrapolating B-splines, though it is technically possible
                 return BRepBuilderAPI_MakeEdge(curve.Curve().Curve());
         }
     }
@@ -1217,7 +1217,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
 }
 
 
-//! Can this BSpline be represented by a straight line?
+//! Can this B-spline be represented by a straight line?
 // if len(first-last) == sum(len(pi - pi+1)) then it is a line
 bool BSpline::isLine()
 {
@@ -1230,7 +1230,7 @@ bool BSpline::isCircle()
     return GeometryUtils::isCircle(occEdge);
 }
 
-// make a circular edge from BSpline
+// make a circular edge from B-spline
 TopoDS_Edge BSpline::asCircle(bool& arc)
 {
     return GeometryUtils::asCircle(occEdge, arc);
@@ -1559,7 +1559,7 @@ bool GeometryUtils::isCircle(TopoDS_Edge occEdge)
     return GeometryUtils::getCircleParms(occEdge, radius, center, isArc);
 }
 
-//! tries to interpret a BSpline edge as a circle. Used by DVDim for approximate dimensions.
+//! tries to interpret a B-spline edge as a circle. Used by DVDim for approximate dimensions.
 //! calculates the curvature of the spline at a number of places and measures the deviation from the average
 //! a true circle has constant curvature and would have no deviation from the average.
 bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc)
@@ -1629,7 +1629,7 @@ bool GeometryUtils::getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Ve
     return isCircle;
 }
 
-//! make a circle or arc of circle Edge from BSpline Edge
+//! make a circle or arc of circle Edge from B-spline Edge
 //! assumes the spline is generally circular but does not check
 // ??? why does this not use getCircleParms to retrieve centre, radius, start/end, isArc
 TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
@@ -1703,7 +1703,7 @@ bool GeometryUtils::isLine(TopoDS_Edge occEdge)
 }
 
 
-//! make a line Edge from BSpline Edge
+//! make a line Edge from B-spline Edge
 TopoDS_Edge GeometryUtils::asLine(TopoDS_Edge occEdge)
 {
     BRepAdaptor_Curve c(occEdge);
