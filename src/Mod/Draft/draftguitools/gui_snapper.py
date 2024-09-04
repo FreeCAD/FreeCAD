@@ -433,7 +433,7 @@ class Snapper:
                         # or vertices.
                         snaps.extend(self.snapToNearUnprojected(point))
 
-            elif Draft.getType(obj) == "Dimension":
+            elif Draft.getType(obj) in ("LinearDimension", "AngularDimension"):
                 # for dimensions we snap to their 2 points:
                 snaps.extend(self.snapToDim(obj))
 
@@ -537,10 +537,12 @@ class Snapper:
 
     def snapToDim(self, obj):
         snaps = []
-        if obj.ViewObject:
-            if hasattr(obj.ViewObject.Proxy, "p2") and hasattr(obj.ViewObject.Proxy, "p3"):
-                snaps.append([obj.ViewObject.Proxy.p2, 'endpoint', self.toWP(obj.ViewObject.Proxy.p2)])
-                snaps.append([obj.ViewObject.Proxy.p3, 'endpoint', self.toWP(obj.ViewObject.Proxy.p3)])
+        if self.isEnabled("Endpoint") \
+                and obj.ViewObject \
+                and hasattr(obj.ViewObject.Proxy, "p2") \
+                and hasattr(obj.ViewObject.Proxy, "p3"):
+            snaps.append([obj.ViewObject.Proxy.p2, 'endpoint', self.toWP(obj.ViewObject.Proxy.p2)])
+            snaps.append([obj.ViewObject.Proxy.p3, 'endpoint', self.toWP(obj.ViewObject.Proxy.p3)])
         return snaps
 
 
