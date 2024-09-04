@@ -52,6 +52,9 @@ public:
     QRectF boundingRect() const override;
     QRectF tightBoundingRect() const;
     QPointF tightBoundingAdjust() const;
+    // void setPos(const QPointF &pos);
+    // void setPos(qreal x, qreal y);
+    // QPointF pos() const;
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
