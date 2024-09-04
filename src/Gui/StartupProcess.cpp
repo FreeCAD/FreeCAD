@@ -304,7 +304,7 @@ void StartupPostProcess::setCursorFlashing()
 
 void StartupPostProcess::setQtStyle()
 {
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
     auto qtStyle = hGrp->GetASCII("QtStyle");
     QApplication::setStyle(QString::fromStdString(qtStyle));
 }
