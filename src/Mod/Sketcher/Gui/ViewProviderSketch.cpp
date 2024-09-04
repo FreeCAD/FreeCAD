@@ -401,7 +401,13 @@ void ViewProviderSketch::ParameterObserver::OnChange(Base::Subject<const char*>&
 {
     (void)rCaller;
 
-    auto key = parameterMap.find(sReason);
+    updateFromParameter(sReason);
+}
+
+void SketcherGui::ViewProviderSketch::ParameterObserver::updateFromParameter(const char* parameter)
+{
+    auto key = parameterMap.find(parameter);
+
     if (key != parameterMap.end()) {
         auto string = key->first;
         auto update = std::get<0>(key->second);
@@ -2976,7 +2982,8 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
     if (AutoColor.getValue()) {
         // update colors according to current user preferences
-        pObserver->initParameters();
+        pObserver->updateFromParameter("SketchEdgeColor");
+        pObserver->updateFromParameter("SketchVertexColor");
     }
 }
 
