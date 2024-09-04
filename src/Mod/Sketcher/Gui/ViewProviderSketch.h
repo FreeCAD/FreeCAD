@@ -174,6 +174,8 @@ private:
         /** Observer for parameter group. */
         void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override;
 
+        void updateFromParameter(const char* property);
+
     private:
         void
         updateBoolProperty(const std::string& string, App::Property* property, bool defaultvalue);
