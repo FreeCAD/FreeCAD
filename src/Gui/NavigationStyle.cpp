@@ -572,7 +572,7 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
          float repositionDistance = -center.getValue()[2] - boundingSphere.getRadius();
          camera->position = camera->position.getValue() + repositionDistance * dir;
          camera->nearDistance = 0;
-         camera->farDistance = 2 * boundingSphere.getRadius();
+         camera->farDistance = 2 * boundingSphere.getRadius() + 1;
          camera->focalDistance = camera->focalDistance.getValue() - repositionDistance;
      }
 #endif
