@@ -190,7 +190,7 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
                 r = (c >> 24) & 0xFF
                 g = (c >> 16) & 0xFF
                 b = (c >> 8) & 0xFF
-                val = f"({r},{g},{g})"
+                val = f"({r},{g},{b})"
                 self.contents[self.obj + "00000000::" + self.prop] = val
 
         elif tag == "Objects":
