@@ -63,6 +63,7 @@ private:
     void onEmissiveColorChanged();
     void onSpecularColorChanged();
     void onShininessValueChanged(int);
+    void onTransparencyValueChanged(int);
     void onButtonReset();
     void onButtonDefault();
     void setButtonColors(const App::Material& mat);
