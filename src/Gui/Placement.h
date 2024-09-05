@@ -187,6 +187,7 @@ public:
     void setPropertyName(const QString&);
     void setPlacement(const Base::Placement&);
     void setSelection(const std::vector<SelectionObject>&);
+    void clearSelection();
     void bindObject();
     bool accept() override;
     bool reject() override;
