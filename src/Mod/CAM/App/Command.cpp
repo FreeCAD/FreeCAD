@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cinttypes>
-# include <iomanip>
-# include <boost/algorithm/string.hpp>
+#include <cinttypes>
+#include <iomanip>
+#include <boost/algorithm/string.hpp>
 #endif
 
 #include <Base/Exception.h>
@@ -39,27 +39,24 @@
 using namespace Base;
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::Command , Base::Persistence)
+TYPESYSTEM_SOURCE(Path::Command, Base::Persistence)
 
 // Constructors & destructors
 
-Command::Command(const char* name,
-                 const std::map<std::string, double>& parameters)
-:Name(name),Parameters(parameters)
-{
-}
+Command::Command(const char* name, const std::map<std::string, double>& parameters)
+    : Name(name)
+    , Parameters(parameters)
+{}
 
 Command::Command()
-{
-}
+{}
 
 Command::~Command()
-{
-}
+{}
 
 // New methods
 
-Placement Command::getPlacement (const Base::Vector3d pos) const
+Placement Command::getPlacement(const Base::Vector3d pos) const
 {
     static const std::string x = "X";
     static const std::string y = "Y";
@@ -67,19 +64,19 @@ Placement Command::getPlacement (const Base::Vector3d pos) const
     static const std::string a = "A";
     static const std::string b = "B";
     static const std::string c = "C";
-    Vector3d vec(getParam(x, pos.x),getParam(y, pos.y),getParam(z, pos.z));
+    Vector3d vec(getParam(x, pos.x), getParam(y, pos.y), getParam(z, pos.z));
     Rotation rot;
-    rot.setYawPitchRoll(getParam(a),getParam(b),getParam(c));
-    Placement plac(vec,rot);
+    rot.setYawPitchRoll(getParam(a), getParam(b), getParam(c));
+    Placement plac(vec, rot);
     return plac;
 }
 
-Vector3d Command::getCenter () const
+Vector3d Command::getCenter() const
 {
     static const std::string i = "I";
     static const std::string j = "J";
     static const std::string k = "K";
-    Vector3d vec(getParam(i),getParam(j),getParam(k));
+    Vector3d vec(getParam(i), getParam(j), getParam(k));
     return vec;
 }
 
@@ -97,36 +94,45 @@ bool Command::has(const std::string& attr) const
     return Parameters.count(a) > 0;
 }
 
-std::string Command::toGCode (int precision, bool padzero) const
+std::string Command::toGCode(int precision, bool padzero) const
 {
     std::stringstream str;
     str.fill('0');
     str << Name;
-    if(precision<0)
+    if (precision < 0) {
         precision = 0;
-    double scale = std::pow(10.0,precision+1);
-    std::int64_t iscale = static_cast<std::int64_t>(scale)/10;
-    for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
-        if(i->first == "N") continue;
+    }
+    double scale = std::pow(10.0, precision + 1);
+    std::int64_t iscale = static_cast<std::int64_t>(scale) / 10;
+    for (std::map<std::string, double>::const_iterator i = Parameters.begin();
+         i != Parameters.end();
+         ++i) {
+        if (i->first == "N") {
+            continue;
+        }
 
         str << " " << i->first;
 
-        std::int64_t v = static_cast<std::int64_t>(i->second*scale);
-        if(v<0) {
+        std::int64_t v = static_cast<std::int64_t>(i->second * scale);
+        if (v < 0) {
             v = -v;
-            str << '-'; //shall we allow -0 ?
+            str << '-';  // shall we allow -0 ?
         }
-        v+=5;
+        v += 5;
         v /= 10;
-        str << (v/iscale);
-        if(!precision) continue;
+        str << (v / iscale);
+        if (!precision) {
+            continue;
+        }
 
         int width = precision;
-        std::int64_t digits = v%iscale;
-        if(!padzero) {
-            if(!digits) continue;
-            while(digits%10 == 0) {
-                digits/=10;
+        std::int64_t digits = v % iscale;
+        if (!padzero) {
+            if (!digits) {
+                continue;
+            }
+            while (digits % 10 == 0) {
+                digits /= 10;
                 --width;
             }
         }
@@ -135,16 +141,17 @@ std::string Command::toGCode (int precision, bool padzero) const
     return str.str();
 }
 
-void Command::setFromGCode (const std::string& str)
+void Command::setFromGCode(const std::string& str)
 {
     Parameters.clear();
     std::string mode = "none";
     std::string key;
     std::string value;
-    for (unsigned int i=0; i < str.size(); i++) {
-        if ( (isdigit(str[i])) || (str[i] == '-') || (str[i] == '.') ) {
+    for (unsigned int i = 0; i < str.size(); i++) {
+        if ((isdigit(str[i])) || (str[i] == '-') || (str[i] == '.')) {
             value += str[i];
-        } else if (isalpha(str[i])) {
+        }
+        else if (isalpha(str[i])) {
             if (mode == "command") {
                 if (!key.empty() && !value.empty()) {
                     std::string cmd = key + value;
@@ -153,32 +160,40 @@ void Command::setFromGCode (const std::string& str)
                     key = "";
                     value = "";
                     mode = "argument";
-                } else {
+                }
+                else {
                     throw Base::BadFormatError("Badly formatted GCode command");
                 }
                 mode = "argument";
-            } else if (mode == "none") {
+            }
+            else if (mode == "none") {
                 mode = "command";
-            } else if (mode == "argument") {
+            }
+            else if (mode == "argument") {
                 if (!key.empty() && !value.empty()) {
                     double val = std::atof(value.c_str());
                     boost::to_upper(key);
                     Parameters[key] = val;
                     key = "";
                     value = "";
-                } else {
+                }
+                else {
                     throw Base::BadFormatError("Badly formatted GCode argument");
                 }
-            } else if (mode == "comment") {
+            }
+            else if (mode == "comment") {
                 value += str[i];
             }
             key = str[i];
-        } else if (str[i] == '(') {
+        }
+        else if (str[i] == '(') {
             mode = "comment";
-        } else if (str[i] == ')') {
+        }
+        else if (str[i] == ')') {
             key = "(";
             value += ")";
-        } else {
+        }
+        else {
             // add non-ascii characters only if this is a comment
             if (mode == "comment") {
                 value += str[i];
@@ -186,22 +201,25 @@ void Command::setFromGCode (const std::string& str)
         }
     }
     if (!key.empty() && !value.empty()) {
-        if ( (mode == "command") || (mode == "comment") ) {
+        if ((mode == "command") || (mode == "comment")) {
             std::string cmd = key + value;
-            if (mode == "command")
+            if (mode == "command") {
                 boost::to_upper(cmd);
+            }
             Name = cmd;
-        } else {
+        }
+        else {
             double val = std::atof(value.c_str());
             boost::to_upper(key);
             Parameters[key] = val;
         }
-    } else {
+    }
+    else {
         throw Base::BadFormatError("Badly formatted GCode argument");
     }
 }
 
-void Command::setFromPlacement (const Base::Placement &plac)
+void Command::setFromPlacement(const Base::Placement& plac)
 {
     Name = "G1";
     Parameters.clear();
@@ -215,26 +233,33 @@ void Command::setFromPlacement (const Base::Placement &plac)
     xval = plac.getPosition().x;
     yval = plac.getPosition().y;
     zval = plac.getPosition().z;
-    plac.getRotation().getYawPitchRoll(aval,bval,cval);
-    if (xval != 0.0)
+    plac.getRotation().getYawPitchRoll(aval, bval, cval);
+    if (xval != 0.0) {
         Parameters[x] = xval;
-    if (yval != 0.0)
+    }
+    if (yval != 0.0) {
         Parameters[y] = yval;
-    if (zval != 0.0)
+    }
+    if (zval != 0.0) {
         Parameters[z] = zval;
-    if (aval != 0.0)
+    }
+    if (aval != 0.0) {
         Parameters[a] = aval;
-    if (bval != 0.0)
+    }
+    if (bval != 0.0) {
         Parameters[b] = bval;
-    if (cval != 0.0)
+    }
+    if (cval != 0.0) {
         Parameters[c] = cval;
+    }
 }
 
-void Command::setCenter(const Base::Vector3d &pos, bool clockwise)
+void Command::setCenter(const Base::Vector3d& pos, bool clockwise)
 {
     if (clockwise) {
         Name = "G2";
-    } else {
+    }
+    else {
         Name = "G3";
     }
     static const std::string i = "I";
@@ -257,24 +282,32 @@ Command Command::transform(const Base::Placement& other)
     xval = plac.getPosition().x;
     yval = plac.getPosition().y;
     zval = plac.getPosition().z;
-    plac.getRotation().getYawPitchRoll(aval,bval,cval);
+    plac.getRotation().getYawPitchRoll(aval, bval, cval);
     Command c = Command();
     c.Name = Name;
-    for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
+    for (std::map<std::string, double>::const_iterator i = Parameters.begin();
+         i != Parameters.end();
+         ++i) {
         std::string k = i->first;
         double v = i->second;
-        if (k == "X")
+        if (k == "X") {
             v = xval;
-        if (k == "Y")
+        }
+        if (k == "Y") {
             v = yval;
-        if (k == "Z")
+        }
+        if (k == "Z") {
             v = zval;
-        if (k == "A")
+        }
+        if (k == "A") {
             v = aval;
-        if (k == "B")
+        }
+        if (k == "B") {
             v = bval;
-        if (k == "C")
+        }
+        if (k == "C") {
             v = cval;
+        }
         c.Parameters[k] = v;
     }
     return c;
@@ -282,7 +315,9 @@ Command Command::transform(const Base::Placement& other)
 
 void Command::scaleBy(double factor)
 {
-    for(std::map<std::string, double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
+    for (std::map<std::string, double>::const_iterator i = Parameters.begin();
+         i != Parameters.end();
+         ++i) {
         switch (i->first[0]) {
             case 'X':
             case 'Y':
@@ -300,23 +335,22 @@ void Command::scaleBy(double factor)
 
 // Reimplemented from base class
 
-unsigned int Command::getMemSize () const
+unsigned int Command::getMemSize() const
 {
     return toGCode().size();
 }
 
-void Command::Save (Writer &writer) const
+void Command::Save(Writer& writer) const
 {
     // this will only get used if saved as XML (probably never)
     writer.Stream() << writer.ind() << "<Command "
                     << "gcode=\"" << toGCode() << "\" />";
-    writer.Stream()<< std::endl;
+    writer.Stream() << std::endl;
 }
 
-void Command::Restore(XMLReader &reader)
+void Command::Restore(XMLReader& reader)
 {
     reader.readElement("Command");
     std::string gcode = reader.getAttribute("gcode");
     setFromGCode(gcode);
 }
-

@@ -52,13 +52,15 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 
     def pocketFeatures(self):
         """pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)"""
-        return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline | PathPocketBaseGui.FeatureRestMachining
+        return (
+            PathPocketBaseGui.FeaturePocket
+            | PathPocketBaseGui.FeatureOutline
+            | PathPocketBaseGui.FeatureRestMachining
+        )
 
     def taskPanelBaseLocationPage(self, obj, features):
         if not hasattr(self, "extensionsPanel"):
-            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(
-                obj, features
-            )
+            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features)
         return self.extensionsPanel
 
 
@@ -68,9 +70,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Pocket",
     QT_TRANSLATE_NOOP("CAM_Pocket_Shape", "Pocket Shape"),
-    QT_TRANSLATE_NOOP(
-        "CAM_Pocket_Shape", "Creates a pocket toolpath from a face or faces"
-    ),
+    QT_TRANSLATE_NOOP("CAM_Pocket_Shape", "Creates a pocket toolpath from a face or faces"),
     PathPocketShape.SetupProperties,
 )
 

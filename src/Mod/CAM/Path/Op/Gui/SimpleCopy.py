@@ -55,30 +55,22 @@ class CommandPathSimpleCopy:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Please select exactly one toolpath object")
-                + "\n"
+                translate("CAM_SimpleCopy", "Please select exactly one toolpath object") + "\n"
             )
             return
         if not (selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Please select exactly one toolpath object")
-                + "\n"
+                translate("CAM_SimpleCopy", "Please select exactly one toolpath object") + "\n"
             )
             return
 
         FreeCAD.ActiveDocument.openTransaction("Simple Copy")
-        FreeCADGui.doCommand(
-            "srcobj = FreeCADGui.Selection.getSelectionEx()[0].Object\n"
-        )
+        FreeCADGui.doCommand("srcobj = FreeCADGui.Selection.getSelectionEx()[0].Object\n")
 
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand(
-            "srcpath = PathScripts.PathUtils.getPathWithPlacement(srcobj)\n"
-        )
+        FreeCADGui.doCommand("srcpath = PathScripts.PathUtils.getPathWithPlacement(srcobj)\n")
         FreeCADGui.addModule("Path.Op.Custom")
-        FreeCADGui.doCommand(
-            'obj = Path.Op.Custom.Create("' + selection[0].Name + '_SimpleCopy")'
-        )
+        FreeCADGui.doCommand('obj = Path.Op.Custom.Create("' + selection[0].Name + '_SimpleCopy")')
         FreeCADGui.doCommand("obj.ViewObject.Proxy = 0")
         FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for c in srcpath.Commands]")
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")

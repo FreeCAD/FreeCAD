@@ -28,7 +28,7 @@
 namespace MillSim
 {
 
-class StockObject : public SolidObject
+class StockObject: public SolidObject
 {
 public:
     StockObject();

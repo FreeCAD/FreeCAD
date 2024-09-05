@@ -222,9 +222,9 @@ public:
         // limitation of not knowing about padding, border and margin boxes of stylesheets
         // thus being unable to provide proper sizeHint for stylesheets to render correctly
         if (role == Qt::DecorationRole) {
-            int size = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
+            auto size = listWidget()->iconSize();
 
-            return QIcon(QPixmap(QSize(size, size)));
+            return QIcon(QPixmap(size));
         }
 
         return QListWidgetItem::data(role);
@@ -241,6 +241,22 @@ public:
                 return isEndPointSelected;
             case Sketcher::PointPos::mid:
                 return isMidPointSelected;
+            default:
+                return false;
+        }
+    }
+
+    bool isGeometryPreselected(Sketcher::PointPos pos) const
+    {
+        switch (pos) {
+            case Sketcher::PointPos::none:
+                return hovered == SubElementType::edge;
+            case Sketcher::PointPos::start:
+                return hovered == SubElementType::start;
+            case Sketcher::PointPos::end:
+                return hovered == SubElementType::end;
+            case Sketcher::PointPos::mid:
+                return hovered == SubElementType::mid;
             default:
                 return false;
         }
@@ -943,9 +959,16 @@ void ElementItemDelegate::drawSubControl(SubControl element,
 
     auto drawSelectIcon = [&](Sketcher::PointPos pos) {
         auto icon = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State);
-        auto opacity = 0.4f;
 
-        if (isHovered) {
+        auto isOptionSelected = option.state & QStyle::State_Selected;
+        auto isOptionHovered = option.state & QStyle::State_MouseOver;
+
+        // items that user is not interacting with should be fully opaque
+        // only if item is partially selected (so only one part of geometry)
+        // the rest should be dimmed out
+        auto opacity = isOptionHovered || isOptionSelected ? 0.4 : 1.0;
+
+        if (item->isGeometryPreselected(pos)) {
             opacity = 0.8f;
         }
 

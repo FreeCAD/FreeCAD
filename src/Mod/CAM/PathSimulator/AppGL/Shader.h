@@ -50,7 +50,7 @@ public:
     void UpdateNormalTexSlot(int normalSlot);
     void UpdateNoiseTexSlot(int noiseSlot);
     void UpdateSsaoTexSlot(int ssaoSlot);
-    void UpdateKernelVals(int nVals, float *vals);
+    void UpdateKernelVals(int nVals, float* vals);
     void UpdateCurSegment(int curSeg);
     unsigned int CompileShader(const char* vertShader, const char* fragShader);
     void Activate();

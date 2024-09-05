@@ -27,19 +27,19 @@
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
-# define PartExport    __declspec(dllimport)
-# define PathExport    __declspec(dllimport)
-# define PartGuiExport __declspec(dllexport)
-# define PathGuiExport __declspec(dllexport)
-#else // for Linux
-# define PartExport
-# define PathExport
-# define PartGuiExport
-# define PathGuiExport
+#define PartExport __declspec(dllimport)
+#define PathExport __declspec(dllimport)
+#define PartGuiExport __declspec(dllexport)
+#define PathGuiExport __declspec(dllexport)
+#else  // for Linux
+#define PartExport
+#define PathExport
+#define PartGuiExport
+#define PathGuiExport
 #endif
 
 #ifdef _MSC_VER
-# pragma warning( disable : 4273 )
+#pragma warning(disable : 4273)
 #endif
 
 #ifdef _PreComp_
@@ -69,6 +69,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
-#endif // PATHGUI_PRECOMPILED_H
+#endif  // PATHGUI_PRECOMPILED_H

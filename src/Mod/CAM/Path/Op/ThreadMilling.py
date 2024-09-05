@@ -338,9 +338,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyString",
             "ThreadName",
             "Thread",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Defines which standard thread was chosen"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Defines which standard thread was chosen"),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -358,9 +356,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyLength",
             "Pitch",
             "Thread",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Set thread's pitch - used for metric threads"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Set thread's pitch - used for metric threads"),
         )
         obj.addProperty(
             "App::PropertyInteger",
@@ -384,9 +380,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyInteger",
             "Passes",
             "Operation",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Set how many passes are used to cut the thread"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -407,9 +401,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyLink",
             "ClearanceOp",
             "Operation",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Operation to clear the inside of the thread"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Operation to clear the inside of the thread"),
         )
 
         for n in self.propertyEnumerations():
@@ -431,9 +423,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         Path.Log.track(obj.Label, loc, gcode, zStart, zFinal, pitch)
         elevator = elevatorRadius(obj, loc, _isThreadInternal(obj), self.tool)
 
-        move2clearance = Path.Command(
-            "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
-        )
+        move2clearance = Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
         self.commandlist.append(move2clearance)
 
         start = None

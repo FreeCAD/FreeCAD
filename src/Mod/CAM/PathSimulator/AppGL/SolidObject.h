@@ -39,7 +39,7 @@ public:
     /// Calls the display list.
     virtual void render();
     Shape shape;
-    void GenerateSolid(std::vector<Vertex> & verts, std::vector<GLushort>& indices);
+    void GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
     vec3 center = {};
     vec3 size = {};
     vec3 position = {};

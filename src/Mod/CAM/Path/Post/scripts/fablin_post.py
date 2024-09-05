@@ -91,9 +91,6 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """"""
 
 
-
-
-
 def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
@@ -130,9 +127,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return
 
@@ -245,9 +240,7 @@ def parse(pathobj):
         return out
     else:  # parsing simple path
 
-        if not hasattr(
-            pathobj, "Path"
-        ):  # groups might contain non-path things like stock.
+        if not hasattr(pathobj, "Path"):  # groups might contain non-path things like stock.
             return out
 
         if OUTPUT_COMMENTS:

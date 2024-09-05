@@ -37,9 +37,9 @@
 #include <sstream>
 #include <vector>
 
-#define VIEWITEM_SIMULATION   1
-#define VIEWITEM_BASE_SHAPE   2
-#define VIEWITEM_MAX          4
+#define VIEWITEM_SIMULATION 1
+#define VIEWITEM_BASE_SHAPE 2
+#define VIEWITEM_MAX 4
 
 namespace MillSim
 {
@@ -80,7 +80,6 @@ public:
     void MousePress(int button, bool isPressed, int px, int py);
     void Zoom(float factor);
     void UpdateWindowScale(int width, int height);
-
 
 
 protected:
@@ -139,7 +138,6 @@ protected:
     bool mIsInStock = false;
     bool mSimPlaying = false;
     bool mSingleStep = false;
-
 };
 }  // namespace MillSim
 #endif

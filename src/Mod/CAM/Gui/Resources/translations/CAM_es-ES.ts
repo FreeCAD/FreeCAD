@@ -2453,7 +2453,7 @@ Si se deja vacío, el directorio macro es usado.</translation>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</source>
-      <translation>La plantilla por defecto a seleccionar al crear un nuevo Trabajo. 
+      <translation>La plantilla por defecto a seleccionar al crear un nuevo Trabajo.
 
 Esto puede ser útil cuando casi todos los trabajos serán procesados por la misma máquina con una configuración similar.
 
@@ -5559,9 +5559,9 @@ Por defecto: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="331"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
-      <translation>Corte para eliminar segmentos colineales (grados). 
+      <translation>Corte para eliminar segmentos colineales (grados).
                         por defecto=10.0.</translation>
     </message>
     <message>
@@ -6946,23 +6946,23 @@ Abortando la creación de la op</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema: 
+      <source>The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema: 
+      <translation type="unfinished">The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -7032,9 +7032,9 @@ For example:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</translation>
     </message>
     <message>
@@ -7350,9 +7350,9 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="382"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
+      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</translation>
     </message>
     <message>
@@ -8492,10 +8492,10 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Directorio de trabajo de herramienta {} necesita estos sudirectorios:
- {} 
+ {}
  ¿Crearlos?</translation>
     </message>
     <message>

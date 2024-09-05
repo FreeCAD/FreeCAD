@@ -47,9 +47,7 @@ class CommandToolBitCreate:
         return {
             "Pixmap": "CAM_ToolBit",
             "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Create Tool"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_ToolBitCreate", "Creates a new ToolBit object"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Creates a new ToolBit object"),
         }
 
     def IsActive(self):

@@ -10,6 +10,7 @@ files: |
         tests/src|
         src/Mod/AddonManager|
         src/Mod/Assembly|
+        src/Mod/CAM|
         src/Mod/Cloud|
         src/Mod/Drawing|
         src/Mod/Fem|

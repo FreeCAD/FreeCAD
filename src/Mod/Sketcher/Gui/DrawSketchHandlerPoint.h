@@ -81,15 +81,10 @@ private:
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
             Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                  "addGeometry(Part.Point(App.Vector(%f,%f,0)), %s)",
                                   editPoint.x,
-                                  editPoint.y);
-
-            if (isConstructionMode()) {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "toggleConstruction(%d)",
-                                      getHighestCurveIndex());
-            }
+                                  editPoint.y,
+                                  isConstructionMode() ? "True" : "False");
 
             Gui::Command::commitCommand();
         }

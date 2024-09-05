@@ -83,9 +83,7 @@ class PathSimulation:
 
     def UpdateProgress(self):
         if self.numCommands > 0:
-            self.taskForm.form.progressBar.setValue(
-                self.iprogress * 100 / self.numCommands
-            )
+            self.taskForm.form.progressBar.setValue(self.iprogress * 100 / self.numCommands)
 
     def Activate(self):
         self.initdone = False
@@ -124,9 +122,7 @@ class PathSimulation:
         guiSelection = FreeCADGui.Selection.getSelectionEx()
         if guiSelection:  #  Identify job selected by user
             sel = guiSelection[0]
-            if hasattr(sel.Object, "Proxy") and isinstance(
-                sel.Object.Proxy, PathJob.ObjectJob
-            ):
+            if hasattr(sel.Object, "Proxy") and isinstance(sel.Object.Proxy, PathJob.ObjectJob):
                 jobName = sel.Object.Name
                 FreeCADGui.Selection.clearSelection()
 
@@ -193,9 +189,7 @@ class PathSimulation:
             if not self.cutTool.Shape.isValid() or self.cutTool.Shape.isNull():
                 self.EndSimulation()
                 raise RuntimeError(
-                    "Path Simulation: Error in tool geometry - {}".format(
-                        self.tool.Name
-                    )
+                    "Path Simulation: Error in tool geometry - {}".format(self.tool.Name)
                 )
 
             self.cutTool.ViewObject.show()
@@ -212,9 +206,7 @@ class PathSimulation:
         self.skipStep = False
         self.initialPos = Vector(0, 0, self.job.Stock.Shape.BoundBox.ZMax)
         # Add cut tool
-        self.cutTool = FreeCAD.ActiveDocument.addObject(
-            "Part::FeaturePython", "CutTool"
-        )
+        self.cutTool = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "CutTool")
         self.cutTool.ViewObject.Proxy = 0
         self.cutTool.ViewObject.hide()
 
@@ -240,9 +232,7 @@ class PathSimulation:
 
         # Add cut path solid for debug
         if self.debug:
-            self.cutSolid = FreeCAD.ActiveDocument.addObject(
-                "Part::FeaturePython", "CutDebug"
-            )
+            self.cutSolid = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "CutDebug")
             self.cutSolid.ViewObject.Proxy = 0
             self.cutSolid.ViewObject.hide()
 
@@ -270,9 +260,7 @@ class PathSimulation:
             if self.skipStep:
                 self.curpos = self.RapidMove(cmd, self.curpos)
             else:
-                (pathSolid, self.curpos) = self.GetPathSolid(
-                    self.tool, cmd, self.curpos
-                )
+                (pathSolid, self.curpos) = self.GetPathSolid(self.tool, cmd, self.curpos)
 
         if cmd.Name in ["G80"]:
             self.firstDrill = True
@@ -363,15 +351,9 @@ class PathSimulation:
             if self.firstDrill:
                 extendcommands.append(Path.Command("G0", {"Z": cmd.r}))
                 self.firstDrill = False
-            extendcommands.append(
-                Path.Command("G0", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
-            )
-            extendcommands.append(
-                Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.z})
-            )
-            extendcommands.append(
-                Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
-            )
+            extendcommands.append(Path.Command("G0", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
+            extendcommands.append(Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.z}))
+            extendcommands.append(Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
             for ecmd in extendcommands:
                 self.curpos = self.voxSim.ApplyCommand(self.curpos, ecmd)
                 if not self.disableAnim:
@@ -630,9 +612,7 @@ class CommandPathSimulate:
             "Pixmap": "CAM_Simulator",
             "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "CAM Simulator"),
             "Accel": "P, M",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "CAM_Simulator", "Simulate G-code on stock"
-            ),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM_Simulator", "Simulate G-code on stock"),
         }
 
     def IsActive(self):
