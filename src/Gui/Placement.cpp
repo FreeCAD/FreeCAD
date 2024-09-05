@@ -102,7 +102,7 @@ PlacementHandler::PlacementHandler()
   : propertyName{"Placement"}
   , changeProperty{false}
 {
-
+    setupDocument();
 }
 
 void PlacementHandler::openTransactionIfNeeded()
@@ -118,6 +118,33 @@ void PlacementHandler::setPropertyName(const std::string& name)
     // Only with the Placement property it's possible to directly change the Inventor representation.
     // For other placement properties with a different name the standard property handling must be used.
     changeProperty = (propertyName != "Placement");
+}
+
+void PlacementHandler::setSelection(const std::vector<Gui::SelectionObject>& selection)
+{
+    selectionObjects = selection;
+}
+
+void PlacementHandler::reselectObjects()
+{
+    //we have to clear selection and reselect original object(s)
+    //else later on the rotation is applied twice because there will
+    //be 2 (vertex) objects in the selection, and even if both are subobjects
+    //of the same object the rotation still gets applied twice
+    Gui::Selection().clearSelection();
+    //reselect original object that was selected when placement dlg first opened
+    for (const auto& it : selectionObjects) {
+        Gui::Selection().addSelection(it);
+    }
+}
+
+const App::DocumentObject* PlacementHandler::getFirstOfSelection() const
+{
+    if (!selectionObjects.empty()) {
+        return selectionObjects.front().getObject();
+    }
+
+    return nullptr;
 }
 
 const std::string& PlacementHandler::getPropertyName() const
@@ -184,6 +211,16 @@ void PlacementHandler::revertTransformationOfViewProviders(Gui::Document* docume
             }
         }
     }
+}
+
+void PlacementHandler::setRefPlacement(const Base::Placement& plm)
+{
+    ref = plm;
+}
+
+const Base::Placement& PlacementHandler::getRefPlacement() const
+{
+    return ref;
 }
 
 void PlacementHandler::applyPlacement(const Base::Placement& p, bool incremental)
@@ -291,6 +328,52 @@ QString PlacementHandler::getSimplePlacement(App::DocumentObject* obj, const QSt
              data);
 }
 
+Base::Vector3d PlacementHandler::computeCenterOfMass() const
+{
+    Base::Vector3d centerOfMass;
+    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
+        (App::GeoFeature::getClassTypeId());
+    if (!sel.empty()) {
+        for (auto it : sel) {
+            const App::PropertyComplexGeoData* propgeo = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
+            const Data::ComplexGeoData* geodata = propgeo ? propgeo->getComplexData() : nullptr;
+            if (geodata && geodata->getCenterOfGravity(centerOfMass)) {
+                break;
+            }
+        }
+    }
+    return centerOfMass;
+}
+
+void PlacementHandler::setCenterOfMass(const Base::Vector3d& pnt)
+{
+    cntOfMass = pnt;
+}
+
+Base::Vector3d PlacementHandler::getCenterOfMass() const
+{
+    return cntOfMass;
+}
+
+std::tuple<Base::Vector3d, std::vector<Base::Vector3d>> PlacementHandler::getSelectedPoints() const
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    std::vector<Base::Vector3d> picked;
+    //combine all pickedpoints into single vector
+    //even if points are from separate objects
+    Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
+    for (auto it = selection.begin(); it != selection.end(); ++it) {
+        std::vector<Base::Vector3d> points = it->getPickedPoints();
+        if (it == selection.begin() && !points.empty()) {
+            firstSelected = points[0];
+        }
+
+        picked.insert(picked.begin(), points.begin(), points.end());
+    }
+
+    return std::make_tuple(firstSelected, picked);
+}
+
 void PlacementHandler::tryRecompute(Gui::Document* document)
 {
     try {
@@ -298,6 +381,23 @@ void PlacementHandler::tryRecompute(Gui::Document* document)
     }
     catch (...) {
     }
+}
+
+void PlacementHandler::setupDocument()
+{
+    //NOLINTBEGIN
+    connectAct = Application::Instance->signalActiveDocument.connect
+        (std::bind(&PlacementHandler::slotActiveDocument, this, sp::_1));
+    //NOLINTEND
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (activeDoc) {
+        appendDocument(activeDoc->getName());
+    }
+}
+
+void PlacementHandler::slotActiveDocument(const Gui::Document& doc)
+{
+    activatedDocument(doc.getDocument()->getName());
 }
 
 // ----------------------------------------------------------------------------
@@ -312,13 +412,11 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
     setupConnections();
     setupUnits();
     setupSignalMapper();
-    setupDocument();
     setupRotationMethod();
 }
 
 Placement::~Placement()
 {
-    connectAct.disconnect();
     delete ui;
 }
 
@@ -391,18 +489,6 @@ void Placement::setupSignalMapper()
 #endif
 }
 
-void Placement::setupDocument()
-{
-    //NOLINTBEGIN
-    connectAct = Application::Instance->signalActiveDocument.connect
-        (std::bind(&Placement::slotActiveDocument, this, sp::_1));
-    //NOLINTEND
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (activeDoc) {
-        handler.appendDocument(activeDoc->getName());
-    }
-}
-
 void Placement::setupRotationMethod()
 {
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Placement");
@@ -428,11 +514,6 @@ void Placement::showDefaultButtons(bool ok)
 void Placement::open()
 {
     handler.openTransactionIfNeeded();
-}
-
-void Placement::slotActiveDocument(const Gui::Document& doc)
-{
-    handler.activatedDocument(doc.getDocument()->getName());
 }
 
 QWidget* Placement::getInvalidInput() const
@@ -466,57 +547,31 @@ void Placement::onCenterOfMassToggled(bool on)
     ui->zCnt->setDisabled(on);
 
     if (on) {
-        cntOfMass = getCenterOfMass();
-        ui->xCnt->setValue(cntOfMass.x);
-        ui->yCnt->setValue(cntOfMass.y);
-        ui->zCnt->setValue(cntOfMass.z);
+        Base::Vector3d pnt = handler.computeCenterOfMass();
+        handler.setCenterOfMass(pnt);
+        ui->xCnt->setValue(pnt.x);
+        ui->yCnt->setValue(pnt.y);
+        ui->zCnt->setValue(pnt.z);
     }
 }
 
 void Placement::onSelectedVertexClicked()
 {
-    cntOfMass.Set(0,0,0);
     ui->centerOfMass->setChecked(false);
 
-    bool success=false;
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    std::vector<Base::Vector3d> picked;
-    //combine all pickedpoints into single vector
-    //even if points are from separate objects
-    Base::Vector3d firstSelected; //first selected will be central point when 3 points picked
-    for (auto it=selection.begin(); it!=selection.end(); ++it){
-        std::vector<Base::Vector3d> points = it->getPickedPoints();
-        if (it==selection.begin() && !points.empty()){
-            firstSelected=points[0];
-        }
-        picked.insert(picked.begin(),points.begin(),points.end());
-    }
-    //we have to clear selection and reselect original object(s)
-    //else later on the rotation is applied twice because there will
-    //be 2 (vertex) objects in the selection, and even if both are subobjects
-    //of the same object the rotation still gets applied twice
-    Gui::Selection().clearSelection();
-    //reselect original object that was selected when placement dlg first opened
-    for (const auto& it : selectionObjects)
-        Gui::Selection().addSelection(it);
+    Base::Vector3d center;
+    bool success = false;
+    auto [firstSelected, picked] = handler.getSelectedPoints();
+    handler.reselectObjects();
 
     if (picked.size() == 1) {
-        ui->xCnt->setValue(picked[0].x);
-        ui->yCnt->setValue(picked[0].y);
-        ui->zCnt->setValue(picked[0].z);
-        cntOfMass.x=picked[0].x;
-        cntOfMass.y=picked[0].y;
-        cntOfMass.z=picked[0].z;
-        success=true;
+        center = picked[0];
+        success = true;
     }
     else if (picked.size() == 2) {
         //average the coords to get center of rotation
-        ui->xCnt->setValue((picked[0].x+picked[1].x)/2.0);
-        ui->yCnt->setValue((picked[0].y+picked[1].y)/2.0);
-        ui->zCnt->setValue((picked[0].z+picked[1].z)/2.0);
-        cntOfMass.x=(picked[0].x+picked[1].x)/2.0;
-        cntOfMass.y=(picked[0].y+picked[1].y)/2.0;
-        cntOfMass.z=(picked[0].z+picked[1].z)/2.0;
+        center = (picked[0] + picked[1]) / 2.0;
+
         //setup a customized axis since the user selected 2 points
         //keep any existing angle, but setup our own axis
         Base::Placement plm = getPlacement();
@@ -525,11 +580,11 @@ void Placement::onSelectedVertexClicked()
         double angle;
         rot.getRawValue(tmp, angle);
         Base::Vector3d axis;
-        if (firstSelected==picked[0]){
-            axis = Base::Vector3d(picked[1]-picked[0]);
+        if (firstSelected == picked[0]){
+            axis = Base::Vector3d(picked[1] - picked[0]);
         }
         else {
-            axis = Base::Vector3d(picked[0]-picked[1]);
+            axis = Base::Vector3d(picked[0] - picked[1]);
         }
         double length = axis.Length();
         Base::Console().Message("Distance: %.8f\n",length);
@@ -546,7 +601,7 @@ void Placement::onSelectedVertexClicked()
         setPlacementData(plm); //creates custom axis, if needed
         ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
         ui->stackedWidget->setCurrentIndex(0);
-        success=true;
+        success = true;
     }
     else if (picked.size() == 3){
         /* User selected 3 points, so we find the plane defined by those
@@ -559,7 +614,7 @@ void Placement::onSelectedVertexClicked()
             a = picked[1];
             c = picked[2];
         }
-        else if (picked[1]==firstSelected){
+        else if (picked[1] == firstSelected){
             a = picked[0];
             c = picked[2];
         }
@@ -570,12 +625,8 @@ void Placement::onSelectedVertexClicked()
 
         Base::Vector3d norm((a-b).Cross(c-b));
         norm.Normalize();
-        ui->xCnt->setValue(b.x);
-        ui->yCnt->setValue(b.y);
-        ui->zCnt->setValue(b.z);
-        cntOfMass.x=b.x;
-        cntOfMass.y=b.y;
-        cntOfMass.z=b.z;
+        center = b;
+
         //setup a customized axis normal to the plane
         //keep any existing angle, but setup our own axis
         Base::Placement plm = getPlacement();
@@ -604,10 +655,15 @@ void Placement::onSelectedVertexClicked()
         setPlacementData(plm); //creates custom axis, if needed
         ui->rotationInput->setCurrentIndex(0); //use rotation with axis instead of euler
         ui->stackedWidget->setCurrentIndex(0);
-        success=true;
+        success = true;
     }
 
-    if (!success){
+    handler.setCenterOfMass(center);
+    ui->xCnt->setValue(center.x);
+    ui->yCnt->setValue(center.y);
+    ui->zCnt->setValue(center.z);
+
+    if (!success) {
         Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
         QMessageBox msgBox;
         msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
@@ -619,10 +675,6 @@ lies on the vector that is normal to the plane defined by the 3 points.  Some di
 information is provided in the report view, which can be useful when aligning objects.  For your \
 convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard."));
         msgBox.exec();
-        ui->xCnt->setValue(0);
-        ui->yCnt->setValue(0);
-        ui->zCnt->setValue(0);
-        return;
     }
 }
 
@@ -653,12 +705,12 @@ void Placement::onApplyAxialClicked()
 void Placement::onApplyIncrementalPlacementToggled(bool on)
 {
     if (on) {
-        this->ref = getPlacementData();
+        handler.setRefPlacement(getPlacementData());
         onResetButtonClicked();
     }
     else {
         Base::Placement p = getPlacementData();
-        p = p * this->ref;
+        p = p * handler.getRefPlacement();
         setPlacementData(p);
         onPlacementChanged(0);
     }
@@ -767,7 +819,7 @@ void Placement::onResetButtonClicked()
  */
 void Placement::setSelection(const std::vector<Gui::SelectionObject>& selection)
 {
-    selectionObjects = selection;
+    handler.setSelection(selection);
 }
 
 void  Placement::setPropertyName(const std::string& name)
@@ -782,9 +834,8 @@ void  Placement::setPropertyName(const std::string& name)
  */
 void Placement::bindObject()
 {
-    if (!selectionObjects.empty()) {
-        App::DocumentObject* obj = selectionObjects.front().getObject();
-
+    // clang-format off
+    if (const App::DocumentObject* obj = handler.getFirstOfSelection()) {
         std::string propertyName = handler.getPropertyName();
         App::ObjectIdentifier path = App::ObjectIdentifier::parse(obj, propertyName);
         if (path.getProperty()) {
@@ -806,6 +857,7 @@ void Placement::bindObject()
             ui->rollAngle->evaluateExpression();
         }
     }
+    // clang-format on
 }
 
 Base::Vector3d Placement::getDirection() const
@@ -883,28 +935,12 @@ Base::Vector3d Placement::getAnglesData() const
 
 Base::Vector3d Placement::getCenterData() const
 {
-    if (ui->centerOfMass->isChecked())
-        return this->cntOfMass;
+    if (ui->centerOfMass->isChecked()) {
+        return handler.getCenterOfMass();
+    }
     return Base::Vector3d(ui->xCnt->value().getValue(),
                           ui->yCnt->value().getValue(),
                           ui->zCnt->value().getValue());
-}
-
-Base::Vector3d Placement::getCenterOfMass() const
-{
-    Base::Vector3d centerOfMass;
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
-        (App::GeoFeature::getClassTypeId());
-    if (!sel.empty()) {
-        for (auto it : sel) {
-            const App::PropertyComplexGeoData* propgeo = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
-            const Data::ComplexGeoData* geodata = propgeo ? propgeo->getComplexData() : nullptr;
-            if (geodata && geodata->getCenterOfGravity(centerOfMass)) {
-                break;
-            }
-        }
-    }
-    return centerOfMass;
 }
 
 Base::Placement Placement::getPlacementData() const
