@@ -104,6 +104,7 @@ public:
 PlacementHandler::PlacementHandler()
   : propertyName{"Placement"}
   , changeProperty{false}
+  , ignoreTransaction{false}
 {
     setupDocument();
 }
@@ -121,6 +122,11 @@ void PlacementHandler::setPropertyName(const std::string& name)
     // Only with the Placement property it's possible to directly change the Inventor representation.
     // For other placement properties with a different name the standard property handling must be used.
     changeProperty = (propertyName != "Placement");
+}
+
+void PlacementHandler::setIgnoreTransactions(bool value)
+{
+    ignoreTransaction = value;
 }
 
 void PlacementHandler::setSelection(const std::vector<Gui::SelectionObject>& selection)
@@ -185,7 +191,7 @@ void PlacementHandler::revertTransformation()
                 revertTransformationOfViewProviders(document);
             }
             else {
-                document->abortCommand();
+                abortCommandIfActive(document);
             }
         }
     }
@@ -288,19 +294,18 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
     // When directly changing the property we now only have to commit the transaction,
     // do a recompute and open a new transaction
     if (changeProperty) {
-        document->commitCommand();
+        commitCommandIfActive(document);
         tryRecompute(document);
-        document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
+        openCommandIfActive(document);
     }
     else {
         std::vector<App::DocumentObject*> sel = getSelectedObjects(document);
         if (!sel.empty()) {
-            document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
+            openCommandIfActive(document);
             for (const auto & it : sel) {
                 applyPlacement(it, data, incremental);
             }
-
-            document->commitCommand();
+            commitCommandIfActive(document);
             tryRecompute(document);
         }
         else {
@@ -415,6 +420,27 @@ void PlacementHandler::setupDocument()
 void PlacementHandler::slotActiveDocument(const Gui::Document& doc)
 {
     activatedDocument(doc.getDocument()->getName());
+}
+
+void PlacementHandler::openCommandIfActive(Gui::Document* doc)
+{
+    if (!ignoreTransaction) {
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
+    }
+}
+
+void PlacementHandler::commitCommandIfActive(Gui::Document* doc)
+{
+    if (!ignoreTransaction) {
+        doc->commitCommand();
+    }
+}
+
+void PlacementHandler::abortCommandIfActive(Gui::Document* doc)
+{
+    if (!ignoreTransaction) {
+        doc->abortCommand();
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -839,9 +865,14 @@ void Placement::setSelection(const std::vector<Gui::SelectionObject>& selection)
     handler.setSelection(selection);
 }
 
-void  Placement::setPropertyName(const std::string& name)
+void Placement::setPropertyName(const std::string& name)
 {
     handler.setPropertyName(name);
+}
+
+void Placement::setIgnoreTransactions(bool value)
+{
+    handler.setIgnoreTransactions(value);
 }
 
 /*!
@@ -1172,6 +1203,7 @@ void TaskPlacementPy::init_type()
     add_varargs_method("setSelection",&TaskPlacementPy::setSelection,"setSelection(list)");
     add_varargs_method("bindObject",&TaskPlacementPy::bindObject,"bindObject()");
 
+    add_varargs_method("setIgnoreTransactions",&TaskPlacementPy::setIgnoreTransactions, "setIgnoreTransactions(bool)");
     add_varargs_method("showDefaultButtons",&TaskPlacementPy::showDefaultButtons, "showDefaultButtons(bool)");
     add_varargs_method("accept",&TaskPlacementPy::accept,"accept()");
     add_varargs_method("reject",&TaskPlacementPy::reject,"reject()");
@@ -1278,6 +1310,14 @@ Py::Object TaskPlacementPy::bindObject(const Py::Tuple& args)
 
     if (widget) {
         widget->bindObject();
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::setIgnoreTransactions(const Py::Tuple& args)
+{
+    if (widget) {
+        widget->setIgnoreTransactions(Py::Boolean(args[0]));
     }
     return Py::None();
 }

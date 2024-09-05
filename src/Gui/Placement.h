@@ -51,6 +51,7 @@ public:
     PlacementHandler();
     void openTransactionIfNeeded();
     void setPropertyName(const std::string&);
+    void setIgnoreTransactions(bool value);
     void setSelection(const std::vector<SelectionObject>&);
     void reselectObjects();
     const App::DocumentObject* getFirstOfSelection() const;
@@ -78,6 +79,9 @@ private:
     QString getSimplePlacement(App::DocumentObject*, const QString&) const;
     void setupDocument();
     void slotActiveDocument(const Gui::Document&);
+    void openCommandIfActive(Gui::Document*);
+    void commitCommandIfActive(Gui::Document*);
+    void abortCommandIfActive(Gui::Document*);
 
 private Q_SLOTS:
     void openTransaction();
@@ -90,6 +94,10 @@ private:
      * otherwise change the placement property.
      */
     bool changeProperty;
+    /** If true do not open or commit transactions. In this case it's expected
+     *  that it's done by the calling instance.
+     */
+    bool ignoreTransaction;
     Connection connectAct;
     /**
      * store these so we can reselect original object
@@ -114,6 +122,7 @@ public:
     void setPropertyName(const std::string&);
     void setSelection(const std::vector<SelectionObject>&);
     void bindObject();
+    void setIgnoreTransactions(bool value);
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
     Base::Placement getPlacement() const;
@@ -229,6 +238,7 @@ public:
     Py::Object setPlacement(const Py::Tuple&);
     Py::Object setSelection(const Py::Tuple&);
     Py::Object bindObject(const Py::Tuple&);
+    Py::Object setIgnoreTransactions(const Py::Tuple&);
 
     Py::Object showDefaultButtons(const Py::Tuple&);
     Py::Object accept(const Py::Tuple&);
