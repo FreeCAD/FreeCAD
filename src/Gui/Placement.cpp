@@ -32,13 +32,16 @@
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>
+#include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
 #include <Base/Console.h>
+#include <Base/PlacementPy.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
+#include <Gui/PythonWrapper.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
@@ -1150,6 +1153,229 @@ void TaskPlacement::clicked(int id)
     if (id == QDialogButtonBox::Apply) {
         widget->onApplyButtonClicked();
     }
+}
+
+// ----------------------------------------------
+
+void TaskPlacementPy::init_type()
+{
+    behaviors().name("TaskPlacement");
+    behaviors().doc("TaskPlacement");
+    behaviors().set_tp_new(PyMake);
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    // clang-format off
+    add_varargs_method("setPropertyName",&TaskPlacementPy::setPropertyName,"setPropertyName(string)");
+    add_varargs_method("setPlacement",&TaskPlacementPy::setPlacement,"setPlacement(Placement)");
+    add_varargs_method("setSelection",&TaskPlacementPy::setSelection,"setSelection(list)");
+    add_varargs_method("bindObject",&TaskPlacementPy::bindObject,"bindObject()");
+
+    add_varargs_method("showDefaultButtons",&TaskPlacementPy::showDefaultButtons, "showDefaultButtons(bool)");
+    add_varargs_method("accept",&TaskPlacementPy::accept,"accept()");
+    add_varargs_method("reject",&TaskPlacementPy::reject,"reject()");
+    add_varargs_method("clicked",&TaskPlacementPy::clicked,"clicked()");
+    add_varargs_method("open",&TaskPlacementPy::open,"open()");
+    add_varargs_method("isAllowedAlterDocument",&TaskPlacementPy::isAllowedAlterDocument,"isAllowedAlterDocument()");
+    add_varargs_method("isAllowedAlterView",&TaskPlacementPy::isAllowedAlterView,"isAllowedAlterView()");
+    add_varargs_method("isAllowedAlterSelection",&TaskPlacementPy::isAllowedAlterSelection,"isAllowedAlterSelection()");
+    add_varargs_method("getStandardButtons",&TaskPlacementPy::getStandardButtons,"getStandardButtons()");
+    // clang-format on
+}
+
+PyObject* TaskPlacementPy::PyMake(struct _typeobject * type, PyObject * args, PyObject * kwds)
+{
+    Q_UNUSED(type)
+    Q_UNUSED(kwds)
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    return new TaskPlacementPy();
+}
+
+TaskPlacementPy::TaskPlacementPy()
+    : widget{new Placement}
+{
+}
+
+TaskPlacementPy::~TaskPlacementPy() = default;
+
+Py::Object TaskPlacementPy::repr()
+{
+    return Py::String("TaskPlacement");
+}
+
+Py::Object TaskPlacementPy::getattr(const char * name)
+{
+    if (strcmp(name, "form") == 0) {
+        Gui::PythonWrapper wrap;
+        wrap.loadWidgetsModule();
+        return wrap.fromQWidget(widget, "QDialog");
+    }
+    return BaseType::getattr(name);
+}
+
+int TaskPlacementPy::setattr(const char* name, const Py::Object& attr)
+{
+    if (strcmp(name, "form") == 0 && attr.isNone()) {
+        delete widget;
+        widget = nullptr;
+        return {};
+    }
+    return BaseType::setattr(name, attr);
+}
+
+Py::Object TaskPlacementPy::setPropertyName(const Py::Tuple& args)
+{
+    const char* propname {};
+    if (!PyArg_ParseTuple(args.ptr(), "s", &propname)) {
+        throw Py::Exception();
+    }
+
+    if (widget) {
+        widget->setPropertyName(propname);
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::setPlacement(const Py::Tuple& args)
+{
+    PyObject* plm {};
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &Base::PlacementPy::Type, &plm)) {
+        throw Py::Exception();
+    }
+
+    if (widget) {
+        widget->setPlacement(*static_cast<Base::PlacementPy*>(plm)->getPlacementPtr());
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::setSelection(const Py::Tuple& args)
+{
+    std::vector<Gui::SelectionObject> sel;
+    Py::Sequence list(args[0]);
+
+    for (const auto& obj : list) {
+        if (PyObject_TypeCheck(obj.ptr(), &App::DocumentObjectPy::Type)) {
+            auto doc = static_cast<App::DocumentObjectPy*>(obj.ptr());
+            sel.emplace_back(doc->getDocumentObjectPtr());
+        }
+    }
+
+    if (widget) {
+        widget->setSelection(sel);
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::bindObject(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    if (widget) {
+        widget->bindObject();
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::showDefaultButtons(const Py::Tuple& args)
+{
+    if (widget) {
+        widget->showDefaultButtons(Py::Boolean(args[0]));
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::accept(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    bool res = true;
+    if (widget) {
+        widget->accept();
+        res = widget->result() == QDialog::Accepted;
+    }
+    return Py::Boolean(res);
+}
+
+Py::Object TaskPlacementPy::reject(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    bool res = true;
+    if (widget) {
+        widget->reject();
+        res = widget->result() == QDialog::Rejected;
+    }
+    return Py::Boolean(res);
+}
+
+Py::Object TaskPlacementPy::clicked(const Py::Tuple& args)
+{
+    int index {};
+    if (!PyArg_ParseTuple(args.ptr(), "i", &index)) {
+        throw Py::Exception();
+    }
+
+    if (widget && index == QDialogButtonBox::Apply) {
+        widget->onApplyButtonClicked();
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::open(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    if (widget) {
+        widget->open();
+    }
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::isAllowedAlterDocument(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+    return Py::Boolean(true);
+}
+
+Py::Object TaskPlacementPy::isAllowedAlterView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+    return Py::Boolean(true);
+}
+
+Py::Object TaskPlacementPy::isAllowedAlterSelection(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+    return Py::Boolean(true);
+}
+
+Py::Object TaskPlacementPy::getStandardButtons(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+    auto buttons = QDialogButtonBox::Ok|
+            QDialogButtonBox::Cancel|
+            QDialogButtonBox::Apply;
+    return Py::Long(static_cast<int>(buttons));
 }
 
 #include "moc_Placement.cpp"
