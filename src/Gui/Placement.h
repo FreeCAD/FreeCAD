@@ -212,6 +212,41 @@ private:
     Placement* widget;
 };
 
+class TaskPlacementPy: public Py::PythonExtension<TaskPlacementPy>
+{
+public:
+    using BaseType = Py::PythonExtension<TaskPlacementPy>;
+    static void init_type();
+
+    TaskPlacementPy();
+    ~TaskPlacementPy() override;
+
+    Py::Object repr() override;
+    Py::Object getattr(const char* name) override;
+    int setattr(const char* name, const Py::Object&) override;
+
+    Py::Object setPropertyName(const Py::Tuple&);
+    Py::Object setPlacement(const Py::Tuple&);
+    Py::Object setSelection(const Py::Tuple&);
+    Py::Object bindObject(const Py::Tuple&);
+
+    Py::Object showDefaultButtons(const Py::Tuple&);
+    Py::Object accept(const Py::Tuple&);
+    Py::Object reject(const Py::Tuple&);
+    Py::Object clicked(const Py::Tuple&);
+    Py::Object open(const Py::Tuple&);
+    Py::Object isAllowedAlterDocument(const Py::Tuple&);
+    Py::Object isAllowedAlterView(const Py::Tuple&);
+    Py::Object isAllowedAlterSelection(const Py::Tuple&);
+    Py::Object getStandardButtons(const Py::Tuple&);
+
+private:
+    static PyObject* PyMake(struct _typeobject*, PyObject*, PyObject*);
+
+private:
+    QPointer<Placement> widget;
+};
+
 } // namespace Dialog
 } // namespace Gui
 
