@@ -62,6 +62,8 @@ void DlgMaterialPropertiesImp::setupConnections()
             this, &DlgMaterialPropertiesImp::onSpecularColorChanged);
     connect(ui->shininess, qOverload<int>(&QSpinBox::valueChanged),
             this, &DlgMaterialPropertiesImp::onShininessValueChanged);
+    connect(ui->transparency, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgMaterialPropertiesImp::onTransparencyValueChanged);
     connect(ui->buttonReset, &QPushButton::clicked,
             this, &DlgMaterialPropertiesImp::onButtonReset);
     connect(ui->buttonDefault, &QPushButton::clicked,
@@ -131,6 +133,14 @@ void DlgMaterialPropertiesImp::onShininessValueChanged(int sh)
 }
 
 /**
+ * Sets the current transparency.
+ */
+void DlgMaterialPropertiesImp::onTransparencyValueChanged(int sh)
+{
+    customMaterial.transparency = (float)sh / 100.0F;
+}
+
+/**
  * Reset the colors to the Coin3D defaults
  */
 void DlgMaterialPropertiesImp::onButtonReset()
@@ -159,6 +169,9 @@ void DlgMaterialPropertiesImp::setButtonColors(const App::Material& mat)
     ui->shininess->blockSignals(true);
     ui->shininess->setValue((int)(100.0F * (mat.shininess + 0.001F)));
     ui->shininess->blockSignals(false);
+    ui->transparency->blockSignals(true);
+    ui->transparency->setValue((int)(100.0F * (mat.transparency + 0.001F)));
+    ui->transparency->blockSignals(false);
 }
 
 #include "moc_DlgMaterialPropertiesImp.cpp"
