@@ -195,7 +195,21 @@ std::vector<App::DocumentObject*> PlacementHandler::getObjects(Gui::Document* do
 
 std::vector<App::DocumentObject*> PlacementHandler::getSelectedObjects(Gui::Document* document) const
 {
-    return Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
+    App::Document* doc = document->getDocument();
+    std::vector<App::DocumentObject*> list;
+    list.reserve(selectionObjects.size());
+    for (const auto& it : selectionObjects) {
+        const App::DocumentObject* obj = it.getObject();
+        if (obj && obj->getDocument() == doc) {
+            list.push_back(const_cast<App::DocumentObject*>(obj));  // NOLINT
+        }
+    }
+
+    if (!list.empty()) {
+        return list;
+    }
+
+    return Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), doc->getName());
 }
 
 void PlacementHandler::revertTransformationOfViewProviders(Gui::Document* document)
@@ -1071,6 +1085,15 @@ TaskPlacement::~TaskPlacement() = default;
 void TaskPlacement::setSelection(const std::vector<Gui::SelectionObject>& selection)
 {
     widget->setSelection(selection);
+}
+
+/*!
+ * \brief TaskPlacement::clearSelection
+ * Clears the array of selection objects.
+ */
+void TaskPlacement::clearSelection()
+{
+    widget->setSelection({});
 }
 
 /*!
