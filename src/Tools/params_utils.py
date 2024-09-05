@@ -19,8 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Utilities for generating C++ code for parameter management using Python Cog
-"""
+"""Utilities for generating C++ code for parameter management using Python Cog"""
+
 import cog
 import inspect
 import re
@@ -1120,12 +1120,13 @@ class ParamFile(ParamProxy):
 
 
 class ParamSpinBox(ParamProxy):
-    def __init__(self, value_min, value_max, value_step, decimals=0, param_bool=None):
+    def __init__(self, value_min, value_max, value_step, decimals=0, param_bool=None, suffix=""):
         super().__init__(param_bool)
         self.value_min = value_min
         self.value_max = value_max
         self.value_step = value_step
         self.decimals = decimals
+        self.suffix = suffix
 
     def init_widget(self, param, row, group_name):
         super().init_widget(param, row, group_name)
@@ -1134,12 +1135,18 @@ class ParamSpinBox(ParamProxy):
     {trace_comment()}
     {param.widget_name}->setMinimum({self.value_min});
     {param.widget_name}->setMaximum({self.value_max});
-    {param.widget_name}->setSingleStep({self.value_step});"""
+    {param.widget_name}->setSingleStep({self.value_step});
+    {param.widget_name}->setAlignment(Qt::AlignRight);"""
         )
         if self.decimals:
             cog.out(
                 f"""
     {param.widget_name}->setDecimals({self.decimals});"""
+            )
+        if self.suffix:
+            cog.out(
+                f"""
+    {param.widget_name}->setSuffix(QLatin1String("{self.suffix}"));"""
             )
 
 
