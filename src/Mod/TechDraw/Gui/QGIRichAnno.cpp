@@ -279,9 +279,7 @@ QString QGIRichAnno::convertTextSizes(const QString& inHtml)  const
 
 TechDraw::DrawRichAnno* QGIRichAnno::getFeature()
 {
-    TechDraw::DrawRichAnno* result =
-         static_cast<TechDraw::DrawRichAnno*>(getViewObject());
-    return result;
+    return static_cast<TechDraw::DrawRichAnno*>(getViewObject());
 }
 
 
