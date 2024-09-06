@@ -177,7 +177,6 @@ int LineGenerator::fromQtStyle(Qt::PenStyle style)
 {
 //    Base::Console().Message("DLG::fromQtStyle(%d)\n", style);
 
-    int result { 0 };
     // the 4 standard Qt::PenStyles and ISO128 equivalents
     int dashed = 2;
     int dotted = 7;
@@ -199,29 +198,22 @@ int LineGenerator::fromQtStyle(Qt::PenStyle style)
     switch (style) {
         case Qt::NoPen:
         case Qt::SolidLine:
-            result = 1;
-            break;
+            return 1;
         case Qt::DashLine:
-            result = dashed;
-            break;
+            return dashed;
         case Qt::DotLine:
-            result = dotted;
-            break;
+            return dotted;
         case Qt::DashDotLine:
-            result = dashDot;
-            break;
+            return dashDot;
         case Qt::DashDotDotLine:
-            result = dashDotDot;
-            break;
+            return dashDotDot;
         case Qt::CustomDashLine:
             // not sure what to do here.  we would have to match the custom pattern
             // to the patterns of the ISO lines and set the dash pattern accordingly.
-            result = 2;
-            break;
+            return 2;
         default:
-            result = 0;
+            return 0;
     }
-    return result;
 }
 
 
