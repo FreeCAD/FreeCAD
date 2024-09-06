@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Sprea dsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spread sheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="873"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreads heet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="874"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadsh eet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadshe et</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="707"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadshee t</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="708"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="790"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="791"/>
@@ -661,7 +661,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Text für die Einheit</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -725,12 +725,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Kopieren &amp; Einfügen fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias enthält ungültige Zeichen!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Zellbezug mit Alias, zum Beispiel
@@ -739,7 +739,7 @@ Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
-      <translation>Tabelle</translation>
+      <translation>Spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -911,7 +911,7 @@ Trotzdem fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Kalkulationstabelle</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
@@ -1125,12 +1125,12 @@ Standard: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>PDF exportieren</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>PDF-Datei</translation>
     </message>

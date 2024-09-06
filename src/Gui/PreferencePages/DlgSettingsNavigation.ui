@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>687</height>
+    <width>548</width>
+    <height>762</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>91</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
@@ -142,6 +142,11 @@
       </item>
       <item row="1" column="4">
        <widget class="Gui::PrefComboBox" name="naviCubeFontName">
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+         </size>
+        </property>
         <property name="toolTip">
          <string>Font name of the navigation cube</string>
         </property>
@@ -217,6 +222,9 @@
         <property name="toolTip">
          <string>Opacity of the navigation cube when not focused</string>
         </property>
+        <property name="suffix">
+         <string notr="true">%</string>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -225,9 +233,6 @@
         </property>
         <property name="value">
          <number>50</number>
-        </property>
-        <property name="suffix">
-         <string notr="true">%</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>InactiveOpacity</cstring>
@@ -249,7 +254,7 @@
         <property name="toolTip">
          <string>Base color for all elements</string>
         </property>
-        <property name="color">
+        <property name="color" stdset="0">
          <color alpha="128">
           <red>226</red>
           <green>232</green>
@@ -305,16 +310,16 @@
          <number>1</number>
         </property>
         <property name="minimum">
-         <double>1.0</double>
+         <double>1.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>100.0</double>
+         <double>100.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.5</double>
+         <double>0.500000000000000</double>
         </property>
         <property name="value">
-         <double>5.0</double>
+         <double>5.000000000000000</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RotationCenterSize</cstring>
@@ -566,19 +571,7 @@ Free Turntable: the part will be rotated around the z-axis.</string>
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
+       <widget class="Gui::PrefUnitSpinBox" name="qspinNewDocScale" native="true">
         <property name="toolTip">
          <string>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</string>
@@ -832,6 +825,11 @@ Mouse tilting is not disabled by this setting.</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
@@ -862,10 +860,9 @@ Mouse tilting is not disabled by this setting.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>PrefUnitSpinBox</class>
-   <extends>QWidget</extends>
+   <class>Gui::PrefUnitSpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

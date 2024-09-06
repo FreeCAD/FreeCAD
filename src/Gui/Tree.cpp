@@ -97,6 +97,11 @@ static bool isVisibilityIconEnabled() {
     return TreeParams::getVisibilityIcon();
 }
 
+static bool isOnlyNameColumnDisplayed() {
+    return TreeParams::getHideInternalNames() 
+        && TreeParams::getHideColumn();
+}
+
 static bool isSelectionCheckBoxesEnabled() {
     return TreeParams::getCheckBoxesSelection();
 }
@@ -478,19 +483,18 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     auto tree = static_cast<TreeWidget*>(parent());
     auto style = tree->style();
 
-    // If the second column is not shown, we'll trim the color background when
+    // If only the first column is shown, we'll trim the color background when
     // rendering as transparent overlay.
-
-    bool trimBG = TreeParams::getHideColumn() || TreeParams::getHideInternalNames();
+    bool trimColumnSize = isOnlyNameColumnDisplayed(); 
 
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
-                && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
+                && (trimColumnSize || (opt.backgroundBrush.style() == Qt::NoBrush
                                 && _TreeItemBackground.style() != Qt::NoBrush)))
         {
             QRect rect = calculateItemRect(option);
 
-            if (trimBG && opt.backgroundBrush.style() == Qt::NoBrush) {
+            if (trimColumnSize && opt.backgroundBrush.style() == Qt::NoBrush) {
                 painter->fillRect(rect, _TreeItemBackground);
             } else if (!opt.state.testFlag(QStyle::State_Selected)) {
                 painter->fillRect(rect, _TreeItemBackground);
@@ -527,7 +531,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         );
     }
 
-    if (TreeParams::getHideColumn()) {
+    if (isOnlyNameColumnDisplayed()) {
         option->rect = calculateItemRect(*option);
 
         // we need to extend this shape a bit, 3px on each side
@@ -3791,7 +3795,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/TreeView");
-    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 4294902015);
+    unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
     QColor color(App::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
@@ -5234,7 +5238,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setUnderline(underlined);
             f.setOverline(overlined);
 
-            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 3873898495);
+            unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 1538528255);
             color = App::Color::fromPackedRGB<QColor>(col);
         }
         else {

@@ -53,10 +53,7 @@ def _getProperty(obj, prop):
         attr = getattr(o, name)
 
     if o == attr:
-        Path.Log.debug(
-            translate("PathGui", "%s has no property %s (%s)")
-            % (obj.Label, prop, name)
-        )
+        Path.Log.debug(translate("PathGui", "%s has no property %s (%s)") % (obj.Label, prop, name))
         return (None, None, None)
 
     # Path.Log.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))
@@ -105,9 +102,7 @@ def isValidBaseObject(obj):
     if obj.TypeId in NotValidBaseTypeIds:
         Path.Log.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
         return False
-    if hasattr(obj, "Sheets") or hasattr(
-        obj, "TagText"
-    ):  # Arch.Panels and Arch.PanelCut
+    if hasattr(obj, "Sheets") or hasattr(obj, "TagText"):  # Arch.Panels and Arch.PanelCut
         Path.Log.debug("%s is not an Arch.Panel" % (obj.Label))
         return False
     import Part
@@ -157,5 +152,3 @@ def clearExpressionEngine(obj):
     if hasattr(obj, "ExpressionEngine"):
         for attr, expr in obj.ExpressionEngine:
             obj.setExpression(attr, None)
-
-

@@ -271,7 +271,7 @@ Přejete si, aby je správce doplňků automaticky nainstaloval? Vyberte &quot;I
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation>TIP: Běžné tagy zahrnují &quot;Shromáždění&quot;, &quot;MKP&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, atd.</translation>
+      <translation>TIP: Běžné tagy zahrnují &quot;Shromáždění&quot;, &quot;MKP&quot;, &quot;Síť&quot;, &quot;NURBS&quot;, atd.</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="17"/>
@@ -284,37 +284,37 @@ Přejete si, aby je správce doplňků automaticky nainstaloval? Vyberte &quot;I
       <translation>Doplňky, které zde lze nainstalovat, nejsou oficiální součástí programu FreeCAD a nejsou ověřeny týmem FreeCAD. Ujistěte se, že víte, co instalujete!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
+      <location filename="../../first_run.ui" line="39"/>
       <source>Download Settings</source>
       <translation>Nastavení stahování</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="53"/>
+      <location filename="../../first_run.ui" line="46"/>
       <source>Automatically check installed Addons for updates</source>
       <translation>Automaticky kontrolovat aktualizace nainstalovaných doplňků</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="60"/>
+      <location filename="../../first_run.ui" line="53"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Stáhnout metadata pro makra (přibližně 10MB)</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="70"/>
+      <location filename="../../first_run.ui" line="63"/>
       <source>No proxy</source>
       <translation>Nepoužívat proxy</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="75"/>
+      <location filename="../../first_run.ui" line="68"/>
       <source>System proxy</source>
       <translation>Systémový proxy server</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="80"/>
+      <location filename="../../first_run.ui" line="73"/>
       <source>User-defined proxy:</source>
       <translation>Uživatelem definované proxy:</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="93"/>
+      <location filename="../../first_run.ui" line="86"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
       <translation>Tato a další nastavení jsou k dispozici v okně Nastavení FreeCADu.</translation>
     </message>
@@ -509,139 +509,139 @@ Přejete si, aby je správce doplňků automaticky nainstaloval? Vyberte &quot;I
       <translation>Možnosti správce doplňků</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="20"/>
+      <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
       <translation>Pokud je tato možnost vybrána, při spuštění Správce doplňků,
 nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="24"/>
+      <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Automaticky kontrolovat aktualizace při startu (vyžaduje git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="40"/>
+      <location filename="../../AddonManagerOptions.ui" line="43"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Stáhnout metadata pro makra (přibližně 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="55"/>
+      <location filename="../../AddonManagerOptions.ui" line="58"/>
       <source>Cache update frequency</source>
       <translation>Četnost aktualizace mezipaměti</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="75"/>
+      <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>Manual (no automatic updates)</source>
       <translation>Ruční (bez automatických aktualizací)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="80"/>
+      <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
       <translation>Denně</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="85"/>
+      <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
       <translation>Týdně</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="95"/>
+      <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
       <translation>Skrýt doplňky bez licence</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="111"/>
+      <location filename="../../AddonManagerOptions.ui" line="114"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation>Skrýt doplňky s licencí non-FSF Free/Libre</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="127"/>
+      <location filename="../../AddonManagerOptions.ui" line="130"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation>Skrytí doplňků s licencí neschválenou společností OSI</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="143"/>
+      <location filename="../../AddonManagerOptions.ui" line="146"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Skrýt doplňky označené pouze Python 2</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="159"/>
+      <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Skrýt Zastaralé doplňky</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="175"/>
+      <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Skrýt doplňky, které vyžadují novější verzi FreeCADu</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="197"/>
+      <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
       <translation>Vlastní repozitáře</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="251"/>
+      <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="257"/>
+      <location filename="../../AddonManagerOptions.ui" line="260"/>
       <source>No proxy</source>
       <translation>Nepoužívat proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="273"/>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
       <translation>Proxy uživatelského systému</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="286"/>
+      <location filename="../../AddonManagerOptions.ui" line="289"/>
       <source>User-defined proxy:</source>
       <translation>Uživatelem definované proxy:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="323"/>
+      <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
       <translation>Zdrojová adresa URL skóre</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="342"/>
+      <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation>Adresa URL pro data Addon Score (podrobnosti o formátování a hostování naleznete na wiki stránce Addon Manager).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="353"/>
+      <location filename="../../AddonManagerOptions.ui" line="350"/>
       <source>Path to Git executable (optional):</source>
-      <translation type="unfinished">Path to Git executable (optional):</translation>
+      <translation>Cesta pro spuštění Gitu (volitelné):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="372"/>
+      <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>Cesta k spustitelnému programu git. Automaticky nalezeno, pokud je potřeba a není zadáno.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="393"/>
+      <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
       <translation>Pokročilá nastavení</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="399"/>
+      <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Zobrazit možnost změny větví (vyžaduje git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="412"/>
+      <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Zakázat git (pouze pro stahování ZIP)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="425"/>
+      <location filename="../../AddonManagerOptions.ui" line="422"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Aktivujte možnosti doplňků správce obsahu určené pro vývojáře nových doplňků.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="428"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
       <translation>Režim pro vývojáře</translation>
     </message>
@@ -1153,34 +1153,34 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
       <translation>Aby se změny projevily, musíte FreeCAD restartovat.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="429"/>
+      <location filename="../../AddonManager.py" line="432"/>
       <source>Restart now</source>
       <translation>Restartovat nyní</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="430"/>
+      <location filename="../../AddonManager.py" line="433"/>
       <source>Restart later</source>
       <translation>Restartovat později</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="496"/>
-      <location filename="../../AddonManager.py" line="897"/>
+      <location filename="../../AddonManager.py" line="499"/>
+      <location filename="../../AddonManager.py" line="900"/>
       <source>Refresh local cache</source>
       <translation>Aktualizovat lokální mezipaměť</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="626"/>
+      <location filename="../../AddonManager.py" line="629"/>
       <source>Updating cache...</source>
       <translation>Aktualizuji mezipaměť...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="686"/>
-      <location filename="../../AddonManager.py" line="721"/>
+      <location filename="../../AddonManager.py" line="689"/>
+      <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
       <translation>Hledání aktualizací...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="936"/>
+      <location filename="../../AddonManager.py" line="939"/>
       <source>Temporary installation of macro failed.</source>
       <translation>Dočasná instalace makra selhala.</translation>
     </message>
@@ -1218,12 +1218,12 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
     <message>
       <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Žádné dostupné aktualizace</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="826"/>
-      <location filename="../../AddonManager.py" line="852"/>
-      <location filename="../../AddonManager.py" line="951"/>
+      <location filename="../../AddonManager.py" line="829"/>
+      <location filename="../../AddonManager.py" line="855"/>
+      <location filename="../../AddonManager.py" line="954"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Nelze spustit nový instalační program, dokud nebude ukončena předchozí instalace.</translation>
     </message>
@@ -1533,17 +1533,17 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
       <translation>Umístění nového licenčního souboru</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="364"/>
       <source>Received {} response code from server</source>
       <translation>Obdržen {} kód odpovědi od serveru</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="517"/>
+      <location filename="../../addonmanager_installer.py" line="532"/>
       <source>Failed to install macro {}</source>
       <translation>Nepodařilo se nainstalovat macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="551"/>
+      <location filename="../../addonmanager_installer.py" line="566"/>
       <source>Failed to create installation manifest file:
 </source>
       <translation>Nepodařilo se vytvořit instalační soubor:</translation>
@@ -1661,12 +1661,12 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
+      <translation>Tento doplněk vyžaduje balíky Pythonu, které nejsou nainstalovány a nelze je nainstalovat automaticky. Chcete-li použít tento doplněk, musíte nainstalovat následující balíky Pythonu ručně:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="246"/>
       <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+      <translation>Tento doplněk (nebo jedna z jeho závislostí) vyžaduje Python {}.{} a váš systém používá {}.{}. Instalace zrušena.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="267"/>
@@ -2099,32 +2099,32 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
       <translation>Instalace doplňku {} selhala</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="165"/>
+      <location filename="../../addonmanager_workers_installation.py" line="195"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Stažený package.xml pro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="196"/>
+      <location filename="../../addonmanager_workers_installation.py" line="233"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Nepodařilo se dekódovat {} soubor pro Addon &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="205"/>
+      <location filename="../../addonmanager_workers_installation.py" line="242"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Informace o závislosti v tomto souboru budou ignorovány</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="212"/>
+      <location filename="../../addonmanager_workers_installation.py" line="249"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Stažená metadata.txt pro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="255"/>
+      <location filename="../../addonmanager_workers_installation.py" line="292"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Stažené požadavkys.txt pro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="273"/>
+      <location filename="../../addonmanager_workers_installation.py" line="310"/>
       <source>Downloaded icon for {}</source>
       <translation>Stažená ikona pro {}</translation>
     </message>
@@ -2210,137 +2210,137 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
       <translation>Chyba při pokusu o odstranění makrosouboru {}:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="122"/>
+      <location filename="../../addonmanager_workers_startup.py" line="121"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Nepodařilo se připojit k GitHubu. Zkontrolujte nastavení připojení a proxy serveru.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="180"/>
+      <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>VAROVÁNÍ: Duplikovat doplněk {} ignorován</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
+      <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
-      <translation>Seznam pracovních lavic byl aktualizován.</translation>
+      <translation>Seznam pracovních prostředí byl aktualizován.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git je zakázán, přeskakuji git makra</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
+      <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Pokouším se změnit nastavení negit makra pro použití gitu
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Došlo k chybě při aktualizaci maker z GitHubu, pokusu o vyčištění pokladny...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="338"/>
+      <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Pokus o vyčištění pokladny...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="350"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
       <translation>Vymazání platby bylo úspěšné</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="360"/>
+      <location filename="../../addonmanager_workers_startup.py" line="359"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Aktualizace maker z GitHubu se nezdařila – zkuste vymazat mezipaměť Správce doplňků.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="383"/>
+      <location filename="../../addonmanager_workers_startup.py" line="382"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Chyba při připojování k Wiki, FreeCAD momentálně nemůže načíst Wiki makro seznam</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="592"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Nelze načíst git aktualizace pro pracovní prostředí {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="605"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
       <translation>git status selhal pro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="671"/>
+      <location filename="../../addonmanager_workers_startup.py" line="672"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Nepodařilo se přečíst metadata z {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="694"/>
+      <location filename="../../addonmanager_workers_startup.py" line="695"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Nepodařilo se načíst kód pro makro &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="747"/>
+      <location filename="../../addonmanager_workers_startup.py" line="748"/>
       <source>Caching macro code...</source>
       <translation>Ukládání makro kódu...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="770"/>
+      <location filename="../../addonmanager_workers_startup.py" line="771"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Správce doplňků: při načítání {name} se nepodařilo dokončit proces pracovníka</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="785"/>
+      <location filename="../../addonmanager_workers_startup.py" line="786"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Z {num_macros} maker vypršel časový limit {num_failed} při zpracování</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="808"/>
+      <location filename="../../addonmanager_workers_startup.py" line="809"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Správce doplňků: proces pracovníka se nepodařilo zastavit ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="847"/>
+      <location filename="../../addonmanager_workers_startup.py" line="848"/>
       <source>Getting metadata from macro {}</source>
       <translation>Získávání metadat z makra {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="861"/>
+      <location filename="../../addonmanager_workers_startup.py" line="862"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Časový limit při načítání metadat pro makro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="873"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Nepodařilo se ukončit proces pro makro {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
+      <location filename="../../addonmanager_workers_startup.py" line="894"/>
       <source>Retrieving macro description...</source>
       <translation>Načítání popisu makro...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="896"/>
       <source>Retrieving info from git</source>
       <translation>Načítání informací z gitu</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
+      <location filename="../../addonmanager_workers_startup.py" line="899"/>
       <source>Retrieving info from wiki</source>
       <translation>Načítání informací z wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="939"/>
+      <location filename="../../addonmanager_workers_startup.py" line="941"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Nepodařilo se získat statistiky doplňků z {} -- přesné bude pouze abecední řazení</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="971"/>
+      <location filename="../../addonmanager_workers_startup.py" line="973"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Nepodařilo se získat hodnocení doplňku z &apos;{}&apos; -- řazení podle skóre selže</translation>
@@ -2418,17 +2418,17 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
       <translation>Nepodařilo se stáhnout data z {} -- obdržel kód odpovědi {}.</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Composite view</source>
       <translation>Složené zobrazení</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Expanded view</source>
       <translation>Rozšířené zobrazení</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="161"/>
       <source>Compact view</source>
       <translation>Kompaktní zobrazení</translation>
     </message>
@@ -2473,7 +2473,7 @@ nainstalované doplňky zkontrolovány, zda jsou k dispozici aktualizace</transl
     <message>
       <location filename="../../AddonManager.py" line="237"/>
       <source>Manage external workbenches, macros, and preference packs</source>
-      <translation>Správa externích pracovních kritérií, maker a balíčků preferencí</translation>
+      <translation>Správa externích pracovních prostředí, maker a balíčků preferencí</translation>
     </message>
   </context>
   <context>

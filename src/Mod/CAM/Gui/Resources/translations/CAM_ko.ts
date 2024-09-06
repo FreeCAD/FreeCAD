@@ -188,7 +188,7 @@
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation>기본형의 '설정값시트'에 있는 값을 포함 할 수 있게 합니다. 
+      <translation>기본형의 '설정값시트'에 있는 값을 포함 할 수 있게 합니다.
 설정값시트에 있는 모든 값은 기본값으로 부터 변경하려면 그 항목이 미리 선택되어져 있어야 합니다. 이 칸을 사용하여 선택 되어 있지 않으면 현재의 설정값시트에 있는 값은 재설정 되지 않습니다.</translation>
     </message>
     <message>
@@ -259,7 +259,7 @@ Note that this option is disabled if a stock object from an existing solid is us
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation>설정값을 옮겨 나갈 수 있게 모든 작업명이 가능하게 하세요. 
+      <translation>설정값을 옮겨 나갈 수 있게 모든 작업명이 가능하게 하세요.
 주의할 것은 현재 설정값 세트를 갖고 있는 작업명만 목록에 수록되어 있다는 겁니다.</translation>
     </message>
     <message>
@@ -657,7 +657,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="189"/>
@@ -1265,7 +1265,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="101"/>
       <source>Extra Offset</source>
-      <translation type="unfinished">Extra Offset</translation>
+      <translation>추가 편차</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
@@ -1405,7 +1405,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="141"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>지그재그 편차</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="146"/>
@@ -1507,12 +1507,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>X Offset</source>
-      <translation type="unfinished">X Offset</translation>
+      <translation>X 편차</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>Y Offset</source>
-      <translation type="unfinished">Y Offset</translation>
+      <translation>Y 편차</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -1750,7 +1750,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="390"/>
       <source>Perpendicular</source>
-      <translation>수직</translation>
+      <translation>직교</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="398"/>
@@ -1883,7 +1883,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
       <source>Depth offset</source>
-      <translation type="unfinished">Depth offset</translation>
+      <translation>깊이 편차</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
@@ -1973,7 +1973,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="103"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
@@ -2226,7 +2226,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length Offset</source>
-      <translation type="unfinished">Length Offset</translation>
+      <translation>길이 편차</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
@@ -2367,7 +2367,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="95"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>도형</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="103"/>
@@ -2578,7 +2578,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="481"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="491"/>
@@ -2881,7 +2881,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="37"/>
@@ -3062,7 +3062,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
       <source>Offset Distance</source>
-      <translation type="unfinished">Offset Distance</translation>
+      <translation>편차 거리</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="63"/>
@@ -3153,7 +3153,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="45"/>
       <source>Base Geometry</source>
-      <translation type="unfinished">Base Geometry</translation>
+      <translation>기본 도형</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
@@ -3311,13 +3311,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <translation>중지</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="115"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation type="unfinished">Activate / resume simulation</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="118"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>플레이</translation>
@@ -3363,13 +3363,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <translation type="unfinished">G/s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="50"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
       <translation type="unfinished">Accuracy:</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="105"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
       <translation type="unfinished">Job:</translation>
@@ -3740,7 +3740,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="610"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="620"/>
@@ -3978,7 +3978,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1120"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1130"/>
@@ -4679,37 +4679,32 @@ Default: 3 mm</translation>
       <translation type="unfinished">Extra allowance from part bound box in positive Z direction</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="179"/>
-      <source>A material for this object</source>
-      <translation>이 객체의 재질</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Stock.py" line="251"/>
+      <location filename="../../../Path/Main/Stock.py" line="245"/>
       <source>Length of this stock box</source>
       <translation type="unfinished">Length of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="257"/>
+      <location filename="../../../Path/Main/Stock.py" line="251"/>
       <source>Width of this stock box</source>
       <translation type="unfinished">Width of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="263"/>
+      <location filename="../../../Path/Main/Stock.py" line="257"/>
       <source>Height of this stock box</source>
       <translation type="unfinished">Height of this stock box</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="303"/>
+      <location filename="../../../Path/Main/Stock.py" line="297"/>
       <source>Radius of this stock cylinder</source>
       <translation type="unfinished">Radius of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="309"/>
+      <location filename="../../../Path/Main/Stock.py" line="303"/>
       <source>Height of this stock cylinder</source>
       <translation type="unfinished">Height of this stock cylinder</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="345"/>
+      <location filename="../../../Path/Main/Stock.py" line="339"/>
       <source>Internal representation of stock type</source>
       <translation type="unfinished">Internal representation of stock type</translation>
     </message>
@@ -5171,12 +5166,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="55"/>
       <source>X offset between tool and probe</source>
-      <translation type="unfinished">X offset between tool and probe</translation>
+      <translation>도구와 탐침 사이의 X 편차</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="61"/>
       <source>Y offset between tool and probe</source>
-      <translation type="unfinished">Y offset between tool and probe</translation>
+      <translation>도구와 탐침 사이의 Y 편차</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="69"/>
@@ -5420,7 +5415,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="317"/>
       <location filename="../../../Path/Op/Waterline.py" line="355"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface.</translation>
+      <translation>대상 표면에서 Z축 깊이 편차를 설정합니다.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="334"/>
@@ -5562,9 +5557,9 @@ Default: 3 mm</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="331"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
-      <translation type="unfinished">Cutoff for removing colinear segments (degrees). 
+      <translation type="unfinished">Cutoff for removing colinear segments (degrees).
                         default=10.0.</translation>
     </message>
     <message>
@@ -5772,12 +5767,12 @@ Default: 3 mm</translation>
       <translation type="unfinished">Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="612"/>
+      <location filename="../../../Path/Main/Stock.py" line="606"/>
       <source>Unsupported stock type named {}</source>
       <translation type="unfinished">Unsupported stock type named {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="620"/>
+      <location filename="../../../Path/Main/Stock.py" line="614"/>
       <source>Unsupported PathStock template version {}</source>
       <translation type="unfinished">Unsupported PathStock template version {}</translation>
     </message>
@@ -6101,7 +6096,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Waterline.py" line="116"/>
       <location filename="../../../Path/Op/Waterline.py" line="129"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="117"/>
@@ -6231,7 +6226,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="502"/>
       <source>Base Geometry</source>
-      <translation type="unfinished">Base Geometry</translation>
+      <translation>기본 도형</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="630"/>
@@ -6509,12 +6504,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
       <source>Tangent</source>
-      <translation type="unfinished">Tangent</translation>
+      <translation>접선</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
       <source>Perpendicular</source>
-      <translation>수직</translation>
+      <translation>직교</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="168"/>
@@ -6950,23 +6945,23 @@ Aborting op creation</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema: 
+      <source>The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema: 
+      <translation type="unfinished">The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -6981,7 +6976,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="88"/>
       <source>Solids</source>
-      <translation>솔리드</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="90"/>
@@ -7036,9 +7031,9 @@ For example:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</translation>
     </message>
     <message>
@@ -7354,9 +7349,9 @@ For example:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="382"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
+      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</translation>
     </message>
     <message>
@@ -7403,28 +7398,28 @@ For example:
       <translation type="unfinished">CAM Simulator</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="311"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="367"/>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="635"/>
       <source>Simulate G-code on stock</source>
       <translation type="unfinished">Simulate G-code on stock</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="270"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="316"/>
       <source>High</source>
       <translation type="unfinished">High</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="272"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="318"/>
       <source>Low</source>
       <translation type="unfinished">Low</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="274"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="320"/>
       <source>Medium</source>
       <translation type="unfinished">Medium</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="307"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="363"/>
       <source>New CAM Simulator</source>
       <translation type="unfinished">New CAM Simulator</translation>
     </message>
@@ -7738,12 +7733,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="70"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>지그재그 편차</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
@@ -7816,7 +7811,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="263"/>
       <source>Perpendicular</source>
-      <translation>수직</translation>
+      <translation>직교</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="266"/>
@@ -7954,7 +7949,7 @@ For example:
       <location filename="../../../Path/Op/Slot.py" line="1921"/>
       <location filename="../../../Path/Op/Slot.py" line="1935"/>
       <source>Current offset value produces negative radius.</source>
-      <translation type="unfinished">Current offset value produces negative radius.</translation>
+      <translation>현재 편차값은 음수 반경을 생성합니다.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Slot.py" line="281"/>
@@ -8027,7 +8022,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="466"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="467"/>
@@ -8496,10 +8491,10 @@ For example:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation type="unfinished">Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</translation>
     </message>
     <message>
@@ -8571,7 +8566,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Profile.py" line="165"/>
       <source>Profile</source>
-      <translation>프로필</translation>
+      <translation>윤곽</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Profile.py" line="168"/>

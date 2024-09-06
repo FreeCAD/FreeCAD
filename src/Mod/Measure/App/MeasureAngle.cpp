@@ -38,16 +38,27 @@ PROPERTY_SOURCE(Measure::MeasureAngle, Measure::MeasureBase)
 
 MeasureAngle::MeasureAngle()
 {
-    ADD_PROPERTY_TYPE(Element1,(nullptr), "Measurement", App::Prop_None, "First element of the measurement");
+    ADD_PROPERTY_TYPE(Element1,
+                      (nullptr),
+                      "Measurement",
+                      App::Prop_None,
+                      "First element of the measurement");
     Element1.setScope(App::LinkScope::Global);
     Element1.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Element2,(nullptr), "Measurement", App::Prop_None, "Second element of the measurement");
+    ADD_PROPERTY_TYPE(Element2,
+                      (nullptr),
+                      "Measurement",
+                      App::Prop_None,
+                      "Second element of the measurement");
     Element2.setScope(App::LinkScope::Global);
     Element2.setAllowExternal(true);
 
-    ADD_PROPERTY_TYPE(Angle,(0.0)       ,"Measurement",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                            "Angle between the two elements");
+    ADD_PROPERTY_TYPE(Angle,
+                      (0.0),
+                      "Measurement",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Angle between the two elements");
     Angle.setUnit(Base::Unit::Angle);
 }
 
@@ -67,9 +78,8 @@ bool MeasureAngle::isValidSelection(const App::MeasureSelection& selection)
             return false;
         }
 
-        if (!(type == App::MeasureElementType::LINE ||
-              type == App::MeasureElementType::PLANE ||
-              type == App::MeasureElementType::LINESEGMENT)) {
+        if (!(type == App::MeasureElementType::LINE || type == App::MeasureElementType::PLANE
+              || type == App::MeasureElementType::LINESEGMENT)) {
             return false;
         }
     }
@@ -81,7 +91,7 @@ bool MeasureAngle::isPrioritizedSelection(const App::MeasureSelection& selection
     if (selection.size() != 2) {
         return false;
     }
-    
+
     // Check if the two elements are parallel
     auto element1 = selection.at(0);
     auto objT1 = element1.object;
@@ -97,13 +107,14 @@ bool MeasureAngle::isPrioritizedSelection(const App::MeasureSelection& selection
     Base::Vector3d vec2;
     getVec(*ob2, sub2, vec2);
 
-    
+
     double angle = std::fmod(vec1.GetAngle(vec2), D_PI);
     return angle > Base::Precision::Angular();
 }
 
 
-void MeasureAngle::parseSelection(const App::MeasureSelection& selection) {
+void MeasureAngle::parseSelection(const App::MeasureSelection& selection)
+{
 
     assert(selection.size() >= 2);
 
@@ -121,8 +132,9 @@ void MeasureAngle::parseSelection(const App::MeasureSelection& selection) {
 }
 
 
-bool MeasureAngle::getVec(App::DocumentObject& ob, std::string& subName, Base::Vector3d& vecOut) {
-    App::SubObjectT subject{&ob, subName.c_str()};
+bool MeasureAngle::getVec(App::DocumentObject& ob, std::string& subName, Base::Vector3d& vecOut)
+{
+    App::SubObjectT subject {&ob, subName.c_str()};
     auto info = getMeasureInfo(subject);
     if (!info || !info->valid) {
         return false;
@@ -135,22 +147,23 @@ bool MeasureAngle::getVec(App::DocumentObject& ob, std::string& subName, Base::V
 
 Base::Vector3d MeasureAngle::getLoc(App::DocumentObject& ob, std::string& subName)
 {
-    App::SubObjectT subject{&ob, subName.c_str()};
+    App::SubObjectT subject {&ob, subName.c_str()};
     auto info = getMeasureInfo(subject);
-        if (!info || !info->valid) {
-            return Base::Vector3d();
-        }    
-    
+    if (!info || !info->valid) {
+        return Base::Vector3d();
+    }
+
     auto angleInfo = std::dynamic_pointer_cast<Part::MeasureAngleInfo>(info);
     return angleInfo->position;
 }
 
-gp_Vec MeasureAngle::vector1() {
+gp_Vec MeasureAngle::vector1()
+{
 
     App::DocumentObject* ob = Element1.getValue();
     std::vector<std::string> subs = Element1.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.empty() ) {
+    if (!ob || !ob->isValid() || subs.empty()) {
         return {};
     }
 
@@ -159,11 +172,12 @@ gp_Vec MeasureAngle::vector1() {
     return gp_Vec(vec.x, vec.y, vec.z);
 }
 
-gp_Vec MeasureAngle::vector2() {
+gp_Vec MeasureAngle::vector2()
+{
     App::DocumentObject* ob = Element2.getValue();
     std::vector<std::string> subs = Element2.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.empty() ) {
+    if (!ob || !ob->isValid() || subs.empty()) {
         return gp_Vec();
     }
 
@@ -172,22 +186,24 @@ gp_Vec MeasureAngle::vector2() {
     return gp_Vec(vec.x, vec.y, vec.z);
 }
 
-gp_Vec MeasureAngle::location1() {
+gp_Vec MeasureAngle::location1()
+{
 
     App::DocumentObject* ob = Element1.getValue();
     std::vector<std::string> subs = Element1.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.empty() ) {
+    if (!ob || !ob->isValid() || subs.empty()) {
         return {};
     }
     auto temp = getLoc(*ob, subs.at(0));
     return {temp.x, temp.y, temp.z};
 }
-gp_Vec MeasureAngle::location2() {
+gp_Vec MeasureAngle::location2()
+{
     App::DocumentObject* ob = Element2.getValue();
     std::vector<std::string> subs = Element2.getSubValues();
 
-    if (!ob || !ob->isValid() || subs.empty() ) {
+    if (!ob || !ob->isValid() || subs.empty()) {
         return {};
     }
 
@@ -195,7 +211,7 @@ gp_Vec MeasureAngle::location2() {
     return {temp.x, temp.y, temp.z};
 }
 
-App::DocumentObjectExecReturn *MeasureAngle::execute()
+App::DocumentObjectExecReturn* MeasureAngle::execute()
 {
     App::DocumentObject* ob1 = Element1.getValue();
     std::vector<std::string> subs1 = Element1.getSubValues();
@@ -227,7 +243,7 @@ void MeasureAngle::onChanged(const App::Property* prop)
 
     if (prop == &Element1 || prop == &Element2) {
         if (!isRestoring()) {
-            App::DocumentObjectExecReturn *ret = recompute();
+            App::DocumentObjectExecReturn* ret = recompute();
             delete ret;
         }
     }
@@ -240,4 +256,3 @@ std::vector<App::DocumentObject*> MeasureAngle::getSubject() const
 {
     return {Element1.getValue()};
 }
-

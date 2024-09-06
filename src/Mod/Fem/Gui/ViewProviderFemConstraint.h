@@ -26,7 +26,7 @@
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 
 #include <Gui/ViewProviderSuppressibleExtension.h>
@@ -136,7 +136,7 @@ inline void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
     rotateSymbol = rotate;
 }
 
-using ViewProviderFemConstraintPython = Gui::ViewProviderPythonFeatureT<ViewProviderFemConstraint>;
+using ViewProviderFemConstraintPython = Gui::ViewProviderFeaturePythonT<ViewProviderFemConstraint>;
 
 
 }  // namespace FemGui

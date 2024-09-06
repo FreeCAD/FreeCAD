@@ -174,8 +174,7 @@ class ObjectCustom(PathOp.ObjectOp):
             # could not determine the path
             if not gcode_file:
                 Path.Log.error(
-                    translate("PathCustom", "Custom file %s could not be found.")
-                    % obj.GcodeFile
+                    translate("PathCustom", "Custom file %s could not be found.") % obj.GcodeFile
                 )
 
             with open(gcode_file) as fd:
@@ -184,9 +183,7 @@ class ObjectCustom(PathOp.ObjectOp):
                         newcommand = Path.Command(str(l))
                         self.commandlist.append(newcommand)
                     except ValueError:
-                        Path.Log.warning(
-                            translate("PathCustom", "Invalid G-code line: %s") % l
-                        )
+                        Path.Log.warning(translate("PathCustom", "Invalid G-code line: %s") % l)
                         continue
 
         self.commandlist.append(Path.Command("(End Custom)"))

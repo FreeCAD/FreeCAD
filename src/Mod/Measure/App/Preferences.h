@@ -37,7 +37,7 @@ class Color;
 namespace Measure
 {
 
-//getters for parameters used in multiple places.
+// getters for parameters used in multiple places.
 class MeasureExport Preferences
 {
 
@@ -51,6 +51,5 @@ public:
 };
 
 
-}//end namespace Measure
+}  // end namespace Measure
 #endif
-

@@ -92,7 +92,7 @@ qui sotto e il risultato può sembrare più bello dell'opzione wiki. Il modulo &
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Nota: se i componenti Web di PySide non sono trovati sul tuo sistema, le pagine di aiuto si apriranno nel browser web predefinito indipendentemente dalle opzioni qui sotto</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -166,7 +166,7 @@ Markdown sopra.</translation>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Non c'è nessun visualizzatore Markdown installato sul sistema, quindi questa pagina di aiuto viene resa come è. Installare i moduli Markdown o Pandoc Python per migliorare il rendering di questa pagina.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

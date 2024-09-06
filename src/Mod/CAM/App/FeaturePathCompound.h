@@ -31,7 +31,7 @@
 namespace Path
 {
 
-class PathExport FeatureCompound : public Path::Feature
+class PathExport FeatureCompound: public Path::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Path::Feature);
 
@@ -40,14 +40,15 @@ public:
     FeatureCompound();
     ~FeatureCompound() override;
 
-    App::PropertyLinkList     Group;
-    App::PropertyBool         UsePlacements;
+    App::PropertyLinkList Group;
+    App::PropertyBool UsePlacements;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "PathGui::ViewProviderPathCompound";
     }
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// Checks whether the object \a obj is part of this group.
     bool hasObject(const DocumentObject* obj) const;
@@ -55,13 +56,12 @@ public:
     void addObject(DocumentObject* obj);
     /// Removes an object from this group.
     void removeObject(DocumentObject* obj);
-    PyObject *getPyObject() override;
-
+    PyObject* getPyObject() override;
 };
 
 using FeatureCompoundPython = App::FeaturePythonT<FeatureCompound>;
 
-} //namespace Path
+}  // namespace Path
 
 
-#endif // PATH_FeatureCompound_H
+#endif  // PATH_FeatureCompound_H

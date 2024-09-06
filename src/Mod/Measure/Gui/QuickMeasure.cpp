@@ -50,7 +50,7 @@ using namespace MeasureGui;
 
 QuickMeasure::QuickMeasure(QObject* parent)
     : QObject(parent)
-    , measurement{new Measure::Measurement()}
+    , measurement {new Measure::Measurement()}
 {
     selectionTimer = new QTimer(this);
     pendingProcessing = false;
@@ -103,8 +103,8 @@ void QuickMeasure::tryMeasureSelection()
 
 bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
 {
-    if (msg.Type == Gui::SelectionChanges::SetPreselect ||
-        msg.Type == Gui::SelectionChanges::RmvPreselect) {
+    if (msg.Type == Gui::SelectionChanges::SetPreselect
+        || msg.Type == Gui::SelectionChanges::RmvPreselect) {
         return false;
     }
 
@@ -158,7 +158,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Volumes) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity vol(measurement->volume(), Base::Unit::Volume);
-        print(tr("Volume: %1, Area: %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
+        print(tr("Volume: %1, Area:
+    %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
     }*/
     else if (mtype == MeasureType::TwoPlanes) {
         Base::Quantity dist(measurement->planePlaneDistance(), Base::Unit::Length);
@@ -168,7 +169,8 @@ void QuickMeasure::printResult()
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         print(tr("Area: %1").arg(area.getUserString()));
     }
-    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere || mtype == MeasureType::Torus) {
+    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere
+             || mtype == MeasureType::Torus) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity rad(measurement->radius(), Base::Unit::Length);
         print(tr("Area: %1, Radius: %2").arg(area.getSafeUserString(), rad.getSafeUserString()));
@@ -184,7 +186,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::TwoLines) {
         Base::Quantity angle(measurement->angle(), Base::Unit::Length);
         Base::Quantity dist(measurement->length(), Base::Unit::Length);
-        print(tr("Angle: %1, Total length: %2").arg(angle.getSafeUserString(), dist.getSafeUserString()));
+        print(tr("Angle: %1, Total length: %2")
+                  .arg(angle.getSafeUserString(), dist.getSafeUserString()));
     }
     else if (mtype == MeasureType::Line) {
         Base::Quantity dist(measurement->length(), Base::Unit::Length);

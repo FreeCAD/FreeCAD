@@ -44,18 +44,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return form
 
     def initPage(self, obj):
-        self.form.LiftDistance.setProperty(
-            "unit", obj.LiftDistance.getUserPreferred()[2]
-        )
+        self.form.LiftDistance.setProperty("unit", obj.LiftDistance.getUserPreferred()[2])
         self.form.HelixDiameterLimit.setProperty(
             "unit", obj.HelixDiameterLimit.getUserPreferred()[2]
         )
-        self.form.KeepToolDownRatio.setProperty(
-            "unit", obj.KeepToolDownRatio.getUserPreferred()[2]
-        )
-        self.form.StockToLeave.setProperty(
-            "unit", obj.StockToLeave.getUserPreferred()[2]
-        )
+        self.form.KeepToolDownRatio.setProperty("unit", obj.KeepToolDownRatio.getUserPreferred()[2])
+        self.form.StockToLeave.setProperty("unit", obj.StockToLeave.getUserPreferred()[2])
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -92,16 +86,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             FreeCAD.Units.Quantity(obj.HelixConeAngle, FreeCAD.Units.Angle).UserString
         )
 
-        self.form.HelixDiameterLimit.setProperty(
-            "rawValue", obj.HelixDiameterLimit.Value
-        )
+        self.form.HelixDiameterLimit.setProperty("rawValue", obj.HelixDiameterLimit.Value)
 
         self.form.LiftDistance.setProperty("rawValue", obj.LiftDistance.Value)
 
         if hasattr(obj, "KeepToolDownRatio"):
-            self.form.KeepToolDownRatio.setProperty(
-                "rawValue", obj.KeepToolDownRatio.Value
-            )
+            self.form.KeepToolDownRatio.setProperty("rawValue", obj.KeepToolDownRatio.Value)
             # self.form.KeepToolDownRatio.setValue(obj.KeepToolDownRatio)
 
         if hasattr(obj, "StockToLeave"):
@@ -131,15 +121,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.Tolerance = 1.0 * self.form.Tolerance.value() / 100.0
         PathGuiUtil.updateInputField(obj, "HelixAngle", self.form.HelixAngle)
         PathGuiUtil.updateInputField(obj, "HelixConeAngle", self.form.HelixConeAngle)
-        PathGuiUtil.updateInputField(
-            obj, "HelixDiameterLimit", self.form.HelixDiameterLimit
-        )
+        PathGuiUtil.updateInputField(obj, "HelixDiameterLimit", self.form.HelixDiameterLimit)
         PathGuiUtil.updateInputField(obj, "LiftDistance", self.form.LiftDistance)
 
         if hasattr(obj, "KeepToolDownRatio"):
-            PathGuiUtil.updateInputField(
-                obj, "KeepToolDownRatio", self.form.KeepToolDownRatio
-            )
+            PathGuiUtil.updateInputField(obj, "KeepToolDownRatio", self.form.KeepToolDownRatio)
 
         if hasattr(obj, "StockToLeave"):
             PathGuiUtil.updateInputField(obj, "StockToLeave", self.form.StockToLeave)
@@ -161,9 +147,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def taskPanelBaseLocationPage(self, obj, features):
         if not hasattr(self, "extensionsPanel"):
-            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(
-                obj, features
-            )
+            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features)
         return self.extensionsPanel
 
 

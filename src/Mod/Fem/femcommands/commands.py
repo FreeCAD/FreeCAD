@@ -762,10 +762,18 @@ class _MeshGmshFromShape(CommandManager):
             "ObjectsFem.makeMeshGmsh(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
         )
         FreeCADGui.doCommand(
-            "FreeCAD.ActiveDocument.ActiveObject.Part = FreeCAD.ActiveDocument.{}".format(
+            "FreeCAD.ActiveDocument.ActiveObject.Shape = FreeCAD.ActiveDocument.{}".format(
                 self.selobj.Name
             )
         )
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.ElementOrder = '2nd'")
+        # SecondOrderLinear gives much better meshes in the regard of
+        # nonpositive jacobians but on curved faces the constraint nodes
+        # will no longer found thus standard will be False
+        # https://forum.freecad.org/viewtopic.php?t=41738
+        # https://forum.freecad.org/viewtopic.php?f=18&t=45260&start=20#p389494
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.SecondOrderLinear = False")
+
         # Gmsh mesh object could be added without an active analysis
         # but if there is an active analysis move it in there
         import FemGui
@@ -778,9 +786,7 @@ class _MeshGmshFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class _MeshGroup(CommandManager):
@@ -836,7 +842,6 @@ class _MeshNetgenFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
@@ -946,7 +951,7 @@ class _SolverCalculixContextManager:
         )
         FreeCADGui.doCommand(
             "{}.IterationsControlParameterTimeUse = {}".format(
-                self.cli_name, ccx_prefs.GetInt("UseNonCcxIterationParam", False)
+                self.cli_name, ccx_prefs.GetBool("UseNonCcxIterationParam", False)
             )
         )
         FreeCADGui.doCommand(

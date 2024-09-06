@@ -78,6 +78,7 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
     void setLabelCenter();
+    Base::Vector3d getLabelCenter() const;
     void setPosFromCenter(const double& xCenter, const double& yCenter);
     double X() const
     {
@@ -226,6 +227,13 @@ protected:
     QString getPrecision();
     void parentViewMousePressed(QGIView* view, QPointF pos);
     TechDraw::DrawView* getSourceView() const;
+    Base::Vector3d arrowPosInDrag();
+    void getBalloonPoints(TechDraw::DrawViewBalloon* balloon,
+                          TechDraw::DrawView* refObj,
+                          bool isDragging,
+                          Base::Vector3d& labelPos,
+                          Base::Vector3d& arrowPos);
+
 
 private:
     TechDraw::DrawViewBalloon* dvBalloon;
@@ -241,7 +249,9 @@ private:
     bool m_dragInProgress;
     bool m_originDragged = false;
     bool m_ctrl;
-    Base::Vector3d m_saveOffset;
+    Base::Vector3d m_saveOriginOffset;
+    Base::Vector3d m_saveOrigin;
+    Base::Vector3d m_savePosition;
 };
 
 }// namespace TechDrawGui

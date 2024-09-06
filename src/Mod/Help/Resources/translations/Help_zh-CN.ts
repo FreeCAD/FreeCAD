@@ -35,7 +35,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>    Translation suffix:</source>
-      <translation type="unfinished">    Translation suffix:</translation>
+      <translation>    翻译后缀：</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>

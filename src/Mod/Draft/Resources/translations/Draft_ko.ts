@@ -812,16 +812,15 @@ view each time a command is started</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation>작업 기준면에 제공할 선택적 오프셋
-기본 위치보다 위에. 이것을 하나와 함께 사용하세요.
-위에 있는 버튼의</translation>
+      <translation>기본 위치보다 높은 작업 평면에 적용할 선택적 편차입니다. 이 편차를 위의 버튼 중 하나와 함께 사용하세요.
+</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="106"/>
@@ -1025,7 +1024,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
       <source>Solid</source>
-      <translation>복합체</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
@@ -1605,7 +1604,7 @@ pattern definitions to be added to the standard patterns</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>텍스트 및 치수</translation>
     </message>
@@ -1627,7 +1626,7 @@ pattern definitions to be added to the standard patterns</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1998,31 +1997,31 @@ This value is the maximum segment length.</translation>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>이 기본 설정 대화상자는 DXF 파일을 가져오거나 내보낼 때 표시됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>가져오기 및 내보내기를 할 때 이 대화 상자 표시</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>파이썬 가져오기가 사용되고, 그렇지 않으면 최신 C++가 사용된다.
 참고: C++ 가져오기가 더 빠르지만 아직 기능이 부족합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>파이썬 내보내기가 사용되고, 그렇지 않으면 최신 C++가 사용된다.
 참고: C++ 내보내기는 더 빠르지만 아직 기능이 부족합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -2031,89 +2030,89 @@ You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation type="unfinished">Allow FreeCAD to automatically download and update the DXF libraries</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>가져오기 옵션</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>가져오기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>선택하지 않으면 텍스트 및 m텍스트를 가져오지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>선택하지 않으면  포인트를 가져오지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>포인트</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>이 항목을 선택하면 용지 공간 오브젝트도 가져옵니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation type="unfinished">*blocks</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>만들기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>표준 부품 개체만 생성됩니다(가장 빠름)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>가능한 경우 언제든지 Parametric Draft 개체가 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
       <translation>Draft 객체</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>스케치는 가능한 한 항상 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>스케치</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>가져온 파일에 적용할 축척 계수</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2124,137 +2123,137 @@ Example: for files in millimeters: 1, in centimeters: 10,
                              미터는 1000, 인치는 25.4, 피트는 304.8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD는 일치하는 개체를 와이어에 결합하려고 합니다.
 이 작업은 시간이 걸릴 수 있습니다!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation type="unfinished">Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
       <translation type="unfinished">Use legacy Python importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Use legacy Python exporter</source>
       <translation type="unfinished">Use legacy Python exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation type="unfinished">Some options are not yet available for the new importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>Layouts</source>
       <translation type="unfinished">Layouts</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
       <source>Simple Part shapes</source>
       <translation>간단한 부분 모양</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
       <translation type="unfinished">Use colors from the DXF file</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
       <translation>geometry를 결합</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
       <translation>도면층을 블록으로 그룹화</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>가져온 텍스트는 표준 초안 텍스트 크기를 갖습니다.
 DXF 문서에 있는 크기 대신</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>텍스트에 표준 글꼴 크기 사용</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>이 옵션을 선택하면 DXF 도면층을 초안 도면층으로 가져옵니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>해치가 단순 와이어로 변환됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
       <translation type="unfinished">Import hatch boundaries as wires</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>폴리선에 너비가 정의된 경우 렌더링됩니다.
 정확한 폭의 폐선으로서.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation type="unfinished">Render polylines with width</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation type="unfinished">Some options are not yet available for the new exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>타원과 스플라인을 폴리라인으로 처리</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation type="unfinished">Max Spline Segment:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>각 폴리선 세그먼트의 최대 길이입니다.
@@ -2262,39 +2261,39 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>내보내기 옵션</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
       <translation type="unfinished">Use layers</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>면을 포함하는 모든 객체가 3D 폴리페이스로 내보내집니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation type="unfinished">Export 3D objects as polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>TechDraw 뷰가 블록으로 내보내집니다.
 DXF R12 이후 템플릿 에서는 실패할 수도 있습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>TechDraw 뷰를 블록으로 내보내기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>내보낸 객체가 현재 뷰 방향을 반영하도록 투영됩니다.</translation>
     </message>
@@ -2608,7 +2607,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="426"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>계속</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="362"/>
@@ -2845,7 +2844,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../DraftGui.py" line="563"/>
       <location filename="../../DraftGui.py" line="823"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>계속</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
@@ -3097,7 +3096,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../DraftGui.py" line="537"/>
       <location filename="../../DraftGui.py" line="805"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="538"/>
@@ -3149,12 +3148,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>이 옵션을 선택하면 기존 오프셋 대신 OCC 스타일 오프셋이 수행됩니다.</translation>
+      <translation>이것을 선택하면 고전적 편차 대신 OCC 방식의 편차가 적용됩니다</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="567"/>
       <source>OCC-style offset</source>
-      <translation type="unfinished">OCC-style offset</translation>
+      <translation>OCC 방식의 편차</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="569"/>
@@ -3291,7 +3290,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="779"/>
@@ -3305,7 +3304,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="798"/>
       <location filename="../../draftguitools/gui_trimex.py" line="214"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>편차 거리</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="794"/>
@@ -3557,7 +3556,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="676"/>
       <source>Wire</source>
-      <translation>와이어</translation>
+      <translation>철사</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="708"/>
@@ -4140,7 +4139,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="219"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>편차 각도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="479"/>
@@ -4182,7 +4181,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="185"/>
       <source>Create B-spline</source>
-      <translation>생성: B-spline</translation>
+      <translation>B-조절곡선 생성</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="66"/>
@@ -4573,22 +4572,22 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>편차를 생성할 대상을 선택하세요</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>편차 생성은 한번에 하나의 대상에만 가능합니다.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>이 유형의 대상은 편차를 생성할 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>베지어 곡선에 대한 편차 생성은 현재 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="110"/>
@@ -4866,12 +4865,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="466"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>경로 길이에 비해 시작 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>경로 길이에 비해 종료 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="534"/>
@@ -5720,7 +5719,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="328"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>편차 방향이 정의되지 않았습니다. 먼저 객체의 양쪽에서 마우스를 움직여 방향을 지정하세요.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
@@ -6677,7 +6676,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="60"/>
       <source>B-spline</source>
-      <translation type="unfinished">B-spline</translation>
+      <translation>B-조절곡선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>
@@ -7097,16 +7096,16 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="63"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>선택한 개체의 편차입니다.
+또한 원본 개체의 편차 복사본을 만들 수도 있습니다.
+스냅하려면 CTRL, 구속하려면 Shift 키를 누릅니다. Alt 키를 누른 상태에서 클릭할 때마다 복사본을 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -8069,7 +8068,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="53"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>모든 면에 적용할 선택적 편차 값</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="56"/>

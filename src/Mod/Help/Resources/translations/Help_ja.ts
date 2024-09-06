@@ -22,7 +22,7 @@ Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>ここにヘルプファイルがあるカスタム URL またはフォルダを設定してください。
-アドオンマネージャーを使用して &quot;offline-documentation&quot; アドオンをインストールするとオフラインで利用するためのドキュメントのダウンロードを簡単に行えます。この入力欄が空白の場合には FreeCAD はデフォルト位置 ($USERAPPDATADIR/Mod/offline-documentation) にあるヘルプファイルを自動で検索します。</translation>
+拡張機能の管理を使用して &quot;offline-documentation&quot; 拡張機能をインストールするとオフラインで利用するためのドキュメントのダウンロードを簡単に行えます。この入力欄が空白の場合には FreeCAD はデフォルト位置 ($USERAPPDATADIR/Mod/offline-documentation) にあるヘルプファイルを自動で検索します。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -84,7 +84,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>注意: システムに PySide Web コンポーネントが見つからない場合、以下の設定に関係なくヘルプページはデフォルトのウェブブラウザで開きます。</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -133,7 +133,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>      Custom stylesheet:</source>
-      <translation>      カスタム・スタイルシート:</translation>
+      <translation>      カスタムスタイルシート：</translation>
     </message>
   </context>
   <context>
@@ -156,7 +156,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>システムにMarkdownレンダラーがインストールされていないため、このヘルプページはそのままレンダリングされます。このページのレンダリングを改善するには、MarkdownまたはPandoc Pythonモジュールをインストールしてください。</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

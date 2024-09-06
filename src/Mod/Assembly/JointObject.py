@@ -171,15 +171,11 @@ def get_active_view(gui_doc):
 
 
 # The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
-# A JCS is a placement that is computed (unless it is detached) from :
-# - An Object: this can be any Part::Feature solid. Or a PartDesign Body. Or a App::Link to those.
-# - A Part DocumentObject : This is the lowest level containing part. It can be either the Object itself if it
-# stands alone. Or a App::Part. Or a App::Link to a App::Part.
-# For example :
-# Assembly.Assembly1.Part1.Part2.Box : Object is Box, part is 'Part1'
-# Assembly.Assembly1.LinkToPart1.Part2.Box : Object is Box, part is 'LinkToPart1'
+# A JCS is a placement that is computed (unless it is detached) from references (PropertyXLinkSubHidden) that links to :
+# - An object: this can be any Part::Feature solid. Or a PartDesign Body. Or a App::Link to those.
 # - An element name: This can be either a face, an edge, a vertex or empty. Empty means that the Object placement will be used
 # - A vertex name: For faces and edges, we need to specify which vertex of said face/edge to use
+# Both element names hold the full path to the object.
 # From these a placement is computed. It is relative to the Object.
 class Joint:
     def __init__(self, joint, type_index):
@@ -203,22 +199,15 @@ class Joint:
 
     def createProperties(self, joint):
         self.migrationScript(joint)
+        self.migrationScript2(joint)
 
         # First Joint Connector
-        if not hasattr(joint, "Object1"):
+        if not hasattr(joint, "Reference1"):
             joint.addProperty(
-                "App::PropertyXLinkSub",
-                "Object1",
+                "App::PropertyXLinkSubHidden",
+                "Reference1",
                 "Joint Connector 1",
-                QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
-            )
-
-        if not hasattr(joint, "Part1"):
-            joint.addProperty(
-                "App::PropertyLink",
-                "Part1",
-                "Joint Connector 1",
-                QT_TRANSLATE_NOOP("App::Property", "The first part of the joint"),
+                QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
             )
 
         if not hasattr(joint, "Placement1"):
@@ -228,7 +217,7 @@ class Joint:
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the local coordinate system within object1 that will be used for the joint.",
+                    "This is the local coordinate system within Reference1's object that will be used for the joint.",
                 ),
             )
 
@@ -244,20 +233,12 @@ class Joint:
             )
 
         # Second Joint Connector
-        if not hasattr(joint, "Object2"):
+        if not hasattr(joint, "Reference2"):
             joint.addProperty(
-                "App::PropertyXLinkSub",
-                "Object2",
+                "App::PropertyXLinkSubHidden",
+                "Reference2",
                 "Joint Connector 2",
-                QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
-            )
-
-        if not hasattr(joint, "Part2"):
-            joint.addProperty(
-                "App::PropertyLink",
-                "Part2",
-                "Joint Connector 2",
-                QT_TRANSLATE_NOOP("App::Property", "The second part of the joint"),
+                QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
             )
 
         if not hasattr(joint, "Placement2"):
@@ -267,7 +248,7 @@ class Joint:
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "This is the local coordinate system within object2 that will be used for the joint.",
+                    "This is the local coordinate system within Reference2's object that will be used for the joint.",
                 ),
             )
 
@@ -470,6 +451,54 @@ class Joint:
 
             joint.Object2 = [obj2, [el2, vtx2]]
 
+    def migrationScript2(self, joint):
+        if hasattr(joint, "Object1"):
+            obj = joint.Object1[0]
+            part = joint.Part1
+            elt = joint.Object1[1][0]
+            vtx = joint.Object1[1][1]
+
+            joint.removeProperty("Object1")
+            joint.removeProperty("Part1")
+
+            # now we need to get the 'selection-root-obj' and the global path
+            rootObj, path = UtilsAssembly.getRootPath(obj, part)
+            obj = rootObj
+            elt = path + elt
+            vtx = path + vtx
+
+            joint.addProperty(
+                "App::PropertyXLinkSubHidden",
+                "Reference1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
+            )
+
+            joint.Reference1 = [obj, [elt, vtx]]
+
+        if hasattr(joint, "Object2"):
+            obj = joint.Object2[0]
+            part = joint.Part2
+            elt = joint.Object2[1][0]
+            vtx = joint.Object2[1][1]
+
+            joint.removeProperty("Object2")
+            joint.removeProperty("Part2")
+
+            rootObj, path = UtilsAssembly.getRootPath(obj, part)
+            obj = rootObj
+            elt = path + elt
+            vtx = path + vtx
+
+            joint.addProperty(
+                "App::PropertyXLinkSubHidden",
+                "Reference2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
+            )
+
+            joint.Reference2 = [obj, [elt, vtx]]
+
     def dumps(self):
         return None
 
@@ -495,9 +524,10 @@ class Joint:
             return
 
         if prop == "Rotation" or prop == "Offset":
-            self.updateJCSPlacements(joint)
-            if joint.Object1 is None or joint.Object2 is None:
+            if joint.Reference1 is None or joint.Reference2 is None:
                 return
+
+            self.updateJCSPlacements(joint)
 
             presolved = self.preSolve(joint, False)
 
@@ -508,45 +538,34 @@ class Joint:
                 self.updateJCSPlacements(joint)
 
         if prop == "Distance" and (joint.JointType == "Distance" or joint.JointType == "Angle"):
-            if joint.Part1 and joint.Part2:
-                if joint.JointType == "Angle" and joint.Distance != 0.0:
-                    self.preventParallel(joint)
-                solveIfAllowed(self.getAssembly(joint))
+            if joint.Reference1 is None or joint.Reference2 is None:
+                return
+
+            if joint.JointType == "Angle" and joint.Distance != 0.0:
+                self.preventParallel(joint)
+            solveIfAllowed(self.getAssembly(joint))
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
         # App.Console.PrintMessage("Recompute Python Box feature\n")
         pass
 
-    def setJointConnectors(self, joint, current_selection):
+    def setJointConnectors(self, joint, refs):
         # current selection is a vector of strings like "Assembly.Assembly1.Assembly2.Body.Pad.Edge16" including both what selection return as obj_name and obj_sub
         assembly = self.getAssembly(joint)
         isAssembly = assembly.Type == "Assembly"
 
-        if len(current_selection) >= 1:
-            joint.Object1 = [
-                current_selection[0]["object"],
-                [current_selection[0]["element_name"], current_selection[0]["vertex_name"]],
-            ]
-            joint.Part1 = current_selection[0]["part"]
-            joint.Placement1 = self.findPlacement(
-                joint, joint.Object1[0], joint.Part1, joint.Object1[1][0], joint.Object1[1][1]
-            )
+        if len(refs) >= 1:
+            joint.Reference1 = refs[0]
+            joint.Placement1 = self.findPlacement(joint, joint.Reference1, 0)
         else:
-            joint.Object1 = None
-            joint.Part1 = None
+            joint.Reference1 = None
             joint.Placement1 = App.Placement()
             self.partMovedByPresolved = None
 
-        if len(current_selection) >= 2:
-            joint.Object2 = [
-                current_selection[1]["object"],
-                [current_selection[1]["element_name"], current_selection[1]["vertex_name"]],
-            ]
-            joint.Part2 = current_selection[1]["part"]
-            joint.Placement2 = self.findPlacement(
-                joint, joint.Object2[0], joint.Part2, joint.Object2[1][0], joint.Object2[1][1], True
-            )
+        if len(refs) >= 2:
+            joint.Reference2 = refs[1]
+            joint.Placement2 = self.findPlacement(joint, joint.Reference2, 1)
             if joint.JointType in JointUsingPreSolve:
                 self.preSolve(joint)
             elif joint.JointType in JointParallelForbidden:
@@ -558,8 +577,7 @@ class Joint:
                 self.updateJCSPlacements(joint)
 
         else:
-            joint.Object2 = None
-            joint.Part2 = None
+            joint.Reference2 = None
             joint.Placement2 = App.Placement()
             if isAssembly:
                 assembly.undoSolve()
@@ -567,14 +585,10 @@ class Joint:
 
     def updateJCSPlacements(self, joint):
         if not joint.Detach1:
-            joint.Placement1 = self.findPlacement(
-                joint, joint.Object1[0], joint.Part1, joint.Object1[1][0], joint.Object1[1][1]
-            )
+            joint.Placement1 = self.findPlacement(joint, joint.Reference1, 0)
 
         if not joint.Detach2:
-            joint.Placement2 = self.findPlacement(
-                joint, joint.Object2[0], joint.Part2, joint.Object2[1][0], joint.Object2[1][1], True
-            )
+            joint.Placement2 = self.findPlacement(joint, joint.Reference2, 1)
 
     """
     So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
@@ -586,15 +600,12 @@ class Joint:
     - if elt is a cylindrical face, vtx can also be the center of the arcs of the cylindrical face.
     """
 
-    def findPlacement(self, joint, obj, part, elt, vtx, isSecond=False):
-        if not obj or not part:
-            return App.Placement()
-
+    def findPlacement(self, joint, ref, index=0):
         ignoreVertex = joint.JointType == "Distance"
-        plc = UtilsAssembly.findPlacement(obj, part, elt, vtx, ignoreVertex)
+        plc = UtilsAssembly.findPlacement(ref, ignoreVertex)
 
         # We apply rotation / reverse / offset it necessary, but only to the second JCS.
-        if isSecond:
+        if index == 1:
             if joint.Offset.Length != 0.0:
                 plc = UtilsAssembly.applyOffsetToPlacement(plc, joint.Offset)
             if joint.Rotation != 0.0:
@@ -604,28 +615,28 @@ class Joint:
 
     def flipOnePart(self, joint):
         assembly = self.getAssembly(joint)
-        part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
-        part1Grounded = assembly.isPartGrounded(joint.Part1)
-        part2Grounded = assembly.isPartGrounded(joint.Part2)
+        part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference2")
+
+        part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
+        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
+
+        part1Grounded = assembly.isPartGrounded(part1)
+        part2Grounded = assembly.isPartGrounded(part2)
         if part2ConnectedByJoint and not part2Grounded:
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
-                joint.Placement2, joint.Object2[0], joint.Part2
+                assembly, joint.Placement2, joint.Reference2
             )
-            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
-                joint.Placement2, joint.Object2[0], joint.Part2
-            )
+            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
             jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
-            joint.Part2.Placement = globalJcsPlc * jcsPlc.inverse()
+            part2.Placement = globalJcsPlc * jcsPlc.inverse()
 
         elif not part1Grounded:
             jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
-                joint.Placement1, joint.Object1[0], joint.Part1
+                assembly, joint.Placement1, joint.Reference1
             )
-            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
-                joint.Placement1, joint.Object1[0], joint.Part1
-            )
+            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
             jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
-            joint.Part1.Placement = globalJcsPlc * jcsPlc.inverse()
+            part1.Placement = globalJcsPlc * jcsPlc.inverse()
 
         solveIfAllowed(self.getAssembly(joint))
 
@@ -634,13 +645,18 @@ class Joint:
 
         # we actually don't want to match perfectly the JCS, it is best to match them
         # in the current closest direction, ie either matched or flipped.
+
         sameDir = self.areJcsSameDir(joint)
         assembly = self.getAssembly(joint)
+
+        part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
+        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
+
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
             joint.Activated = False
-            part1Connected = assembly.isPartConnected(joint.Part1)
-            part2Connected = assembly.isPartConnected(joint.Part2)
+            part1Connected = assembly.isPartConnected(part1)
+            part2Connected = assembly.isPartConnected(part2)
             joint.Activated = True
         else:
             part1Connected = False
@@ -648,34 +664,38 @@ class Joint:
 
         if not part2Connected:
             if savePlc:
-                self.partMovedByPresolved = joint.Part2
-                self.presolveBackupPlc = joint.Part2.Placement
+                self.partMovedByPresolved = part2
+                self.presolveBackupPlc = part2.Placement
 
-            globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(
-                joint.Placement1, joint.Object1[0], joint.Part1
-            )
+            globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
             jcsPlc2 = UtilsAssembly.getJcsPlcRelativeToPart(
-                joint.Placement2, joint.Object2[0], joint.Part2
+                assembly, joint.Placement2, joint.Reference2
             )
             if not sameDir:
                 jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
-            joint.Part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
+
+            # For link groups and sub-assemblies we have to take into account
+            # the parent placement (ie the linkgroup plc) as the linkgroup is not the moving part
+            # But instead of doing as follow, we rather enforce identity placement for linkgroups.
+            # parentPlc = UtilsAssembly.getParentPlacementIfNeeded(part2)
+            # part2.Placement = globalJcsPlc1 * jcsPlc2.inverse() * parentPlc.inverse()
+
+            part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
             return True
 
         elif not part1Connected:
             if savePlc:
-                self.partMovedByPresolved = joint.Part1
-                self.presolveBackupPlc = joint.Part1.Placement
+                self.partMovedByPresolved = part1
+                self.presolveBackupPlc = part1.Placement
 
-            globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(
-                joint.Placement2, joint.Object2[0], joint.Part2
-            )
+            globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
             jcsPlc1 = UtilsAssembly.getJcsPlcRelativeToPart(
-                joint.Placement1, joint.Object1[0], joint.Part1
+                assembly, joint.Placement1, joint.Reference1
             )
             if not sameDir:
                 jcsPlc1 = UtilsAssembly.flipPlacement(jcsPlc1)
-            joint.Part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
+
+            part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
             return True
         return False
 
@@ -693,47 +713,43 @@ class Joint:
             return
 
         assembly = self.getAssembly(joint)
+
+        part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
+        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
+
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
-            part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part1")
-            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Part2")
+            part1ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference1")
+            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference2")
         else:
             part1ConnectedByJoint = False
             part2ConnectedByJoint = True
 
         if part2ConnectedByJoint:
-            self.partMovedByPresolved = joint.Part2
-            self.presolveBackupPlc = joint.Part2.Placement
+            self.partMovedByPresolved = part2
+            self.presolveBackupPlc = part2.Placement
 
-            joint.Part2.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
-                joint.Part2.Placement, 10, App.Vector(1, 0, 0)
+            part2.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
+                part2.Placement, 10, App.Vector(1, 0, 0)
             )
 
         elif part1ConnectedByJoint:
-            self.partMovedByPresolved = joint.Part1
-            self.presolveBackupPlc = joint.Part1.Placement
+            self.partMovedByPresolved = part1
+            self.presolveBackupPlc = part1.Placement
 
-            joint.Part1.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
-                joint.Part1.Placement, 10, App.Vector(1, 0, 0)
+            part1.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
+                part1.Placement, 10, App.Vector(1, 0, 0)
             )
 
     def areJcsSameDir(self, joint):
-        globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(
-            joint.Placement1, joint.Object1[0], joint.Part1
-        )
-        globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(
-            joint.Placement2, joint.Object2[0], joint.Part2
-        )
+        globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+        globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
 
         return UtilsAssembly.arePlacementSameDir(globalJcsPlc1, globalJcsPlc2)
 
     def areJcsZParallel(self, joint):
-        globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(
-            joint.Placement1, joint.Object1[0], joint.Part1
-        )
-        globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(
-            joint.Placement2, joint.Object2[0], joint.Part2
-        )
+        globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+        globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
 
         return UtilsAssembly.arePlacementZParallel(globalJcsPlc1, globalJcsPlc2)
 
@@ -872,9 +888,9 @@ class ViewProviderJoint:
     def get_JCS_size(self):
         return get_camera_height(self.gui_doc) / 20
 
-    def set_JCS_placement(self, soTransform, placement, obj, part):
+    def set_JCS_placement(self, soTransform, placement, ref):
         # change plc to be relative to the origin of the document.
-        global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
+        global_plc = UtilsAssembly.getGlobalPlacement(ref)
         placement = global_plc * placement
 
         t = placement.Base
@@ -887,29 +903,27 @@ class ViewProviderJoint:
         """If a property of the handled feature has changed we have the chance to handle this here"""
         # joint is the handled feature, prop is the name of the property that has changed
         if prop == "Placement1":
-            if joint.Object1:
+            if hasattr(joint, "Reference1") and joint.Reference1:
                 plc = joint.Placement1
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_ALL
 
-                if joint.Part1:
-                    self.set_JCS_placement(self.transform1, plc, joint.Object1[0], joint.Part1)
+                self.set_JCS_placement(self.transform1, plc, joint.Reference1)
             else:
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_NONE
 
         if prop == "Placement2":
-            if joint.Object2:
+            if hasattr(joint, "Reference2") and joint.Reference2:
                 plc = joint.Placement2
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_ALL
 
-                if joint.Part2:
-                    self.set_JCS_placement(self.transform2, plc, joint.Object2[0], joint.Part2)
+                self.set_JCS_placement(self.transform2, plc, joint.Reference2)
             else:
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_NONE
 
-    def showPreviewJCS(self, visible, placement=None, obj=None, part=None):
+    def showPreviewJCS(self, visible, placement=None, ref=None):
         if visible:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_ALL
-            self.set_JCS_placement(self.transform3, placement, obj, part)
+            self.set_JCS_placement(self.transform3, placement, ref)
         else:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_NONE
 
@@ -1232,15 +1246,14 @@ class MakeJointSelGate:
             # Only objects within the assembly.
             return False
 
-        full_obj_name = ".".join(objs_names)
-        full_element_name = full_obj_name + "." + element_name
-        selected_object = UtilsAssembly.getObject(full_element_name)
+        ref = [obj, [sub]]
+        selected_object = UtilsAssembly.getObject(ref)
 
         if not (
             selected_object.isDerivedFrom("Part::Feature")
             or selected_object.isDerivedFrom("App::Part")
         ):
-            if selected_object.isDerivedFrom("App::Link"):
+            if UtilsAssembly.isLink(selected_object):
                 linked = selected_object.getLinkedObject()
 
                 if not (linked.isDerivedFrom("Part::Feature") or linked.isDerivedFrom("App::Part")):
@@ -1267,6 +1280,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.activeType = "Part"
         else:
             self.activeType = "Assembly"
+            self.assembly.ensureIdentityPlacements()
 
         self.doc = self.assembly.Document
         self.gui_doc = Gui.getDocument(self.doc)
@@ -1329,8 +1343,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             else:
                 App.setActiveTransaction("Create " + self.jointName + " Joint")
 
-            self.current_selection = []
-            self.preselection_dict = None
+            self.refs = []
+            self.presel_ref = None
 
             self.createJointObject()
             self.visibilityBackup = False
@@ -1359,7 +1373,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.addition_rejected = False
 
     def accept(self):
-        if len(self.current_selection) != 2:
+        if len(self.refs) != 2:
             App.Console.PrintWarning(
                 translate("Assembly", "You need to select 2 elements from 2 separate parts.")
             )
@@ -1419,52 +1433,27 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 continue
 
             for sub_name in sel.SubElementNames:
+                # We add sub_name twice because the joints references have element name + vertex name
+                # and in the case of initial selection, both are the same.
+                ref = [sel.Object, [sub_name, sub_name]]
+                moving_part = self.getMovingPart(ref)
+
                 # Only objects within the assembly.
-                objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(
-                    sel.ObjectName, sub_name
-                )
-                if self.assembly.Name not in objs_names:
+                if moving_part is None:
                     Gui.Selection.removeSelection(sel.Object, sub_name)
                     continue
 
-                obj_name = sel.ObjectName
-
-                full_obj_name = UtilsAssembly.getFullObjName(obj_name, sub_name)
-                full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-                selected_object = UtilsAssembly.getObject(full_element_name)
-                element_name = UtilsAssembly.getElementName(full_element_name)
-                part_containing_selected_object = self.getContainingPart(
-                    full_element_name, selected_object
-                )
-
-                if selected_object == self.assembly:
-                    # do not accept selection of assembly itself
-                    Gui.Selection.removeSelection(sel.Object, sub_name)
-                    continue
-
-                if (
-                    len(self.current_selection) == 1
-                    and selected_object == self.current_selection[0]["object"]
-                ):
+                if len(self.refs) == 1 and moving_part == self.getMovingPart(self.refs[0]):
                     # do not select several feature of the same object.
-                    self.current_selection.clear()
+                    self.refs.clear()
                     Gui.Selection.clearSelection()
                     return
 
-                selection_dict = {
-                    "object": selected_object,
-                    "part": part_containing_selected_object,
-                    "element_name": element_name,
-                    "full_element_name": full_element_name,
-                    "full_obj_name": full_obj_name,
-                    "vertex_name": element_name,
-                }
-
-                self.current_selection.append(selection_dict)
+                self.refs.append(ref)
 
         # do not accept initial selection if we don't have 2 selected features
-        if len(self.current_selection) != 2:
-            self.current_selection.clear()
+        if len(self.refs) != 2:
+            self.refs.clear()
             Gui.Selection.clearSelection()
         else:
             self.updateJoint()
@@ -1635,46 +1624,17 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.form.groupBox_limits.hide()
 
     def updateTaskboxFromJoint(self):
-        self.current_selection = []
-        self.preselection_dict = None
+        self.refs = []
+        self.presel_ref = None
 
-        obj1 = self.joint.Object1[0]
-        part1 = self.joint.Part1
-        el1 = self.joint.Object1[1][0]
-        vtx1 = self.joint.Object1[1][1]
+        ref1 = self.joint.Reference1
+        ref2 = self.joint.Reference2
 
-        obj2 = self.joint.Object2[0]
-        part2 = self.joint.Part2
-        el2 = self.joint.Object2[1][0]
-        vtx2 = self.joint.Object2[1][1]
+        self.refs.append(ref1)
+        self.refs.append(ref2)
 
-        selection_dict1 = {
-            "object": obj1,
-            "part": part1,
-            "element_name": el1,
-            "vertex_name": vtx1,
-        }
-
-        selection_dict2 = {
-            "object": obj2,
-            "part": part2,
-            "element_name": el2,
-            "vertex_name": vtx2,
-        }
-
-        self.current_selection.append(selection_dict1)
-        self.current_selection.append(selection_dict2)
-
-        # Add the elements to the selection. Note we cannot do :
-        # Gui.Selection.addSelection(self.doc.Name, obj1.Name, elName)
-        # Because obj1 can be external in which case addSelection will fail. And
-        # Gui.Selection.addSelection(obj1.Document.Name, obj1.Name, elName)
-        # will not select in the assembly doc.
-        elName = self.getSubnameForSelection(obj1, part1, el1)
-        Gui.Selection.addSelection(self.doc.Name, part1.Name, elName)
-
-        elName = self.getSubnameForSelection(obj2, part2, el2)
-        Gui.Selection.addSelection(self.doc.Name, part2.Name, elName)
+        Gui.Selection.addSelection(ref1[0].Document.Name, ref1[0].Name, ref1[1][0])
+        Gui.Selection.addSelection(ref2[0].Document.Name, ref2[0].Name, ref2[1][0])
 
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
         self.form.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
@@ -1693,63 +1653,23 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
         self.updateJointList()
 
-    def getSubnameForSelection(self, obj, part, elName):
-        # We need the subname starting from the part.
-        # Example for : Assembly.Part1.LinkToPart2.Part3.Body.Tip.Face1
-        # part is Part1 and obj is Body
-        # we should get : LinkToPart2.Part3.Body.Tip.Face1
-
-        if obj is None or part is None:
-            return elName
-
-        if obj.TypeId == "PartDesign::Body":
-            elName = obj.Tip.Name + "." + elName
-        elif obj.TypeId == "App::Link":
-            linked_obj = obj.getLinkedObject()
-            if linked_obj.TypeId == "PartDesign::Body":
-                elName = linked_obj.Tip.Name + "." + elName
-
-        if obj != part and obj in part.OutListRecursive:
-            bSub = ""
-            currentObj = part
-
-            limit = 0
-            while limit < 1000:
-                limit = limit + 1
-
-                if currentObj != part:
-                    if bSub != "":
-                        bSub = bSub + "."
-                    bSub = bSub + currentObj.Name
-
-                if currentObj == obj:
-                    break
-
-                if currentObj.TypeId == "App::Link":
-                    currentObj = currentObj.getLinkedObject()
-
-                for obji in currentObj.OutList:
-                    if obji == obj or obj in obji.OutListRecursive:
-                        currentObj = obji
-                        break
-
-            elName = bSub + "." + elName
-        return elName
-
     def updateJoint(self):
         # First we build the listwidget
         self.updateJointList()
 
         # Then we pass the new list to the joint object
-        self.joint.Proxy.setJointConnectors(self.joint, self.current_selection)
+        self.joint.Proxy.setJointConnectors(self.joint, self.refs)
 
     def updateJointList(self):
         self.form.featureList.clear()
         simplified_names = []
-        for sel in self.current_selection:
-            sname = sel["object"].Label
-            if sel["element_name"] != "":
-                sname = sname + "." + sel["element_name"]
+        for ref in self.refs:
+
+            sname = UtilsAssembly.getObject(ref).Label
+
+            element_name = UtilsAssembly.getElementName(ref[1][0])
+            if element_name != "":
+                sname = sname + "." + element_name
             simplified_names.append(sname)
         self.form.featureList.addItems(simplified_names)
 
@@ -1771,15 +1691,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 self.form.limitRotMaxSpinbox.setProperty("rawValue", angle)
 
     def moveMouse(self, info):
-        if len(self.current_selection) >= 2 or (
-            len(self.current_selection) == 1
+        if len(self.refs) >= 2 or (
+            len(self.refs) == 1
             and (
-                not self.preselection_dict
-                or self.current_selection[0]["part"] == self.preselection_dict["part"]
+                not self.presel_ref
+                or self.getMovingPart(self.refs[0]) == self.getMovingPart(self.presel_ref)
             )
         ):
             self.joint.ViewObject.Proxy.showPreviewJCS(False)
-            if len(self.current_selection) >= 2:
+            if len(self.refs) >= 2:
                 self.updateLimits()
             return
 
@@ -1789,38 +1709,24 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         if (
             not cursor_info
-            or not self.preselection_dict
-            # or cursor_info["SubName"] != self.preselection_dict["sub_name"]
+            or not self.presel_ref
+            # or cursor_info["SubName"] != self.presel_ref["sub_name"]
             # Removed because they are not equal when hovering a line endpoints.
             # But we don't actually need to test because if there's no preselection then not cursor is None
         ):
             self.joint.ViewObject.Proxy.showPreviewJCS(False)
             return
 
-        # newPos = self.view.getPoint(*info["Position"]) # This is not what we want, it's not pos on the object but on the focal plane
+        ref = self.presel_ref
 
+        # newPos = self.view.getPoint(*info["Position"]) is not OK: it's not pos on the object but on the focal plane
         newPos = App.Vector(cursor_info["x"], cursor_info["y"], cursor_info["z"])
-        self.preselection_dict["mouse_pos"] = newPos
+        vertex_name = UtilsAssembly.findElementClosestVertex(self.assembly, ref, newPos)
 
-        if self.preselection_dict["element_name"] == "":
-            self.preselection_dict["vertex_name"] = ""
-        else:
-            self.preselection_dict["vertex_name"] = UtilsAssembly.findElementClosestVertex(
-                self.preselection_dict
-            )
+        ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
 
-        isSecond = len(self.current_selection) == 1
-        obj = self.preselection_dict["object"]
-        part = self.preselection_dict["part"]
-        placement = self.joint.Proxy.findPlacement(
-            self.joint,
-            obj,
-            part,
-            self.preselection_dict["element_name"],
-            self.preselection_dict["vertex_name"],
-            isSecond,
-        )
-        self.joint.ViewObject.Proxy.showPreviewJCS(True, placement, obj, part)
+        placement = self.joint.Proxy.findPlacement(self.joint, ref, 0)
+        self.joint.ViewObject.Proxy.showPreviewJCS(True, placement, ref)
         self.previewJCSVisible = True
 
     # 3D view keyboard handler
@@ -1845,38 +1751,46 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
                     for index in selected_indexes:
                         row = index.row()
-                        if row < len(self.current_selection):
-                            selection_dict = self.current_selection[row]
-                            elName = self.getSubnameForSelection(
-                                selection_dict["object"],
-                                selection_dict["part"],
-                                selection_dict["element_name"],
-                            )
-                            Gui.Selection.removeSelection(selection_dict["object"], elName)
+                        if row < len(self.refs):
+                            ref = self.refs[row]
+
+                            Gui.Selection.removeSelection(ref[0], ref[1][0])
 
                     return True  # Consume the event
 
         return super().eventFilter(watched, event)
 
-    def getContainingPart(self, full_element_name, obj):
-        return UtilsAssembly.getContainingPart(full_element_name, obj, self.assembly)
+    def getMovingPart(self, ref):
+        return UtilsAssembly.getMovingPart(self.assembly, ref)
 
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
-        full_obj_name = UtilsAssembly.getFullObjName(obj_name, sub_name)
-        full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-        selected_object = UtilsAssembly.getObject(full_element_name)
-        element_name = UtilsAssembly.getElementName(full_element_name)
-        part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
+        rootObj = App.getDocument(doc_name).getObject(obj_name)
+        resolved = rootObj.resolveSubElement(sub_name)
+        element_name_TNP = resolved[1]
+        element_name = resolved[2]
+
+        # Preprocess the sub_name to remove the TNP string
+        # We do this because after we need to add the vertex_name as well.
+        # And the names will be resolved anyway after.
+        if len(element_name_TNP.split(".")) == 2:
+            names = sub_name.split(".")
+            names.pop(-2)  # remove the TNP string
+            sub_name = ".".join(names)
+
+        ref = [rootObj, [sub_name]]
+
+        moving_part = self.getMovingPart(ref)
 
         # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)
         acceptable = True
-        if len(self.current_selection) >= 2:
+        if len(self.refs) >= 2:
             # No more than 2 elements can be selected for basic joints.
             acceptable = False
 
-        for selection_dict in self.current_selection:
-            if selection_dict["part"] == part_containing_selected_object:
+        for reference in self.refs:
+            sel_moving_part = self.getMovingPart(reference)
+            if sel_moving_part == moving_part:
                 # Can't join a solid to itself. So the user need to select 2 different parts.
                 acceptable = False
 
@@ -1886,20 +1800,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             return
 
         # Selection is acceptable so add it
-        selection_dict = {
-            "object": selected_object,
-            "part": part_containing_selected_object,
-            "element_name": element_name,
-            "full_element_name": full_element_name,
-            "full_obj_name": full_obj_name,
-            "mouse_pos": App.Vector(mousePos[0], mousePos[1], mousePos[2]),
-        }
-        if element_name == "":
-            selection_dict["vertex_name"] = ""
-        else:
-            selection_dict["vertex_name"] = UtilsAssembly.findElementClosestVertex(selection_dict)
 
-        self.current_selection.append(selection_dict)
+        mousePos = App.Vector(mousePos[0], mousePos[1], mousePos[2])
+        vertex_name = UtilsAssembly.findElementClosestVertex(self.assembly, ref, mousePos)
+
+        # add the vertex name to the reference
+        ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
+
+        self.refs.append(ref)
         self.updateJoint()
 
         # We hide the preview JCS if we just added to the selection
@@ -1910,41 +1818,27 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.addition_rejected = False
             return
 
-        full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-        selected_object = UtilsAssembly.getObject(full_element_name)
-        element_name = UtilsAssembly.getElementName(full_element_name)
-        part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
+        ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
+        moving_part = self.getMovingPart(ref)
 
         # Find and remove the corresponding dictionary from the combined list
-        for selection_dict in self.current_selection:
-            if selection_dict["part"] == part_containing_selected_object:
-                self.current_selection.remove(selection_dict)
+        for reference in self.refs:
+            sel_moving_part = self.getMovingPart(reference)
+            if sel_moving_part == moving_part:
+                self.refs.remove(reference)
                 break
 
         self.updateJoint()
 
     def setPreselection(self, doc_name, obj_name, sub_name):
         if not sub_name:
-            self.preselection_dict = None
+            self.presel_ref = None
             return
 
-        full_obj_name = UtilsAssembly.getFullObjName(obj_name, sub_name)
-        full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
-        selected_object = UtilsAssembly.getObject(full_element_name)
-        element_name = UtilsAssembly.getElementName(full_element_name)
-        part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
-
-        self.preselection_dict = {
-            "object": selected_object,
-            "part": part_containing_selected_object,
-            "sub_name": sub_name,
-            "element_name": element_name,
-            "full_element_name": full_element_name,
-            "full_obj_name": full_obj_name,
-        }
+        self.presel_ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
 
     def clearSelection(self, doc_name):
-        self.current_selection.clear()
+        self.refs.clear()
         self.updateJoint()
 
     def setJointsPickableState(self, state: bool):

@@ -44,6 +44,11 @@ class ASMTMarker;
 class ASMTPart;
 }  // namespace MbD
 
+namespace App
+{
+class PropertyXLinkSub;
+}  // namespace App
+
 namespace Base
 {
 class Placement;
@@ -56,6 +61,12 @@ namespace Assembly
 
 class JointGroup;
 class ViewGroup;
+
+struct ObjRef
+{
+    App::DocumentObject* obj;
+    App::PropertyXLinkSub* ref;
+};
 
 // This enum has to be the same as the one in JointObject.py
 enum class JointType
@@ -123,7 +134,6 @@ enum class DistanceType
     Other,
 };
 
-
 class AssemblyExport AssemblyObject: public App::Part
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Assembly::AssemblyObject);
@@ -158,9 +168,11 @@ public:
     Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
     bool validateNewPlacements();
     void setNewPlacements();
-    void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
-    void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
+    static void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
+    static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
 
+    // This makes sure that LinkGroups or sub-assemblies have identity placements.
+    void ensureIdentityPlacements();
 
     // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
@@ -173,8 +185,7 @@ public:
                                                        JointType jointType);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistance(App::DocumentObject* joint);
     std::string handleOneSideOfJoint(App::DocumentObject* joint,
-                                     const char* propObjLinkName,
-                                     const char* propPartName,
+                                     const char* propRefName,
                                      const char* propPlcName);
     void getRackPinionMarkers(App::DocumentObject* joint,
                               std::string& markerNameI,
@@ -182,9 +193,10 @@ public:
     int slidingPartIndex(App::DocumentObject* joint);
 
     void jointParts(std::vector<App::DocumentObject*> joints);
-    JointGroup* getJointGroup();
-    ViewGroup* getExplodedViewGroup();
-    std::vector<App::DocumentObject*> getJoints(bool updateJCS = true, bool delBadJoints = false);
+    JointGroup* getJointGroup() const;
+    ViewGroup* getExplodedViewGroup() const;
+    std::vector<App::DocumentObject*>
+    getJoints(bool updateJCS = true, bool delBadJoints = false, bool subJoints = true);
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
@@ -197,20 +209,23 @@ public:
     bool isJointConnectingPartToGround(App::DocumentObject* joint, const char* partPropName);
     bool isJointTypeConnecting(App::DocumentObject* joint);
 
+    bool isObjInSetOfObjRefs(App::DocumentObject* obj, const std::vector<ObjRef>& pairs);
     void removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
                                  std::vector<App::DocumentObject*> groundedObjs);
     void traverseAndMarkConnectedParts(App::DocumentObject* currentPart,
-                                       std::set<App::DocumentObject*>& connectedParts,
+                                       std::vector<ObjRef>& connectedParts,
                                        const std::vector<App::DocumentObject*>& joints);
-    std::vector<App::DocumentObject*>
-    getConnectedParts(App::DocumentObject* part, const std::vector<App::DocumentObject*>& joints);
+    std::vector<ObjRef> getConnectedParts(App::DocumentObject* part,
+                                          const std::vector<App::DocumentObject*>& joints);
     bool isPartGrounded(App::DocumentObject* part);
     bool isPartConnected(App::DocumentObject* part);
 
-    std::vector<App::DocumentObject*> getDownstreamParts(App::DocumentObject* part,
-                                                         App::DocumentObject* joint);
+    std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part,
+                                           App::DocumentObject* joint = nullptr);
     std::vector<App::DocumentObject*> getUpstreamParts(App::DocumentObject* part, int limit = 0);
-    App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part);
+    App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part,
+                                               App::DocumentObject*& joint,
+                                               std::string& name);
 
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
@@ -239,10 +254,12 @@ public:
 
     static bool isEdgeType(App::DocumentObject* obj, std::string& elName, GeomAbs_CurveType type);
     static bool isFaceType(App::DocumentObject* obj, std::string& elName, GeomAbs_SurfaceType type);
-    static double getFaceRadius(App::DocumentObject* obj, const char* elName);
-    static double getEdgeRadius(App::DocumentObject* obj, const char* elName);
+    static double getFaceRadius(App::DocumentObject* obj, std::string& elName);
+    static double getEdgeRadius(App::DocumentObject* obj, std::string& elName);
 
     static DistanceType getDistanceType(App::DocumentObject* joint);
+
+    static JointGroup* getJointGroup(const App::Part* part);
 
     // getters to get from properties
     static void setJointActivated(App::DocumentObject* joint, bool val);
@@ -250,22 +267,27 @@ public:
     static double getJointDistance(App::DocumentObject* joint);
     static double getJointDistance2(App::DocumentObject* joint);
     static JointType getJointType(App::DocumentObject* joint);
-    static const char* getElementFromProp(App::DocumentObject* obj, const char* propName);
+    static std::string getElementFromProp(App::DocumentObject* obj, const char* propName);
     static std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
     static App::DocumentObject* getObjFromProp(App::DocumentObject* joint, const char* propName);
-    static App::DocumentObject* getLinkedObjFromProp(App::DocumentObject* joint, const char* pObj);
+    static App::DocumentObject* getObjFromRef(App::DocumentObject* obj, std::string& sub);
+    static App::DocumentObject* getObjFromRef(App::PropertyXLinkSub* prop);
+    static App::DocumentObject* getObjFromRef(App::DocumentObject* joint, const char* propName);
+    App::DocumentObject* getMovingPartFromRef(App::DocumentObject* obj, std::string& sub);
+    App::DocumentObject* getMovingPartFromRef(App::PropertyXLinkSub* prop);
+    App::DocumentObject* getMovingPartFromRef(App::DocumentObject* joint, const char* propName);
+    static App::DocumentObject* getLinkedObjFromRef(App::DocumentObject* joint,
+                                                    const char* propName);
+    static std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop);
+    static std::vector<std::string> getSubAsList(App::DocumentObject* joint, const char* propName);
+    static std::vector<std::string> splitSubName(const std::string& subName);
     static Base::Placement getPlacementFromProp(App::DocumentObject* obj, const char* propName);
-    static bool getTargetPlacementRelativeTo(Base::Placement& foundPlc,
-                                             App::DocumentObject* targetObj,
-                                             App::DocumentObject* part,
-                                             App::DocumentObject* container,
-                                             bool inContainerBranch,
-                                             bool ignorePlacement = false);
+
     static Base::Placement getGlobalPlacement(App::DocumentObject* targetObj,
-                                              App::DocumentObject* container = nullptr);
-    static Base::Placement getGlobalPlacement(App::DocumentObject* joint,
-                                              const char* targetObj,
-                                              const char* container = "");
+                                              App::DocumentObject* rootObj,
+                                              const std::string& sub);
+    static Base::Placement getGlobalPlacement(App::DocumentObject* targetObj,
+                                              App::PropertyXLinkSub* prop);
 };
 
 // using AssemblyObjectPython = App::FeaturePythonT<AssemblyObject>;

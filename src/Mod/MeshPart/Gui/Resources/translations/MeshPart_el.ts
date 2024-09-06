@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>

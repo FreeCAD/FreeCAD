@@ -32,21 +32,23 @@
 
 class Ui_TaskDlgPathCompound;
 
-namespace PathGui {
+namespace PathGui
+{
 
 /// Widget
-class TaskWidgetPathCompound : public Gui::TaskView::TaskBox
+class TaskWidgetPathCompound: public Gui::TaskView::TaskBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=nullptr);
+    explicit TaskWidgetPathCompound(ViewProviderPathCompound* CompoundView,
+                                    QWidget* parent = nullptr);
     ~TaskWidgetPathCompound() override;
 
     std::vector<std::string> getList() const;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     QWidget* proxy;
@@ -54,12 +56,12 @@ private:
 };
 
 /// Task Dialog
-class PathGuiExport TaskDlgPathCompound : public Gui::TaskView::TaskDialog
+class PathGuiExport TaskDlgPathCompound: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgPathCompound(PathGui::ViewProviderPathCompound *);
+    TaskDlgPathCompound(PathGui::ViewProviderPathCompound*);
     ~TaskDlgPathCompound() override;
 
 public:
@@ -76,15 +78,16 @@ public:
 
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
 protected:
-    PathGui::ViewProviderPathCompound          *CompoundView;
-    TaskWidgetPathCompound                     *parameter;
+    PathGui::ViewProviderPathCompound* CompoundView;
+    TaskWidgetPathCompound* parameter;
 };
 
 
+}  // namespace PathGui
 
-} //namespace RobotGui
-
-#endif // PATHGUI_TASKDLGPATHCOMPOUND_H
+#endif  // PATHGUI_TASKDLGPATHCOMPOUND_H

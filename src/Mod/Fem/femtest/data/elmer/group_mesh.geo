@@ -7,10 +7,10 @@ General.NumThreads = X;
 Merge "tmp0TVZbM.brep";
 
 // group data
-Physical Surface("Face1") = {1};
-Physical Surface("Face2") = {2};
-Physical Surface("Face6") = {6};
-Physical Volume("Solid1") = {1};
+Physical Surface("Face1_Surface") = {1};
+Physical Surface("Face2_Surface") = {2};
+Physical Surface("Face6_Surface") = {6};
+Physical Volume("Solid1_Volume") = {1};
 
 // Characteristic Length
 // no boundary layer settings for this mesh

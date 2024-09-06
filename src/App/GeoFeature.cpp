@@ -89,11 +89,6 @@ GeoFeature::getElementName(const char *name, ElementNameType type) const
     if(!name)
         return {};
 
-#ifndef FC_USE_TNP_FIX
-    ret.oldName = name;
-
-    return ret;
-#else
     auto prop = getPropertyOfGeometry();
     if (!prop) {
         return ElementNamePair("",name);
@@ -105,7 +100,6 @@ GeoFeature::getElementName(const char *name, ElementNameType type) const
     }
 
     return _getElementName(name, geo->getElementName(name));
-#endif
 }
 
 ElementNamePair
@@ -143,17 +137,14 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         ElementNameType type, const DocumentObject *filter, 
         const char **_element, GeoFeature **geoFeature)
 {
-#ifdef FC_USE_TNP_FIX
     elementName.newName.clear();
     elementName.oldName.clear();
-#endif
     if(!obj || !obj->isAttachedToDocument())
         return nullptr;
     if(!subname)
         subname = "";
     const char *element = Data::findElementName(subname);
     if(_element) *_element = element;
-#ifdef FC_USE_TNP_FIX
     auto sobj = obj->getSubObject(std::string(subname, element).c_str());
     if(!sobj)
         return nullptr;
@@ -164,13 +155,6 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         if(ext)
             geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
     }
-#else
-    auto sobj = obj->getSubObject(subname);
-    if(!sobj)
-        return nullptr;
-    obj = sobj->getLinkedObject(true);
-    auto geo = dynamic_cast<GeoFeature*>(obj);
-#endif
     if(geoFeature)
         *geoFeature = geo;
     if(!obj || (filter && obj!=filter))
@@ -217,7 +201,6 @@ bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const ch
     return false;
 }
 
-#ifdef FC_USE_TNP_FIX
 bool GeoFeature::hasMissingElement(const char* subname)
 {
     return Data::hasMissingElement(subname);
@@ -287,5 +270,3 @@ GeoFeature::getHigherElements(const char *element, bool silent) const
         return {};
     return prop->getComplexData()->getHigherElements(element, silent);
 }
-
-#endif

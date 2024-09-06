@@ -91,7 +91,7 @@ modul pro Python by měl být nainstalován pro optimální výsledky.</translat
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+      <translation>Poznámka: Pokud ve vašem systému nejsou nalezeny PySide Webové komponenty, stránky nápovědy se otevřou ve výchozím webovém prohlížeči bez ohledu na níže uvedené možnosti</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -167,7 +167,7 @@ To vyžaduje komponentu PySide QtWebengineWidgets.</translation>
     <message>
       <location filename="../../Help.py" line="84"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Na vašem systému není nainstalován žádný vykreslovač Markdownu, takže tato stránka nápovědy je vykreslena tak, jak je. Nainstalujte prosím moduly Markdown nebo Pandoc pro Python pro vylepšení vykreslování této stránky.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Bod je umístěn na pozici objektu. Funguje na objektech s umístěním a hranách elipsy/paraboly/hyperboly.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="283"/>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Exportovat CAD soubor...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Importovat CAD soubor...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2205,17 +2205,17 @@ Pohled kamery určuje směr projekce.</translation>
       <translation>Převést síť</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1076"/>
+      <location filename="../../TaskAttacher.cpp" line="1078"/>
       <source>Edit attachment</source>
       <translation>Upravit připojení</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="456"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="454"/>
       <source>Change face colors</source>
       <translation>Změnit barvy plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>Loft</source>
       <translation>Profilování</translation>
     </message>
@@ -2246,7 +2246,7 @@ Pohled kamery určuje směr projekce.</translation>
       <translation>Těleso</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="365"/>
+      <location filename="../../TaskSweep.cpp" line="367"/>
       <source>Sweep</source>
       <translation>Tažení</translation>
     </message>
@@ -2256,7 +2256,7 @@ Pohled kamery určuje směr projekce.</translation>
       <translation>Upravit zrcadlení</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1557"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
       <source>Project on surface</source>
       <translation>Promítnout na povrch</translation>
     </message>
@@ -2530,7 +2530,7 @@ Poznámka: Umístění je určeno v lokálním prostoru připojeného objektu.</
   <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1109"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1111"/>
       <source>Chamfer Edges</source>
       <translation>Sražené hrany</translation>
     </message>
@@ -2566,68 +2566,68 @@ Poznámka: Umístění je určeno v lokálním prostoru připojeného objektu.</
   <context>
     <name>PartGui::DlgExportStep</name>
     <message>
-      <location filename="../../DlgExportStep.ui" line="20"/>
+      <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
       <translation>Export</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="26"/>
+      <location filename="../../DlgExportStep.ui" line="36"/>
       <source>Units for export of STEP</source>
       <translation>Jednotky pro export formátu STEP</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="47"/>
+      <location filename="../../DlgExportStep.ui" line="44"/>
       <source>Millimeter</source>
       <translation>Milimetry</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="52"/>
+      <location filename="../../DlgExportStep.ui" line="49"/>
       <source>Meter</source>
       <translation>Metry</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="57"/>
+      <location filename="../../DlgExportStep.ui" line="54"/>
       <source>Inch</source>
       <translation>Palce</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="65"/>
+      <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
       <translation>Vypsat křivky v parametrickém prostoru povrchu</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="72"/>
+      <location filename="../../DlgExportStep.ui" line="123"/>
       <source>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</source>
-      <translation type="unfinished">Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</translation>
+      <translation>Odškrtněte pro přeskočení neviditelných objektů při exportu, což je užitečné pro CADy, které nepodporují STEP styl neviditelnosti.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="88"/>
+      <location filename="../../DlgExportStep.ui" line="104"/>
       <source>Check this option to keep the placement information when exporting
 a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</source>
-      <translation type="unfinished">Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</translation>
+      <translation>Zaškrtněte tuto možnost, chcete-li zachovat informace o umístění
+při exportu jediného objektu. Vezměte prosím na vědomí, že při
+importu souboru STEP nazpět bude umístění zakódováno do
+geometrie tvaru, místo aby zůstalo uvnitř vlastnosti umístění.</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="75"/>
+      <location filename="../../DlgExportStep.ui" line="126"/>
       <source>Export invisible objects</source>
       <translation>Exportovat neviditelné objekty</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="94"/>
+      <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
       <translation>Exportovat umístění jediného objektu</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="107"/>
+      <location filename="../../DlgExportStep.ui" line="91"/>
       <source>Use legacy export function</source>
       <translation>Použít funkci starého exportu</translation>
     </message>
     <message>
-      <location filename="../../DlgExportStep.ui" line="120"/>
+      <location filename="../../DlgExportStep.ui" line="29"/>
       <source>Scheme</source>
       <translation>Schéma</translation>
     </message>
@@ -2690,7 +2690,7 @@ za účelem minimalizace velikosti výsledného souboru STEP.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="230"/>
+      <location filename="../../DlgExtrusion.cpp" line="232"/>
       <source>Select</source>
       <translation>Vybrat</translation>
     </message>
@@ -2797,40 +2797,40 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
       <translation>Útvar</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="204"/>
+      <location filename="../../DlgExtrusion.cpp" line="206"/>
       <source>Selecting...</source>
       <translation>Vybírání...</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="452"/>
+      <location filename="../../DlgExtrusion.cpp" line="454"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="500"/>
-      <location filename="../../DlgExtrusion.cpp" line="506"/>
+      <location filename="../../DlgExtrusion.cpp" line="502"/>
+      <location filename="../../DlgExtrusion.cpp" line="508"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Vysunování selhalo.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="573"/>
+      <location filename="../../DlgExtrusion.cpp" line="575"/>
       <source>Object not found: %1</source>
       <translation>Objekt nebyl nalezen. %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="635"/>
+      <location filename="../../DlgExtrusion.cpp" line="637"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
       <translation>Nejsou vybrané útvary pro vysunutí. Nejprve nějaké vyberte.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="652"/>
+      <location filename="../../DlgExtrusion.cpp" line="654"/>
       <source>Unknown error</source>
       <translation>Neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="656"/>
+      <location filename="../../DlgExtrusion.cpp" line="658"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2839,12 +2839,12 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="658"/>
+      <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Mód směru je použitelný na hranu, ale hrana není připojená.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="681"/>
+      <location filename="../../DlgExtrusion.cpp" line="683"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
@@ -2853,12 +2853,12 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="691"/>
+      <location filename="../../DlgExtrusion.cpp" line="693"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Vektor směru vysunutí má nulovou délku. Musí být nenulový.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="702"/>
+      <location filename="../../DlgExtrusion.cpp" line="704"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Celková dálka vysunutí je nulová (délka1 == -délka2). Musí být nenulová.</translation>
     </message>
@@ -2956,7 +2956,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
       <translation>Hrany ke sražení</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="912"/>
+      <location filename="../../DlgFilletEdges.cpp" line="914"/>
       <source>Start length</source>
       <translation>Počáteční délka</translation>
     </message>
@@ -2968,7 +2968,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Chamfer Parameters</source>
-      <translation type="unfinished">Chamfer Parameters</translation>
+      <translation>Parametry sražení</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="273"/>
@@ -2997,7 +2997,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="283"/>
-      <location filename="../../DlgFilletEdges.cpp" line="914"/>
+      <location filename="../../DlgFilletEdges.cpp" line="916"/>
       <source>Start radius</source>
       <translation>Počáteční rádius</translation>
     </message>
@@ -3007,39 +3007,39 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
       <translation>Koncový rádius</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="761"/>
-      <location filename="../../DlgFilletEdges.cpp" line="821"/>
+      <location filename="../../DlgFilletEdges.cpp" line="763"/>
+      <location filename="../../DlgFilletEdges.cpp" line="823"/>
       <source>Edge%1</source>
       <translation>Hrana%1</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="904"/>
+      <location filename="../../DlgFilletEdges.cpp" line="906"/>
       <source>Length</source>
       <translation>Délka</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="906"/>
+      <location filename="../../DlgFilletEdges.cpp" line="908"/>
       <source>Radius</source>
       <translation>Poloměr</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="960"/>
+      <location filename="../../DlgFilletEdges.cpp" line="962"/>
       <source>No shape selected</source>
       <translation>Není vybrán útvar</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="961"/>
+      <location filename="../../DlgFilletEdges.cpp" line="963"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
       <translation>Není vybrán přípustný útvar. Prosím vyber přípustný útvar.</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1012"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1014"/>
       <source>No edge selected</source>
       <translation>Není vybraná hrana</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1013"/>
+      <location filename="../../DlgFilletEdges.cpp" line="1015"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Nevhodná entita pro zaoblení. Prosím vyber nejprve jednu nebo více hran.</translation>
@@ -3080,7 +3080,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export solids and shells as</source>
-      <translation type="unfinished">Export solids and shells as</translation>
+      <translation>Exportovat tělesa a skořepiny jako</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
@@ -3211,7 +3211,7 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="123"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Nepoužívat název instance. Užitečné pro některé starší soubory STEP s nesmysluplnými názvy automaticky generovaných instancí.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="126"/>
@@ -3386,7 +3386,7 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP input file</source>
-      <translation type="unfinished">STEP input file</translation>
+      <translation>Vstupní soubor STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -3909,7 +3909,7 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="250"/>
-      <location filename="../../DlgRevolution.cpp" line="463"/>
+      <location filename="../../DlgRevolution.cpp" line="465"/>
       <source>Select reference</source>
       <translation>Vybrat referenci</translation>
     </message>
@@ -3939,19 +3939,19 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
       <translation>Vytvoř těleso</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="183"/>
+      <location filename="../../DlgRevolution.cpp" line="185"/>
       <source>Object not found: %1</source>
       <translation>Objekt nebyl nalezen. %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="264"/>
+      <location filename="../../DlgRevolution.cpp" line="266"/>
       <source>Select a shape for revolution, first.</source>
       <translation type="unfinished">Select a shape for revolution, first.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="280"/>
-      <location filename="../../DlgRevolution.cpp" line="285"/>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <location filename="../../DlgRevolution.cpp" line="282"/>
+      <location filename="../../DlgRevolution.cpp" line="287"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3960,23 +3960,23 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
       <source>Unknown error</source>
       <translation>Neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="299"/>
+      <location filename="../../DlgRevolution.cpp" line="301"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>Osa rotace má nulovou délku. Musí být nenulová.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="309"/>
+      <location filename="../../DlgRevolution.cpp" line="311"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>Rozpětí úhlu rotace je nulové. Musí být nenulové.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="443"/>
-      <location filename="../../DlgRevolution.cpp" line="447"/>
+      <location filename="../../DlgRevolution.cpp" line="445"/>
+      <location filename="../../DlgRevolution.cpp" line="449"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -3985,7 +3985,7 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="459"/>
+      <location filename="../../DlgRevolution.cpp" line="461"/>
       <source>Selecting... (line or arc)</source>
       <translation>Vybírání... (čára nebo oblouk)</translation>
     </message>
@@ -4141,12 +4141,12 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation>Barva zrcadlení tvaru</translation>
+      <translation>Zrcadlení barvy tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation>Výchozí barva zrcadlení pro nové tvary</translation>
+      <translation>Výchozí zrcadlení barvy pro nové tvary</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
@@ -4161,12 +4161,12 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation>Odlesky tvaru</translation>
+      <translation>Lesklost tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation>Výchozí odlesky pro nové tvary</translation>
+      <translation>Výchozí lesklost pro nové tvary</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4240,10 +4240,10 @@ složeniny (pomalejší ale s podrobnějšími detaily).</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Spodní strana povrchu bude vykreslena stejným způsobem jako horní strana.
+Pokud není zaškrtnuto, záleží na možnosti "Barva podsvícení"
+(sekce nastavení Zobrazení -&gt; 3D pohled). Buď bude použita barva podsvícení,
+nebo černá.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4359,27 +4359,27 @@ bude použit normálový vektor roviny náčrtu</translation>
       <translation>Vybrané profily</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="177"/>
+      <location filename="../../TaskLoft.cpp" line="179"/>
       <source>Too few elements</source>
       <translation>Příliž málo elemnetů</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="177"/>
+      <location filename="../../TaskLoft.cpp" line="179"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Nejméně dva body, hrany, dráty, nebo plochy jsou požadovány.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="211"/>
+      <location filename="../../TaskLoft.cpp" line="213"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="240"/>
+      <location filename="../../TaskLoft.cpp" line="242"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Bod/Hrana/Drát/Plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="241"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Loft</source>
       <translation>Profilování</translation>
     </message>
@@ -4471,7 +4471,7 @@ bude použit normálový vektor roviny náčrtu</translation>
   <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-      <location filename="../../TaskOffset.cpp" line="204"/>
+      <location filename="../../TaskOffset.cpp" line="206"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -4499,7 +4499,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Persistent Section Cutting</source>
-      <translation type="unfinished">Persistent Section Cutting</translation>
+      <translation>Trvalý řez</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4736,69 +4736,69 @@ budou viditelné pouze vytvořené řezy</translation>
       <translation>Vybrané profily</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="328"/>
+      <location filename="../../TaskSweep.cpp" line="330"/>
       <source>Too few elements</source>
       <translation>Příliž málo elemnetů</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="328"/>
+      <location filename="../../TaskSweep.cpp" line="330"/>
       <source>At least one edge or wire is required.</source>
       <translation>Je vyžadován alespoň jedna hrana nebo křivka.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="332"/>
+      <location filename="../../TaskSweep.cpp" line="334"/>
       <source>Invalid selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="332"/>
+      <location filename="../../TaskSweep.cpp" line="334"/>
       <source>Select one or more edges from a single object.</source>
       <translation>Vyberte jeden nebo více hran z jednoho objektu.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="339"/>
+      <location filename="../../TaskSweep.cpp" line="341"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="339"/>
+      <location filename="../../TaskSweep.cpp" line="341"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' nemůže být použit jako profil a cesta.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="377"/>
+      <location filename="../../TaskSweep.cpp" line="379"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="410"/>
+      <location filename="../../TaskSweep.cpp" line="412"/>
       <source>Done</source>
       <translation>Hotovo</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="414"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Vyberte jednu nebo více spojitých hran v 3D pohledu a stiskněte "Hotovo"</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
-      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="436"/>
+      <location filename="../../TaskSweep.cpp" line="444"/>
       <source>Sweep path</source>
       <translation>Tažení po křivce</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="434"/>
-      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="436"/>
+      <location filename="../../TaskSweep.cpp" line="444"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Vybraná dráha Tažení je neplatná.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="454"/>
+      <location filename="../../TaskSweep.cpp" line="456"/>
       <source>Vertex/Wire</source>
       <translation>Vrchol/Drát</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="455"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Sweep</source>
       <translation>Tažení</translation>
     </message>
@@ -4837,7 +4837,7 @@ budou viditelné pouze vytvořené řezy</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="337"/>
+      <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Odsazení připojení (v lokálních souřadnicích):</translation>
     </message>
@@ -4914,77 +4914,77 @@ Poznámka: Umístění je určeno v lokálním souřadnicovém systému připoje
       <translation>Otočit strany</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="320"/>
+      <location filename="../../TaskAttacher.cpp" line="322"/>
       <source>OCC error: %1</source>
       <translation>OCC chyba: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="322"/>
+      <location filename="../../TaskAttacher.cpp" line="324"/>
       <source>unknown error</source>
       <translation>neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Attachment mode failed: %1</source>
       <translation>Režim připojení selhal: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Not attached</source>
       <translation>Není připojeno</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="333"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attached with mode %1</source>
       <translation>Připojené v módu %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="337"/>
+      <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odsazení připojení (neaktivní - nepřipojeno):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="634"/>
+      <location filename="../../TaskAttacher.cpp" line="636"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="641"/>
+      <location filename="../../TaskAttacher.cpp" line="643"/>
       <source>Edge</source>
       <translation>Hrana</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="648"/>
+      <location filename="../../TaskAttacher.cpp" line="650"/>
       <source>Vertex</source>
       <translation>Vrchol</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="713"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Selecting...</source>
       <translation>Vybírání...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="717"/>
+      <location filename="../../TaskAttacher.cpp" line="719"/>
       <source>Reference%1</source>
       <translation>Reference%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="764"/>
+      <location filename="../../TaskAttacher.cpp" line="766"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Není upravitelné, protože otočení odsazeného připojení je vázáno výrazy.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="830"/>
+      <location filename="../../TaskAttacher.cpp" line="832"/>
       <source>Reference combinations:</source>
       <translation>Kombinace referencí:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="847"/>
+      <location filename="../../TaskAttacher.cpp" line="849"/>
       <source>%1 (add %2)</source>
       <translation>%1 (přidat %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="852"/>
+      <location filename="../../TaskAttacher.cpp" line="854"/>
       <source>%1 (add more references)</source>
       <translation>%1 (přidat více referencí)</translation>
     </message>
@@ -5132,7 +5132,7 @@ Jednotlivé kontroly booleovských operací:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Přeskočit tuto stránku nastavení</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1084"/>
@@ -5242,12 +5242,12 @@ Jednotlivé kontroly booleovských operací:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1062"/>
+      <location filename="../../TaskAttacher.cpp" line="1064"/>
       <source>Attachment</source>
       <translation>Připojení</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1117"/>
+      <location filename="../../TaskAttacher.cpp" line="1119"/>
       <source>Datum dialog: Input error</source>
       <translation>Dialog hodnoty: Chyba vstupu</translation>
     </message>
@@ -5440,7 +5440,7 @@ Jednotlivé kontroly booleovských operací:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="480"/>
+      <location filename="../../TaskSweep.cpp" line="482"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Vyberte jeden nebo více profilů a vyberte hranu nebo křivku jako trajektorii tažení ve 3D pohledu.</translation>
@@ -5478,23 +5478,23 @@ in the 3D view for the sweep path.</source>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="89"/>
-      <location filename="../../TaskThickness.cpp" line="288"/>
-      <location filename="../../TaskThickness.cpp" line="298"/>
+      <location filename="../../TaskThickness.cpp" line="290"/>
+      <location filename="../../TaskThickness.cpp" line="300"/>
       <source>Thickness</source>
       <translation>Tloušťka</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="185"/>
+      <location filename="../../TaskThickness.cpp" line="187"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>Vyberte stěny zdrojového objektu a stiskněte tlačítko "Hotovo"</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="188"/>
+      <location filename="../../TaskThickness.cpp" line="190"/>
       <source>Done</source>
       <translation>Hotovo</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="253"/>
+      <location filename="../../TaskThickness.cpp" line="255"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -5562,12 +5562,12 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../Command.cpp" line="389"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</translation>
+      <translation>Vyberte prosím dva tvary nebo více. Nebo vyberte jednu složeninu složenou ze dvou nebo více tvarů pro výpočet jejich průniku.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>
       <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Vyberte prosím dva tvary nebo více. Nebo vyberte jednu složeninu složenou ze dvou nebo více tvarů ke sloučení.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="856"/>
@@ -6280,7 +6280,7 @@ Vytvoří "Filtr složenin" pro každý tvar.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
       <source>Reference{}</source>
-      <translation>Odkaz{}</translation>
+      <translation>Reference{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
@@ -6684,7 +6684,7 @@ K extrakci zbývajících částí může být použitý 'Filtr složenin'.</tra
   <context>
     <name>FaceMaker</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="75"/>
+      <location filename="../../../App/FaceMaker.cpp" line="79"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
       <translation>Tvar musí být drát, hrana nebo složenina. Bylo dodáno něco jiného.</translation>
     </message>
@@ -6692,12 +6692,12 @@ K extrakci zbývajících částí může být použitý 'Filtr složenin'.</tra
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="281"/>
+      <location filename="../../../App/FaceMaker.cpp" line="278"/>
       <source>Simple</source>
       <translation>Jednoduchý</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="286"/>
+      <location filename="../../../App/FaceMaker.cpp" line="283"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Vytvoří samostatnou rovinnou plochu z každého drátu. Bez podpory otvorů; dráty mohou ležet v různých rovinách.</translation>
     </message>
@@ -6731,12 +6731,12 @@ K extrakci zbývajících částí může být použitý 'Filtr složenin'.</tra
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="459"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="381"/>
       <source>Part Extrude facemaker</source>
       <translation>Vysunovací tvoření plochy</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="464"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="386"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Podporuje vytváření ploch s dírami, nepodporuje vnořování.</translation>
     </message>
@@ -6774,14 +6774,14 @@ K extrakci zbývajících částí může být použitý 'Filtr složenin'.</tra
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="73"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Vlastní vzhled:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="97"/>
       <source>When checked, you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Je-li zaškrtnuto, můžete vybrat více ploch
+přetažením výběrového obdélníku v 3D pohledu</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="87"/>

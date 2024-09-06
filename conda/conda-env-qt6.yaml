@@ -1,0 +1,8 @@
+name: freecad
+channels:
+- conda-forge
+dependencies:
+- conda-devenv
+- mamba
+- python==3.12.*
+- zstd

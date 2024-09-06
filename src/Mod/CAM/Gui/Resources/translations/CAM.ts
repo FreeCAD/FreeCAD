@@ -3241,13 +3241,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/TaskCAMSimulator.ui" line="115"/>
+        <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
         <location filename="../panels/TaskPathSimulator.ui" line="55"/>
         <source>Activate / resume simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/TaskCAMSimulator.ui" line="118"/>
+        <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
         <location filename="../panels/TaskPathSimulator.ui" line="58"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
@@ -3293,13 +3293,13 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/TaskCAMSimulator.ui" line="50"/>
+        <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
         <location filename="../panels/TaskPathSimulator.ui" line="229"/>
         <source>Accuracy:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../panels/TaskCAMSimulator.ui" line="105"/>
+        <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
         <location filename="../panels/TaskPathSimulator.ui" line="278"/>
         <source>Job:</source>
         <translation type="unfinished"></translation>
@@ -4558,37 +4558,32 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="179"/>
-        <source>A material for this object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../Path/Main/Stock.py" line="251"/>
+        <location filename="../../../Path/Main/Stock.py" line="245"/>
         <source>Length of this stock box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="257"/>
+        <location filename="../../../Path/Main/Stock.py" line="251"/>
         <source>Width of this stock box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="263"/>
+        <location filename="../../../Path/Main/Stock.py" line="257"/>
         <source>Height of this stock box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="303"/>
+        <location filename="../../../Path/Main/Stock.py" line="297"/>
         <source>Radius of this stock cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="309"/>
+        <location filename="../../../Path/Main/Stock.py" line="303"/>
         <source>Height of this stock cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="345"/>
+        <location filename="../../../Path/Main/Stock.py" line="339"/>
         <source>Internal representation of stock type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5441,7 +5436,7 @@ Default: 3 mm</source>
     </message>
     <message>
         <location filename="../../../Path/Op/Vcarve.py" line="331"/>
-        <source>Cutoff for removing colinear segments (degrees). 
+        <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5650,12 +5645,12 @@ Default: 3 mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="612"/>
+        <location filename="../../../Path/Main/Stock.py" line="606"/>
         <source>Unsupported stock type named {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Stock.py" line="620"/>
+        <location filename="../../../Path/Main/Stock.py" line="614"/>
         <source>Unsupported PathStock template version {}</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6823,12 +6818,12 @@ Aborting op creation</source>
     </message>
     <message>
         <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-        <source>The currently selected unit schema: 
+        <source>The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -6899,7 +6894,7 @@ For example:
     <name>CAM_Inspect</name>
     <message>
         <location filename="../../../Path/Main/Gui/Inspect.py" line="145"/>
-        <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+        <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7216,7 +7211,7 @@ For example:
     </message>
     <message>
         <location filename="../../../Path/Main/Sanity/Sanity.py" line="382"/>
-        <source>Tool number {} is a legacy tool. Legacy tools not 
+        <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7264,28 +7259,28 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="311"/>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="367"/>
         <location filename="../../../Path/Main/Gui/Simulator.py" line="635"/>
         <source>Simulate G-code on stock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="270"/>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="316"/>
         <source>High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="272"/>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="318"/>
         <source>Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="274"/>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="320"/>
         <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="307"/>
+        <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="363"/>
         <source>New CAM Simulator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8357,7 +8352,7 @@ For example:
     <message>
         <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
         <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
         <translation type="unfinished"></translation>
     </message>

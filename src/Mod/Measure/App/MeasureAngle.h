@@ -41,7 +41,7 @@ namespace Measure
 {
 
 
-class MeasureExport MeasureAngle : public Measure::MeasureBaseExtendable<Part::MeasureAngleInfo>
+class MeasureExport MeasureAngle: public Measure::MeasureBaseExtendable<Part::MeasureAngleInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureAngle);
 
@@ -54,9 +54,10 @@ public:
     App::PropertyLinkSub Element2;
     App::PropertyAngle Angle;
 
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "MeasureGui::ViewProviderMeasureAngle";
     }
 
@@ -64,10 +65,16 @@ public:
     static bool isPrioritizedSelection(const App::MeasureSelection& selection);
     void parseSelection(const App::MeasureSelection& selection) override;
 
-    std::vector<std::string> getInputProps() override {return {"Element1", "Element2"};}
-    App::Property* getResultProp() override {return &this->Angle;}
+    std::vector<std::string> getInputProps() override
+    {
+        return {"Element1", "Element2"};
+    }
+    App::Property* getResultProp() override
+    {
+        return &this->Angle;
+    }
 
-   // Return the object we are measuring
+    // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;
 
 
@@ -81,13 +88,12 @@ public:
     // Location Vectors
     gp_Vec location1();
     gp_Vec location2();
-    
-private:
 
+private:
     void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Measure
+}  // namespace Measure
 
 
-#endif // APP_MEASUREANGLE_H
+#endif  // APP_MEASUREANGLE_H

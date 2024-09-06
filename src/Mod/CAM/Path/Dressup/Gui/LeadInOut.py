@@ -126,9 +126,7 @@ class ObjectDressup:
             "App::PropertyBool",
             "IncludeLayers",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Apply LeadInOut to layers within an operation"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Apply LeadInOut to layers within an operation"),
         )
         obj.Proxy = self
 
@@ -164,15 +162,13 @@ class ObjectDressup:
 
         if obj.Length <= 0:
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null")
-                + "\n"
+                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null") + "\n"
             )
             obj.Length = 0.1
 
         if obj.LengthOut <= 0:
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null")
-                + "\n"
+                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null") + "\n"
             )
             obj.LengthOut = 0.1
 
@@ -203,22 +199,18 @@ class ObjectDressup:
 
         # move to clearance height
         if first:
-            travel.append(PathLanguage.MoveStraight(
-                None, "G0", {"Z": op.ClearanceHeight.Value}))
+            travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": op.ClearanceHeight.Value}))
 
         # move to correct xy-position
-        travel.append(PathLanguage.MoveStraight(
-            None, "G0", {"X": pos.x, "Y": pos.y}))
+        travel.append(PathLanguage.MoveStraight(None, "G0", {"X": pos.x, "Y": pos.y}))
 
         # move to correct z-position (either rapidly or in two steps)
         if obj.RapidPlunge:
             travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": pos.z}))
         else:
             if first or not obj.KeepToolDown:
-                travel.append(PathLanguage.MoveStraight(
-                    None, "G0", {"Z": op.SafeHeight.Value}))
-            travel.append(PathLanguage.MoveStraight(
-                None, "G1", {"Z": pos.z, "F": vertfeed}))
+                travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": op.SafeHeight.Value}))
+            travel.append(PathLanguage.MoveStraight(None, "G1", {"Z": pos.z, "F": vertfeed}))
 
         return travel
 
@@ -228,8 +220,7 @@ class ObjectDressup:
 
         # move to clearance height
         if last or not obj.KeepToolDown:
-            travel.append(PathLanguage.MoveStraight(
-                None, "G0", {"Z": op.ClearanceHeight.Value}))
+            travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": op.ClearanceHeight.Value}))
 
         return travel
 
@@ -272,8 +263,7 @@ class ObjectDressup:
             length = obj.Length.Value
             angle = move.anglesOfTangents()[0]
             tangent = -self.angleToVector(angle) * length
-            normal = self.angleToVector(
-                angle + self.getArcDirection(obj)) * length
+            normal = self.angleToVector(angle + self.getArcDirection(obj)) * length
 
             # prepend the selected lead-in
             if obj.StyleOn == "Arc":
@@ -316,8 +306,7 @@ class ObjectDressup:
             length = obj.LengthOut.Value
             angle = move.anglesOfTangents()[1]
             tangent = self.angleToVector(angle) * length
-            normal = self.angleToVector(
-                angle + self.getArcDirection(obj)) * length
+            normal = self.angleToVector(angle + self.getArcDirection(obj)) * length
 
             # append the selected lead-out
             if obj.StyleOff == "Arc":
@@ -340,9 +329,11 @@ class ObjectDressup:
         return lead
 
     def isCuttingMove(self, obj, instr):
-        return (instr.isMove()
-                and not instr.isRapid()
-                and (not obj.IncludeLayers or not instr.isPlunge()))
+        return (
+            instr.isMove()
+            and not instr.isRapid()
+            and (not obj.IncludeLayers or not instr.isPlunge())
+        )
 
     def findLastCuttingMoveIndex(self, obj, source):
         for i in range(len(source) - 1, -1, -1):
@@ -351,8 +342,7 @@ class ObjectDressup:
         return None
 
     def generateLeadInOutCurve(self, obj):
-        source = PathLanguage.Maneuver.FromPath(
-            PathUtils.getPathWithPlacement(obj.Base)).instr
+        source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
         maneuver = PathLanguage.Maneuver()
 
         # Knowing weather a given instruction is the first cutting move is easy,
@@ -479,21 +469,17 @@ class CommandPathDressupLeadInOut:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Please select one toolpath object")
-                + "\n"
+                translate("CAM_DressupLeadInOut", "Please select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "The selected object is not a toolpath")
-                + "\n"
+                translate("CAM_DressupLeadInOut", "The selected object is not a toolpath") + "\n"
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Please select a Profile object")
-            )
+            Path.Log.error(translate("CAM_DressupLeadInOut", "Please select a Profile object"))
             return
 
         # everything ok!
@@ -512,9 +498,7 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Dressup.Gui.LeadInOut.ViewProviderDressup(obj.ViewObject)"
         )
-        FreeCADGui.doCommand(
-            "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
-        )
+        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
         App.ActiveDocument.commitTransaction()
         App.ActiveDocument.recompute()
 

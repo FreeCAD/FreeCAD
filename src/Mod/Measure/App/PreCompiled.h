@@ -46,4 +46,4 @@
 
 #endif  //_PreComp_
 
-#endif // MEASUREGUI_PRECOMPILED_H
+#endif  // MEASUREGUI_PRECOMPILED_H

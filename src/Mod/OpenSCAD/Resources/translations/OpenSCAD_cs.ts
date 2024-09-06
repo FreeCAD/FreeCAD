@@ -242,7 +242,7 @@
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <location filename="../../OpenSCADCommands.py" line="370"/>
       <source>as Mesh</source>
-      <translation>jako Mesh</translation>
+      <translation>jako Síť</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="352"/>
@@ -276,7 +276,7 @@
       <location filename="../../OpenSCADCommands.py" line="482"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Mesh Boolean</source>
-      <translation>Mesh Boolean</translation>
+      <translation>Boolean sítě</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="487"/>

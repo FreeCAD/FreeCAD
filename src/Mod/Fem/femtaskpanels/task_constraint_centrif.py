@@ -36,16 +36,16 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of FemConstraintCentrif objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -139,21 +139,14 @@ class _TaskPanel:
         self.obj.RotationFrequency = self.rotation_frequency
         self.obj.RotationAxis = self.AxisSelectionWidget.references
         self.obj.References = self.BodySelectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
-
-    def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-
         self.AxisSelectionWidget.finish_selection()
         self.BodySelectionWidget.finish_selection()
+        return super().accept()
 
-        doc.resetEdit()
+    def reject(self):
+        self.AxisSelectionWidget.finish_selection()
+        self.BodySelectionWidget.finish_selection()
+        return super().reject()
 
     def init_parameter_widget(self):
         self.rotation_frequency = self.obj.RotationFrequency

@@ -401,6 +401,18 @@ Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
 {
     if(!pcObject)
         throw Base::RuntimeError("View provider detached");
+
+    if (!pcObject->isAttachedToDocument()) {
+        // Check if view provider is attached to a document as an annotation
+        for (auto doc : App::GetApplication().getDocuments()) {
+            auto guiDoc = Gui::Application::Instance->getDocument(doc);
+            if (guiDoc->isAnnotationViewProvider(this)) {
+                return guiDoc->getActiveView();
+            }
+        }
+        return nullptr;
+    }
+
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
     return pGuiDoc->getActiveView();
