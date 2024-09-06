@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <list>
+#include <QElapsedTimer>
 #include <QSplashScreen>
 
 namespace Gui
@@ -45,6 +47,7 @@ public:
 
     void show();
     void setShowMessages(bool on);
+    void pushMessage(const QString& msg);
 
     static QPixmap defaultSplashImage();
     static QPixmap splashImage();
@@ -54,7 +57,18 @@ protected:
     void drawContents(QPainter* painter) override;
 
 private:
+    void updateLayout();
+    int lineStep() const;
+
     SplashObserver* messages;
+    std::list<QString> lines;
+    std::list<QString>::size_type lineCount {};
+    int startX {}, startY {}, maxWidth {};
+    QRect textRect;
+    Qt::Alignment hAlignment;
+    Qt::Alignment vAlignment;
+    QColor textColor;
+    QElapsedTimer repaintTimer;
 };
 
 }  // namespace Gui
