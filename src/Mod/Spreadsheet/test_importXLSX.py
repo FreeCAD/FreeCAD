@@ -3,6 +3,7 @@ from unittest.mock import patch, MagicMock
 
 from importXLSX import FormulaTranslator, getText, handleStrings, open
 
+
 class TestFormulaTranslator(unittest.TestCase):
     def test_translate_expressions(self):
         # With
@@ -82,7 +83,7 @@ class TestFormulaTranslator(unittest.TestCase):
         formulas_and_expressions = [
             (
                 "IF(a<b+c,0.1+SIN(0.5),0.3+MAX(COS(0.2),SIN(0.1)))",
-                "(a<b+c?0.1+sin(1rad*(0.5)):0.3+max(cos(1rad*(0.2)),sin(1rad*(0.1))))"
+                "(a<b+c?0.1+sin(1rad*(0.5)):0.3+max(cos(1rad*(0.2)),sin(1rad*(0.1))))",
             ),
         ]
 
