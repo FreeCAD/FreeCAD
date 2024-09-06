@@ -79,21 +79,19 @@ bool LineSet::isDashed()
 //! calculates the apparent start point (ie start of overlay line) for dashed lines
 Base::Vector3d LineSet::calcApparentStart(TechDraw::BaseGeomPtr g)
 {
-    Base::Vector3d result;
     Base::Vector3d start(g->getStartPoint().x, g->getStartPoint().y, 0.0);
     double angle = getPATLineSpec().getAngle();
     if (angle == 0.0) {             //horizontal
-        result = Base::Vector3d(getMinX(), start.y, 0.0);
+        return Base::Vector3d(getMinX(), start.y, 0.0);
     } else if ((angle == 90.0) ||
                (angle == -90.0)) {  //vertical
-        result = Base::Vector3d(start.x, getMinY(), 0.0);
+        return Base::Vector3d(start.x, getMinY(), 0.0);
     } else {
         double slope = getPATLineSpec().getSlope();
         double y     = getMinY();
         double x = ((y - start.y) / slope) + start.x;
-        result = Base::Vector3d(x, y,0);
+        return Base::Vector3d(x, y,0);
     }
-    return result;
 }
 
 Base::Vector3d LineSet::getUnitDir()
@@ -132,20 +130,18 @@ Base::Vector3d LineSet::getUnitOrtho()
 
 Base::Vector3d LineSet::findAtomStart()
 {
-    Base::Vector3d result;
     Base::Vector3d origin = getOrigin();
     double angle = getAngle();
     if (angle == 0.0) {
-        result = Base::Vector3d(getMinX(), origin.y, 0.0);
+        return Base::Vector3d(getMinX(), origin.y, 0.0);
     } else if ( (angle == 90.0) ||
                 (angle == -90.0) ) {
-        result = Base::Vector3d(origin.x, getMinY(), 0.0);
+        return Base::Vector3d(origin.x, getMinY(), 0.0);
     } else {
         double minY = getMinY();
         double x = origin.x - (origin.y - minY)/getSlope();
-        result = Base::Vector3d(x, minY, 0.0);
+        return Base::Vector3d(x, minY, 0.0);
     }
-    return result;
 }
 
 Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &offset, double scale)
