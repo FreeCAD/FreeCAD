@@ -60,8 +60,12 @@
 
 FC_LOG_LEVEL_INIT("Parameter", true, true)
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 using namespace Base;
 
 
@@ -76,7 +80,6 @@ using namespace Base;
 // - DOMPrintErrorHandler
 // - XStr
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 class DOMTreeErrorReporter: public ErrorHandler
 {

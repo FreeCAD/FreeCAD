@@ -31,12 +31,22 @@
 
 #include <Base/Exception.h>
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+namespace XERCES_CPP_NAMESPACE
+{
+class DOMNode;
+class DOMElement;
+class DOMDocument;
+}  // namespace XERCES_CPP_NAMESPACE
+#else
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMNode;
 class DOMElement;
 class DOMDocument;
 XERCES_CPP_NAMESPACE_END
+#endif
 
 // Helper class
 class BaseExport XMLTools
