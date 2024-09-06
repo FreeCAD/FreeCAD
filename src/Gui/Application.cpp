@@ -2304,6 +2304,14 @@ void Application::runApplication()
     Base::Console().Log("Finish: Event loop left\n");
 }
 
+bool Application::hiddenMainWindow()
+{
+    const std::map<std::string,std::string>& cfg = App::Application::Config();
+    auto it = cfg.find("StartHidden");
+
+    return it != cfg.end();
+}
+
 bool Application::testStatus(Status pos) const
 {
     return d->StatusBits.test((size_t)pos);
