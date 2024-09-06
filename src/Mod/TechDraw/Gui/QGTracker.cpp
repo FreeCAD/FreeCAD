@@ -483,10 +483,7 @@ QColor QGTracker::getTrackerColor()
 
 double QGTracker::getTrackerWeight()
 {
-    double result = 1.0;
-    result = Preferences::getPreferenceGroup("Tracker")->GetFloat("TrackerWeight", 4.0);
-
-    return result;
+    return Preferences::getPreferenceGroup("Tracker")->GetFloat("TrackerWeight", 4.0);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGTracker.cpp>
