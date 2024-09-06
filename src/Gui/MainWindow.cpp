@@ -1630,9 +1630,7 @@ void MainWindow::delayedStartup()
         throw;
     }
 
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    auto it = cfg.find("StartHidden");
-    if (it != cfg.end()) {
+    if (Application::hiddenMainWindow()) {
         QApplication::quit();
         return;
     }
