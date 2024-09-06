@@ -205,8 +205,7 @@ std::string CosmeticExtension::addCosmeticVertex(const Base::Vector3d& pos, bool
     TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(tempPos);
     verts.push_back(cv);
     CosmeticVertexes.setValues(verts);
-    std::string result = cv->getTagAsString();
-    return result;
+    return cv->getTagAsString();
 }
 
 /// retrieve a cosmetic vertex by unique id
