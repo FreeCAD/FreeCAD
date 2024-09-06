@@ -136,7 +136,7 @@ public:
 
     ParameterGrp::handle handle;
     QString activeStyleSheet;
-    bool hideTab;
+    bool hideTab = false;
 
 private:
     QString detectOverlayStyleSheetFileName() const {
