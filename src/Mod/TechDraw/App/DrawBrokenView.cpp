@@ -240,11 +240,8 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
 TopoDS_Shape DrawBrokenView::compressShape(const TopoDS_Shape& shapeToCompress) const
 {
     // Base::Console().Message("DBV::compressShape()\n");
-    TopoDS_Shape result;
     TopoDS_Shape compressed = compressHorizontal(shapeToCompress);
-    result = compressVertical(compressed);
-
-    return result;
+    return compressVertical(compressed);
 }
 
 //! move the broken pieces in the input shape "right" to close up the removed areas.
