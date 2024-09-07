@@ -1394,14 +1394,16 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         }
 
         auto &info = *nodeArray[nodeIdx];
-        ss << info.linkInfo->getLinkedName() << '.';
+        if (info.linkInfo) {
+            ss << info.linkInfo->getLinkedName() << '.';
 
-        if(info.isLinked()) {
-            if (!info.linkInfo->getElementPicked(false, childType, pp, ss)) {
-                return false;
+            if(info.isLinked()) {
+                if (!info.linkInfo->getElementPicked(false, childType, pp, ss)) {
+                    return false;
+                }
+                subname = ss.str();
+                return true;
             }
-            subname = ss.str();
-            return true;
         }
     }
 
