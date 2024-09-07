@@ -3323,7 +3323,46 @@ void Application::ExtractUserPath()
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
+// TODO: Consider using this for all UNIX-like OSes
+#if defined(__OpenBSD__)
+#include <cstdio>
+#include <cstdlib>
+#include <sys/param.h>
+#include <QCoreApplication>
+
+std::string Application::FindHomePath(const char* sCall)
+{
+    // We have three ways to start this application either use one of the two executables or
+    // import the FreeCAD.so module from a running Python session. In the latter case the
+    // Python interpreter is already initialized.
+    std::string absPath;
+    std::string homePath;
+    if (Py_IsInitialized()) {
+        // Note: realpath is known to cause a buffer overflow because it
+        // expands the given path to an absolute path of unknown length.
+        // Even setting PATH_MAX does not necessarily solve the problem
+        // for sure but the risk of overflow is rather small.
+        char resolved[PATH_MAX];
+        char* path = realpath(sCall, resolved);
+        if (path)
+            absPath = path;
+    }
+    else {
+        int argc = 1;
+        QCoreApplication app(argc, (char**)(&sCall));
+        absPath = QCoreApplication::applicationFilePath().toStdString();
+    }
+
+    // should be an absolute path now
+    std::string::size_type pos = absPath.find_last_of("/");
+    homePath.assign(absPath,0,pos);
+    pos = homePath.find_last_of("/");
+    homePath.assign(homePath,0,pos+1);
+
+    return homePath;
+}
+
+#elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
 #include <cstdio>
 #include <cstdlib>
 #include <sys/param.h>
