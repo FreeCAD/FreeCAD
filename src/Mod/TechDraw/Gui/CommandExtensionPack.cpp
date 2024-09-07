@@ -61,6 +61,7 @@
 #include <Mod/TechDraw/App/LineGenerator.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
+#include "CommandUtil.h"
 #include "DrawGuiUtil.h"
 #include "QGSPage.h"
 #include "TaskSelectLineAttributes.h"
@@ -91,8 +92,7 @@ void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, 
 double _getAngle(Base::Vector3d center, Base::Vector3d point);
 std::vector<Base::Vector3d> _getVertexPoints(const std::vector<std::string>& SubNames,
                                              TechDraw::DrawViewPart* objFeat);
-bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
-               TechDraw::DrawViewPart*& objFeat, const std::string& message);
+bool _checkSel(Gui::Command* cmd, const std::string& message);
 std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);
 
 //===========================================================================
@@ -104,7 +104,7 @@ void execHoleCircle(Gui::Command* cmd)
     //create centerlines of a hole/bolt circle
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Hole Circle"))) {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Hole Circle"))) {
         return;
     }
     const std::vector<std::string> SubNames = selection[0].getSubNames();
@@ -203,7 +203,7 @@ void execCircleCenterLines(Gui::Command* cmd)
     // create circle centerlines
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Circle Centerlines"))) {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Circle Centerlines"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
@@ -384,7 +384,7 @@ void execThreadHoleSide(Gui::Command* cmd)
     // add cosmetic thread to side view of hole
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Side"))) {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Side"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Side"));
@@ -438,7 +438,7 @@ void execThreadBoltSide(Gui::Command* cmd)
     // add cosmetic thread to side view of bolt
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Side")))  {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Side")))  {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Side"));
@@ -492,7 +492,7 @@ void execThreadHoleBottom(Gui::Command* cmd)
     // add cosmetic thread to bottom view of hole
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Bottom"))) {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Bottom"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Bottom"));
@@ -546,7 +546,7 @@ void execThreadBoltBottom(Gui::Command* cmd)
     // add cosmetic thread to bottom view of bolt
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Bottom")))  {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Thread Bolt Bottom")))  {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Bolt Bottom"));
@@ -794,7 +794,7 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Change Line Attributes"))) {
+    if (!_checkSel(this, QT_TRANSLATE_NOOP("Command","TechDraw Change Line Attributes"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change Line Attributes"));
@@ -855,7 +855,7 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
     //Base::Console().Message("VertexAtIntersection started\n");
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Intersection Vertex(es)")))  {
+    if (!_checkSel(this, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Intersection Vertex(es)")))  {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Intersection Vertex(es)"));
@@ -901,7 +901,7 @@ void execDrawCosmArc(Gui::Command* cmd)
     //draw a cosmetic arc of circle
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Arc")))  {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Arc")))  {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Arc"));
@@ -974,7 +974,7 @@ void execDrawCosmCircle(Gui::Command* cmd)
     //draw a cosmetic circle
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle"))) {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle"));
@@ -1037,7 +1037,7 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
     //draw a cosmetic circle through 3 points
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle 3 Points")))  {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle 3 Points")))  {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle 3 Points"));
@@ -1228,7 +1228,7 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
     // create a line parallel or perpendicular to another line
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Line Parallel/Perpendicular"))) {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Line Parallel/Perpendicular"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Line Parallel/Perpendicular"));
@@ -1477,7 +1477,7 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Lock/Unlock View")))  {
+    if (!_checkSel(this, QT_TRANSLATE_NOOP("Command","TechDraw Lock/Unlock View")))  {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
@@ -1505,7 +1505,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
     // extend or shorten a cosmetic line or a centerline
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Extend/Shorten Line"))) {
+    if (!_checkSel(cmd, QT_TRANSLATE_NOOP("Command","TechDraw Extend/Shorten Line"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend/Shorten Line"));
@@ -1777,7 +1777,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw calculate selected area")))  {
+    if (!_checkSel(this, QT_TRANSLATE_NOOP("Command","TechDraw calculate selected area")))  {
         return;
     }
 
@@ -1909,7 +1909,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart *objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command", "TechDraw calculate selected arc length"))) {
+    if (!_checkSel(this, QT_TRANSLATE_NOOP("Command", "TechDraw calculate selected arc length"))) {
         return;
     }
 
@@ -2055,25 +2055,20 @@ std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
     return featName;
 }
 
-bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
-               TechDraw::DrawViewPart*& objFeat, const std::string& message)
+bool _checkSel(Gui::Command* cmd, const std::string& message)
 {
-    // check selection of getSelectionEx() and selection[0].getObject()
-    selection = cmd->getSelection().getSelectionEx();
-    if (selection.empty()) {
+    if (cmd->getSelection().getSelectionEx().empty()) {
         // message is translated in caller
         QMessageBox::warning(Gui::getMainWindow(), QString::fromUtf8(message.c_str()),
                              QObject::tr("Selection is empty"));
         return false;
     }
 
-    objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
-    if (!objFeat) {
+    if (!CommandUtil::getDrawViewPart(cmd)) {
         QMessageBox::warning(Gui::getMainWindow(), QString::fromUtf8(message.c_str()),
                              QObject::tr("No object selected"));
         return false;
     }
-
     return true;
 }
 

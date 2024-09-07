@@ -48,6 +48,7 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "CommandUtil.h"
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
 #include "TaskCenterLine.h"
@@ -713,18 +714,15 @@ void execCenterLine(Gui::Command* cmd)
     }
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart *baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if (!baseFeat) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                                 QObject::tr("No base View in Selection."));
-            return;
-        }
-    }
-    else {
+    if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("You must select a base View for the line."));
+    }
+
+    TechDraw::DrawViewPart* baseFeat = CommandUtil::getDrawViewPart(cmd);
+    if (!baseFeat) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                                QObject::tr("No base View in Selection."));
         return;
     }
 
@@ -901,14 +899,13 @@ void exec2PointCenterLine(Gui::Command* cmd)
     }
 
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("You must select a base View for the line."));
         return;
     }
 
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    TechDraw::DrawViewPart* baseFeat = CommandUtil::getDrawViewPart(cmd);
     if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("No base View in Selection."));
@@ -1423,14 +1420,13 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
     }
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("You must select a View and/or lines."));
         return;
     }
 
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    TechDraw::DrawViewPart* baseFeat = CommandUtil::getDrawViewPart(this);
     if (!baseFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                 QObject::tr("No View in Selection."));
@@ -1500,28 +1496,20 @@ void CmdTechDrawShowAll::activated(int iMsg)
         return;
     }
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Nothing selected"));
-        return;
-    }
-
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if (!baseFeat)  {
+    TechDraw::DrawViewPart* dvp = CommandUtil::getDrawViewPart(this);
+    if (!dvp)  {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("No Part Views in this selection"));
         return;
     }
 
-    Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
+    Gui::ViewProvider* vp = QGIView::getViewProvider(dvp);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
     if (partVP) {
         bool state = partVP->ShowAllEdges.getValue();
         state = !state;
         partVP->ShowAllEdges.setValue(state);
-        baseFeat->requestPaint();
+        dvp->requestPaint();
     }
 }
 

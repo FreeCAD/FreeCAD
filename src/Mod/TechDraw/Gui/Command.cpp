@@ -65,6 +65,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
 
+#include "CommandUtil.h"
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "QGIViewPart.h"
@@ -828,20 +829,14 @@ bool CmdTechDrawSectionView::isActive()
 
 void execSimpleSection(Gui::Command* cmd)
 {
-    std::vector<App::DocumentObject*> baseObj =
-        cmd->getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (baseObj.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), tr("Wrong selection"),
-                             tr("Select at least 1 DrawViewPart object as Base."));
-        return;
-    }
-
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
+    TechDraw::DrawViewPart* dvp = CommandUtil::getDrawViewPart(cmd);
+    if (!page || !dvp) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            tr("Wrong selection"), tr("Select at least 1 DrawViewPart object as Base."));
         return;
     }
 
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
     Gui::Control().showDialog(new TaskDlgSectionView(dvp));
 
     cmd->updateActive();//ok here since dialog doesn't call doc.recompute()
@@ -995,15 +990,12 @@ void CmdTechDrawDetailView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::vector<App::DocumentObject*> baseObj =
-        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (baseObj.empty()) {
+    TechDraw::DrawViewPart* dvp = CommandUtil::getDrawViewPart(this);
+    if(!dvp) {
         QMessageBox::warning(Gui::getMainWindow(), tr("Wrong selection"),
                              tr("Select at least 1 DrawViewPart object as Base."));
         return;
     }
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*(baseObj.begin()));
-
     Gui::Control().showDialog(new TaskDlgDetail(dvp));
 }
 
@@ -1189,9 +1181,8 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
 
 bool _checkDrawViewPartBalloon(Gui::Command* cmd)
 {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
-    if (!objFeat) {
+    TechDraw::DrawViewPart* dvp = CommandUtil::getDrawViewPart(cmd);
+    if (!dvp) {
         QMessageBox::warning(Gui::getMainWindow(), tr("Incorrect selection"),
                              tr("No View of a Part in selection."));
         return false;

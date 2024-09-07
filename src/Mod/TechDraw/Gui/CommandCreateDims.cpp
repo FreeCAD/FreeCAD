@@ -60,6 +60,7 @@
 #include <Mod/TechDraw/App/LandmarkDimension.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "CommandUtil.h"
 #include "CommandExtensionDims.h"
 #include "DimensionValidators.h"
 #include "DrawGuiUtil.h"
@@ -85,7 +86,6 @@ using DimensionType = TechDraw::DrawViewDimension::DimensionType;
 
 //internal functions
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
-bool _checkDrawViewPart(Gui::Command* cmd);
 
 bool isDimCmdActive(Gui::Command* cmd)
 {
@@ -2087,8 +2087,7 @@ bool CmdTechDrawHorizontalExtentDimension::isActive()
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
+    if (!CommandUtil::getDrawViewPart(cmd)) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),
                              QObject::tr("No View of a Part in selection."));
@@ -2381,8 +2380,7 @@ void CreateTechDrawCommandsDims()
 
 void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometryType> acceptableDimensionGeometrys)
 {
-    bool result = _checkDrawViewPart(cmd);
-    if (!result) {
+    if (!CommandUtil::getDrawViewPart(cmd)) {
         QMessageBox::warning(Gui::getMainWindow(),
             QObject::tr("Incorrect selection"),
             QObject::tr("No View of a Part in selection."));
@@ -2570,16 +2568,4 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
         return false;
     }
     return true;
-}
-
-bool _checkDrawViewPart(Gui::Command* cmd)
-{
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    for (auto& sel : selection) {
-        auto dvp = dynamic_cast<TechDraw::DrawViewPart*>(sel.getObject());
-        if (dvp) {
-            return true;
-        }
-    }
-    return false;
 }

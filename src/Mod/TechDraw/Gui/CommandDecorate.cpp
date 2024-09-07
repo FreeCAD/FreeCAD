@@ -47,6 +47,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "CommandUtil.h"
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
@@ -86,11 +87,12 @@ void CmdTechDrawHatch::activated(int iMsg)
         return;
     }
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    TechDraw::DrawViewPart* partFeat = CommandUtil::getDrawViewPart(this);
     if (!partFeat) {
         return;
     }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     const std::vector<std::string> &subNames = selection[0].getSubNames();
     TechDraw::DrawPage* page = partFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
@@ -181,12 +183,12 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     if (!_checkSelectionHatch(this)) {                 //same requirements as hatch - page, DrawViewXXX, face
         return;
     }
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    TechDraw::DrawViewPart* objFeat = CommandUtil::getDrawViewPart(this);
     if (!objFeat) {
         return;
     }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     const std::vector<std::string> &subNames = selection[0].getSubNames();
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
@@ -370,7 +372,7 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
         return false;
     }
 
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+    TechDraw::DrawViewPart* objFeat = CommandUtil::getDrawViewPart(cmd);
     if(!objFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("No TechDraw object in selection"));
