@@ -363,10 +363,7 @@ class GmshTools:
         Console.PrintMessage("  " + self.gmsh_bin + "\n")
 
     def get_group_data(self):
-        # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
-        #       some output message or make them work together
-
-        # mesh group objects
+        # mesh group objects. Only one shape type is expected
         if not self.mesh_obj.MeshGroupList:
             # print("  No mesh group objects.")
             pass
@@ -674,9 +671,8 @@ class GmshTools:
 
                 for phys in ele:
                     if ele[phys]:
-                        name = group + "_{}".format(phys)
                         items = "{" + ", ".join(ele[phys]) + "}"
-                        geo.write('Physical {}("{}") = {};\n'.format(phys, name, items))
+                        geo.write('Physical {}("{}") = {};\n'.format(phys, group, items))
 
             geo.write("\n")
 
