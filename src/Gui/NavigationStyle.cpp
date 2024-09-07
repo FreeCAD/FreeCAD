@@ -516,12 +516,14 @@ void NavigationStyle::viewAll()
     }
 }
 
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
 void NavigationStyle::findBoundingSphere() {
     // Find a bounding sphere for the scene
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->getSceneGraph());
     boundingSphere.circumscribe(action.getBoundingBox());
 }
+#endif
 
 /** Rotate the camera by the given amount, then reposition it so we're still pointing at the same
  * focal point
@@ -554,8 +556,9 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
     // Reposition camera so the rotation center stays in the same place
     camera->position = rotationCenter + newRotationCenterDistance;
 
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     // Fix issue with near clipping in orthogonal view
-     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+    if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
 
          // The center of the bounding sphere in camera coordinate system
          SbVec3f center;
@@ -572,6 +575,7 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
          camera->farDistance = 2 * boundingSphere.getRadius();
          camera->focalDistance = camera->focalDistance.getValue() - repositionDistance;
      }
+#endif
 }
 
 void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
@@ -782,7 +786,10 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         // Rotation mode is WindowCenter
         if (!rotationCenterMode) {
             viewer->changeRotationCenterPosition(getFocalPoint());
+
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
             findBoundingSphere();
+#endif
         }
     }
 }
@@ -1405,7 +1412,11 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         // first starting a drag operation.
         animator->stop();
         viewer->showRotationCenter(true);
+
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
         findBoundingSphere();
+#endif
+
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();
