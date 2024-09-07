@@ -58,7 +58,10 @@ FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRota
 
 void FixedTimeAnimation::initialize()
 {
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     navigation->findBoundingSphere();
+#endif
+
     prevAngle = 0;
     prevTranslation = SbVec3f(0, 0, 0);
 
@@ -135,7 +138,10 @@ SpinningAnimation::SpinningAnimation(NavigationStyle* navigation, const SbVec3f&
 
 void SpinningAnimation::initialize()
 {
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     navigation->findBoundingSphere();
+#endif
+
     prevAngle = 0;
 
     navigation->setViewing(true);
