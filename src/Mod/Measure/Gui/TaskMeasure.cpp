@@ -57,6 +57,7 @@ TaskMeasure::TaskMeasure()
                                               nullptr);
 
     showDelta = new QCheckBox();
+    showDeltaLabel = new QLabel(tr("Show Delta:"));
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
     // Create mode dropdown and add all registered measuretypes
@@ -87,7 +88,7 @@ TaskMeasure::TaskMeasure()
     formLayout->setFormAlignment(Qt::AlignCenter);
 
     formLayout->addRow(tr("Mode:"), modeSwitch);
-    formLayout->addRow(tr("Show Delta:"), showDelta);
+    formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
 
@@ -327,14 +328,12 @@ void TaskMeasure::update()
     createViewObject(_mMeasureObject);
 
     // Must be after createViewObject!
-    auto* measureDistance = dynamic_cast<Measure::MeasureDistance*>(_mMeasureObject);
-    if (measureDistance) {
-        assert(_mViewObject);
-        auto* prop = dynamic_cast<App::PropertyBool*>(_mViewObject->getPropertyByName("ShowDelta"));
-        if (prop) {
-            prop->setValue(showDelta->isChecked());
-            _mViewObject->update(prop);
-        }
+    assert(_mViewObject);
+    auto* prop = dynamic_cast<App::PropertyBool*>(_mViewObject->getPropertyByName("ShowDelta"));
+    setDeltaPossible(prop != nullptr);
+    if (prop) {
+        prop->setValue(showDelta->isChecked());
+        _mViewObject->update(prop);
     }
 }
 
@@ -479,29 +478,14 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
     return TaskDialog::eventFilter(obj, event);
 }
 
+void TaskMeasure::setDeltaPossible(bool possible) {
+    showDelta->setVisible(possible);
+    showDeltaLabel->setVisible(possible);
+}
+
 void TaskMeasure::onModeChanged(int index)
 {
     explicitMode = (index != 0);
-
-    // If delta possible the show delta checkbox is shown
-    // otherwise it gets hidden
-    bool deltaPossible = false;
-    if (!explicitMode) {
-        deltaPossible = true;
-    } else {
-        // Measures which support delta
-        const QVector<QString> deltaMeasures = {
-            QLatin1String("Distance"), QLatin1String("Distance Free")
-        };
-        const auto ct = modeSwitch->currentText();
-        for (const auto& s: deltaMeasures) {
-            if (s == ct) {
-                deltaPossible = true;
-                break;
-            }
-        }
-    }
-    showDelta->setEnabled(deltaPossible);
 
     this->update();
 }

@@ -79,6 +79,7 @@ private:
     QLineEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
+    QLabel* showDeltaLabel{nullptr};
 
     void removeObject();
     void onModeChanged(int index);
@@ -90,6 +91,7 @@ private:
     Gui::ViewProviderDocumentObject* createViewObject(App::DocumentObject* measureObj);
     void saveObject();
     void ensureGroup(Measure::MeasureBase* measurement);
+    void setDeltaPossible(bool possible);
 
 
     // List of measure types
