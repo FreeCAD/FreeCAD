@@ -82,8 +82,9 @@ def write_femelement_material(f, ccxwriter):
                 TEC = FreeCAD.Units.Quantity(mat_obj.Material["ThermalExpansionCoefficient"])
                 TEC_in_mmK = TEC.getValueAs("mm/mm/K").Value
             elif mat_obj.Category == "Fluid":
-                DV = FreeCAD.Units.Quantity(mat_obj.Material["DynamicViscosity"])
-                DV_in_tmms = DV.getValueAs("t/mm/s").Value
+                KV = FreeCAD.Units.Quantity(mat_obj.Material["KinematicViscosity"])
+                KV_in_mm2s = KV.getValueAs("mm^2/s").Value
+                DV_in_tmms = KV_in_mm2s * density_in_tonne_per_mm3
 
         # write material properties
         f.write(f"** FreeCAD material name: {mat_info_name}\n")
