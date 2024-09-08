@@ -442,6 +442,12 @@ public:
     /* Return true to cause PropertyView to show linked object's property */
     virtual bool canLinkProperties() const {return true;}
 
+    /* Return whether this object is a link */
+    virtual bool isLink() const {return false;};
+
+    /* Return whether this object is a link group */
+    virtual bool isLinkGroup() const {return false;};
+
     /* Return true to bypass duplicate label checking */
     virtual bool allowDuplicateLabel() const {return false;}
 

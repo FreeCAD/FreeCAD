@@ -111,39 +111,6 @@ static void printPlacement(Base::Placement plc, const char* name)
         angle);
 }*/
 
-static bool isLink(App::DocumentObject* obj)
-{
-    if (!obj) {
-        return false;
-    }
-
-    auto* link = dynamic_cast<App::Link*>(obj);
-    if (link) {
-        return link->ElementCount.getValue() == 0;
-    }
-
-    auto* linkEl = dynamic_cast<App::LinkElement*>(obj);
-    if (linkEl) {
-        return true;
-    }
-
-    return false;
-}
-
-static bool isLinkGroup(App::DocumentObject* obj)
-{
-    if (!obj) {
-        return false;
-    }
-
-    auto* link = dynamic_cast<App::Link*>(obj);
-    if (link) {
-        return link->ElementCount.getValue() > 0;
-    }
-
-    return false;
-}
-
 // ================================ Assembly Object ============================
 
 PROPERTY_SOURCE(Assembly::AssemblyObject, App::Part)
@@ -1733,7 +1700,7 @@ void AssemblyObject::ensureIdentityPlacements()
     std::vector<App::DocumentObject*> group = Group.getValues();
     for (auto* obj : group) {
         // When used in assembly, link groups must have identity placements.
-        if (isLinkGroup(obj)) {
+        if (obj->isLinkGroup()) {
             auto* link = dynamic_cast<App::Link*>(obj);
             auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
             if (!pPlc || !link) {
@@ -2185,7 +2152,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
 
     App::Document* doc = obj->getDocument();
 
-    std::vector<std::string> names = splitSubName(sub);
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
 
     // Lambda function to check if the typeId is a BodySubObject
     auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
@@ -2227,7 +2194,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             return obj;
         }
 
-        if (obj->isDerivedFrom<App::Part>() || isLinkGroup(obj)) {
+        if (obj->isDerivedFrom<App::Part>() || obj->isLinkGroup()) {
             continue;
         }
         else if (obj->isDerivedFrom<PartDesign::Body>()) {
@@ -2237,7 +2204,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             // Primitive, fastener, gear, etc.
             return obj;
         }
-        else if (isLink(obj)) {
+        else if (obj->isLink()) {
             App::DocumentObject* linked_obj = obj->getLinkedObject();
             if (linked_obj->isDerivedFrom<PartDesign::Body>()) {
                 auto* retObj = handlePartDesignBody(linked_obj, it);
@@ -2302,7 +2269,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;
         }
 
-        if (isLink(obj)) {  // update the document if necessary for next object
+        if (obj->isLink()) {  // update the document if necessary for next object
             doc = obj->getLinkedObject()->getDocument();
         }
 
@@ -2319,7 +2286,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;  // we ignore groups.
         }
 
-        if (isLinkGroup(obj)) {
+        if (obj->isLinkGroup()) {
             continue;
         }
 
