@@ -11375,7 +11375,6 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const{
 
     if (!valid) {
         FC_ERR("invalid subname " << subname);
-        // return sub;
         return Data::IndexedName();
     }
 
@@ -11406,7 +11405,6 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const{
             int idx = getVertexIndexGeoPos(geoId, static_cast<PointPos>(posId));
             if (idx < 0) {
                 FC_ERR("invalid subname " << subname);
-                // return sub;
                 return Data::IndexedName();
             }
             return Data::IndexedName::fromConst("Vertex", idx + 1);
