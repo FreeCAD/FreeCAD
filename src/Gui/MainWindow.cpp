@@ -392,6 +392,14 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->whatsthis = false;
     d->assistant = new Assistant();
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    // this forces QT to switch to OpenGL mode, this prevents delay and flickering of the window
+    // after opening project and prevent issues with double initialization of the window
+    //
+    // https://stackoverflow.com/questions/76026196/how-to-force-qt-to-use-the-opengl-window-type
+    new QOpenGLWidget(this);
+#endif
+
     // global access
     instance = this;
 
