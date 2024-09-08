@@ -159,7 +159,7 @@ def InitApplications():
     # also add these directories to the sys.path to
     # not change the old behaviour. once we have moved to
     # proper python modules this can eventually be removed.
-    sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
+    sys.path = sys.path + [ModDir] + libpaths + [ExtDir]
 
     # The AddonManager may install additional Python packages in
     # these paths:
@@ -209,7 +209,7 @@ def InitApplications():
                 subdirectory = subdirectory.replace("/",os.path.sep)
                 subdirectory = os.path.join(Dir, subdirectory)
                 #classname = workbench.Classname
-                sys.path.insert(0,subdirectory)
+                sys.path.append(subdirectory)
                 PathExtension.append(subdirectory)
                 RunInitPy(subdirectory)
 
@@ -244,7 +244,7 @@ def InitApplications():
         if Dir not in ['', 'CVS', '__init__.py']:
             if checkIfAddonIsDisabled(Dir):
                 continue
-            sys.path.insert(0,Dir)
+            sys.path.append(Dir)
             PathExtension.append(Dir)
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
