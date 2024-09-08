@@ -153,14 +153,19 @@ void FileDialog::accept()
     QFileDialog::accept();
 }
 
-void FileDialog::getPossibleSuffixes(QStringList& possibleSuffixes, const QRegularExpression& rx,
-                                     const QString* suffixDescriptions)
+void FileDialog::getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions)
 {
+    QRegularExpression rx;
+    // start the raw string with a (
+    // match a *, a . and at least one word character (a-z, A-Z, 0-9, _) with \*\.\w+
+    // end the raw string with a )
+    rx.setPattern(QLatin1String(R"(\*\.\w+)"));
+
     QRegularExpressionMatchIterator i = rx.globalMatch(*suffixDescriptions);
     while (i.hasNext()) {
         QRegularExpressionMatch match = i.next();
-        QString suffix = match.captured(1);
-        possibleSuffixes << suffix;
+        QString suffix = match.captured(0);
+        suffixes << suffix;
     }
 }
 
@@ -195,22 +200,13 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             filterToSearch = &filter;
         }
 
-        QRegularExpression rx;
-        rx.setPattern(QLatin1String(R"(\s\((\*\.\w{1,})\W)"));
-        QStringList possibleSuffixes;
-        getPossibleSuffixes(possibleSuffixes, rx, filterToSearch);
-        auto match = rx.match(*filterToSearch);
-        if (match.hasMatch()) {
-            int index = match.capturedStart();
-            int length = match.capturedLength();
-            // get the suffix with the leading dot but ignore the surrounding ' (*' and ')'
-            int offsetStart = 3;
-            int offsetEnd = 4;
-            QString suffix = filterToSearch->mid(index + offsetStart, length - offsetEnd);
-            QString fiSuffix = QLatin1String("*.") + fi.suffix();  // To match with possibleSuffixes
-            if (fi.suffix().isEmpty() || !possibleSuffixes.contains(fiSuffix)) {
-                dirName += suffix;
-            }
+        QStringList filterSuffixes;
+        getSuffixesDescription(filterSuffixes, filterToSearch);
+        QString fiSuffix = QLatin1String("*.") + fi.suffix();  // To match with filterSuffixes
+        if (fi.suffix().isEmpty() || !filterSuffixes.contains(fiSuffix)) {
+            // there is no suffix or not a suffix that matches the filter, so
+            // default to the first suffix of the filter
+            dirName += filterSuffixes[0].mid(1);
         }
     }
 
