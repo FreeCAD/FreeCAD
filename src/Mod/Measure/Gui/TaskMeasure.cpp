@@ -32,6 +32,8 @@
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
+#include <Mod/Measure/App/MeasureDistance.h>
+#include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -53,6 +55,9 @@ TaskMeasure::TaskMeasure()
                                               tr("Measurement"),
                                               true,
                                               nullptr);
+
+    showDelta = new QCheckBox();
+    connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
@@ -82,6 +87,7 @@ TaskMeasure::TaskMeasure()
     formLayout->setFormAlignment(Qt::AlignCenter);
 
     formLayout->addRow(tr("Mode:"), modeSwitch);
+    formLayout->addRow(tr("Show Delta:"), showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
 
@@ -319,6 +325,17 @@ void TaskMeasure::update()
     valueResult->setText(_mMeasureObject->getResultString());
 
     createViewObject(_mMeasureObject);
+
+    // Must be after createViewObject!
+    auto* measureDistance = dynamic_cast<Measure::MeasureDistance*>(_mMeasureObject);
+    if (measureDistance) {
+        assert(_mViewObject);
+        auto* prop = dynamic_cast<App::PropertyBool*>(_mViewObject->getPropertyByName("ShowDelta"));
+        if (prop) {
+            prop->setValue(showDelta->isChecked());
+            _mViewObject->update(prop);
+        }
+    }
 }
 
 void TaskMeasure::close()
@@ -465,6 +482,33 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
 void TaskMeasure::onModeChanged(int index)
 {
     explicitMode = (index != 0);
+
+    // If delta possible the show delta checkbox is shown
+    // otherwise it gets hidden
+    bool deltaPossible = false;
+    if (!explicitMode) {
+        deltaPossible = true;
+    } else {
+        // Measures which support delta
+        const QVector<QString> deltaMeasures = {
+            QLatin1String("Distance"), QLatin1String("Distance Free")
+        };
+        const auto ct = modeSwitch->currentText();
+        for (const auto& s: deltaMeasures) {
+            if (s == ct) {
+                deltaPossible = true;
+                break;
+            }
+        }
+    }
+    showDelta->setEnabled(deltaPossible);
+
+    this->update();
+}
+
+void TaskMeasure::showDeltaChanged(int checkState)
+{
+    delta = checkState == Qt::CheckState::Checked;
     this->update();
 }
 

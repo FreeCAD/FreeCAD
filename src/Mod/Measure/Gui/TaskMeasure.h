@@ -24,6 +24,7 @@
 #include <QString>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QCheckBox>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -77,9 +78,11 @@ private:
 
     QLineEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
+    QCheckBox* showDelta {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
+    void showDeltaChanged(int checkState);
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
@@ -94,6 +97,9 @@ private:
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
+
+    // Stores if delta measures shall be shown
+    bool delta = false;
 };
 
 }  // namespace Gui
