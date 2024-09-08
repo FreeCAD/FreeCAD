@@ -235,6 +235,7 @@ private:
     void updateThreadDepthParam();
     void readCutDefinitions();
 
+    double getCountersinkAngle() const;
     double getThreadClassClearance() const;
     double getThreadRunout(int mode = 1) const;
     double getThreadPitch() const;
