@@ -231,6 +231,7 @@ void StartupPostProcess::execute()
     showMainWindow();
     activateWorkbench();
     checkParameters();
+    hideSplashScreen();
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -444,12 +445,9 @@ void StartupPostProcess::showMainWindow()
         Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
         mainWindow->stopSplasher();
         throw;
-
     }
 
-    // stop splash screen and set immediately the active window that may be of interest
-    // for scripts using Python binding for Qt
-    mainWindow->stopSplasher();
+    // immediately the active window that may be of interest for scripts using Python binding for Qt
     mainWindow->activateWindow();
 }
 
@@ -560,4 +558,10 @@ void StartupPostProcess::checkParameters()
         Base::Console().Warning("User parameter file couldn't be opened.\n"
                                 "Continue with an empty configuration that won't be saved.\n");
     }
+}
+
+void StartupPostProcess::hideSplashScreen()
+{
+    // this must be done as last step to ensure that splash screen hides when everything is loaded
+    mainWindow->stopSplasher();
 }

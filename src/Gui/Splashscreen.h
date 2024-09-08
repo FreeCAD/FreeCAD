@@ -41,7 +41,7 @@ class SplashScreen : public QSplashScreen
     Q_OBJECT
 
 public:
-    explicit SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
+    explicit SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
     ~SplashScreen() override;
 
     void setShowMessages(bool on);

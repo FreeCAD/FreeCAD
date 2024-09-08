@@ -76,6 +76,7 @@ private:
     void showMainWindow();
     void activateWorkbench();
     void checkParameters();
+    void hideSplashScreen();
 
 private:
     bool loadFromPythonModule = false;
