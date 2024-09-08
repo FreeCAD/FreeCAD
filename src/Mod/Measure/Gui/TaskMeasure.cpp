@@ -46,10 +46,11 @@
 
 using namespace Gui;
 
-namespace {
+namespace
+{
 constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
 constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
-}
+}  // namespace
 
 TaskMeasure::TaskMeasure()
 {
@@ -488,7 +489,8 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
     return TaskDialog::eventFilter(obj, event);
 }
 
-void TaskMeasure::setDeltaPossible(bool possible) {
+void TaskMeasure::setDeltaPossible(bool possible)
+{
     showDelta->setVisible(possible);
     showDeltaLabel->setVisible(possible);
 }

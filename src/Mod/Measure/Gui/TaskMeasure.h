@@ -79,7 +79,7 @@ private:
     QLineEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
-    QLabel* showDeltaLabel{nullptr};
+    QLabel* showDeltaLabel {nullptr};
 
     void removeObject();
     void onModeChanged(int index);
