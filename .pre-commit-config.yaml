@@ -40,6 +40,8 @@ exclude: |
     (?x)^(
         .*vcproj.*|
         .*vcxproj.*|
+        src/Main/freecad.rc.cmake|
+        src/Main/freecadCmd.rc.cmake|
         src/App/ExpressionParser.tab.c|
         src/App/ExpressionParser.tab.h|
         src/App/ExpressionParser.y|
