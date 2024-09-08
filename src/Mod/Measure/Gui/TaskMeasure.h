@@ -101,7 +101,7 @@ private:
     bool explicitMode = false;
 
     // Stores if delta measures shall be shown
-    bool delta = false;
+    bool delta = true;
 };
 
 }  // namespace Gui

@@ -42,9 +42,14 @@
 
 #include <QFormLayout>
 #include <QPushButton>
+#include <QSettings>
 
 using namespace Gui;
 
+namespace {
+constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
+constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
+}
 
 TaskMeasure::TaskMeasure()
 {
@@ -56,7 +61,12 @@ TaskMeasure::TaskMeasure()
                                               true,
                                               nullptr);
 
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
+
     showDelta = new QCheckBox();
+    showDelta->setChecked(delta);
     showDeltaLabel = new QLabel(tr("Show Delta:"));
     connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
@@ -493,6 +503,11 @@ void TaskMeasure::onModeChanged(int index)
 void TaskMeasure::showDeltaChanged(int checkState)
 {
     delta = checkState == Qt::CheckState::Checked;
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
+
     this->update();
 }
 
