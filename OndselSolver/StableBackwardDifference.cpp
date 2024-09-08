@@ -59,7 +59,7 @@ void StableBackwardDifference::formTaylorRowwithTimeNodederivative(size_t i, siz
 	//| rowi hi hipower aij |
 	auto& rowi = taylorMatrix->at(i);
 	if (k > 0) {
-		for (int j = 0; j < (int)k - 2; j++)	//Use int because of subtraction
+		for (ssize_t j = 0; j < (ssize_t)k - 2; j++)
 		{
 			rowi->at(j) = 0.0;
 		}

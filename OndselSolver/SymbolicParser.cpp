@@ -192,17 +192,16 @@ bool MbD::SymbolicParser::peekForTypeNoPush(const std::string& c)
 
 std::string MbD::SymbolicParser::scanToken()
 {
-	prevEnd = (int)source->tellg();	//Use int because of decrement
-	prevEnd--;
+        prevEnd = source->tellg() - std::streamoff(1);
 	while (std::isspace(hereChar) || isNextLineTag(hereChar)) {
 		hereChar = source->get();
 	}
 	if (hereChar == EOF) {
-		mark = prevEnd + 1;
+		mark = prevEnd + std::streamoff(1);;
 		tokenType = "end";
 		return token = "";
 	}
-	mark = (int)source->tellg();
+	mark = source->tellg();
 	if (std::isalpha(hereChar)) {
 		xLetter();
 	}

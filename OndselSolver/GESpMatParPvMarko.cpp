@@ -20,17 +20,17 @@ void GESpMatParPvMarko::doPivoting(size_t p)
 	//"Do scaling. Do partial pivoting."
 	//"criterion := mag / (2.0d raisedTo: rowiCount)."
 	//| lookForFirstNonZeroInPivotCol i rowi aip criterionMax rowPivoti criterion max |
-	int i;	//Use int because of decrement
+	ssize_t i;	//Use ssize_t because of decrement
 	size_t rowPivoti;
 	double aip, mag, max, criterion, criterionMax;
 	SpRowDsptr spRowi;
 	rowPositionsOfNonZerosInPivotColumn->clear();
 	auto lookForFirstNonZeroInPivotCol = true;
-	i = (int)m - 1;
+	i = (ssize_t)m - 1;
 	while (lookForFirstNonZeroInPivotCol) {
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
-			if (i <= (int)p) throwSingularMatrixError(""); //Use int because i can be negative
+			if (i <= (ssize_t)p) throwSingularMatrixError(""); //Use ssize_t because i can be negative
 		}
 		else {
 			markowitzPivotColCount = 0;
@@ -44,7 +44,7 @@ void GESpMatParPvMarko::doPivoting(size_t p)
 		}
 		i--;
 	}
-	while (i >= (int)p) { //Use int because i can be negative
+	while (i >= (ssize_t)p) { //Use ssize_t because i can be negative
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
 			aip = std::numeric_limits<double>::min();

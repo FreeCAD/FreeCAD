@@ -54,13 +54,13 @@ void GESpMatParPv::backSubstituteIntoDU()
 	answerX = std::make_shared<FullColumn<double>>(m);
 	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
 	//auto rhsZeroElement = this->rhsZeroElement();
-	for (int i = (int)n - 2; i >= 0; i--)	//Use int because of decrement
+	for (ssize_t i = (ssize_t)n - 2; i >= 0; i--)	//Use ssize_t because of decrement
 	{
 		auto rowi = matrixA->at(i);
 		sum = 0.0; // rhsZeroElement copy.
 		for (auto const& keyValue : *rowi) {
 			auto j = keyValue.first;
-			if ((int)j > i) {
+			if ((ssize_t)j > i) {
 				duij = keyValue.second;
 				sum += answerX->at(j) * duij;
 			}

@@ -21,7 +21,7 @@ void GEFullMat::backSubstituteIntoDU()
 {
 	answerX = std::make_shared<FullColumn<double>>(n);
 	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
-	for (int i = (int)n - 2; i >= 0; i--)	//Use int because of decrement
+	for (ssize_t i = (ssize_t)n - 2; i >= 0; i--)	//Use ssize_t because of decrement
 	{
 		auto rowi = matrixA->at(i);
 		double sum = answerX->at(n) * rowi->at(n);

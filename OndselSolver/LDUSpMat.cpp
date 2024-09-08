@@ -69,7 +69,7 @@ void LDUSpMat::backSubstituteIntoDU()
 	}
 	answerX = std::make_shared<FullColumn<double>>(m);
 	answerX->at(n - 1) = rightHandSideB->at(m - 1);
-	for (int i = (int)n - 2; i >= 0; i--)	//Use int because of decrement
+	for (ssize_t i = (ssize_t)n - 2; i >= 0; i--)	//Use ssize_t because of decrement
 	{
 		auto& rowi = matrixU->at(i);
 		sum = 0.0;

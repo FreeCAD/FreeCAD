@@ -58,7 +58,7 @@ namespace MbD {
 		std::shared_ptr<std::map<std::string, Symsptr>> variables;
 		std::shared_ptr<std::vector<ASMTItemIJ>> geoIJs;
 		std::shared_ptr<Units> units;
-		int mark = -1, prevEnd = -1;
+		std::streampos mark = 0, prevEnd = 0;
 		char hereChar = '\0';
 		std::string token, tokenType;
 		double tokenNum = -1.0e100;

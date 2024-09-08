@@ -118,14 +118,14 @@ void GESpMatFullPv::backSubstituteIntoDU()
 	auto jn = colOrder->at(n);
 	answerX->at(jn) = rightHandSideB->at(m) / matrixA->at(m)->at(jn);
 	//auto rhsZeroElement = this->rhsZeroElement();
-	for (int i = (int)n - 2; i >= 0; i--)	//Use int because of decrement
+	for (ssize_t i = (ssize_t)n - 2; i >= 0; i--)	//Use ssize_t because of decrement
 	{
 		auto& rowi = matrixA->at(i);
 		sum = 0.0; // rhsZeroElement copy.
 		for (auto const& keyValue : *rowi) {
 			auto jj = keyValue.first;
 			auto j = positionsOfOriginalCols->at(jj);
-			if ((int) j > i) {
+			if ((ssize_t) j > i) {
 				duij = keyValue.second;
 				sum += answerX->at(jj) * duij;
 			}

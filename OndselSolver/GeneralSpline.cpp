@@ -149,7 +149,7 @@ double MbD::GeneralSpline::derivativeAt(size_t n, double xxx)
 	calcIndexAndDeltaFor(xxx);
 	auto& derivsi = derivs->at(index);
 	double sum = 0.0;
-	for (int j = (int)degree; j >= (int) n + 1; j--)	//Use int because of decrement
+	for (ssize_t j = (ssize_t)degree; j >= (ssize_t) n + 1; j--)	//Use ssize_t because of decrement
 	{
 		sum = (sum + derivsi->at((size_t)j - 1)) * delta / (j - n);
 	}
@@ -231,7 +231,7 @@ double MbD::GeneralSpline::y(double xxx)
 	calcIndexAndDeltaFor(xxx);
 	auto& derivsi = derivs->at(index);
 	double sum = 0.0;
-	for (int j = (int)degree; j >= 1; j--)	//Use int because of decrement
+	for (ssize_t j = (ssize_t)degree; j >= 1; j--)	//Use ssize_t because of decrement
 	{
 		sum = (sum + derivsi->at((size_t)j - 1)) * delta / j;
 	}

@@ -11,6 +11,12 @@
 #include <cstddef>
 #include <limits>
 
+// For Windows platforms only, cstddef includes size_t but not ssize_t
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 #include "MbDMath.h"
 
 namespace MbD {
