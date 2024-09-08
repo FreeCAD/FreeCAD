@@ -122,7 +122,11 @@ void QuickMeasure::addSelectionToMeasurement()
 
         std::string vpType = obj->getViewProviderName();
         auto* vp = Gui::Application::Instance->getViewProvider(obj);
-        if (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing()) {
+        if ((vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing())
+            || vpType.find("Gui::ViewProviderOrigin") != std::string::npos
+            || vpType.find("Gui::ViewProviderPart") != std::string::npos
+            || vpType.find("SpreadsheetGui") != std::string::npos
+            || vpType.find("TechDrawGui") != std::string::npos) {
             continue;
         }
 
