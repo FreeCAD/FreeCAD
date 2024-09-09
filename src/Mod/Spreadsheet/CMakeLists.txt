@@ -8,6 +8,7 @@ set(Spreadsheet_Scripts
     Init.py
     TestSpreadsheet.py
     importXLSX.py
+    test_importXLSX.py
 )
 
 if(BUILD_GUI)
