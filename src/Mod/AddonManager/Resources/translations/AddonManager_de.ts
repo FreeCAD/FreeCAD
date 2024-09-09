@@ -6,12 +6,12 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation>Benutzerdefiniertes Projektarchiv</translation>
+      <translation>Eigenes Projektarchiv</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation>Projektarchiv Internetadresse</translation>
+      <translation>URL des Projektarchivs</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
@@ -2352,7 +2352,7 @@ installierte Addons auf verfügbare Updates überprüft</translation>
       <location filename="../../AddonManagerOptions.py" line="262"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation>Projektarchiv Internetadresse</translation>
+      <translation>URL des Projektarchivs</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="268"/>

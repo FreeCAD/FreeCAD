@@ -1684,7 +1684,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <location filename="../../addonmanager_installer_gui.py" line="339"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
-      <translation>Impossible d'exécuter Python</translation>
+      <translation>Impossible de lancer Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="344"/>
@@ -1732,7 +1732,7 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
-      <translation>Installation de l'extension de FreeCAD "{}"</translation>
+      <translation>Installation de l'extension "{}"</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="450"/>

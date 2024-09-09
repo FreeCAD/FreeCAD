@@ -11,17 +11,17 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>%1'e hoş geldiniz</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation type="unfinished">To get started, set your basic configuration options below.</translation>
+      <translation>Başlamak için temel yapılandırma seçeneklerinizi aşağıda ayarlayın.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="101"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
+      <translation>Bu ayarları (ve daha fazlasını) tekrar Tercihler kısmından değiştirebilirsiniz.</translation>
     </message>
   </context>
   <context>
@@ -29,17 +29,17 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>Dil</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>Ölçü Birimi</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>Gezinme Stili</translation>
     </message>
   </context>
   <context>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start in an MDI view</source>
-      <translation type="unfinished">Displays the Start in an MDI view</translation>
+      <translation>Başlangıcı MDI görünümünde gösterir</translation>
     </message>
   </context>
   <context>
@@ -61,32 +61,32 @@
     <message>
       <location filename="../../StartView.cpp" line="208"/>
       <source>Empty file</source>
-      <translation type="unfinished">Empty file</translation>
+      <translation>Boş dosya</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="209"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation type="unfinished">Create a new empty FreeCAD file</translation>
+      <translation>Boş bir FreeCAD dosyası oluştur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="211"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Dosya Aç</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="212"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>Mevcut bir CAD dosyası veya 3D model aç</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Parametric Part</source>
-      <translation type="unfinished">Parametric Part</translation>
+      <translation>Değişkenli Parça</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="215"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>Parça Tasarımı tezgahı ile parça oluştur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
@@ -96,52 +96,52 @@
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Montaj projesi oluştur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="220"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2D Taslak</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="221"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D Draft with the Draft workbench</translation>
+      <translation>Taslak tezgahı ile 2D taslak oluştur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="223"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
+      <translation>BIM/Mimari</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="224"/>
       <source>Create an architectural project</source>
-      <translation type="unfinished">Create an architectural project</translation>
+      <translation>Mimari yapı projesi oluştur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="488"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>Yeni Dosya</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="489"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Örnekler</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="490"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>Son kullanılan dosyalar</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="493"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>İlk kurulumu aç</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="495"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
+      <translation>Açılış ekranını tekrar gösterme (boş pencere ile başlat)</translation>
     </message>
   </context>
   <context>
@@ -157,45 +157,45 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="58"/>
       <source>FreeCAD Classic</source>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>FreeCAD Klasik</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
       <source>FreeCAD Dark</source>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD Karanlık</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>FreeCAD Light</source>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD Aydınlık</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="166"/>
       <source>Theme</source>
-      <translation type="unfinished">Theme</translation>
+      <translation>Tema</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="167"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Daha fazla tema mı arıyorsunuz? Temaları &lt;a href="freecad:Std_AddonMgr"&gt; Tema Yöneticisi&lt;/a&gt; 'ne girerek elde edebilirsin.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="169"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD Karanlık</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="170"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD Aydınlık</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="171"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>FreeCAD Klasik</translation>
     </message>
   </context>
 </TS>

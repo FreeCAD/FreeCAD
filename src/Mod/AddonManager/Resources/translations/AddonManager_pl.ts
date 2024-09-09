@@ -198,7 +198,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation>Wskazówka: ponieważ jest to wyświetlane w programie FreeCAD, w Menedżerze Dodatków, nie jest konieczne zajmowanie miejsca informacjami takimi jak "To jest dodatek do programu FreeCAD..." -- po prostu powiedz, co on robi.</translation>
+      <translation>Wskazówka: ponieważ jest to wyświetlane w programie FreeCAD, w Menedżerze Dodatków, nie jest konieczne zajmowanie miejsca informacjami takimi jak &quot;To jest dodatek do programu FreeCAD...&quot; -- po prostu napisz, co on robi.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
@@ -515,7 +515,7 @@ Upewnij się, że wiesz, co instalujesz!</translation>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
       <translation>Jeśli ta opcja jest zaznaczona, podczas uruchamiania Menedżera dodatków,
-zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</translation>
+zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="27"/>
@@ -817,7 +817,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation>Klasa, która definiuje element danych "kona".</translation>
+      <translation>Klasa, która definiuje element danych &quot;Ikona&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
@@ -862,7 +862,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation>Wyświetlany na liście dodatków Menedżera dodatków. Nie powinien zawierać słowa "FreeCAD".</translation>
+      <translation>Wyświetlany na liście dodatków Menedżera dodatków. Nie powinien zawierać słowa &quot;FreeCAD&quot;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -1128,13 +1128,13 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
     <message>
       <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation>Zatrzymanie działającego procesu {} zajmuje dużo czasu ...</translation>
+      <translation>Zatrzymanie działającego procesu {} zajmuje dużo czasu...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="95"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation>Poprzedni proces pamięci podręcznej został przerwany, ponowne uruchomienie ...
+      <translation>Poprzedni proces pamięci podręcznej został przerwany, ponowne uruchamianie...
 </translation>
     </message>
     <message>
@@ -1263,7 +1263,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
       <location filename="../../manage_python_dependencies.py" line="246"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
-      <translation>Zaktualizuj</translation>
+      <translation>Aktualizuj</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="340"/>
@@ -1273,7 +1273,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
       <source>Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</source>
-      <translation>Nie można zaimportować QtNetwork -- nie jest zainstalowany w Twoim systemie. Twój dostawca może mieć pakiet dla tej zależności (często nazywany np. "python3-pyside2.qtnetwork")</translation>
+      <translation>Nie można zaimportować QtNetwork -- wygląda na to, że nie jest zainstalowany w Twoim systemie. Twój dostawca może mieć pakiet dla tej zależności (często nazywany np. &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="228"/>
@@ -1367,7 +1367,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="285"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation>Identyfikator Git "{}" sprawdzony, brak możliwości aktualizacji</translation>
+      <translation>Identyfikator Git &apos;{}&apos; sprawdzony, brak możliwości aktualizacji</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="278"/>
@@ -1427,7 +1427,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="334"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation>OSTRZEŻENIE: Ten dodatek jest obecnie zainstalowany, ale wyłączony. Użyj przycisku "włącz", aby go ponownie włączyć.</translation>
+      <translation>OSTRZEŻENIE: Ten dodatek jest obecnie zainstalowany, ale wyłączony. Użyj przycisku &apos;włącz&apos;, aby go ponownie włączyć.</translation>
     </message>
     <message>
       <location filename="../../Widgets/addonmanager_widget_package_details_view.py" line="177"/>
@@ -1647,7 +1647,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji.</tr
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation>Dodatek "{}" wymaga środowisk pracy "{}", które nie są dostępne w twojej kopii FreeCAD:</translation>
+      <translation>Dodatek &apos;{}&apos; wymaga danych środowisk pracy, które nie są dostępne w twojej kopii programu FreeCAD:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>

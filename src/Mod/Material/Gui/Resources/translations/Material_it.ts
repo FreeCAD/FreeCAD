@@ -296,6 +296,11 @@
       <source>Shininess</source>
       <translation>Lucentezza</translation>
     </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="248"/>
+      <source>Transparency</source>
+      <translation>Trasparenza</translation>
+    </message>
   </context>
   <context>
     <name>MatGui::DlgInspectMaterial</name>
@@ -539,69 +544,69 @@ will be listed as available.</source>
       <translation>Directory dell'utente</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="152"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="155"/>
       <source>Card sorting and duplicates</source>
       <translation>Ordinamento e duplicati schede</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="158"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
       <source>Duplicate cards will be deleted from the displayed material card list.</source>
       <translation>Le schede duplicate saranno eliminate dall'elenco delle schede materiale visualizzato.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="164"/>
       <source>Delete card duplicates</source>
       <translation>Elimina duplicati della scheda</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="177"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="180"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>Le schede materiali appaiono ordinate per le loro risorse (posizioni).
 Se non selezionato, saranno ordinate per il loro nome.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="181"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="184"/>
       <source>Sort by resources</source>
       <translation>Ordina per risorse</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="200"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="203"/>
       <source>Material Selector</source>
       <translation>Selettore Materiale</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="206"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="289"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="209"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="292"/>
       <source>Show favorites</source>
       <translation>Mostra preferiti</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="222"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="305"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="225"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="308"/>
       <source>Show recent</source>
       <translation>Mostra recenti</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="238"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="321"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="241"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="324"/>
       <source>Show empty libraries</source>
       <translation>Mostra librerie vuote</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="254"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="337"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="257"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="340"/>
       <source>Show empty folders</source>
       <translation>Mostra cartelle vuote</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="267"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="350"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="270"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="353"/>
       <source>Show legacy files</source>
       <translation>Mostra file precedenti</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="283"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="286"/>
       <source>Material Editor</source>
       <translation>Editor dei materiali</translation>
     </message>

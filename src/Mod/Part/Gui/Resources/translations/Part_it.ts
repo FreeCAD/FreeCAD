@@ -3155,9 +3155,10 @@ Selezionare prima uno o più spigoli.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Selezionando questa opzione, durante la lettura del file non viene eseguita nessuna unione di composti (importazione più lenta, ma con maggiori dettagli).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

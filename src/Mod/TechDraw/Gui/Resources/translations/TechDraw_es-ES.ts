@@ -2036,7 +2036,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Crear vista de hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="395"/>
+      <location filename="../../PagePrinter.cpp" line="389"/>
       <source>Save page to dxf</source>
       <translation>Guardar página como dxf</translation>
     </message>
@@ -2262,12 +2262,12 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Crear imagen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="497"/>
+      <location filename="../../QGIViewBalloon.cpp" line="509"/>
       <source>Drag Balloon</source>
       <translation>Arrastrar Globo</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="831"/>
+      <location filename="../../QGIViewDimension.cpp" line="873"/>
       <source>Drag Dimension</source>
       <translation>Arrastrar Cota</translation>
     </message>
@@ -2628,7 +2628,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Personalizar formato</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="369"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="398"/>
       <source>Surface Finish Symbols</source>
       <translation>Símbolos de acabado de superficie</translation>
     </message>
@@ -3604,7 +3604,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="263"/>
       <source>Edit Leader Line</source>
-      <translation>Editar Línea de Referencia</translation>
+      <translation>Editar línea de referencia</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="140"/>
@@ -3937,37 +3937,37 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Editar sombreado de cara</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="247"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
       <source>Method</source>
       <translation>Método</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="253"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="283"/>
       <source>Addition</source>
       <translation>Adición</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="262"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="292"/>
       <source>Average roughness</source>
       <translation>Aspereza promedio</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="268"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="298"/>
       <source>Roughness sampling length</source>
       <translation>Longitud de muestreo de rugosidad</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="307"/>
       <source>Lay symbol</source>
       <translation>Símbolo de Lay</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="285"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="315"/>
       <source>Minimum roughness grade number</source>
       <translation>Número mínimo de grado de rugosidad</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="295"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="325"/>
       <source>Maximum roughness grade number</source>
       <translation>Número máximo de grado de rugosidad</translation>
     </message>
@@ -4018,7 +4018,7 @@ Sin una selección, un explorador de archivos le permite seleccionar un archivo 
       <translation>Error de parámetro</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="332"/>
+      <location filename="../../PagePrinter.cpp" line="326"/>
       <source>Document Name:</source>
       <translation>Nombre del documento:</translation>
     </message>
@@ -4344,7 +4344,7 @@ en el pliegue de la línea de referencia</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="294"/>
       <source>Symbol Directory</source>
-      <translation>Directorio de Símbolos</translation>
+      <translation>Directorio de símbolos</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="301"/>
@@ -4409,7 +4409,7 @@ una penalización de rendimiento en modelos complejos.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="299"/>
       <source>Show Section Edges</source>
-      <translation>Mostrar Aristas de Sección</translation>
+      <translation>Mostrar aristas de sección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="67"/>
@@ -4419,7 +4419,7 @@ una penalización de rendimiento en modelos complejos.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="70"/>
       <source>Debug Section</source>
-      <translation>Depurar Sección</translation>
+      <translation>Depurar sección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="274"/>
@@ -4449,24 +4449,24 @@ una penalización de rendimiento en modelos complejos.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="48"/>
       <source>Fuse Before Section</source>
-      <translation>Fusionar Antes de la Sección</translation>
+      <translation>Fusionar antes de la sección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="118"/>
       <source>Edge Fuzz</source>
-      <translation>Arista Difusa</translation>
+      <translation>Zona de selección alrededor de las aristas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="95"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
-      <translation>Tamaño del área de selección alrededor de los bordes
+      <translation>Tamaño del área de selección alrededor de las aristas
 Cada unidad tiene aproximadamente 0.1 mm de ancho</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="176"/>
       <source>Mark Fuzz</source>
-      <translation>Marca Difusa</translation>
+      <translation>Zona de selección alrededor de las marcas centrales</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="208"/>
@@ -4483,7 +4483,7 @@ Cada unidad tiene aproximadamente 0.1 mm de ancho</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="356"/>
       <source>Auto Correct Dimension Refs</source>
-      <translation>Dimensión automática correcta Refs</translation>
+      <translation>Corregir automáticamente las referencias de cotas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="334"/>
@@ -4498,12 +4498,12 @@ Cada unidad tiene aproximadamente 0.1 mm de ancho</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="231"/>
       <source>Max SVG Hatch Tiles</source>
-      <translation>Máximo de recuadros SVG de rayado</translation>
+      <translation>Máximo de recuadros de rayado SVG</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="412"/>
       <source>Max PAT Hatch Segments</source>
-      <translation>Máximo Segmentos PAT de rayado</translation>
+      <translation>Máximo de recuadros de rayado PAT</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="147"/>
@@ -4539,7 +4539,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="405"/>
       <source>Overlap Edges Scrub Passes</source>
-      <translation>Superponer pases de bordes</translation>
+      <translation>Número de pasadas para eliminar superposiciones de aristas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="455"/>
@@ -4558,7 +4558,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="627"/>
       <source>Section Line Style</source>
-      <translation>Estilo de Línea de Sección</translation>
+      <translation>Estilo de línea de sección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="80"/>
@@ -4658,12 +4658,12 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="752"/>
       <source>Line Width Group</source>
-      <translation>Grupo Ancho de Línea</translation>
+      <translation>Grupo de ancho de línea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="227"/>
       <source>Detail View Outline Shape</source>
-      <translation>Vista de Detalle del Contorno de Forma</translation>
+      <translation>Vista de detalle del contorno de forma</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="395"/>
@@ -4683,7 +4683,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="615"/>
       <source>Detail Highlight Style</source>
-      <translation>Estilo de Resaltar Detalle</translation>
+      <translation>Estilo de resaltado de detalle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="534"/>
@@ -4728,7 +4728,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
       <source>Ballon Leader Kink Length</source>
-      <translation>Longitud de Pliegue de la Flecha de Globo</translation>
+      <translation>Longitud de pliegue de la flecha de globo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -4743,7 +4743,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
       <source>Balloon Orthogonal Triangle</source>
-      <translation>Triángulo Ortogonal del Globo</translation>
+      <translation>Triángulo ortogonal del globo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="292"/>
@@ -4753,7 +4753,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="295"/>
       <source>Leader Line Auto Horizontal</source>
-      <translation>Línea de Referencia Auto Horizontal</translation>
+      <translation>Línea de referencia horizontal automática</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="322"/>
@@ -4773,7 +4773,7 @@ Por tanto, necesitará aumentar el límite de recuadros.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="268"/>
       <source>Print Center Marks</source>
-      <translation>Imprimir Marcas Centrales</translation>
+      <translation>Imprimir marcas centrales</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="160"/>
@@ -4858,7 +4858,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="604"/>
       <source>Hidden Line</source>
-      <translation>Línea Oculta</translation>
+      <translation>Línea oculta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
@@ -4878,7 +4878,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="170"/>
       <source>Section Face</source>
-      <translation>Cara de Sección</translation>
+      <translation>Cara de sección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
@@ -4898,7 +4898,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="418"/>
       <source>Section Line</source>
-      <translation>Línea de Sección</translation>
+      <translation>Línea de sección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="347"/>
@@ -4938,7 +4938,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="60"/>
       <source>Geometric Hatch</source>
-      <translation>Rayado Geométrico</translation>
+      <translation>Rayado geométrico</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="367"/>
@@ -4948,7 +4948,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="177"/>
       <source>Centerline</source>
-      <translation>Línea Central</translation>
+      <translation>Línea central</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="267"/>
@@ -4988,7 +4988,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="392"/>
       <source>Detail Highlight</source>
-      <translation>Resaltar Detalle</translation>
+      <translation>Resaltado de detalle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
@@ -4998,7 +4998,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Leaderline</source>
-      <translation>Línea de Referencia</translation>
+      <translation>Línea de referencia</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="461"/>
@@ -5008,7 +5008,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="592"/>
       <source>Grid Color</source>
-      <translation>Color de la rejilla</translation>
+      <translation>Color de la cuadrícula</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
@@ -5023,7 +5023,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="495"/>
       <source>Transparent Faces</source>
-      <translation>Caras Transparentes</translation>
+      <translation>Caras transparentes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="223"/>
@@ -5057,7 +5057,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="181"/>
       <source>Standard and Style</source>
-      <translation>Norma y Estilo</translation>
+      <translation>Norma y estilo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="109"/>
@@ -5067,12 +5067,12 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="119"/>
       <source>ISO Oriented</source>
-      <translation>ISO Orientado</translation>
+      <translation>ISO orientado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="124"/>
       <source>ISO Referencing</source>
-      <translation>ISO Referenciado</translation>
+      <translation>ISO referenciado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="129"/>
@@ -5092,7 +5092,7 @@ si planeas usar un dibujo como una guía de corte 1:1.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="359"/>
       <source>Use Global Decimals</source>
-      <translation>Usar Decimales Globales</translation>
+      <translation>Usar decimales globales</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
@@ -5135,7 +5135,7 @@ Este ajuste solo es para la barra de herramientas. Cualquiera que sea el que esc
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="561"/>
       <source>Dimension tool diameter/radius mode:</source>
-      <translation>Modo diámetro/radio de la herramienta de dimensión:</translation>
+      <translation>Modo diámetro/radio de la herramienta de cota:</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="568"/>
@@ -5156,7 +5156,7 @@ Este ajuste solo es para la barra de herramientas. Cualquiera que sea el que esc
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="163"/>
       <source>Show Units</source>
-      <translation>Mostrar Unidades</translation>
+      <translation>Mostrar unidades</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="393"/>
@@ -5166,7 +5166,7 @@ Este ajuste solo es para la barra de herramientas. Cualquiera que sea el que esc
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="302"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
-      <translation>Número de decimales si &apos;Usar Decimales Globales&apos; no es usado</translation>
+      <translation>Número de decimales si &apos;Usar decimales globales&apos; no es usado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="67"/>
@@ -5181,7 +5181,7 @@ Este ajuste solo es para la barra de herramientas. Cualquiera que sea el que esc
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
       <source>Font Size</source>
-      <translation>Tamaño de Fuente</translation>
+      <translation>Tamaño de fuente</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="194"/>
@@ -5191,7 +5191,7 @@ Este ajuste solo es para la barra de herramientas. Cualquiera que sea el que esc
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="286"/>
       <source>Tolerance Text Scale</source>
-      <translation>Tolerancia de la Escala del Texto</translation>
+      <translation>Tolerancia de la escala del texto</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="252"/>
@@ -5223,7 +5223,7 @@ Multiplicador de &apos;Tamaño de fuente&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="215"/>
       <source>Arrow Size</source>
-      <translation>Tamaño de Flecha</translation>
+      <translation>Tamaño de flecha</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="46"/>
@@ -5291,7 +5291,7 @@ Normalmente, no se utiliza ninguna brecha Si se utiliza una brecha, el valor rec
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
       <source>Auto</source>
-      <translation>Auto</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="184"/>
@@ -5324,7 +5324,7 @@ Normalmente, no se utiliza ninguna brecha Si se utiliza una brecha, el valor rec
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="52"/>
       <source>Update With 3D (global policy)</source>
-      <translation>Actualizar Con 3D (política global)</translation>
+      <translation>Actualizar con 3D (política global)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
@@ -5335,7 +5335,7 @@ can override the global &apos;Update With 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>
       <source>Allow Page Override (global policy)</source>
-      <translation>Permitir Anulación de Página (política global)</translation>
+      <translation>Permitir anulación de página (política global)</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="105"/>
@@ -5347,7 +5347,7 @@ Esto puede ralentizar el tiempo de respuesta.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="109"/>
       <source>Keep Page Up To Date</source>
-      <translation>Mantener Página Actualizada</translation>
+      <translation>Mantener página actualizada</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="136"/>
@@ -5359,7 +5359,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="140"/>
       <source>Auto-distribute Secondary Views</source>
-      <translation>Auto-distribuir Vistas Secundarias</translation>
+      <translation>Distribuir automaticamente vistas secundarias</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="167"/>
@@ -5381,12 +5381,12 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="220"/>
       <source>Font for labels</source>
-      <translation>Letra para etiquetas</translation>
+      <translation>Fuente para etiquetas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="239"/>
       <source>Label Size</source>
-      <translation>Tamaño de Etiqueta</translation>
+      <translation>Tamaño de etiqueta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="265"/>
@@ -5401,7 +5401,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="322"/>
       <source>Projection Group Angle</source>
-      <translation>Ángulo de Grupo de Proyección</translation>
+      <translation>Ángulo del grupo de proyección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="335"/>
@@ -5456,7 +5456,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="586"/>
       <source>Template Directory</source>
-      <translation>Directorio de Plantillas</translation>
+      <translation>Directorio de plantillas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="570"/>
@@ -5466,7 +5466,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="620"/>
       <source>Hatch Pattern File</source>
-      <translation>Archivo de Patrón de rayado</translation>
+      <translation>Archivo de patrón de rayado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
@@ -5481,7 +5481,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="516"/>
       <source>Welding Directory</source>
-      <translation>Directorio de Soldadura</translation>
+      <translation>Directorio de soldadura</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="548"/>
@@ -5526,7 +5526,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="639"/>
       <source>Symbol Directory</source>
-      <translation>Directorio de Símbolos</translation>
+      <translation>Directorio de símbolos</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="655"/>
@@ -5536,7 +5536,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="700"/>
       <source>Grid</source>
-      <translation>Rejilla</translation>
+      <translation>Cuadrícula</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="726"/>
@@ -5600,6 +5600,31 @@ para Grupos de Proyección</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="898"/>
+      <source>Snapping</source>
+      <translation>Ajustar</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="906"/>
+      <source>Check this box if you want views to snap into alignment when being dragged.</source>
+      <translation type="unfinished">Check this box if you want views to snap into alignment when being dragged.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="909"/>
+      <source>Snap View Alignment</source>
+      <translation type="unfinished">Snap View Alignment</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="938"/>
+      <source>View Snapping Factor</source>
+      <translation type="unfinished">View Snapping Factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="945"/>
+      <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
+      <translation type="unfinished">When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="993"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Nota:&lt;/span&gt; Artículos en cursiva &lt;span style=&quot; font-style:italic;&quot;&gt;&lt;/span&gt; son valores predeterminados para nuevos objetos. No tienen ningún efecto sobre los objetos existentes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5614,7 +5639,7 @@ para Grupos de Proyección</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="47"/>
       <source>Hidden Line Removal</source>
-      <translation>Eliminación de Línea Oculta</translation>
+      <translation>Eliminación de línea oculta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="66"/>
@@ -5626,7 +5651,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="70"/>
       <source>Use Polygon Approximation</source>
-      <translation>Usar Aproximación Poligonal</translation>
+      <translation>Usar aproximación poligonal</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="83"/>
@@ -5647,7 +5672,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show Hard Lines</source>
-      <translation>Mostrar Líneas Fuertes</translation>
+      <translation>Mostrar líneas fuertes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>
@@ -5663,7 +5688,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="203"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="233"/>
       <source>Show Smooth Lines</source>
-      <translation>Mostrar Líneas Suaves</translation>
+      <translation>Mostrar líneas suaves</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="230"/>
@@ -5705,12 +5730,12 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="368"/>
       <source>ISO Count</source>
-      <translation>Contar ISO</translation>
+      <translation>Número de líneas isoparamétricas a mostrar</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="387"/>
       <source>Number of ISO lines per face edge</source>
-      <translation>Número de líneas ISO por arista de la cara</translation>
+      <translation>Número de líneas isoparamétricas por arista de la cara</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="414"/>
@@ -5724,7 +5749,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
       <location filename="../../DlgPrefsTechDrawScale.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="47"/>
       <source>Scale</source>
-      <translation>Escalar</translation>
+      <translation>Escala</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
@@ -5739,7 +5764,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
       <source>View Scale Type</source>
-      <translation>Ver Tipo de Escala</translation>
+      <translation>Ver tipo de escala</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="128"/>
@@ -5754,7 +5779,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="143"/>
       <source>Auto</source>
-      <translation>Auto</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="148"/>
@@ -5764,7 +5789,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="161"/>
       <source>View Custom Scale</source>
-      <translation>Ver Escala Personalizada</translation>
+      <translation>Ver escala personalizada</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
@@ -5779,7 +5804,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="246"/>
       <source>Vertex Scale</source>
-      <translation>Escala de Vértices</translation>
+      <translation>Escala de vértices</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="265"/>
@@ -5789,7 +5814,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="292"/>
       <source>Center Mark Scale</source>
-      <translation>Centrar Escala de Marca</translation>
+      <translation>Centrar escala de marca</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="324"/>
@@ -5799,12 +5824,12 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="349"/>
       <source>Template Edit Mark</source>
-      <translation>Plantilla Editar Marca</translation>
+      <translation>Tamaño del marcador de texto editable en la plantilla</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="368"/>
       <source>Size of template field click handles</source>
-      <translation>Tamaño del campo de plantilla que maneja click</translation>
+      <translation>Tamaño de los campos en los que se puede hacer clic de las plantillas, en mm</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="387"/>
@@ -6087,7 +6112,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="324"/>
       <source>Leader Kink Length:</source>
-      <translation>Longitud de Pliegue de la Flecha:</translation>
+      <translation>Longitud de pliegue de la flecha:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="343"/>
@@ -6100,7 +6125,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="17"/>
       <source>Center Line</source>
-      <translation>Línea Central</translation>
+      <translation>Línea central</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="29"/>
@@ -6260,7 +6285,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="114"/>
       <source>Automatic</source>
-      <translation>Automatico</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="119"/>
@@ -6270,7 +6295,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="127"/>
       <source>Scale</source>
-      <translation>Escalar</translation>
+      <translation>Escala</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="134"/>
@@ -6420,7 +6445,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="160"/>
-      <location filename="../../TaskCosVertex.cpp" line="253"/>
+      <location filename="../../TaskCosVertex.cpp" line="249"/>
       <source>Pick Points</source>
       <translation>Elegir puntos</translation>
     </message>
@@ -6440,7 +6465,7 @@ Do you want to continue?</source>
       <translation>Clic izquierdo para establecer un punto</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="281"/>
+      <location filename="../../TaskCosVertex.cpp" line="277"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>En proceso de edición abandonado. Comenzar de nuevo.</translation>
     </message>
@@ -6733,7 +6758,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="583"/>
       <source>Centerline</source>
-      <translation>Línea Central</translation>
+      <translation>Línea central</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="593"/>
@@ -6888,7 +6913,7 @@ Personalizado: se utiliza el factor de escala personalizado</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="221"/>
       <source>Automatic</source>
-      <translation>Automatico</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="226"/>
@@ -7081,12 +7106,12 @@ en lugar del valor de dimensión</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="282"/>
       <source>ISO Oriented</source>
-      <translation>ISO Orientado</translation>
+      <translation>ISO orientado</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="287"/>
       <source>ISO Referencing</source>
-      <translation>ISO Referenciado</translation>
+      <translation>ISO referenciado</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="292"/>
@@ -7325,7 +7350,7 @@ en lugar del valor de dimensión</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="26"/>
       <source>Leader Line</source>
-      <translation>Línea de Referencia</translation>
+      <translation>Línea de referencia</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
@@ -7380,7 +7405,7 @@ Puedes elegir más puntos para obtener segmentos de línea.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="242"/>
       <source>Line width</source>
-      <translation>Ancho de la línea</translation>
+      <translation>Ancho de línea</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="258"/>
@@ -7630,7 +7655,7 @@ Puedes elegir más puntos para obtener segmentos de línea.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Scale</source>
-      <translation>Escalar</translation>
+      <translation>Escala</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>
@@ -7640,7 +7665,7 @@ Puedes elegir más puntos para obtener segmentos de línea.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="50"/>
       <source>Automatic</source>
-      <translation>Automatico</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="55"/>
@@ -7979,7 +8004,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="172"/>
       <source>Line width</source>
-      <translation>Ancho de la línea</translation>
+      <translation>Ancho de línea</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="188"/>
@@ -8072,7 +8097,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="103"/>
       <source>Automatic</source>
-      <translation>Automatico</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="108"/>
@@ -8082,7 +8107,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="116"/>
       <source>Scale</source>
-      <translation>Escalar</translation>
+      <translation>Escala</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="123"/>
@@ -8240,67 +8265,67 @@ usando el Espaciado X/Y dado</translation>
     <name>TechDrawGui::TaskSurfaceFinishSymbols</name>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="230"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="246"/>
       <source>Surface Finish Symbols</source>
       <translation>Símbolos de acabado de superficie</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="34"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="61"/>
       <source>Material removal prohibited, whole part</source>
       <translation>Eliminación de material prohibida, parte completa</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="44"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="95"/>
       <source>Any method allowed, whole part</source>
       <translation>Cualquier método permitido, parte completa</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="54"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="129"/>
       <source>Material removal required, whole part</source>
       <translation>Eliminación de material requerida, parte completa</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="64"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="163"/>
       <source>Material removal required</source>
       <translation>Requiere eliminar material</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="74"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="197"/>
       <source>Material removal prohibited</source>
       <translation>Eliminación de material prohibida</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="231"/>
       <source>Any method allowed</source>
       <translation>Cualquier método permitido</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="255"/>
       <source>Rotation angle</source>
       <translation>Ángulo de rotación</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="265"/>
       <source>Use ISO standard</source>
       <translation>Usar estándar ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="278"/>
       <source>Use ASME standard</source>
       <translation>Usar estándar ASME</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="248"/>
       <source>Symbol angle:</source>
       <translation>Ángulo del símbolo:</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="268"/>
       <source>ISO</source>
       <translation>ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="281"/>
       <source>ASME</source>
       <translation>ASME</translation>
     </message>
@@ -8676,7 +8701,7 @@ usando el Espaciado X/Y dado</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Views From Other Workbenches</source>
-      <translation>Vistas de otros entornos de trabajo</translation>
+      <translation>Vistas de otros bancos de trabajo</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
@@ -9084,7 +9109,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Page</source>
       <translation>Página</translation>
     </message>
@@ -9092,7 +9117,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>Template</source>
       <translation>Plantilla</translation>
     </message>
@@ -9100,7 +9125,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>Vista</translation>
     </message>
@@ -9108,7 +9133,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>View</source>
       <translation>Vista</translation>
     </message>
@@ -9116,7 +9141,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>Sección</translation>
     </message>
@@ -9124,7 +9149,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Section</source>
       <translation>Sección</translation>
     </message>
@@ -9132,7 +9157,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Detail</source>
       <translation>Detalle</translation>
     </message>
@@ -9140,7 +9165,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>ActiveView</source>
       <translation>Vista activa</translation>
     </message>
@@ -9148,7 +9173,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Annotation</source>
       <translation>Anotación</translation>
     </message>
@@ -9156,7 +9181,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Image</source>
       <translation>Imagen</translation>
     </message>
@@ -9164,7 +9189,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Symbol</source>
       <translation>Símbolo</translation>
     </message>
@@ -9172,7 +9197,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Arch</source>
       <translation>Arco</translation>
     </message>
@@ -9180,15 +9205,15 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Draft</source>
-      <translation>Calado</translation>
+      <translation>Draft</translation>
     </message>
   </context>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>LeaderLine</source>
       <translation>Línea de Referencia</translation>
     </message>
@@ -9196,7 +9221,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Balloon</source>
       <translation>Globo</translation>
     </message>
@@ -9204,7 +9229,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Dimension</source>
       <translation>Cota</translation>
     </message>
@@ -9212,7 +9237,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Extent</source>
       <translation>Extensión</translation>
     </message>
@@ -9220,7 +9245,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Hatch</source>
       <translation>Rayado</translation>
     </message>
@@ -9228,7 +9253,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>GeomHatch</source>
       <translation>GeomHatch</translation>
     </message>

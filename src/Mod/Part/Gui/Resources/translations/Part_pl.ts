@@ -3167,10 +3167,10 @@ Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Jeśli opcja jest zaznaczona, żadne złożone połączenie nie zostanie wykonane
-podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -5247,7 +5247,7 @@ Pojedyncze kontrole operacji logicznych:</translation>
         <numerusform>%n nieprawidłowy kształt.</numerusform>
         <numerusform>%n nieprawidłowe kształty.</numerusform>
         <numerusform>%n nieprawidłowe kształty.</numerusform>
-        <numerusform>%n nieprawidłowe kształty.</numerusform>
+        <numerusform>%n nieprawidłowych kształtów.</numerusform>
       </translation>
     </message>
     <message>

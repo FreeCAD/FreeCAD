@@ -11,17 +11,17 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>Us donem la benvinguda a %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>To get started, set your basic configuration options below.</source>
-      <translation type="unfinished">To get started, set your basic configuration options below.</translation>
+      <translation>Per començar, establiu les opcions de configuració bàsiques a continuació.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="101"/>
       <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in Preferences.</translation>
+      <translation>Aquestes opcions (i moltes d'altres) les podreu canviar més endavant a Preferències.</translation>
     </message>
   </context>
   <context>
@@ -29,17 +29,17 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>Llengua</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>Sistema d'Unitats</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>Estil de navegació</translation>
     </message>
   </context>
   <context>
@@ -53,7 +53,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start in an MDI view</source>
-      <translation type="unfinished">Displays the Start in an MDI view</translation>
+      <translation>Mostra l'inici en una vista MDI</translation>
     </message>
   </context>
   <context>
@@ -61,87 +61,87 @@
     <message>
       <location filename="../../StartView.cpp" line="208"/>
       <source>Empty file</source>
-      <translation type="unfinished">Empty file</translation>
+      <translation>Fitxer buit</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="209"/>
       <source>Create a new empty FreeCAD file</source>
-      <translation type="unfinished">Create a new empty FreeCAD file</translation>
+      <translation>Crear un nou fitxer buit de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="211"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Obrir fitxer</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="212"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>Obrir un model 3D o fitxer CAD existent</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Parametric Part</source>
-      <translation type="unfinished">Parametric Part</translation>
+      <translation>Peça Paramètrica</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="215"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>Crea una peça amb el banc de treball PartDesign</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Muntatge</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Create an assembly project</source>
-      <translation type="unfinished">Create an assembly project</translation>
+      <translation>Crear un projecte de muntatge</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="220"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>Esbós 2D</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="221"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D Draft with the Draft workbench</translation>
+      <translation>Crea un esbós 2D amb el banc de treball d'Esbós</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="223"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
+      <translation>BIM/Arquitectura</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="224"/>
       <source>Create an architectural project</source>
-      <translation type="unfinished">Create an architectural project</translation>
+      <translation>Crea un projecte d'arquitectura</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="488"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>Fitxer nou</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="489"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Exemples</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="490"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>Fitxers recents</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="493"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>Obre la configuració del primer inici</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="495"/>
       <source>Don't show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Don't show this Start page again (start with blank screen)</translation>
+      <translation>No mostris més aquesta pàgina d'inici (començar amb una pantalla en blanc)</translation>
     </message>
   </context>
   <context>
@@ -157,45 +157,45 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="58"/>
       <source>FreeCAD Classic</source>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>FreeCAD Clàssic</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="59"/>
       <source>FreeCAD Dark</source>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD Fosc</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>FreeCAD Light</source>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD Clar</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="166"/>
       <source>Theme</source>
-      <translation type="unfinished">Theme</translation>
+      <translation>Tema</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="167"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Busques més temes? En pots obtenir utilitzant el &lt;a href="freecad:Std_AddonMgr"&gt;Gestor de Complements&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="169"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>FreeCAD Fosc</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="170"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD Clar</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="171"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>FreeCAD Clàssic</translation>
     </message>
   </context>
 </TS>

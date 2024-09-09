@@ -5651,12 +5651,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="800"/>
+      <location filename="../../../femcommands/commands.py" line="798"/>
       <source>FEM mesh group</source>
       <translation>FEM-Netz-Gruppe</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="801"/>
+      <location filename="../../../femcommands/commands.py" line="799"/>
       <source>Creates a FEM mesh group</source>
       <translation>Erstellt eine FEM-Netzgruppe</translation>
     </message>
@@ -5664,12 +5664,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="813"/>
+      <location filename="../../../femcommands/commands.py" line="811"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>FEM-Netz aus Form - Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="817"/>
+      <location filename="../../../femcommands/commands.py" line="815"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Erstellt ein FEM-Netz aus einer Festkörper- oder einer Flächenform mit dem internen Vernetzer Netgen</translation>
     </message>
@@ -5677,12 +5677,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="869"/>
+      <location filename="../../../femcommands/commands.py" line="866"/>
       <source>Show result</source>
       <translation>Ergebnis anzeigen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="873"/>
+      <location filename="../../../femcommands/commands.py" line="870"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Zeigen und sichtbar machen der ausgewählten Ergebnisse</translation>
     </message>
@@ -5690,12 +5690,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="885"/>
+      <location filename="../../../femcommands/commands.py" line="882"/>
       <source>Purge results</source>
       <translation>Ergebnisse löschen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="889"/>
+      <location filename="../../../femcommands/commands.py" line="886"/>
       <source>Purges all results from active analysis</source>
       <translation>Löscht alle Ergebnisse aus der aktiven Analyse</translation>
     </message>
@@ -5703,12 +5703,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="999"/>
+      <location filename="../../../femcommands/commands.py" line="996"/>
       <source>Solver CalculiX Standard</source>
       <translation>Löser CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1004"/>
+      <location filename="../../../femcommands/commands.py" line="1001"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Erstellt ein standard CalculiX FEM Solver mit CCX Werkzeugen</translation>
     </message>
@@ -5716,12 +5716,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1052"/>
+      <location filename="../../../femcommands/commands.py" line="1049"/>
       <source>Solver job control</source>
       <translation>Löser-Auftragssteuerung</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1057"/>
+      <location filename="../../../femcommands/commands.py" line="1054"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Ändert Löser-Attribute und führt die Berechnungen für den ausgewählten Löser aus</translation>
     </message>
@@ -5729,12 +5729,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1069"/>
+      <location filename="../../../femcommands/commands.py" line="1066"/>
       <source>Solver Elmer</source>
       <translation>Löser Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1071"/>
+      <location filename="../../../femcommands/commands.py" line="1068"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Erzeugt den FEM-Löser Elmer</translation>
     </message>
@@ -5742,12 +5742,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1082"/>
+      <location filename="../../../femcommands/commands.py" line="1079"/>
       <source>Solver Mystran</source>
       <translation>Löser Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1084"/>
+      <location filename="../../../femcommands/commands.py" line="1081"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Erzeugt den FEM-Löser Mystran</translation>
     </message>
@@ -5755,12 +5755,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1094"/>
+      <location filename="../../../femcommands/commands.py" line="1091"/>
       <source>Run solver calculations</source>
       <translation>Berechnungen des Lösers starten</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1098"/>
+      <location filename="../../../femcommands/commands.py" line="1095"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Starten der Berechnungen für den ausgewählten Löser</translation>
     </message>
@@ -5768,12 +5768,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1114"/>
+      <location filename="../../../femcommands/commands.py" line="1111"/>
       <source>Solver Z88</source>
       <translation>Z88 Löser</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1116"/>
+      <location filename="../../../femcommands/commands.py" line="1113"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Erstellt einen Z88 FEM-Löser</translation>
     </message>
@@ -6215,12 +6215,12 @@ Bitte zuerst einen Ergebnistyp auswählen.</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1027"/>
+      <location filename="../../../femcommands/commands.py" line="1024"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>Löser CalculiX (neues Framework)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1032"/>
+      <location filename="../../../femcommands/commands.py" line="1029"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Erstellt ein neues Framework des FEM-Lösers CalculiX (weniger Fehlerbehandlung bei Ergebnissen)</translation>
     </message>
@@ -6371,12 +6371,12 @@ Bitte zuerst einen Ergebnistyp auswählen.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="858"/>
+      <location filename="../../../femcommands/commands.py" line="855"/>
       <source>FEM mesh refinement</source>
       <translation>FEM Netzverfeinerung</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="859"/>
+      <location filename="../../../femcommands/commands.py" line="856"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Erzeugt eine FEM-Netzverfeinerung</translation>
     </message>

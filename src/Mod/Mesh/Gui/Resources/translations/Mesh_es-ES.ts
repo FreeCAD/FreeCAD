@@ -1550,7 +1550,7 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
-      <translation>Automatico</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>

@@ -226,7 +226,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1556"/>
+      <location filename="../../../JointObject.py" line="1522"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
@@ -242,7 +242,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1558"/>
+      <location filename="../../../JointObject.py" line="1524"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
@@ -267,17 +267,17 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <translation>Szíj</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1379"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>2 elemet kell kiválasztania 2 különálló részből.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1560"/>
+      <location filename="../../../JointObject.py" line="1526"/>
       <source>Radius 1</source>
       <translation>Sugár 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1562"/>
+      <location filename="../../../JointObject.py" line="1528"/>
       <source>Pitch radius</source>
       <translation>Sugár lejtése</translation>
     </message>
@@ -388,7 +388,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <location filename="../../../JointObject.py" line="210"/>
       <location filename="../../../JointObject.py" line="474"/>
       <source>The first reference of the joint</source>
-      <translation>Csatlakozás első referencia pontja</translation>
+      <translation>Csatlakozás első hivatkozási pontja</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
@@ -475,7 +475,7 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
     <message>
       <location filename="../../../JointObject.py" line="379"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
-      <translation>Ez a két koordináta rendszer közötti legkisebb hosszhatár (a Z tengelyük mentén).</translation>
+      <translation>Ez a két koordinátarendszer közötti legkisebb hosszhatár (a Z tengelyük mentén).</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="390"/>
@@ -493,12 +493,12 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
       <translation>Ez a két koordinátarendszer (X-tengelyük) közötti szög maximum határa.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1070"/>
+      <location filename="../../../JointObject.py" line="1035"/>
       <source>The object to ground</source>
       <translation>A rögzitendő tárgy</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1082"/>
+      <location filename="../../../JointObject.py" line="1047"/>
       <source>This is where the part is grounded.</source>
       <translation>Itt van az alkatrész rögzítve.</translation>
     </message>
@@ -663,17 +663,17 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>The object is associated to one or more joints.</source>
       <translation>A tárgy egy vagy több csatlakozással rendelkezik.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>El akarja mozgatni a tárgyat és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="854"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
     </message>
@@ -923,7 +923,7 @@ Nyomja meg az ESC billentyűt a törléshez.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <translation>A darabjegyzék tárgy egy dokumentumtárgy, amely a darabjegyzék beállításait tárolja. Ez egyben egy táblázatkezelő tárgy is, így könnyen megjelenítheti a BOM-ot. Ha nincs szüksége arra, hogy a BOM tárgyát dokumentumtárgyként mentse, egyszerűen exportálhatja és törölheti a feladatot.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

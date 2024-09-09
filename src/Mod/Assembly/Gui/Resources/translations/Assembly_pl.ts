@@ -242,7 +242,7 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1556"/>
+      <location filename="../../../JointObject.py" line="1522"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
@@ -258,7 +258,7 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1558"/>
+      <location filename="../../../JointObject.py" line="1524"/>
       <source>Angle</source>
       <translation>Kąt</translation>
     </message>
@@ -283,17 +283,17 @@ Aby wstawić komponenty zewnętrzne, upewnij się, że plik jest otwarty w bież
       <translation>Pas</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1379"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Musisz wybrać dwa elementy z dwóch oddzielnych części.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1560"/>
+      <location filename="../../../JointObject.py" line="1526"/>
       <source>Radius 1</source>
       <translation>Promień 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1562"/>
+      <location filename="../../../JointObject.py" line="1528"/>
       <source>Pitch radius</source>
       <translation>Promień nachylenia</translation>
     </message>
@@ -516,12 +516,12 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
       <translation>Jest to maksymalny limit kąta między oboma układami współrzędnych (między ich osiami X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1070"/>
+      <location filename="../../../JointObject.py" line="1035"/>
       <source>The object to ground</source>
       <translation>Obiekt do zakotwienia</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1082"/>
+      <location filename="../../../JointObject.py" line="1047"/>
       <source>This is where the part is grounded.</source>
       <translation>W tym miejscu część jest zakotwiona.</translation>
     </message>
@@ -686,17 +686,17 @@ Pliki noszą nazwy "runPreDrag.asmt" i "dragging.log" i znajdują się w domyśl
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Obiekt jest powiązany z jednym lub większą liczbą połączeń.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Czy chcesz przenieść obiekt i usunąć powiązane połączenia?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="854"/>
       <source>Move part</source>
       <translation>Przesuń część</translation>
     </message>
@@ -953,7 +953,9 @@ W przeciwnym razie będzie to zestawienie całego dokumentu.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <translation>Obiekt BOM jest obiektem dokumentu, który przechowuje ustawienia BOM.
+Jest to również obiekt arkusza kalkulacyjnego, dzięki czemu można łatwo wizualizować BOM.
+Jeśli obiekt BOM nie ma być zapisany jako obiekt dokumentu, można go po prostu wyeksportować i anulować zadanie.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>
