@@ -3148,9 +3148,10 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Bu işaretliyse dosya okuma sırasında Bileşen birleşimi yapılmayacaktır(yavaş; ama daha yüksek detaylı).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

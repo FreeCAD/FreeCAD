@@ -136,7 +136,7 @@
     <message>
       <location filename="../../StartView.cpp" line="493"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>Otwórz ustawienia pierwszego uruchomienia</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="495"/>

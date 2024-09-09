@@ -3154,10 +3154,10 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Si està marcat, no es farà cap fusió composta
-durant la lectura del fitxer (detalls més lents però més alts).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -5219,9 +5219,9 @@ Comprovacions d'operació booleana individual:</translation>
     <message numerus="yes">
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>%n invalid shapes.</source>
-      <translation type="unfinished">
+      <translation>
+        <numerusform>%n forma invàlida.</numerusform>
         <numerusform>%n formes invàlides.</numerusform>
-        <numerusform>%n invalid shapes.</numerusform>
       </translation>
     </message>
     <message>

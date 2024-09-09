@@ -336,7 +336,7 @@
       <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation>A nyomtató a rajztól eltérő tájolást használ.
+      <translation>A nyomtató a rajztól eltérő tájolást használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
@@ -350,7 +350,7 @@ Szeretné folytatni?</translation>
       <location filename="../../DrawingView.cpp" line="620"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>A nyomtató a rajztól eltérő méretű papír méretet használ.
+      <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
