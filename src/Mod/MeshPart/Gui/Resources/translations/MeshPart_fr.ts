@@ -35,7 +35,7 @@
       <location filename="../../Command.cpp" line="319"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
-      <translation>Crée rune courbe approximative au-dessus d'un maillage.
+      <translation>Créer rune courbe approximative au-dessus d'un maillage.
 Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
     </message>
   </context>
@@ -310,7 +310,7 @@ Cette commande ne fonctionne qu'avec un objet "Mesh", pas avec une face ou une s
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation>Déflexion angulaire maximale d'une section de maillage à la section suivante</translation>
+      <translation>Déviation angulaire maximale d'une section de maillage à la section suivante</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>

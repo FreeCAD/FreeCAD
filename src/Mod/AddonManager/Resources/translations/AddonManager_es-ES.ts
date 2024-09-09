@@ -603,12 +603,12 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
-      <translation>URL fuente de la puntuación</translation>
+      <translation>URL de la fuente de puntaje</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
-      <translation>La URL para los datos de la puntuación del complemento (ver página de la WIki del Administrador de Complementos para el formato y los detalles del alojamiento).</translation>
+      <translation>La URL para los datos de la puntuación del complemento (ver página de la Wiki del Administrador de Complementos para el formato y los detalles del alojamiento).</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="350"/>
@@ -643,7 +643,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
-      <translation>Modo de desarrollador de complemento</translation>
+      <translation>Modo de desarrollador de complementos</translation>
     </message>
   </context>
   <context>
@@ -1577,7 +1577,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="427"/>
       <source>Automatic</source>
-      <translation>Automatico</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="428"/>
@@ -1644,7 +1644,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation>El complemento &apos;{}&apos; requiere los siguientes entornos de trabajo, los cuales no están disponibles en su copia de FreeCAD:</translation>
+      <translation>El complemento &apos;{}&apos; requiere los siguientes bancos de trabajo, los cuales no están disponibles en su copia de FreeCAD:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
@@ -2221,7 +2221,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
-      <translation>Lista de entornos de trabajo actualizada.</translation>
+      <translation>Lista de bancos de trabajo actualizada.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="268"/>
@@ -2474,7 +2474,7 @@ se comprobarán los complementos instalados para ver si hay actualizaciones disp
     <message>
       <location filename="../../AddonManager.py" line="237"/>
       <source>Manage external workbenches, macros, and preference packs</source>
-      <translation>Administrar entornos de trabajo externos, macros y paquetes de preferencias</translation>
+      <translation>Administrar bancos de trabajo externos, macros y paquetes de preferencias</translation>
     </message>
   </context>
   <context>

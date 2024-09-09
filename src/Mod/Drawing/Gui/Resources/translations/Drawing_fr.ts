@@ -720,7 +720,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Select exactly one Part object.</source>
-      <translation>Sélectionnez exactement un seul objet Pièce.</translation>
+      <translation>Sélectionner un seul objet Pièce.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>

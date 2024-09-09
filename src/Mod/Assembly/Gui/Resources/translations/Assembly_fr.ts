@@ -192,7 +192,7 @@
     <message>
       <location filename="../../../InitGui.py" line="112"/>
       <source>&amp;Assembly</source>
-      <translation>&amp;Assembly</translation>
+      <translation>&amp;Assemblage</translation>
     </message>
   </context>
   <context>
@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1556"/>
+      <location filename="../../../JointObject.py" line="1522"/>
       <source>Distance</source>
       <translation>Longueur</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1558"/>
+      <location filename="../../../JointObject.py" line="1524"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -265,17 +265,17 @@
       <translation>Courroie</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1379"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Vous devez sélectionner 2 éléments de 2 pièces séparées.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1560"/>
+      <location filename="../../../JointObject.py" line="1526"/>
       <source>Radius 1</source>
       <translation>Rayon 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1562"/>
+      <location filename="../../../JointObject.py" line="1528"/>
       <source>Pitch radius</source>
       <translation>Rayon primitif</translation>
     </message>
@@ -412,7 +412,7 @@
     <message>
       <location filename="../../../JointObject.py" line="232"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
-      <translation>Cela empêche Placement1 de recalculer, ce qui permet un positionnement personnalisé du placement.</translation>
+      <translation>Ceci empêche Placement1 d'être recalculé, ce qui permet un positionnement personnalisé de l'emplacement.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="449"/>
@@ -490,12 +490,12 @@
       <translation>Il s'agit de la limite maximale de l'angle entre les deux systèmes de coordonnées (entre leurs axes X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1070"/>
+      <location filename="../../../JointObject.py" line="1035"/>
       <source>The object to ground</source>
       <translation>L'objet à bloquer</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1082"/>
+      <location filename="../../../JointObject.py" line="1047"/>
       <source>This is where the part is grounded.</source>
       <translation>C'est là que la pièce est bloquée.</translation>
     </message>
@@ -639,7 +639,7 @@
       <source>Log the dragging steps of the solver. Useful if you want to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
       <translation>Enregistre les étapes successives du solveur. Utile si vous souhaitez signaler un bogue.
-Les fichiers sont nommés "runPreDrag.asmt" et "dragging.log" et se trouvent dans le répertoire par défaut de std::ofstream (sous Windows, c'est le bureau).</translation>
+Les fichiers se nomment "runPreDrag.asmt" et "dragging.log" et se trouvent dans le répertoire par défaut de std::ofstream (sous Windows, c'est le bureau).</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
@@ -649,7 +649,7 @@ Les fichiers sont nommés "runPreDrag.asmt" et "dragging.log" et se trouvent dan
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
       <source>Ground first part:</source>
-      <translation>Bloquer une première pièce :</translation>
+      <translation>Bloquer la première pièce :</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="66"/>
@@ -660,17 +660,17 @@ Les fichiers sont nommés "runPreDrag.asmt" et "dragging.log" et se trouvent dan
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objet est associé à une ou plusieurs liaisons.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Voulez-vous déplacer l'objet et supprimer les liaisons associées ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="854"/>
       <source>Move part</source>
       <translation>Déplacer une pièce</translation>
     </message>
@@ -884,7 +884,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="280"/>
       <source>Create Perpendicular Joint</source>
-      <translation>Créer un assemblage perpendiculaire</translation>
+      <translation>Créer une liaison perpendiculaire</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="287"/>
@@ -920,7 +920,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <translation>L'objet Nomenclature est un objet document qui stocke les paramètres de votre nomenclature. C'est aussi une feuille de calcul pour facilement visualiser votre nomenclature. Si vous n'avez pas besoin d'enregistrer l'objet Nomenclature, vous pouvez simplement exporter et annuler la tâche.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>
