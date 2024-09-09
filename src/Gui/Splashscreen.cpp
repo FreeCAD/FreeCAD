@@ -881,6 +881,7 @@ void AboutDialog::copyToClipboard()
     }
     str << "\n";
 
+    // Add Stylesheet/Theme/Qtstyle information
     std::string styleSheet = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("StyleSheet");
     std::string theme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("Theme");
     std::string style = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("QtStyle");
@@ -889,6 +890,13 @@ void AboutDialog::copyToClipboard()
         << QString::fromStdString(styleSheet) << "/"
         << QString::fromStdString(theme) << "/"
         << QString::fromStdString(style) << "\n";
+
+    // Add DPI information
+    str << "Logical/physical DPI: "
+        << screen()->logicalDotsPerInch()
+        << "/"
+        << screen()->physicalDotsPerInch()
+        << "\n";
 
     // Add installed module information:
     auto modDir = fs::path(App::Application::getUserAppDataDir()) / "Mod";
