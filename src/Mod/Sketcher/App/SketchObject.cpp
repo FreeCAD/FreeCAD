@@ -4198,8 +4198,9 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
                 // TODO: Do we apply constraints on center etc of the conics?
 
-                // transfer constraints from start and end of original
+                // transfer constraints from start, mid and end of original
                 transferConstraints(GeoId, PointPos::start, newId0, PointPos::start, true);
+                transferConstraints(GeoId, PointPos::mid, newId0, PointPos::mid);
                 transferConstraints(GeoId, PointPos::end, newId1, PointPos::end, true);
             });
     }
