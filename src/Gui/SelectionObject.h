@@ -50,7 +50,7 @@ public:
     /*! Constructs a SelectionObject from the SelectionChanges structure.
      */
     explicit SelectionObject(const SelectionChanges& msg);
-    explicit SelectionObject(App::DocumentObject*);
+    explicit SelectionObject(const App::DocumentObject*);
     ~SelectionObject() override;
     /**
      * The default implementation returns an instance of @ref SelectionObjectPy.
