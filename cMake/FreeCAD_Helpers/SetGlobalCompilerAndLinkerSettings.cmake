@@ -100,4 +100,4 @@ macro (SetGlobalCompilerAndLinkerSettings)
         endif ()
     endif (MINGW)
 
-endmacro(SetGlobalCompilerAndLinkerSettings)
+endmacro (SetGlobalCompilerAndLinkerSettings)

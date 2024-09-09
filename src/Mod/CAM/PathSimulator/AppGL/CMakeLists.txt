@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
@@ -9,29 +9,24 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS})
 
-)
+link_directories (${OCC_LIBRARY_DIR})
 
-link_directories(${OCC_LIBRARY_DIR})
-
-set(CAMSimulator_LIBS
+set (
+    CAMSimulator_LIBS
     Path
     Part
     Mesh
     FreeCADApp
     FreeCADGui
     ${QtOpenGL_LIBRARIES}
-    ${OPENGL_gl_LIBRARY}
-)
+    ${OPENGL_gl_LIBRARY})
 
-SET(CAMSimulator_SRCS_Python
-    CAMSimPy.xml
-    CAMSimPyImp.cpp
-)
+set (CAMSimulator_SRCS_Python CAMSimPy.xml CAMSimPyImp.cpp)
 
-
-SET(CAMSimulator_SRCS_Module
+set (
+    CAMSimulator_SRCS_Module
     AppCAMSimulator.cpp
     CAMSim.cpp
     CAMSim.h
@@ -39,10 +34,10 @@ SET(CAMSimulator_SRCS_Module
     DlgCAMSimulator.cpp
     DlgCAMSimulator.h
     PreCompiled.cpp
-    PreCompiled.h
-)
+    PreCompiled.h)
 
-SET(CAMSimulator_SRCS_Core
+set (
+    CAMSimulator_SRCS_Core
     EndMill.cpp
     EndMill.h
     GCodeParser.cpp
@@ -54,7 +49,7 @@ SET(CAMSimulator_SRCS_Core
     linmath.h
     MillMotion.h
     MillPathLine.cpp
-	MillPathLine.h
+    MillPathLine.h
     MillPathSegment.cpp
     MillPathSegment.h
     MillSimulation.cpp
@@ -73,40 +68,31 @@ SET(CAMSimulator_SRCS_Core
     Texture.cpp
     Texture.h
     TextureLoader.cpp
-    TextureLoader.h
-)
+    TextureLoader.h)
 
+generate_from_xml (CAMSimPy)
 
-generate_from_xml(CAMSimPy)
+source_group ("Module" FILES ${CAMSimulator_SRCS_Module})
+source_group ("Python" FILES ${CAMSimulator_SRCS_Python})
+source_group ("Core" FILES ${CAMSimulator_SRCS_Core})
 
+set (CAMSimulator_SRCS_precomp ${CAMSimulator_SRCS_Module} ${CAMSimulator_SRCS_Python})
 
-SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
-SOURCE_GROUP("Python" FILES ${CAMSimulator_SRCS_Python})
-SOURCE_GROUP("Core" FILES ${CAMSimulator_SRCS_Core})
+set (CAMSimulator_SRCS ${CAMSimulator_SRCS_precomp} ${CAMSimulator_SRCS_Core})
 
-SET(CAMSimulator_SRCS_precomp
-    ${CAMSimulator_SRCS_Module}
-    ${CAMSimulator_SRCS_Python}
-)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${CAMSimulator_SRCS_precomp})
+    add_msvc_precompiled_header (CAMSimulator PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-SET(CAMSimulator_SRCS
-    ${CAMSimulator_SRCS_precomp}
-    ${CAMSimulator_SRCS_Core}
-)
-
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${CAMSimulator_SRCS_precomp})
-    ADD_MSVC_PRECOMPILED_HEADER(CAMSimulator PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
-add_library(CAMSimulator SHARED ${CAMSimulator_SRCS})
-target_link_libraries(CAMSimulator ${CAMSimulator_LIBS})
+add_library (CAMSimulator SHARED ${CAMSimulator_SRCS})
+target_link_libraries (CAMSimulator ${CAMSimulator_LIBS})
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(CAMSimulator)
-endif()
+    target_compile_warn_error (CAMSimulator)
+endif ()
 
-SET_BIN_DIR(CAMSimulator CAMSimulator /Mod/CAM)
-SET_PYTHON_PREFIX_SUFFIX(CAMSimulator)
+set_bin_dir (CAMSimulator CAMSimulator /Mod/CAM)
+set_python_prefix_suffix (CAMSimulator)
 
-INSTALL(TARGETS CAMSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (TARGETS CAMSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})

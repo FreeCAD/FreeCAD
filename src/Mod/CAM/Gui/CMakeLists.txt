@@ -1,4 +1,4 @@
-include_directories(
+include_directories (
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -8,32 +8,24 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-)
+    ${XercesC_INCLUDE_DIRS})
 
-link_directories(${OCC_LIBRARY_DIR})
+link_directories (${OCC_LIBRARY_DIR})
 
-set(PathGui_LIBS
-    Path
-    PartGui
-    FreeCADGui
-)
+set (PathGui_LIBS Path PartGui FreeCADGui)
 
 set (Path_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Path_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${Path_TR_QRC} ${QM_SRCS})
-qt_add_resources(PathResource_SRCS Resources/Path.qrc ${Path_TR_QRC})
+qt_find_and_add_translation (QM_SRCS "Resources/translations/*_*.ts"
+                             ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_create_resource_file (${Path_TR_QRC} ${QM_SRCS})
+qt_add_resources (PathResource_SRCS Resources/Path.qrc ${Path_TR_QRC})
 
-SOURCE_GROUP("Resources" FILES ${PathResource_SRCS})
+source_group ("Resources" FILES ${PathResource_SRCS})
 
-set(PathGui_UIC_SRCS
-    DlgSettingsPathColor.ui
-    TaskDlgPathCompound.ui
-    DlgProcessorChooser.ui
-)
+set (PathGui_UIC_SRCS DlgSettingsPathColor.ui TaskDlgPathCompound.ui DlgProcessorChooser.ui)
 
-SET(PathGui_SRCS_Module
+set (
+    PathGui_SRCS_Module
     Command.cpp
     AppPathGui.cpp
     AppPathGuiPy.cpp
@@ -48,12 +40,12 @@ SET(PathGui_SRCS_Module
     TaskDlgPathCompound.h
     DlgProcessorChooser.ui
     DlgProcessorChooser.cpp
-    DlgProcessorChooser.h
-)
+    DlgProcessorChooser.h)
 
-SOURCE_GROUP("Module" FILES ${PathGui_SRCS_Module})
+source_group ("Module" FILES ${PathGui_SRCS_Module})
 
-SET(PathGui_SRCS_ViewProvider
+set (
+    PathGui_SRCS_ViewProvider
     ViewProviderPath.cpp
     ViewProviderPath.h
     ViewProviderPathCompound.cpp
@@ -61,38 +53,31 @@ SET(PathGui_SRCS_ViewProvider
     ViewProviderPathShape.cpp
     ViewProviderPathShape.h
     ViewProviderArea.cpp
-    ViewProviderArea.h
-)
+    ViewProviderArea.h)
 
-SOURCE_GROUP("ViewProvider" FILES ${PathGui_SRCS_ViewProvider})
+source_group ("ViewProvider" FILES ${PathGui_SRCS_ViewProvider})
 
-SET(PathGui_SRCS
-    ${PathResource_SRCS}
-    ${PathGui_UIC_HDRS}
-    ${PathGui_SRCS_Module}
-    ${PathGui_SRCS_ViewProvider}
-)
+set (PathGui_SRCS ${PathResource_SRCS} ${PathGui_UIC_HDRS} ${PathGui_SRCS_Module}
+                  ${PathGui_SRCS_ViewProvider})
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PathGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
+if (FREECAD_USE_PCH)
+    add_definitions (-D_PreComp_)
+    get_msvc_precompiled_source ("PreCompiled.cpp" PCH_SRCS ${PathGui_SRCS})
+    add_msvc_precompiled_header (PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif (FREECAD_USE_PCH)
 
-SET(PathGuiIcon_SVG
-    Resources/icons/CAMWorkbench.svg
-)
+set (PathGuiIcon_SVG Resources/icons/CAMWorkbench.svg)
 
-add_library(PathGui SHARED ${PathGui_SRCS} ${PathGuiIcon_SVG})
-target_link_libraries(PathGui ${PathGui_LIBS})
+add_library (PathGui SHARED ${PathGui_SRCS} ${PathGuiIcon_SVG})
+target_link_libraries (PathGui ${PathGui_LIBS})
 if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PathGui)
-endif()
+    target_compile_warn_error (PathGui)
+endif ()
 
-SET_BIN_DIR(PathGui PathGui /Mod/CAM)
-SET_PYTHON_PREFIX_SUFFIX(PathGui)
+set_bin_dir (PathGui PathGui /Mod/CAM)
+set_python_prefix_suffix (PathGui)
 
-fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/CAM" ${PathGuiIcon_SVG})
+fc_copy_sources (PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/CAM" ${PathGuiIcon_SVG})
 
-INSTALL(TARGETS PathGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-INSTALL(FILES ${PathGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/CAM/Resources/icons")
+install (TARGETS PathGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install (FILES ${PathGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/CAM/Resources/icons")

@@ -1,37 +1,23 @@
-add_subdirectory(App)
-add_subdirectory(libarea)
-add_subdirectory(PathSimulator)
+add_subdirectory (App)
+add_subdirectory (libarea)
+add_subdirectory (PathSimulator)
 
-if(BUILD_GUI)
-    add_subdirectory(Gui)
-endif(BUILD_GUI)
+if (BUILD_GUI)
+    add_subdirectory (Gui)
+endif (BUILD_GUI)
 
-set(Path_Scripts
-    Init.py
-    PathCommands.py
-    TestCAMApp.py
-)
+set (Path_Scripts Init.py PathCommands.py TestCAMApp.py)
 
-if(BUILD_GUI)
+if (BUILD_GUI)
     list (APPEND Path_Scripts InitGui.py)
-endif(BUILD_GUI)
+endif (BUILD_GUI)
 
-INSTALL(
-    FILES
-        ${Path_Scripts}
-    DESTINATION
-        Mod/CAM
-)
+install (FILES ${Path_Scripts} DESTINATION Mod/CAM)
 
-SET(PathPython_SRCS
-    Path/__init__.py
-    Path/Log.py
-    Path/Geom.py
-    Path/GuiInit.py
-    Path/Preferences.py
-)
+set (PathPython_SRCS Path/__init__.py Path/Log.py Path/Geom.py Path/GuiInit.py Path/Preferences.py)
 
-SET(PathPythonBase_SRCS
+set (
+    PathPythonBase_SRCS
     Path/Base/__init__.py
     Path/Base/Drillable.py
     Path/Base/FeedRate.py
@@ -41,10 +27,10 @@ SET(PathPythonBase_SRCS
     Path/Base/PropertyBag.py
     Path/Base/SetupSheet.py
     Path/Base/SetupSheetOpPrototype.py
-    Path/Base/Util.py
-)
+    Path/Base/Util.py)
 
-SET(PathPythonBaseGui_SRCS
+set (
+    PathPythonBaseGui_SRCS
     Path/Base/Gui/__init__.py
     Path/Base/Gui/GetPoint.py
     Path/Base/Gui/IconViewProvider.py
@@ -53,18 +39,13 @@ SET(PathPythonBaseGui_SRCS
     Path/Base/Gui/PropertyEditor.py
     Path/Base/Gui/SetupSheet.py
     Path/Base/Gui/SetupSheetOpPrototype.py
-    Path/Base/Gui/Util.py
-)
+    Path/Base/Gui/Util.py)
 
-SET(PathPythonDressup_SRCS
-    Path/Dressup/__init__.py
-    Path/Dressup/Utils.py
-    Path/Dressup/Boundary.py
-    Path/Dressup/DogboneII.py
-    Path/Dressup/Tags.py
-)
+set (PathPythonDressup_SRCS Path/Dressup/__init__.py Path/Dressup/Utils.py Path/Dressup/Boundary.py
+                            Path/Dressup/DogboneII.py Path/Dressup/Tags.py)
 
-SET(PathPythonDressupGui_SRCS
+set (
+    PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
     Path/Dressup/Gui/AxisMap.py
     Path/Dressup/Gui/Dogbone.py
@@ -76,16 +57,12 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/RampEntry.py
     Path/Dressup/Gui/Tags.py
     Path/Dressup/Gui/TagPreferences.py
-    Path/Dressup/Gui/ZCorrect.py
-)
+    Path/Dressup/Gui/ZCorrect.py)
 
-SET(PathPythonMain_SRCS
-    Path/Main/__init__.py
-    Path/Main/Job.py
-    Path/Main/Stock.py
-)
+set (PathPythonMain_SRCS Path/Main/__init__.py Path/Main/Job.py Path/Main/Stock.py)
 
-SET(PathPythonMainGui_SRCS
+set (
+    PathPythonMainGui_SRCS
     Path/Main/Gui/__init__.py
     Path/Main/Gui/Camotics.py
     Path/Main/Gui/Fixture.py
@@ -96,10 +73,10 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/PreferencesJob.py
     Path/Main/Gui/SanityCmd.py
     Path/Main/Gui/Simulator.py
-    Path/Main/Gui/SimulatorGL.py
-)
+    Path/Main/Gui/SimulatorGL.py)
 
-SET(PathPythonMainSanity_SRCS
+set (
+    PathPythonMainSanity_SRCS
     Path/Main/Sanity/Sanity.py
     Path/Main/Sanity/ImageBuilder.py
     Path/Main/Sanity/ReportGenerator.py
@@ -107,36 +84,32 @@ SET(PathPythonMainSanity_SRCS
     Path/Main/Sanity/Sanity_Bulb.svg
     Path/Main/Sanity/Sanity_Caution.svg
     Path/Main/Sanity/Sanity_Note.svg
-    Path/Main/Sanity/Sanity_Warning.svg
-)
+    Path/Main/Sanity/Sanity_Warning.svg)
 
-SET(PathPythonTools_SRCS
-    Path/Tool/__init__.py
-    Path/Tool/Bit.py
-    Path/Tool/Controller.py
-)
+set (PathPythonTools_SRCS Path/Tool/__init__.py Path/Tool/Bit.py Path/Tool/Controller.py)
 
-SET(PathPythonToolsGui_SRCS
+set (
+    PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Bit.py
     Path/Tool/Gui/BitCmd.py
     Path/Tool/Gui/BitEdit.py
     Path/Tool/Gui/BitLibraryCmd.py
     Path/Tool/Gui/BitLibrary.py
-    Path/Tool/Gui/Controller.py
-)
+    Path/Tool/Gui/Controller.py)
 
-SET(PathPythonPost_SRCS
+set (
+    PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
     Path/Post/Processor.py
     Path/Post/Utils.py
     Path/Post/UtilsArguments.py
     Path/Post/UtilsExport.py
-    Path/Post/UtilsParse.py
-)
+    Path/Post/UtilsParse.py)
 
-SET(PathPythonPostScripts_SRCS
+set (
+    PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_post.py
     Path/Post/scripts/comparams_post.py
@@ -170,10 +143,10 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/slic3r_pre.py
     Path/Post/scripts/smoothie_post.py
     Path/Post/scripts/uccnc_post.py
-    Path/Post/scripts/wedm_post.py
-)
+    Path/Post/scripts/wedm_post.py)
 
-SET(PathPythonOp_SRCS
+set (
+    PathPythonOp_SRCS
     Path/Op/__init__.py
     Path/Op/Adaptive.py
     Path/Op/Area.py
@@ -198,10 +171,10 @@ SET(PathPythonOp_SRCS
     Path/Op/ThreadMilling.py
     Path/Op/Util.py
     Path/Op/Vcarve.py
-    Path/Op/Waterline.py
-)
+    Path/Op/Waterline.py)
 
-SET(PathPythonOpGui_SRCS
+set (
+    PathPythonOpGui_SRCS
     Path/Op/Gui/__init__.py
     Path/Op/Gui/Adaptive.py
     Path/Op/Gui/Array.py
@@ -228,36 +201,24 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Surface.py
     Path/Op/Gui/ThreadMilling.py
     Path/Op/Gui/Vcarve.py
-    Path/Op/Gui/Waterline.py
-)
+    Path/Op/Gui/Waterline.py)
 
-SET(PathScripts_SRCS
-    PathScripts/PathUtils.py
-    PathScripts/PathUtilsGui.py
-    PathScripts/PathPropertyBag.py
-    PathScripts/PathPropertyBagGui.py
-    PathScripts/__init__.py
-)
+set (PathScripts_SRCS
+     PathScripts/PathUtils.py PathScripts/PathUtilsGui.py PathScripts/PathPropertyBag.py
+     PathScripts/PathPropertyBagGui.py PathScripts/__init__.py)
 
-SET(PathPythonBaseGenerator_SRCS
-    Path/Base/Generator/dogboneII.py
-    Path/Base/Generator/drill.py
-    Path/Base/Generator/helix.py
-    Path/Base/Generator/rotation.py
-    Path/Base/Generator/threadmilling.py
-    Path/Base/Generator/toolchange.py
-)
+set (
+    PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/dogboneII.py Path/Base/Generator/drill.py Path/Base/Generator/helix.py
+    Path/Base/Generator/rotation.py Path/Base/Generator/threadmilling.py
+    Path/Base/Generator/toolchange.py)
 
-SET(PathPythonGui_SRCS
-    PathPythonGui/__init__.py
-    PathPythonGui/simple_edit_panel.py
-)
+set (PathPythonGui_SRCS PathPythonGui/__init__.py PathPythonGui/simple_edit_panel.py)
 
-SET(Tools_SRCS
-    Tools/README.md
-)
+set (Tools_SRCS Tools/README.md)
 
-SET(Tools_Bit_SRCS
+set (
+    Tools_Bit_SRCS
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/5mm-thread-cutter.fctb
     Tools/Bit/5mm_Drill.fctb
@@ -266,14 +227,12 @@ SET(Tools_Bit_SRCS
     Tools/Bit/6mm_Ball_End.fctb
     Tools/Bit/6mm_Bullnose.fctb
     Tools/Bit/probe.fctb
-    Tools/Bit/slittingsaw.fctb
-)
+    Tools/Bit/slittingsaw.fctb)
 
-SET(Tools_Library_SRCS
-    Tools/Library/Default.fctl
-)
+set (Tools_Library_SRCS Tools/Library/Default.fctl)
 
-SET(Tools_Shape_SRCS
+set (
+    Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
     Tools/Shape/bullnose.fcstd
     Tools/Shape/chamfer.fcstd
@@ -283,10 +242,10 @@ SET(Tools_Shape_SRCS
     Tools/Shape/probe.fcstd
     Tools/Shape/slittingsaw.fcstd
     Tools/Shape/thread-mill.fcstd
-    Tools/Shape/v-bit.fcstd
-)
+    Tools/Shape/v-bit.fcstd)
 
-SET(Tests_SRCS
+set (
+    Tests_SRCS
     Tests/__init__.py
     Tests/boxtest.fcstd
     Tests/boxtest1.fcstd
@@ -346,39 +305,28 @@ SET(Tests_SRCS
     Tests/TestRefactoredTestPostMCodes.py
     Tests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     Tests/Tools/Library/test-path-tool-bit-library-00.fctl
-    Tests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
-)
+    Tests/Tools/Shape/test-path-tool-bit-shape-00.fcstd)
 
-SET(PathImages_Ops
-    Images/Ops/chamfer.svg
-)
+set (PathImages_Ops Images/Ops/chamfer.svg)
 
-SET(PathImages_Tools
-    Images/Tools/drill.svg
-    Images/Tools/endmill.svg
-    Images/Tools/v-bit.svg
-)
+set (PathImages_Tools Images/Tools/drill.svg Images/Tools/endmill.svg Images/Tools/v-bit.svg)
 
-SET(Path_Images
-    ${PathImages_Ops}
-    ${PathImages_Tools}
-)
+set (Path_Images ${PathImages_Ops} ${PathImages_Tools})
 
-SET(PathData_Threads
+set (
+    PathData_Threads
     Data/Threads/imperial-external-2A.csv
     Data/Threads/imperial-external-3A.csv
     Data/Threads/imperial-internal-2B.csv
     Data/Threads/imperial-internal-3B.csv
     Data/Threads/metric-external-4G6G.csv
     Data/Threads/metric-external-6G.csv
-    Data/Threads/metric-internal-6H.csv
-)
+    Data/Threads/metric-internal-6H.csv)
 
-SET(Path_Data
-    ${PathData_Threads}
-)
+set (Path_Data ${PathData_Threads})
 
-SET(all_files
+set (
+    all_files
     ${PathScripts_SRCS}
     ${PathPython_SRCS}
     ${PathPythonBase_SRCS}
@@ -401,201 +349,62 @@ SET(all_files
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
     ${Path_Images}
-    ${Path_Data}
-)
+    ${Path_Data})
 
-ADD_CUSTOM_TARGET(PathScripts ALL
-    SOURCES ${all_files}
-)
+add_custom_target (PathScripts ALL SOURCES ${all_files})
 
-SET(test_files
-  ${Path_Scripts}
-  ${Tests_SRCS}
-)
+set (test_files ${Path_Scripts} ${Tests_SRCS})
 
-ADD_CUSTOM_TARGET(Tests ALL
-    SOURCES ${test_files}
-)
+add_custom_target (Tests ALL SOURCES ${test_files})
 
-fc_copy_sources(PathScripts "${CMAKE_BINARY_DIR}/Mod/CAM" ${all_files})
-fc_copy_sources(Tests "${CMAKE_BINARY_DIR}/Mod/CAM" ${test_files})
+fc_copy_sources (PathScripts "${CMAKE_BINARY_DIR}/Mod/CAM" ${all_files})
+fc_copy_sources (Tests "${CMAKE_BINARY_DIR}/Mod/CAM" ${test_files})
 
-INSTALL(
-    FILES
-        ${PathScripts_SRCS}
-    DESTINATION
-        Mod/CAM/PathScripts
-)
+install (FILES ${PathScripts_SRCS} DESTINATION Mod/CAM/PathScripts)
 
-INSTALL(
-    FILES
-        ${PathPython_SRCS}
-    DESTINATION
-        Mod/CAM/Path
-)
+install (FILES ${PathPython_SRCS} DESTINATION Mod/CAM/Path)
 
-INSTALL(
-    FILES
-        ${PathPythonBase_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Base
-)
+install (FILES ${PathPythonBase_SRCS} DESTINATION Mod/CAM/Path/Base)
 
-INSTALL(
-    FILES
-        ${PathPythonBaseGenerator_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Base/Generator
-)
+install (FILES ${PathPythonBaseGenerator_SRCS} DESTINATION Mod/CAM/Path/Base/Generator)
 
-INSTALL(
-    FILES
-        ${PathPythonBaseGui_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Base/Gui
-)
+install (FILES ${PathPythonBaseGui_SRCS} DESTINATION Mod/CAM/Path/Base/Gui)
 
-INSTALL(
-    FILES
-        ${PathPythonDressup_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Dressup
-)
+install (FILES ${PathPythonDressup_SRCS} DESTINATION Mod/CAM/Path/Dressup)
 
-INSTALL(
-    FILES
-        ${PathPythonDressupGui_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Dressup/Gui
-)
+install (FILES ${PathPythonDressupGui_SRCS} DESTINATION Mod/CAM/Path/Dressup/Gui)
 
-INSTALL(
-    FILES
-        ${PathPythonMain_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Main
-)
-INSTALL(
-    FILES
-        ${PathPythonMainGui_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Main/Gui
-)
-INSTALL(
-    FILES
-        ${PathPythonMainSanity_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Main/Sanity
-)
+install (FILES ${PathPythonMain_SRCS} DESTINATION Mod/CAM/Path/Main)
+install (FILES ${PathPythonMainGui_SRCS} DESTINATION Mod/CAM/Path/Main/Gui)
+install (FILES ${PathPythonMainSanity_SRCS} DESTINATION Mod/CAM/Path/Main/Sanity)
 
-INSTALL(
-    FILES
-        ${PathPythonOp_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Op
-)
-INSTALL(
-    FILES
-        ${PathPythonOpGui_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Op/Gui
-)
+install (FILES ${PathPythonOp_SRCS} DESTINATION Mod/CAM/Path/Op)
+install (FILES ${PathPythonOpGui_SRCS} DESTINATION Mod/CAM/Path/Op/Gui)
 
-INSTALL(
-    FILES
-        ${PathPythonPost_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Post
-)
+install (FILES ${PathPythonPost_SRCS} DESTINATION Mod/CAM/Path/Post)
 
-INSTALL(
-    FILES
-        ${PathPythonPostScripts_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Post/scripts
-)
+install (FILES ${PathPythonPostScripts_SRCS} DESTINATION Mod/CAM/Path/Post/scripts)
 
-INSTALL(
-    FILES
-        ${PathPythonTools_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Tool
-)
+install (FILES ${PathPythonTools_SRCS} DESTINATION Mod/CAM/Path/Tool)
 
-INSTALL(
-    FILES
-        ${PathPythonToolsGui_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Tool/Gui
-)
+install (FILES ${PathPythonToolsGui_SRCS} DESTINATION Mod/CAM/Path/Tool/Gui)
 
-INSTALL(
-    FILES
-        ${Tests_SRCS}
-    DESTINATION
-        Mod/CAM/Tests
-)
+install (FILES ${Tests_SRCS} DESTINATION Mod/CAM/Tests)
 
-INSTALL(
-  DIRECTORY
-      Tests/Tools
-  DESTINATION
-        Mod/CAM/Tests
-)
+install (DIRECTORY Tests/Tools DESTINATION Mod/CAM/Tests)
 
+install (FILES ${PathPythonGui_SRCS} DESTINATION Mod/CAM/PathPythonGui)
 
-INSTALL(
-    FILES
-        ${PathPythonGui_SRCS}
-    DESTINATION
-        Mod/CAM/PathPythonGui
-)
+install (FILES ${Tools_SRCS} DESTINATION Mod/CAM/Tools)
 
-INSTALL(
-    FILES
-        ${Tools_SRCS}
-    DESTINATION
-        Mod/CAM/Tools
-)
+install (FILES ${Tools_Bit_SRCS} DESTINATION Mod/CAM/Tools/Bit)
 
-INSTALL(
-    FILES
-        ${Tools_Bit_SRCS}
-    DESTINATION
-        Mod/CAM/Tools/Bit
-)
+install (FILES ${Tools_Library_SRCS} DESTINATION Mod/CAM/Tools/Library)
 
-INSTALL(
-    FILES
-        ${Tools_Library_SRCS}
-    DESTINATION
-        Mod/CAM/Tools/Library
-)
+install (FILES ${Tools_Shape_SRCS} DESTINATION Mod/CAM/Tools/Shape)
 
-INSTALL(
-    FILES
-      ${Tools_Shape_SRCS}
-    DESTINATION
-      Mod/CAM/Tools/Shape
-)
+install (FILES ${PathImages_Ops} DESTINATION Mod/CAM/Images/Ops)
 
-INSTALL(
-    FILES
-        ${PathImages_Ops}
-    DESTINATION
-        Mod/CAM/Images/Ops
-)
+install (FILES ${PathImages_Tools} DESTINATION Mod/CAM/Images/Tools)
 
-INSTALL(
-    FILES
-        ${PathImages_Tools}
-    DESTINATION
-        Mod/CAM/Images/Tools
-)
-
-INSTALL(
-    FILES
-        ${PathData_Threads}
-    DESTINATION
-        Mod/CAM/Data/Threads
-)
+install (FILES ${PathData_Threads} DESTINATION Mod/CAM/Data/Threads)
