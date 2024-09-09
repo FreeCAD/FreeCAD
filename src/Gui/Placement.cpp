@@ -80,7 +80,8 @@ public:
         return false;
     }
 
-    static App::PropertyPlacement* getProperty(App::DocumentObject* obj, const std::string& propertyName)
+    static App::PropertyPlacement* getProperty(const App::DocumentObject* obj,
+                                               const std::string& propertyName)
     {
         std::map<std::string,App::Property*> props;
         obj->getPropertyMap(props);
@@ -197,33 +198,37 @@ void PlacementHandler::revertTransformation()
     }
 }
 
-std::vector<App::DocumentObject*> PlacementHandler::getObjects(Gui::Document* document) const
+std::vector<const App::DocumentObject*> PlacementHandler::getObjects(const Gui::Document* document) const
 {
-    return document->getDocument()->getObjectsOfType(App::DocumentObject::getClassTypeId());
+    auto objs = document->getDocument()->getObjectsOfType(App::DocumentObject::getClassTypeId());
+    std::vector<const App::DocumentObject*> list;
+    list.insert(list.begin(), objs.begin(), objs.end());
+    return list;
 }
 
-std::vector<App::DocumentObject*> PlacementHandler::getSelectedObjects(Gui::Document* document) const
+std::vector<const App::DocumentObject*> PlacementHandler::getSelectedObjects(const Gui::Document* document) const
 {
     App::Document* doc = document->getDocument();
-    std::vector<App::DocumentObject*> list;
+    std::vector<const App::DocumentObject*> list;
     list.reserve(selectionObjects.size());
     for (const auto& it : selectionObjects) {
         const App::DocumentObject* obj = it.getObject();
         if (obj && obj->getDocument() == doc) {
-            list.push_back(const_cast<App::DocumentObject*>(obj));  // NOLINT
+            list.push_back(obj);
         }
     }
 
-    if (!list.empty()) {
-        return list;
+    if (list.empty()) {
+        auto objs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), doc->getName());
+        list.insert(list.begin(), objs.begin(), objs.end());
     }
 
-    return Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), doc->getName());
+    return list;
 }
 
 void PlacementHandler::revertTransformationOfViewProviders(Gui::Document* document)
 {
-    std::vector<App::DocumentObject*> obj = getObjects(document);
+    std::vector<const App::DocumentObject*> obj = getObjects(document);
     for (const auto & it : obj) {
         auto property = find_placement::getProperty(it, this->propertyName);
         if (property) {
@@ -252,7 +257,7 @@ void PlacementHandler::applyPlacement(const Base::Placement& p, bool incremental
     if (!document)
         return;
 
-    std::vector<App::DocumentObject*> sel = getSelectedObjects(document);
+    std::vector<const App::DocumentObject*> sel = getSelectedObjects(document);
     if (!sel.empty()) {
         for (const auto & it : sel) {
             applyPlacement(document, it, p, incremental);
@@ -263,7 +268,8 @@ void PlacementHandler::applyPlacement(const Base::Placement& p, bool incremental
     }
 }
 
-void PlacementHandler::applyPlacement(Gui::Document* document, App::DocumentObject* obj, const Base::Placement& p, bool incremental)
+void PlacementHandler::applyPlacement(const Gui::Document* document, const App::DocumentObject* obj,
+                                      const Base::Placement& p, bool incremental)
 {
     auto property = find_placement::getProperty(obj, this->propertyName);
     if (property) {
@@ -299,7 +305,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
         openCommandIfActive(document);
     }
     else {
-        std::vector<App::DocumentObject*> sel = getSelectedObjects(document);
+        std::vector<const App::DocumentObject*> sel = getSelectedObjects(document);
         if (!sel.empty()) {
             openCommandIfActive(document);
             for (const auto & it : sel) {
@@ -314,7 +320,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
     }
 }
 
-void PlacementHandler::applyPlacement(App::DocumentObject* obj, const QString& data, bool incremental)
+void PlacementHandler::applyPlacement(const App::DocumentObject* obj, const QString& data, bool incremental)
 {
     auto property = find_placement::getProperty(obj, this->propertyName);
     if (property) {
@@ -330,7 +336,7 @@ void PlacementHandler::applyPlacement(App::DocumentObject* obj, const QString& d
     }
 }
 
-QString PlacementHandler::getIncrementalPlacement(App::DocumentObject* obj, const QString& data) const
+QString PlacementHandler::getIncrementalPlacement(const App::DocumentObject* obj, const QString& data) const
 {
     return QString::fromLatin1(
         R"(App.getDocument("%1").%2.%3=%4.multiply(App.getDocument("%1").%2.%3))")
@@ -340,7 +346,7 @@ QString PlacementHandler::getIncrementalPlacement(App::DocumentObject* obj, cons
              data);
 }
 
-QString PlacementHandler::getSimplePlacement(App::DocumentObject* obj, const QString& data) const
+QString PlacementHandler::getSimplePlacement(const App::DocumentObject* obj, const QString& data) const
 {
     return QString::fromLatin1(
         "App.getDocument(\"%1\").%2.%3=%4")
@@ -472,7 +478,8 @@ void Placement::setupUi()
 
 void Placement::setupConnections()
 {
-    connect(ui->applyButton, &QPushButton::clicked,
+    QPushButton* applyButton = ui->buttonBox->button(QDialogButtonBox::Apply);
+    connect(applyButton, &QPushButton::clicked,
             this, &Placement::onApplyButtonClicked);
     connect(ui->applyIncrementalPlacement, &QCheckBox::toggled,
             this, &Placement::onApplyIncrementalPlacementToggled);
@@ -542,9 +549,7 @@ void Placement::setupRotationMethod()
 
 void Placement::showDefaultButtons(bool ok)
 {
-    ui->oKButton->setVisible(ok);
-    ui->closeButton->setVisible(ok);
-    ui->applyButton->setVisible(ok);
+    ui->buttonBox->setVisible(ok);
     ui->buttonBoxLayout->invalidate();
     if (ok) {
         ui->buttonBoxLayout->insertSpacerItem(0, ui->buttonBoxSpacer);
@@ -882,9 +887,34 @@ void Placement::setIgnoreTransactions(bool value)
  */
 void Placement::bindObject()
 {
-    // clang-format off
     if (const App::DocumentObject* obj = handler.getFirstOfSelection()) {
         std::string propertyName = handler.getPropertyName();
+        bindProperty(obj, propertyName);
+    }
+}
+
+/*!
+ * \brief Placement::setPlacementAndBindObject
+ * Sets the placement, binds the spin boxes to the placement components of the passed object and
+ * sets the name of the placement property.
+ */
+void Placement::setPlacementAndBindObject(const App::DocumentObject* obj, const std::string& propertyName)
+{
+    if (obj) {
+        App::PropertyPlacement* prop = find_placement::getProperty(obj, propertyName);
+        if (prop) {
+            setPlacement(prop->getValue());
+            handler.setPropertyName(propertyName);
+            bindProperty(obj, propertyName);
+            handler.setSelection({SelectionObject{obj}});
+        }
+    }
+}
+
+void Placement::bindProperty(const App::DocumentObject* obj, const std::string& propertyName)
+{
+    // clang-format off
+    if (obj) {
         App::ObjectIdentifier path = App::ObjectIdentifier::parse(obj, propertyName);
         if (path.getProperty()) {
             ui->xPos->bind(App::ObjectIdentifier::parse(obj, propertyName + std::string(".Base.x")));
@@ -1140,6 +1170,12 @@ void TaskPlacement::bindObject()
     widget->bindObject();
 }
 
+void TaskPlacement::setPlacementAndBindObject(const App::DocumentObject* obj,
+                                              const std::string& propertyName)
+{
+    widget->setPlacementAndBindObject(obj, propertyName);
+}
+
 void TaskPlacement::open()
 {
     widget->open();
@@ -1198,21 +1234,36 @@ void TaskPlacementPy::init_type()
     behaviors().supportGetattr();
     behaviors().supportSetattr();
     // clang-format off
-    add_varargs_method("setPropertyName",&TaskPlacementPy::setPropertyName,"setPropertyName(string)");
-    add_varargs_method("setPlacement",&TaskPlacementPy::setPlacement,"setPlacement(Placement)");
-    add_varargs_method("setSelection",&TaskPlacementPy::setSelection,"setSelection(list)");
-    add_varargs_method("bindObject",&TaskPlacementPy::bindObject,"bindObject()");
-
-    add_varargs_method("setIgnoreTransactions",&TaskPlacementPy::setIgnoreTransactions, "setIgnoreTransactions(bool)");
-    add_varargs_method("showDefaultButtons",&TaskPlacementPy::showDefaultButtons, "showDefaultButtons(bool)");
-    add_varargs_method("accept",&TaskPlacementPy::accept,"accept()");
-    add_varargs_method("reject",&TaskPlacementPy::reject,"reject()");
-    add_varargs_method("clicked",&TaskPlacementPy::clicked,"clicked()");
-    add_varargs_method("open",&TaskPlacementPy::open,"open()");
-    add_varargs_method("isAllowedAlterDocument",&TaskPlacementPy::isAllowedAlterDocument,"isAllowedAlterDocument()");
-    add_varargs_method("isAllowedAlterView",&TaskPlacementPy::isAllowedAlterView,"isAllowedAlterView()");
-    add_varargs_method("isAllowedAlterSelection",&TaskPlacementPy::isAllowedAlterSelection,"isAllowedAlterSelection()");
-    add_varargs_method("getStandardButtons",&TaskPlacementPy::getStandardButtons,"getStandardButtons()");
+    add_varargs_method("setPropertyName", &TaskPlacementPy::setPropertyName,
+                       "setPropertyName(string)");
+    add_varargs_method("setPlacement", &TaskPlacementPy::setPlacement,
+                       "setPlacement(Placement)");
+    add_varargs_method("setSelection", &TaskPlacementPy::setSelection,
+                       "setSelection(list)");
+    add_varargs_method("bindObject", &TaskPlacementPy::bindObject,
+                       "bindObject()");
+    add_varargs_method("setPlacementAndBindObject", &TaskPlacementPy::setPlacementAndBindObject,
+                       "setPlacementAndBindObject(obj, string)");
+    add_varargs_method("setIgnoreTransactions", &TaskPlacementPy::setIgnoreTransactions,
+                       "setIgnoreTransactions(bool)");
+    add_varargs_method("showDefaultButtons", &TaskPlacementPy::showDefaultButtons,
+                       "showDefaultButtons(bool)");
+    add_varargs_method("accept", &TaskPlacementPy::accept,
+                       "accept()");
+    add_varargs_method("reject", &TaskPlacementPy::reject,
+                       "reject()");
+    add_varargs_method("clicked", &TaskPlacementPy::clicked,
+                       "clicked()");
+    add_varargs_method("open", &TaskPlacementPy::open,
+                       "open()");
+    add_varargs_method("isAllowedAlterDocument", &TaskPlacementPy::isAllowedAlterDocument,
+                       "isAllowedAlterDocument()");
+    add_varargs_method("isAllowedAlterView", &TaskPlacementPy::isAllowedAlterView,
+                       "isAllowedAlterView()");
+    add_varargs_method("isAllowedAlterSelection", &TaskPlacementPy::isAllowedAlterSelection,
+                       "isAllowedAlterSelection()");
+    add_varargs_method("getStandardButtons", &TaskPlacementPy::getStandardButtons,
+                       "getStandardButtons()");
     // clang-format on
 }
 
@@ -1311,6 +1362,25 @@ Py::Object TaskPlacementPy::bindObject(const Py::Tuple& args)
     if (widget) {
         widget->bindObject();
     }
+
+    return Py::None();
+}
+
+Py::Object TaskPlacementPy::setPlacementAndBindObject(const Py::Tuple& args)
+{
+    Py::Object object = args[0];
+    Py::String name = args[1];
+    std::string propName = static_cast<std::string>(name);
+
+    if (PyObject_TypeCheck(object.ptr(), &App::DocumentObjectPy::Type)) {
+        auto py = static_cast<App::DocumentObjectPy*>(object.ptr());
+        auto obj = py->getDocumentObjectPtr();
+
+        if (widget) {
+            widget->setPlacementAndBindObject(obj, propName);
+        }
+    }
+
     return Py::None();
 }
 

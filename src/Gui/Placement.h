@@ -69,14 +69,15 @@ public:
     std::tuple<Base::Vector3d, std::vector<Base::Vector3d>> getSelectedPoints() const;
 
 private:
-    std::vector<App::DocumentObject*> getObjects(Gui::Document*) const;
-    std::vector<App::DocumentObject*> getSelectedObjects(Gui::Document*) const;
+    std::vector<const App::DocumentObject*> getObjects(const Gui::Document*) const;
+    std::vector<const App::DocumentObject*> getSelectedObjects(const Gui::Document*) const;
     void revertTransformationOfViewProviders(Gui::Document*);
     void tryRecompute(Gui::Document*);
-    void applyPlacement(Gui::Document*, App::DocumentObject*, const Base::Placement& p, bool incremental);
-    void applyPlacement(App::DocumentObject*, const QString& p, bool incremental);
-    QString getIncrementalPlacement(App::DocumentObject*, const QString&) const;
-    QString getSimplePlacement(App::DocumentObject*, const QString&) const;
+    void applyPlacement(const Gui::Document*, const App::DocumentObject*,
+                        const Base::Placement& p, bool incremental);
+    void applyPlacement(const App::DocumentObject*, const QString& p, bool incremental);
+    QString getIncrementalPlacement(const App::DocumentObject*, const QString&) const;
+    QString getSimplePlacement(const App::DocumentObject*, const QString&) const;
     void setupDocument();
     void slotActiveDocument(const Gui::Document&);
     void openCommandIfActive(Gui::Document*);
@@ -122,6 +123,8 @@ public:
     void setPropertyName(const std::string&);
     void setSelection(const std::vector<SelectionObject>&);
     void bindObject();
+    void setPlacementAndBindObject(const App::DocumentObject* obj,
+                                   const std::string& propertyName);
     void setIgnoreTransactions(bool value);
     Base::Vector3d getDirection() const;
     void setPlacement(const Base::Placement&);
@@ -149,6 +152,7 @@ private:
     void setupUnits();
     void setupSignalMapper();
     void setupRotationMethod();
+    void bindProperty(const App::DocumentObject* obj, const std::string& propertyName);
 
     bool onApply();
     void setPlacementData(const Base::Placement&);
@@ -198,6 +202,8 @@ public:
     void setSelection(const std::vector<SelectionObject>&);
     void clearSelection();
     void bindObject();
+    void setPlacementAndBindObject(const App::DocumentObject* obj,
+                                   const std::string& propertyName);
     bool accept() override;
     bool reject() override;
     void clicked(int id) override;
@@ -238,6 +244,7 @@ public:
     Py::Object setPlacement(const Py::Tuple&);
     Py::Object setSelection(const Py::Tuple&);
     Py::Object bindObject(const Py::Tuple&);
+    Py::Object setPlacementAndBindObject(const Py::Tuple&);
     Py::Object setIgnoreTransactions(const Py::Tuple&);
 
     Py::Object showDefaultButtons(const Py::Tuple&);
