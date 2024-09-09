@@ -34,6 +34,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
         if(FREECAD_RELEASE_PDB)
             set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
             set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
+            set (CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /DEBUG")
         endif(FREECAD_RELEASE_PDB)
         if(FREECAD_RELEASE_SEH)
             # remove /EHsc or /EHs flags because they are incompatible with /EHa
