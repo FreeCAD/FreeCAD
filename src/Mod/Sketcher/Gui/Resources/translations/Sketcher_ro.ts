@@ -2808,7 +2808,7 @@ invalid constraints, degenerated geometry, etc.</translation>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Există un număr de moduri se poate aplica această restricţie. 
+      <translation>Există un număr de moduri se poate aplica această restricţie.
 Se acceptă combinațiile: două curbe; un punct extrem şi o curbă; două puncte extreme; două curbe şi un punct.</translation>
     </message>
     <message>

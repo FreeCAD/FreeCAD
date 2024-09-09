@@ -1070,7 +1070,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1171,7 +1171,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1430,7 +1430,7 @@ adding an analysis container</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1540,7 +1540,7 @@ FreeCAD 結果オブジェクト: インポートされたデータは FreeCAD F
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定された実行可能ファイル 
+      <translation>指定された実行可能ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>
@@ -1649,7 +1649,7 @@ that "MAXKOI" needs to be increased.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>指定されたz88r実行ファイル 
+      <translation>指定されたz88r実行ファイル
 '%1'
  が存在しません!
 別のファイルを指定してください。</translation>

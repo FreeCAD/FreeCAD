@@ -2296,7 +2296,7 @@ Wenn die angegebene Höhe 0 ist, wird die halbe Höhe des Teils verwendet. Ist d
       <source>Radius of the fillet on the tag&apos;s top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
-      <translation>Radius der Abrundung an der oberen Kante des Stegs. 
+      <translation>Radius der Abrundung an der oberen Kante des Stegs.
 
 Wenn der Radius größer ist als der Radius, den der Steg selbst unterstützt, wird die Form einer Kuppel gebildet.</translation>
     </message>
@@ -5556,7 +5556,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="327"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
       <translation>Obergrenze zum Entfernen von kolinearen Segmenten (Grad). Standard = 10.0.</translation>
     </message>
@@ -6943,23 +6943,23 @@ Abbruch der OP-Erstellung</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema: 
+      <source>The currently selected unit schema:
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values. 
- 
-CNC machines require feed rate to be expressed in 
-unit/minute. To ensure correct G-code: 
+ Does not use &apos;minutes&apos; for velocity values.
+
+CNC machines require feed rate to be expressed in
+unit/minute. To ensure correct G-code:
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation>Das aktuell ausgewählte Einheitenschema: 
+      <translation>Das aktuell ausgewählte Einheitenschema:
      '{}' für dieses Dokument
- verwendet keine 'Minuten' für Geschwindigkeitswerte. 
- 
-CNC-Maschinen benötigen die Vorschubgeschwindigkeit in 
-Einheit/Minute. Um einen korrekten G-Code sicherzustellen: 
+ verwendet keine 'Minuten' für Geschwindigkeitswerte.
+
+CNC-Maschinen benötigen die Vorschubgeschwindigkeit in
+Einheit/Minute. Um einen korrekten G-Code sicherzustellen:
 Ein Minuten-basiertes Einheitenschema in den Einstellungen auswählen.
 Zum Beispiel:
     'Metrisch, Kleine Teile &amp; CNC'
@@ -7029,9 +7029,9 @@ Zum Beispiel:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Hinweis&lt;/b&gt;: Dieser Dialog zeigt Werkzeugweg-Befehle in FreeCAD-Basiseinheiten (mm/s) an. 
+      <translation>&lt;b&gt;Hinweis&lt;/b&gt;: Dieser Dialog zeigt Werkzeugweg-Befehle in FreeCAD-Basiseinheiten (mm/s) an.
  Werte werden erst im Postprozessor in die gewünschte Einheit konvertiert.</translation>
     </message>
     <message>
@@ -7347,9 +7347,9 @@ Zum Beispiel:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation>Werkzeugnummer {} ist ein veraltetes Werkzeug. Veraltete Werkzeuge werden nicht durch 
+      <translation>Werkzeugnummer {} ist ein veraltetes Werkzeug. Veraltete Werkzeuge werden nicht durch
                         Path-Sanity unterstützt</translation>
     </message>
     <message>
@@ -8489,10 +8489,10 @@ Zum Beispiel:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Das Werkzeugspitzen Arbeitsverzeichnis {} benötigt folgende Unterverzeichnisse:
- {} 
+ {}
  Sollen diese erstellt werden?</translation>
     </message>
     <message>
