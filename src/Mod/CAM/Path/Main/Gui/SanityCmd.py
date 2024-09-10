@@ -65,12 +65,20 @@ class CommandCAMSanity:
 
         # Ask the user for a filename to save the report to
 
+        defaultDir = os.path.split(FreeCAD.ActiveDocument.getFileName())[0]
+
+        if defaultDir == "":
+            defaultDir = os.path.expanduser("~")
+
         file_location = QFileDialog.getSaveFileName(
             None,
             translate("Path", "Save Sanity Check Report"),
-            os.path.expanduser("~"),
+            defaultDir,
             "HTML files (*.html)",
         )[0]
+
+        if file_location == "":
+            return
 
         sanity_checker = Sanity.CAMSanity(obj, file_location)
         html = sanity_checker.get_output_report()
