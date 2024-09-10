@@ -227,6 +227,7 @@ private:
     void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
 
 private:
+    bool suppressSelectionChange;
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
