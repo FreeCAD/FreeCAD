@@ -32,6 +32,8 @@
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
+#include <Mod/Measure/App/MeasureDistance.h>
+#include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -40,9 +42,15 @@
 
 #include <QFormLayout>
 #include <QPushButton>
+#include <QSettings>
 
 using namespace Gui;
 
+namespace
+{
+constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
+constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
+}  // namespace
 
 TaskMeasure::TaskMeasure()
 {
@@ -53,6 +61,15 @@ TaskMeasure::TaskMeasure()
                                               tr("Measurement"),
                                               true,
                                               nullptr);
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
+
+    showDelta = new QCheckBox();
+    showDelta->setChecked(delta);
+    showDeltaLabel = new QLabel(tr("Show Delta:"));
+    connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
@@ -82,6 +99,7 @@ TaskMeasure::TaskMeasure()
     formLayout->setFormAlignment(Qt::AlignCenter);
 
     formLayout->addRow(tr("Mode:"), modeSwitch);
+    formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
     layout->addLayout(formLayout);
 
@@ -319,6 +337,15 @@ void TaskMeasure::update()
     valueResult->setText(_mMeasureObject->getResultString());
 
     createViewObject(_mMeasureObject);
+
+    // Must be after createViewObject!
+    assert(_mViewObject);
+    auto* prop = dynamic_cast<App::PropertyBool*>(_mViewObject->getPropertyByName("ShowDelta"));
+    setDeltaPossible(prop != nullptr);
+    if (prop) {
+        prop->setValue(showDelta->isChecked());
+        _mViewObject->update(prop);
+    }
 }
 
 void TaskMeasure::close()
@@ -462,9 +489,27 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
     return TaskDialog::eventFilter(obj, event);
 }
 
+void TaskMeasure::setDeltaPossible(bool possible)
+{
+    showDelta->setVisible(possible);
+    showDeltaLabel->setVisible(possible);
+}
+
 void TaskMeasure::onModeChanged(int index)
 {
     explicitMode = (index != 0);
+
+    this->update();
+}
+
+void TaskMeasure::showDeltaChanged(int checkState)
+{
+    delta = checkState == Qt::CheckState::Checked;
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
+
     this->update();
 }
 
