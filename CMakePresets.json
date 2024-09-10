@@ -151,6 +151,10 @@
         },
         "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
+          "CMAKE_IGNORE_PREFIX_PATH": {
+            "type": "STRING",
+            "value": "/opt/homebrew;/usr/local/homebrew"
+          },
           "CMAKE_INCLUDE_PATH": {
             "type": "FILEPATH",
             "value": "${sourceDir}/.conda/freecad/include"
