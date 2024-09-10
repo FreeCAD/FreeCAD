@@ -168,7 +168,7 @@ protected:
 
     /// Create a shape with shapes and faces from a given LinkSubList
     /// return 0 if almost one full shape is selected else the face count
-    int getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape); // TODO static
+    static int getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape);
 
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoShape& upToFace,

@@ -4237,9 +4237,33 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
         // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
         // then the algorithm expects that the 'NaturalRestriction' flag is set in order
         // to work as expected.
-        BRep_Builder builder;
-        _uptoface = _uptoface.makeElementCopy();
-        builder.NaturalRestriction(TopoDS::Face(_uptoface.getShape()), Standard_True);
+
+        // skip concave face
+        bool isConcave = false;
+        TopoDS_Face theFace = TopoDS::Face(_uptoface.getShape());
+        Handle(Geom_Surface) surf = BRep_Tool::Surface(theFace);
+        GeomAdaptor_Surface adapt(surf);
+        if(adapt.GetType() != GeomAbs_Plane){
+            // get parameters bounds
+            Standard_Real uMin, uMax, vMin, vMax;
+            surf->Bounds(uMin, uMax, vMin, vMax);
+            // compute normals at the middle
+            // TODO? find intersection point in UpToFace
+            gp_Pnt pt;
+            gp_Vec dU, dV;
+            surf->D1((uMin+uMax)/2, (vMin+vMax)/2, pt, dU, dV);
+            // check normals orientation
+            gp_Dir dirdU(dU);
+            isConcave = dirdU.Angle(direction) < M_PI_2;
+            gp_Dir dirdV(dV);
+            isConcave = isConcave || (dirdV.Angle(direction) < M_PI_2);
+        }
+
+        if (! isConcave){
+            BRep_Builder builder;
+            _uptoface = _uptoface.makeElementCopy();
+            builder.NaturalRestriction(TopoDS::Face(_uptoface.getShape()), Standard_True);
+        }
     }
 
     TopoShape uptoface(_uptoface);
@@ -4252,7 +4276,8 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
-    if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE && uptoface.hasSubShape(TopAbs_WIRE)) {
+    if (checkLimits && uptoface.shapeType(true) == TopAbs_FACE
+        && uptoface.hasSubShape(TopAbs_WIRE)) {
         TopoDS_Face face = TopoDS::Face(uptoface.getShape());
         bool remove_limits = false;
         // Remove the limits of the upToFace so that the extrusion works even if profile is larger

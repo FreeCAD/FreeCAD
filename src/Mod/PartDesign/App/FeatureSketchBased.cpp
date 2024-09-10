@@ -708,12 +708,10 @@ int ProfileBased::getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::P
         }
     }
     if (ret == 0){
-        throw Base::ValueError("SketchBased: No face selected");
+        return 0;
     }
-
-    upToShape = faceList[0];
-
     if (ret == 1){
+        upToShape = faceList[0];
         return 1;
     }
 
