@@ -59,7 +59,7 @@ runs:
       id: getCached
       with:
         path: ${{ inputs.libpackdir }}
-        key: libpackforwin
+        key: libpackforwin-${{ inputs.libpackname }}
     - name: Download libpack
       shell: bash
       if: steps.getCached.outputs.cache-hit != 'true'
