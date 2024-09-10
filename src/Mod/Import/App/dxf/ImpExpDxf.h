@@ -122,7 +122,11 @@ protected:
     PyObject* getDraftModule()
     {
         if (DraftModule == nullptr) {
+            static int times = 0;
             DraftModule = PyImport_ImportModule("Draft");
+            if (DraftModule == nullptr && times++ == 0) {
+                ImportError("Unable to locate \"Draft\" module");
+            }
         }
         return DraftModule;
     }

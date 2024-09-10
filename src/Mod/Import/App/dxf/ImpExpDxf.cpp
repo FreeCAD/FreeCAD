@@ -628,7 +628,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
         App::Color appColor = ObjectColor(color);
         PyObject* draftModule = nullptr;
         PyObject* layer = nullptr;
-        draftModule = PyImport_ImportModule("Draft");
+        draftModule = getDraftModule();
         if (draftModule != nullptr) {
             // After the colours, I also want to pass the draw_style, but there is an intervening
             // line-width parameter. It is easier to just pass that parameter's default value than
@@ -651,7 +651,6 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
                                                          appColor.b,
                                                          2.0,
                                                          "Solid");
-            Py_DECREF(draftModule);
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
         if (result->DraftLayerView != nullptr) {
