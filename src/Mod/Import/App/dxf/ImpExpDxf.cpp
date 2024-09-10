@@ -103,7 +103,7 @@ bool ImpExpDxfRead::ReadEntitiesSection()
         // TODO: We do end-to-end joining or complete merging as selected by the options.
         for (auto& shapeSet : ShapesToCombine) {
             m_entityAttributes = shapeSet.first;
-            CombineShapes(shapeSet.second, "Compound");
+            CombineShapes(shapeSet.second, m_entityAttributes.m_Layer == nullptr ? "Compound" : m_entityAttributes.m_Layer->Name.c_str());
         }
     }
     else {
