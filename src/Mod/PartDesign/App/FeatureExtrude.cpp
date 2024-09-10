@@ -40,7 +40,7 @@
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
-#include "Mod/Part/App/PartFeature.h"
+#include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureExtrude.h"
 
@@ -141,8 +141,8 @@ TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sket
         dir = -dir;
         cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
     }
-    Part::cutTopoShapeFaces *near;
-    Part::cutTopoShapeFaces *far;
+    struct Part::cutTopoShapeFaces *near;
+    struct Part::cutTopoShapeFaces *far;
     near = far = &cfaces.front();
     for (auto &face : cfaces) {
         if (face.distsq > far->distsq) {
