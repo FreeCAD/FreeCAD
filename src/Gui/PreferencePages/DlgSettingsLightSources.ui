@@ -52,14 +52,14 @@
       <item row="2" column="0">
        <widget class="QLabel" name="z_label">
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;z&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string notr="true">z</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="x_label">
         <property name="text">
-         <string>x</string>
+         <string notr="true">x</string>
         </property>
        </widget>
       </item>
@@ -105,21 +105,21 @@
       <item row="1" column="0">
        <widget class="QLabel" name="y_label">
         <property name="text">
-         <string>y</string>
+         <string notr="true">y</string>
         </property>
        </widget>
       </item>
       <item row="2" column="3">
        <widget class="QLabel" name="q2_label">
         <property name="text">
-         <string>q2</string>
+         <string notr="true">q2</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
        <widget class="QLabel" name="q0_label">
         <property name="text">
-         <string>q0</string>
+         <string notr="true">q0</string>
         </property>
        </widget>
       </item>
@@ -139,14 +139,14 @@
       <item row="1" column="3">
        <widget class="QLabel" name="q1_label">
         <property name="text">
-         <string>q1</string>
+         <string notr="true">q1</string>
         </property>
        </widget>
       </item>
       <item row="3" column="3">
        <widget class="QLabel" name="q3_label">
         <property name="text">
-         <string>q3</string>
+         <string notr="true">q3</string>
         </property>
        </widget>
       </item>
