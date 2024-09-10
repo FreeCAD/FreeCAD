@@ -57,6 +57,7 @@ dependencies:
 - xorg-x11-server-xvfb-cos7-aarch64    # [linux and aarch64]
 - sed                                  # [unix]
 - ccache
+- clang-format
 - cmake
 - coin3d
 - compilers
