@@ -2029,8 +2029,10 @@ QPixmap MainWindow::splashImage() const
     int splash_count = pixmaps.count()/2 - 1;
 
     // set a random splash path
-    int random = rand() % splash_count;
-    splash_path += std::to_string(random);
+    if (splash_count) {
+        int random = rand() % splash_count;
+        splash_path += std::to_string(random);
+    }
 
     // if no image was found try the config
     if (splash_image.isNull()) {
