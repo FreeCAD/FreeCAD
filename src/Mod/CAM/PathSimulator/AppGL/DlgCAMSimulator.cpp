@@ -87,7 +87,7 @@ void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
     modifiers |= (ev->modifiers() & Qt::ControlModifier) != 0 ? MS_KBD_CONTROL : 0;
     modifiers |= (ev->modifiers() & Qt::AltModifier) != 0 ? MS_KBD_ALT : 0;
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QPoint pnt = ev->pos();
 #else
     QPoint pnt = ev->position().toPoint();
@@ -97,7 +97,7 @@ void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
 
 void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QPoint pnt = ev->pos();
 #else
     QPoint pnt = ev->position().toPoint();
@@ -107,7 +107,7 @@ void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
 
 void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QPoint pnt = ev->pos();
 #else
     QPoint pnt = ev->position().toPoint();
