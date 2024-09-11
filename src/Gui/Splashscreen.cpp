@@ -162,7 +162,7 @@ public:
         // choose text color
         auto tc = cfg.find("SplashTextColor");
         if (tc != cfg.end()) {
-            QColor col; col.setNamedColor(QString::fromLatin1(tc->second.c_str()));
+            QColor col(QString::fromStdString(tc->second));
             if (col.isValid()) {
                 textColor = col;
             }
