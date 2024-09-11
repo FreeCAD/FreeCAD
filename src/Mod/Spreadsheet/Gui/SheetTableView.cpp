@@ -1159,8 +1159,7 @@ QString SheetTableView::toHtml() const
     boldFont.setBold(true);
     boldFormat.setFont(boldFont);
 
-    QColor bgColor;
-    bgColor.setNamedColor(QLatin1String("#f0f0f0"));
+    QColor bgColor(QLatin1String("#f0f0f0"));
     QTextCharFormat bgFormat;
     bgFormat.setBackground(QBrush(bgColor));
 

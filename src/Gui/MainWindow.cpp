@@ -2118,8 +2118,7 @@ QPixmap MainWindow::splashImage() const
             y = h - 20;
         }
 
-        QColor color;
-        color.setNamedColor(QString::fromLatin1(tc->second.c_str()));
+        QColor color(QString::fromLatin1(tc->second.c_str()));
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
@@ -2129,8 +2128,7 @@ QPixmap MainWindow::splashImage() const
             }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 235), y - 7, version);
-            QColor warningColor;
-            warningColor.setNamedColor(QString::fromLatin1(wc->second.c_str()));
+            QColor warningColor(QString::fromLatin1(wc->second.c_str()));
             if (suffix == QLatin1String("dev") && warningColor.isValid()) {
                 fontVer.setPointSizeF(14.0);
                 painter.setFont(fontVer);
