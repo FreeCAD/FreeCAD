@@ -1976,7 +1976,7 @@ void MainWindow::renderDevBuildWarning(
 {
     // Create a background box that fades out the artwork for better legibility
     QColor fader (Qt::white);
-    constexpr float halfDensity (0.65);
+    constexpr float halfDensity (0.65F);
     fader.setAlphaF(halfDensity);
     QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
     painter.setBrush(fillBrush);
