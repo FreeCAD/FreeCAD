@@ -871,12 +871,20 @@ void AboutDialog::copyToClipboard()
 #endif
     QLocale loc;
     str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6,6,0)
         << QLocale::countryToString(loc.country())
+#else
+        << QLocale::territoryToString(loc.territory())
+#endif
         << " (" << loc.name() << ")";
     if (loc != QLocale::system()) {
         loc = QLocale::system();
         str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6,6,0)
             << QLocale::countryToString(loc.country())
+#else
+            << QLocale::territoryToString(loc.territory())
+#endif
             << " (" << loc.name() << ") ]";
     }
     str << "\n";
