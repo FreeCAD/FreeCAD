@@ -62,19 +62,15 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
-#include "QGITemplate.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
-#include "QGIViewBalloon.h"
 #include "QGIViewDimension.h"
 #include "QGMText.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
-#include "Rez.h"
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
 
@@ -204,6 +200,10 @@ bool MDIViewPage::onMsg(const char* pMsg, const char**)
         doc->saveAs();
         return true;
     }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
+        doc->saveCopy();
+        return true;
+    }
     else if (strcmp("Undo", pMsg) == 0) {
         doc->undo(1);
         Gui::Command::updateActive();
@@ -251,6 +251,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("SaveAs", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
         return true;
     }
     else if (strcmp("PrintPreview", pMsg) == 0) {
