@@ -2022,7 +2022,7 @@ QPixmap MainWindow::splashImage() const
         splash_image.load(fi.filePath(), "PNG");
 
     // if no image was found try the config
-    std::string splash_path = App::Application::Config()["SplashScreen"];    
+    std::string splash_path = App::Application::Config()["SplashScreen"];
     if (splash_image.isNull()) {
         QString path = QString::fromUtf8(splash_path.c_str());
         if (QDir(path).isRelative()) {
@@ -2043,7 +2043,7 @@ QPixmap MainWindow::splashImage() const
         int splash_count = pixmaps.count()/2 - 1;
 
         // set a random splash path
-        if (splash_count) {
+        if (splash_count > 0) {
             int random = rand() % splash_count;
             splash_path += std::to_string(random);
         }
