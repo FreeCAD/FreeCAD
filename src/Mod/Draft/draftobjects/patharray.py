@@ -475,11 +475,9 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         end = endOffset
 
     cdist = cdist - start - end
-    if count < 1:
-        count = 1
+    count = max(count, 1)
     n = count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1
-    if n == 0:
-        n = 1
+    n = max(n, 1)
     step = cdist / n
     remains = 0
     travel = start
