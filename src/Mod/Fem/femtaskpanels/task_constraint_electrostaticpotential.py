@@ -175,14 +175,14 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         # neumann/diriclet radiogroup selection
         self._paramWidget.BCtypeBG.buttonClicked.connect(self._BCtype_clicked)
-        if self._obj.Diriclet:
+        if self.obj.Diriclet:
             self._paramWidget.diricletBC_RB.click()
         else:
             self._paramWidget.neumannBC_RB.click()
 
-        self._paramWidget.electricfluxQSB.setProperty("value", self._obj.ElectricFlux)
+        self._paramWidget.electricfluxQSB.setProperty("value", self.obj.ElectricFlux)
         FreeCADGui.ExpressionBinding(self._paramWidget.electricfluxQSB).bind(
-            self._obj, "ElectricFlux"
+            self.obj, "ElectricFlux"
         )
 
     def _applyPotentialChanges(self, enabledBox, potentialQSB):
