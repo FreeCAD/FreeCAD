@@ -66,8 +66,6 @@ using DGU = DrawGuiUtil;
 
 QGIBalloonLabel::QGIBalloonLabel()
 {
-    posX = 0;
-    posY = 0;
     m_ctrl = false;
     m_drag = false;
 
@@ -78,6 +76,7 @@ QGIBalloonLabel::QGIBalloonLabel()
     setAcceptHoverEvents(true);
 
     m_labelText = new QGCustomText();
+    m_labelText->setTightBounding(true);
     m_labelText->setParentItem(this);
 
     verticalSep = false;
@@ -99,7 +98,6 @@ QVariant QGIBalloonLabel::itemChange(GraphicsItemChange change, const QVariant& 
         update();
     }
     else if (change == ItemPositionHasChanged && scene()) {
-        setLabelCenter();
         if (m_drag) {
             Q_EMIT dragging(m_ctrl);
         }
@@ -195,20 +193,13 @@ void QGIBalloonLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 void QGIBalloonLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
 {
     //set label's Qt position(top, left) given boundingRect center point
-    setPos(xCenter - m_labelText->boundingRect().width() / 2.,
-           yCenter - m_labelText->boundingRect().height() / 2.);
-}
-
-void QGIBalloonLabel::setLabelCenter()
-{
-    //save label's bRect center (posX, posY) given Qt position (top, left)
-    posX = x() + m_labelText->boundingRect().width() / 2.;
-    posY = y() + m_labelText->boundingRect().height() / 2.;
+    setPos(xCenter - m_labelText->boundingRect().center().x(),
+           yCenter - m_labelText->boundingRect().center().y());
 }
 
 Base::Vector3d QGIBalloonLabel::getLabelCenter() const
 {
-    return Base::Vector3d(posX, posY, 0.0);
+    return Base::Vector3d(getCenterX(), getCenterY(), 0.0);
 }
 
 void QGIBalloonLabel::setFont(QFont font) { m_labelText->setFont(font); }
@@ -504,8 +495,8 @@ void QGIViewBalloon::balloonLabelDragFinished()
     scale = balloonParent->getScale();
 
     //set feature position (x, y) from graphic position
-    double x = Rez::appX(balloonLabel->X() / scale);
-    double y = Rez::appX(balloonLabel->Y() / scale);
+    double x = Rez::appX(balloonLabel->getCenterX() / scale);
+    double y = Rez::appX(balloonLabel->getCenterY() / scale);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
                             dvb->getNameInDocument(), x);
@@ -1002,8 +993,8 @@ void QGIViewBalloon::getBalloonPoints(TechDraw::DrawViewBalloon* balloon, DrawVi
         arrowTipPosInParent = DGU::toGuiPoint(refObj, originApp);
     }
     else {
-        x =  balloonLabel->X();
-        y = -balloonLabel->Y();     // invert from Qt scene units to R2 mm
+        x =  balloonLabel->getCenterX();
+        y = -balloonLabel->getCenterY();     // invert from Qt scene units to R2 mm
         if (m_originDragged) {
             // moving the whole bubble object. do not adjust origin point.
             arrowTipPosInParent = arrowPosInDrag();
