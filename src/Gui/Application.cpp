@@ -2250,11 +2250,8 @@ void Application::runApplication()
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
 
-    // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
-    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
-    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
