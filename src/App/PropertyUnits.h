@@ -360,8 +360,8 @@ public:
 
 /** ElectricFlux property
  * This is a property for electric fluxes used in Neumann boundary conditions.
-  * It is basically a float property. On the Gui it has units of A*s/mm^2,
-  * i.e. C/mm^2, thus a surface charge density.
+ * It is basically a float property. On the Gui it has units of A*s/mm^2, i.e.
+ * C/mm^2, thus a surface charge density.
  */
 class AppExport PropertyElectricFlux: public PropertyQuantity
 {
