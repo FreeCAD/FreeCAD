@@ -61,16 +61,8 @@
 void PrintInitHelp();
 
 const char sBanner[] =
-    "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre and others 2001-2024\n"
-    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n"
-    "FreeCAD wouldn't be possible without FreeCAD community.\n"
-    "  #####                 ####  ###   ####  \n"
-    "  #                    #      # #   #   # \n"
-    "  #     ##  #### ####  #     #   #  #   # \n"
-    "  ####  # # #  # #  #  #     #####  #   # \n"
-    "  #     #   #### ####  #    #     # #   # \n"
-    "  #     #   #    #     #    #     # #   #  ##  ##  ##\n"
-    "  #     #   #### ####   ### #     # ####   ##  ##  ##\n\n";
+    "(C) 2001-2024 FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
 
 #if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);
