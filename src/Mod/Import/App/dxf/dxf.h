@@ -686,12 +686,12 @@ protected:
     // notification popup "Log" goes to a log somewhere and not to the screen/user at all
 
     template<typename... args>
-    void ImportError(const char* format, args&&... argValues) const
+    static void ImportError(const char* format, args&&... argValues)
     {
         Base::ConsoleSingleton::Instance().Warning(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
-    void ImportObservation(const char* format, args&&... argValues) const
+    static void ImportObservation(const char* format, args&&... argValues)
     {
         Base::ConsoleSingleton::Instance().Message(format, std::forward<args>(argValues)...);
     }
