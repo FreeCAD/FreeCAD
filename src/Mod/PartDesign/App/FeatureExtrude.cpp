@@ -141,22 +141,22 @@ TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sket
         dir = -dir;
         cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
     }
-    struct Part::cutTopoShapeFaces *near;
-    struct Part::cutTopoShapeFaces *far;
-    near = far = &cfaces.front();
+    struct Part::cutTopoShapeFaces *nearFace;
+    struct Part::cutTopoShapeFaces *farFace;
+    nearFace = farFace = &cfaces.front();
     for (auto &face : cfaces) {
-        if (face.distsq > far->distsq) {
-            far = &face;
+        if (face.distsq > farFace->distsq) {
+            farFace = &face;
         }
-        else if (face.distsq < near->distsq) {
-            near = &face;
+        else if (face.distsq < nearFace->distsq) {
+            nearFace = &face;
         }
     }
 
-    if (near != far) {
+    if (nearFace != farFace) {
         std::vector<TopoShape> faceList;
         for (auto &face : shape.getSubTopoShapes(TopAbs_FACE)) {
-            if (! (face == far->face)){
+            if (! (face == farFace->face)){
                 // don't use the last face so the shell is open
                 // and OCC works better
                 faceList.push_back(face);
