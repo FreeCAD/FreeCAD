@@ -64,6 +64,7 @@ import WorkingPlane
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 from Draft import LinearDimension
+from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
 from builtins import open as pyopen
@@ -2596,7 +2597,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         elif angle in [90, 270]:
                             p2 = vec([x2, y3, z2])
                     newob = doc.addObject("App::FeaturePython", "Dimension")
-                    lay.addObject(newob)
+                    if hasattr(lay, "addObject"):
+                        lay.addObject(newob)
+                    elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
+                        lay.Proxy.addObject(lay, newob)
                     _Dimension(newob)
                     if gui:
                         from Draft import _ViewProviderDimension
