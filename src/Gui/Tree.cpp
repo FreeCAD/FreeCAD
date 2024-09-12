@@ -1677,10 +1677,6 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
-    QTreeWidget::mousePressEvent(event);
-
-    // Handle the visibility icon after the normal event processing to not interfere with
-    // the selection logic.
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
@@ -1728,12 +1724,11 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
-
-                event->setAccepted(true);
-                return;
             }
         }
     }
+
+    QTreeWidget::mousePressEvent(event);
 }
 
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
