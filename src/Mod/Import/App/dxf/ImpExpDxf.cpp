@@ -655,7 +655,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
         auto result = new Layer(name, color, std::move(lineType), layer);
         if (result->DraftLayerView != nullptr) {
             PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", Py_False);
-            PyObject_SetAttrString(result->DraftLayerView, "OverrideShapeColorChildren", Py_False);
+            PyObject_SetAttrString(result->DraftLayerView, "OverrideShapeAppearanceChildren", Py_False);
         }
 
         // We make our own layer class even if we could not make a layer. MoveToLayer will ignore
