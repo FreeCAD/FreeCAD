@@ -95,6 +95,16 @@ private:
     FILE* file;
 };
 
+static bool inGuiMode()
+{
+    // if console option is set then run in cmd mode
+    if (App::Application::Config()["Console"] == "1") {
+        return false;
+    }
+    return App::Application::Config()["RunMode"] == "Gui"
+        || App::Application::Config()["RunMode"] == "Internal";
+}
+
 static void DisplayInfo(const QString& msg, bool preformatted = true)
 {
     if (App::Application::Config()["Console"] == "1") {
@@ -312,12 +322,7 @@ int main(int argc, char** argv)
     std::streambuf* oldcerr = std::cerr.rdbuf(&stdcerr);
 
     try {
-        // if console option is set then run in cmd mode
-        if (App::Application::Config()["Console"] == "1") {
-            App::Application::runApplication();
-        }
-        if (App::Application::Config()["RunMode"] == "Gui"
-            || App::Application::Config()["RunMode"] == "Internal") {
+        if (inGuiMode()) {
             Gui::Application::runApplication();
         }
         else {
