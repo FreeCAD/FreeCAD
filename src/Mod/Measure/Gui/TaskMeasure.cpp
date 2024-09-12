@@ -479,7 +479,9 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
         }
 
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-            this->apply();
+            // Save object. Indirectly dependent on whether the apply button is enabled
+            // enabled if valid measurement object.
+            this->buttonBox->button(QDialogButtonBox::Apply)->click();
             return true;
         }
     }
