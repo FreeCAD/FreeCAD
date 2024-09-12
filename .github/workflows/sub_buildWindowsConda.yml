@@ -24,6 +24,7 @@
 
 name: Build Windows (Conda)
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       artifactBasename:
