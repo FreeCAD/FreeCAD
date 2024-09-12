@@ -63,6 +63,7 @@
 #include <QResizeEvent>
 #include <QScrollArea>
 #include <QSpacerItem>
+#include <QStackedWidget>
 #include <QString>
 #include <QStyleOptionViewItem>
 #include <QTimer>

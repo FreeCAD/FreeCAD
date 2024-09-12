@@ -89,7 +89,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     if (startupWb) {
         enableCheckBox->setChecked(true);
         enableCheckBox->setEnabled(false);
-        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled. See Preferences/General/Autoload to change."));
+        enableCheckBox->setToolTip(tr("This is the current startup module, and must be enabled."));
     }
     connect(enableCheckBox, &QCheckBox::toggled, this, [this](bool checked) { onWbToggled(checked); });
 
@@ -124,7 +124,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     subLayout->setContentsMargins(5, 0, 0, 5);
     subWidget->setMinimumSize(250, 0);
     subWidget->setAttribute(Qt::WA_TranslucentBackground);
-   
+
     // 5: Autoloaded checkBox.
     autoloadCheckBox = new QCheckBox(this);
     autoloadCheckBox->setText(tr("Auto-load"));
@@ -134,7 +134,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     if (startupWb) { // Figure out whether to check and/or disable this checkBox:
         autoloadCheckBox->setChecked(true);
         autoloadCheckBox->setEnabled(false);
-        autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change."));
+        autoloadCheckBox->setToolTip(tr("This is the current startup module, and must be autoloaded."));
     }
     else if (autoLoad) {
         autoloadCheckBox->setChecked(true);

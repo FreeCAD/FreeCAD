@@ -240,9 +240,9 @@ void ViewProviderFemPostPipeline::scaleField(vtkDataSet* dset,
 
 PyObject* ViewProviderFemPostPipeline::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new ViewProviderFemPostPipelinePy(this), true);
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderFemPostPipelinePy(this);
     }
-    return Py::new_reference_to(PythonObject);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }

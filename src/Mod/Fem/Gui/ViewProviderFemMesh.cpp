@@ -116,12 +116,12 @@ Base::Vector3d FemFace::set(short size,
     hide = false;
 
     // sorting the nodes for later easier comparison (bubble sort)
-    int i, j, flag = 1;         // set flag to 1 to start first pass
+    int flag = 1;               // set flag to 1 to start first pass
     const SMDS_MeshNode* temp;  // holding variable
 
-    for (i = 1; (i <= size) && flag; i++) {
+    for (int i = 1; (i <= size) && flag; i++) {
         flag = 0;
-        for (j = 0; j < (size - 1); j++) {
+        for (int j = 0; j < (size - 1); j++) {
             if (Nodes[j + 1] > Nodes[j])  // ascending order simply changes to <
             {
                 temp = Nodes[j];  // swap elements
@@ -596,11 +596,11 @@ void ViewProviderFemMesh::resetHighlightNodes()
 
 PyObject* ViewProviderFemMesh::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new ViewProviderFemMeshPy(this), true);
+    if (!pyViewObject) {
+        pyViewObject = new ViewProviderFemMeshPy(this);
     }
-    return Py::new_reference_to(PythonObject);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 
 void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long, Base::Vector3d>& NodeDispMap)
@@ -659,7 +659,7 @@ void ViewProviderFemMesh::applyDisplacementToNodes(double factor)
         return;
     }
 
-    float x, y, z;
+    float x = 0, y = 0, z = 0;
     // set the point coordinates
     long sz = pcCoords->point.getNum();
     SbVec3f* verts = pcCoords->point.startEditing();
@@ -3170,5 +3170,5 @@ PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemMeshPython, FemGui::ViewProvider
 /// @endcond
 
 // explicit template instantiation
-template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemMesh>;
+template class FemGuiExport ViewProviderFeaturePythonT<ViewProviderFemMesh>;
 }  // namespace Gui

@@ -194,7 +194,7 @@ class CommandStructuresFromSelection:
     def GetResources(self):
         return {'Pixmap': 'Arch_MultipleStructures',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Multiple Structures"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple Arch Structures from a selected base, using each selected edge as an extrusion path")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -441,7 +441,7 @@ class _CommandStructure:
         grid = QtGui.QGridLayout(w)
 
         # mode box
-        labelmode = QtGui.QLabel(translate("Arch","Drawing mode")+":")
+        labelmode = QtGui.QLabel(translate("Arch","Parameters of the structure")+":")
         self.modeb = QtGui.QRadioButton(translate("Arch","Beam"))
         self.modec = QtGui.QRadioButton(translate("Arch","Column"))
         if self.bpoint or self.beammode:
@@ -496,9 +496,9 @@ class _CommandStructure:
         grid.addWidget(self.vHeight,6,1,1,1)
 
         # horizontal button
-        value5 = QtGui.QPushButton(translate("Arch","Switch L/H"))
+        value5 = QtGui.QPushButton(translate("Arch","Switch Length/Height"))
         grid.addWidget(value5,7,0,1,1)
-        value6 = QtGui.QPushButton(translate("Arch","Switch L/W"))
+        value6 = QtGui.QPushButton(translate("Arch","Switch Length/Width"))
         grid.addWidget(value6,7,1,1,1)
 
         # continue button
@@ -716,7 +716,7 @@ class _Structure(ArchComponent.Component):
             obj.addProperty("App::PropertyEnumeration","FaceMaker","Structure",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
             obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         if not "ArchSketchEdges" in pl:  # PropertyStringList
-            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
+            obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
         else:
             # test if the property was added but as IntegerList, then update;
             type = obj.getTypeIdOfProperty('ArchSketchEdges')
@@ -724,7 +724,7 @@ class _Structure(ArchComponent.Component):
                 oldIntValue = obj.ArchSketchEdges
                 newStrValue = [str(x) for x in oldIntValue]
                 obj.removeProperty("ArchSketchEdges")
-                obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
+                obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."))
                 obj.ArchSketchEdges = newStrValue
         self.Type = "Structure"
 

@@ -98,9 +98,7 @@ def allAvailablePostProcessors():
 def allEnabledPostProcessors(include=None):
     blacklist = postProcessorBlacklist()
     enabled = [
-        processor
-        for processor in allAvailablePostProcessors()
-        if processor not in blacklist
+        processor for processor in allAvailablePostProcessors() if processor not in blacklist
     ]
     if include:
         postlist = list(set(include + enabled))
@@ -279,9 +277,7 @@ def suppressVelocity():
     return preferences().GetBool(WarningSuppressVelocity, False)
 
 
-def setPreferencesAdvanced(
-    ocl, warnSpeeds, warnRapids, warnModes, warnOCL, warnVelocity
-):
+def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL, warnVelocity):
     preferences().SetBool(EnableAdvancedOCLFeatures, ocl)
     preferences().SetBool(WarningSuppressAllSpeeds, warnSpeeds)
     preferences().SetBool(WarningSuppressRapidSpeeds, warnRapids)
@@ -295,9 +291,7 @@ def lastFileToolLibrary():
     if filename.endswith(".fctl") and os.path.isfile(filename):
         return filename
 
-    libpath = preferences().GetString(
-        LastPathToolLibrary, pathDefaultToolsPath("Library")
-    )
+    libpath = preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath("Library"))
     libFiles = [f for f in glob.glob(libpath + "/*.fctl")]
     libFiles.sort()
     if len(libFiles) >= 1:

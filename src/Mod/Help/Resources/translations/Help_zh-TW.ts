@@ -90,24 +90,29 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <translation>顯示</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="192"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+      <source>Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</source>
+      <translation type="unfinished">Note: if PySide Web components are not found on your system, help pages will open in your default web browser regardless of the options below</translation>
+    </message>
+    <message>
+      <location filename="../../dlgPreferencesHelp.ui" line="202"/>
       <source>In a FreeCAD tab</source>
       <translation>在 FreeCAD 標籤中</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="170"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in your default web browser.</source>
       <translation>該文件將在您的預設網頁瀏覽器中打開.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="211"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
       <translation type="unfinished">The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="246"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
@@ -116,27 +121,27 @@ Markdown version above.</source>
 時這才有效.</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="173"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In your default web browser</source>
       <translation>在您的預設網頁瀏覽器中</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="189"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component</source>
       <translation>這文件將在 FreeCAD 介面內的新分頁中開啟. 這需要 PySide QtWebengineWidgets 元件</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="215"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="225"/>
       <source>In a separate, embeddable dialog</source>
       <translation>在單獨的, 可嵌入對話框</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="231"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="241"/>
       <source>Options</source>
       <translation>選項</translation>
     </message>
     <message>
-      <location filename="../../dlgPreferencesHelp.ui" line="239"/>
+      <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>      Custom stylesheet:</source>
       <translation>      自訂樣式表:</translation>
     </message>
@@ -160,8 +165,8 @@ Markdown version above.</source>
     </message>
     <message>
       <location filename="../../Help.py" line="84"/>
-      <source>There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.</source>
-      <translation>您的系統上沒有安裝 Markdown 渲染器, 因此此說明頁面按原樣渲染. 請安裝 markdown 或 pandoc python 模組以改善此頁面的渲染.</translation>
+      <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
+      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="113"/>

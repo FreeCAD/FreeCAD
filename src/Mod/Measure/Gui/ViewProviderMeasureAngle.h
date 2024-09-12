@@ -35,18 +35,18 @@
 
 #include "ViewProviderMeasureBase.h"
 
-//NOLINTBEGIN
+// NOLINTBEGIN
 class SoText2;
 class SoTranslation;
 class SoCoordinate3;
 class SoIndexedLineSet;
 class SoTransform;
-//NOLINTEND
+// NOLINTEND
 
 namespace MeasureGui
 {
 
-class MeasureGuiExport ViewProviderMeasureAngle : public MeasureGui::ViewProviderMeasureBase
+class MeasureGuiExport ViewProviderMeasureAngle: public MeasureGui::ViewProviderMeasureBase
 {
     PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureAngle);
 
@@ -60,14 +60,13 @@ public:
 
 private:
     // Fields
-    SoSFFloat fieldAngle; //radians.
+    SoSFFloat fieldAngle;  // radians.
 
     SbMatrix getMatrix();
 };
 
 
-} //namespace MeasureGui
+}  // namespace MeasureGui
 
 
-
-#endif // GUI_VIEWPROVIDERMEASUREANGLE_H
+#endif  // GUI_VIEWPROVIDERMEASUREANGLE_H

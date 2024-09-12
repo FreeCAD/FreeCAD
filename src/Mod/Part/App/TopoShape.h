@@ -1106,7 +1106,8 @@ public:
 
     /** Make revolved shell around a basis shape
      *
-     * @param base: the basis shape
+     * @param base: the basis shape (solid)
+     * @param profile: the shape to be revolved
      * @param axis: the revolving axis
      * @param face_maker: optional type name of the the maker used to make a
      *                    face from basis shape
@@ -1120,6 +1121,7 @@ public:
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
     TopoShape& makeElementRevolution(const TopoShape& _base,
+                                     const TopoDS_Shape& profile,
                                      const gp_Ax1& axis,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
@@ -1143,6 +1145,7 @@ public:
      * @return Return the generated new shape. The TopoShape itself is not modified.
      */
     TopoShape& makeElementRevolution(const gp_Ax1& axis,
+                                     const TopoDS_Shape& profile,
                                      const TopoDS_Face& supportface,
                                      const TopoDS_Face& uptoface,
                                      const char* face_maker = nullptr,
@@ -1151,6 +1154,7 @@ public:
                                      const char* op = nullptr) const
     {
         return TopoShape(0, Hasher).makeElementRevolution(*this,
+                                                          profile,
                                                           axis,
                                                           supportface,
                                                           uptoface,
@@ -1438,6 +1442,12 @@ public:
                                                          const char* marker = nullptr,
                                                          std::string* postfix = nullptr) const;
 
+    void reTagElementMap(long tag,  // NOLINT google-default-arguments
+                         App::StringHasherRef hasher,
+                         const char* postfix = nullptr) override;
+
+    long isElementGenerated(const Data::MappedName &name, int depth=1) const;
+
     /** @name sub shape cached functions
      *
      * Mapped element names introduces some overhead when getting sub shapes
@@ -1470,7 +1480,7 @@ public:
      */
      std::vector<TopoShape> findSubShapesWithSharedVertex(const TopoShape &subshape,
                                           std::vector<std::string> *names=nullptr,
-                                          CheckGeometry checkGeometry=CheckGeometry::checkGeometry,
+                                          Data::SearchOptions = Data::SearchOption::CheckGeometry,
                                           double tol=1e-7, double atol=1e-12) const;
     //@}
 
@@ -1493,6 +1503,9 @@ public:
 
     Data::ElementMapPtr resetElementMap(
         Data::ElementMapPtr elementMap=Data::ElementMapPtr()) override;
+
+    std::vector<Data::IndexedName> getHigherElements(const char *element,
+                                                     bool silent = false) const override;
 
     /** Helper class to return the generated and modified shape given an input shape
      *

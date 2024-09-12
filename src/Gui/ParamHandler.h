@@ -116,7 +116,7 @@ private:
 // the registered parameter key is changed, the manager will call the
 // registered handler function ParamHandler::onChange(). If it returns True,
 // then the handler will be appended to a queue to be invoked later by a timer
-// to avoid repeatitive processing on change of multiple keys.
+// to avoid repetitive processing on change of multiple keys.
 //
 // The handler manager is meant to be initiated by some static function, e.g.
 // DlgSettingsGeneral::attachObserver(). It is intended to be one and only

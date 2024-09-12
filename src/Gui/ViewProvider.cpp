@@ -715,6 +715,11 @@ bool ViewProvider::canDragObject(App::DocumentObject* obj) const
     return false;
 }
 
+bool ViewProvider::canDragObjectToTarget(App::DocumentObject* obj, [[maybe_unused]] App::DocumentObject* target) const
+{
+    return canDragObject(obj);
+}
+
 bool ViewProvider::canDragObjects() const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();

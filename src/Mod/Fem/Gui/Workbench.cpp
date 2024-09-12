@@ -167,7 +167,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* solve = new Gui::ToolBarItem(root);
     solve->setCommand("Solve");
-    if (!Fem::Tools::checkIfBinaryExists("CCX", "ccx", "ccx").empty()) {
+    if (!Fem::Tools::checkIfBinaryExists("Ccx", "ccx", "ccx").empty()) {
         *solve << "FEM_SolverCalculiXCcxTools";
     }
     if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {

@@ -132,6 +132,7 @@
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/engines/SoConcatenate.h>
+#include <Inventor/engines/SoDecomposeVec3f.h>
 #include <Inventor/engines/SoTransformVec3f.h>
 
 #include <Inventor/errors/SoDebugError.h>

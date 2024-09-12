@@ -36,6 +36,7 @@ import ifcopenshell
 from ifcopenshell import geom
 from ifcopenshell import api
 from ifcopenshell import template
+from ifcopenshell.util import element
 from ifcopenshell.util import attribute
 from ifcopenshell.util import schema
 from ifcopenshell.util import placement
@@ -139,7 +140,7 @@ def convert_document(document, filename=None, shapemode=0, strategy=0, silent=Fa
 
 
 def setup_project(proj, filename, shapemode, silent):
-    """Setups a project (common operations between signle doc/not single doc modes)
+    """Sets up a project (common operations between single doc/not single doc modes)
     Returns the ifcfile object, the project ifc entity, and full (True/False)"""
 
     full = False
@@ -700,7 +701,10 @@ def filter_elements(elements, ifcfile, expand=True, spaces=False, assemblies=Tru
                 elements = ifcfile.by_type("IfcElement")
                 elements.extend(ifcfile.by_type("IfcSite"))
             else:
-                elements = ifcopenshell.util.element.get_decomposition(elem)
+                decomp = ifcopenshell.util.element.get_decomposition(elem)
+                if decomp:
+                    # avoid replacing elements if decomp is empty
+                    elements = decomp
         else:
             if elem.Representation.Representations:
                 rep = elem.Representation.Representations[0]
@@ -999,7 +1003,11 @@ def deaggregate(obj, parent):
     element = get_ifc_element(obj)
     if not element:
         return
-    api_run("aggregate.unassign_object", ifcfile, product=element)
+    try:
+        api_run("aggregate.unassign_object", ifcfile, products=[element])
+    except:
+        # older version of ifcopenshell
+        api_run("aggregate.unassign_object", ifcfile, product=element)
     parent.Proxy.removeObject(parent, obj)
 
 
@@ -1165,21 +1173,43 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
             )
         elif parent_element.Decomposes:
             container = parent_element.Decomposes[0].RelatingObject
+            try:
+                uprel = api_run(
+                    "aggregate.assign_object",
+                    ifcfile,
+                    products=[element],
+                    relating_object=container,
+                )
+            except:
+                # older version of ifcopenshell
+                uprel = api_run(
+                    "aggregate.assign_object",
+                    ifcfile,
+                    product=element,
+                    relating_object=container,
+                )
+    # case 3: element aggregated inside other element
+    else:
+        try:
+            api_run("aggregate.unassign_object", ifcfile, products=[element])
+        except:
+            # older version of ifcopenshell
+            api_run("aggregate.unassign_object", ifcfile, product=element)
+        try:
+            uprel = api_run(
+                "aggregate.assign_object",
+                ifcfile,
+                products=[element],
+                relating_object=parent_element,
+            )
+        except:
+            # older version of ifcopenshell
             uprel = api_run(
                 "aggregate.assign_object",
                 ifcfile,
                 product=element,
-                relating_object=container,
+                relating_object=parent_element,
             )
-    # case 3: element aggregated inside other element
-    else:
-        api_run("aggregate.unassign_object", ifcfile, product=element)
-        uprel = api_run(
-            "aggregate.assign_object",
-            ifcfile,
-            product=element,
-            relating_object=parent_element,
-        )
     if hasattr(parent.Proxy, "addObject"):
         parent.Proxy.addObject(parent, obj)
     return uprel
@@ -1189,7 +1219,7 @@ def get_elem_attribs(ifcentity):
     # This function can become pure IFC
 
     # usually info_ifcentity = ifcentity.get_info() would de the trick
-    # the above could raise an unhandled excption on corrupted ifc files
+    # the above could raise an unhandled exception on corrupted ifc files
     # in IfcOpenShell
     # see https://github.com/IfcOpenShell/IfcOpenShell/issues/2811
     # thus workaround

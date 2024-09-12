@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 """ Worker thread classes for Addon Manager startup """
-import datetime
 import hashlib
 import json
 import os
@@ -454,7 +453,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
                     if os.path.isfile(repo_metadata_cache_path):
                         try:
                             repo.load_metadata_file(repo_metadata_cache_path)
-                        except Exception as e:
+                        except RuntimeError as e:
                             FreeCAD.Console.PrintLog(f"Failed loading {repo_metadata_cache_path}\n")
                             FreeCAD.Console.PrintLog(str(e) + "\n")
                     self.addon_repo.emit(repo)
@@ -577,7 +576,7 @@ class UpdateChecker:
             with wb.git_lock:
                 try:
                     status = self.git_manager.status(clonedir)
-                    if "(no branch)" in self.git_manager.status(clonedir):
+                    if "(no branch)" in status:
                         # By definition, in a detached-head state we cannot
                         # update, so don't even bother checking.
                         wb.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
@@ -612,13 +611,15 @@ class UpdateChecker:
         installed_metadata_file = os.path.join(clone_dir, "package.xml")
         if not os.path.isfile(installed_metadata_file):
             return False
+        if not hasattr(package, "metadata") or package.metadata is None:
+            return False
         try:
             installed_metadata = MetadataReader.from_file(installed_metadata_file)
             installed_default_branch = get_branch_from_metadata(installed_metadata)
             remote_default_branch = get_branch_from_metadata(package.metadata)
             if installed_default_branch != remote_default_branch:
                 return True
-        except Exception:
+        except RuntimeError:
             return False
         return False
 
@@ -663,7 +664,7 @@ class UpdateChecker:
                     package.set_status(Addon.Status.UPDATE_AVAILABLE)
                 else:
                     package.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
-            except Exception:
+            except RuntimeError:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
@@ -686,7 +687,7 @@ class UpdateChecker:
                 mac = mac.replace("+", "%2B")
                 url = "https://wiki.freecad.org/Macro_" + mac
                 macro_wrapper.macro.fill_details_from_wiki(url)
-        except Exception:
+        except RuntimeError:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
@@ -935,7 +936,8 @@ class GetBasicAddonStatsWorker(QtCore.QThread):
             FreeCAD.Console.PrintError(
                 translate(
                     "AddonsInstaller",
-                    "Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate\n",
+                    "Failed to get Addon statistics from {} -- only sorting alphabetically will"
+                    " be accurate\n",
                 ).format(self.url)
             )
             return
@@ -994,5 +996,5 @@ class GetAddonScoreWorker(QtCore.QThread):
                     self.update_addon_score.emit(addon)
                 except (ValueError, OverflowError):
                     FreeCAD.Console.PrintLog(
-                        f"Failed to convert score value '{score}' to an integer for addon {addon.name}"
+                        f"Failed to convert score value '{score}' to an integer for {addon.name}"
                     )

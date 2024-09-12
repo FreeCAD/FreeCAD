@@ -536,7 +536,7 @@ class BIM_Library_TaskPanel:
 
         from PySide import QtGui
 
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
 

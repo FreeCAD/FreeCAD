@@ -281,11 +281,6 @@ const std::string TaskFemConstraintPlaneRotation::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-bool TaskFemConstraintPlaneRotation::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintPlaneRotation::changeEvent(QEvent*)
 {}
 

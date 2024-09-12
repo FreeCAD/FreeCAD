@@ -222,9 +222,9 @@ public:
         // limitation of not knowing about padding, border and margin boxes of stylesheets
         // thus being unable to provide proper sizeHint for stylesheets to render correctly
         if (role == Qt::DecorationRole) {
-            int size = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
+            auto size = listWidget()->iconSize();
 
-            return QIcon(QPixmap(QSize(size, size)));
+            return QIcon(QPixmap(size));
         }
 
         return QListWidgetItem::data(role);
@@ -241,6 +241,22 @@ public:
                 return isEndPointSelected;
             case Sketcher::PointPos::mid:
                 return isMidPointSelected;
+            default:
+                return false;
+        }
+    }
+
+    bool isGeometryPreselected(Sketcher::PointPos pos) const
+    {
+        switch (pos) {
+            case Sketcher::PointPos::none:
+                return hovered == SubElementType::edge;
+            case Sketcher::PointPos::start:
+                return hovered == SubElementType::start;
+            case Sketcher::PointPos::end:
+                return hovered == SubElementType::end;
+            case Sketcher::PointPos::mid:
+                return hovered == SubElementType::mid;
             default:
                 return false;
         }
@@ -305,7 +321,7 @@ private:
         {QT_TR_NOOP("Arc of ellipse"), 1},
         {QT_TR_NOOP("Arc of hyperbola"), 1},
         {QT_TR_NOOP("Arc of parabola"), 1},
-        {QT_TR_NOOP("B-Spline"), 1}};
+        {QT_TR_NOOP("B-spline"), 1}};
 };
 }// namespace SketcherGui
 
@@ -943,9 +959,16 @@ void ElementItemDelegate::drawSubControl(SubControl element,
 
     auto drawSelectIcon = [&](Sketcher::PointPos pos) {
         auto icon = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State);
-        auto opacity = 0.4f;
 
-        if (isHovered) {
+        auto isOptionSelected = option.state & QStyle::State_Selected;
+        auto isOptionHovered = option.state & QStyle::State_MouseOver;
+
+        // items that user is not interacting with should be fully opaque
+        // only if item is partially selected (so only one part of geometry)
+        // the rest should be dimmed out
+        auto opacity = isOptionHovered || isOptionSelected ? 0.4 : 1.0;
+
+        if (item->isGeometryPreselected(pos)) {
             opacity = 0.8f;
         }
 
@@ -1301,7 +1324,7 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
     for (int i = filterList->count() - 1; i >= 0; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
         filterState = filterState << 1;// we shift left first, else the list is shifted at the end.
-        filterState = filterState | isChecked;
+        filterState = filterState | (isChecked ? 1 : 0);
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -1853,12 +1876,12 @@ void TaskSketcherElements::slotElementsChanged()
                                                      : QString::fromLatin1("")))
                                       : (QString::fromLatin1("%1-").arg(i) + tr("Parabolic Arc")))
                 : type == Part::GeomBSplineCurve::getClassTypeId()
-                ? (isNamingBoxChecked ? (tr("BSpline") + IdInformation())
+                ? (isNamingBoxChecked ? (tr("B-spline") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
                                   : (internalAligned ? (QString::fromLatin1("-") + tr("Internal"))
                                                      : QString::fromLatin1("")))
-                                      : (QString::fromLatin1("%1-").arg(i) + tr("BSpline")))
+                                      : (QString::fromLatin1("%1-").arg(i) + tr("B-spline")))
                 : (isNamingBoxChecked ? (tr("Other") + IdInformation())
                            + (construction
                                   ? (QString::fromLatin1("-") + tr("Construction"))
@@ -1965,8 +1988,8 @@ void TaskSketcherElements::slotElementsChanged()
                            ? (tr("Parabolic Arc") + linkname)
                            : (QString::fromLatin1("%1-").arg(i - 2) + tr("Parabolic Arc")))
                     : type == Part::GeomBSplineCurve::getClassTypeId()
-                    ? (isNamingBoxChecked ? (tr("BSpline") + linkname)
-                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("BSpline")))
+                    ? (isNamingBoxChecked ? (tr("B-spline") + linkname)
+                                          : (QString::fromLatin1("%1-").arg(i - 2) + tr("B-spline")))
                     : (isNamingBoxChecked ? (tr("Other") + linkname)
                                           : (QString::fromLatin1("%1-").arg(i - 2) + tr("Other"))),
                 sketchView);

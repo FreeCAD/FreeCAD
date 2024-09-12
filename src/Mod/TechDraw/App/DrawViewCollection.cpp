@@ -152,8 +152,8 @@ void DrawViewCollection::rebuildViewList()
     const std::vector<App::DocumentObject*> currViews = Views.getValues();
     std::vector<App::DocumentObject*> newViews;
     for (auto* child : getOutList()) {
-        if (child->isDerivedFrom<DrawView>() || 
-            (child->isDerivedFrom<App::Link>() 
+        if (child->isDerivedFrom<DrawView>() ||
+            (child->isDerivedFrom<App::Link>()
                 && static_cast<App::Link*>(child)->getLinkedObject()->isDerivedFrom<DrawView>())) {
             bool found = false;
             for (auto& v:currViews) {

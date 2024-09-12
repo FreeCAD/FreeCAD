@@ -412,7 +412,6 @@ bool DrawBrokenView::isBreakObject(const App::DocumentObject& breakObj)
 //! horizontal or vertical
 bool DrawBrokenView::isBreakObjectSketch(const App::DocumentObject& breakObj)
 {
-    // Base::Console().Message("DBV::isBreakObjectSketch()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
     if (locShape.IsNull()) {
         return false;

@@ -784,7 +784,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Validate sketch...");
-    sToolTipText = QT_TR_NOOP("Validate a sketch by looking at missing coincidences,\n"
+    sToolTipText = QT_TR_NOOP("Validates a sketch by looking at missing coincidences,\n"
                               "invalid constraints, degenerated geometry, etc.");
     sWhatsThis = "Sketcher_ValidateSketch";
     sStatusTip = sToolTipText;
@@ -824,7 +824,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Mirror sketch");
-    sToolTipText = QT_TR_NOOP("Create a new mirrored sketch for each selected sketch\n"
+    sToolTipText = QT_TR_NOOP("Creates a new mirrored sketch for each selected sketch\n"
                               "by using the X or Y axes, or the origin point,\n"
                               "as mirroring reference.");
     sWhatsThis = "Sketcher_MirrorSketch";

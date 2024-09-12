@@ -219,7 +219,6 @@ CmdRobotSimulate::CmdRobotSimulate()
 
 void CmdRobotSimulate::activated(int)
 {
-#if 1
     const char* SelFilter = "SELECT Robot::RobotObject  \n"
                             "SELECT Robot::TrajectoryObject  ";
 
@@ -230,7 +229,6 @@ void CmdRobotSimulate::activated(int)
     if (filter.match()) {
         pcRobotObject = static_cast<Robot::RobotObject*>(filter.Result[0][0].getObject());
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(filter.Result[1][0].getObject());
-        ;
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -249,32 +247,6 @@ void CmdRobotSimulate::activated(int)
 
     Gui::TaskView::TaskDialog* dlg = new TaskDlgSimulate(pcRobotObject, pcTrajectoryObject);
     Gui::Control().showDialog(dlg);
-
-#else
-
-
-    const char* SelFilter = "SELECT Robot::RobotObject  \n"
-                            "SELECT Robot::TrajectoryObject  ";
-
-    Gui::SelectionFilter filter(SelFilter);
-    Robot::RobotObject* pcRobotObject;
-    Robot::TrajectoryObject* pcTrajectoryObject;
-
-    if (filter.match()) {
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(filter.Result[0][0].getObject());
-        pcTrajectoryObject =
-            dynamic_cast<Robot::TrajectoryObject*>(filter.Result[1][0].getObject());
-        ;
-    }
-    else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Robot and one Trajectory object."));
-    }
-
-    RobotGui::TrajectorySimulate dlg(pcRobotObject, pcTrajectoryObject, Gui::getMainWindow());
-    dlg.exec();
-#endif
 }
 
 bool CmdRobotSimulate::isActive()

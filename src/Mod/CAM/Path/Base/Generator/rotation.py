@@ -82,9 +82,7 @@ def __getCRotation(normalVector, cMin=-360, cMax=360):
     with either the +y or -y axis.
     multiple poses may be possible.  Returns a list of all valid poses
     """
-    Path.Log.debug(
-        "normalVector: {} cMin: {} cMax: {}".format(normalVector, cMin, cMax)
-    )
+    Path.Log.debug("normalVector: {} cMin: {} cMax: {}".format(normalVector, cMin, cMax))
 
     angle = relAngle(normalVector, refAxis.y)
 
@@ -173,9 +171,7 @@ def generate(normalVector, aMin=-360, aMax=360, cMin=-360, cMax=360, compound=Fa
         # Get the candidate A rotation for the new vector
         aResult = __getARotation(newvec, aMin, aMax)
 
-        Path.Log.debug(
-            "\n=====\nFor C Rotation: {}\n Calculated A {}\n".format(result, aResult)
-        )
+        Path.Log.debug("\n=====\nFor C Rotation: {}\n Calculated A {}\n".format(result, aResult))
 
         if aResult is not None:
             solutions.append({"A": aResult, "C": result})

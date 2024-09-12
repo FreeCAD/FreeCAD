@@ -78,7 +78,7 @@ class TestHelix(unittest.TestCase):
         body.addObject(helix)
         helix.Profile = profileSketch
         helix.ReferenceAxis = (profileSketch,"V_Axis")
-        helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), 
+        helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0),
                                             FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0),
                                             FreeCAD.Vector(0,0,0))
         helix.Pitch = 3
@@ -119,7 +119,7 @@ class TestHelix(unittest.TestCase):
         helix.Height = 150
         helix.Turns = 3
         helix.Angle = 0
-        helix.Mode = 0 
+        helix.Mode = 0
         self.Doc.recompute()
         bbox = helix.Shape.BoundBox
         self.assertAlmostEqual(bbox.YMin,0)
@@ -171,7 +171,7 @@ class TestHelix(unittest.TestCase):
         helix.Height = 110
         helix.Turns = 2.2
         helix.Angle = 30
-        helix.Mode = 0 
+        helix.Mode = 0
         helix.Reversed = True
         self.Doc.recompute()
         self.assertAlmostEqual(helix.Shape.Volume/1e5, 3.8828,places=4)

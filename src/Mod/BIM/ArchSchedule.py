@@ -127,7 +127,7 @@ class _ArchSchedule:
                 "App::PropertyLink",
                 "Schedule",
                 "Arch",
-                QT_TRANSLATE_NOOP("App::Property", "The Arch Schedule that uses this spreadsheet"))
+                QT_TRANSLATE_NOOP("App::Property", "The BIM Schedule that uses this spreadsheet"))
         sp.Schedule = obj
 
     def getSpreadSheet(self, obj, force=False):

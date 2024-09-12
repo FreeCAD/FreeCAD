@@ -50,6 +50,7 @@
 #include "FeatureLinearPattern.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
+#include "Mod/Part/App/TopoShapeOpCode.h"
 
 
 using namespace PartDesign;
@@ -213,22 +214,22 @@ App::DocumentObjectExecReturn* Transformed::execute()
         return App::DocumentObject::StdReturn;
     }
 
+    std::vector<App::DocumentObject*> originals;
     auto const mode = static_cast<Mode>(TransformMode.getValue());
     if (mode == Mode::TransformBody) {
-        Originals.setValues({});
+        Originals.setStatus(App::Property::Status::Hidden, true);
+    } else {
+        Originals.setStatus(App::Property::Status::Hidden, false);
+        originals = Originals.getValues();
     }
-
-    std::vector<App::DocumentObject*> originals = Originals.getValues();
     // Remove suppressed features from the list so the transformations behave as if they are not
     // there
-    {
-        auto eraseIter =
-            std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {
-                auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
-                return feature != nullptr && feature->Suppressed.getValue();
-            });
-        originals.erase(eraseIter, originals.end());
-    }
+    auto eraseIter =
+        std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {
+            auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+            return feature != nullptr && feature->Suppressed.getValue();
+        });
+    originals.erase(eraseIter, originals.end());
 
     if (mode == Mode::TransformToolShapes && originals.empty()) {
         return App::DocumentObject::StdReturn;
@@ -282,38 +283,18 @@ App::DocumentObjectExecReturn* Transformed::execute()
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
     supportShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape support = supportShape.getShape();
 
-    auto getTransformedCompShape = [&](const auto& origShape) {
-        TopTools_ListOfShape shapeTools;
-        std::vector<TopoDS_Shape> shapes;
-
+    auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
+        std::vector<TopoShape> shapes = {supportShape};
+        TopoShape shape (origShape);
+        int idx=1;
         auto transformIter = transformations.cbegin();
-
-        // First transformation is skipped since it should not be part of the toolShape.
-        ++transformIter;
-
-        for (; transformIter != transformations.end(); ++transformIter) {
-            // Make an explicit copy of the shape because the "true" parameter to
-            // BRepBuilderAPI_Transform seems to be pretty broken
-            BRepBuilderAPI_Copy copy(origShape);
-
-            TopoDS_Shape shape = copy.Shape();
-
-            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false);  // No need to copy, now
-            if (!mkTrf.IsDone()) {
-                throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Transformation failed"));
-            }
-            shape = mkTrf.Shape();
-
-            shapes.emplace_back(shape);
+        transformIter++;
+        for ( ; transformIter != transformations.end(); transformIter++) {
+            auto opName = Data::indexSuffix(idx++);
+            shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
         }
-
-        for (const auto& shape : shapes) {
-            shapeTools.Append(shape);
-        }
-
-        return shapeTools;
+        return shapes;
     };
 
     switch (mode) {
@@ -343,107 +324,43 @@ App::DocumentObjectExecReturn* Transformed::execute()
                                           "Shape of additive/subtractive feature is empty"));
                 }
                 gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-#ifdef FC_USE_TNP_FIX
                 if (!fuseShape.isNull()) {
                     fuseShape = fuseShape.makeElementTransform(trsf);
                 }
                 if (!cutShape.isNull()) {
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
-#else
                 if (!fuseShape.isNull()) {
-                    fuseShape = fuseShape.makeTransform(trsf);
+                    supportShape.makeElementFuse(getTransformedCompShape(supportShape, fuseShape));
                 }
                 if (!cutShape.isNull()) {
-                    cutShape = cutShape.makeTransform(trsf);
+                    supportShape.makeElementCut(getTransformedCompShape(supportShape, cutShape));
                 }
-
-#endif
-
-                TopoDS_Shape current = support;
-                if (!fuseShape.isNull()) {
-                    TopTools_ListOfShape shapeArguments;
-                    shapeArguments.Append(current);
-                    TopTools_ListOfShape shapeTools = getTransformedCompShape(fuseShape.getShape());
-                    if (!shapeTools.IsEmpty()) {
-                        BRepAlgoAPI_Fuse mkBool;
-                        mkBool.SetArguments(shapeArguments);
-                        mkBool.SetTools(shapeTools);
-                        mkBool.Build();
-                        if (!mkBool.IsDone()) {
-                            return new App::DocumentObjectExecReturn(
-                                QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                        }
-                        current = mkBool.Shape();
-                    }
-                }
-                if (!cutShape.isNull()) {
-                    TopTools_ListOfShape shapeArguments;
-                    shapeArguments.Append(current);
-                    TopTools_ListOfShape shapeTools = getTransformedCompShape(cutShape.getShape());
-                    if (!shapeTools.IsEmpty()) {
-                        BRepAlgoAPI_Cut mkBool;
-                        mkBool.SetArguments(shapeArguments);
-                        mkBool.SetTools(shapeTools);
-                        mkBool.Build();
-                        if (!mkBool.IsDone()) {
-                            return new App::DocumentObjectExecReturn(
-                                QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                        }
-                        current = mkBool.Shape();
-                    }
-                }
-
-                support = current;  // Use result of this operation for fuse/cut of next original
             }
             break;
         case Mode::TransformBody: {
-            TopTools_ListOfShape shapeArguments;
-            shapeArguments.Append(support);
-            TopTools_ListOfShape shapeTools = getTransformedCompShape(support);
-            if (!shapeTools.IsEmpty()) {
-                BRepAlgoAPI_Fuse mkBool;
-                mkBool.SetArguments(shapeArguments);
-                mkBool.SetTools(shapeTools);
-                mkBool.Build();
-                if (!mkBool.IsDone()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
-                }
-                support = mkBool.Shape();
-            }
+            supportShape.makeElementFuse(getTransformedCompShape(supportShape, supportShape));
             break;
         }
     }
 
-    support = refineShapeIfActive(support);
-
-    if (!isSingleSolidRuleSatisfied(support)) {
+    supportShape = refineShapeIfActive((supportShape));
+    if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
         Base::Console().Warning("Transformed: Result has multiple solids. Only keeping the first.\n");
     }
 
-    this->Shape.setValue(getSolid(support));  // picking the first solid
-    rejected = getRemainingSolids(support);
+    this->Shape.setValue(getSolid(supportShape));  // picking the first solid
+    rejected = getRemainingSolids(supportShape.getShape());
 
     return App::DocumentObject::StdReturn;
 }
 
-TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+
+TopoShape Transformed::refineShapeIfActive(const TopoShape& oldShape) const
 {
     if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            if (!TopoShape(resShape).isClosed()) {
-                return oldShape;
-            }
-            return resShape;
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
+        return oldShape.makeElementRefine();
     }
-
     return oldShape;
 }
 

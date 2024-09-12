@@ -23,7 +23,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
-         <string>If checked, no Compound merge will be done
+         <string>If checked, Compound merge will be done
 during file reading (slower but higher details).</string>
         </property>
         <property name="text">
@@ -120,7 +120,7 @@ during file reading (slower but higher details).</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxUseBaseName">
         <property name="toolTip">
-         <string>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</string>
+         <string>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</string>
         </property>
         <property name="text">
          <string>Ignore instance names</string>

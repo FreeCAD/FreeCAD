@@ -200,6 +200,7 @@ PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
 
+// clang-format off
 PyMOD_INIT_FUNC(Part)
 {
     // load dependent module
@@ -498,6 +499,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeometryBoolExtension   	::init();
     Part::GeometryDoubleExtension 	::init();
     Part::GeometryMigrationExtension	::init();
+    Part::GeometryMigrationPersistenceExtension	::init();
     Part::Geometry                	::init();
     Part::GeomPoint               	::init();
     Part::GeomCurve               	::init();
@@ -563,3 +565,4 @@ PyMOD_INIT_FUNC(Part)
     
     PyMOD_Return(partModule);
 }
+// clang-format on

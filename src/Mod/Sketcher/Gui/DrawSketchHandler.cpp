@@ -440,8 +440,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     int preSelPnt = getPreselectPoint();
     int preSelCrv = getPreselectCurve();
     int preSelCrs = getPreselectCross();
-    int GeoId = GeoEnum::GeoUndef;
 
+    int GeoId = GeoEnum::GeoUndef;
     PointPos PosId = PointPos::none;
 
     if (preSelPnt != -1) {
@@ -459,15 +459,18 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
             }
         }
     }
-    else if (preSelCrs == 0) {  // root point
+    else if (preSelCrs == 0) {
+        // root point
         GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = PointPos::start;
     }
-    else if (preSelCrs == 1) {  // x axis
+    else if (preSelCrs == 1) {
+        // x axis
         GeoId = Sketcher::GeoEnum::HAxis;
         hitShapeDir = Base::Vector3d(1, 0, 0);
     }
-    else if (preSelCrs == 2) {  // y axis
+    else if (preSelCrs == 2) {
+        // y axis
         GeoId = Sketcher::GeoEnum::VAxis;
         hitShapeDir = Base::Vector3d(0, 1, 0);
     }
@@ -819,7 +822,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                     if (geom1 && geom2
                         && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
 
-                        if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId()) {
+                        if (!geom1->is<Part::GeomEllipse>()) {
                             std::swap(geoId1, geoId2);
                         }
 
@@ -846,7 +849,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         && (geom1->is<Part::GeomArcOfEllipse>()
                             || geom2->is<Part::GeomArcOfEllipse>())) {
 
-                        if (geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()) {
+                        if (!geom1->is<Part::GeomArcOfEllipse>()) {
                             std::swap(geoId1, geoId2);
                         }
 
@@ -883,6 +886,22 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
             // creation, this is redundant.
         }
     }
+}
+
+int DrawSketchHandler::seekAndRenderAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    const Base::Vector2d& Dir,
+    AutoConstraint::TargetType type)
+{
+    if (seekAutoConstraint(suggestedConstraints, Pos, Dir, type)) {
+        renderSuggestConstraintsCursor(suggestedConstraints);
+    }
+    else {
+        applyCursor();
+    }
+
+    return suggestedConstraints.size();
 }
 
 void DrawSketchHandler::renderSuggestConstraintsCursor(

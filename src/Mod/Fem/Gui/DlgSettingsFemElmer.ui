@@ -258,7 +258,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="l_elmer_multiCPU">
         <property name="text">
-         <string>Multi-CPU core support:</string>
+         <string>Multi-core CPU support:</string>
         </property>
        </widget>
       </item>

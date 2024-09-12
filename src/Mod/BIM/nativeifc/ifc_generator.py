@@ -30,6 +30,7 @@ import FreeCAD
 from FreeCAD import Base
 import Part
 import ifcopenshell
+from ifcopenshell.util import element
 from nativeifc import ifc_tools
 import multiprocessing
 import FreeCADGui
@@ -39,7 +40,7 @@ from pivy import coin
 def generate_geometry(obj, cached=False):
     """Sets the geometry of the given object from a corresponding IFC element.
     This is the main function called by the execute method of FreeCAD document objects
-    It is only meant to be called form there, as it is always the responsability of the
+    It is only meant to be called form there, as it is always the responsibility of the
     NativeIFC document object to know when it needs to regenerate its geometry.
 
     The generate_geometry will call either generate_shape or generate_coin, depending
@@ -338,9 +339,12 @@ def get_decomposed_elements(element, obj=None):
     else:
         # add child elements that are not yet rendered
         child_ids = [c.StepId for c in obj.Group if hasattr(c, "StepId")]
-    for child in ifcopenshell.util.element.get_decomposition(
-        element, is_recursive=False
-    ):
+    try:
+        dec = ifcopenshell.util.element.get_decomposition(element, is_recursive=False)
+    except:
+        # older version of IfcOpenShell
+        dec = ifcopenshell.util.element.get_decomposition(element)
+    for child in dec:
         if child.id() not in child_ids:
             if child not in result:
                 result.append(child)

@@ -721,7 +721,7 @@ class TestObjectType(unittest.TestCase):
         # FemMeshGmsh
         mesh_gmsh = ObjectsFem.makeMeshGmsh(doc)
         self.assertTrue(is_derived_from(mesh_gmsh, "App::DocumentObject"))
-        self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshObjectPython"))
+        self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshShapeBaseObjectPython"))
         self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshGmsh"))
 
         # MeshBoundaryLayer
@@ -965,7 +965,7 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeMaterialReinforced(doc).isDerivedFrom("App::MaterialObjectPython")
         )
         mesh = ObjectsFem.makeMeshGmsh(doc)
-        self.assertTrue(mesh.isDerivedFrom("Fem::FemMeshObjectPython"))
+        self.assertTrue(mesh.isDerivedFrom("Fem::FemMeshShapeBaseObjectPython"))
         self.assertTrue(
             ObjectsFem.makeMeshBoundaryLayer(doc, mesh).isDerivedFrom("Fem::FeaturePython")
         )

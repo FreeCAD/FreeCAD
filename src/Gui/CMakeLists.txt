@@ -70,13 +70,6 @@ if(MSVC)
          ${OPENGL_gl_LIBRARY}
     )
 
-    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
-        list(APPEND FreeCADGui_LIBS
-            Qt6::GuiPrivate
-        )
-    endif()
-
-
     if(FREECAD_USE_3DCONNEXION)
         list(APPEND FreeCADGui_LIBS
             hid
@@ -92,6 +85,14 @@ else(MSVC)
         ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
+
+if (WIN32)
+    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        list(APPEND FreeCADGui_LIBS
+            Qt6::GuiPrivate
+        )
+    endif()
+endif()
 
 include_directories(
     ${QtCore_INCLUDE_DIRS}
@@ -466,7 +467,6 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
-    TaskMeasure.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
     DlgAddPropertyVarSet.cpp
@@ -507,7 +507,6 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
-    TaskMeasure.h
     DlgObjectSelection.h
     DlgAddProperty.h
     DlgAddPropertyVarSet.h
@@ -850,6 +849,7 @@ SET(View3D_CPP_SRCS
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
+    Multisample.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
     InventorNavigationStyle.cpp
@@ -882,6 +882,7 @@ SET(View3D_SRCS
     Flag.h
     GLBuffer.h
     GLPainter.h
+    Multisample.h
     MouseSelection.h
     NavigationStyle.h
     GestureNavigationStyle.h
@@ -946,7 +947,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderImagePlane.cpp
     ViewProviderInventorObject.cpp
     ViewProviderPyImp.cpp
-    ViewProviderPythonFeature.cpp
+    ViewProviderFeaturePython.cpp
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
@@ -983,7 +984,7 @@ SET(Viewprovider_SRCS
     ViewProviderGeometryObject.h
     ViewProviderImagePlane.h
     ViewProviderInventorObject.h
-    ViewProviderPythonFeature.h
+    ViewProviderFeaturePython.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h

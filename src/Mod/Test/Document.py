@@ -22,7 +22,9 @@
 # ***************************************************************************/
 
 import FreeCAD, os, unittest, tempfile
+from FreeCAD import Base
 import math
+import xml.etree.ElementTree as ET
 
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Document code
@@ -634,6 +636,18 @@ class DocumentBasicCases(unittest.TestCase):
         obj = doc.Python.Proxy
 
         self.assertEqual(obj.Dictionary, {"Stored data": [3, 5, 7]})
+
+    def testContent(self):
+        test = self.Doc.addObject("App::FeaturePython", "Python")
+        types = Base.TypeId.getAllDerivedFrom("App::Property")
+        for type in types:
+            try:
+                test.addProperty(type.Name, type.Name.replace(":", "_"))
+                print("Add property type: {}".format(type.Name))
+            except Exception as e:
+                pass
+        root = ET.fromstring(test.Content)
+        self.assertEqual(root.tag, "Properties")
 
     def tearDown(self):
         # closing doc

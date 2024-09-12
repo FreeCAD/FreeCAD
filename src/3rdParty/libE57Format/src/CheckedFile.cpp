@@ -44,6 +44,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#elif defined(__OpenBSD__)
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #elif defined( __APPLE__ )
 #include <sys/types.h>
 #include <unistd.h>
@@ -483,7 +487,7 @@ uint64_t CheckedFile::lseek64( int64_t offset, int whence )
 #endif
 #elif defined( __linux__ )
    int64_t result = ::lseek64( fd_, offset, whence );
-#elif defined( __APPLE__ )
+#elif defined( __APPLE__ ) || defined(__OpenBSD__)
    int64_t result = ::lseek( fd_, offset, whence );
 #else
 #error "no supported OS platform defined"

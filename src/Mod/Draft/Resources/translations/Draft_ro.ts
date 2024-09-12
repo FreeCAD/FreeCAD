@@ -156,14 +156,14 @@
       <translation>Culoare linie și săgeată</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="501"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="497"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
       <source>The distance the dimension line is additionally extended</source>
       <translation>Distanța liniei de dimensiune este extinsă suplimentar</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="531"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="537"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="547"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
       <translation>Distanța liniilor de prelungire este extinsă suplimentar dincolo de linia de dimensiune</translation>
     </message>
@@ -211,46 +211,46 @@
       <translation>Multiplicator scalare</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="435"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>Dacă este bifat, va afișa unitatea lângă valoarea dimensiunii</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="428"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>Show unit</source>
       <translation>Arată unitatea</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="458"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="454"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Specificați o unitate validă a lungimii ca mm, m, in, ft, pentru a forța afișarea valorii dimensiunii în această unitate</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
       <source>Unit override</source>
       <translation>Suprascrie unitatea</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Numărul de zecimale de afișat pentru valorile de dimensiune</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
       <source>Decimals</source>
       <translation>Zecimale</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="557"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="567"/>
       <source>The distance between the dimension text and the dimension line</source>
       <translation>Distanța dintre textul dimensiunii și linia de dimensiune</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="560"/>
       <source>Text spacing</source>
       <translation>Spațierea textului</translation>
     </message>
@@ -301,28 +301,28 @@
       <translation>Dimensiunea săgeții</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Dimension details</source>
       <translation>Detalii dimensiune</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>Dimension overshoot</source>
       <translation>Depășirea dimensiunii</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="511"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="517"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
       <source>The length of the extension lines</source>
       <translation>Lungimea liniilor de extensie</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
       <source>Extension lines</source>
       <translation>Linii de extensie</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="540"/>
       <source>Extension overshoot</source>
       <translation>Depășirea extensiei</translation>
     </message>
@@ -1005,7 +1005,7 @@ will be moved to the center of the view.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="386"/>
       <source>Line width</source>
       <translation>Latimea liniei</translation>
     </message>
@@ -1013,7 +1013,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="393"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1093,27 +1093,27 @@ will be moved to the center of the view.</translation>
       <translation>Culoare forma</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="592"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="598"/>
       <source>Annotations</source>
       <translation>Annotations (Automatic Copy)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="555"/>
       <source>Text spacing</source>
       <translation>Spațierea textului</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Text color</source>
       <translation>Culoare text</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="458"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Dimensions</source>
       <translation>Dimensiuni</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source>Dot</source>
       <translation>Punct</translation>
     </message>
@@ -1140,47 +1140,47 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Lines and arrows</source>
       <translation>Linii și săgeți</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="413"/>
       <source>Circle</source>
       <translation>Cerc</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="412"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="418"/>
       <source>Arrow</source>
       <translation>Săgeată</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
       <source>Tick</source>
       <translation>Cocher</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
       <source>Tick-2</source>
       <translation>Oblique 2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="471"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation type="unfinished">If checked, a unit symbol is added to dimension texts</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation type="unfinished">The unit override for dimensions. Leave blank to use the current FreeCAD unit.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Distanța cu care linia de dimensiune este prelungită dincolo de liniile de extensie</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation type="unfinished">The color for texts, dimension texts and label texts</translation>
     </message>
@@ -1215,32 +1215,32 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
       <translation>Multiplicator scalare</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Line and arrow color</source>
       <translation>Culoare linie și săgeată</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="400"/>
       <source>Arrow type</source>
       <translation>Tipul de săgeată</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="436"/>
       <source>Arrow size</source>
       <translation>Dimensiunea săgeții</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="501"/>
       <source>Dim line overshoot</source>
       <translation type="unfinished">Dim line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="518"/>
       <source>Ext line length</source>
       <translation type="unfinished">Ext line length</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1251,42 +1251,42 @@ A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="538"/>
       <source>Ext line overshoot</source>
       <translation type="unfinished">Ext line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>The length of extension lines above the dimension line</source>
       <translation type="unfinished">The length of extension lines above the dimension line</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Spațiul dintre linia de dimensionare și textul dimensiunii</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="581"/>
       <source>Apply the above style to selected object(s)</source>
       <translation type="unfinished">Apply the above style to selected object(s)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="595"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation type="unfinished">Apply the above style to all annotations (texts, dimensions and labels)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>Show unit</source>
       <translation>Arată unitatea</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="481"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
       <source>Unit override</source>
       <translation>Suprascrie unitatea</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="578"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="584"/>
       <source>Selected</source>
       <translation>Selectat</translation>
     </message>
@@ -1605,6 +1605,7 @@ pattern definitions to be added to the standard patterns</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>Texte și dimensiuni</translation>
     </message>
@@ -1626,7 +1627,7 @@ pattern definitions to be added to the standard patterns</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1997,41 +1998,31 @@ This value is the maximum segment length.</translation>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Acest dialog de preferințe va fi afișat la importul/exportul de fișiere DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Arată acest dialog atunci când se importă şi exportă</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Importatorul Python este utilizat, altfel este folosit cel C++ mai nou.
 Notă: importatorul C++ este mai rapid, dar nu este atît de plin de opțiuni</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
-      <source>Use legacy python importer</source>
-      <translation>Utilizarea importatorului python moştenit</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Se utilizează un exportator în Python. În caz contrar, se utilizează noul C+++.
 Notă: Exportatorul C++ este mai rapid, dar încă nu este la fel de caracteristic</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
-      <source>Use legacy python exporter</source>
-      <translation>Use legacy python exporter</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -2040,104 +2031,89 @@ Poți face acest lucru și manual prin instalarea atelierului "dxf_library"
 din Managerul de Suplimente.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Permite FreeCAD să descarce automat și să actualizeze bibliotecile DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>Importare opțiuni</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Dacă nu este bifată, textele și mtextele nu vor fi importate</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
-      <source>texts and dimensions</source>
-      <translation>texte și dimensiuni</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Dacă nu este bifată, punctele nu vor fi importate</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>puncte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Dacă este bifată, obiectele din spațiul hârtiei vor fi de asemenea importate</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
-      <source>layouts</source>
-      <translation>aspecte</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Dacă doriți ca blocurile fără nume (începând cu un *) să fie importate de asemenea</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation>*blocuri</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>Creează</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Numai obiectele Componente standard vor fi create (cel mai rapid)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
-      <source>simple Part shapes</source>
-      <translation>forme de piese simple</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Obiecte Schiță parametrice vor fi create ori de câte ori este posibil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
       <translation>Obiect ciornă</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Schițele vor fi create ori de câte ori este posibil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>Schițe</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Factor de scara se aplică fişierelor importate</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2148,117 +2124,137 @@ Exemplu: pentru fişierele în milimetri: 1, în centimetri 10,
                              în metri: 1000, în inci: 25.4 , în picioare: 304.8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD va încerca să alăture obiectele coincidente în fire.
 Rețineți că acest lucru poate dura ceva timp!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation type="unfinished">Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
+      <source>Use legacy Python importer</source>
+      <translation type="unfinished">Use legacy Python importer</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
+      <source>Use legacy Python exporter</source>
+      <translation type="unfinished">Use legacy Python exporter</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation type="unfinished">Some options are not yet available for the new importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
+      <source>Layouts</source>
+      <translation type="unfinished">Layouts</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
+      <source>Simple Part shapes</source>
+      <translation>Forme de piese simple</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
       <translation type="unfinished">Use colors from the DXF file</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
       <translation>Reuneşte formele geometrice</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
       <translation>Grupează straturile în blocuri</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Textele importate vor primi dimensiunea standard a Textului de Schiță,
 în loc de dimensiunea pe care o au în documentul DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>Utilizaţi dimensiunea standard a fontului pentru texte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Dacă este bifată, straturile DXF vor fi importate ca Straturi de Schiță</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Hașurile vor fi transformate în linii simple</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
       <translation type="unfinished">Import hatch boundaries as wires</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Dacă poliliniile au definită o lăţime, vor fi randate
 ca o linie închisă cu lăţimea corectă</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation type="unfinished">Render polylines with width</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation type="unfinished">Some options are not yet available for the new exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Tratează elipsele și curbele ca polilinii</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation>Lungime maxima a segmentului de polilinie:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Lungimea maximă a fiecărui segment de polilinie.
@@ -2266,39 +2262,39 @@ Dacă este setată la '0' întreaga curbă este tratată ca un segment drept.</t
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>Opţiunile de export</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
       <translation type="unfinished">Use layers</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Toate obiectele care conțin fețe vor fi exportate ca polifețe 3D</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation type="unfinished">Export 3D objects as polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>TechDraw Views va fi exportat ca blocuri.
 Acest lucru poate eşua pentru postarea de şabloane DXF R12.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Exportă TechDraw Views ca blocuri</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Obiectele exportate vor fi proiectate pentru a reflecta direcția vizualizării curente</translation>
     </message>
@@ -3078,7 +3074,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="531"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Angle</source>
       <translation>Unghi</translation>
     </message>
@@ -3300,14 +3296,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="212"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="780"/>
       <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="214"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Offset distance</source>
       <translation type="unfinished">Offset distance</translation>
     </message>
@@ -3438,25 +3434,6 @@ sau încercați să salvați într-o versiune DWG mai mică.</translation>
       <location filename="../../WorkingPlane.py" line="861"/>
       <source>Selected Shapes must define a plane</source>
       <translation>Formele selectate trebuie să definească un plan</translation>
-    </message>
-    <message>
-      <location filename="../../importDXF.py" line="143"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>Librăriile DXF de import/export necesare FreeCAD pentru a gestiona
-formatul DXF nu a fost găsit în acest sistem.
-Vă rugăm fie să activați FreeCAD pentru a descărca aceste biblioteci:
-  1 - Atelierul pentru Proiectul de Încărcare
-  2 - Editare meniu &gt; Preferințe &gt; Import-Export &gt; DXF &gt; Activează descărcările
-Sau descărcați manual aceste biblioteci, așa cum se explică pe
-https://github. om/yorikvanhavre/Draft-dxf-importator
-Pentru a permite FreeCAD să descarce aceste biblioteci, răspunde Da.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1296"/>
@@ -4100,11 +4077,6 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Dimensiune rotire</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Schița este prea complexă pentru a fi editată: se sugerează să se folosească editorul implicit al schiței</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Rază de umplere</translation>
@@ -4160,33 +4132,43 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Selectați obiecte de tăiat sau extins</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="120"/>
+      <source>This object is not supported.</source>
+      <translation type="unfinished">This object is not supported.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="143"/>
+      <source>Only a single face can be extruded.</source>
+      <translation type="unfinished">Only a single face can be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Alege distanța</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="219"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
       <source>Offset angle</source>
       <translation>Offset unghi</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="479"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Imposibil de tăiat aceste obiecte, doar firele de ciornă și arcurile sunt suportate.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="484"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Imposibil de tăiat aceste obiecte, prea multe cabluri</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="501"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
       <source>These objects don't intersect.</source>
       <translation>Aceste obiecte nu se intersectează.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="504"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
       <source>Too many intersection points.</source>
       <translation>Prea multe puncte de intersecţie.</translation>
     </message>
@@ -4333,8 +4315,8 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
+      <source>Endpoint of Bézier curve can't be smoothed</source>
+      <translation type="unfinished">Endpoint of Bézier curve can't be smoothed</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -5265,24 +5247,24 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="491"/>
       <source>Activate this layer</source>
       <translation type="unfinished">Activate this layer</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
       <source>Select layer contents</source>
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="535"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="549"/>
       <source>Merge layer duplicates</source>
       <translation type="unfinished">Merge layer duplicates</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="541"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="594"/>
       <source>Add new layer</source>
       <translation type="unfinished">Add new layer</translation>
     </message>
@@ -5584,6 +5566,30 @@ of existing objects in all opened documents?</translation>
       <location filename="../../draftobjects/layer.py" line="99"/>
       <source>updated view properties</source>
       <translation type="unfinished">updated view properties</translation>
+    </message>
+    <message>
+      <location filename="../../importDXF.py" line="143"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
+      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
     </message>
   </context>
   <context>
@@ -6418,10 +6424,10 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
       <source>Edits the active object.
-Press E or ALT+LeftClick to display context menu
+Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
       <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
+Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</translation>
     </message>
   </context>
@@ -6524,8 +6530,8 @@ Create a group first to use this tool.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
-      <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <source>Select a group to add all Draft and BIM objects to.</source>
+      <translation type="unfinished">Select a group to add all Draft and BIM objects to.</translation>
     </message>
   </context>
   <context>

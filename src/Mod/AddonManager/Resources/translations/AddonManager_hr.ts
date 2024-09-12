@@ -284,37 +284,37 @@ Da li želite da Upravitelj dodacima ih instalira automatski? Odaberi &quot;Igno
       <translation>Dodaci koji se ovdje mogu instalirati nisu službeni dio FreeCAD programa, i nisu ispitani od FreeCAD tima. Budite sigurni da znate što će se instalirati!</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="46"/>
+      <location filename="../../first_run.ui" line="39"/>
       <source>Download Settings</source>
       <translation>Postavke preuzimanja</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="53"/>
+      <location filename="../../first_run.ui" line="46"/>
       <source>Automatically check installed Addons for updates</source>
       <translation>Automatski provjeravaj ažuriranja instaliranih dodataka</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="60"/>
+      <location filename="../../first_run.ui" line="53"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Preuzmi meta podatke makro naredbe (otprilike 10MB)</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="70"/>
+      <location filename="../../first_run.ui" line="63"/>
       <source>No proxy</source>
       <translation>No proxy</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="75"/>
+      <location filename="../../first_run.ui" line="68"/>
       <source>System proxy</source>
       <translation>System proxy</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="80"/>
+      <location filename="../../first_run.ui" line="73"/>
       <source>User-defined proxy:</source>
       <translation>Korisnički definiran proxy:</translation>
     </message>
     <message>
-      <location filename="../../first_run.ui" line="93"/>
+      <location filename="../../first_run.ui" line="86"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
       <translation>Ove i druge postavke dostupne su u prozoru Postavki FreeCAD-a.</translation>
     </message>
@@ -511,139 +511,139 @@ Da li želite da Upravitelj dodacima ih instalira automatski? Odaberi &quot;Igno
       <translation>Opcije uređivača dodataka</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="20"/>
+      <location filename="../../AddonManagerOptions.ui" line="23"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</source>
       <translation type="unfinished">If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="24"/>
+      <location filename="../../AddonManagerOptions.ui" line="27"/>
       <source>Automatically check for updates at start (requires git)</source>
       <translation>Automatski provjerava ima li ažuriranja kod pokretanja (zahtjeva python-git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="40"/>
+      <location filename="../../AddonManagerOptions.ui" line="43"/>
       <source>Download Macro metadata (approximately 10MB)</source>
       <translation>Preuzmi meta podatke makro naredbe (otprilike 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="55"/>
+      <location filename="../../AddonManagerOptions.ui" line="58"/>
       <source>Cache update frequency</source>
       <translation>Učestalost ažuriranja predmemorije</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="75"/>
+      <location filename="../../AddonManagerOptions.ui" line="78"/>
       <source>Manual (no automatic updates)</source>
       <translation>Ručno (nema automatskih ažuriranja)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="80"/>
+      <location filename="../../AddonManagerOptions.ui" line="83"/>
       <source>Daily</source>
       <translation>Dnevno</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="85"/>
+      <location filename="../../AddonManagerOptions.ui" line="88"/>
       <source>Weekly</source>
       <translation>Tjedno</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="95"/>
+      <location filename="../../AddonManagerOptions.ui" line="98"/>
       <source>Hide Addons without a license</source>
       <translation>Skriva dodatke bez licence</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="111"/>
+      <location filename="../../AddonManagerOptions.ui" line="114"/>
       <source>Hide Addons with non-FSF Free/Libre license</source>
       <translation>Skriva dodatke sa non-FSF Free/Libre licencom</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="127"/>
+      <location filename="../../AddonManagerOptions.ui" line="130"/>
       <source>Hide Addons with non-OSI-approved license</source>
       <translation>Skriva dodatke sa non-OSI-approved licencom</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="143"/>
+      <location filename="../../AddonManagerOptions.ui" line="146"/>
       <source>Hide Addons marked Python 2 Only</source>
       <translation>Skriva dodatak označen samo za Python 2</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="159"/>
+      <location filename="../../AddonManagerOptions.ui" line="162"/>
       <source>Hide Addons marked Obsolete</source>
       <translation>Skriva dodatake označene zastarjelim</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="175"/>
+      <location filename="../../AddonManagerOptions.ui" line="178"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
       <translation>Sakrij dodatke koji zahtjevaju noviju verziju FreeCAD-a</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="197"/>
+      <location filename="../../AddonManagerOptions.ui" line="200"/>
       <source>Custom repositories</source>
       <translation>Prilagođena spremišta</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="251"/>
+      <location filename="../../AddonManagerOptions.ui" line="254"/>
       <source>Proxy</source>
       <translation>Proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="257"/>
+      <location filename="../../AddonManagerOptions.ui" line="260"/>
       <source>No proxy</source>
       <translation>No proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="273"/>
+      <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>User system proxy</source>
       <translation>User system proxy</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="286"/>
+      <location filename="../../AddonManagerOptions.ui" line="289"/>
       <source>User-defined proxy:</source>
       <translation>Korisnički definiran proxy:</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="323"/>
+      <location filename="../../AddonManagerOptions.ui" line="320"/>
       <source>Score source URL</source>
       <translation>Bodovi izvornog URL-a</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="342"/>
+      <location filename="../../AddonManagerOptions.ui" line="333"/>
       <source>The URL for the Addon Score data (see Addon Manager wiki page for formatting and hosting details).</source>
       <translation>URL za podatke o ocjeni dodataka (vidi wiki stranicu Addon Managera za formatiranje i detalje o hostingu).</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="353"/>
-      <source>Path to git executable (optional):</source>
-      <translation>Putanja ka izvršnoj git datoteci (neobavezno):</translation>
+      <location filename="../../AddonManagerOptions.ui" line="350"/>
+      <source>Path to Git executable (optional):</source>
+      <translation type="unfinished">Path to Git executable (optional):</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="372"/>
+      <location filename="../../AddonManagerOptions.ui" line="369"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>Putanja ka izvršnoj git datoteci.  Automatski detektirano ako je potrebno i nije specificirano.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="393"/>
+      <location filename="../../AddonManagerOptions.ui" line="390"/>
       <source>Advanced Options</source>
       <translation>Napredne opcije</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="399"/>
+      <location filename="../../AddonManagerOptions.ui" line="396"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Prikaži opciju za promjenu grana (zahtjeva git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="412"/>
+      <location filename="../../AddonManagerOptions.ui" line="409"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Onemogući git (povratak na ZIP preuzimanja)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="425"/>
+      <location filename="../../AddonManagerOptions.ui" line="422"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Aktivirajte Upravitelj dodataka opcije namijenjene programerima novih Dodataka.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="428"/>
+      <location filename="../../AddonManagerOptions.ui" line="425"/>
       <source>Addon developer mode</source>
       <translation>Dodatak Developer mod</translation>
     </message>
@@ -1155,34 +1155,34 @@ installed addons will be checked for available updates</translation>
       <translation>Za primjenu promjene, ponovo pokreni FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="429"/>
+      <location filename="../../AddonManager.py" line="432"/>
       <source>Restart now</source>
       <translation>Ponovno pokreni sada</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="430"/>
+      <location filename="../../AddonManager.py" line="433"/>
       <source>Restart later</source>
       <translation>Ponovno pokreni kasnije</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="496"/>
-      <location filename="../../AddonManager.py" line="897"/>
+      <location filename="../../AddonManager.py" line="499"/>
+      <location filename="../../AddonManager.py" line="900"/>
       <source>Refresh local cache</source>
       <translation>Osvježite lokalnu predmemoriju</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="626"/>
+      <location filename="../../AddonManager.py" line="629"/>
       <source>Updating cache...</source>
       <translation>Ažuriram međuspremnik…</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="686"/>
-      <location filename="../../AddonManager.py" line="721"/>
+      <location filename="../../AddonManager.py" line="689"/>
+      <location filename="../../AddonManager.py" line="724"/>
       <source>Checking for updates...</source>
       <translation>Provjeri ima li ažuriranja...</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="936"/>
+      <location filename="../../AddonManager.py" line="939"/>
       <source>Temporary installation of macro failed.</source>
       <translation type="unfinished">Temporary installation of macro failed.</translation>
     </message>
@@ -1213,14 +1213,19 @@ installed addons will be checked for available updates</translation>
       <translation>Razvojni alati...</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="106"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="107"/>
       <source>Apply %n available update(s)</source>
       <translation>Primjeni %n dostupno(a) ažuriranja</translation>
     </message>
     <message>
-      <location filename="../../AddonManager.py" line="826"/>
-      <location filename="../../AddonManager.py" line="852"/>
-      <location filename="../../AddonManager.py" line="951"/>
+      <location filename="../../Widgets/addonmanager_widget_global_buttons.py" line="110"/>
+      <source>No updates available</source>
+      <translation type="unfinished">No updates available</translation>
+    </message>
+    <message>
+      <location filename="../../AddonManager.py" line="829"/>
+      <location filename="../../AddonManager.py" line="855"/>
+      <location filename="../../AddonManager.py" line="954"/>
       <source>Cannot launch a new installer until the previous one has finished.</source>
       <translation>Ne može se pokrenuti novi program za instaliranje dok se prethodni ne završi.</translation>
     </message>
@@ -1251,18 +1256,18 @@ installed addons will be checked for available updates</translation>
       <translation>Čini se da je ovo prvi put da je ova verzija Python-a korištena sa Upraviteljem dodataka. Da li želiš  da za njega instaliraš iste automatski instalirane zavisnosti?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="199"/>
+      <location filename="../../manage_python_dependencies.py" line="198"/>
       <source>Processing, please wait...</source>
       <translation>U obradi, sačekaj...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="247"/>
+      <location filename="../../manage_python_dependencies.py" line="246"/>
       <location filename="../../Widgets/addonmanager_widget_addon_buttons.py" line="115"/>
       <source>Update</source>
       <translation>Ažuriraj</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="341"/>
+      <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
       <translation>Ažuriranje...</translation>
     </message>
@@ -1292,7 +1297,7 @@ installed addons will be checked for available updates</translation>
       <translation>Upravitelj dodataka: Neočekivani {} odgovor s poslužitelja</translation>
     </message>
     <message>
-      <location filename="../../NetworkManager.py" line="512"/>
+      <location filename="../../NetworkManager.py" line="511"/>
       <source>Error with encrypted connection</source>
       <translation>Pogreška s šifriranom vezom</translation>
     </message>
@@ -1436,7 +1441,7 @@ installed addons will be checked for available updates</translation>
       <translation>Ovaj Dodatak će biti onemogućen sljedeći put kada ponovo pokreneš FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="477"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../addonmanager_package_details_controller.py" line="245"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
@@ -1530,17 +1535,17 @@ installed addons will be checked for available updates</translation>
       <translation>Lokacija za novu licencnu datoteku</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="355"/>
+      <location filename="../../addonmanager_installer.py" line="364"/>
       <source>Received {} response code from server</source>
       <translation>Primljen {} kod odgovora sa servera</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="517"/>
+      <location filename="../../addonmanager_installer.py" line="532"/>
       <source>Failed to install macro {}</source>
       <translation>Nije moguće instalirati makro naredbu {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer.py" line="551"/>
+      <location filename="../../addonmanager_installer.py" line="566"/>
       <source>Failed to create installation manifest file:
 </source>
       <translation>Greška prilikom stvaranja datoteke manifesta instalacije</translation>
@@ -1620,11 +1625,6 @@ installed addons will be checked for available updates</translation>
       <translation>Drugo...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="153"/>
-      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation>Ovaj dodatak zahtijeva Python pakete koji nisu instalirani i ne mogu se automatski instalirati. Za korištenje ovog radnog stola morate ručno instalirati sljedeće Python pakete:</translation>
-    </message>
-    <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
       <translation>Previše ih je da bi se izlistali</translation>
@@ -1655,122 +1655,127 @@ installed addons will be checked for available updates</translation>
       <translation>Pritisni OK da bi ipak instaliralo.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="243"/>
+      <location filename="../../addonmanager_installer_gui.py" line="242"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="189"/>
       <source>Incompatible Python version</source>
       <translation>Nekompatibilna Python verzija</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="247"/>
-      <source>This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
-      <translation>Ovaj Dodatak (ili jedna od njegovih zavisnosti) zahtjeva Pithon {}.{}, a tvoj operativni sustav radi na {}.{}. Instalacija je prekinuta.</translation>
+      <location filename="../../addonmanager_installer_gui.py" line="153"/>
+      <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</source>
+      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this addon you must install the following Python packages manually:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="268"/>
+      <location filename="../../addonmanager_installer_gui.py" line="246"/>
+      <source>This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</source>
+      <translation type="unfinished">This Addon (or one of its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.</translation>
+    </message>
+    <message>
+      <location filename="../../addonmanager_installer_gui.py" line="267"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
       <translation>Neobavezna zavisnost od {} se zanemaruje jer se ne nalazi na listi dozvoljenih</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_installer_gui.py" line="313"/>
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
-      <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
       <translation>Instalacija ovisnosti</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="340"/>
+      <location filename="../../addonmanager_installer_gui.py" line="339"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
       <translation>Nije moguće pokrenuti Python</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="345"/>
+      <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
       <translation>Automatsko pronalaženje izvršne datoteke Python-a nije uspjelo, ili je putanja pogrešno zadana. Provjeri ispravnost ove putanje u podešavanjima za Upravitelj dodataka.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="349"/>
+      <location filename="../../addonmanager_installer_gui.py" line="348"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
       <translation>Zavisnosti se ne mogu instalirati. Želiš li ipak nastaviti sa instalacijom {}?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="364"/>
+      <location filename="../../addonmanager_installer_gui.py" line="363"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="86"/>
       <source>Cannot execute pip</source>
       <translation>Nije moguće pokrenuti  pip</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="370"/>
+      <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
       <translation>Izvršavanje pip-a nije uspjelo, izgleda da on nedostaje u tvojoj Python instalaciji. Uvjeri se da tvoj operativni sustav ima instaliran pip i pokušaj ponovo. Neuspjela naredba je bila:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="374"/>
-      <location filename="../../addonmanager_installer_gui.py" line="399"/>
+      <location filename="../../addonmanager_installer_gui.py" line="373"/>
+      <location filename="../../addonmanager_installer_gui.py" line="398"/>
       <source>Continue with installation of {} anyway?</source>
       <translation>Želiš li ipak nastaviti sa instalacijom {}?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="391"/>
+      <location filename="../../addonmanager_installer_gui.py" line="390"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="96"/>
       <source>Package installation failed</source>
       <translation>Instalacija paketa nije uspjela</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="395"/>
+      <location filename="../../addonmanager_installer_gui.py" line="394"/>
       <source>See Report View for detailed failure log.</source>
       <translation>Pogledaj Pregled izvješća za detaljan zapisnik grešaka.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="436"/>
+      <location filename="../../addonmanager_installer_gui.py" line="435"/>
       <source>Installing Addon</source>
       <translation>Instaliranje Dodatka</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="437"/>
+      <location filename="../../addonmanager_installer_gui.py" line="436"/>
       <source>Installing FreeCAD Addon &apos;{}&apos;</source>
       <translation>Instalacija FreeCAD Dodatka &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="451"/>
+      <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
       <translation>Otkazivanje</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="452"/>
+      <location filename="../../addonmanager_installer_gui.py" line="451"/>
       <source>Cancelling installation of &apos;{}&apos;</source>
       <translation>Prekid instalacije &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="478"/>
+      <location filename="../../addonmanager_installer_gui.py" line="477"/>
       <source>{} was installed successfully</source>
       <translation>{} je uspješno instalirano.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="490"/>
+      <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
       <translation>Instalacija nije uspjela</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="491"/>
+      <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
       <translation>Nije moguće instaliratii {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="608"/>
-      <location filename="../../install_to_toolbar.py" line="96"/>
+      <location filename="../../addonmanager_installer_gui.py" line="605"/>
+      <location filename="../../install_to_toolbar.py" line="94"/>
       <source>Create new toolbar</source>
       <translation>Napravi novu Alatnu traku</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="734"/>
-      <location filename="../../install_to_toolbar.py" line="253"/>
+      <location filename="../../addonmanager_installer_gui.py" line="731"/>
+      <location filename="../../install_to_toolbar.py" line="251"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
       <translation>Makro naredba instalirana sa FreeCAD Upraviteljem dodataka</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="736"/>
-      <location filename="../../install_to_toolbar.py" line="255"/>
+      <location filename="../../addonmanager_installer_gui.py" line="733"/>
+      <location filename="../../install_to_toolbar.py" line="253"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
       <translation>pokreni</translation>
@@ -2040,39 +2045,39 @@ installed addons will be checked for available updates</translation>
       <translation>Filter</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="87"/>
+      <location filename="../../change_branch.py" line="86"/>
       <source>DANGER: Developer feature</source>
       <translation>OPASNOST: Funkcija za programere</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="94"/>
+      <location filename="../../change_branch.py" line="93"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation>OPASNOST: Prebacivanje grana je namjenjeno programerima i beta testerima i može da dovede do oštećenih dokumenata koji nisu kompatibilni unazad, nestabilnosti, kvarova i/ili preranog toplotnog kolapsa univerzuma. Da li si siguran da želiš da nastaviš?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="103"/>
+      <location filename="../../change_branch.py" line="102"/>
       <source>There are local changes</source>
       <translation>Postoje lokalne promjene</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="108"/>
+      <location filename="../../change_branch.py" line="107"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation>UPOZORENjE: Ovo spremište ima nepovezane lokalne promjene. Da li si siguran da želiš da promjeniš grane (donoseći promjene sa sobom)?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="207"/>
+      <location filename="../../change_branch.py" line="206"/>
       <source>Local</source>
       <comment>Table header for local git ref name</comment>
       <translation>Lokalno</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="213"/>
+      <location filename="../../change_branch.py" line="212"/>
       <source>Remote tracking</source>
       <comment>Table header for git remote tracking branch name</comment>
       <translation>Daljinsko praćenje</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="219"/>
+      <location filename="../../change_branch.py" line="218"/>
       <source>Last Updated</source>
       <comment>Table header for git update date</comment>
       <translation>Posljednje ažurirano</translation>
@@ -2098,32 +2103,32 @@ installed addons will be checked for available updates</translation>
       <translation>Instalacija Dodatka  {} nije uspjela.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="165"/>
+      <location filename="../../addonmanager_workers_installation.py" line="195"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Preuzet package.xml za {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="196"/>
+      <location filename="../../addonmanager_workers_installation.py" line="233"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Dekodiranje {} datoteke za Dodatak &apos;{}&apos; nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="205"/>
+      <location filename="../../addonmanager_workers_installation.py" line="242"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Sve informacije o zavisnosti u ovoj datoteci će biti ignorirane</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="212"/>
+      <location filename="../../addonmanager_workers_installation.py" line="249"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Preuzet metadata.txt za {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="255"/>
+      <location filename="../../addonmanager_workers_installation.py" line="292"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Preuzet requirements.txt za {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="273"/>
+      <location filename="../../addonmanager_workers_installation.py" line="310"/>
       <source>Downloaded icon for {}</source>
       <translation>Preuzeta ikona za {}</translation>
     </message>
@@ -2209,135 +2214,135 @@ installed addons will be checked for available updates</translation>
       <translation>Greška pri pokušaju uklanjanja datoteke makro naredbe {}:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="122"/>
+      <location filename="../../addonmanager_workers_startup.py" line="121"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Povezivanje sa GitHub-om nije uspjelo. Provjeri podešavanja veze i proksija.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="180"/>
+      <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>UPOZORENJE: Duplikat dodatka {} je ignoriran</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
+      <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
       <translation>Popis radnih stolova je ažuriran.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git je onemogućen, preskaču se git makro naredbe</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
+      <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Pokušaj promjene postavki ne git makro naredbi da koriste git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Došlo je do greške pri ažuriranju makro naredbi a sa GitHub-a, pokušavam čistu provjeru...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="338"/>
+      <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Pokušavam napraviti čistu provjeru...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="350"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
       <translation>Čista provjera je uspjela</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="360"/>
+      <location filename="../../addonmanager_workers_startup.py" line="359"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Nije uspjelo ažurirati makro naredbe s GitHuba. Pokušajte izbrisati predmemoriju Upravitelja dodataka.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="383"/>
+      <location filename="../../addonmanager_workers_startup.py" line="382"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Čini se da je problem povezivanje s Wiki-em, FreeCAD trenutačno ne može dohvatiti popis makronaredbi Wiki-a</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="592"/>
+      <location filename="../../addonmanager_workers_startup.py" line="591"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Nije moguće dohvatiti git ažuriranja za radni stol {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="605"/>
+      <location filename="../../addonmanager_workers_startup.py" line="604"/>
       <source>git status failed for {}</source>
       <translation>git stanje nije uspjelo za {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="671"/>
+      <location filename="../../addonmanager_workers_startup.py" line="672"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Nije uspjelo čitanje metapodataka iz  {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="694"/>
+      <location filename="../../addonmanager_workers_startup.py" line="695"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Nije uspjelo preuzimanje koda za makro naredbu &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="747"/>
+      <location filename="../../addonmanager_workers_startup.py" line="748"/>
       <source>Caching macro code...</source>
       <translation>Osvježavanje koda makronaredbe...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="770"/>
+      <location filename="../../addonmanager_workers_startup.py" line="771"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Upravitelj dodataka: radni proces nije uspio da se završi prilikom preuzimanja {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="785"/>
+      <location filename="../../addonmanager_workers_startup.py" line="786"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Za {num_macros} makro naredbu je prekoračen je vremenski limit, {num_failed} tokom obrade</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="808"/>
+      <location filename="../../addonmanager_workers_startup.py" line="809"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Upravitelj dodataka: radni proces nije uspio da se zaustavi {name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="847"/>
+      <location filename="../../addonmanager_workers_startup.py" line="848"/>
       <source>Getting metadata from macro {}</source>
       <translation>Preuzimanje metapodataka iz makro naredbe {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="861"/>
+      <location filename="../../addonmanager_workers_startup.py" line="862"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Isteklo je vrijeme za preuzimanje metapodataka za makro naredbu {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="872"/>
+      <location filename="../../addonmanager_workers_startup.py" line="873"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Zaustavljanje procesa za makro naredbu {} nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="893"/>
+      <location filename="../../addonmanager_workers_startup.py" line="894"/>
       <source>Retrieving macro description...</source>
       <translation>Dohvaćanje opisa makro naredbe...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="895"/>
+      <location filename="../../addonmanager_workers_startup.py" line="896"/>
       <source>Retrieving info from git</source>
       <translation>Dohvaćanje informacije od git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="898"/>
+      <location filename="../../addonmanager_workers_startup.py" line="899"/>
       <source>Retrieving info from wiki</source>
       <translation>Dohvaćanje informacije od wiki-a</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="939"/>
+      <location filename="../../addonmanager_workers_startup.py" line="941"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Nije uspjelo dohvatiti statistike dodataka iz {} -- samo će abecedno sortiranje biti točno</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="971"/>
+      <location filename="../../addonmanager_workers_startup.py" line="973"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Nije uspjelo dohvatiti bodove dodataka iz &apos;{}&apos;  --  sortiranje  po bodovima neće biti uspješno.</translation>
@@ -2390,12 +2395,12 @@ installed addons will be checked for available updates</translation>
       <translation>Neuspješno</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="198"/>
       <source>Update was cancelled</source>
       <translation>Ažuriranje je obustavljeno</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="200"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>some addons may have been updated</source>
       <translation>neki dodaci su možda ažurirani</translation>
     </message>
@@ -2415,17 +2420,17 @@ installed addons will be checked for available updates</translation>
       <translation>Nije uspjelo preuzeti podatke iz {} -- primljen je povratni kod {}.</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="152"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="159"/>
       <source>Composite view</source>
       <translation>Sastavljeni prikaz</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="153"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="160"/>
       <source>Expanded view</source>
       <translation>Prošireni prikaz</translation>
     </message>
     <message>
-      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="154"/>
+      <location filename="../../Widgets/addonmanager_widget_view_selector.py" line="161"/>
       <source>Compact view</source>
       <translation>Kompaktni prikaz</translation>
     </message>
@@ -2489,7 +2494,7 @@ installed addons will be checked for available updates</translation>
   <context>
     <name>Addons installer</name>
     <message>
-      <location filename="../../addonmanager_update_all_gui.py" line="193"/>
+      <location filename="../../addonmanager_update_all_gui.py" line="192"/>
       <source>Finished updating the following addons</source>
       <translation>Završeno je ažuriranje sljedećih dodataka</translation>
     </message>
@@ -2497,7 +2502,7 @@ installed addons will be checked for available updates</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="653"/>
+      <location filename="../../addonmanager_installer_gui.py" line="650"/>
       <source>Auto-Created Macro Toolbar</source>
       <translation>Automatski napravljena Makro alatna traka</translation>
     </message>

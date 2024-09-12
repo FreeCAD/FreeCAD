@@ -77,17 +77,15 @@ public:
         /// For exporting
         Export=2,
     };
+
     /** Return the new and old style sub-element name
      *
      * @param name: input name
      * @param type: desired element name type to return
      *
-     * @return a pair(newName,oldName). New element name may be empty.
-     *
-     * This function currently is does nothing. The new style element name
-     * generation will be added in the next batch of patches.
+     * @return a struct with the newName and oldName. New element name may be empty.
      */
-    virtual std::pair<std::string,std::string> getElementName(
+    virtual ElementNamePair getElementName(  // NOLINT(google-default-arguments)
             const char *name, ElementNameType type=Normal) const;
 
     /** Resolve both the new and old style element name
@@ -105,7 +103,7 @@ public:
      * @return Return the owner object of the element
      */
     static DocumentObject *resolveElement(App::DocumentObject *obj, 
-            const char *subname, std::pair<std::string,std::string> &elementName, 
+            const char *subname, ElementNamePair &elementName,
             bool append=false, ElementNameType type=Normal,
             const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
 
@@ -150,7 +148,6 @@ public:
      * @return bool whether or not a direction is found.
      */
     virtual bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname = nullptr) const;
-#ifdef FC_USE_TNP_FIX
     /** Search sub element using internal cached geometry
      *
      * @param element: element name
@@ -167,7 +164,7 @@ public:
      * reference to the same geometry of the old element.
      */
     virtual const std::vector<std::string>& searchElementCache(const std::string &element,
-                                                               Data::SearchOptions options = Data::SearchOptions::CheckGeometry,
+                                                               Data::SearchOptions options = Data::SearchOption::CheckGeometry,
                                                                double tol = 1e-7,
                                                                double atol = 1e-10) const;
 
@@ -179,15 +176,16 @@ public:
 
     virtual std::vector<const char *> getElementTypes(bool all=true) const;
 
+    /// Return the higher level element names of the given element
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
 
 protected:
     void onChanged(const Property* prop) override;
 //    void onDocumentRestored() override;
     void updateElementReference();
-#endif
 protected:
-    std::pair<std::string, std::string> _getElementName(const char* name,
-                                                        const Data::MappedElement& mapped) const;
+    ElementNamePair _getElementName(const char* name,
+                                    const Data::MappedElement& mapped) const;
 };
 
 } //namespace App

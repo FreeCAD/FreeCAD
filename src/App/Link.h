@@ -599,6 +599,8 @@ public:
     {
         _handleChangedPropertyName(reader,TypeName,PropName);
     }
+
+    App::Link* getLinkGroup() const;
 };
 
 using LinkElementPython = App::FeaturePythonT<LinkElement>;

@@ -110,22 +110,6 @@ public:
     };
     //@}
 
-    /** @name Anti-Aliasing modes of the rendered 3D scene
-      * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basically deprecated)
-      * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite common and efficient AA technique
-      */
-    //@{
-    enum AntiAliasing {
-        None = 0,
-        Smoothing = 1,
-        MSAA2x = 2,
-        MSAA4x = 3,
-        MSAA6x = 5,
-        MSAA8x = 4
-    };
-    //@}
-
     /** @name Render mode
       */
     //@{

@@ -68,7 +68,7 @@ class BIM_TDView:
             FreeCAD.Console.PrintError(
                 translate(
                     "BIM",
-                    "No section view or draft objects selected, or no page selected, or no page found in document",
+                    "No section view or Draft objects selected, or no page selected, or no page found in document",
                 )
                 + "\n"
             )

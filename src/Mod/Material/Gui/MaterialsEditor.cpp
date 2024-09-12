@@ -1283,12 +1283,10 @@ void MaterialsEditor::onContextMenu(const QPoint& pos)
     QMenu contextMenu(tr("Context menu"), this);
 
     QAction action1(tr("Inherit from"), this);
-    // action1.setShortcut(Qt::Key_Delete);
     connect(&action1, &QAction::triggered, this, &MaterialsEditor::onInherit);
     contextMenu.addAction(&action1);
 
     QAction action2(tr("Inherit new material"), this);
-    // action1.setShortcut(Qt::Key_Delete);
     connect(&action2, &QAction::triggered, this, &MaterialsEditor::onInheritNew);
     contextMenu.addAction(&action2);
 

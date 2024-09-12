@@ -6,12 +6,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>标准 (毫米, 千克, 秒, 度)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>公制(米, 千克, 秒, 度)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>
@@ -35,8 +35,8 @@
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <source>Metric small parts &amp; CNC (mm, mm/min)</source>
+      <translation type="unfinished">Metric small parts &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>

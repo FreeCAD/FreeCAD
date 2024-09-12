@@ -478,7 +478,6 @@ if HAVE_QTNETWORK:
                 proxy_authentication = FreeCADGui.PySideUic.loadUi(
                     os.path.join(os.path.dirname(__file__), "proxy_authentication.ui")
                 )
-                proxy_authentication.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                 # Show the right labels, etc.
                 proxy_authentication.labelProxyAddress.setText(f"{reply.hostName()}:{reply.port()}")
                 if authenticator.realm():
@@ -583,7 +582,8 @@ if HAVE_QTNETWORK:
                 timeout_ms = default_timeout
                 if hasattr(reply, "request"):
                     request = reply.request()
-                    timeout_ms = request.transferTimeout()
+                    if hasattr(request, "transferTimeout"):
+                        timeout_ms = request.transferTimeout()
                 new_url = reply.attribute(QtNetwork.QNetworkRequest.RedirectionTargetAttribute)
                 self.__launch_request(index, self.__create_get_request(new_url, timeout_ms))
                 return  # The task is not done, so get out of this method now

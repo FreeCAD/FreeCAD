@@ -509,7 +509,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
         ui->labelTurbulentLengthValue->setText(tr("Dissipation Rate [m2/s3]"));
     }
     else if (turbulenceSpec == "intensity&LengthScale") {
-        ui->labelTurbulentLengthValue->setText(tr("Length Scale[m]"));
+        ui->labelTurbulentLengthValue->setText(tr("Length Scale [m]"));
     }
     else if (turbulenceSpec == "intensity&ViscosityRatio") {
         ui->labelTurbulentLengthValue->setText(tr("Viscosity Ratio [1]"));
@@ -949,11 +949,6 @@ void TaskFemConstraintFluidBoundary::updateUI()
         onButtonReference(true);
         return;
     }
-}
-
-bool TaskFemConstraintFluidBoundary::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintFluidBoundary::changeEvent(QEvent* e)

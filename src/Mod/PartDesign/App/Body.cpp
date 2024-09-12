@@ -502,6 +502,35 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
 App::DocumentObject *Body::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+    while (subname && *subname == '.') {
+        ++subname;  // skip leading .
+    }
+
+    // PartDesign::Feature now support grouping sibling features, and the user
+    // is free to expand/collapse at any time. To not disrupt subname path
+    // because of this, the body will peek the next two sub-objects reference,
+    // and skip the first sub-object if possible.
+    if (subname) {
+        const char* firstDot = strchr(subname, '.');
+        if (firstDot) {
+            const char* secondDot = strchr(firstDot + 1, '.');
+            if (secondDot) {
+                auto firstObj = Group.find(std::string(subname, firstDot).c_str());
+                if (!firstObj || firstObj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+                    auto secondObj = Group.find(std::string(firstDot + 1, secondDot).c_str());
+                    if (secondObj) {
+                        // we support only one level of sibling grouping, so no
+                        // recursive call to our own getSubObject()
+                        return Part::BodyBase::getSubObject(firstDot + 1,
+                                                            pyObj,
+                                                            pmat,
+                                                            transform,
+                                                            depth + 1);
+                    }
+                }
+            }
+        }
+    }
 #if 1
     return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
 #else

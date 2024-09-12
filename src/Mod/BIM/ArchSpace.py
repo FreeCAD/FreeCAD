@@ -219,7 +219,7 @@ class _Space(ArchComponent.Component):
         if not "Boundaries" in pl:
             obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Space",QT_TRANSLATE_NOOP("App::Property","The objects that make the boundaries of this space object"))
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea",    "Area",             "Space",QT_TRANSLATE_NOOP("App::Property","Identical to Horizontal Area")) 
+            obj.addProperty("App::PropertyArea",       "Area",          "Space",QT_TRANSLATE_NOOP("App::Property","Identical to Horizontal Area"))
         if not "FinishFloor" in pl:
             obj.addProperty("App::PropertyString",     "FinishFloor",   "Space",QT_TRANSLATE_NOOP("App::Property","The finishing of the floor of this space"))
         if not "FinishWalls" in pl:
@@ -245,7 +245,7 @@ class _Space(ArchComponent.Component):
             obj.addProperty("App::PropertyEnumeration","Conditioning",  "Space",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
             obj.Conditioning = ConditioningTypes
         if not "Internal" in pl:
-            obj.addProperty("App::PropertyBool",       "Internal",     "Space",QT_TRANSLATE_NOOP("App::Property","Specifies if this space is internal or external"))
+            obj.addProperty("App::PropertyBool",       "Internal",      "Space",QT_TRANSLATE_NOOP("App::Property","Specifies if this space is internal or external"))
             obj.Internal = True
         if not "AreaCalculationType" in pl:
             obj.addProperty("App::PropertyEnumeration", "AreaCalculationType",  "Space",QT_TRANSLATE_NOOP("App::Property","Defines the calculation type for the horizontal area and its perimeter length"))
@@ -443,8 +443,6 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = params.get_param_view("DefaultShapeLineWidth")
         vobj.LineColor = ArchCommands.getDefaultColor("Space")
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][params.get_param_arch("defaultSpaceStyle")]
-        if vobj.Transparency == 100:
-            vobj.DisplayMode = "Wireframe"
 
     def setProperties(self,vobj):
 
@@ -666,13 +664,9 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             else:
                 self.label.whichChild = -1
 
-        elif prop == "ShapeColor":
-            if hasattr(vobj,"ShapeColor"):
-                self.fmat = vobj.ShapeColor.getValue()
-
         elif prop == "Transparency":
-            if hasattr(vobj,"Transparency"):
-                self.fmat.transparency.setValue(vobj.Transparency/100.0)
+            if hasattr(vobj,"DisplayMode"):
+                vobj.DisplayMode = "Wireframe" if vobj.Transparency == 100 else "Flat Lines"
 
     def setEdit(self, vobj, mode):
         if mode != 0:

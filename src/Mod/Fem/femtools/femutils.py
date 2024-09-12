@@ -244,23 +244,6 @@ def make_dir(specific_path):
 
 # ************************************************************************************************
 # other
-def get_part_to_mesh(mesh_obj):
-    """
-    gmsh mesh object: the Attribute is Part
-    netgen mesh object: the Attribute is Shape
-    other mesh objects: do not have a Attribute which holds the part to mesh
-    """
-    if is_derived_from(mesh_obj, "Fem::FemMeshGmsh"):
-        return mesh_obj.Part
-    elif is_derived_from(mesh_obj, "Fem::FemMeshShapeNetgenObject"):
-        return mesh_obj.Shape
-    else:
-        return None
-    # TODO: the Attributes should be named with the same name
-    # should it be Shape or Part?
-    # IMHO Part since the Attributes references the document object and not a Shape
-
-
 def getBoundBoxOfAllDocumentShapes(doc):
     """Calculate bounding box containing all objects inside *doc*.
 

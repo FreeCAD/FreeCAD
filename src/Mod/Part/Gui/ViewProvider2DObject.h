@@ -26,7 +26,7 @@
 
 #include "ViewProvider.h"
 #include <App/PropertyUnits.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -98,7 +98,7 @@ private:
     float MaxY;
 };
 
-using ViewProvider2DObjectPython = Gui::ViewProviderPythonFeatureT<ViewProvider2DObject>;
+using ViewProvider2DObjectPython = Gui::ViewProviderFeaturePythonT<ViewProvider2DObject>;
 
 } // namespace PartGui
 

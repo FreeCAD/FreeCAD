@@ -95,32 +95,36 @@ def assembly_has_at_least_n_parts(n):
     return False
 
 
-def getObject(full_name):
-    # full_name is "Assembly.LinkOrAssembly1.LinkOrPart1.LinkOrBox.Edge16"
-    # or           "Assembly.LinkOrAssembly1.LinkOrPart1.LinkOrBody.pad.Edge16"
+def isLink(obj):
+    # If element count is not 0, then its a link group in which case the Link
+    # is a container and it's the LinkElement that is linking to external doc.
+    return (obj.TypeId == "App::Link" and obj.ElementCount == 0) or obj.TypeId == "App::LinkElement"
+
+
+def isLinkGroup(obj):
+    return obj.TypeId == "App::Link" and obj.ElementCount > 0
+
+
+def getObject(ref):
+    if len(ref) != 2:
+        return None
+    subs = ref[1]
+    if len(subs) < 1:
+        return None
+    sub_name = subs[0]
+
+    # sub_name is "LinkOrAssembly1.LinkOrPart1.LinkOrBox.Edge16"
+    # or           "LinkOrAssembly1.LinkOrPart1.LinkOrBody.pad.Edge16"
     # or           "Assembly.LinkOrAssembly1.LinkOrPart1.LinkOrBody.Local_CS.X"
     # We want either LinkOrBody or LinkOrBox or Local_CS.
-    names = full_name.split(".")
-    doc = App.ActiveDocument
+    names = sub_name.split(".")
 
-    if len(names) < 3:
+    if len(names) < 2:
         return None
 
-    prevObj = None
-
-    for i, objName in enumerate(names):
-        if i == 0:
-            prevObj = doc.getObject(objName)
-            if prevObj.TypeId == "App::Link":
-                prevObj = prevObj.getLinkedObject()
-            continue
-
-        obj = None
-        if prevObj.TypeId in {"App::Part", "Assembly::AssemblyObject", "App::DocumentObjectGroup"}:
-            for obji in prevObj.OutList:
-                if obji.Name == objName:
-                    obj = obji
-                    break
+    doc = ref[0].Document
+    for i, obj_name in enumerate(names):
+        obj = doc.getObject(obj_name)
 
         if obj is None:
             return None
@@ -129,26 +133,7 @@ def getObject(full_name):
         if i == len(names) - 2:
             return obj
 
-        if obj.TypeId == "App::Link":
-            linked_obj = obj.getLinkedObject()
-            if linked_obj.TypeId == "PartDesign::Body":
-                if i + 1 < len(names):
-                    obj2 = None
-                    for obji in linked_obj.OutList:
-                        if obji.Name == names[i + 1]:
-                            obj2 = obji
-                            break
-                    if obj2 and isBodySubObject(obj2.TypeId):
-                        return obj2
-                return obj
-            elif linked_obj.isDerivedFrom("Part::Feature"):
-                return obj
-            else:
-                prevObj = linked_obj
-                continue
-
-        elif obj.TypeId in {"App::Part", "Assembly::AssemblyObject", "App::DocumentObjectGroup"}:
-            prevObj = obj
+        if obj.TypeId in {"App::Part", "Assembly::AssemblyObject"} or isLinkGroup(obj):
             continue
 
         elif obj.TypeId == "PartDesign::Body":
@@ -166,6 +151,24 @@ def getObject(full_name):
             # primitive, fastener, gear ...
             return obj
 
+        elif isLink(obj):
+            linked_obj = obj.getLinkedObject()
+            if linked_obj.TypeId == "PartDesign::Body":
+                if i + 1 < len(names):
+                    obj2 = None
+                    for obji in linked_obj.OutList:
+                        if obji.Name == names[i + 1]:
+                            obj2 = obji
+                            break
+                    if obj2 and isBodySubObject(obj2.TypeId):
+                        return obj2
+                return obj
+            elif linked_obj.isDerivedFrom("Part::Feature"):
+                return obj
+            else:
+                doc = linked_obj.Document
+                continue
+
     return None
 
 
@@ -179,70 +182,7 @@ def isBodySubObject(typeId):
     )
 
 
-def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
-    # full_name is "Assembly.Assembly1.LinkOrPart1.LinkOrBox.Edge16" -> LinkOrPart1
-    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.pad.Edge16" -> LinkOrPart1
-    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.Sketch.Edge1" -> LinkOrPart1
-
-    if selected_object is None:
-        App.Console.PrintError("getContainingPart() in UtilsAssembly.py selected_object is None")
-        return None
-
-    names = full_name.split(".")
-    doc = App.ActiveDocument
-    if len(names) < 3:
-        App.Console.PrintError(
-            "getContainingPart() in UtilsAssembly.py the object name is too short, at minimum it should be something like 'Assembly.Box.edge16'. It shouldn't be shorter"
-        )
-        return None
-
-    for objName in names:
-        obj = doc.getObject(objName)
-
-        if not obj:
-            continue
-
-        if obj == selected_object:
-            return selected_object
-
-        if obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
-            if selected_object in obj.OutListRecursive:
-                return obj
-
-        # Note here we may want to specify a specific behavior for Assembly::AssemblyObject.
-        if obj.TypeId == "App::Part":
-            if selected_object in obj.OutListRecursive:
-                if not activeAssemblyOrPart:
-                    return obj
-                elif activeAssemblyOrPart in obj.OutListRecursive or obj == activeAssemblyOrPart:
-                    # If the user put the assembly inside a Part, then we ignore it.
-                    continue
-                else:
-                    return obj
-
-        elif obj.TypeId == "App::Link":
-            linked_obj = obj.getLinkedObject()
-            if linked_obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
-                if selected_object in linked_obj.OutListRecursive:
-                    return obj
-            if linked_obj.TypeId in ["App::Part", "Assembly::AssemblyObject"]:
-                # linked_obj_doc = linked_obj.Document
-                # selected_obj_in_doc = doc.getObject(selected_object.Name)
-                if selected_object in linked_obj.OutListRecursive:
-                    if not activeAssemblyOrPart:
-                        return obj
-                    elif (linked_obj.Document == activeAssemblyOrPart.Document) and (
-                        activeAssemblyOrPart in linked_obj.OutListRecursive
-                        or linked_obj == activeAssemblyOrPart
-                    ):
-                        continue
-                    else:
-                        return obj
-
-    # no container found so we return the object itself.
-    return selected_object
-
-
+# Deprecated. Kept for migrationScript.
 def getObjectInPart(objName, part):
     if part is None:
         return None
@@ -266,43 +206,85 @@ def getObjectInPart(objName, part):
     return None
 
 
-# get the placement of Obj relative to its containing Part
+# Used by migrationScript.
+def getRootPath(obj, part):
+    sels = obj.Parents
+    for sel in sels:
+        rootObj = sel[0]
+        # The part and the rootObj should be in the same doc
+        if rootObj.Document.Name != part.Document.Name:
+            continue
+
+        path = sel[1]
+        # we need to check that the part name is in the list.
+        names = path.split(".")
+        if part.Name not in names:
+            continue
+
+        # for bodies we need to add the tip to the path.
+        if obj.TypeId == "PartDesign::Body":
+            path = path + obj.Tip.Name + "."
+
+        return rootObj, path
+
+    return None, ""
+
+
+# get the placement of Obj relative to its moving Part
 # Example : assembly.part1.part2.partn.body1 : placement of Obj relative to part1
-def getObjPlcRelativeToPart(obj, part):
-    # we need plc to be relative to the containing part
-    obj_global_plc = getGlobalPlacement(obj, part)
-    part_global_plc = getGlobalPlacement(part)
+def getObjPlcRelativeToPart(assembly, ref):
+    # we need plc to be relative to the moving part
+    moving_part = getMovingPart(assembly, ref)
+    obj_global_plc = getGlobalPlacement(ref)
+    part_global_plc = getGlobalPlacement(ref, moving_part)
 
     return part_global_plc.inverse() * obj_global_plc
 
 
 # Example : assembly.part1.part2.partn.body1 : jcsPlc is relative to body1
 # This function returns jcsPlc relative to part1
-def getJcsPlcRelativeToPart(jcsPlc, obj, part):
-    obj_relative_plc = getObjPlcRelativeToPart(obj, part)
+def getJcsPlcRelativeToPart(assembly, jcsPlc, ref):
+    obj_relative_plc = getObjPlcRelativeToPart(assembly, ref)
     return obj_relative_plc * jcsPlc
 
 
 # Return the jcs global placement
-def getJcsGlobalPlc(jcsPlc, obj, part):
-    obj_global_plc = getGlobalPlacement(obj, part)
+def getJcsGlobalPlc(jcsPlc, ref):
+    obj_global_plc = getGlobalPlacement(ref)
     return obj_global_plc * jcsPlc
 
 
-# The container is used to support cases where the same object appears at several places
-# which happens when you have a link to a part.
-def getGlobalPlacement(targetObj, container=None):
+def getGlobalPlacement(ref, targetObj=None):
+    if not isRefValid(ref, 1):
+        return App.Placement()
+
+    if targetObj is None:  # If no targetObj is given, we consider it's the getObject(ref)
+        targetObj = getObject(ref)
+
     if targetObj is None:
         return App.Placement()
 
-    inContainerBranch = container is None
-    for rootObj in App.activeDocument().RootObjectsIgnoreLinks:
-        foundPlacement = getTargetPlacementRelativeTo(
-            targetObj, rootObj, container, inContainerBranch
-        )
-        if foundPlacement is not None:
-            return foundPlacement
+    rootObj = ref[0]
+    names = ref[1][0].split(".")
 
+    doc = rootObj.Document
+    plc = rootObj.Placement
+
+    for objName in names:
+        obj = doc.getObject(objName)
+        if not obj:
+            continue
+
+        plc = plc * obj.Placement
+
+        if obj == targetObj:
+            return plc
+
+        if isLink(obj):
+            linked_obj = obj.getLinkedObject()
+            doc = linked_obj.Document  # in case its an external link.
+
+    # If targetObj has not been found there's a problem
     return App.Placement()
 
 
@@ -313,71 +295,13 @@ def isThereOneRootAssembly():
     return False
 
 
-def getTargetPlacementRelativeTo(
-    targetObj, part, container, inContainerBranch, ignorePlacement=False
-):
-    inContainerBranch = inContainerBranch or (not ignorePlacement and part == container)
-
-    if targetObj == part and inContainerBranch and not ignorePlacement:
-        return targetObj.Placement
-
-    if part.TypeId == "App::DocumentObjectGroup":
-        for obj in part.OutList:
-            foundPlacement = getTargetPlacementRelativeTo(
-                targetObj, obj, container, inContainerBranch, ignorePlacement
-            )
-            if foundPlacement is not None:
-                return foundPlacement
-
-    elif part.TypeId in {"App::Part", "Assembly::AssemblyObject", "PartDesign::Body"}:
-        for obj in part.OutList:
-            foundPlacement = getTargetPlacementRelativeTo(
-                targetObj, obj, container, inContainerBranch
-            )
-            if foundPlacement is None:
-                continue
-
-            # If we were called from a link then we need to ignore this placement as we use the link placement instead.
-            if not ignorePlacement:
-                foundPlacement = part.Placement * foundPlacement
-
-            return foundPlacement
-
-    elif part.TypeId == "App::Link":
-        linked_obj = part.getLinkedObject()
-        if part == linked_obj or linked_obj is None:
-            return None  # upon loading this can happen for external links.
-
-        if linked_obj.TypeId in {"App::Part", "Assembly::AssemblyObject", "PartDesign::Body"}:
-            for obj in linked_obj.OutList:
-                foundPlacement = getTargetPlacementRelativeTo(
-                    targetObj, obj, container, inContainerBranch
-                )
-                if foundPlacement is None:
-                    continue
-
-                foundPlacement = part.Placement * foundPlacement
-                return foundPlacement
-
-        foundPlacement = getTargetPlacementRelativeTo(
-            targetObj, linked_obj, container, inContainerBranch, True
-        )
-
-        if foundPlacement is not None and not ignorePlacement:
-            foundPlacement = part.Placement * foundPlacement
-
-        return foundPlacement
-
-    return None
-
-
 def getElementName(full_name):
     # full_name is "Assembly.Assembly1.Assembly2.Assembly3.Box.Edge16"
     # We want either Edge16.
     parts = full_name.split(".")
 
-    if len(parts) < 3:
-        # At minimum "Assembly.Box.edge16". It shouldn't be shorter
+    if len(parts) < 2:
+        # At minimum "Box.edge16". It shouldn't be shorter
         return ""
 
     # case of PartDesign datums : CoordinateSystem, point, line, plane
@@ -452,23 +376,25 @@ def extract_type_and_number(element_name):
         return None, None
 
 
-def findElementClosestVertex(selection_dict):
-    obj = selection_dict["object"]
+def findElementClosestVertex(assembly, ref, mousePos):
+    element_name = getElementName(ref[1][0])
+    if element_name == "":
+        return ""
 
-    mousePos = selection_dict["mouse_pos"]
+    obj = getObject(ref)
 
-    # We need mousePos to be relative to the part containing obj global placement
-    if selection_dict["object"] != selection_dict["part"]:
-        plc = App.Placement()
-        plc.Base = mousePos
-        global_plc = getGlobalPlacement(selection_dict["part"])
-        plc = global_plc.inverse() * plc
-        mousePos = plc.Base
+    # We need mousePos to be in the same lcs as obj
+    plc = App.Placement()
+    plc.Base = mousePos
+    global_plc = getGlobalPlacement(ref)
+    plc = global_plc.inverse() * plc  # We make it relative to obj Origin
+    plc = obj.Placement * plc  # Make plc in the same lcs as obj
+    mousePos = plc.Base
 
-    elt_type, elt_index = extract_type_and_number(selection_dict["element_name"])
+    elt_type, elt_index = extract_type_and_number(element_name)
 
     if elt_type == "Vertex":
-        return selection_dict["element_name"]
+        return element_name
 
     elif elt_type == "Edge":
         edge = obj.Shape.Edges[elt_index - 1]
@@ -476,7 +402,7 @@ def findElementClosestVertex(selection_dict):
         if curve.TypeId == "Part::GeomCircle":
             # For centers, as they are not shape vertexes, we return the element name.
             # For now we only allow selecting the center of arcs / circles.
-            return selection_dict["element_name"]
+            return element_name
 
         edge_points = getPointsFromVertexes(edge.Vertexes)
 
@@ -489,7 +415,7 @@ def findElementClosestVertex(selection_dict):
 
         if curve.TypeId == "Part::GeomLine" and closest_vertex_index == 2:
             # If line center is closest then we have no vertex name to set so we put element name
-            return selection_dict["element_name"]
+            return element_name
 
         vertex_name = findVertexNameInObject(edge.Vertexes[closest_vertex_index], obj)
 
@@ -500,7 +426,7 @@ def findElementClosestVertex(selection_dict):
         surface = face.Surface
         _type = surface.TypeId
         if _type == "Part::GeomSphere" or _type == "Part::GeomTorus":
-            return selection_dict["element_name"]
+            return element_name
 
         # Handle the circle/arc edges for their centers
         center_points = []
@@ -558,11 +484,11 @@ def findElementClosestVertex(selection_dict):
                 return "Edge" + str(index)
 
         if _type == "Part::GeomCylinder" or _type == "Part::GeomCone":
-            return selection_dict["element_name"]
+            return element_name
 
         if closest_vertex_index == len(face.Vertexes):
             # If center of gravity then we have no vertex name to set so we put element name
-            return selection_dict["element_name"]
+            return element_name
 
         vertex_name = findVertexNameInObject(face.Vertexes[closest_vertex_index], obj)
 
@@ -709,10 +635,10 @@ def getSubMovingParts(obj, partsAsSolid):
         objs.append(obj)
         return objs
 
-    elif obj.TypeId == "App::DocumentObjectGroup":
+    elif isLinkGroup(obj) or obj.TypeId == "App::DocumentObjectGroup":
         return getMovablePartsWithin(obj)
 
-    if obj.TypeId == "App::Link":
+    if isLink(obj):
         linked_obj = obj.getLinkedObject()
         if linked_obj.TypeId == "App::Part" or linked_obj.isDerivedFrom("Part::Feature"):
             return [obj]
@@ -743,7 +669,7 @@ def getCenterOfMass(parts):
 def getObjMassAndCom(obj, containingPart=None):
     link_global_plc = None
 
-    if obj.TypeId == "App::Link":
+    if isLink(obj):
         link_global_plc = getGlobalPlacement(obj, containingPart)
         obj = obj.getLinkedObject()
 
@@ -770,14 +696,23 @@ def getObjMassAndCom(obj, containingPart=None):
         com = comPlc.Base * mass
         return mass, com
 
-    elif obj.isDerivedFrom("App::Part") or obj.isDerivedFrom("App::DocumentObjectGroup"):
+    elif (
+        isLinkGroup(obj)
+        or obj.isDerivedFrom("App::Part")
+        or obj.isDerivedFrom("App::DocumentObjectGroup")
+    ):
         if containingPart is None and obj.isDerivedFrom("App::Part"):
             containingPart = obj
 
         total_mass = 0
         total_com = App.Vector(0, 0, 0)
 
-        for subObj in obj.OutList:
+        if isLinkGroup(obj):
+            children = obj.ElementList
+        else:
+            children = obj.Group
+
+        for subObj in children:
             mass, com = getObjMassAndCom(subObj, containingPart)
             total_mass += mass
             total_com += com
@@ -785,10 +720,10 @@ def getObjMassAndCom(obj, containingPart=None):
     return 0, App.Vector(0, 0, 0)
 
 
-def getCenterOfBoundingBox(objs, parts):
+def getCenterOfBoundingBox(objs, refs):
     i = 0
     center = App.Vector()
-    for obj, part in zip(objs, parts):
+    for obj, ref in zip(objs, refs):
         viewObject = obj.ViewObject
         if viewObject is None:
             continue
@@ -796,15 +731,15 @@ def getCenterOfBoundingBox(objs, parts):
         if boundingBox is None:
             continue
         bboxCenter = boundingBox.Center
-        if part != obj:
-            # bboxCenter does not take into account obj global placement
-            plc = App.Placement(bboxCenter, App.Rotation())
-            # change plc to be relative to the object placement.
-            plc = obj.Placement.inverse() * plc
-            # change plc to be relative to the origin of the document.
-            global_plc = getGlobalPlacement(obj, part)
-            plc = global_plc * plc
-            bboxCenter = plc.Base
+
+        # bboxCenter does not take into account obj global placement
+        plc = App.Placement(bboxCenter, App.Rotation())
+        # change plc to be relative to the object placement.
+        plc = obj.Placement.inverse() * plc
+        # change plc to be relative to the origin of the document.
+        global_plc = getGlobalPlacement(ref, obj)
+        plc = global_plc * plc
+        bboxCenter = plc.Base
 
         center = center + bboxCenter
         i = i + 1
@@ -880,9 +815,15 @@ So here we want to find a placement that corresponds to a local coordinate syste
 """
 
 
-def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
-    if not obj or not part:
+def findPlacement(ref, ignoreVertex=False):
+    if not isRefValid(ref, 2):
         return App.Placement()
+    obj = getObject(ref)
+    if not obj:
+        return App.Placement()
+
+    elt = getElementName(ref[1][0])
+    vtx = getElementName(ref[1][1])
 
     # case of origin objects.
     if elt == "X_Axis" or elt == "YZ_Plane":
@@ -904,10 +845,15 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
     isLine = False
 
     if elt_type == "Vertex":
-        vertex = obj.Shape.Vertexes[elt_index - 1]
+        vertex = get_element(obj.Shape.Vertexes, elt_index, elt)
+        if vertex is None:
+            return App.Placement()
         plc.Base = (vertex.X, vertex.Y, vertex.Z)
     elif elt_type == "Edge":
-        edge = obj.Shape.Edges[elt_index - 1]
+        edge = get_element(obj.Shape.Edges, elt_index, elt)
+        if edge is None:
+            return App.Placement()
+
         curve = edge.Curve
 
         # First we find the translation
@@ -921,7 +867,10 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
                 line_middle = (edge_points[0] + edge_points[1]) * 0.5
                 plc.Base = line_middle
         else:
-            vertex = obj.Shape.Vertexes[vtx_index - 1]
+            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            if vertex is None:
+                return App.Placement()
+
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
 
         # Then we find the Rotation
@@ -935,7 +884,10 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
             plane = Part.Plane(plane_origin, plane_normal)
             plc.Rotation = App.Rotation(plane.Rotation)
     elif elt_type == "Face":
-        face = obj.Shape.Faces[elt_index - 1]
+        face = get_element(obj.Shape.Faces, elt_index, elt)
+        if face is None:
+            return App.Placement()
+
         surface = face.Surface
 
         # First we find the translation
@@ -953,7 +905,10 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
                 plc.Base = face.CenterOfGravity
         elif vtx_type == "Edge":
             # In this case the edge is a circle/arc and the wanted vertex is its center.
-            edge = face.Edges[vtx_index - 1]
+            edge = get_element(face.Edges, vtx_index, vtx)
+            if edge is None:
+                return App.Placement()
+
             curve = edge.Curve
             if curve.TypeId == "Part::GeomCircle":
                 center_point = curve.Location
@@ -966,7 +921,10 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
                 plc.Base = findCylindersIntersection(obj, surface, edge, elt_index)
 
         else:
-            vertex = obj.Shape.Vertexes[vtx_index - 1]
+            vertex = get_element(obj.Shape.Vertexes, vtx_index, vtx)
+            if vertex is None:
+                return App.Placement()
+
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
 
         # Then we find the Rotation
@@ -997,6 +955,24 @@ def findPlacement(obj, part, elt, vtx, ignoreVertex=False):
     # plc = activeAssembly().Placement.inverse() * plc
 
     return plc
+
+
+def get_element(shape_elements, index, sub):
+    if index - 1 < 0 or index - 1 >= len(shape_elements):
+        print(f"Joint Corrupted: Index of {sub} out of bound.")
+        return None
+    return shape_elements[index - 1]
+
+
+def isRefValid(ref, number_sub):
+    if ref is None:
+        return False
+    if len(ref) != 2:
+        return False
+    if len(ref[1]) < number_sub:
+        return False
+
+    return True
 
 
 def round_vector(v, decimals=10):
@@ -1045,8 +1021,8 @@ def getAssemblyShapes(assembly):
 
 
 def getJointDistance(joint):
-    plc1 = getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
-    plc2 = getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
+    plc1 = getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+    plc2 = getJcsGlobalPlc(joint.Placement2, joint.Reference2)
 
     # Find the sign
     sign = 1
@@ -1058,10 +1034,139 @@ def getJointDistance(joint):
 
 
 def getJointXYAngle(joint):
-    plc1 = getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
-    plc2 = getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
+    plc1 = getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+    plc2 = getJcsGlobalPlc(joint.Placement2, joint.Reference2)
 
     plc3 = plc1.inverse() * plc2  # plc3 is plc2 relative to plc1
     x_axis = plc3.Rotation.multVec(App.Vector(1, 0, 0))
 
     return math.atan2(x_axis.y, x_axis.x)
+
+
+def getMovingPart(assembly, ref):
+    # ref can be :
+    # [assembly, ['box.edge1', 'box.vertex2']]
+    # [Part, ['Assembly.box.edge1', 'Assembly.box.vertex2']]
+    # [assembly, ['Body.Pad.edge1', 'Body.Pad.vertex2']]
+
+    if assembly is None or ref is None or len(ref) != 2:
+        return None
+
+    obj = ref[0]
+    subs = ref[1]
+
+    if subs is None or len(subs) < 1:
+        return None
+
+    sub = ref[1][0]  # All subs should have the same object paths.
+    names = [obj.Name] + sub.split(".")
+
+    try:
+        index = names.index(assembly.Name)
+        # Get the sublist starting after the after the assembly (in case of Part1/Assembly/...)
+        names = names[index + 1 :]
+    except ValueError:
+        return None
+
+    doc = assembly.Document
+
+    if len(names) < 2:
+        App.Console.PrintError(
+            "getMovingPart() in UtilsAssembly.py the object name is too short, at minimum it should be something like ['Box','edge16']. It shouldn't be shorter"
+        )
+        return None
+
+    for objName in names:
+        obj = doc.getObject(objName)
+
+        if not obj:
+            continue
+
+        if obj.TypeId == "App::DocumentObjectGroup":
+            continue  # we ignore groups.
+
+        # If it is a LinkGroup then we skip it
+        if isLinkGroup(obj):
+            continue
+
+        return obj
+
+    return None
+
+
+def truncateSubAtFirst(sub, target):
+    # target=part1 & sub=asm.part1.link1.part1.obj -> asm.part1.
+    names = sub.split(".")
+    sub = ""
+    for name in names:
+        sub = sub + name + "."
+        if name == target:
+            break
+
+    return sub
+
+
+def truncateSubAtLast(sub, target):
+    # target=part1 & sub=asm.part1.link1.part1.obj -> asm.part1.link1.part1.
+    names = sub.split(".")
+    sub = ""
+    target_indices = [i for i, name in enumerate(names) if name == target]
+
+    if target_indices:
+        last_index = target_indices[-1]
+        for i, name in enumerate(names):
+            sub += name + "."
+            if i == last_index:
+                break
+
+    return sub
+
+
+def swapElNameInSubname(sub_name, new_elName):
+    # turns assembly.box.edge1 into assembly.box.new_elName
+    names = sub_name.split(".")
+
+    # Replace the last element
+    names[-1] = new_elName
+
+    # Join the names back together
+    modified_sub = ".".join(names)
+
+    return modified_sub
+
+
+def addVertexToReference(ref, vertex_name):
+    # Turns [obj, ['box.face1']] and 'vertex1' into [obj, ['box.face1', 'box.vertex1']]
+    if len(ref) == 2:
+        subs = ref[1]
+        if len(subs) > 0:
+            sub_name = subs[0]
+            vertex_full_sub = swapElNameInSubname(sub_name, vertex_name)
+            if len(subs) == 2:  # Update the vertex sub
+                subs[1] = vertex_full_sub
+            else:
+                subs.append(vertex_full_sub)
+
+            ref = [ref[0], subs]
+
+    return ref
+
+
+def getLinkGroup(linkElement):
+    if linkElement.TypeId == "App::LinkElement":
+        for obj in linkElement.InList:
+            if obj.TypeId == "App::Link":
+                if linkElement in obj.ElementList:
+                    return obj
+        print("Link Group not found.")
+
+    return None
+
+
+def getParentPlacementIfNeeded(part):
+    if part.TypeId == "App::LinkElement":
+        linkGroup = getLinkGroup(part)
+        if linkGroup:
+            return linkGroup.Placement
+
+    return Base.Placement()

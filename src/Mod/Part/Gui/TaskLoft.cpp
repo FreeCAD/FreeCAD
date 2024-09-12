@@ -73,10 +73,12 @@ LoftWidget::LoftWidget(QWidget* parent)
     d->ui.selector->setAvailableLabel(tr("Available profiles"));
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
 
+    // clang-format off
     connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &LoftWidget::onCurrentItemChanged);
     connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
             this, &LoftWidget::onCurrentItemChanged);
+    // clang-format on
 
     findShapes();
 }

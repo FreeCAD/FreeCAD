@@ -40,7 +40,7 @@ generate_from_xml(MaterialTreeWidgetPy)
 
 SET(Python_SRCS
     MaterialTreeWidgetPy.xml
-    MaterialTreeWidgetPyImpl.cpp
+    MaterialTreeWidgetPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -154,7 +154,11 @@ SET(MatGuiImages
     Resources/images/default_image.png
 )
 
-add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages})
+SET(Material_Ui_Files
+    Resources/ui/materials-editor.ui
+)
+
+add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages} ${Material_Ui_Files})
 target_link_libraries(MatGui ${MatGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MatGui)
@@ -165,7 +169,9 @@ SET_PYTHON_PREFIX_SUFFIX(MatGui)
 
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiIcon_SVG})
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiImages})
+fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/Mod/Material" ${Material_Ui_Files})
 
 INSTALL(TARGETS MatGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/icons")
 INSTALL(FILES ${MatGuiImages} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/images")
+INSTALL(FILES ${Material_Ui_Files} DESTINATION "${CMAKE_BINARY_DIR}/Mod/Material/Resources/ui")

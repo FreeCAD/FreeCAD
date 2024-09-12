@@ -24,6 +24,7 @@
 #include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 #include <App/Document.h>
+#include <App/Link.h>
 
 #include "MeasureManager.h"
 
@@ -60,6 +61,32 @@ namespace App {
 
         MeasureHandler empty;
         return empty;
+    }
+
+    MeasureHandler MeasureManager::getMeasureHandler(const App::MeasureSelectionItem& selectionItem) {
+        auto objT = selectionItem.object;
+
+        // Resolve App::Link
+        App::DocumentObject* sub = objT.getSubObject();
+        if (sub->isDerivedFrom<App::Link>()) {
+            auto link = static_cast<App::Link*>(sub);
+            sub = link->getLinkedObject(true);
+        }
+
+        const char* className = sub->getTypeId().getName();
+        std::string mod = Base::Type::getModuleName(className);
+
+        return getMeasureHandler(mod.c_str());
+    }
+
+    MeasureElementType MeasureManager::getMeasureElementType(const App::MeasureSelectionItem& selectionItem) {
+        auto handler = getMeasureHandler(selectionItem);
+        if (handler.module.empty()) {
+            return App::MeasureElementType::INVALID;
+        }
+
+        auto objT = selectionItem.object;
+        return handler.typeCb(objT.getObject(), objT.getSubName().c_str());
     }
 
     void MeasureManager::addMeasureType(MeasureType* measureType) {

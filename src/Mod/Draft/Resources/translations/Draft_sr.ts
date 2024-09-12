@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Уредник изгледа напомена</translation>
+      <translation>Уређивач изгледа напомена</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
       <source>Isolate</source>
-      <translation type="unfinished">Isolate</translation>
+      <translation>Изолуј</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="77"/>
@@ -156,14 +156,14 @@
       <translation>Боја линије и стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="501"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="497"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
       <source>The distance the dimension line is additionally extended</source>
       <translation>Растојање на које се котна линија додатно продужава</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="531"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="537"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="547"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
       <translation>Растојање на које се помоћне котне линије додатно продужавају изнад котне линије</translation>
     </message>
@@ -211,46 +211,46 @@
       <translation>Множилац размере</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="435"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>Ако је означено, приказаће јединицу мере поред вредности коте</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="428"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>Show unit</source>
       <translation>Прикажи мерне јединице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="458"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="454"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Наведи важећу јединицу дужине као што је мм, м, ин, фт, да би наметнуо приказивање вредности коте у овој мерној јединици</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
       <source>Unit override</source>
       <translation>Јединице за замену</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Број децимала које треба приказати за вредности кота</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
       <source>Decimals</source>
       <translation>Децимале</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="557"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="567"/>
       <source>The distance between the dimension text and the dimension line</source>
       <translation>Размак између котне линије и котног броја</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="560"/>
       <source>Text spacing</source>
       <translation>Размак у тексту</translation>
     </message>
@@ -301,28 +301,28 @@
       <translation>Величина стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>Појединости кота</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>Dimension overshoot</source>
       <translation>Продужетак котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="511"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="517"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
       <source>The length of the extension lines</source>
       <translation>Дужина помоћних котних линија</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
       <source>Extension lines</source>
       <translation>Помоћне котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="540"/>
       <source>Extension overshoot</source>
       <translation>Продужетак помоћне котне линије</translation>
     </message>
@@ -763,7 +763,7 @@ Or choose one of the options below.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
       <source>Top (XY)</source>
-      <translation>Горња (XY)</translation>
+      <translation>Одозго (XY)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
@@ -1003,7 +1003,7 @@ will be moved to the center of the view.</source>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="386"/>
       <source>Line width</source>
       <translation>Ширина линије</translation>
     </message>
@@ -1011,7 +1011,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="393"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1091,27 +1091,27 @@ will be moved to the center of the view.</source>
       <translation>Боја облика</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="592"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="598"/>
       <source>Annotations</source>
       <translation>Напомене</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="555"/>
       <source>Text spacing</source>
       <translation>Размак у тексту</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Text color</source>
       <translation>Боја текста</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="458"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Dimensions</source>
       <translation>Коте</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source>Dot</source>
       <translation>Тачка</translation>
     </message>
@@ -1137,47 +1137,47 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Множилац размере напомене је инверзан размери подешеној у прозору за подешавање размере напомене. Ако је размера 1:100, множилац је 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Lines and arrows</source>
       <translation>Линије и стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="413"/>
       <source>Circle</source>
       <translation>Круг</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="412"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="418"/>
       <source>Arrow</source>
       <translation>Cтрелица</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
       <source>Tick</source>
       <translation>Коса црта</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
       <source>Tick-2</source>
       <translation>Коса црта 2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="471"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation>Ако је означено, ознака мерних јединица се додаје уз котни број</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Јединица мере која ће се користи за коте. Остави празно да би користио тренутну FreeCAD јединицу мере.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Продужетак котне линије иза помоћне котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>Боја текста, котног броја и текста ознаке</translation>
     </message>
@@ -1212,32 +1212,32 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Множилац размере</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Line and arrow color</source>
       <translation>Боја линије и стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="400"/>
       <source>Arrow type</source>
       <translation>Врста стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="436"/>
       <source>Arrow size</source>
       <translation>Величина стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="501"/>
       <source>Dim line overshoot</source>
       <translation>Продужетак котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="518"/>
       <source>Ext line length</source>
       <translation>Дужина помоћне котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1247,42 +1247,42 @@ for linear dimensions.</source>
 Позитивна вредност дефинише продужетак помоћних котних линија. Користите само за линеарне коте.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="538"/>
       <source>Ext line overshoot</source>
       <translation>Продужетак помоћне котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>Дужина помоћне котне линије изнад котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Размак између котне линије и котног броја</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="581"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Примени горњи стил на изабране објекте</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="595"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Примени горњи стил на све напомене (текст, димензије и ознаке)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>Show unit</source>
       <translation>Прикажи мерне јединице</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="481"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
       <source>Unit override</source>
       <translation>Јединице за замену</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="578"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="584"/>
       <source>Selected</source>
       <translation>Изабрано</translation>
     </message>
@@ -1349,7 +1349,7 @@ faces are picked during commands.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
       <source>XY (Top)</source>
-      <translation>XY (врх)</translation>
+      <translation>XY (Одозго)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="99"/>
@@ -1592,6 +1592,7 @@ pattern definitions to be added to the standard patterns</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>Текст и коте</translation>
     </message>
@@ -1613,7 +1614,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
@@ -1814,7 +1815,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="476"/>
       <source>Dimension details</source>
-      <translation type="unfinished">Dimension details</translation>
+      <translation>Појединости кота</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
@@ -1983,41 +1984,31 @@ This value is the maximum segment length.</source>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Ове опције подешавања ће се приказати приликом увоза/извоза DXF датотека</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Прикажи ова подешавања приликом увоза и извоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Користи се Питхон импортер, у супротном случају се користи новији C++.
 Напомена: C++ импортер је бржи, али још није толико функционалан</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
-      <source>Use legacy python importer</source>
-      <translation>Користи застарели Python importer</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Користи се Python exporter, у супротном случају се користи новији C++.
 Напомена: C++ импортер је бржи, али још није толико функционалан</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
-      <source>Use legacy python exporter</source>
-      <translation>Користи застарели Python exporter</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -2026,104 +2017,89 @@ from the Addon Manager.</source>
 из Менаџера додатака.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>Дозволите FreeCAD-у да аутоматски преузима и ажурира DXF библиотеке</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>Поставке увоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>Увези</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Ако није означено, текст и мтекст неће бити увезени</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
-      <source>texts and dimensions</source>
-      <translation>текст и коте</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Ако није означено, тачке се неће увозити</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>тачке</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Ако је означено, биће увезени и празни листови цртежа</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
-      <source>layouts</source>
-      <translation>распоред страна</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Ако желиш да се увезу и неименовани блокови (који почињу са *)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation>*блокови</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>Направи</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Само стандардни Део облици ће бити створени (најбрже)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
-      <source>simple Part shapes</source>
-      <translation>једноставни Део облици</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Параметарски објекти окружења Цртање ће бити створени кад год је то могуће</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
       <translation>Објекти окружења Цртање</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Биће направљене скице кад год је то могуће</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>Скице</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Коефицијент скалирања који ће се применити на увезене датотеке</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2134,117 +2110,137 @@ Example: for files in millimeters: 1, in centimeters: 10,
                               у метрима: 1000, у инчима: 25,4, у стопама: 304,8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation>Објекти из истих слојева биће спојени у блокове окружења Цртање,
 приказиваће се брже на екрану, али ће бити сложенији за уређивање.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation>Пројицирај извезене објекте дуж тренутног правца приказа</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD ће покушати да споји у жичани рам објекте чији се крајеви подударају.
 Имај на уму да ово може потрајати!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation>Боје ће бити преузете из DXF објеката кад год је то могуће.
 У супротном ће се применити предефинисане боје.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation>Аутоматско ажурирање (само застарели увозник/извозник)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
+      <source>Use legacy Python importer</source>
+      <translation>Користи застарели Python увозник</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
+      <source>Use legacy Python exporter</source>
+      <translation>Користи застарели Python извозник</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation>Неке опције су још увек недоступне у новом увознику</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
+      <source>Layouts</source>
+      <translation>Слојеви</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
+      <source>Simple Part shapes</source>
+      <translation>Једноставни Part облици</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
       <translation>Преузми оригиналне боје из DXF датотеке</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
       <translation>Споји геометрију</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
-      <translation>Групирај слојеве у блокове</translation>
+      <translation>Групиши слојеве у блокове</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Увезени текстови ће добити предефинисану величину текста окружења Цртање,
 уместо величине коју имају у DXF документу</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>Користи стандардну величину фонта за текст</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Ако је ово означено, DXF слојеви ће бити импортовани као слојеви окружења Цртање</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Шрафуре ће бити конвертоване у жичане ивице</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
       <translation>Увези границе шрафуре као жичане ивице</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Ако изломљене линије имају дефинисану дебљину, биће приказане
 као затворене жичане ивице са правилном ширином</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation>Прикажи изломљене линије са ширином</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation>Неке опције су још увек недоступне у новом извознику</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Извоз елипсе је неквалитетан. Чекирај ову опцију да би их извезао као изломљене линије.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Третирај елипсе и криве као изломљене линије</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation>Максимални сегмент сплајн криве:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Максимална дужина сваког од сегмената изломљене линије.
@@ -2252,39 +2248,39 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>Опције извоза</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
       <translation>Користи слојеве</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Сви објекти који садрже странице биће извезени као 3Д мрежа повезаних страница</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Извези 3Д објекте као мрежу повезаних страница</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Погледи цртежа ће бити извезени као блокови.
 Ово можда неће успети за новије шаблоне од DXF R12.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Извези погледе цртежа као блокове</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Извезени објекти ће бити пројицирани тако да одражавају тренутни правац погледа</translation>
     </message>
@@ -3063,7 +3059,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="531"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Angle</source>
       <translation>Угао</translation>
     </message>
@@ -3284,14 +3280,14 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="212"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
       <source>Distance</source>
       <translation>Растојање</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="780"/>
       <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="214"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Offset distance</source>
       <translation>Одмак растојање</translation>
     </message>
@@ -3420,25 +3416,6 @@ or try saving to a lower DWG version.</source>
       <location filename="../../WorkingPlane.py" line="861"/>
       <source>Selected Shapes must define a plane</source>
       <translation>Изабрани облици морају дефинисати раван</translation>
-    </message>
-    <message>
-      <location filename="../../importDXF.py" line="143"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>Библиотеке DXF увоза/извоза које су потребне FreeCAD-у за руковање
-DXF формат-ом нису пронађене на овом систему.
-Или омогући FreeCAD-у да сам преузима ове библиотеке:
- 1 - Покрени Draft радно окружење
- 2 – Мени Уреди/Подешавања/Увоз-Извоз/DXF/ Дозволи FreeCAD-у са аутоматски...
-Или преузми ове библиотеке ручно, као што је објашњено на страни
-https://github.com/yorikvanhavre/Draft-dxf-importer
-Да би омогућио FreeCAD-у да преузме ове библиотеке, одговори са Да.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1296"/>
@@ -3903,39 +3880,39 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="223"/>
       <source>No style name specified</source>
-      <translation type="unfinished">No style name specified</translation>
+      <translation>Није наведено име стила</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="227"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="280"/>
       <source>Style exists</source>
-      <translation type="unfinished">Style exists</translation>
+      <translation>Стил већ постоји</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="228"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="281"/>
       <source>This style name already exists</source>
-      <translation type="unfinished">This style name already exists</translation>
+      <translation>Ово име стила већ постоји</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="256"/>
       <source>Style in use</source>
-      <translation type="unfinished">Style in use</translation>
+      <translation>Стил је у употреби</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="257"/>
       <source>This style is used by some objects in this document. Are you sure?</source>
-      <translation type="unfinished">This style is used by some objects in this document. Are you sure?</translation>
+      <translation>Овај стил користе неки други објекти у овом документу. Јеси ли сигуран?</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="271"/>
       <source>Rename style</source>
-      <translation type="unfinished">Rename style</translation>
+      <translation>Преименуј стил</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="272"/>
       <source>New name:</source>
-      <translation type="unfinished">New name:</translation>
+      <translation>Ново име:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="293"/>
@@ -4082,11 +4059,6 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Окрени коту</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Скица је превише сложена за уређивање: предлаже се коришћење подразумеваног уређивача скица</translation>
-    </message>
-    <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
       <translation>Полупречник заобљења</translation>
@@ -4142,33 +4114,43 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Изабери објекте које хоћеш опсећи или продужити</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="120"/>
+      <source>This object is not supported.</source>
+      <translation type="unfinished">This object is not supported.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="143"/>
+      <source>Only a single face can be extruded.</source>
+      <translation type="unfinished">Only a single face can be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Изабери растојање</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="219"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>Угао одмака</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="479"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Није могуће опсећи ове објекте, подржане су само жичане ивице и кружни лукови.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="484"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Није могуће опсећи ове објекте, превише жичаних ивица</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="501"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
       <source>These objects don't intersect.</source>
       <translation>Ови објекти се не укрштају.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="504"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
       <source>Too many intersection points.</source>
       <translation>Превише пресечних тачака.</translation>
     </message>
@@ -4315,7 +4297,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
+      <source>Endpoint of Bézier curve can't be smoothed</source>
       <translation>Крајња тачка Безјеове криве се не може углачати</translation>
     </message>
     <message>
@@ -4388,7 +4370,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_scale.py" line="236"/>
       <location filename="../../draftguitools/gui_scale.py" line="359"/>
       <source>Scale</source>
-      <translation>Размера</translation>
+      <translation>Скалирај</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="209"/>
@@ -4536,7 +4518,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="119"/>
       <source>Mirror</source>
-      <translation>Симетрично пресликавање</translation>
+      <translation>Симетрично пресликај</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="164"/>
@@ -5247,24 +5229,24 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Погрешан унос: мора бити број између 0 и 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="491"/>
       <source>Activate this layer</source>
       <translation>Активирај овај слој</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
       <source>Select layer contents</source>
       <translation>Изабери садржај слоја</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="535"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="549"/>
       <source>Merge layer duplicates</source>
       <translation>Обједини дупликате слоја</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="541"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="594"/>
       <source>Add new layer</source>
       <translation>Додај нови слој</translation>
     </message>
@@ -5567,6 +5549,30 @@ of existing objects in all opened documents?</source>
       <source>updated view properties</source>
       <translation>освежена својства приказа</translation>
     </message>
+    <message>
+      <location filename="../../importDXF.py" line="143"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either allow FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation>Библиотеке потребне за увоз и извоз датотека у DXF формату 
+нису пронађене на овом систему.
+Или омогући FreeCAD-у да сам преузима ове библиотеке:
+ 1 - Покрени окружење Цртање
+ 2 - Мени Уреди/Подешавања/Увоз-Извоз/DXF/ Дозволи FreeCAD-у да аутоматски...
+Или преузми ове библиотеке ручно, као што је објашњено на страни
+https://github.com/yorikvanhavre/Draft-dxf-importer
+Да би омогућио FreeCAD-у да преузме ове библиотеке, одговори са Да.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
+      <translation>Скица је превише сложена за уређивање: предлаже се коришћење подразумеваног уређивача скица</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -5725,7 +5731,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="152"/>
       <source>Scale</source>
-      <translation>Размера</translation>
+      <translation>Скалирај</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="153"/>
@@ -6400,11 +6406,11 @@ CTRL за хватање, SHIFT за ограничавање.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
       <source>Edits the active object.
-Press E or ALT+LeftClick to display context menu
+Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
       <translation>Уређује активни објекат.
-Притисни Е или ALT+леви клик да би приказао контекстни мени
-на подржаним спојевима и на подржаним објектима.</translation>
+Да би приказао контекстни мени на подржаним спојевима 
+и објектима притисни Е или ALT+леви клик.</translation>
     </message>
   </context>
   <context>
@@ -6506,8 +6512,8 @@ Create a group first to use this tool.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
-      <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation>Изабери групу у коју ћеш додати све објекте окружења Цртање и Атхитектура.</translation>
+      <source>Select a group to add all Draft and BIM objects to.</source>
+      <translation>Изабери групу у коју ћеш додати све објекте окружења Цртање и БИМ.</translation>
     </message>
   </context>
   <context>
@@ -6648,7 +6654,7 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="76"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Тримекс</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="82"/>
@@ -6794,7 +6800,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="71"/>
       <source>Scale</source>
-      <translation>Размера</translation>
+      <translation>Скалирај</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="74"/>
@@ -6964,7 +6970,7 @@ then draw a line to specify the distance and direction of stretching.</source>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="64"/>
       <source>Mirror</source>
-      <translation>Симетрично пресликавање</translation>
+      <translation>Симетрично пресликај</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="67"/>
@@ -7815,7 +7821,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/wpproxy.py" line="42"/>
       <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
+      <translation>Положај овог објекта</translation>
     </message>
     <message>
       <location filename="../../draftobjects/point.py" line="45"/>

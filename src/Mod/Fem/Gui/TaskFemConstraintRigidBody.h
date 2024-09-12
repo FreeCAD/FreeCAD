@@ -66,7 +66,6 @@ private Q_SLOTS:
     void onRefNodeZChanged(double);
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 

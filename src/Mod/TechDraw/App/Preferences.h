@@ -135,6 +135,12 @@ public:
     static int BreakType();
 
     static bool useExactMatchOnDims();
+
+    static bool useCameraDirection();
+    static bool alwaysShowLabel();
+
+    static bool SnapViews();
+    static double SnapLimitFactor();
 };
 
 

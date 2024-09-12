@@ -49,39 +49,23 @@ now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="wedm", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
 parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
+    "--comments-character", default="", help="Use provided character before comments"
 )
 parser.add_argument(
-    "--comments-character",
-    default="",
-    help="Use provided character before comments")
-parser.add_argument(
-    "--command-space",
-    default=" ",
-    help="Use provided character as space in commands")
-parser.add_argument(
-    "--endline-character",
-    default="",
-    help="Use provided character at end of line")
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
+    "--command-space", default=" ", help="Use provided character as space in commands"
 )
+parser.add_argument("--endline-character", default="", help="Use provided character at end of line")
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument(
-    "--scale",
-    default="1",
-    help="Scale factor for coordinates")
-parser.add_argument(
-    "--precision", default="3", help="number of digits of precision, default=3"
-)
-parser.add_argument(
-    "--fixed-length", default="0", help="use fixed length coordinates, default=0"
-)
+parser.add_argument("--scale", default="1", help="Scale factor for coordinates")
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+parser.add_argument("--fixed-length", default="0", help="use fixed length coordinates, default=0")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="G17\nG90"',
@@ -98,9 +82,7 @@ parser.add_argument(
     action="store_true",
     help="Output the Same G-command Name USE NonModal Mode",
 )
-parser.add_argument(
-    "--axis-modal", action="store_true", help="Output the Same Axis Value Mode"
-)
+parser.add_argument("--axis-modal", action="store_true", help="Output the Same Axis Value Mode")
 parser.add_argument(
     "--no-tlo",
     action="store_true",
@@ -116,22 +98,18 @@ parser.add_argument(
     action="store_true",
     help="Don't output units G20/G21",
 )
-parser.add_argument(
-    "--relative",
-    action="store_true",
-    help="Generate Relative GCODE")
+parser.add_argument("--relative", action="store_true", help="Generate Relative GCODE")
 parser.add_argument(
     "--two-digit-codes",
     action="store_true",
-    help="Add trailing 0 to codes lower than 10 (G1 -> G01)")
-parser.add_argument(
-    "--force-sign",
-    action="store_true",
-    help="Always add sign to coordinates")
+    help="Add trailing 0 to codes lower than 10 (G1 -> G01)",
+)
+parser.add_argument("--force-sign", action="store_true", help="Always add sign to coordinates")
 parser.add_argument(
     "--ignore-operations",
     default="",
-    help="Ignore provided operations, use Labels and separate with ','")
+    help="Ignore provided operations, use Labels and separate with ','",
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -145,9 +123,7 @@ OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
 USE_TLO = True  # if true G43 will be output following tool changes
-OUTPUT_DOUBLES = (
-    True  # if false duplicate axis values are suppressed if the same as previous line.
-)
+OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 LINENR = 100  # line number starting value
 USE_RAPIDS = False
 OMIT_UNITS = False
@@ -186,8 +162,6 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """"""
 
 
-
-
 def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
@@ -207,7 +181,7 @@ def processArguments(argstring):
     global MODAL
     global USE_TLO
     global OUTPUT_DOUBLES
-    global LOCATION # keep track for incremental
+    global LOCATION  # keep track for incremental
     global USE_RAPIDS
     global OMIT_UNITS
     global RELATIVE_GCODE
@@ -251,12 +225,12 @@ def processArguments(argstring):
         if args.omit_units:
             OMIT_UNITS = True
         if args.relative:
-            print ("relative")
+            print("relative")
             RELATIVE_GCODE = True
-            #PREAMBLE = PREAMBLE.replace("G90", "")
-            #PREAMBLE = PREAMBLE.replace("G91", "")
+            # PREAMBLE = PREAMBLE.replace("G90", "")
+            # PREAMBLE = PREAMBLE.replace("G91", "")
             PREAMBLE += "\nG91"
-            LOCATION = {'X':0, 'Y':0, 'Z':0}
+            LOCATION = {"X": 0, "Y": 0, "Z": 0}
         if args.two_digit_codes:
             TWO_DIGIT_CODES = True
         if args.force_sign:
@@ -281,9 +255,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return None
 
@@ -325,12 +297,12 @@ def export(objectslist, filename, argstring):
             print(job.MachineUnits)
             if job.MachineUnits == "Metric":
                 UNITS = "G21"
-                UNIT_FORMAT = 'mm'
-                UNIT_SPEED_FORMAT = 'mm/min'
+                UNIT_FORMAT = "mm"
+                UNIT_SPEED_FORMAT = "mm/min"
             else:
                 UNITS = "G20"
-                UNIT_FORMAT = 'in'
-                UNIT_SPEED_FORMAT = 'in/min'
+                UNIT_FORMAT = "in"
+                UNIT_SPEED_FORMAT = "in/min"
 
         # ignore selected operations
         if obj.Label in IGNORE_OPERATIONS:
@@ -338,17 +310,17 @@ def export(objectslist, filename, argstring):
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + COMMENT_CHAR + "(begin operation: %s)\n" % obj.Label
-            gcode += linenumber() + COMMENT_CHAR + "(machine: %s, %s)\n" % (MACHINE_NAME, UNIT_SPEED_FORMAT)
+            gcode += (
+                linenumber()
+                + COMMENT_CHAR
+                + "(machine: %s, %s)\n" % (MACHINE_NAME, UNIT_SPEED_FORMAT)
+            )
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
         # get coolant mode
         coolantMode = "None"
-        if (
-            hasattr(obj, "CoolantMode")
-            or hasattr(obj, "Base")
-            and hasattr(obj.Base, "CoolantMode")
-        ):
+        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
             if hasattr(obj, "CoolantMode"):
                 coolantMode = obj.CoolantMode
             else:
@@ -469,9 +441,9 @@ def parse(pathobj):
         #     out += linenumber() + COMMENT_CHAR + "(" + pathobj.Label + ")\n"
 
         for c in PathUtils.getPathWithPlacement(pathobj).Commands:
-        # For Debug Only
-        #     if OUTPUT_COMMENTS:
-        #         out += linenumber() + COMMENT_CHAR + "(" + str(c) + ")\n"
+            # For Debug Only
+            #     if OUTPUT_COMMENTS:
+            #         out += linenumber() + COMMENT_CHAR + "(" + str(c) + ")\n"
 
             outstring = []
             command = c.Name
@@ -484,9 +456,9 @@ def parse(pathobj):
                 if command == lastcommand:
                     outstring.pop(0)
 
-            if command[0] == "(": # command is a comment
-                if OUTPUT_COMMENTS: # Edit comment  with COMMENT_CHAR
-                    outstring.insert(0,COMMENT_CHAR)
+            if command[0] == "(":  # command is a comment
+                if OUTPUT_COMMENTS:  # Edit comment  with COMMENT_CHAR
+                    outstring.insert(0, COMMENT_CHAR)
                 else:
                     continue
 
@@ -501,9 +473,7 @@ def parse(pathobj):
                             "G0",
                             "G00",
                         ]:  # linuxcnc doesn't use rapid speeds
-                            speed = Units.Quantity(
-                                c.Parameters["F"], FreeCAD.Units.Velocity
-                            )
+                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                                 outstring.append(
                                     param
@@ -530,31 +500,41 @@ def parse(pathobj):
                             (not OUTPUT_DOUBLES)
                             and (param in currLocation)
                             and (currLocation[param] == c.Parameters[param])
-                       ):
+                        ):
                             continue
                         else:
                             if RELATIVE_GCODE and (param != "I" and param != "J"):
-                                pos =  Units.Quantity(c.Parameters[param] - currLocation[param], FreeCAD.Units.Length)
-                                print(f'currlocation: {currLocation[param]} param: {c.Parameters[param]} pos: {pos}')
+                                pos = Units.Quantity(
+                                    c.Parameters[param] - currLocation[param], FreeCAD.Units.Length
+                                )
+                                print(
+                                    f"currlocation: {currLocation[param]} param: {c.Parameters[param]} pos: {pos}"
+                                )
                                 if pos == 0:
                                     # Remove no movement
-                                    continue;
+                                    continue
                             else:
                                 pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
 
-                            pos = pos*SCALE
+                            pos = pos * SCALE
                             sign = ""
                             if pos >= 0 and FORCE_SIGN:
                                 sign = "+"
 
-                            stringout = sign+format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
+                            stringout = sign + format(
+                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
+                            )
 
                             # Remove unneeded 0s on incremental moves this is needed since some numbers are zero only after applying precision
-                            if RELATIVE_GCODE and command in move_comands and (float(stringout) == 0):
-                                continue;
+                            if (
+                                RELATIVE_GCODE
+                                and command in move_comands
+                                and (float(stringout) == 0)
+                            ):
+                                continue
                             # Force trailing zeros
                             if FIXED_LENGTH > 0:
-                                extra = 1 if stringout[0] in ["+","-"] else 0
+                                extra = 1 if stringout[0] in ["+", "-"] else 0
                                 stringout = stringout.zfill(FIXED_LENGTH + extra)
                             outstring.append(param + stringout)
 
@@ -582,10 +562,10 @@ def parse(pathobj):
             if len(outstring) >= 1:
                 if len(outstring) == 1 and (outstring[0] == "G0" or outstring[0] == "G1"):
                     # Don't write empty moves (Generated when Z moves are ignored for EDM)
-                    print('Ignoring: '+ command + ':' + outstring[0])
+                    print("Ignoring: " + command + ":" + outstring[0])
                     continue
                 if TWO_DIGIT_CODES and len(command) == 2 and outstring[0] == command:
-                    outstring[0] = command[0]+"0"+command[1]
+                    outstring[0] = command[0] + "0" + command[1]
                 if OUTPUT_LINE_NUMBERS:
                     outstring.insert(0, (linenumber()))
 
@@ -599,12 +579,12 @@ def parse(pathobj):
                     out += w
                 # Note: Do *not* strip `out`, since that forces the allocation
                 # of a contiguous string & thus quadratic complexity.
-                out += ENDLINE+"\n"
+                out += ENDLINE + "\n"
 
             # store the latest command after written
             lastcommand = command
 
-
         return out
+
 
 # print(__name__ + " gcode postprocessor loaded.")

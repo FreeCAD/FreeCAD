@@ -279,6 +279,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
     def testPartFuse(self):
         # Arrange
         self.doc.addObject("Part::Fuse", "Fuse")
+        self.doc.Fuse.Refine = False
         self.doc.Fuse.Base = self.doc.Box1
         self.doc.Fuse.Tool = self.doc.Box2
         # Act

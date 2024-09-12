@@ -69,7 +69,7 @@ class CommandAxoLengthDimension:
         if len(vertexes)<2:
             vertexes.append(edges[0].Vertexes[0])
             vertexes.append(edges[0].Vertexes[1])
-            
+
         view = Utils.getSelView()
         scale = view.getScale()
 
@@ -80,7 +80,7 @@ class CommandAxoLengthDimension:
         xAxis = App.Vector(1,0,0)
         extAngle = degrees(extLineVec.getAngle(xAxis))
         lineAngle = degrees(dimLineVec.getAngle(xAxis))
-        
+
         if extLineVec.y < 0.0:
             extAngle = 180-extAngle
         if dimLineVec.y < 0.0:
@@ -97,7 +97,7 @@ class CommandAxoLengthDimension:
             (px,py,pz) = Utils.getCoordinateVectors(view)
             arrowTips = distanceDim.getArrowPositions()
             value2D = (arrowTips[1].sub(arrowTips[0])).Length
-            value3D = 1.0 
+            value3D = 1.0
             if px.isParallel(dimLineVec,0.1):
                 value3D = value2D/px.Length
             elif py.isParallel(dimLineVec,0.1):

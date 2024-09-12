@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="1490"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1491"/>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../Command.cpp" line="960"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="961"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
@@ -102,7 +102,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../../Command.cpp" line="1089"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1090"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="1264"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1265"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../Command.cpp" line="1044"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1046"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1573"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1574"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1403"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Command.cpp" line="459"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="460"/>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../Command.cpp" line="1366"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1367"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="323"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
@@ -336,7 +336,7 @@
     <message>
       <location filename="../../Command.cpp" line="1692"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1693"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="768"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="769"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="660"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="661"/>
@@ -392,7 +392,7 @@
     <message>
       <location filename="../../Command.cpp" line="987"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="988"/>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../Command.cpp" line="833"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="834"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1183"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../Command.cpp" line="1217"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1218"/>
@@ -468,7 +468,7 @@
     <message>
       <location filename="../../Command.cpp" line="1135"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1136"/>
@@ -487,7 +487,7 @@
     <message>
       <location filename="../../Command.cpp" line="1787"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1788"/>
@@ -505,7 +505,7 @@
     <message>
       <location filename="../../Command.cpp" line="929"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="930"/>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../Command.cpp" line="1620"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1621"/>
@@ -543,7 +543,7 @@
     <message>
       <location filename="../../Command.cpp" line="1656"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1657"/>
@@ -562,7 +562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1306"/>
@@ -581,7 +581,7 @@
     <message>
       <location filename="../../Command.cpp" line="1738"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1739"/>
@@ -599,7 +599,7 @@
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="899"/>
@@ -618,7 +618,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="612"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Síť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>

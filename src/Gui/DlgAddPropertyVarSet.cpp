@@ -46,6 +46,8 @@ using namespace Gui::Dialog;
 
 const std::string DlgAddPropertyVarSet::GROUP_BASE = "Base";
 
+const bool CLEAR_NAME = true;
+
 DlgAddPropertyVarSet::DlgAddPropertyVarSet(QWidget* parent,
                                            ViewProviderVarSet* viewProvider)
     : QDialog(parent),
@@ -65,7 +67,7 @@ DlgAddPropertyVarSet::~DlgAddPropertyVarSet() = default;
 void DlgAddPropertyVarSet::initializeGroup()
 {
     connect(&comboBoxGroup, &EditFinishedComboBox::editFinished,
-            this, &DlgAddPropertyVarSet::onGroupDetermined);
+            this, &DlgAddPropertyVarSet::onEditFinished);
     comboBoxGroup.setObjectName(QString::fromUtf8("comboBoxGroup"));
     comboBoxGroup.setInsertPolicy(QComboBox::InsertAtTop);
     comboBoxGroup.setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -101,6 +103,18 @@ void DlgAddPropertyVarSet::initializeGroup()
     comboBoxGroup.setEditText(QString::fromStdString(groupNamesSorted[0]));
 }
 
+void DlgAddPropertyVarSet::getSupportedTypes(std::vector<Base::Type>& types)
+{
+    std::vector<Base::Type> proptypes;
+    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), proptypes);
+    std::copy_if(proptypes.begin(), proptypes.end(), std::back_inserter(types), [](const Base::Type& type) {
+        return type.canInstantiate();
+    });
+    std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) {
+        return strcmp(a.getName(), b.getName()) < 0;
+    });
+}
+
 void DlgAddPropertyVarSet::initializeTypes()
 {
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
@@ -112,8 +126,7 @@ void DlgAddPropertyVarSet::initializeTypes()
     }
 
     std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"),types);
-    std::sort(types.begin(), types.end(), [](Base::Type a, Base::Type b) { return strcmp(a.getName(), b.getName()) < 0; });
+    getSupportedTypes(types);
 
     for(const auto& type : types) {
         ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
@@ -127,8 +140,8 @@ void DlgAddPropertyVarSet::initializeTypes()
     ui->comboBoxType->setCompleter(&completerType);
     ui->comboBoxType->setInsertPolicy(QComboBox::NoInsert);
 
-    connect(ui->comboBoxType, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgAddPropertyVarSet::onTypePropertyDetermined);
+    connect(ui->comboBoxType, &QComboBox::currentTextChanged,
+            this, &DlgAddPropertyVarSet::onEditFinished);
 }
 
 /*
@@ -138,12 +151,12 @@ static void printFocusChain(QWidget *widget) {
     QWidget* start = widget;
     int i = 0;
     do {
-        FC_ERR(" " << widget->objectName().toUtf8().constData());
+        FC_ERR(" " << widget->objectName().toStdString();
         widget = widget->nextInFocusChain();
         i++;
     } while (widget != nullptr && i < 30 && start != widget);
     QWidget *currentWidget = QApplication::focusWidget();
-    FC_ERR("  Current focus widget:" << (currentWidget ? currentWidget->objectName().toUtf8().constData() : "None") << std::endl << std::endl);
+    FC_ERR("  Current focus widget:" << (currentWidget ? currentWidget->objectName().toStdString() : "None") << std::endl << std::endl);
 }
 */
 
@@ -155,7 +168,9 @@ void DlgAddPropertyVarSet::initializeWidgets(ViewProviderVarSet* viewProvider)
     connect(this, &QDialog::finished,
             this, [viewProvider](int result) { viewProvider->onFinished(result); });
     connect(ui->lineEditName, &QLineEdit::editingFinished,
-            this, &DlgAddPropertyVarSet::onNamePropertyDetermined);
+            this, &DlgAddPropertyVarSet::onEditFinished);
+    connect(ui->lineEditName, &QLineEdit::textChanged,
+            this, &DlgAddPropertyVarSet::onNamePropertyChanged);
 
     std::string title = "Add a property to " + varSet->getFullName();
     setWindowTitle(QString::fromStdString(title));
@@ -177,13 +192,16 @@ void DlgAddPropertyVarSet::setOkEnabled(bool enabled)
     okButton->setEnabled(enabled);
 }
 
-void DlgAddPropertyVarSet::clearEditors()
+void DlgAddPropertyVarSet::clearEditors(bool clearName)
 {
-    ui->lineEditName->clear();
+    if (clearName) {
+        bool beforeBlocked = ui->lineEditName->blockSignals(true);
+        ui->lineEditName->clear();
+        ui->lineEditName->blockSignals(beforeBlocked);
+    }
     removeEditor();
     setOkEnabled(false);
     namePropertyToAdd.clear();
-    editor = nullptr;
 }
 
 void DlgAddPropertyVarSet::removeEditor()
@@ -191,6 +209,7 @@ void DlgAddPropertyVarSet::removeEditor()
     if (editor) {
         layout()->removeWidget(editor.get());
         QWidget::setTabOrder(ui->comboBoxType, ui->checkBoxAdd);
+        editor = nullptr;
 
         // FC_ERR("remove editor");
         // printFocusChain(ui->comboBoxType);
@@ -211,11 +230,14 @@ static PropertyEditor::PropertyItem *createPropertyItem(App::Property *prop)
     return item;
 }
 
-void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& /*type*/)
+void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& type)
 {
     editor.reset(propertyItem->createEditor(this, [this]() {
         this->valueChanged();
     }));
+    if (type == "App::PropertyFont") {
+        propertyItem->setEditorData(editor.get(), QVariant());
+    }
     editor->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     editor->setObjectName(QString::fromUtf8("editor"));
     auto formLayout = qobject_cast<QFormLayout*>(layout());
@@ -228,14 +250,16 @@ void DlgAddPropertyVarSet::addEditor(PropertyEditor::PropertyItem* propertyItem,
     // printFocusChain(editor.get());
 }
 
-bool DlgAddPropertyVarSet::isSupportedType(std::string& type)
+bool DlgAddPropertyVarSet::isTypeWithEditor(const std::string& type)
 {
-    return unsupportedTypes.find(type) == unsupportedTypes.end();
+    return typesWithoutEditor.find(type) == typesWithoutEditor.end();
 }
 
-void DlgAddPropertyVarSet::createProperty(std::string& name, std::string& group)
+void DlgAddPropertyVarSet::createProperty()
 {
-    std::string type = ui->comboBoxType->currentText().toUtf8().constData();
+    std::string name = ui->lineEditName->text().toStdString();
+    std::string group = comboBoxGroup.currentText().toStdString();
+    std::string type = ui->comboBoxType->currentText().toStdString();
 
     App::Property* prop;
     try {
@@ -260,57 +284,90 @@ void DlgAddPropertyVarSet::createProperty(std::string& name, std::string& group)
     // editors that we can reuse
     removeEditor();
     propertyItem.reset(createPropertyItem(prop));
-    if (propertyItem && isSupportedType(type)) {
+    if (propertyItem && isTypeWithEditor(type)) {
         propertyItem->setPropertyData({prop});
         propertyItem->bind(*objectIdentifier);
-             addEditor(propertyItem.get(), type);
+        addEditor(propertyItem.get(), type);
     }
 
     setOkEnabled(true);
 }
 
-void DlgAddPropertyVarSet::onNamePropertyDetermined()
-{
-    if (!namePropertyToAdd.empty()) {
-        // we were already adding a name, so remove that property
+void DlgAddPropertyVarSet::changePropertyToAdd() {
+    // we were already adding a new property, the only option to get here
+    // is a change of type or group.
+
+    std::string name = ui->lineEditName->text().toStdString();
+    assert(name == namePropertyToAdd);
+
+    App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
+
+    std::string group = comboBoxGroup.currentText().toStdString();
+    if (prop->getGroup() != group) {
+        varSet->changeDynamicProperty(prop, group.c_str(), nullptr);
+    }
+
+    std::string type = ui->comboBoxType->currentText().toStdString();
+    if (prop->getTypeId() != Base::Type::fromName(type.c_str())) {
+        // the property should have a different type
         varSet->removeDynamicProperty(namePropertyToAdd.c_str());
+        createProperty();
     }
-    QString nameProperty = ui->lineEditName->text();
-    std::string name = nameProperty.toUtf8().constData();
-    std::string group = comboBoxGroup.currentText().toUtf8().constData();
-    if(name.empty() || group.empty()
-       || name != Base::Tools::getIdentifier(name)
-       || group != Base::Tools::getIdentifier(group)) {
-        QMessageBox::critical(getMainWindow(),
-                              QObject::tr("Invalid name"),
-                              QObject::tr("The property name or group name must only contain alpha numericals,\n"
-                                          "underscore, and must not start with a digit."));
-        clearEditors();
-        return;
-    }
-
-    auto prop = varSet->getPropertyByName(name.c_str());
-    if(prop && prop->getContainer() == varSet) {
-        QMessageBox::critical(this,
-                              QObject::tr("Invalid name"),
-                              QObject::tr("The property '%1' already exists in '%2'").arg(
-                                      QString::fromLatin1(name.c_str()),
-                                      QString::fromLatin1(varSet->getFullName().c_str())));
-        clearEditors();
-        return;
-    }
-
-    App::Document* doc = varSet->getDocument();
-    doc->openTransaction("Add property VarSet");
-    createProperty(name, group);
-
-    // FC_ERR("chain onNameDetermined");
-    // printFocusChain(ui->lineEditName);
 }
 
-void DlgAddPropertyVarSet::onGroupDetermined()
+
+void DlgAddPropertyVarSet::clearCurrentProperty()
 {
-    std::string group = comboBoxGroup.currentText().toUtf8().constData();
+    removeEditor();
+    varSet->removeDynamicProperty(namePropertyToAdd.c_str());
+    App::Document* doc = varSet->getDocument();
+    if (doc->hasPendingTransaction()) {
+        doc->abortTransaction();
+    }
+    setOkEnabled(false);
+    namePropertyToAdd.clear();
+}
+
+class CreatePropertyException : public std::exception {
+public:
+    explicit CreatePropertyException(const std::string& message) : msg(message) {}
+
+    const char* what() const noexcept override {
+        return msg.c_str();
+    }
+
+private:
+    std::string msg;
+};
+
+void DlgAddPropertyVarSet::checkName() {
+    std::string name = ui->lineEditName->text().toStdString();
+    if(name.empty() || name != Base::Tools::getIdentifier(name)) {
+        QMessageBox::critical(getMainWindow(),
+                              QObject::tr("Invalid name"),
+                              QObject::tr("The property name must only contain alpha numericals,\n"
+                                          "underscore, and must not start with a digit."));
+        clearEditors(!CLEAR_NAME);
+        throw CreatePropertyException("Invalid name");
+    }
+
+    if (namePropertyToAdd.empty()) {
+        // we are adding a new property, check whether it doesn't already exist
+        auto prop = varSet->getPropertyByName(name.c_str());
+        if(prop && prop->getContainer() == varSet) {
+            QMessageBox::critical(this,
+                                  QObject::tr("Invalid name"),
+                                  QObject::tr("The property '%1' already exists in '%2'").arg(
+                                          QString::fromLatin1(name.c_str()),
+                                          QString::fromLatin1(varSet->getFullName().c_str())));
+            clearEditors(!CLEAR_NAME);
+            throw CreatePropertyException("Invalid name");
+        }
+    }
+}
+
+void DlgAddPropertyVarSet::checkGroup() {
+    std::string group = comboBoxGroup.currentText().toStdString();
 
     if (group.empty() || group != Base::Tools::getIdentifier(group)) {
         QMessageBox::critical(this,
@@ -318,36 +375,58 @@ void DlgAddPropertyVarSet::onGroupDetermined()
             QObject::tr("The group name must only contain alpha numericals,\n"
                         "underscore, and must not start with a digit."));
         comboBoxGroup.setEditText(QString::fromUtf8("Base"));
+        throw CreatePropertyException("Invalid name");
+    }
+}
+
+void DlgAddPropertyVarSet::checkType() {
+    std::string type = ui->comboBoxType->currentText().toStdString();
+
+    if (Base::Type::fromName(type.c_str()) == Base::Type::badType()) {
+        throw CreatePropertyException("Invalid name");
+    }
+}
+
+void DlgAddPropertyVarSet::onEditFinished() {
+    /* The editor for the value is dynamically created if 1) the name has been
+     * determined and 2) if the type of the property has been determined.  The
+     * group of the property is important too, but it is not essential, because
+     * we can change the group after the property has been created.
+     *
+     * In this function we check whether we can create a property and therefore
+     * an editor.
+     */
+
+    try {
+        checkName();
+        checkGroup();
+        checkType();
+    }
+    catch (const CreatePropertyException& e) {
+        if (!namePropertyToAdd.empty()) {
+            clearCurrentProperty();
+        }
         return;
     }
 
-    if (!namePropertyToAdd.empty()) {
-        // we were already adding a property
-        App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
-        if (prop->getGroup() != group) {
-            varSet->changeDynamicProperty(prop, group.c_str(), nullptr);
-        }
+    if (namePropertyToAdd.empty()) {
+        // we are adding a new property
+        App::Document* doc = varSet->getDocument();
+        doc->openTransaction("Add property VarSet");
+        createProperty();
     }
-
-    // FC_ERR("chain onGroupDetermined");
-    // printFocusChain(&comboBoxGroup);
-    ui->comboBoxType->setFocus();
+    else {
+        // we were already adding a new property that should now be changed
+        changePropertyToAdd();
+    }
 }
 
-void DlgAddPropertyVarSet::onTypePropertyDetermined()
+void DlgAddPropertyVarSet::onNamePropertyChanged(const QString& text)
 {
-    std::string type = ui->comboBoxType->currentText().toUtf8().constData();
-
-    if (!namePropertyToAdd.empty()) {
-        // we were already adding a name, so check this property
-        App::Property* prop = varSet->getPropertyByName(namePropertyToAdd.c_str());
-
-        if (prop->getTypeId() != Base::Type::fromName(type.c_str())) {
-            // the property should have a different type
-            std::string group = prop->getGroup();
-            varSet->removeDynamicProperty(namePropertyToAdd.c_str());
-            createProperty(namePropertyToAdd, group);
-        }
+    if (!namePropertyToAdd.empty() && text.toStdString() != namePropertyToAdd) {
+        // The user decided to change the name of the property.  This
+        // invalidates the editor that is strictly associated with the property.
+        clearCurrentProperty();
     }
 }
 
@@ -370,8 +449,8 @@ void DlgAddPropertyVarSet::accept()
         return;
     }
 
-    std::string group = comboBoxGroup.currentText().toUtf8().constData();
-    std::string type = ui->comboBoxType->currentText().toUtf8().constData();
+    std::string group = comboBoxGroup.currentText().toStdString();
+    std::string type = ui->comboBoxType->currentText().toStdString();
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/PropertyView");
     paramGroup->SetASCII("NewPropertyType", type.c_str());

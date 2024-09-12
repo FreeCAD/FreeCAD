@@ -137,7 +137,7 @@ FreeCADPanelScheme::FreeCADPanelScheme() : ActionPanelScheme()
     ActionPanelScheme* panelStyle = WinXPPanelScheme2::defaultScheme();
 
     actionStyle = QString(ActionPanelFreeCAD);
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_MACOS)
     ActionPanelScheme* panelStyle = MacPanelScheme::defaultScheme();
 
     actionStyle = panelStyle->actionStyle;

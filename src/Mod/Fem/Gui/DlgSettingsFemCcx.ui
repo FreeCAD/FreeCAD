@@ -355,7 +355,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Spooles</string>
+            <string>Spooles equation solver</string>
            </property>
           </item>
           <item>
@@ -365,7 +365,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Iterative Cholesky</string>
+            <string>Cholesky iterative solver</string>
            </property>
           </item>
          </widget>

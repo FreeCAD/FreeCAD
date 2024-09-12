@@ -40,6 +40,7 @@
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDrawingViewExtension.h"
@@ -49,6 +50,7 @@
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 namespace sp = std::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
@@ -62,7 +64,8 @@ ViewProviderDrawingView::ViewProviderDrawingView() :
     sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
-    ADD_PROPERTY_TYPE(KeepLabel ,(false), group, App::Prop_None, "Keep Label on Page even if toggled off");
+    auto showLabel = Preferences::alwaysShowLabel();
+    ADD_PROPERTY_TYPE(KeepLabel ,(showLabel), group, App::Prop_None, "Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we

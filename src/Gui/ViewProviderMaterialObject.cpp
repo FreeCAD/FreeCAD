@@ -73,5 +73,5 @@ PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderMaterialObjectPython, Gui::ViewProvide
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderMaterialObject>;
+template class GuiExport ViewProviderFeaturePythonT<ViewProviderMaterialObject>;
 }

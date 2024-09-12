@@ -53,7 +53,7 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
     }
 }
 
-SelectionObject::SelectionObject(App::DocumentObject* obj)
+SelectionObject::SelectionObject(const App::DocumentObject* obj)
 {
     FeatName = obj->getNameInDocument();
     DocName = obj->getDocument()->getName();

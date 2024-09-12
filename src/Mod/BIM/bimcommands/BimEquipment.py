@@ -91,7 +91,7 @@ class Arch_Equipment:
 
 
 class Arch_3Views:
-    
+
     # OBSOLETE
 
     "the Arch 3Views command definition"

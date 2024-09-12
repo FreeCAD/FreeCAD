@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="title">
-      <string>FEM Mesh Parameter</string>
+      <string>FEM Mesh Parameters</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <item>

@@ -62,6 +62,8 @@ protected Q_SLOTS:
     void onButtonReference(const bool pressed = true);
     void setSelection(QListWidgetItem* item);
 
+    bool event(QEvent* event) override;
+
 protected:
     void changeEvent(QEvent* e) override
     {
@@ -71,7 +73,6 @@ protected:
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
     void keyPressEvent(QKeyEvent* ke) override;
     void createDeleteAction(QListWidget* parentList);
-    bool KeyEvent(QEvent* e);
     void onSelectionChanged(const Gui::SelectionChanges&) override
     {}
 

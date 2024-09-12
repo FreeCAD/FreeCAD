@@ -42,7 +42,9 @@ macro(CompilerChecksAndSetups)
         endif()
 
     # Escape the two plus chars as otherwise cmake complains about invalid regex
-    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")
+    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+23")
+        set(CMAKE_CXX_STANDARD 23)
+    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")
         set(CMAKE_CXX_STANDARD 20)
     elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
         set(CMAKE_CXX_STANDARD 17)

@@ -38,6 +38,7 @@ import urllib
 import tempfile
 from Tests.PathTestUtils import PathTestBase
 
+
 class TestCAMSanity(PathTestBase):
     @classmethod
     def setUpClass(cls):

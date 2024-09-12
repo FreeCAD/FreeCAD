@@ -138,6 +138,8 @@ PyMOD_INIT_FUNC(FemGui)
 
     FemGui::ViewProviderFemMesh                                 ::init();
     FemGui::ViewProviderFemMeshPython                           ::init();
+    FemGui::ViewProviderFemMeshShapeBase                        ::init();
+    FemGui::ViewProviderFemMeshShapeBasePython                  ::init();
     FemGui::ViewProviderFemMeshShape                            ::init();
     FemGui::ViewProviderFemMeshShapeNetgen                      ::init();
     FemGui::PropertyFemMeshItem                                 ::init();

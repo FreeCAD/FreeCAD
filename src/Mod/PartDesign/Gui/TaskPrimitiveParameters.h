@@ -101,6 +101,16 @@ private:
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
+    template<typename T = App::DocumentObject> T* getObject() const
+    {
+        static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+        if (vp) {
+            return dynamic_cast<T*>(vp->getObject());
+        }
+
+        return nullptr;
+    }
+
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_DlgPrimitives> ui;

@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Sprea dsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spread sheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="873"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreads heet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="874"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadsh eet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadshe et</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="707"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadshee t</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="708"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="790"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="791"/>
@@ -434,7 +434,7 @@
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Starte die Zellenadresse zum binden.
-Tippe '=', wenn du einen Ausdruck verwenden möchtest.
+Tippe '=' zur Verwendung eines Ausrucks.
 Der Ausdruck muss eine Zeichenkette mit einer Zellenadresse auswerten.</translation>
     </message>
     <message>
@@ -443,7 +443,7 @@ Der Ausdruck muss eine Zeichenkette mit einer Zellenadresse auswerten.</translat
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Endadresse der zu bindenden Zelle.
-Tippe '=', wenn du einen Ausdruck verwenden möchten.
+Tippe '=' zur Verwendung eines Ausdrucks.
 Der Ausdruck muss eine Zeichenkette mit einer Zellenadresse auswerten.</translation>
     </message>
     <message>
@@ -542,7 +542,7 @@ von dieser Eigenschaft ausgewählt wurde.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Geben Sie einen Ausdruck ein, um das Objekt und den Eigenschaftsnamen anzugeben, um dynamisch die Designkonfiguration zu wechseln. Das Objekt wird erzeugt, wenn es nicht existiert.</translation>
+      <translation>Einen Ausdruck eingeben, um das Objekt und den Eigenschaftsnamen anzugeben und dynamisch die Designkonfiguration zu wechseln. Das Objekt wird erzeugt, wenn es nicht existiert.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
@@ -660,8 +660,8 @@ switch the design configuration. The property will be created if not exist.</sou
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
-      <source>Unit string</source>
-      <translation>Einheit</translation>
+      <source>Text for the unit</source>
+      <translation>Text für die Einheit</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -725,21 +725,21 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Kopieren &amp; Einfügen fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias enthält ungültige Zeichen!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Zellbezug mit Alias, zum Beispiel
-Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
+Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
-      <translation>Tabelle</translation>
+      <translation>Spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -870,7 +870,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Zellbezug mit Alias, zum Beispiel
-Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
+Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     </message>
   </context>
   <context>
@@ -886,8 +886,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
 
 Do you want to continue?</source>
       <translation>Quell- und Zielzellenanzahl stimmen nicht überein. Partielle Bindung kann trotzdem funktionieren.
-
-Möchten Sie fortfahren?</translation>
+Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="275"/>
@@ -912,7 +911,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>Tabellenblatt</translation>
+      <translation>Kalkulationstabelle</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
@@ -922,7 +921,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation>Wenn aktiviert, wird für den Zell-String die benutzerdefinierte Darstellung verwendet.</translation>
+      <translation>Wenn aktiviert, wird für den Zell-Zeichenkette die benutzerdefinierte Darstellung verwendet.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
@@ -936,7 +935,7 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation>Das Format der benutzerdefinierten Stringdarstellung.
+      <translation>Das Format der benutzerdefinierten Zeichenkettendarstellung.
 Standard: %V = %A
 
 %A - Alias Name
@@ -1126,12 +1125,12 @@ Standard: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>PDF exportieren</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>PDF-Datei</translation>
     </message>

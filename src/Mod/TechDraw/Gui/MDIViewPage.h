@@ -131,7 +131,7 @@ protected:
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel);
     void addSceneItemToTreeSel(QGraphicsItem* sceneItem, std::vector<Gui::SelectionObject> treeSel);
-    void removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel);
+    void removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& treeSelection);
     std::string getSceneSubName(QGraphicsItem* scene);
     void setTreeToSceneSelect();
     void sceneSelectionManager();

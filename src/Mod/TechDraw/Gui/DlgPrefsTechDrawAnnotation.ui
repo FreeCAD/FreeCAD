@@ -22,12 +22,6 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="title">
       <string>Annotation</string>
      </property>
@@ -42,17 +36,8 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Length of balloon leader line kink</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <double>5.000000000000000</double>
@@ -103,12 +88,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Style for balloon leader line ends</string>
@@ -257,12 +236,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Restrict Filled Triangle line end to vertical or horizontal directions</string>
           </property>
@@ -288,12 +261,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Show arc centers in printed output</string>
           </property>
@@ -315,12 +282,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
           </property>
           <property name="font">
            <font>
@@ -351,12 +312,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
           </property>
           <property name="font">
            <font>
@@ -394,12 +349,6 @@
         </item>
         <item row="0" column="2">
          <widget class="Gui::PrefComboBox" name="cbCutSurface">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Default appearance of cut surface in section view</string>
           </property>
@@ -442,12 +391,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Outline shape for detail views</string>
           </property>
@@ -466,12 +409,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Shape of balloon annotations</string>
@@ -606,12 +543,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Standard to be used to draw non-continuous lines.</string>
           </property>
@@ -633,12 +564,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineGroup</cstring>
@@ -747,12 +672,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>24</height>
-           </size>
           </property>
           <property name="font">
            <font>
@@ -882,6 +801,12 @@ if you are planning to use a drawing as a 1:1 cutting guide.
          <widget class="Gui::PrefComboBox" name="pcbBreakStyle">
           <property name="toolTip">
            <string>Style of line to be used in BrokenView.</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineStyleBreak</cstring>

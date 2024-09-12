@@ -69,16 +69,12 @@ class TestPathSetupSheet(PathTestBase):
 
         self.assertEqualLocale(attrs[PathSetupSheet.Template.HorizRapid], "0.00 mm/s")
         self.assertEqualLocale(attrs[PathSetupSheet.Template.VertRapid], "0.00 mm/s")
-        self.assertEqualLocale(
-            attrs[PathSetupSheet.Template.SafeHeightOffset], "3.00 mm"
-        )
+        self.assertEqualLocale(attrs[PathSetupSheet.Template.SafeHeightOffset], "3.00 mm")
         self.assertEqual(
             attrs[PathSetupSheet.Template.SafeHeightExpression],
             "OpStockZMax+SetupSheet.SafeHeightOffset",
         )
-        self.assertEqualLocale(
-            attrs[PathSetupSheet.Template.ClearanceHeightOffset], "5.00 mm"
-        )
+        self.assertEqualLocale(attrs[PathSetupSheet.Template.ClearanceHeightOffset], "5.00 mm")
         self.assertEqual(
             attrs[PathSetupSheet.Template.ClearanceHeightExpression],
             "OpStockZMax+SetupSheet.ClearanceHeightOffset",
@@ -110,9 +106,7 @@ class TestPathSetupSheet(PathTestBase):
         self.assertEqual(o1.HorizRapid.UserString, o2.HorizRapid.UserString)
         self.assertEqual(o1.SafeHeightOffset.UserString, o2.SafeHeightOffset.UserString)
         self.assertEqual(o1.SafeHeightExpression, o2.SafeHeightExpression)
-        self.assertEqual(
-            o1.ClearanceHeightOffset.UserString, o2.ClearanceHeightOffset.UserString
-        )
+        self.assertEqual(o1.ClearanceHeightOffset.UserString, o2.ClearanceHeightOffset.UserString)
         self.assertEqual(o1.ClearanceHeightExpression, o2.ClearanceHeightExpression)
         self.assertEqual(o1.StartDepthExpression, o2.StartDepthExpression)
         self.assertEqual(o1.FinalDepthExpression, o2.FinalDepthExpression)
@@ -187,12 +181,8 @@ class TestPathSetupSheet(PathTestBase):
 
         self.assertEqual(ss.expressionReference(), "SetupSheet")
 
-        self.assertEqual(
-            str(ss.encodeTemplateAttributes({"00": 13.00})), "{'00': 13.0}"
-        )
-        self.assertEqual(
-            str(ss.decodeTemplateAttributes({"00": 13.00})), "{'00': 13.0}"
-        )
+        self.assertEqual(str(ss.encodeTemplateAttributes({"00": 13.00})), "{'00': 13.0}")
+        self.assertEqual(str(ss.decodeTemplateAttributes({"00": 13.00})), "{'00': 13.0}")
 
     def test11(self):
         """Verify template attributes encoding/decoding of strings."""
@@ -228,9 +218,7 @@ class TestPathSetupSheet(PathTestBase):
             refstring("{'00': u'SetupSheet.y'}"),
         )
         self.assertEqual(
-            str(
-                ss.decodeTemplateAttributes({"00": "${SetupSheet}.y - ${SetupSheet}.z"})
-            ),
+            str(ss.decodeTemplateAttributes({"00": "${SetupSheet}.y - ${SetupSheet}.z"})),
             refstring("{'00': u'SetupSheet.y - SetupSheet.z'}"),
         )
 
@@ -243,11 +231,7 @@ class TestPathSetupSheet(PathTestBase):
             refstring("{'00': {'01': u'hugo'}}"),
         )
         self.assertEqual(
-            str(
-                ss.encodeTemplateAttributes(
-                    {"00": {"01": "SetupSheet.y - SetupSheet.z"}}
-                )
-            ),
+            str(ss.encodeTemplateAttributes({"00": {"01": "SetupSheet.y - SetupSheet.z"}})),
             refstring("{'00': {'01': u'${SetupSheet}.y - ${SetupSheet}.z'}}"),
         )
 
@@ -256,11 +240,7 @@ class TestPathSetupSheet(PathTestBase):
             refstring("{'00': {'01': u'hugo'}}"),
         )
         self.assertEqual(
-            str(
-                ss.decodeTemplateAttributes(
-                    {"00": {"01": "${SetupSheet}.y - ${SetupSheet}.z"}}
-                )
-            ),
+            str(ss.decodeTemplateAttributes({"00": {"01": "${SetupSheet}.y - ${SetupSheet}.z"}})),
             refstring("{'00': {'01': u'SetupSheet.y - SetupSheet.z'}}"),
         )
 
@@ -286,16 +266,10 @@ class TestPathSetupSheet(PathTestBase):
         self.assertEqual(str(encoded["01"][1]), refstring("{'20': u'${SetupSheet}'}"))
         self.assertEqual(len(encoded["02"]), 1)
         self.assertEqual(len(encoded["02"][0]["a"]), 2)
-        self.assertEqual(
-            str(encoded["02"][0]["a"][0]), refstring("{'b': u'${SetupSheet}'}")
-        )
-        self.assertEqual(
-            str(encoded["02"][0]["a"][1]), refstring("{'c': u'${SetupSheet}'}")
-        )
+        self.assertEqual(str(encoded["02"][0]["a"][0]), refstring("{'b': u'${SetupSheet}'}"))
+        self.assertEqual(str(encoded["02"][0]["a"][1]), refstring("{'c': u'${SetupSheet}'}"))
         self.assertEqual(len(encoded["02"][0]["b"]), 1)
-        self.assertEqual(
-            str(encoded["02"][0]["b"][0]), refstring("{'b': u'${SetupSheet}'}")
-        )
+        self.assertEqual(str(encoded["02"][0]["b"][0]), refstring("{'b': u'${SetupSheet}'}"))
 
         decoded = ss.decodeTemplateAttributes(encoded)
         self.assertEqual(len(decoded), len(attrs))
