@@ -1700,15 +1700,17 @@ void Hole::onChanged(const App::Property* prop)
     }
     else if (prop == &DepthType) {
         std::string DepthMode(DepthType.getValueAsString());
-        Depth.setReadOnly(DepthMode != "Dimension");
-        DrillPoint.setReadOnly(DepthMode != "Dimension");
-        DrillPointAngle.setReadOnly(DepthMode != "Dimension");
-        DrillForDepth.setReadOnly(DepthMode != "Dimension");
+        bool isNotDimension = (DepthMode != "Dimension");
+
+        Depth.setReadOnly(isNotDimension);
+        DrillPoint.setReadOnly(isNotDimension);
+        DrillPointAngle.setReadOnly(isNotDimension);
+        DrillForDepth.setReadOnly(isNotDimension);
+
         if (!isRestoring()) {
-            if (DepthMode != "Dimension") {
+            if (isNotDimension) {
                 // if through all, set the depth accordingly
                 Depth.setValue(getThroughAllLength());
-                // the thread depth is not dimension, it is the same as the hole depth
                 ThreadDepth.setValue(getThroughAllLength());
             }
             updateThreadDepthParam();
