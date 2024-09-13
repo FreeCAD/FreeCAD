@@ -140,7 +140,8 @@ private:
                     options.setItem("expandCompound", Py::Boolean(stepSettings.expandCompound));
                     options.setItem("mode", Py::Long(stepSettings.mode));
                     options.setItem("codePage", Py::Long(stepSettings.codePage));
-                } else {
+                }
+                else {
                     throw Py::Exception();
                 }
             }
