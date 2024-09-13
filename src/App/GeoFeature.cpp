@@ -25,6 +25,8 @@
 
 #include <App/GeoFeaturePy.h>
 
+#include <Base/Tools.h>
+
 #include "ComplexGeoData.h"
 #include "Document.h"
 #include "GeoFeature.h"
@@ -269,4 +271,64 @@ GeoFeature::getHigherElements(const char *element, bool silent) const
     if (!prop)
         return {};
     return prop->getComplexData()->getHigherElements(element, silent);
+}
+
+Base::Placement GeoFeature::getPlacementFromProp(App::DocumentObject* obj, const char* propName)
+{
+    Base::Placement plc = Base::Placement();
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName(propName));
+    if (propPlacement) {
+        plc = propPlacement->getValue();
+    }
+    return plc;
+}
+
+Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
+                                                   App::DocumentObject* rootObj,
+                                                   const std::string& sub)
+{
+    if (!targetObj || !rootObj || sub.empty()) {
+        return Base::Placement();
+    }
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    App::Document* doc = rootObj->getDocument();
+    Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
+
+    if (targetObj == rootObj) return plc;
+
+    for (auto& name : names) {
+        App::DocumentObject* obj = doc->getObject(name.c_str());
+        if (!obj) {
+            return Base::Placement();
+        }
+
+        plc = plc * getPlacementFromProp(obj, "Placement");
+
+        if (obj == targetObj) {
+            return plc;
+        }
+        if (obj->isLink()) {
+            // Update doc in case its an external link.
+            doc = obj->getLinkedObject()->getDocument();
+        }
+    }
+
+    // If targetObj has not been found there's a problem
+    return Base::Placement();
+}
+
+Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
+                                                   App::PropertyXLinkSub* prop)
+{
+    if (!targetObj || !prop) {
+        return Base::Placement();
+    }
+
+    std::vector<std::string> subs = prop->getSubValues();
+    if (subs.empty()) {
+        return Base::Placement();
+    }
+
+    return getGlobalPlacement(targetObj, prop->getValue(), subs[0]);
 }

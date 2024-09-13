@@ -46,6 +46,8 @@
 #include <App/DocumentObject.h>
 #include <App/Part.h>
 
+#include <Base/Tools.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -618,7 +620,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
 
             std::vector<std::string> objsSubNames = selObj.getSubNames();
             for (auto& subNamesStr : objsSubNames) {
-                std::vector<std::string> subNames = AssemblyObject::splitSubName(subNamesStr);
+                std::vector<std::string> subNames = Base::Tools::splitSubName(subNamesStr);
                 if (subNames.empty()) {
                     continue;
                 }
@@ -764,7 +766,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         const char* plcPropName = (pName == "Reference1") ? "Placement1" : "Placement2";
 
         // jcsPlc is relative to the Object
-        jcsPlc = AssemblyObject::getPlacementFromProp(movingJoint, plcPropName);
+        jcsPlc = App::GeoFeature::getPlacementFromProp(movingJoint, plcPropName);
 
         // Make jcsGlobalPlc relative to the origin of the doc
         auto* ref =
@@ -773,7 +775,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             return DragMode::Translation;
         }
         auto* obj = assemblyPart->getObjFromRef(movingJoint, pName.c_str());
-        Base::Placement global_plc = AssemblyObject::getGlobalPlacement(obj, ref);
+        Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(obj, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
@@ -920,7 +922,7 @@ void ViewProviderAssembly::initMoveDragger()
     App::DocumentObject* part = docsToMove[0].obj;
 
     draggerInitPlc =
-        AssemblyObject::getGlobalPlacement(part, docsToMove[0].rootObj, docsToMove[0].sub);
+        App::GeoFeature::getGlobalPlacement(part, docsToMove[0].rootObj, docsToMove[0].sub);
     std::vector<App::DocumentObject*> listOfObjs;
     std::vector<App::PropertyXLinkSub*> listOfRefs;
     for (auto& movingObj : docsToMove) {
@@ -1130,11 +1132,11 @@ ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& mo
         // bboxCenter does not take into account obj global placement
         Base::Placement plc(bboxCenter, Base::Rotation());
         // Change plc to be relative to the object placement.
-        Base::Placement objPlc = AssemblyObject::getPlacementFromProp(movingObj.obj, "Placement");
+        Base::Placement objPlc = App::GeoFeature::getPlacementFromProp(movingObj.obj, "Placement");
         plc = objPlc.inverse() * plc;
         // Change plc to be relative to the origin of the document.
         Base::Placement global_plc =
-            AssemblyObject::getGlobalPlacement(movingObj.obj, movingObj.rootObj, movingObj.sub);
+            App::GeoFeature::getGlobalPlacement(movingObj.obj, movingObj.rootObj, movingObj.sub);
         plc = global_plc * plc;
         bboxCenter = plc.getPosition();
 
