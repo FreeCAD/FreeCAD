@@ -1,5 +1,6 @@
 ﻿/***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,6 +57,7 @@
 #include "QGCustomImage.h"
 #include "QGCustomLabel.h"
 #include "QGICaption.h"
+#include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGIViewClip.h"
 #include "QGSPage.h"
@@ -971,5 +973,32 @@ void QGIView::makeMark(QPointF pos, QColor color)
 {
     makeMark(pos.x(), pos.y(), color);
 }
+
+//! Retrieves objects of type T with given indexes
+template <typename T>
+std::vector<T> QGIView::getObjects(std::vector<int> indexes)
+{
+    QList<QGraphicsItem*> children = childItems();
+    std::vector<T> result;
+    for (QGraphicsItem*& child : children) {
+        //                   Convert QGIVertex* (as T) to QGIVertex
+        if (child->type() != std::remove_pointer<T>::type::Type) {
+            continue;
+        }
+
+        // Get index of child item
+        T object = static_cast<T>(child);
+        int target = object->getProjIndex();
+        // If child item's index in indexes, then add to results
+        if (std::find(indexes.begin(), indexes.end(), target) != indexes.end()) {
+            result.push_back(object);
+        }
+    }
+    return result;
+}
+
+template std::vector<QGIVertex*> QGIView::getObjects<QGIVertex*>(std::vector<int>);
+template std::vector<QGIEdge*> QGIView::getObjects<QGIEdge*>(std::vector<int>);
+
 
 #include <Mod/TechDraw/Gui/moc_QGIView.cpp>
