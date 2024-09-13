@@ -91,25 +91,7 @@ namespace PartApp = Part;
 
 using namespace Assembly;
 using namespace MbD;
-/*
-static void printPlacement(Base::Placement plc, const char* name)
-{
-    Base::Vector3d pos = plc.getPosition();
-    Base::Vector3d axis;
-    double angle;
-    Base::Rotation rot = plc.getRotation();
-    rot.getRawValue(axis, angle);
-    Base::Console().Warning(
-        "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
-        name,
-        pos.x,
-        pos.y,
-        pos.z,
-        axis.x,
-        axis.y,
-        axis.z,
-        angle);
-}*/
+
 
 static bool isLink(App::DocumentObject* obj)
 {
@@ -1327,8 +1309,6 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     // containing Part.
 
     if (obj->getNameInDocument() != part->getNameInDocument()) {
-        // Make plc relative to the containing part
-        // plc = objPlc * plc; // this would not work for nested parts.
 
         auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
         if (!ref) {
@@ -1528,9 +1508,6 @@ AssemblyObject::makeMbdPart(std::string& name, Base::Placement plc, double mass)
     Base::Vector3d r1 = mat.getRow(1);
     Base::Vector3d r2 = mat.getRow(2);
     mbdPart->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
-    /*double q0, q1, q2, q3;
-    rot.getValue(q0, q1, q2, q3);
-    mbdPart->setQuarternions(q0, q1, q2, q3);*/
 
     return mbdPart;
 }
@@ -1551,9 +1528,7 @@ std::shared_ptr<ASMTMarker> AssemblyObject::makeMbdMarker(std::string& name, Bas
     Base::Vector3d r1 = mat.getRow(1);
     Base::Vector3d r2 = mat.getRow(2);
     mbdMarker->setRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
-    /*double q0, q1, q2, q3;
-    rot.getValue(q0, q1, q2, q3);
-    mbdMarker->setQuarternions(q0, q1, q2, q3);*/
+
     return mbdMarker;
 }
 
@@ -1582,53 +1557,7 @@ std::vector<ObjRef> AssemblyObject::getDownstreamParts(App::DocumentObject* part
     if (joint) {
         AssemblyObject::setJointActivated(joint, state);
     }
-    /*if (limit > 1000) {  // Infinite loop protection
-        return {};
-    }
-    limit++;
-    Base::Console().Warning("limit %d\n", limit);
-
-    std::vector<App::DocumentObject*> downstreamParts = {part};
-    std::string name;
-    App::DocumentObject* connectingJoint =
-        getJointOfPartConnectingToGround(part,
-                                         name);  // ?????????????????????????????? if we remove
-                                                 // connection to ground then it can't work for tom
-    std::vector<App::DocumentObject*> jointsOfPart = getJointsOfPart(part);
-
-    // remove connectingJoint from jointsOfPart
-    auto it = std::remove(jointsOfPart.begin(), jointsOfPart.end(), connectingJoint);
-    jointsOfPart.erase(it, jointsOfPart.end());
-    for (auto joint : jointsOfPart) {
-        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
-        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
-        bool firstIsDown = part->getFullName() == part2->getFullName();
-        App::DocumentObject* downstreamPart = firstIsDown ? part1 : part2;
-
-        Base::Console().Warning("looping\n");
-        // it is possible that the part is connected to ground by this joint.
-        // In which case we should not select those parts. To test we disconnect :
-        auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Part1"));
-        if (!propObj) {
-            continue;
-        }
-        propObj->setValue(nullptr);
-        bool isConnected = isPartConnected(downstreamPart);
-        propObj->setValue(part1);
-        if (isConnected) {
-            Base::Console().Warning("continue\n");
-            continue;
-        }
-
-        std::vector<App::DocumentObject*> subDownstreamParts =
-            getDownstreamParts(downstreamPart, limit);
-        for (auto downPart : subDownstreamParts) {
-            if (std::find(downstreamParts.begin(), downstreamParts.end(), downPart)
-                == downstreamParts.end()) {
-                downstreamParts.push_back(downPart);
-            }
-        }
-    }*/
+   
     return downstreamParts;
 }
 
@@ -2444,37 +2373,3 @@ App::DocumentObject* AssemblyObject::getLinkedObjFromRef(App::DocumentObject* jo
     }
     return nullptr;
 }
-
-
-/*void Part::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property*
-prop)
-{
-    App::Part::handleChangedPropertyType(reader, TypeName, prop);
-}*/
-
-/* Apparently not necessary as App::Part doesn't have this.
-// Python Assembly feature ---------------------------------------------------------
-
-namespace App
-{
-    /// @cond DOXERR
-    PROPERTY_SOURCE_TEMPLATE(Assembly::AssemblyObjectPython, Assembly::AssemblyObject)
-        template<>
-    const char* Assembly::AssemblyObjectPython::getViewProviderName() const
-    {
-        return "AssemblyGui::ViewProviderAssembly";
-    }
-    template<>
-    PyObject* Assembly::AssemblyObjectPython::getPyObject()
-    {
-        if (PythonObject.is(Py::_None())) {
-            // ref counter is set to 1
-            PythonObject = Py::Object(new FeaturePythonPyT<AssemblyObjectPy>(this), true);
-        }
-        return Py::new_reference_to(PythonObject);
-    }
-    /// @endcond
-
-    // explicit template instantiation
-    template class AssemblyExport FeaturePythonT<Assembly::AssemblyObject>;
-}// namespace App*/
