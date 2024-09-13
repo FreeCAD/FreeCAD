@@ -1557,7 +1557,7 @@ std::vector<ObjRef> AssemblyObject::getDownstreamParts(App::DocumentObject* part
     if (joint) {
         AssemblyObject::setJointActivated(joint, state);
     }
-   
+
     return downstreamParts;
 }
 
