@@ -355,7 +355,7 @@ def assign_groups(children):
 
 
 def get_children(
-    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False
+    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False, iftype=None
 ):
     """Returns the direct descendants of an object"""
 
@@ -373,9 +373,12 @@ def get_children(
             children.extend([rel.RelatedOpeningElement])
         for rel in getattr(ifcentity, "HasFillings", []):
             children.extend([rel.RelatedBuildingElement])
-    return filter_elements(
+    result = filter_elements(
         children, ifcfile, expand=expand, spaces=True, assemblies=assemblies
     )
+    if iftype:
+        result = [r for r in result if r.is_a(ifctype)]
+    return result
 
 
 def get_object(element, document=None):
@@ -667,7 +670,11 @@ def get_ifc_element(obj, ifcfile=None):
     if not ifcfile:
         ifcfile = get_ifcfile(obj)
     if ifcfile and hasattr(obj, "StepId"):
-        return ifcfile.by_id(obj.StepId)
+        try:
+            return ifcfile.by_id(obj.StepId)
+        except RuntimeError:
+            # entity not found
+            pass
     return None
 
 
@@ -784,27 +791,33 @@ def set_colors(obj, colors):
     """Sets the given colors to an object"""
 
     if FreeCAD.GuiUp and colors:
+        try:
+            vobj = obj.ViewObject
+        except ReferenceError:
+            # Object was probably deleted
+            return
         # ifcopenshell issues (-1,-1,-1) colors if not set
         if isinstance(colors[0], (tuple, list)):
             colors = [tuple([abs(d) for d in c]) for c in colors]
         else:
             colors = [abs(c) for c in colors]
-        if hasattr(obj.ViewObject, "ShapeColor"):
+        if hasattr(vobj, "ShapeColor"):
             if isinstance(colors[0], (tuple, list)):
-                obj.ViewObject.ShapeColor = colors[0][:3]
-                if len(colors[0]) > 3:
-                    obj.ViewObject.Transparency = int(colors[0][3] * 100)
+                vobj.ShapeColor = colors[0][:3]
+                # do not set transparency when the object has more than one color
+                #if len(colors[0]) > 3:
+                #    vobj.Transparency = int(colors[0][3] * 100)
             else:
-                obj.ViewObject.ShapeColor = colors[:3]
+                vobj.ShapeColor = colors[:3]
                 if len(colors) > 3:
-                    obj.ViewObject.Transparency = int(colors[3] * 100)
-        if hasattr(obj.ViewObject, "DiffuseColor"):
+                    vobj.Transparency = int(colors[3] * 100)
+        if hasattr(vobj, "DiffuseColor"):
             # strip out transparency value because it currently gives ugly
             # results in FreeCAD when combining transparent and non-transparent objects
             if all([len(c) > 3 and c[3] != 0 for c in colors]):
-                obj.ViewObject.DiffuseColor = colors
+                vobj.DiffuseColor = colors
             else:
-                obj.ViewObject.DiffuseColor = [c[:3] for c in colors]
+                vobj.DiffuseColor = [c[:3] for c in colors]
 
 
 def get_body_context_ids(ifcfile):
@@ -849,9 +862,15 @@ def get_freecad_matrix(ios_matrix):
 
     # https://github.com/IfcOpenShell/IfcOpenShell/issues/1440
     # https://pythoncvc.net/?cat=203
+    # https://github.com/IfcOpenShell/IfcOpenShell/issues/4832#issuecomment-2158583873
     m_l = list()
     for i in range(3):
-        line = list(ios_matrix[i::3])
+        if len(ios_matrix) == 16:
+            # IfcOpenShell 0.8
+            line = list(ios_matrix[i::4])
+        else:
+            # IfcOpenShell 0.7
+            line = list(ios_matrix[i::3])
         line[-1] *= SCALE
         m_l.extend(line)
     return FreeCAD.Matrix(*m_l)
@@ -1130,7 +1149,11 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
         for old_par in old_obj.InList:
             if hasattr(old_par, "Group") and old_obj in old_par.Group:
                 old_par.Group = [o for o in old_par.Group if o != old_obj]
-        api_run("spatial.unassign_container", ifcfile, product=element)
+        try:
+            api_run("spatial.unassign_container", ifcfile, products=[element])
+        except:
+            # older version of IfcOpenShell
+            api_run("spatial.unassign_container", ifcfile, product=element)
         if element.is_a("IfcOpeningElement"):
             uprel = api_run(
                 "void.add_opening",
@@ -1139,12 +1162,21 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                 element=parent_element,
             )
         else:
-            uprel = api_run(
-                "spatial.assign_container",
-                ifcfile,
-                product=element,
-                relating_structure=parent_element,
-            )
+            try:
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    products=[element],
+                    relating_structure=parent_element,
+                )
+            except:
+                # older version of ifcopenshell
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    product=element,
+                    relating_structure=parent_element,
+                )
     # case 2: dooe/window inside element
     # https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/annex/annex-e/wall-with-opening-and-window.htm
     elif parent_element.is_a("IfcElement") and element.is_a() in [

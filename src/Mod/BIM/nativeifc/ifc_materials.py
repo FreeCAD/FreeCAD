@@ -135,12 +135,23 @@ def set_material(material, obj):
             if not container.OutList:
                 doc.removeObject(container.Name)
     if material_element:
-        ifc_tools.api_run(
-            "material.assign_material",
-            ifcfile,
-            product=element,
-            type=material_element.is_a(),
-            material=material_element,
-        )
+        try:
+            # IfcOpenShell 0.8
+            ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                products=[element],
+                type=material_element.is_a(),
+                material=material_element,
+            )
+        except:
+            # IfcOpenShell 0.7
+            ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                product=element,
+                type=material_element.is_a(),
+                material=material_element,
+            )
         if new:
             show_material(obj)
