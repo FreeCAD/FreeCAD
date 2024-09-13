@@ -162,7 +162,7 @@ public:
         // choose text color
         auto tc = cfg.find("SplashTextColor");
         if (tc != cfg.end()) {
-            QColor col; col.setNamedColor(QString::fromLatin1(tc->second.c_str()));
+            QColor col(QString::fromStdString(tc->second));
             if (col.isValid()) {
                 textColor = col;
             }
@@ -871,19 +871,43 @@ void AboutDialog::copyToClipboard()
 #endif
     QLocale loc;
     str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6,6,0)
         << QLocale::countryToString(loc.country())
+#else
+        << QLocale::territoryToString(loc.territory())
+#endif
         << " (" << loc.name() << ")";
     if (loc != QLocale::system()) {
         loc = QLocale::system();
         str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6,6,0)
             << QLocale::countryToString(loc.country())
+#else
+            << QLocale::territoryToString(loc.territory())
+#endif
             << " (" << loc.name() << ") ]";
     }
     str << "\n";
 
+    // Add Stylesheet/Theme/Qtstyle information
     std::string styleSheet = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("StyleSheet");
     std::string theme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("Theme");
-    std::string style = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("QtStyle");
+
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+        std::string style = qApp->style()->name().toStdString();
+    #else
+        std::string style = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("QtStyle");
+        if(style.empty()) {
+            style = "Qt default";
+        }
+    #endif
+
+    if(styleSheet.empty()) {
+        styleSheet = "unset";
+    }
+    if(theme.empty()) {
+        theme = "unset";
+    }
 
     str << "Stylesheet/Theme/QtStyle: "
         << QString::fromStdString(styleSheet) << "/"

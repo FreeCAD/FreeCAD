@@ -392,6 +392,14 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->whatsthis = false;
     d->assistant = new Assistant();
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    // this forces QT to switch to OpenGL mode, this prevents delay and flickering of the window
+    // after opening project and prevent issues with double initialization of the window
+    //
+    // https://stackoverflow.com/questions/76026196/how-to-force-qt-to-use-the-opengl-window-type
+    new QOpenGLWidget(this);
+#endif
+
     // global access
     instance = this;
 
@@ -1976,7 +1984,7 @@ void MainWindow::renderDevBuildWarning(
 {
     // Create a background box that fades out the artwork for better legibility
     QColor fader (Qt::white);
-    constexpr float halfDensity (0.65);
+    constexpr float halfDensity (0.65F);
     fader.setAlphaF(halfDensity);
     QBrush fillBrush(fader, Qt::BrushStyle::SolidPattern);
     painter.setBrush(fillBrush);
@@ -2021,18 +2029,8 @@ QPixmap MainWindow::splashImage() const
     if (fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
 
-    // determine the count of splashes
-    std::string splash_path = App::Application::Config()["SplashScreen"];
-    QStringList pixmaps = Gui::BitmapFactory().findIconFiles().filter(QString::fromStdString(splash_path));
-    // divide by 2 since there's two sets (normal and 2x)
-    // minus 1 to ignore the default splash that isn't numbered
-    int splash_count = pixmaps.count()/2 - 1;
-
-    // set a random splash path
-    int random = rand() % splash_count;
-    splash_path += std::to_string(random);
-
     // if no image was found try the config
+    std::string splash_path = App::Application::Config()["SplashScreen"];
     if (splash_image.isNull()) {
         QString path = QString::fromUtf8(splash_path.c_str());
         if (QDir(path).isRelative()) {
@@ -2046,6 +2044,17 @@ QPixmap MainWindow::splashImage() const
     // now try the icon paths
     float pixelRatio (1.0);
     if (splash_image.isNull()) {
+        // determine the count of splashes
+        QStringList pixmaps = Gui::BitmapFactory().findIconFiles().filter(QString::fromStdString(splash_path));
+        // divide by 2 since there's two sets (normal and 2x)
+        // minus 1 to ignore the default splash that isn't numbered
+        int splash_count = pixmaps.count()/2 - 1;
+
+        // set a random splash path
+        if (splash_count > 0) {
+            int random = rand() % splash_count;
+            splash_path += std::to_string(random);
+        }
         if (qApp->devicePixelRatio() > 1.0) {
             // For HiDPI screens, we have a double-resolution version of the splash image
             splash_path += "_2x";
@@ -2118,8 +2127,7 @@ QPixmap MainWindow::splashImage() const
             y = h - 20;
         }
 
-        QColor color;
-        color.setNamedColor(QString::fromLatin1(tc->second.c_str()));
+        QColor color(QString::fromLatin1(tc->second.c_str()));
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
@@ -2129,8 +2137,7 @@ QPixmap MainWindow::splashImage() const
             }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 235), y - 7, version);
-            QColor warningColor;
-            warningColor.setNamedColor(QString::fromLatin1(wc->second.c_str()));
+            QColor warningColor(QString::fromLatin1(wc->second.c_str()));
             if (suffix == QLatin1String("dev") && warningColor.isValid()) {
                 fontVer.setPointSizeF(14.0);
                 painter.setFont(fontVer);
