@@ -103,7 +103,10 @@ bool ImpExpDxfRead::ReadEntitiesSection()
         // TODO: We do end-to-end joining or complete merging as selected by the options.
         for (auto& shapeSet : ShapesToCombine) {
             m_entityAttributes = shapeSet.first;
-            CombineShapes(shapeSet.second, m_entityAttributes.m_Layer == nullptr ? "Compound" : m_entityAttributes.m_Layer->Name.c_str());
+            CombineShapes(shapeSet.second,
+                          m_entityAttributes.m_Layer == nullptr
+                              ? "Compound"
+                              : m_entityAttributes.m_Layer->Name.c_str());
         }
     }
     else {
@@ -655,7 +658,9 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
         auto result = new Layer(name, color, std::move(lineType), layer);
         if (result->DraftLayerView != nullptr) {
             PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", Py_False);
-            PyObject_SetAttrString(result->DraftLayerView, "OverrideShapeAppearanceChildren", Py_False);
+            PyObject_SetAttrString(result->DraftLayerView,
+                                   "OverrideShapeAppearanceChildren",
+                                   Py_False);
         }
 
         // We make our own layer class even if we could not make a layer. MoveToLayer will ignore
