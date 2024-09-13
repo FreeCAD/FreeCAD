@@ -91,7 +91,9 @@ class TechDrawExport DrawUtil
 {
 public:
     static int getIndexFromName(const std::string& geomName);
+    static std::vector<int> getIndexFromName(const std::vector<std::string>& geomNames);
     static std::string getGeomTypeFromName(const std::string& geomName);
+    static bool isGeomTypeConsistent(const std::vector<std::string>& geomNames);
     static std::string makeGeomName(const std::string& geomType, int index);
     static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance = VERTEXTOLERANCE);
     static bool isZeroEdge(TopoDS_Edge e, double tolerance = VERTEXTOLERANCE);

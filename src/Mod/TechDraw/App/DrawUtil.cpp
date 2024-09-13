@@ -101,6 +101,16 @@ using namespace TechDraw;
     }
 }
 
+/*static*/ std::vector<int> DrawUtil::getIndexFromName(const std::vector<std::string>& geomNames)
+{
+    std::vector<int> result;
+    result.reserve(200);
+    for (const std::string& geomName : geomNames) {
+        result.push_back(getIndexFromName(geomName));
+    }
+    return result;
+}
+
 std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
 {
     if (geomName.empty()) {
@@ -124,6 +134,20 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
     }
+}
+
+//! Check if all geomNames are of same geomType
+//! Edge1, Edge2, Edge3 -> true
+//! Edge1, Edge2, Vertex7 -> false
+bool DrawUtil::isGeomTypeConsistent(const std::vector<std::string>& geomNames)
+{
+    std::string reference = getGeomTypeFromName(geomNames.at(0));
+    for (std::string geomName : geomNames) {
+        if (reference != getGeomTypeFromName(geomName)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 std::string DrawUtil::makeGeomName(const std::string& geomType, int index)
