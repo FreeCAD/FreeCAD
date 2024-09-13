@@ -605,6 +605,9 @@ void CmdSketcherMapSketch::activated(int iMsg)
 
             return;
         }
+        std::sort(sketches.begin(), sketches.end(), [](const auto &a, const auto &b) {
+            return QString::fromUtf8(a->Label.getValue()) < QString::fromUtf8(b->Label.getValue());
+        });
 
         bool ok;
         QStringList items;
