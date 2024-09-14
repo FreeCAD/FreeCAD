@@ -378,42 +378,9 @@ Application::Application(bool GUIenabled)
             std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
+        App::GetApplication().signalFinishRestoreDocument.connect(
+            std::bind(&Gui::Application::slotFinishRestoreDocument, this, sp::_1));
         // NOLINTEND
-        App::GetApplication().signalFinishOpenDocument.connect([]() {
-            std::vector<App::Document*> docs;
-            for(auto doc : App::GetApplication().getDocuments()) {
-                if(doc->testStatus(App::Document::RecomputeOnRestore)) {
-                    docs.push_back(doc);
-                    doc->setStatus(App::Document::RecomputeOnRestore, false);
-                }
-            }
-            if(docs.empty() || !App::DocumentParams::getWarnRecomputeOnRestore())
-                return;
-            WaitCursor wc;
-            wc.restoreCursor();
-            auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recompution required"),
-                QObject::tr("Some document(s) require recomputation for migration purpose. "
-                            "It is highly recommended to perform a recomputation before "
-                            "any modification to avoid compatibility problem.\n\n"
-                            "Do you want to recompute now?"),
-                QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
-            if(res != QMessageBox::Yes)
-                return;
-            bool hasError = false;
-            for(auto doc : App::Document::getDependentDocuments(docs,true)) {
-                try {
-                    doc->recompute({},false,&hasError);
-                } catch (Base::Exception &e) {
-                    e.ReportException();
-                    hasError = true;
-                }
-            }
-            if(hasError)
-                QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
-                        QObject::tr("Failed to recompute some document(s).\n"
-                                    "Please check report view for more details."));
-        });
-
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
@@ -1010,6 +977,42 @@ void Application::slotShowHidden(const App::Document& Doc)
 #endif
 
     signalShowHidden(*doc->second);
+}
+
+void Application::slotFinishRestoreDocument(const App::Document& Doc) {
+    Doc;
+    std::vector<App::Document *> docs;
+    for (auto doc: App::GetApplication().getDocuments()) {
+        if (doc->testStatus(App::Document::RecomputeOnRestore)) {
+            docs.push_back(doc);
+            doc->setStatus(App::Document::RecomputeOnRestore, false);
+        }
+    }
+    if (docs.empty())
+        return;
+    WaitCursor wc;
+    wc.restoreCursor();
+    auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recompution required"),
+                                    QObject::tr("Some document(s) require recomputation for migration purpose. "
+                                                "It is highly recommended to perform a recomputation before "
+                                                "any modification to avoid compatibility problem.\n\n"
+                                                "Do you want to recompute now?"),
+                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+    if (res != QMessageBox::Yes)
+        return;
+    bool hasError = false;
+    for (auto doc: App::Document::getDependentDocuments(docs, true)) {
+        try {
+            doc->recompute({}, false, &hasError);
+        } catch (Base::Exception &e) {
+            e.ReportException();
+            hasError = true;
+        }
+    }
+    if (hasError)
+        QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
+                              QObject::tr("Failed to recompute some document(s).\n"
+                                          "Please check report view for more details."));
 }
 
 void Application::slotActiveDocument(const App::Document& Doc)
