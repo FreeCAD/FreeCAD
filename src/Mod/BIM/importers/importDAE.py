@@ -126,49 +126,42 @@ def read(filename):
     #for geom in col.geometries:
     #for geom in col.scene.objects('geometry'):
     for node in col.scene.nodes:
-        if list(node.objects("geometry")):
-            color = None
-            # retrieving material
-            if "}" in node.xmlnode.tag:
-                bt = node.xmlnode.tag.split("}")[0]+"}"
-                gnode = node.xmlnode.find(bt+"instance_geometry")
-                if gnode is not None:
-                    bnode = gnode.find(bt+"bind_material")
-                    if bnode is not None:
-                        tnode = bnode.find(bt+"technique_common")
-                        if tnode is not None:
-                            mnode = tnode.find(bt+"instance_material")
-                            if mnode is not None:
-                                if "target" in mnode:
-                                    mname = mnode.get("target").strip("#")
-                                    for m in col.materials:
-                                        if m.id == mname:
-                                            e = m.effect
-                                            if isinstance(e.diffuse,tuple):
-                                                color = e.diffuse
-            for geom in node.objects("geometry"):
-                for prim in geom.primitives():
-                    #print(prim, dir(prim))
-                    meshdata = []
-                    if hasattr(prim,"triangles"):
-                        tset = prim.triangles()
-                    elif hasattr(prim,"triangleset"):
-                        tset = prim.triangleset()
-                    else:
-                        tset = []
-                    for tri in tset:
-                        face = []
-                        for v in tri.vertices:
-                            v = [x * unit for x in v]
-                            face.append([v[0],v[1],v[2]])
-                        meshdata.append(face)
-                    #print(meshdata)
-                    newmesh = Mesh.Mesh(meshdata)
-                    #print(newmesh)
-                    obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature","Mesh")
-                    obj.Mesh = newmesh
-                    if color and FreeCAD.GuiUp:
+        for child in node.children:
+            if not isinstance(child, collada.scene.GeometryNode):
+                continue
+            geom: collada.scenes.GeometryNode = child.geometry
+            mat_symbols: list[str] = [m.symbol for m in child.materials]
+            for prim in geom.primitives:
+                meshdata = []
+                for tri in prim:
+                    # tri.vertices is a numpy array.
+                    meshdata.append((tri.vertices * unit).tolist())
+                mesh = Mesh.Mesh(meshdata)
+                try:
+                    name = geom.name
+                except AttributeError:
+                    name = geom.id
+                obj = FreeCAD.ActiveDocument.addObject('Mesh::Feature', name)
+                obj.Label = name
+                obj.Mesh = mesh
+                if FreeCAD.GuiUp:
+                    try:
+                        mat_index = mat_symbols.index(prim.material)
+                        material = child.materials[mat_index].target
+                        color = material.effect.diffuse
                         obj.ViewObject.ShapeColor = color
+                    except ValueError:
+                        # Material not found.
+                        pass
+                    except TypeError:
+                        # color is not a tuple but a texture.
+                        pass
+
+    # Print the errors that occurred during reading.
+    if col.errors:
+        FreeCAD.Console.PrintWarning(translate('BIM', 'File was read but some errors occured:') + '\n')
+    for e in col.errors:
+        FreeCAD.Console.PrintWarning(str(e) + '\n')
 
 
 def export(exportList,filename,tessellation=1,colors=None):
