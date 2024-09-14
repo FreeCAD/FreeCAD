@@ -1475,6 +1475,7 @@ Document::readObjects(Base::XMLReader& reader)
 
 void Document::addRecomputeObject(DocumentObject *obj) {
     if(testStatus(Status::Restoring) && obj) {
+        setStatus(Status::RecomputeOnRestore, true);
         d->touchedObjs.insert(obj);
         obj->touch();
     }
