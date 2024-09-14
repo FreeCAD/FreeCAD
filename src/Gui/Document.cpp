@@ -117,6 +117,7 @@ struct DocumentP
     Connection connectStartLoadDocument;
     Connection connectFinishLoadDocument;
     Connection connectShowHidden;
+    Connection connectFinishRestoreDocument;
     Connection connectFinishRestoreObject;
     Connection connectExportObjects;
     Connection connectImportObjects;
@@ -184,7 +185,6 @@ Document::Document(App::Document* pcDocument,Application * app)
         (std::bind(&Gui::Document::slotFinishRestoreDocument, this, sp::_1));
     d->connectShowHidden = App::GetApplication().signalShowHidden.connect
         (std::bind(&Gui::Document::slotShowHidden, this, sp::_1));
-
     d->connectChangePropertyEditor = pcDocument->signalChangePropertyEditor.connect
         (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2));
     d->connectChangeDocument = d->_pcDocument->signalChanged.connect // use the same slot function
