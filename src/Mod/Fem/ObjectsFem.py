@@ -525,8 +525,15 @@ def makeMeshGroup(doc, base_mesh, use_label=False, name="MeshGroup"):
 
 def makeMeshNetgen(doc, name="MeshNetgen"):
     """makeMeshNetgen(document, [name]):
-    makes a Fem MeshShapeNetgenObject object"""
-    obj = doc.addObject("Fem::FemMeshShapeNetgenObject", name)
+    makes a Netgen FEM mesh object"""
+    obj = doc.addObject("Fem::FemMeshShapeBaseObjectPython", name)
+    from femobjects import mesh_netgen
+
+    mesh_netgen.MeshNetgen(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_mesh_netgen
+
+        view_mesh_netgen.VPMeshNetgen(obj.ViewObject)
     return obj
 
 
