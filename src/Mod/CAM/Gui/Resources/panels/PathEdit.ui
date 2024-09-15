@@ -1602,7 +1602,6 @@ Default: &quot;5mm&quot;</string>
  </tabstops>
  <resources>
   <include location="../../../../../Gui/Icons/resource.qrc"/>
-  <include location="../../../../Material/Resources/Material.qrc"/>
   <include location="../../../../Material/Gui/Resources/Material.qrc"/>
   <include location="../Path.qrc"/>
  </resources>
