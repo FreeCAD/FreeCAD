@@ -35,7 +35,9 @@ else:
 
 class TestPathDrillable(PathTestUtils.PathTestBase):
     def setUp(self):
+        App.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         self.doc = App.open(App.getHomePath() + "/Mod/CAM/Tests/Drilling_1.FCStd")
+        App.ConfigSet("SuppressRecomputeRequiredDialog", "")
         self.obj = self.doc.getObject("Pocket011")
 
     def tearDown(self):

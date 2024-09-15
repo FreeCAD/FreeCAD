@@ -42,7 +42,9 @@ from Tests.PathTestUtils import PathTestBase
 class TestCAMSanity(PathTestBase):
     @classmethod
     def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
         cls.job = cls.doc.getObject("Job")
 
     @classmethod

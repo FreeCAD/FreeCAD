@@ -84,7 +84,9 @@ def wireMarkers(wire):
 class TestPathOpUtil(PathTestUtils.PathTestBase):
     @classmethod
     def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.openDocument(DOC)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     @classmethod
     def tearDownClass(cls):
