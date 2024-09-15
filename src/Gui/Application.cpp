@@ -979,8 +979,8 @@ void Application::slotShowHidden(const App::Document& Doc)
     signalShowHidden(*doc->second);
 }
 
-void Application::slotFinishRestoreDocument(const App::Document& Doc) {
-    Doc;
+void Application::slotFinishRestoreDocument([[maybe_unused]] const App::Document& Doc) {
+    // Quietly gnore the doc parameter and check across all documents.
     std::vector<App::Document *> docs;
     for (auto doc: App::GetApplication().getDocuments()) {
         if (doc->testStatus(App::Document::RecomputeOnRestore)) {
@@ -988,14 +988,19 @@ void Application::slotFinishRestoreDocument(const App::Document& Doc) {
             doc->setStatus(App::Document::RecomputeOnRestore, false);
         }
     }
-    if (docs.empty())
+    // Certain tests want to use very old .FCStd files.  We should not prompt during those tests, so this
+    // allows them to 'FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")`
+    const std::map<std::string, std::string>& Map = App::Application::Config();
+    auto value = Map.find("SuppressRecomputeRequiredDialog");
+    bool skip = value not_eq Map.end() and not value->second.empty();   // Any non empty string is true.
+    if (docs.empty() || skip )
         return;
     WaitCursor wc;
     wc.restoreCursor();
-    auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recompution required"),
-                                    QObject::tr("Some document(s) require recomputation for migration purpose. "
+    auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recomputation required"),
+                                    QObject::tr("Some document(s) require recomputation for migration purposes. "
                                                 "It is highly recommended to perform a recomputation before "
-                                                "any modification to avoid compatibility problem.\n\n"
+                                                "any modification to avoid compatibility problems.\n\n"
                                                 "Do you want to recompute now?"),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
     if (res != QMessageBox::Yes)

@@ -131,7 +131,7 @@ public:
     boost::signals2::signal<void ()> signalRefreshWorkbenches;
     /// signal on show hidden items
     boost::signals2::signal<void (const Gui::Document&)> signalShowHidden;
-    /// signal on document open complete
+    /// signal on document restore complete
     boost::signals2::signal<void (const Gui::Document&)> signalFinishRestoreDocument;
     /// signal on activating view
     boost::signals2::signal<void (const Gui::MDIView*)> signalActivateView;
