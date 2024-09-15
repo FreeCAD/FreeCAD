@@ -86,6 +86,8 @@ class TestFileNameGenerator(unittest.TestCase):
         # cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
         # cls.job = cls.doc.getObject("Job")
 
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
+
         cls.testfile = FreeCAD.getHomePath() + "Mod/CAM/Tests/test_filenaming.fcstd"
         cls.testfilepath, cls.testfilename = os.path.split(cls.testfile)
         cls.testfilename, cls.ext = os.path.splitext(cls.testfilename)
@@ -98,6 +100,7 @@ class TestFileNameGenerator(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     # def test010(self):
     #     self.job.PostProcessorOutputFile = ""
@@ -272,12 +275,14 @@ class TestFileNameGenerator(unittest.TestCase):
 class TestResolvingPostProcessorName(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
 
     @classmethod
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     def setUp(self):
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
@@ -327,12 +332,14 @@ class TestPostProcessorFactory(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
 
     @classmethod
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     def setUp(self):
         pass
@@ -359,12 +366,14 @@ class TestPostProcessorClass(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/Tests/boxtest.fcstd")
         cls.job = cls.doc.getObject("Job")
 
     @classmethod
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     def setUp(self):
         pass
@@ -603,8 +612,10 @@ class TestBuildPostList(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.testfile = FreeCAD.getHomePath() + "Mod/CAM/Tests/test_filenaming.fcstd"
         cls.doc = FreeCAD.open(cls.testfile)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
         cls.job = cls.doc.getObjectsByLabel("MainJob")[0]
 
     @classmethod

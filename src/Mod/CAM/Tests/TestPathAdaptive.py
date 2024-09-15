@@ -52,7 +52,9 @@ class TestPathAdaptive(PathTestBase):
     def initClass(cls):
         # Open existing FreeCAD document with test geometry
         cls.needsInit = False
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "Mod/CAM/Tests/test_adaptive.fcstd")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
         # Create Job object, adding geometry objects from file opened above
         cls.job = PathJob.Create("Job", [cls.doc.Fusion], None)
