@@ -596,6 +596,38 @@ Application::~Application()
 // creating std commands
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+namespace
+{
+QByteArray LoadAndInsertObjectCode(
+    const std::string& unicodepath,
+    const char* Module,
+    const char* methodName,
+    const char* DocName = nullptr
+)
+{
+    return QStringLiteral(R"raw(
+try:
+    docName = "%1"
+    importArgs = []
+    importKwargs = {}
+
+    if docName:
+        importArgs.append(docName)
+    if hasattr(%2, "importOptions"):
+        importKwargs["options"] = %2.importOptions(u"%3")
+
+    %2.%4(u"%3", *importArgs, **importKwargs)
+except RuntimeError as e:
+    if not e.message.lower() == "user cancelled import":
+        raise
+)raw")
+    .arg(QString::fromUtf8(DocName))
+    .arg(QString::fromUtf8(Module))
+    .arg(QString::fromStdString(unicodepath))
+    .arg(QString::fromUtf8(methodName)).toUtf8();
+}
+}
+
 void Application::open(const char* FileName, const char* Module)
 {
     WaitCursor wc;
@@ -639,16 +671,7 @@ void Application::open(const char* FileName, const char* Module)
                 // issue module loading
                 Command::doCommand(Command::App, "import %s", Module);
 
-                // check for additional import options
-                std::stringstream str;
-                str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                    << "    options = " << Module << ".importOptions(u\"" << unicodepath << "\")\n"
-                    << "    " << Module << ".open(u\"" << unicodepath << "\", options = options)\n"
-                    << "else:\n"
-                    << "    " << Module << ".open(u\"" << unicodepath << "\")\n";
-
-                std::string code = str.str();
-                Gui::Command::runCommand(Gui::Command::App, code.c_str());
+                Gui::Command::runCommand(Gui::Command::App, LoadAndInsertObjectCode(unicodepath, Module, "open"));
 
                 // ViewFit
                 if (sendHasMsgToActiveView("ViewFit")) {
@@ -713,30 +736,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                // check for additional import options
-                std::stringstream str;
-                if (DocName) {
-                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                        << "    options = " << Module << ".importOptions(u\"" << unicodepath
-                        << "\")\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName
-                        << "\", options = options)\n"
-                        << "else:\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName
-                        << "\")\n";
-                }
-                else {
-                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                        << "    options = " << Module << ".importOptions(u\"" << unicodepath
-                        << "\")\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath
-                        << "\", options = options)\n"
-                        << "else:\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\")\n";
-                }
-
-                std::string code = str.str();
-                Gui::Command::runCommand(Gui::Command::App, code.c_str());
+                Gui::Command::runCommand(Gui::Command::App, LoadAndInsertObjectCode(unicodepath, Module, "insert", DocName));
 
                 // Commit the transaction
                 if (doc && !pendingCommand) {
