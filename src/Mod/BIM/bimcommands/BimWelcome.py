@@ -43,7 +43,6 @@ class BIM_Welcome:
     def Activated(self):
         from PySide import QtCore, QtGui
 
-        # load dialog
         self.form = FreeCADGui.PySideUic.loadUi(":ui/dialogWelcome.ui")
 
         # handle the tutorial links
