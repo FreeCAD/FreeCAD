@@ -265,9 +265,11 @@ App::DocumentObjectExecReturn* SketchObject::execute()
         Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
+        // 9/16/24: We used to clear the constraints here, but we no longer want to do that
+        // as missing reference geometry is not considered an error while we sort out sketcher UI.
+        // Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
         // we cannot trust the constraints of external geometries, so remove them
-        delConstraintsToExternal();
+        //  delConstraintsToExternal();
     }
 
     // This includes a regular solve including full geometry update, except when an error
@@ -8351,7 +8353,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
 
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
-    // ExternalGeometry is wiped out.
+    // ExternalGeometry is wiped out.!refSet.count(egf->getRef())
     for(auto &geo : ExternalGeo.getValues()) {
         auto egf = ExternalGeometryFacade::getFacade(geo);
         if(egf->getRef().size() && egf->testFlag(ExternalGeometryExtension::Missing)) {
@@ -9135,7 +9137,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
         if(!refSet.count(egf->getRef())) {
             FC_ERR( "External geometry " << getFullName() << ".e" << egf->getId()
                     << " missing reference: " << egf->getRef());
-            hasError = true;
+             hasError = true;
             egf->setFlag(ExternalGeometryExtension::Missing,true);
         } else {
             egf->setFlag(ExternalGeometryExtension::Missing,false);
