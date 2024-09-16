@@ -130,7 +130,7 @@ private:
             PartGui::TaskImportStep dlg(Gui::getMainWindow());
             if (dlg.showDialog()) {
                 if (!dlg.exec()) {
-                    throw Py::RuntimeError("User cancelled import");
+                    throw Py::Exception(Base::PyExc_FC_AbortIOException, "User cancelled import");
                 }
             }
             auto stepSettings = dlg.getSettings();

@@ -617,9 +617,8 @@ try:
         importKwargs["options"] = %2.importOptions(u"%3")
 
     %2.%4(u"%3", *importArgs, **importKwargs)
-except RuntimeError as e:
-    if not e.message.lower() == "user cancelled import":
-        raise
+except PyExc_FC_AbortIOException:
+    pass
 )raw")
     .arg(QString::fromUtf8(DocName))
     .arg(QString::fromUtf8(Module))
