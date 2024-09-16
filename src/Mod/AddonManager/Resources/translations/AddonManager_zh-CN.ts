@@ -2151,7 +2151,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../addonmanager_macro.py" line="374"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
-      <translation type="unfinished">Unable to fetch macro-specified file {} from {}</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="382"/>

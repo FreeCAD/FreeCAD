@@ -3154,8 +3154,8 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Ako je označeno, sastavljeni objekat će se sjediniti
+tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

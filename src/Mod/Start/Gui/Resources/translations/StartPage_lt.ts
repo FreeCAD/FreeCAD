@@ -59,87 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="208"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Empty file</source>
       <translation>Tuščias failas</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Sukurti tuščią FreeCad failą</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="211"/>
+      <location filename="../../StartView.cpp" line="215"/>
       <source>Open File</source>
       <translation>Atidaryti failą</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="216"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Atverti esamą CAD failą arba 3D modelį</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Parametric Part</source>
       <translation>Parametrinė detalė</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="219"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Sukurkite detalę naudodami Detalių projektavimo darbastalį</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Assembly</source>
       <translation>Surinkimas</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Create an assembly project</source>
       <translation>Sukurti surinkimo projektą</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="224"/>
       <source>2D Draft</source>
       <translation>Plokščias juodraštis</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Sukurkite brėžinio juodraštį naudodami Juodraščio darbastalį</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Architektūra</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Create an architectural project</source>
       <translation>Sukurkite architektūrinį projektą</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="488"/>
+      <location filename="../../StartView.cpp" line="492"/>
       <source>New File</source>
       <translation>Naujas failas</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="489"/>
+      <location filename="../../StartView.cpp" line="493"/>
       <source>Examples</source>
       <translation>Pavyzdžiai</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="490"/>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>Recent Files</source>
       <translation>Paskiausiai naudoti failai</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="493"/>
+      <location filename="../../StartView.cpp" line="497"/>
       <source>Open first start setup</source>
       <translation type="unfinished">Open first start setup</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="495"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Pakartotinai neberodyti šio pradžios puslapio</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="482"/>
+      <location filename="../../StartView.cpp" line="486"/>
       <source>Start</source>
       <translation>Pradėti</translation>
     </message>

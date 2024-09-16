@@ -2584,7 +2584,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner Transition</source>
-      <translation>코너 전환</translation>
+      <translation>모퉁이 전환</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
@@ -2594,12 +2594,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation>각진 모서리</translation>
+      <translation>각진 모퉁이</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round Corner</source>
-      <translation>둥근 모서리</translation>
+      <translation>둥근 모퉁이</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
@@ -5293,7 +5293,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="560"/>
       <source>Polygon of prism is invalid, must have 3 or more sides</source>
-      <translation>각기둥의 다각형이 잘못되었습니다. 측면이 3개 이상이어야 합니다</translation>
+      <translation>각기둥의 다각형이 잘못되었습니다. 변이 3개 이상이어야 합니다</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="562"/>

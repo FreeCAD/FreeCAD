@@ -1396,12 +1396,12 @@
     <message>
       <location filename="../../Command.cpp" line="1737"/>
       <source>Offset:</source>
-      <translation>Separació:</translation>
+      <translation>Equidistància:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1738"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Eines per compensar les formes (construir formes paral·leles)</translation>
+      <translation>Eines per a l'equidistància de les formes (construir formes paral·leles)</translation>
     </message>
   </context>
   <context>
@@ -1742,12 +1742,12 @@
     <message>
       <location filename="../../Command.cpp" line="1625"/>
       <source>3D Offset...</source>
-      <translation>Offset 3D...</translation>
+      <translation>Equidistància 3D...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1626"/>
       <source>Utility to offset in 3D</source>
-      <translation>Utilitat per a Offset ò separar en 3D</translation>
+      <translation>Utilitat per a l'equidistància 3D</translation>
     </message>
   </context>
   <context>
@@ -1760,12 +1760,12 @@
     <message>
       <location filename="../../Command.cpp" line="1682"/>
       <source>2D Offset...</source>
-      <translation>2D Offset... ( Compensació)...</translation>
+      <translation>Equidistància 2D...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1683"/>
       <source>Utility to offset planar shapes</source>
-      <translation>Utilitat per a separar les formes d'un pla</translation>
+      <translation>Utilitat per a l'equidistància de les formes d'un pla</translation>
     </message>
   </context>
   <context>
@@ -2163,12 +2163,12 @@ de projecció.</translation>
     <message>
       <location filename="../../Command.cpp" line="1648"/>
       <source>Make Offset</source>
-      <translation>Desplassar, Ofsset</translation>
+      <translation>Fer equidistància</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1706"/>
       <source>Make 2D Offset</source>
-      <translation>Desplassar 2D</translation>
+      <translation>Fer equidistància 2D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1886"/>
@@ -2297,7 +2297,7 @@ de projecció.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Desplaçament de l'adjunt (en coordenades locals):</translation>
+      <translation>Equidistància de l'adjunt (en coordenades locals):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -3156,8 +3156,8 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Si està marcat, la fusió composta es farà
+durant la lectura del fitxer (detalls més lents però més alts).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -4509,7 +4509,7 @@ s'utilitzarà el vector normal del pla d'esbós</translation>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
@@ -4833,7 +4833,7 @@ només seran visibles els talls creats</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Desplaçament de l'adjunt (en coordenades locals):</translation>
+      <translation>Equidistància de l'adjunt (en coordenades locals):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4904,7 +4904,7 @@ de l'objecte que s'adjunta.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip side of attachment and offset</source>
-      <translation>Invertir de costat l'adjunt i desplassar</translation>
+      <translation>Invertir de costat l'adjunt i desplaçar</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
@@ -4939,7 +4939,7 @@ de l'objecte que s'adjunta.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="339"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Òfset adjunt (inactiu - no adjunts):</translation>
+      <translation>Equidistància adjunt (inactiu - no adjunts):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="636"/>
@@ -4969,7 +4969,7 @@ de l'objecte que s'adjunta.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="766"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation>No es pot editar perquè la rotació està restringida per la superposiciò de les expressions.</translation>
+      <translation>No es pot editar perquè la rotació Equidistància adjunt està restringida per les expressions.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="832"/>
@@ -5280,7 +5280,7 @@ Comprovacions d'operació booleana individual:</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -6301,12 +6301,12 @@ Crearà un "Filtre compost" per a cada forma.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Desplaçament de l'adjunt (en coordenades locals):</translation>
+      <translation>Equidistància de l'adjunt (en coordenades locals):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Òfset adjunt (inactiu - no adjunts):</translation>
+      <translation>Equidistància adjunt (inactiu - no adjunts):</translation>
     </message>
   </context>
   <context>

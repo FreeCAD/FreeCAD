@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1522"/>
+      <location filename="../../../JointObject.py" line="1554"/>
       <source>Distance</source>
       <translation>Distància</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1524"/>
+      <location filename="../../../JointObject.py" line="1556"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -265,17 +265,17 @@
       <translation>Corretja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1379"/>
+      <location filename="../../../JointObject.py" line="1409"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Necessites seleccionar 2 elements de 2 peces separades.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1526"/>
+      <location filename="../../../JointObject.py" line="1558"/>
       <source>Radius 1</source>
       <translation>Radi 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1528"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Pitch radius</source>
       <translation>Radi de pas</translation>
     </message>
@@ -383,119 +383,121 @@
       <translation>El tipus de juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="210"/>
-      <location filename="../../../JointObject.py" line="474"/>
+      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="475"/>
       <source>The first reference of the joint</source>
       <translation>La primera referència de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
+      <location filename="../../../JointObject.py" line="222"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
       <translation>Aquest és el sistema de coordenades local de la referència 1 de l'objecte, que s'utilitzarà per a la juntura.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="241"/>
-      <location filename="../../../JointObject.py" line="497"/>
+      <location filename="../../../JointObject.py" line="244"/>
+      <location filename="../../../JointObject.py" line="518"/>
+      <source>This is the attachment offset of the first connector of the joint.</source>
+      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="253"/>
+      <location filename="../../../JointObject.py" line="498"/>
       <source>The second reference of the joint</source>
       <translation>La segona referència de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="252"/>
+      <location filename="../../../JointObject.py" line="264"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
       <translation>Aquest és el sistema de coordenades local de la referència 2 de l'objecte, que s'utilitzarà per a la juntura.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="430"/>
+      <location filename="../../../JointObject.py" line="286"/>
+      <location filename="../../../JointObject.py" line="528"/>
+      <source>This is the attachment offset of the second connector of the joint.</source>
+      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="431"/>
       <source>The first object of the joint</source>
       <translation>El primer objecte de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="232"/>
+      <location filename="../../../JointObject.py" line="233"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Això impedeix recalcular Placement1, permetent el posicionament personalitzat de la ubicació.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="449"/>
+      <location filename="../../../JointObject.py" line="450"/>
       <source>The second object of the joint</source>
       <translation>El segon objecte de la juntura</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="263"/>
+      <location filename="../../../JointObject.py" line="275"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Això impedeix recalcular Placement2, permetent el posicionament personalitzat de la ubicació.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="275"/>
+      <location filename="../../../JointObject.py" line="298"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Aquest és la distància de la juntura. Només és utilitzada per la juntura de Distància, de Pinyó-Cremallera (radi de pas), de Cargol, d'Engranatges i de Corretja (radi 1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="286"/>
+      <location filename="../../../JointObject.py" line="309"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Aquesta és la segona distància de la juntura. Només és utilitzada per la juntura d'Engranatge per a desar el segon radi.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="297"/>
-      <source>This is the rotation of the joint.</source>
-      <translation>Aquest és la rotació de la juntura.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="308"/>
-      <source>This is the offset vector of the joint.</source>
-      <translation>Aquest és el vector desplaçament de la juntura.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="319"/>
+      <location filename="../../../JointObject.py" line="320"/>
       <source>This indicates if the joint is active.</source>
       <translation>Això indica si la juntura és activa.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="331"/>
+      <location filename="../../../JointObject.py" line="332"/>
       <source>Enable the minimum length limit of the joint.</source>
       <translation>Habilita el límit de longitud mínima de la juntura.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="343"/>
+      <location filename="../../../JointObject.py" line="344"/>
       <source>Enable the maximum length limit of the joint.</source>
       <translation>Habilita el límit de longitud màxima de la juntura.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="355"/>
+      <location filename="../../../JointObject.py" line="356"/>
       <source>Enable the minimum angle limit of the joint.</source>
       <translation>Habilita el límit de l'angle mínim de la juntura.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="367"/>
+      <location filename="../../../JointObject.py" line="368"/>
       <source>Enable the minimum length of the joint.</source>
       <translation>Habilita el límit de l'angle màxim de la juntura.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="379"/>
+      <location filename="../../../JointObject.py" line="380"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Aquest és el límit mínim de la longitud entre els dos sistemes de coordenades (al llarg de l'eix Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="390"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Aquest és el límit màxim de la longitud entre els dos sistemes de coordenades (al llarg de l'eix Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="401"/>
+      <location filename="../../../JointObject.py" line="402"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Aquest és el límit mínim de l'angle entre els dos sistemes de coordenades (entre el seu eix X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="412"/>
+      <location filename="../../../JointObject.py" line="413"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Aquest és el límit màxim de l'angle entre els dos sistemes de coordenades (entre el seu eix X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1035"/>
+      <location filename="../../../JointObject.py" line="1065"/>
       <source>The object to ground</source>
       <translation>L'objecte a bloquejar</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1047"/>
+      <location filename="../../../JointObject.py" line="1077"/>
       <source>This is where the part is grounded.</source>
       <translation>Aquest és on la peça és bloquejada.</translation>
     </message>
@@ -536,7 +538,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="89"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="113"/>
@@ -660,17 +662,17 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objecte està associat a una o més juntures.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="182"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vols moure l'objecte i eliminar les juntures associades?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="854"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="856"/>
       <source>Move part</source>
       <translation>Moure peça</translation>
     </message>

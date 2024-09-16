@@ -347,7 +347,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to clipboard</source>
-      <translation>클립보드에 복사하기</translation>
+      <translation>오림판에 복사하기</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>

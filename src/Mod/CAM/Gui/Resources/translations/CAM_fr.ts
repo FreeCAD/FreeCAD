@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Area workplane</source>
-      <translation>Plan de travail de la zone</translation>
+      <translation>Zone du plan de travail</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="144"/>
@@ -1379,7 +1379,7 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</source>
-      <translation>Spécifier si le surfaçage doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée) ou si la boîte englobante doit être surfaçée.
+      <translation>Spécifier si le surfaçage doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée) ou si la boîte englobante doit être surfacée.
 
 Cette dernière option peut être utilisée pour le surfaçage de l'ensemble de la zone du brut afin de garantir des hauteurs uniformes pour les opérations suivantes.</translation>
     </message>
@@ -3127,7 +3127,9 @@ Si le rayon est trop grand pour la forme de l'attache, il est réduit au rayon m
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
-      <translation>Liste des attaches actuelles. Pour modifier des coordonnées, double-cliquer ou par le bouton Éditer. Les attaches sont automatiquement désactivées si elles se chevauchent avec l'attache précédente ou si elles ne se trouvent pas sur la polyligne de base.</translation>
+      <translation>Liste des attaches actuelles.
+Les coordonnées peuvent être modifiées en double-cliquant ou en utilisant le bouton Éditer.
+Les attaches sont automatiquement désactivées si elles se chevauchent avec l'attache précédente ou si elles ne se trouvent pas sur la polyligne de base.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
@@ -3928,7 +3930,7 @@ Valeur par défaut : "5 mm"</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
       <source>If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the &apos;order by&apos; property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.</source>
-      <translation>Si plusieurs systèmes de coordonnées sont utilisés, la valeur TRUE permet d'écrire le G-code dans plusieurs fichiers de sortie, comme le prévoit la propriété "Trier par".
+      <translation>Si plusieurs systèmes de coordonnées sont utilisés, la valeur TRUE permet d'écrire le G-code dans plusieurs fichiers de sortie, comme le prévoit la propriété "Trier par". 
 Par exemple, si le classement par outil, le premier fichier de sortie sera pour la première fixation et un fichier séparé pour la seconde.</translation>
     </message>
     <message>
@@ -4222,7 +4224,7 @@ Par défaut : 3 mm</translation>
       <translation>L'angle du bord coupant (%.2f) entraîne une longueur négative de la pointe de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation>Sauvegarder le rapport de contrôle de l'outil Rechercher des erreurs</translation>
     </message>
@@ -5571,7 +5573,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="327"/>
-      <source>Cutoff for removing colinear segments (degrees).
+      <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
       <translation>Seuil de décision pour la suppression des segments colinéaires (degrés), par défaut = 10.0.</translation>
     </message>
@@ -5613,7 +5615,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="51"/>
       <source>Pattern method</source>
-      <translation>Méthode de motif</translation>
+      <translation>Méthode par gabarit</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="60"/>
@@ -6955,12 +6957,12 @@ Annulation de la création de l'opération</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema:
+      <source>The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
@@ -7038,7 +7040,7 @@ Par exemple :
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b&gt;Remarque &lt;/b&gt;: cette boîte de dialogue montre les commandes de parcours avec les unités de base de FreeCAD (mm/s).
 Les valeurs seront converties dans l'unité souhaitée pendant le post-traitement.</translation>
@@ -7356,7 +7358,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not
+      <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
       <translation>L'outil {} est un vieil outil. Les vieux outils ne sont pas pris en charge par l'outil Rechercher des erreurs.</translation>
     </message>
@@ -8497,10 +8499,10 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {}
+ {} 
  Create them?</source>
       <translation>Le répertoire de travail des outils coupants {} a besoin de ces sous-répertoires :
- {}
+ {} 
  Voulez-vous les créer ?</translation>
     </message>
     <message>
@@ -8509,34 +8511,34 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <translation>Copier les fichiers des exemples dans le nouveau répertoire {} ?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Table d'outils en JSON (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation>Enregistrer la bibliothèque d'outils coupants</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Forme</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>Table d'outils LinuxCNC (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation>Table d'outils CAMotics (*.json)</translation>
     </message>

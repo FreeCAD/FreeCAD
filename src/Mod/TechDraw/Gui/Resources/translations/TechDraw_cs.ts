@@ -2011,7 +2011,7 @@ Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</
     <message>
       <location filename="../../Command.cpp" line="1841"/>
       <source>Save page to DXF</source>
-      <translation type="unfinished">Save page to DXF</translation>
+      <translation>Uložit stránku do DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
@@ -2071,158 +2071,158 @@ Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</
       <location filename="../../CommandCreateDims.cpp" line="1038"/>
       <location filename="../../CommandCreateDims.cpp" line="1059"/>
       <source>Add Extent dimension</source>
-      <translation type="unfinished">Add Extent dimension</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="798"/>
       <source>Add Area dimension</source>
-      <translation type="unfinished">Add Area dimension</translation>
+      <translation>Vytvoř kótu velikosti plochy</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="809"/>
       <location filename="../../CommandCreateDims.cpp" line="1104"/>
       <location filename="../../CommandCreateDims.cpp" line="1205"/>
       <source>Add Distance dimension</source>
-      <translation type="unfinished">Add Distance dimension</translation>
+      <translation>Vytvoř kótu vzdálenosti</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="818"/>
       <location filename="../../CommandCreateDims.cpp" line="924"/>
       <location filename="../../CommandCreateDims.cpp" line="1185"/>
       <source>Add DistanceX Chamfer dimension</source>
-      <translation type="unfinished">Add DistanceX Chamfer dimension</translation>
+      <translation>Vytvoř kótu X-rozměru sražené hrany</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="829"/>
       <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Add horizontal chain dimensions</source>
-      <translation type="unfinished">Add horizontal chain dimensions</translation>
+      <translation>Vytvoř horizontální řetězovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="834"/>
       <location filename="../../CommandCreateDims.cpp" line="861"/>
       <source>Add horizontal coordinate dimensions</source>
-      <translation type="unfinished">Add horizontal coordinate dimensions</translation>
+      <translation>Vytvoř horizontální souřadnicovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="838"/>
       <location filename="../../CommandCreateDims.cpp" line="842"/>
       <location filename="../../CommandCreateDims.cpp" line="846"/>
       <source>Add 3-points angle dimension</source>
-      <translation type="unfinished">Add 3-points angle dimension</translation>
+      <translation>Vytvoř kótu úhlu ze tří bodů</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="856"/>
       <source>Add horizontal chain dimension</source>
-      <translation type="unfinished">Add horizontal chain dimension</translation>
+      <translation>Vytvoř horizontální řetězovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="871"/>
       <source>Add point to line Distance dimension</source>
-      <translation type="unfinished">Add point to line Distance dimension</translation>
+      <translation>Vytvoř kótu od čáry k bodu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="882"/>
       <location filename="../../CommandCreateDims.cpp" line="897"/>
       <location filename="../../CommandCreateDims.cpp" line="912"/>
       <source>Add length dimension</source>
-      <translation type="unfinished">Add length dimension</translation>
+      <translation>Vytvoř délkovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="935"/>
       <source>Add Angle dimension</source>
-      <translation type="unfinished">Add Angle dimension</translation>
+      <translation>Vytvoř úhlovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="950"/>
       <source>Add circle to line Distance dimension</source>
-      <translation type="unfinished">Add circle to line Distance dimension</translation>
+      <translation>Vytvoř kótu mezi kružnicí a čárou</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="965"/>
       <source>Add ellipse to line Distance dimension</source>
-      <translation type="unfinished">Add ellipse to line Distance dimension</translation>
+      <translation>Vytvoř kótu mezi elipsou a čárou</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1089"/>
       <source>Add Radius dimension</source>
-      <translation type="unfinished">Add Radius dimension</translation>
+      <translation>Vytvoř kótu poloměru</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="989"/>
       <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>Add Arc Length dimension</source>
-      <translation type="unfinished">Add Arc Length dimension</translation>
+      <translation>Vytvoř kótu délky oblouku</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="999"/>
       <source>Add circle to circle Distance dimension</source>
-      <translation type="unfinished">Add circle to circle Distance dimension</translation>
+      <translation>Vytvoř kótu vzdálenosti mezi dvěma kružnicemi</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1033"/>
       <source>Add ellipse to ellipse Distance dimension</source>
-      <translation type="unfinished">Add ellipse to ellipse Distance dimension</translation>
+      <translation>Vytvoř kótu vzdálenosti mezi dvěma elipsami</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1048"/>
       <source>Add edge length dimension</source>
-      <translation type="unfinished">Add edge length dimension</translation>
+      <translation>Vytvoř kótu délky okraje</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1093"/>
       <source>Add Diameter dimension</source>
-      <translation type="unfinished">Add Diameter dimension</translation>
+      <translation>Vytvoř kótu průměru</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1188"/>
       <source>Add DistanceX dimension</source>
-      <translation type="unfinished">Add DistanceX dimension</translation>
+      <translation>Vytvoř kótu horizontální vzdálenosti</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1195"/>
       <source>Add DistanceY Chamfer dimension</source>
-      <translation type="unfinished">Add DistanceY Chamfer dimension</translation>
+      <translation>Vytvoř kótu Y-rozměru sražené hrany</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1198"/>
       <source>Add DistanceY dimension</source>
-      <translation type="unfinished">Add DistanceY dimension</translation>
+      <translation>Vytvoř kótu vertikální vzdálenosti</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1243"/>
       <source>Add DistanceX extent dimension</source>
-      <translation type="unfinished">Add DistanceX extent dimension</translation>
+      <translation>Vytvoř X-rozsah kóty</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1248"/>
       <source>Add DistanceY extent dimension</source>
-      <translation type="unfinished">Add DistanceY extent dimension</translation>
+      <translation>Vytvoř Y-rozsah kóty</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1290"/>
       <source>Add horizontal coord dimensions</source>
-      <translation type="unfinished">Add horizontal coord dimensions</translation>
+      <translation>Vytvoř horizontální souřadnice</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1297"/>
       <source>Add vertical chain dimensions</source>
-      <translation type="unfinished">Add vertical chain dimensions</translation>
+      <translation>Vytvoř vertikální řetězovou kótu </translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1301"/>
       <source>Add vertical coord dimensions</source>
-      <translation type="unfinished">Add vertical coord dimensions</translation>
+      <translation>Vytvoř vertikální souřadnice</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1307"/>
       <source>Add oblique chain dimensions</source>
-      <translation type="unfinished">Add oblique chain dimensions</translation>
+      <translation>Vytvoř šikmou řetězovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1311"/>
       <source>Add oblique coord dimensions</source>
-      <translation type="unfinished">Add oblique coord dimensions</translation>
+      <translation>Vytvoř šikmou souřadnicovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1383"/>
@@ -2262,7 +2262,7 @@ Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</
       <translation>Vytvořit obrázek</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="509"/>
+      <location filename="../../QGIViewBalloon.cpp" line="500"/>
       <source>Drag Balloon</source>
       <translation>Táhnout balon</translation>
     </message>
@@ -2272,7 +2272,7 @@ Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</
       <translation>Táhnout kótu</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="572"/>
+      <location filename="../../QGSPage.cpp" line="570"/>
       <source>Create Balloon</source>
       <translation>Vytvořit balon</translation>
     </message>
@@ -2289,7 +2289,7 @@ Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="193"/>
       <source>Create Cosmetic Circle</source>
-      <translation type="unfinished">Create Cosmetic Circle</translation>
+      <translation>Vytvoř kosmetickou kružnici</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="267"/>
@@ -2420,67 +2420,67 @@ Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1278"/>
       <source>Create Horiz Chain Dim</source>
-      <translation type="unfinished">Create Horiz Chain Dim</translation>
+      <translation>Vytvoř rozměr v horizontální řetětové kótě</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1344"/>
       <source>Create Vert Chain Dim</source>
-      <translation type="unfinished">Create Vert Chain Dim</translation>
+      <translation>Vytvoř rozměr ve vertikální řetězové kótě</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1410"/>
       <source>Create Oblique Chain Dim</source>
-      <translation type="unfinished">Create Oblique Chain Dim</translation>
+      <translation>Vytvoř rozměr v šikmé řetězové kótě</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1649"/>
       <source>Create Horiz Coord Dim</source>
-      <translation type="unfinished">Create Horiz Coord Dim</translation>
+      <translation>Vytvoř horizontální rozměr pro souřadnicovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1721"/>
       <source>Create Vert Coord Dim</source>
-      <translation type="unfinished">Create Vert Coord Dim</translation>
+      <translation>Vytvoř vertikální rozměr pro vertikální souřadnicovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1795"/>
       <source>Create Oblique Coord Dim</source>
-      <translation type="unfinished">Create Oblique Coord Dim</translation>
+      <translation>Vytvoř rozměr pro šikmou souřadnicovou kótu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2048"/>
       <source>Create Horiz Chamfer Dim</source>
-      <translation type="unfinished">Create Horiz Chamfer Dim</translation>
+      <translation>Vytvoř horizontální rozměr pro sraženou hranu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>Create Vert Chamfer Dim</source>
-      <translation type="unfinished">Create Vert Chamfer Dim</translation>
+      <translation>Vytvoř vertikální rozměr pro sraženou hranu</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2303"/>
       <source>Create Arc Length Dim</source>
-      <translation type="unfinished">Create Arc Length Dim</translation>
+      <translation>Vytvoř rozměr délky oblouku</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="107"/>
       <source>TechDraw Hole Circle</source>
-      <translation type="unfinished">TechDraw Hole Circle</translation>
+      <translation>TechDraw kružnice díry</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="128"/>
       <source>Bolt Circle Centerlines</source>
-      <translation type="unfinished">Bolt Circle Centerlines</translation>
+      <translation>Osová kružnice šroubů</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="206"/>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>Osová kružnice</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="209"/>
       <source>Circle Centerlines</source>
-      <translation type="unfinished">Circle Centerlines</translation>
+      <translation>Osová kružnice</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="387"/>
@@ -3549,28 +3549,28 @@ Bez výběru umožňuje prohlížeč souborů vybrat soubor SVG nebo obrázek.</
       <translation>V dokumentu nejsou žádné stránky s výkresy.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="315"/>
+      <location filename="../../MDIViewPage.cpp" line="318"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="316"/>
-      <location filename="../../MDIViewPage.cpp" line="503"/>
+      <location filename="../../MDIViewPage.cpp" line="319"/>
+      <location filename="../../MDIViewPage.cpp" line="506"/>
       <source>All Files (*.*)</source>
       <translation>Všechny soubory (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="321"/>
       <source>Export Page As PDF</source>
       <translation>Exportovat stránku do PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="502"/>
+      <location filename="../../MDIViewPage.cpp" line="505"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="505"/>
+      <location filename="../../MDIViewPage.cpp" line="508"/>
       <source>Export page as SVG</source>
       <translation>Exportovat stránku do SVG</translation>
     </message>
@@ -4619,6 +4619,11 @@ Then you need to increase the tile limit.</translation>
       <translation type="unfinished">Include Cut Line in Section Annotation</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
+      <source>Balloon Leader Kink Length</source>
+      <translation type="unfinished">Balloon Leader Kink Length</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation type="unfinished">Broken View Break Type</translation>
@@ -4722,11 +4727,6 @@ Then you need to increase the tile limit.</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation type="unfinished">Length of horizontal portion of Balloon leader</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
-      <source>Ballon Leader Kink Length</source>
-      <translation type="unfinished">Ballon Leader Kink Length</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -5849,91 +5849,91 @@ Fast, but result is a collection of short straight lines.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Přepnout průběžné aktualizace</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
       <translation>Přepnout rámce</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportovat SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>Export DXF</source>
       <translation>Exportovat DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export PDF</source>
       <translation>Export PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>Tisknout všechny stránky</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="409"/>
+      <location filename="../../MDIViewPage.cpp" line="412"/>
       <source>Different orientation</source>
       <translation>Jiná orientace</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="410"/>
+      <location filename="../../MDIViewPage.cpp" line="413"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Tiskárna používá jinou orientaci než výkres.
 Chcete pokračovat?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="419"/>
+      <location filename="../../MDIViewPage.cpp" line="422"/>
       <source>Different paper size</source>
       <translation>Jiný formát papíru</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="420"/>
+      <location filename="../../MDIViewPage.cpp" line="423"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Tiskárna používá jiný formát papíru než výkres.
 Chcete pokračovat?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="434"/>
+      <location filename="../../MDIViewPage.cpp" line="437"/>
       <source>Opening file failed</source>
       <translation>Otevření souboru selhalo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="435"/>
+      <location filename="../../MDIViewPage.cpp" line="438"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Soubor %1 nelze otevřít pro zápis.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="526"/>
+      <location filename="../../MDIViewPage.cpp" line="529"/>
       <source>Save DXF file</source>
       <translation>Uložit soubor DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="527"/>
+      <location filename="../../MDIViewPage.cpp" line="530"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="547"/>
+      <location filename="../../MDIViewPage.cpp" line="550"/>
       <source>Save PDF file</source>
       <translation type="unfinished">Save PDF file</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="548"/>
+      <location filename="../../MDIViewPage.cpp" line="551"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1092"/>
+      <location filename="../../MDIViewPage.cpp" line="1095"/>
       <source>Selected:</source>
       <translation>Vybráno:</translation>
     </message>
@@ -6527,7 +6527,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="41"/>
       <source>Straightness</source>
-      <translation type="unfinished">Straightness</translation>
+      <translation>Přímost</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="51"/>

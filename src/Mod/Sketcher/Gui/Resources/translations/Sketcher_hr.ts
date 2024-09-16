@@ -1495,7 +1495,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3344"/>
       <source>Add 'Lock' constraint</source>
-      <translation>Dodajte 'Zaključaj' ograničenje
+      <translation>Dodajte 'Zaključaj' ograničenje 
 
 </translation>
     </message>
@@ -1512,20 +1512,20 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3634"/>
       <source>Add 'Block' constraint</source>
-      <translation>Dodajte 'Blok' ograničenje
+      <translation>Dodajte 'Blok' ograničenje 
 </translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3683"/>
       <source>Add block constraint</source>
-      <translation>Dodaje blok ograničenje
+      <translation>Dodaje blok ograničenje 
 </translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4025"/>
       <location filename="../../CommandConstraints.cpp" line="4214"/>
       <source>Add coincident constraint</source>
-      <translation>Dodajte podudarno ograničenje
+      <translation>Dodajte podudarno ograničenje 
 </translation>
     </message>
     <message>
@@ -2104,24 +2104,24 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Preimenujte ograničenja skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1057"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1063"/>
       <source>Drag Point</source>
       <translation>Povucite točku
 
 </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1095"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1101"/>
       <source>Drag Curve</source>
       <translation>Povucite krivulju</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1165"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1171"/>
       <source>Drag Constraint</source>
       <translation>Povucite ograničenje</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1371"/>
       <source>Modify sketch constraints</source>
       <translation>Izmijenite ograničenja skica</translation>
     </message>
@@ -2198,59 +2198,59 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2796"/>
+      <location filename="../../../App/SketchObject.cpp" line="2797"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nije moguće odrediti sjecište krivulje. Pokušajte dodati podudarno ograničenje između vrhova krivulje koju namjeravate zaobliti.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7068"/>
+      <location filename="../../../App/SketchObject.cpp" line="7070"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Vi zahtijevate: bez promjena u mnoštvu čvorova.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7062"/>
-      <location filename="../../../App/SketchObject.cpp" line="7248"/>
+      <location filename="../../../App/SketchObject.cpp" line="7064"/>
+      <location filename="../../../App/SketchObject.cpp" line="7250"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">B-spline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7074"/>
-      <location filename="../../../App/SketchObject.cpp" line="7258"/>
+      <location filename="../../../App/SketchObject.cpp" line="7076"/>
+      <location filename="../../../App/SketchObject.cpp" line="7260"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7083"/>
+      <location filename="../../../App/SketchObject.cpp" line="7085"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Čvor indeks je izvan granica. Imajte na umu da u skladu s OCC notacijom, prvi čvor ima indeks 1 a ne nula.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7094"/>
+      <location filename="../../../App/SketchObject.cpp" line="7096"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Mnoštvo se ne može povećavati iznad stupanja mnoštva b-spline krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7102"/>
+      <location filename="../../../App/SketchObject.cpp" line="7104"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Mnoštvo se ne može smanjiti ispod nule.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7116"/>
+      <location filename="../../../App/SketchObject.cpp" line="7118"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC je uspio smanjiti mnoštvo unutar maksimalne tolerancije.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7252"/>
+      <location filename="../../../App/SketchObject.cpp" line="7254"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Čvor ne može sa nulom multiplicirati.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7269"/>
+      <location filename="../../../App/SketchObject.cpp" line="7271"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7275"/>
+      <location filename="../../../App/SketchObject.cpp" line="7277"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the B-spline parameter range.</translation>
     </message>
@@ -4008,7 +4008,7 @@ u odnosu na ostale elemente korištenjem konstrukcijskih linija</translation>
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
       <translation>Ako je odabrano to je zamjena dimenzijskih ograničenja sa geometrijskim
-ograničenjima u kopijama, tako da se promjena u originalnom elementu
+ograničenjima u kopijama, tako da se promjena u originalnom elementu 
 izravno odražava na kopijama</translation>
     </message>
     <message>
@@ -4171,9 +4171,9 @@ Ova postavka vrijedi samo za alatnu traku. Bez obzira što ste odabrali, svi ala
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
-      <translation>Tijekom korištenja alata za dimenzioniranje možete odabrati kako upravljati krugovima i lukovima:
-'Automatski': Alat će primijeniti polumjer na luk i promjer na krug.
-'Promjer': Alat će primijeniti promjer na oba luka i kružnice.
+      <translation>Tijekom korištenja alata za dimenzioniranje možete odabrati kako upravljati krugovima i lukovima: 
+'Automatski': Alat će primijeniti polumjer na luk i promjer na krug. 
+'Promjer': Alat će primijeniti promjer na oba luka i kružnice. 
 'Polumjer': Alat će primijeniti polumjer na oba luka i kružnice.</translation>
     </message>
     <message>
@@ -4202,9 +4202,9 @@ Ova postavka vrijedi samo za alatnu traku. Bez obzira što ste odabrali, svi ala
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation>Odaberite način vidljivosti za parametre Na pogledu:
-'Onemogućeno': parametri Na pogledu su potpuno onemogućeni.
-'Samo dimenzionalni': Vidljivi su samo dimenzionalni parametri Na pogledu. Oni su najkorisniji. Na primjer, polumjer kruga.
+      <translation>Odaberite način vidljivosti za parametre Na pogledu: 
+'Onemogućeno': parametri Na pogledu su potpuno onemogućeni. 
+'Samo dimenzionalni': Vidljivi su samo dimenzionalni parametri Na pogledu. Oni su najkorisniji. Na primjer, polumjer kruga. 
 'Sve': Parametri Na pogledu, i dimenzionalni i položajni. Položajni su (x, y) položaj pokazivača. Na primjer, za središte kruga.</translation>
     </message>
     <message>
@@ -4372,7 +4372,7 @@ Defaults to: %N = %V
 %N - name parameter
 %V - dimension value</source>
       <translation>Format prezentacije niza dimenzijskih ograničenja.
-Zadano na: %N = %V
+Zadano na: %N = %V 
 
 %N - ime parametra
 %V - vrijednost dimenzije</translation>
@@ -4546,7 +4546,7 @@ Tada su vidljivi samo objekti iza ravnine skice.</translation>
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
       <translation>%1 obrnuti lukovi su pronađeni u vanjskoj geometriji. Njihove krajnje točke su uokvirene u 3d prikazu.
 
-%2 ograničenja su povezana sa krajnjim točkama. Ograničenja su navedena u kartici Ograničenja (izbornik: Kombinirani pregled -&gt; Ograničenja).
+%2 ograničenja su povezana sa krajnjim točkama. Ograničenja su navedena u kartici Ograničenja (izbornik: Kombinirani pregled -&gt; Ograničenja). 
 
 Kliknite "Zamijeni krajnje točke u ograničenja" gumb da biste ponovo pridružili krajnje točke. Napravite to samo jedanput za skice u FreeCAD prije v0.15</translation>
     </message>
@@ -4727,16 +4727,16 @@ Međutim, nema povezanih ograničenja na krajnje točake.</translation>
       <translation>Postavke</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1825"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1832"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1839"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1846"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1853"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1860"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1874"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1881"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1829"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1836"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1843"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1850"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1857"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1878"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
       <source>Construction</source>
       <translation>Izgradnja</translation>
     </message>
@@ -4746,101 +4746,101 @@ Međutim, nema povezanih ograničenja na krajnje točake.</translation>
       <translation>Elementi</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1964"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1827"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1832"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1969"/>
       <source>Point</source>
       <translation>Točka</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1868"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1875"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1882"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1888"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1886"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1892"/>
       <source>Internal</source>
       <translation>Interno</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1967"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1834"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1839"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1972"/>
       <source>Line</source>
       <translation>Linija</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1841"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1846"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1975"/>
       <source>Arc</source>
       <translation>Luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1973"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1848"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1853"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1978"/>
       <source>Circle</source>
       <translation>Krug</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1976"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1855"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1860"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1980"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1981"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1863"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1980"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1981"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1862"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1984"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1985"/>
       <source>Elliptical Arc</source>
       <translation>Eliptični luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1870"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1984"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1985"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1869"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1988"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1989"/>
       <source>Hyperbolic Arc</source>
       <translation>Hiperbolni luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1872"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1877"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1988"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1989"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1876"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1881"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1992"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1993"/>
       <source>Parabolic Arc</source>
       <translation>Parabolični luk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1879"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1991"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1992"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1883"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1888"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1995"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1996"/>
       <source>B-spline</source>
       <translation>B-krivulja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1885"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1890"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1993"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1994"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1889"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1997"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1998"/>
       <source>Other</source>
       <translation>Drugo</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
       <source>Extended information</source>
       <translation>Proširene informacije</translation>
     </message>
@@ -5065,112 +5065,112 @@ To se radi analizom geometrije i ograničenja skice.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2990"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2997"/>
       <source>Edit sketch</source>
       <translation>Uredi skicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3007"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3014"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3008"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3015"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3022"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3029"/>
       <source>Invalid sketch</source>
       <translation>Neispravna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3023"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3030"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Želite li otvoriti alat provjera valjanosti skice?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3024"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3031"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skica je neispravna i ne može se uređivati.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3168"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3175"/>
       <source>Please remove the following constraint:</source>
       <translation>Molim uklonite sljedeće ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3169"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3176"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Molim uklonite barem jedno od sljedećih ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Molimo obrišite ovo redundantno ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3176"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Molimo obrišite ova redundantna ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Sljedeće ograničenje je djelomično suvišno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Sljedeća ograničenja su djelomično suvišna:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3196"/>
       <source>Please remove the following malformed constraint:</source>
       <translation>Uklonite sljedeće deformirano ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3197"/>
       <source>Please remove the following malformed constraints:</source>
       <translation>Uklonite sljedeća deformirana ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3248"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3255"/>
       <source>Empty sketch</source>
       <translation>Prazan skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3253"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3260"/>
       <source>Over-constrained:</source>
       <translation>Pretjerano ograničeno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3266"/>
       <source>Malformed constraints:</source>
       <translation>Deformirana ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3274"/>
       <source>Redundant constraints:</source>
       <translation>Suvišna ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3280"/>
       <source>Partially redundant:</source>
       <translation>Djelomično suvišno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3280"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspio konvergirati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3286"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3293"/>
       <source>Under-constrained:</source>
       <translation type="unfinished">Under-constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3288"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3295"/>
       <source>%n DoF(s)</source>
       <translation>
         <numerusform>%n Stupanj slobode</numerusform>
@@ -5179,7 +5179,7 @@ To se radi analizom geometrije i ograničenja skice.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3292"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3299"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničen</translation>
     </message>
@@ -5765,7 +5765,7 @@ Eigen Sparse QR algoritam optimiziran je za rijetke matrice; obično brže</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
       <source>Same as 'Sketch size multiplier', but for redundant solving</source>
-      <translation>Isto kao i "Množitelj veličine skice", ali za rješavanje suvišnog
+      <translation>Isto kao i "Množitelj veličine skice", ali za rješavanje suvišnog 
 
 </translation>
     </message>
@@ -5841,7 +5841,7 @@ Eigen Sparse QR algoritam optimiziran je za rijetke matrice; obično brže</tran
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3232"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3239"/>
       <source>and %1 more</source>
       <translation>i %1 još
 
@@ -6064,17 +6064,17 @@ Razmak mreže se mijenja ako postane manji od ovog broja piksela.</translation>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="557"/>
+      <location filename="../../../App/SketchObject.cpp" line="558"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Skica ima deformirana ograničenja!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="563"/>
+      <location filename="../../../App/SketchObject.cpp" line="564"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Skica ima djelomično suvišna ograničenja!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10736"/>
+      <location filename="../../../App/SketchObject.cpp" line="10738"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole su migrirane. Migrirane datoteke neće se otvoriti u prethodnim verzijama FreeCAD-a!!</translation>
@@ -6493,8 +6493,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation>Ograničite kontekstualno na temelju vašeg odabira.
-Ovisno o vašem odabiru, možda imate nekoliko dostupnih ograničenja. Možete se kretati kroz njih pomoću tipke M.
+      <translation>Ograničite kontekstualno na temelju vašeg odabira. 
+Ovisno o vašem odabiru, možda imate nekoliko dostupnih ograničenja. Možete se kretati kroz njih pomoću tipke M. 
 Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se potvrditi. Desnim klikom miša ili pritiskom tipke Esc će se otkazati.</translation>
     </message>
   </context>
@@ -6691,32 +6691,32 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1647"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1657"/>
       <source>Corner, width, height</source>
       <translation>Ugao, Širina, Visina</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1648"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
       <source>Center, width, height</source>
       <translation>Središte, Širina, Visina</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1649"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
       <source>3 corners</source>
       <translation>3 Ugla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1650"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1660"/>
       <source>Center, 2 corners</source>
       <translation>Središte, 2 Ugla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1655"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1665"/>
       <source>Rounded corners (U)</source>
       <translation>Zaobljeni uglovi (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1668"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Stvori pravokutnik sa zaobljenim uglovima.</translation>
     </message>
@@ -6724,12 +6724,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1664"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1674"/>
       <source>Frame (J)</source>
       <translation>Okvir (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1667"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1677"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Stvori dva pravokutnika sa konstantnim pomakom.</translation>
     </message>

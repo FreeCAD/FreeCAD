@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
@@ -1109,7 +1109,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="215"/>
       <location filename="../../SheetTableView.cpp" line="662"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>붙여넣기</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="217"/>
@@ -1157,7 +1157,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
       <translation>이름없음</translation>
     </message>

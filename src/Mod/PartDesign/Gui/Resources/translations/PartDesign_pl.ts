@@ -5391,7 +5391,7 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
     <message>
       <location filename="../../../App/FeatureThickness.cpp" line="101"/>
       <source>Invalid face reference</source>
-      <translation>Nieprawidłowe odniesienie ściany.</translation>
+      <translation>Nieprawidłowe odniesienie ściany</translation>
     </message>
   </context>
   <context>

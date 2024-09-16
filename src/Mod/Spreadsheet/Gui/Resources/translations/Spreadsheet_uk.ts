@@ -506,10 +506,10 @@ by that property.
       <translation>Початкова адреса комірки.
 
 Передбачається, що перший стовпець діапазону містить список імен конфігурації,
-які будуть використовуватися для створення списку рядків та привʼязки до цієї
+які будуть використовуватися для створення списку рядків та привʼязки до цієї 
 властивості, щоб користувач міг динамічно перемикати конфігурації.
 
-Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо),
+Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо), 
 обраного за допомогою цієї властивості.
 </translation>
     </message>
@@ -527,10 +527,10 @@ by that property.
       <translation>Кінцева адреса комірки.
 
 Передбачається, що перший стовпець діапазону містить список імен конфігурації,
-які будуть використовуватися для створення списку рядків та привʼязки до цієї
+які будуть використовуватися для створення списку рядків та привʼязки до цієї 
 властивості, щоб користувач міг динамічно перемикати конфігурації.
 
-Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо),
+Перший рядок діапазону буде привʼязаний до будь-якого рядка (непрямо), 
 обраного за допомогою цієї властивості.
 </translation>
     </message>
@@ -543,7 +543,7 @@ by that property.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation>Введіть вираз, щоб вказати назву обʼєкта та властивості, щоб динамічно
+      <translation>Введіть вираз, щоб вказати назву обʼєкта та властивості, щоб динамічно 
 змінювати конфігурацію проєкту. Якщо властивість не існує, вона буде створена.</translation>
     </message>
     <message>
@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
@@ -1180,7 +1180,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>

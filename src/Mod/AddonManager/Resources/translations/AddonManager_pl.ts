@@ -281,8 +281,8 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Dodatki, które mogą być zainstalowane, nie są oficjalnie częścią FreeCAD,
-i nie są sprawdzane przez zespół FreeCAD.
+      <translation>Dodatki, które mogą być zainstalowane, nie są oficjalnie częścią FreeCAD, 
+i nie są sprawdzane przez zespół FreeCAD. 
 Upewnij się, że wiesz, co instalujesz!</translation>
     </message>
     <message>
@@ -1706,9 +1706,9 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji</tra
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="369"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was:</source>
-      <translation>Niepowodzenie nie udało się uruchomić polecenia, którego może brakować
-w Twojej instalacji środowiska Python.
-Upewnij się, że w systemie jest zainstalowane to polecenie
+      <translation>Niepowodzenie nie udało się uruchomić polecenia, którego może brakować 
+w Twojej instalacji środowiska Python. 
+Upewnij się, że w systemie jest zainstalowane to polecenie 
 i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</translation>
     </message>
     <message>

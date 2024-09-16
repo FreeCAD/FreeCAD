@@ -5,8 +5,8 @@
     <name>ArchMaterial</name>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
-      <source>Arch material</source>
-      <translation>Material del banco de trabajo Arch</translation>
+      <source>BIM material</source>
+      <translation type="unfinished">BIM material</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -660,7 +660,7 @@ Utilidades -&gt; Hacer proyecto IFC</translation>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Las cantidades seleccionadas se exportarán a IFC. Las cantidades marcadas con un signo de advertencia indican un valor cero que podría necesitar verificar. Al hacer clic en el encabezado de una columna se aplicará a todos los elementos seleccionados.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Advertencia&lt;/span&gt;: El área horizontal es el área obtenida al proyectar el objeto en el suelo (X,Y) plano, pero el área vertical es la suma de todas las áreas de las caras que son verticales (ortogonal al plano del suelo), así que una pared tendrá sus dos caras contadas.&lt;/p&gt;&lt;p&gt;Los valores de longitud, ancho y altura pueden ser cambiados aquí, pero ten cuidado, podría cambiar la geometría del elemento!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Las cantidades seleccionadas se exportarán a IFC. Las cantidades marcadas con un signo de advertencia indican un valor cero que podría necesitar verificar. Al hacer clic en el encabezado de una columna se aplicará a todos los elementos seleccionados.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Advertencia&lt;/span&gt;: El área horizontal es el área obtenida al proyectar el objeto en el suelo (X,Y) plano, pero el área vertical es la suma de todas las áreas de las caras que son verticales (ortogonal al plano del suelo), así que una pared tendrá sus dos caras contadas.&lt;/p&gt;&lt;p&gt;Los valores de longitud, ancho y altura pueden ser cambiados aquí, pero ¡ten cuidado, podría cambiar la geometría del elemento!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="59"/>
@@ -1118,7 +1118,7 @@ Utilidades -&gt; Hacer proyecto IFC</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="567"/>
       <source>The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</source>
-      <translation>Los ajustes anteriores pueden guardarse como preajuste. Los preajustes se almacenan como archivos .txt en la carpeta de usuario de FreeCAD</translation>
+      <translation>Los ajustes anteriores pueden guardarse como preconfiguración. Las preconfiguraciones se almacenan como archivos .txt en la carpeta de usuario de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="579"/>
@@ -2314,7 +2314,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation>Si esto está marcado, cuando un objeto se convierte en Sustracción o Adición de un objeto Arch, recibirá el color de Construcción de Draft.</translation>
+      <translation>Si esto está marcado, cuando un objeto se convierte en Sustracción o Adición de un objeto arquitectónico, recibirá el color de construcción Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="96"/>
@@ -2354,7 +2354,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation>Si se selecciona esta opción, cuando un objeto Arco tiene un material, el objeto tomará el color del material. Esto se puede anular para cada objeto.</translation>
+      <translation>Si se selecciona esta opción, cuando un objeto arquitectónico tiene un material, el objeto tomará el color del material. Esto se puede anular para cada objeto.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
@@ -2626,7 +2626,7 @@ en lugar del banco de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="267"/>
       <source>Dashdot</source>
-      <translation>DashDot</translation>
+      <translation>Línea y punto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="275"/>
@@ -2778,7 +2778,7 @@ esto es más seguro si comienzas a obtener fallos cuando estableces múltiples n
     <message>
       <location filename="../ui/preferences-ifc.ui" line="193"/>
       <source>Do not import Arch objects</source>
-      <translation>No importar arcos de objetos</translation>
+      <translation>No importar objetos arquitectónicos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="205"/>
@@ -3404,7 +3404,7 @@ En cualquier caso, algunas aplicaciones BIM usarán este factor para elegir con 
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="463"/>
-      <location filename="../../bimcommands/BimWindow.py" line="306"/>
+      <location filename="../../bimcommands/BimWindow.py" line="307"/>
       <location filename="../../bimcommands/BimProfile.py" line="81"/>
       <location filename="../../bimcommands/BimPanel.py" line="138"/>
       <source>Preset</source>
@@ -3669,7 +3669,7 @@ En cualquier caso, algunas aplicaciones BIM usarán este factor para elegir con 
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="842"/>
-      <location filename="../../ArchMaterial.py" line="95"/>
+      <location filename="../../ArchMaterial.py" line="93"/>
       <source>Reorder children alphabetically</source>
       <translation>Ordenar los valores alfabéticamente</translation>
     </message>
@@ -4029,7 +4029,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="100"/>
       <location filename="../../bimcommands/BimWindow.py" line="119"/>
-      <location filename="../../bimcommands/BimWindow.py" line="166"/>
+      <location filename="../../bimcommands/BimWindow.py" line="167"/>
       <source>Create Window</source>
       <translation>Crear ventana</translation>
     </message>
@@ -4039,32 +4039,32 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Elige una cara en un objeto existente o seleccione por defecto</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="190"/>
+      <location filename="../../bimcommands/BimWindow.py" line="191"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Ventana no basada en un sketch. Ventana no alineada o redimensionada.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="200"/>
+      <location filename="../../bimcommands/BimWindow.py" line="201"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>No hay restricciones de anchura y/o altura en el sketch de la ventana. La ventana no ha cambiado de tamaño.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="203"/>
+      <location filename="../../bimcommands/BimWindow.py" line="204"/>
       <source>No window found. Cannot continue.</source>
       <translation>No se ha encontrado ninguna ventana. No se puede continuar.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="265"/>
+      <location filename="../../bimcommands/BimWindow.py" line="266"/>
       <source>Window options</source>
       <translation>Opciones de ventana</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="269"/>
+      <location filename="../../bimcommands/BimWindow.py" line="270"/>
       <source>Auto include in host object</source>
       <translation>Auto incluir en el objeto anfitrión</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="275"/>
+      <location filename="../../bimcommands/BimWindow.py" line="276"/>
       <source>Sill height</source>
       <translation>Altura de alfeizar</translation>
     </message>
@@ -4130,8 +4130,8 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <location filename="../../ArchWindow.py" line="1366"/>
       <location filename="../../ArchIFCView.py" line="56"/>
       <location filename="../../ArchAxisSystem.py" line="203"/>
-      <location filename="../../ArchMaterial.py" line="367"/>
-      <location filename="../../ArchMaterial.py" line="665"/>
+      <location filename="../../ArchMaterial.py" line="363"/>
+      <location filename="../../ArchMaterial.py" line="663"/>
       <location filename="../../ArchGrid.py" line="285"/>
       <location filename="../../ArchSchedule.py" line="432"/>
       <location filename="../../ArchAxis.py" line="581"/>
@@ -4169,8 +4169,8 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1372"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <source>Name</source>
       <translation>Nombre</translation>
     </message>
@@ -4184,8 +4184,8 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1375"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <location filename="../../bimcommands/BimPanel.py" line="162"/>
       <source>Thickness</source>
       <translation>Espesor</translation>
@@ -4367,8 +4367,8 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Fusionar duplicados</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <location filename="../../Arch.py" line="302"/>
       <source>Material</source>
       <translation>Material</translation>
@@ -4379,17 +4379,17 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Multimaterial</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="797"/>
+      <location filename="../../ArchMaterial.py" line="793"/>
       <source>New layer</source>
       <translation>Nueva capa</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="834"/>
+      <location filename="../../ArchMaterial.py" line="830"/>
       <source>Total thickness</source>
       <translation>Espesor total</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="848"/>
+      <location filename="../../ArchMaterial.py" line="844"/>
       <source>depends on the object</source>
       <translation>depende del objeto</translation>
     </message>
@@ -5673,7 +5673,7 @@ Creación de Edificio cancelada.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="192"/>
-      <location filename="../../ArchMaterial.py" line="170"/>
+      <location filename="../../ArchMaterial.py" line="166"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>Un código estándar (MasterFormat, OmniClass,...)</translation>
     </message>
@@ -6610,43 +6610,43 @@ Creación de Edificio cancelada.</translation>
       <translation>Cuando es verdadero, la barandilla se coloreará como el poste original y la sección.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="168"/>
-      <location filename="../../ArchMaterial.py" line="620"/>
+      <location filename="../../ArchMaterial.py" line="164"/>
+      <location filename="../../ArchMaterial.py" line="618"/>
       <source>A description for this material</source>
       <translation>Una descripción de este material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="172"/>
+      <location filename="../../ArchMaterial.py" line="168"/>
       <source>A URL where to find information about this material</source>
       <translation>Una URL donde encontrar información sobre este material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="174"/>
+      <location filename="../../ArchMaterial.py" line="170"/>
       <source>The transparency value of this material</source>
       <translation>El valor de transparencia de este material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="176"/>
+      <location filename="../../ArchMaterial.py" line="172"/>
       <source>The color of this material</source>
       <translation>El color de este material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="178"/>
+      <location filename="../../ArchMaterial.py" line="174"/>
       <source>The color of this material when cut</source>
       <translation>El color de este material cuando se corta</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="621"/>
+      <location filename="../../ArchMaterial.py" line="619"/>
       <source>The list of layer names</source>
       <translation>La lista de los nombres de capa</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="622"/>
+      <location filename="../../ArchMaterial.py" line="620"/>
       <source>The list of layer materials</source>
       <translation>La lista de materiales de capa</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="623"/>
+      <location filename="../../ArchMaterial.py" line="621"/>
       <source>The list of layer thicknesses</source>
       <translation>La lista de espesores de capa</translation>
     </message>
@@ -8044,8 +8044,8 @@ Creación de Edificio cancelada.</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="67"/>
-      <source>The sizes for rows</source>
-      <translation>Los tamaños de las filas</translation>
+      <source>The sizes of rows</source>
+      <translation type="unfinished">The sizes of rows</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="69"/>
@@ -8637,7 +8637,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="484"/>
       <source>Do you wish to colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
-      <translation>¿Desea colorear en amarillo los objetos que se han movido en el otro archivo (para usar como diferencia)?</translation>
+      <translation>¿Desea colorear en amarillo los objetos que se han movido en el otro archivo (para servir como diferencia)?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="505"/>
@@ -9393,12 +9393,12 @@ CTRL+/ para alternar entre modo automático y manual</translation>
       <translation>Sistema de unidades actualizado para todos los documentos abiertos</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="670"/>
+      <location filename="../../bimcommands/BimSetup.py" line="673"/>
       <source>IfcOpenShell not found</source>
       <translation>IfcOpenShell no encontrado</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="674"/>
+      <location filename="../../bimcommands/BimSetup.py" line="677"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on your system. Would you like to download and install it now? It will be installed in FreeCAD's Macros directory.</source>
       <translation>IfcOpenShell es necesario para importar y exportar archivos IFC. Parece que falta en su sistema. ¿Desea descargarlo e instalarlo ahora? Se instalará en el directorio de Macros de FreeCAD.</translation>
     </message>
@@ -9523,7 +9523,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
       <translation>Vistas 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="281"/>
+      <location filename="../../bimcommands/BimViews.py" line="280"/>
       <source>Sheets</source>
       <translation>Hojas</translation>
     </message>

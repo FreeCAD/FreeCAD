@@ -1162,7 +1162,7 @@ widget de escala de anotación. Si la escala es 1:100 el multiplicador es 100.</
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
-      <translation>Si está marcado, un símbolo unitario es añadido a los textos de dimensión</translation>
+      <translation>Si está marcado, un símbolo unitario es añadido a los textos de cota</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
@@ -1172,7 +1172,7 @@ widget de escala de anotación. Si la escala es 1:100 el multiplicador es 100.</
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation>La distancia de la línea se extiende más allá de las líneas de extensión</translation>
+      <translation>La distancia que la línea de cota se extiende más allá de las líneas de referencia</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
@@ -1240,20 +1240,20 @@ widget de escala de anotación. Si la escala es 1:100 el multiplicador es 100.</
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</source>
-      <translation>La longitud de las líneas de extensión. Utilice 0 para líneas de extensión completas. Un valor negativo
-define la brecha entre los extremos de las líneas de extensión y los puntos medidos.
-Un valor positivo define la longitud máxima de las líneas de extensión. Sólo se utiliza
-para las dimensiones lineales.</translation>
+      <translation>La longitud de las líneas de referencia. Utilice 0 para líneas de referencia completas. Un valor negativo
+define la brecha entre los extremos de las líneas de referencia y los puntos medidos.
+Un valor positivo define la longitud máxima de las líneas de referencia. Sólo se utiliza
+para las cotas lineales.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="538"/>
       <source>Ext line overshoot</source>
-      <translation>Prolongación de línea de extensión</translation>
+      <translation>Prolongación de línea de referencia</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>The length of extension lines above the dimension line</source>
-      <translation>La longitud de las líneas de extensión por encima de la línea de cota</translation>
+      <translation>La longitud de las líneas de referencia por encima de la línea de cota</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
@@ -1656,14 +1656,14 @@ definiciones de patrones para ser añadido a los patrones estándar</translation
       <source>The default font for texts, dimensions and labels. It can be a font name such
 as "Arial", a style such as "sans", "serif" or "mono", or a family such as
 "Arial,Helvetica,sans", or a name with a style such as "Arial:Bold".</source>
-      <translation>Fuente predeterminada para textos, dimensiones y etiquetas. Puede ser un nombre de fuente como
+      <translation>Fuente predeterminada para textos, cotas y etiquetas. Puede ser un nombre de fuente como
 como "Arial", un estilo como "sans", "serif" o "mono", o una familia como
 "Arial,Helvetica,sans", o un nombre con un estilo como "Arial:Bold".</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="67"/>
       <source>The default height for texts, dimension texts and label texts</source>
-      <translation>La altura por defecto para los textos, textos de cotas y textos de etiquetas</translation>
+      <translation>La altura por defecto para los textos, los textos de cotas y etiquetas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="99"/>
@@ -1828,12 +1828,12 @@ o cm, deje en blanco para usar la unidad actual definida en FreeCAD.</translatio
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
       <source>The default distance the dimension line is extended past the extension lines</source>
-      <translation>La distancia por defecto la línea de cota se extiende más allá de las líneas de extensión</translation>
+      <translation>La distancia por defecto la línea de cota se extiende más allá de las líneas de referencia</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="524"/>
       <source>Extension line length</source>
-      <translation>Longitud de línea de extensión</translation>
+      <translation>Longitud de línea de referencia</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="531"/>
@@ -1841,15 +1841,15 @@ o cm, deje en blanco para usar la unidad actual definida en FreeCAD.</translatio
 value defines the gap between the ends of the extension lines and the measured
 points. A positive value defines the maximum length of the extension lines. Only
 used for linear dimensions.</source>
-      <translation>La longitud por defecto de las líneas de extensión. Utilice 0 para líneas de extensión completas. Un valor
-negativo define la brecha entre los extremos de las líneas de extensión y los puntos medidos.
-Un valor positivo define la longitud máxima de las líneas de extensión. Sólo se utiliza
+      <translation>La longitud por defecto de las líneas de referencia. Utilice 0 para líneas de referencia completas. Un valor
+negativo define la brecha entre los extremos de las líneas de referencia y los puntos medidos.
+Un valor positivo define la longitud máxima de las líneas de referencia. Sólo se utiliza
 para las cotas lineales.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="563"/>
       <source>The default length of extension lines above the dimension line</source>
-      <translation>La longitud por defecto de las líneas de extensión encima de la línea de cota</translation>
+      <translation>La longitud por defecto de las líneas de referencia encima de la línea de cota</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="592"/>
@@ -3004,8 +3004,8 @@ si coinciden con el eje X, Y o Z del sistema global de coordenadas</translation>
     <message>
       <location filename="../../DraftGui.py" line="491"/>
       <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="1469"/>
+      <location filename="../../DraftGui.py" line="1484"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3231,8 +3231,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     </message>
     <message>
       <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1487"/>
       <source>Autogroup off</source>
       <translation>Desactivar Auto-agrupar</translation>
     </message>
@@ -3326,32 +3326,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1480"/>
       <source>Autogroup:</source>
       <translation>Autogrupo:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1619"/>
       <source>Modify objects</source>
       <translation>Modificar objetos</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1768"/>
       <source>Faces</source>
       <translation>Caras</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1769"/>
       <source>Remove</source>
       <translation>Eliminar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1770"/>
       <source>Add</source>
       <translation>Agregar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1771"/>
       <source>Facebinder elements</source>
       <translation>Elementos Facebinder</translation>
     </message>
@@ -4125,12 +4125,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="120"/>
       <source>This object is not supported.</source>
-      <translation type="unfinished">This object is not supported.</translation>
+      <translation>Este objeto no está soportado.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="143"/>
       <source>Only a single face can be extruded.</source>
-      <translation type="unfinished">Only a single face can be extruded.</translation>
+      <translation>Sólo una sola cara puede ser extruida.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="182"/>
@@ -4875,29 +4875,29 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Desplazamiento final demasiado grande para la longitud del trayecto menos el Desplazamiento Inicial. Usando cero en su lugar.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="537"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>La longitud del vector tangente es cero. Copia no alineada.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="551"/>
+      <location filename="../../draftobjects/patharray.py" line="573"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>La longitud del vector normal es cero. Utilizando un eje predeterminado en su lugar.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="557"/>
+      <location filename="../../draftobjects/patharray.py" line="579"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Los vectores tangente y normal son paralelos. El normal se reemplaza por un eje por defecto.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>No se puede calcular el vector normal. Utilizando la normal por defecto en su lugar.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>AlignMode {} is not implemented</source>
       <translation>AlignMode {} no está implementado</translation>
     </message>
@@ -5559,7 +5559,7 @@ de los objetos existentes en todos los documentos abiertos?</translation>
       <translation>propiedades de vista actualizadas</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5649,7 +5649,7 @@ Para habilitar a FreeCAD la descarga de estas bibliotecas, responda Sí.</transl
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -6014,9 +6014,7 @@ if any.
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
       <translation>Crea una etiqueta, opcionalmente unida a un objeto o subelemento seleccionado.
-
 Primero selecciona un vértice, una arista, o una cara de un objeto, después llama a este comando, y entonces establece la posición de la línea directriz y el texto de la etiqueta. La etiqueta será capaz de mostrar información sobre este objeto y, en su caso, sobre el subelemento seleccionado. 
-
 Si se seleccionan muchos objetos o muchos subelementos, solo se usará el primero en cada caso para proporcionar información a la etiqueta.</translation>
     </message>
   </context>
@@ -7890,7 +7888,7 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
     <message>
       <location filename="../../draftobjects/dimension.py" line="136"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation>La dirección normal del texto de la dimensión</translation>
+      <translation>La dirección normal del texto de la cota</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="149"/>
@@ -8269,12 +8267,12 @@ las propiedades de 'Primer ángulo' y 'Último ángulo'.</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="124"/>
       <source>Spacing between text and dimension line</source>
-      <translation>Espacio entre el texto y la línea de dimensión</translation>
+      <translation>Espacio entre el texto y la línea de cota</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="133"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation>Girar el texto de dimensión 180 grados</translation>
+      <translation>Girar el texto de cota 180 grados</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="143"/>
@@ -8288,7 +8286,7 @@ Deja '(0,0,0)' para posición automática</translation>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
       <translation>Anulación de texto.
-Escribe '$dim' para que sea reemplazado por la longitud de la dimensión.</translation>
+Escribe '$dim' para que sea reemplazado por la longitud de la cota.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="167"/>
@@ -8324,26 +8322,26 @@ Utilice 'arch' para forzar notación de arco de Estados Unidos</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="219"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation>Gira 180 grados las flechas de dimensión</translation>
+      <translation>Gira 180 grados las flechas de cota</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="230"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation>La distancia de la línea de dimensión se extiende
-más allá de las líneas de extensión</translation>
+      <translation>La distancia de la línea de cota se extiende
+más allá de las líneas de referencia</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="239"/>
       <source>Length of the extension lines</source>
-      <translation>Longitud de las líneas auxiliares</translation>
+      <translation>Longitud de las líneas de referencia</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="249"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation>Longitud de la línea de extensión
-más allá de la línea de dimensión</translation>
+      <translation>Longitud de la línea de referencia
+más allá de la línea de cota</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="258"/>

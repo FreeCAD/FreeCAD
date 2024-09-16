@@ -810,14 +810,14 @@ view each time a command is started</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation>Una separació opcional per al pla de treball damunt de la seva posició de base. Utilitzeu-ho juntament amb un dels botons de dalt</translation>
+      <translation>Una equidistància opcional per al pla de treball damunt de la seva posició de base. Utilitzeu-ho juntament amb un dels botons de dalt</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="106"/>
@@ -2971,8 +2971,8 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
     <message>
       <location filename="../../DraftGui.py" line="491"/>
       <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="1469"/>
+      <location filename="../../DraftGui.py" line="1484"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3107,12 +3107,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>Si s'activa, es realitzarà un desplaçament estil OCC en comptes del desplaçament clàssic</translation>
+      <translation>Si s'activa, es realitzarà una equidistància d'estil OCC en comptes de l'equidistància clàssica</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="567"/>
       <source>OCC-style offset</source>
-      <translation>Desplaçament de l'estil OCC</translation>
+      <translation>Equidistància d'estil OCC</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="569"/>
@@ -3196,8 +3196,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     </message>
     <message>
       <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1487"/>
       <source>Autogroup off</source>
       <translation>Desactivar Autoagrupar</translation>
     </message>
@@ -3249,7 +3249,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="779"/>
@@ -3291,32 +3291,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
       <translation>Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1480"/>
       <source>Autogroup:</source>
       <translation>Autoagrupar:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1619"/>
       <source>Modify objects</source>
       <translation>Modificar objectes</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1768"/>
       <source>Faces</source>
       <translation>Cares</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1769"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1770"/>
       <source>Add</source>
       <translation>Afegeix</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1771"/>
       <source>Facebinder elements</source>
       <translation>Elements del Lligacares</translation>
     </message>
@@ -4089,23 +4089,23 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="120"/>
       <source>This object is not supported.</source>
-      <translation type="unfinished">This object is not supported.</translation>
+      <translation>Aquest objecte no és suportat.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="143"/>
       <source>Only a single face can be extruded.</source>
-      <translation type="unfinished">Only a single face can be extruded.</translation>
+      <translation>Només es pot extrudir una sola cara.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="182"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
-      <translation>Tria la distància</translation>
+      <translation>Tria l'equidistància</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="228"/>
       <source>Offset angle</source>
-      <translation>Angle de Ofset</translation>
+      <translation>Angle d'equidistància</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="488"/>
@@ -4831,37 +4831,37 @@ L'angle final serà l'angle de base més aquesta quantitat.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="466"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation>El desplaçament inicial és massa gran per la longitud del camí. Utilitzant zero en el seu lloc.</translation>
+      <translation>L'equidistància inicial és massa gran per la longitud del camí. Utilitzant zero en el seu lloc.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation>El desplaçament final és massa gran per la longitud del camí menys el desplaçament inicial. Utilitzant zero en el seu lloc.</translation>
+      <translation>L'equidistància final és massa gran per la longitud del camí menys l'equidistància inicial. Utilitzant zero en el seu lloc.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="537"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>La longitud del vector tangent és zero. Còpia no-alineada.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="551"/>
+      <location filename="../../draftobjects/patharray.py" line="573"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>La longitud del vector normal és zero. Utilitzant l'eix predeterminat en el seu lloc.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="557"/>
+      <location filename="../../draftobjects/patharray.py" line="579"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Els vectors tangent i normal són paral·lels. S'ha substituït el vector normal per un eix predeterminat.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>No es pot calcular el vector normal. Utilitzant el vector normal predeterminat en el seu lloc.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>AlignMode {} is not implemented</source>
       <translation>AlignMode {} no està implementat</translation>
     </message>
@@ -5522,7 +5522,7 @@ of existing objects in all opened documents?</source>
       <translation>s'han actualitzat les propietats de vista</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5612,7 +5612,7 @@ Per permetre que FreeCAD descarregui aquestes llibreries respongueu Sí.</transl
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -7049,7 +7049,7 @@ Per exemple, pot unir objectes seleccionats en un de sol, convertir vores simple
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="63"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>

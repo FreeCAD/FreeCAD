@@ -3156,8 +3156,8 @@ Por favor selecciona primero una o más aristas.</translation>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Si está marcado, se realizará una fusión compuesta durante
+la lectura del archivo (más lenta pero con más detalles).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

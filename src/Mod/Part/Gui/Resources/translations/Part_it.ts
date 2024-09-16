@@ -2208,7 +2208,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1078"/>
       <source>Edit attachment</source>
-      <translation>Modifica allegato</translation>
+      <translation>Modifica associazione</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.cpp" line="454"/>
@@ -3157,8 +3157,7 @@ Selezionare prima uno o più spigoli.</translation>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Selezionando questa opzione, durante la lettura del file viene eseguita l' unione di composti (più lento, ma con maggiori dettagli).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -5921,7 +5920,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="105"/>
       <source>Attachment editor</source>
-      <translation>Editor allegato</translation>
+      <translation>Editor associazione</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
