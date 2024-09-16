@@ -53,6 +53,8 @@ class BIM_Welcome:
         self.form.label_4.linkActivated.connect(self.handleLink)
         self.form.label_7.linkActivated.connect(self.handleLink)
 
+        self.form.adjustSize()
+
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(
