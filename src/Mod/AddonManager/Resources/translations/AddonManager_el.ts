@@ -2049,7 +2049,7 @@ installed addons will be checked for available updates</source>
     <message>
       <location filename="../../change_branch.py" line="93"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation>ΚΙΝΔΥΝΟΣ: Η εναλλαγή τμημάτων προορίζεται για προγραμματιστές και δοκιμαστές beta, αυτό μπορεί να έχει ως αποτέλεσμα σπασμένα έγγραφα, μη συμβατά, αστάθεια, σφάλματα ή/και ξαφνική απώλεια. 
+      <translation>ΚΙΝΔΥΝΟΣ: Η εναλλαγή τμημάτων προορίζεται για προγραμματιστές και δοκιμαστές beta, αυτό μπορεί να έχει ως αποτέλεσμα σπασμένα έγγραφα, μη συμβατά, αστάθεια, σφάλματα ή/και ξαφνική απώλεια.
 Είσαι σίγουρος ότι θέλεις να συνεχίσεις;</translation>
     </message>
     <message>

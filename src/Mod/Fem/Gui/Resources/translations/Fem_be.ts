@@ -1069,7 +1069,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1170,7 +1170,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1429,7 +1429,7 @@ adding an analysis container</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1541,7 +1541,7 @@ exported from FreeCAD.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1648,7 +1648,7 @@ that "MAXKOI" needs to be increased.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Паказаны двайковы файл z88r 
+      <translation>Паказаны двайковы файл z88r
 '%1'
  не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
