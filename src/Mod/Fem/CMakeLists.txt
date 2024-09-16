@@ -571,6 +571,7 @@ SET(FemGuiObjects_SRCS
 SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
     femtaskpanels/base_femtaskpanel.py
+    femtaskpanels/base_femmeshtaskpanel.py
     femtaskpanels/task_constraint_bodyheatsource.py
     femtaskpanels/task_constraint_centrif.py
     femtaskpanels/task_constraint_currentdensity.py
