@@ -402,7 +402,7 @@ Multiplier of 'Font Size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.</string>
+           <string>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</string>
           </property>
           <property name="text">
            <string>Extension Gap Factor - ISO</string>
@@ -430,7 +430,7 @@ Multiplier of 'Font Size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions.</string>
+           <string>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</string>
           </property>
           <property name="text">
            <string>Extension Gap Factor - ASME</string>
@@ -440,7 +440,7 @@ Multiplier of 'Font Size'</string>
         <item row="9" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapISO">
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ISO dimensions.
+           <string>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</string>
           </property>
@@ -458,7 +458,7 @@ Multiplier of 'Font Size'</string>
         <item row="10" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbGapASME">
           <property name="toolTip">
-           <string>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
+           <string>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</string>
           </property>
           <property name="value">
@@ -480,7 +480,7 @@ Multiplier of 'Font Size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the size of spacing between dimension line and dimension text for ISO dimensions.</string>
+           <string>Controls the gap size between dimension line and dimension text for ISO dimensions.</string>
           </property>
           <property name="text">
            <string>Line Spacing - ISO</string>
@@ -490,7 +490,7 @@ Multiplier of 'Font Size'</string>
         <item row="11" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbLineSpacingFactorISO">
           <property name="toolTip">
-           <string>Controls the size of spacing between dimension line and dimension text.
+           <string>Controls the gap size between dimension line and dimension text.
  Value * linewidth is the line spacing.</string>
           </property>
           <property name="value">

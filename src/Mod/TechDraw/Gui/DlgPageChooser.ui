@@ -26,7 +26,7 @@
    <item>
     <widget class="QLabel" name="lPrompt">
      <property name="text">
-      <string>FreeCAD could not determine which Page to use.  Please select a Page.</string>
+      <string>FreeCAD could not determine which Page to use. Please select a Page.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -2106,7 +2106,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             if (!ref.getSubName().empty()) {
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
-                    QObject::tr("Selection contains both 2d and 3d geometry"));
+                    QObject::tr("Selection contains both 2D and 3D geometry"));
                 return;
             }
         }
@@ -2441,7 +2441,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
             QMessageBox::StandardButton result = QMessageBox::warning(
                 Gui::getMainWindow(),
-                QObject::tr("BSpline Curve Warning"),
+                QObject::tr("B-spline Curve Warning"),
                 QObject::tr("Selected edge is a B-spline. Value will be approximate. Continue?"),
                 QMessageBox::Ok | QMessageBox::Cancel,
                 QMessageBox::Cancel);
@@ -2452,7 +2452,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
             QMessageBox::critical(
                 Gui::getMainWindow(),
-                QObject::tr("BSpline Curve Error"),
+                QObject::tr("B-spline Curve Error"),
                 QObject::tr("Selected edge is a B-spline and a radius/diameter can not be calculated."));
             return;
         }

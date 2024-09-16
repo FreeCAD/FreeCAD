@@ -382,12 +382,12 @@ for ProjectionGroups</string>
           </property>
           <item>
            <property name="text">
-            <string>ANSI</string>
+            <string notr="true">ANSI</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ISO</string>
+            <string notr="true">ISO</string>
            </property>
           </item>
          </widget>

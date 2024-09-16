@@ -305,7 +305,7 @@ This directory will be used for the symbol selection.</string>
         <enum>Gui::FileChooser::Directory</enum>
        </property>
        <property name="filter">
-        <string>*.svg</string>
+        <string notr="true">*.svg</string>
        </property>
       </widget>
      </item>

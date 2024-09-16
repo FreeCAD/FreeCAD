@@ -144,7 +144,7 @@ bool TaskDimension::accept()
 {
     if (m_dimensionVP.expired()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
-                                               QObject::tr("Dimension not found.  Was it deleted? Can not continue."));
+                                               QObject::tr("Dimension not found. Was it deleted? Can not continue."));
         return true;
     }
     Gui::Document* doc = m_dimensionVP->getDocument();
@@ -159,7 +159,7 @@ bool TaskDimension::reject()
 {
     if (m_dimensionVP.expired()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
-                                               QObject::tr("Dimension not found.  Was it deleted? Can not continue."));
+                                               QObject::tr("Dimension not found. Was it deleted? Can not continue."));
         return true;
     }
     Gui::Document* doc = m_dimensionVP->getDocument();
