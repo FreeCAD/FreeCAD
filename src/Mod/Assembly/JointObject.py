@@ -200,6 +200,7 @@ class Joint:
     def createProperties(self, joint):
         self.migrationScript(joint)
         self.migrationScript2(joint)
+        self.migrationScript3(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -229,6 +230,17 @@ class Joint:
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
+                ),
+            )
+
+        if not hasattr(joint, "Offset1"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the first connector of the joint.",
                 ),
             )
 
@@ -263,6 +275,17 @@ class Joint:
                 ),
             )
 
+        if not hasattr(joint, "Offset2"):
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the second connector of the joint.",
+                ),
+            )
+
         # Other properties
         if not hasattr(joint, "Distance"):
             joint.addProperty(
@@ -283,28 +306,6 @@ class Joint:
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "This is the second distance of the joint. It is used only by the gear joint to store the second radius.",
-                ),
-            )
-
-        if not hasattr(joint, "Rotation"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "Rotation",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the rotation of the joint.",
-                ),
-            )
-
-        if not hasattr(joint, "Offset"):
-            joint.addProperty(
-                "App::PropertyVector",
-                "Offset",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the offset vector of the joint.",
                 ),
             )
 
@@ -499,6 +500,36 @@ class Joint:
 
             joint.Reference2 = [obj, [elt, vtx]]
 
+    def migrationScript3(self, joint):
+        if hasattr(joint, "Offset"):
+            current_offset = joint.Offset  # App.Vector
+            current_rotation = joint.Rotation  # float
+
+            joint.removeProperty("Offset")
+            joint.removeProperty("Rotation")
+
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset1",
+                "Joint Connector 1",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the first connector of the joint.",
+                ),
+            )
+
+            joint.addProperty(
+                "App::PropertyPlacement",
+                "Offset2",
+                "Joint Connector 2",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "This is the attachment offset of the second connector of the joint.",
+                ),
+            )
+
+            joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
+
     def dumps(self):
         return None
 
@@ -523,7 +554,7 @@ class Joint:
         if App.isRestoring():
             return
 
-        if prop == "Rotation" or prop == "Offset":
+        if prop == "Offset1" or prop == "Offset2":
             if joint.Reference1 is None or joint.Reference2 is None:
                 return
 
@@ -604,12 +635,11 @@ class Joint:
         ignoreVertex = joint.JointType == "Distance"
         plc = UtilsAssembly.findPlacement(ref, ignoreVertex)
 
-        # We apply rotation / reverse / offset it necessary, but only to the second JCS.
-        if index == 1:
-            if joint.Offset.Length != 0.0:
-                plc = UtilsAssembly.applyOffsetToPlacement(plc, joint.Offset)
-            if joint.Rotation != 0.0:
-                plc = UtilsAssembly.applyRotationToPlacement(plc, joint.Rotation)
+        # We apply the attachment offsets.
+        if index == 0:
+            plc = plc * joint.Offset1
+        else:
+            plc = plc * joint.Offset2
 
         return plc
 
@@ -1482,10 +1512,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Distance2 = self.form.distanceSpinbox2.property("rawValue")
 
     def onOffsetChanged(self, quantity):
-        self.joint.Offset = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
+        self.joint.Offset2.Base = App.Vector(0, 0, self.form.offsetSpinbox.property("rawValue"))
 
     def onRotationChanged(self, quantity):
-        self.joint.Rotation = self.form.rotationSpinbox.property("rawValue")
+        yaw = self.form.rotationSpinbox.property("rawValue")
+        ypr = self.joint.Offset2.Rotation.getYawPitchRoll()
+        self.joint.Offset2.Rotation.setYawPitchRoll(yaw, ypr[1], ypr[2])
 
     def onLimitLenMinChanged(self, quantity):
         if self.form.limitCheckbox1.isChecked():
@@ -1638,8 +1670,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
         self.form.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
-        self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
-        self.form.rotationSpinbox.setProperty("rawValue", self.joint.Rotation)
+        self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset2.Base.z)
+        self.form.rotationSpinbox.setProperty(
+            "rawValue", self.joint.Offset2.Rotation.getYawPitchRoll()[0]
+        )
 
         self.form.limitCheckbox1.setChecked(self.joint.EnableLengthMin)
         self.form.limitCheckbox2.setChecked(self.joint.EnableLengthMax)

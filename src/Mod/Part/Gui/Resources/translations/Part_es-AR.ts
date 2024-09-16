@@ -3155,9 +3155,10 @@ Por favor seleccione primero una o más aristas.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Si está marcado, no se realizará una fusión compuesta durante la lectura del archivo (más lenta pero con más detalles).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -3187,12 +3188,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="75"/>
       <source>Reduce number of objects using Link array</source>
-      <translation>Reduce el número de objetos usando la matriz Link</translation>
+      <translation>Reducir el número de objetos usando la matriz Link</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="78"/>
       <source>Reduce number of objects</source>
-      <translation>Reduce el número de objetos</translation>
+      <translation>Reducir el número de objetos</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="91"/>
@@ -3223,7 +3224,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="150"/>
       <source>CodePage</source>
-      <translation type="unfinished">CodePage</translation>
+      <translation>Página de código</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="177"/>
@@ -3243,7 +3244,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="207"/>
       <source>Assembly per document in sub-directory</source>
-      <translation>Ensamblado por documento en subdirectorio</translation>
+      <translation>Ensamblaje por documento en subdirectorio</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="212"/>
@@ -5515,7 +5516,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../AppPartGui.cpp" line="238"/>
       <source>Part and Part Design workbench</source>
-      <translation>Entornos de trabajo Part y Part Design</translation>
+      <translation>Bancos de trabajo Part y Part Design</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="239"/>

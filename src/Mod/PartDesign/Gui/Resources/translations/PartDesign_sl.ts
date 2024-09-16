@@ -1453,12 +1453,12 @@ If zero, it is equal to Radius2</source>
       <translation>Presek</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="52"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="53"/>
       <source>Boolean parameters</source>
       <translation>Določilke logičnih vrednosti</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="86"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -1466,34 +1466,34 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="49"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="50"/>
       <source>Primitive parameters</source>
       <translation>Določilke osnovnika</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="911"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="916"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="921"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="928"/>
       <source>Invalid wedge parameters</source>
       <translation>Neveljavne določilke klina</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="912"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
       <source>X min must not be equal to X max!</source>
       <translation>Najmanjši X ne sme biti enak največjemu X!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="923"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Najmanjši Y ne sme biti enak največjemu Y!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Najmanjši Z ne sme biti enak največjemu Z!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="967"/>
       <source>Create primitive</source>
       <translation>Ustvari osnovnik</translation>
     </message>
@@ -1565,7 +1565,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Kót</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="327"/>
+      <location filename="../../TaskChamferParameters.cpp" line="332"/>
       <source>Empty chamfer created !
 </source>
       <translation>Prazen posnet rob je ustvarjen!
@@ -1575,17 +1575,17 @@ s ponovnim klikom pa zaključite izbiranje</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="347"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="388"/>
       <source>Empty body list</source>
       <translation>Izprazni seznam teles</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="348"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="389"/>
       <source>The body list cannot be empty</source>
       <translation>Seznam teles ne more biti prazen</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="360"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="403"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Logične vrednosti: Potrdi: Vnosna napaka</translation>
     </message>
@@ -1661,7 +1661,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Obratna smer vlečenja</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="284"/>
+      <location filename="../../TaskDraftParameters.cpp" line="292"/>
       <source>Empty draft created !
 </source>
       <translation>Ustvarjeno brez nagiba!
@@ -1681,17 +1681,17 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Izberi</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="301"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="278"/>
       <source>Add all edges</source>
       <translation>Dodaj vse robove</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="308"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="285"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
       <translation>Doda vse robove v okno s seznamom (dejavno le v načinu dodajanja izbora).</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="316"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -1699,64 +1699,64 @@ s ponovnim klikom pa zaključite izbiranje</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1212"/>
       <source>No face selected</source>
       <translation>Nobena ploskev ni izbrana</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="157"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1016"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="160"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1047"/>
       <source>Face</source>
       <translation>Ploskev</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="173"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="176"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="264"/>
       <source>Preview</source>
       <translation>Predogled</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="268"/>
       <source>Select faces</source>
       <translation>Izberite ploskve</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="490"/>
       <source>No shape selected</source>
       <translation>Nobena oblika ni izbrana</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
       <source>Sketch normal</source>
       <translation>Normala na očrt</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="591"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="601"/>
       <source>Face normal</source>
       <translation>Ploskvina normala</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="605"/>
       <source>Select reference...</source>
       <translation>Izberite osnovo …</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="609"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="614"/>
       <source>Custom direction</source>
       <translation>Smer po meri</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="999"/>
       <source>Click on a shape in the model</source>
       <translation type="unfinished">Click on a shape in the model</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
       <source>Click on a face in the model</source>
       <translation>Klikni na ploskev v modelu</translation>
     </message>
@@ -1799,52 +1799,52 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Ustvari navzkrižni sklic</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="61"/>
+      <location filename="../../TaskFeaturePick.cpp" line="63"/>
       <source>Valid</source>
       <translation>Veljavno</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="62"/>
+      <location filename="../../TaskFeaturePick.cpp" line="65"/>
       <source>Invalid shape</source>
       <translation>Neveljavna oblika</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="63"/>
+      <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>No wire in sketch</source>
       <translation>V očrtu ni nobenega črtovja</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="64"/>
+      <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Sketch already used by other feature</source>
       <translation>Očrt je že uporabljen za drugo značilnost</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="65"/>
+      <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>Belongs to another body</source>
       <translation>Pripada drugemu telesu</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="66"/>
+      <location filename="../../TaskFeaturePick.cpp" line="73"/>
       <source>Belongs to another part</source>
       <translation>Pripada drugemu delu</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="67"/>
+      <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Doesn't belong to any body</source>
       <translation>Ne pripada nobenemu telesu</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="68"/>
+      <location filename="../../TaskFeaturePick.cpp" line="77"/>
       <source>Base plane</source>
       <translation>Osnovna ravnina</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="69"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Feature is located after the tip feature</source>
       <translation>Značilnost je za Vrhom</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="80"/>
+      <location filename="../../TaskFeaturePick.cpp" line="89"/>
       <source>Select attachment</source>
       <translation type="unfinished">Select attachment</translation>
     </message>
@@ -1881,7 +1881,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Uporabi vse robove</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="194"/>
+      <location filename="../../TaskFilletParameters.cpp" line="198"/>
       <source>Empty fillet created!</source>
       <translation type="unfinished">Empty fillet created!</translation>
     </message>
@@ -1905,43 +1905,43 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="228"/>
+      <location filename="../../TaskHelixParameters.cpp" line="237"/>
       <source>Base X axis</source>
       <translation>Osnovna X os</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="229"/>
+      <location filename="../../TaskHelixParameters.cpp" line="238"/>
       <source>Base Y axis</source>
       <translation>Osnovna Y os</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="230"/>
+      <location filename="../../TaskHelixParameters.cpp" line="239"/>
       <source>Base Z axis</source>
       <translation>Osnovna Z os</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="212"/>
+      <location filename="../../TaskHelixParameters.cpp" line="221"/>
       <source>Horizontal sketch axis</source>
       <translation>Vodoravna os skice</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="211"/>
+      <location filename="../../TaskHelixParameters.cpp" line="220"/>
       <source>Vertical sketch axis</source>
       <translation>Navpična os skice</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="210"/>
+      <location filename="../../TaskHelixParameters.cpp" line="219"/>
       <source>Normal sketch axis</source>
       <translation>Os normale skice</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="196"/>
+      <location filename="../../TaskHelixParameters.cpp" line="204"/>
       <source>Select reference...</source>
       <translation>Izberite sklic ...</translation>
     </message>
@@ -2016,27 +2016,27 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Posodobi pogled</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="52"/>
+      <location filename="../../TaskHelixParameters.cpp" line="56"/>
       <source>Helix parameters</source>
       <translation>Določilke vijačnice</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="214"/>
+      <location filename="../../TaskHelixParameters.cpp" line="223"/>
       <source>Construction line %1</source>
       <translation>Pomožna črta %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="277"/>
+      <location filename="../../TaskHelixParameters.cpp" line="289"/>
       <source>Warning: helix might be self intersecting</source>
       <translation>Pozor: vijačnica lahko seka samo sebe</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="282"/>
+      <location filename="../../TaskHelixParameters.cpp" line="294"/>
       <source>Error: helix touches itself</source>
       <translation>Napaka: vijačnica se dotika sama sebe</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="330"/>
+      <location filename="../../TaskHelixParameters.cpp" line="343"/>
       <source>Error: unsupported mode</source>
       <translation>Napaka: nepodprt način</translation>
     </message>
@@ -2186,7 +2186,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
       <translation>Določilke navlečka</translation>
     </message>
     <message>
-      <location filename="../../TaskLoftParameters.cpp" line="72"/>
+      <location filename="../../TaskLoftParameters.cpp" line="74"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -2566,12 +2566,12 @@ merjena vzdolž določene smeri</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="536"/>
+      <location filename="../../TaskPipeParameters.cpp" line="579"/>
       <source>Section orientation</source>
       <translation>Usmerjenost preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="562"/>
+      <location filename="../../TaskPipeParameters.cpp" line="607"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -2630,18 +2630,18 @@ merjena vzdolž določene smeri</translation>
       <translation>Določilke cevi</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="84"/>
+      <location filename="../../TaskPipeParameters.cpp" line="88"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="424"/>
-      <location filename="../../TaskPipeParameters.cpp" line="522"/>
+      <location filename="../../TaskPipeParameters.cpp" line="447"/>
+      <location filename="../../TaskPipeParameters.cpp" line="559"/>
       <source>Input error</source>
       <translation>Napaka vnosa</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="424"/>
+      <location filename="../../TaskPipeParameters.cpp" line="447"/>
       <source>No active body</source>
       <translation>Nobenega dejavnega telesa</translation>
     </message>
@@ -2679,12 +2679,12 @@ merjena vzdolž določene smeri</translation>
       <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="816"/>
+      <location filename="../../TaskPipeParameters.cpp" line="879"/>
       <source>Section transformation</source>
       <translation>Preoblikovanje preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="832"/>
+      <location filename="../../TaskPipeParameters.cpp" line="896"/>
       <source>Remove</source>
       <translation>Odstrani</translation>
     </message>
@@ -2788,7 +2788,7 @@ merjena vzdolž določene smeri</translation>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="972"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="981"/>
       <source>Attachment</source>
       <translation>Pripetek</translation>
     </message>
@@ -4263,20 +4263,20 @@ Na voljo le pri luknjah breh navoja</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <location filename="../../TaskHoleParameters.cpp" line="660"/>
       <source>Standard</source>
       <translation>Običajno</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="632"/>
-      <location filename="../../TaskHoleParameters.cpp" line="643"/>
+      <location filename="../../TaskHoleParameters.cpp" line="663"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Close</source>
       <translation>Zapri</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="633"/>
+      <location filename="../../TaskHoleParameters.cpp" line="666"/>
       <source>Wide</source>
       <translation>Velika</translation>
     </message>
@@ -4415,12 +4415,12 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Obratno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="642"/>
+      <location filename="../../TaskHoleParameters.cpp" line="677"/>
       <source>Normal</source>
       <translation>Običajno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="644"/>
+      <location filename="../../TaskHoleParameters.cpp" line="683"/>
       <source>Loose</source>
       <translation>Ohlapno</translation>
     </message>
@@ -4750,35 +4750,19 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Oblika orodja je ničelna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="155"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="154"/>
       <source>Unsupported boolean operation</source>
       <translation type="unfinished">Unsupported boolean operation</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
-      <source>Fusion of tools failed</source>
-      <translation>Spojitev orodij spodletela</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="736"/>
       <location filename="../../../App/FeaturePipe.cpp" line="397"/>
       <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
       <location filename="../../../App/FeatureLoft.cpp" line="248"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <source>Resulting shape is not a solid</source>
       <translation>Dobljena oblika ni telo</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="176"/>
-      <source>Cut out failed</source>
-      <translation>Izrezovanje spodletelo</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="181"/>
-      <source>Common operation failed</source>
-      <translation>Skupno dejanje spodletelo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="740"/>
@@ -4788,7 +4772,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="192"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <location filename="../../../App/FeatureFillet.cpp" line="117"/>
       <location filename="../../../App/FeatureLoft.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="1905"/>
@@ -4922,13 +4906,13 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <translation>Os vrtenine seka očrt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="227"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="228"/>
       <location filename="../../../App/FeatureGroove.cpp" line="157"/>
       <source>Could not revolve the sketch!</source>
       <translation>Očrta ni mogoče zvrteti!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="239"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="240"/>
       <location filename="../../../App/FeatureGroove.cpp" line="201"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
@@ -5083,7 +5067,7 @@ Sekajoče se prvine očrta niso dovoljene.</translation>
       <translation>Napaka: dodajanje navoja spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="160"/>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>Logična operacija spodletela</translation>

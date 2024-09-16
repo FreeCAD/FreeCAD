@@ -251,7 +251,6 @@ void TaskMeasure::saveObject()
 
     _mDocument = App::GetApplication().getActiveDocument();
     _mDocument->addObject(_mMeasureObject, _mMeasureType->label.c_str());
-    _mMeasureObject = nullptr;
 }
 
 
@@ -387,8 +386,6 @@ bool TaskMeasure::apply()
 {
     saveObject();
     ensureGroup(_mMeasureObject);
-    _mMeasureType = nullptr;
-    _mMeasureObject = nullptr;
     reset();
 
     // Commit transaction
@@ -411,6 +408,7 @@ void TaskMeasure::reset()
 {
     // Reset tool state
     _mMeasureType = nullptr;
+    _mMeasureObject = nullptr;
     this->clearSelection();
 
     // Should the explicit mode also be reset?
@@ -481,7 +479,9 @@ bool TaskMeasure::eventFilter(QObject* obj, QEvent* event)
         }
 
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-            this->apply();
+            // Save object. Indirectly dependent on whether the apply button is enabled
+            // enabled if valid measurement object.
+            this->buttonBox->button(QDialogButtonBox::Apply)->click();
             return true;
         }
     }

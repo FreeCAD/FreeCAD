@@ -402,7 +402,7 @@ void DlgAddPropertyVarSet::onEditFinished() {
         checkGroup();
         checkType();
     }
-    catch (const CreatePropertyException& e) {
+    catch (const CreatePropertyException&) {
         if (!namePropertyToAdd.empty()) {
             clearCurrentProperty();
         }

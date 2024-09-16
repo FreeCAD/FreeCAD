@@ -567,20 +567,18 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             old_value = Units.Quantity(self.material[matProperty]).Value
             # value = float(inputfield_text)  # this fails on locale with comma
             # https://forum.freecad.org/viewtopic.php?f=18&t=56912&p=523313#p523313
-        if value:
-            if not (1 - variation < float(old_value) / value < 1 + variation):
-                material = self.material
-                if qUnit != "":
-                    material[matProperty] = str(value) + " " + qUnit
-                else:
-                    material[matProperty] = str(value)
-                self.material = material
-                if self.has_transient_mat is False:
-                    self.add_transient_material()
-                else:
-                    self.set_transient_material()
-        else:
-            pass  # some check or default value set can be done here
+
+        if not (1 - variation < float(old_value) / value < 1 + variation):
+            material = self.material
+            if qUnit != "":
+                material[matProperty] = str(value) + " " + qUnit
+            else:
+                material[matProperty] = str(value)
+            self.material = material
+            if self.has_transient_mat is False:
+                self.add_transient_material()
+            else:
+                self.set_transient_material()
         # print(inputfield_text)
 
     # mechanical input fields

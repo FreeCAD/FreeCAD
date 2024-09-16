@@ -155,6 +155,7 @@ class Arch_Window:
 
         import Draft
         from draftutils import gui_utils
+        from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
         self.tracker.off()
         if point is None:
@@ -393,6 +394,7 @@ class Arch_Window:
 
     def setPreset(self,i):
 
+        from PySide import QtGui
         from draftutils import params
         from ArchWindowPresets import WindowPresets
         self.Preset = i

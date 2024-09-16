@@ -108,15 +108,16 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
+          qt_major_version: 6
       - name: Restore Compiler Cache
         uses: actions/cache@v4
         with:
           save-always: true
           path: ${{ env.CCACHE_DIR }}
-          key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}-qt6
+          key: FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |
-            FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-qt6-
-            FC-${{ steps.genCacheKey.outputs.cacheKey }}-qt6-
+            FC-${{ steps.genCacheKey.outputs.cacheKey }}-${{ github.ref }}-
+            FC-${{ steps.genCacheKey.outputs.cacheKey }}-
       - name: Print CCache statistics before build, reset stats and print config
         run: |
           ccache -s

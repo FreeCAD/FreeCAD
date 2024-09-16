@@ -1453,12 +1453,12 @@ Ha zérus, azonos a Radius2-vel (2. sugárral?)</translation>
       <translation>Közös</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="52"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="53"/>
       <source>Boolean parameters</source>
       <translation>Logikai paraméterek</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="86"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
@@ -1466,34 +1466,34 @@ Ha zérus, azonos a Radius2-vel (2. sugárral?)</translation>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="49"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="50"/>
       <source>Primitive parameters</source>
       <translation>Alaptest paraméterei</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="911"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="916"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="921"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="928"/>
       <source>Invalid wedge parameters</source>
       <translation>Érvénytelen ék paraméterek</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="912"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min nem lehet egyenlő X max-szal!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="923"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min nem lehet egyenlő Y max-szal!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min nem lehet egyenlő Z max-szal!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="967"/>
       <source>Create primitive</source>
       <translation>Alaptest létrehozása</translation>
     </message>
@@ -1564,7 +1564,7 @@ click again to end selection</source>
       <translation>Szög</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="327"/>
+      <location filename="../../TaskChamferParameters.cpp" line="332"/>
       <source>Empty chamfer created !
 </source>
       <translation>Üres letörést hozott létre !
@@ -1574,17 +1574,17 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="347"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="388"/>
       <source>Empty body list</source>
       <translation>Test listájának ürítése</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="348"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="389"/>
       <source>The body list cannot be empty</source>
       <translation>Test listája nem lehet üres</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="360"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="403"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Logikai: Fogadja el: beviteli hiba</translation>
     </message>
@@ -1659,7 +1659,7 @@ click again to end selection</source>
       <translation>Fordított irányban húzza</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="284"/>
+      <location filename="../../TaskDraftParameters.cpp" line="292"/>
       <source>Empty draft created !
 </source>
       <translation>Üres tervrajzot hozott létre !
@@ -1679,17 +1679,17 @@ click again to end selection</source>
       <translation>Kiválaszt</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="301"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="278"/>
       <source>Add all edges</source>
       <translation>Az összes él hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="308"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="285"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
       <translation>Hozzáadja az összes élt a listához (csak kijelölési módban aktív).</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="316"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
@@ -1697,64 +1697,64 @@ click again to end selection</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1212"/>
       <source>No face selected</source>
       <translation>Nincs kijelölve felület</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="157"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1016"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="160"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1047"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="173"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="176"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="264"/>
       <source>Preview</source>
       <translation>Előnézet</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="268"/>
       <source>Select faces</source>
       <translation>Válassza ki a felületeket</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="490"/>
       <source>No shape selected</source>
       <translation>Nincs kijelölve alakzat</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
       <source>Sketch normal</source>
       <translation>Normál vektor vázlata</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="591"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="601"/>
       <source>Face normal</source>
       <translation>Aktuális felület</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="605"/>
       <source>Select reference...</source>
       <translation>Válasszon referenciát...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="609"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="614"/>
       <source>Custom direction</source>
       <translation>Egyéni irány</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="999"/>
       <source>Click on a shape in the model</source>
       <translation>Kattintson egy alakzatra a modellben</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
       <source>Click on a face in the model</source>
       <translation>Kattintson a modell felületére</translation>
     </message>
@@ -1797,52 +1797,52 @@ click again to end selection</source>
       <translation>Kereszthivatkozás létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="61"/>
+      <location filename="../../TaskFeaturePick.cpp" line="63"/>
       <source>Valid</source>
       <translation>Érvényes</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="62"/>
+      <location filename="../../TaskFeaturePick.cpp" line="65"/>
       <source>Invalid shape</source>
       <translation>Érvénytelen alakzat</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="63"/>
+      <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>No wire in sketch</source>
       <translation>Nincs drótváz a vázlatban</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="64"/>
+      <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Sketch already used by other feature</source>
       <translation>Egyéb funkció már használja a vázlatot</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="65"/>
+      <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>Belongs to another body</source>
       <translation>Egy másik testhez tartozik</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="66"/>
+      <location filename="../../TaskFeaturePick.cpp" line="73"/>
       <source>Belongs to another part</source>
       <translation>Egy másik alkatrészhez tartozik</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="67"/>
+      <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Doesn't belong to any body</source>
       <translation>Nem tartozik semmilyen testhez</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="68"/>
+      <location filename="../../TaskFeaturePick.cpp" line="77"/>
       <source>Base plane</source>
       <translation>Alapsík</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="69"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Feature is located after the tip feature</source>
       <translation>A tulajdonság a tipp-funkció után található</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="80"/>
+      <location filename="../../TaskFeaturePick.cpp" line="89"/>
       <source>Select attachment</source>
       <translation>Melléklet kiválasztása</translation>
     </message>
@@ -1878,7 +1878,7 @@ click again to end selection</source>
       <translation>Az összes él használata</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="194"/>
+      <location filename="../../TaskFilletParameters.cpp" line="198"/>
       <source>Empty fillet created!</source>
       <translation>Üres lekerekítést hozott létre!</translation>
     </message>
@@ -1902,43 +1902,43 @@ click again to end selection</source>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="228"/>
+      <location filename="../../TaskHelixParameters.cpp" line="237"/>
       <source>Base X axis</source>
       <translation>Alap X tengely</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="229"/>
+      <location filename="../../TaskHelixParameters.cpp" line="238"/>
       <source>Base Y axis</source>
       <translation>Alap Y tengely</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="230"/>
+      <location filename="../../TaskHelixParameters.cpp" line="239"/>
       <source>Base Z axis</source>
       <translation>Alap Z tengely</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="212"/>
+      <location filename="../../TaskHelixParameters.cpp" line="221"/>
       <source>Horizontal sketch axis</source>
       <translation>Vázlat vízszintes tengelye</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="211"/>
+      <location filename="../../TaskHelixParameters.cpp" line="220"/>
       <source>Vertical sketch axis</source>
       <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="210"/>
+      <location filename="../../TaskHelixParameters.cpp" line="219"/>
       <source>Normal sketch axis</source>
       <translation>Normál vázlat tengely</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="196"/>
+      <location filename="../../TaskHelixParameters.cpp" line="204"/>
       <source>Select reference...</source>
       <translation>Válasszon referenciát...</translation>
     </message>
@@ -2013,27 +2013,27 @@ click again to end selection</source>
       <translation>Nézetek frissítése</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="52"/>
+      <location filename="../../TaskHelixParameters.cpp" line="56"/>
       <source>Helix parameters</source>
       <translation>Csavar paraméterek</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="214"/>
+      <location filename="../../TaskHelixParameters.cpp" line="223"/>
       <source>Construction line %1</source>
       <translation>Építési egyenes %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="277"/>
+      <location filename="../../TaskHelixParameters.cpp" line="289"/>
       <source>Warning: helix might be self intersecting</source>
       <translation>Figyelmeztetés: a csigavonal önmagát metszheti</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="282"/>
+      <location filename="../../TaskHelixParameters.cpp" line="294"/>
       <source>Error: helix touches itself</source>
       <translation>Hiba: a csigavonal megérinti magát</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="330"/>
+      <location filename="../../TaskHelixParameters.cpp" line="343"/>
       <source>Error: unsupported mode</source>
       <translation>Hiba: nem támogatott mód</translation>
     </message>
@@ -2183,7 +2183,7 @@ click again to end selection</source>
       <translation>Kihúzott tárgy paraméterei</translation>
     </message>
     <message>
-      <location filename="../../TaskLoftParameters.cpp" line="72"/>
+      <location filename="../../TaskLoftParameters.cpp" line="74"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
@@ -2562,12 +2562,12 @@ measured along the specified direction</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="536"/>
+      <location filename="../../TaskPipeParameters.cpp" line="579"/>
       <source>Section orientation</source>
       <translation>Szakasz tájolás</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="562"/>
+      <location filename="../../TaskPipeParameters.cpp" line="607"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
@@ -2626,18 +2626,18 @@ measured along the specified direction</source>
       <translation>Cső paraméterek</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="84"/>
+      <location filename="../../TaskPipeParameters.cpp" line="88"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="424"/>
-      <location filename="../../TaskPipeParameters.cpp" line="522"/>
+      <location filename="../../TaskPipeParameters.cpp" line="447"/>
+      <location filename="../../TaskPipeParameters.cpp" line="559"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="424"/>
+      <location filename="../../TaskPipeParameters.cpp" line="447"/>
       <source>No active body</source>
       <translation>Nincs aktív test</translation>
     </message>
@@ -2675,12 +2675,12 @@ measured along the specified direction</source>
       <translation>A lista húzással átrendezhető</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="816"/>
+      <location filename="../../TaskPipeParameters.cpp" line="879"/>
       <source>Section transformation</source>
       <translation>Szakasz átalakítás</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="832"/>
+      <location filename="../../TaskPipeParameters.cpp" line="896"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
@@ -2784,7 +2784,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="972"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="981"/>
       <source>Attachment</source>
       <translation>Melléklet</translation>
     </message>
@@ -4256,20 +4256,20 @@ Csak menet nélküli furatokhoz érhető el</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <location filename="../../TaskHoleParameters.cpp" line="660"/>
       <source>Standard</source>
       <translation>Általános</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="632"/>
-      <location filename="../../TaskHoleParameters.cpp" line="643"/>
+      <location filename="../../TaskHoleParameters.cpp" line="663"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Close</source>
       <translation>Bezárás</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="633"/>
+      <location filename="../../TaskHoleParameters.cpp" line="666"/>
       <source>Wide</source>
       <translation>Széles</translation>
     </message>
@@ -4408,12 +4408,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>Fordított</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="642"/>
+      <location filename="../../TaskHoleParameters.cpp" line="677"/>
       <source>Normal</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="644"/>
+      <location filename="../../TaskHoleParameters.cpp" line="683"/>
       <source>Loose</source>
       <translation>Lazán</translation>
     </message>
@@ -4743,35 +4743,19 @@ over 90: larger hole radius at the bottom</source>
       <translation>A szerszám alakja üres</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="155"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="154"/>
       <source>Unsupported boolean operation</source>
-      <translation type="unfinished">Unsupported boolean operation</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
-      <source>Fusion of tools failed</source>
-      <translation>A szerszám csatlakoztatása sikertelen</translation>
+      <translation>Nem támogatott logikai művelet</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="736"/>
       <location filename="../../../App/FeaturePipe.cpp" line="397"/>
       <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
       <location filename="../../../App/FeatureLoft.cpp" line="248"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <source>Resulting shape is not a solid</source>
       <translation>Az eredmény alakzat nem szilárd test</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="176"/>
-      <source>Cut out failed</source>
-      <translation>A kivágás sikertelen</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="181"/>
-      <source>Common operation failed</source>
-      <translation>A közös művelet sikertelen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="740"/>
@@ -4781,7 +4765,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="192"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <location filename="../../../App/FeatureFillet.cpp" line="117"/>
       <location filename="../../../App/FeatureLoft.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="1905"/>
@@ -4915,13 +4899,13 @@ over 90: larger hole radius at the bottom</source>
       <translation>A körbmetszési tengely metszi a vázlatot</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="227"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="228"/>
       <location filename="../../../App/FeatureGroove.cpp" line="157"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nem lehetett körmetszeni a vázlatot!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="239"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="240"/>
       <location filename="../../../App/FeatureGroove.cpp" line="201"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
@@ -5076,7 +5060,7 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
       <translation>Hiba: A menet hozzáadása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="160"/>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>A logikai művelet sikertelen</translation>
@@ -5398,7 +5382,7 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     <message>
       <location filename="../../../App/FeatureThickness.cpp" line="101"/>
       <source>Invalid face reference</source>
-      <translation type="unfinished">Invalid face reference</translation>
+      <translation>Érvénytelen felület hivatkozás</translation>
     </message>
   </context>
   <context>

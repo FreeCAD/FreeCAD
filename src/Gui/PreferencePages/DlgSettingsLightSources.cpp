@@ -31,6 +31,8 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSphere.h>
 #endif
 
 #include "DlgSettingsLightSources.h"
@@ -52,12 +54,6 @@ DlgSettingsLightSources::DlgSettingsLightSources(QWidget* parent)
 
     view = ui->viewer;
     createViewer();
-
-    QSizePolicy sp {QSizePolicy::Expanding, QSizePolicy::Expanding};
-    sp.setHeightForWidth(true);
-    sp.setHorizontalStretch(1);
-    sp.setVerticalStretch(1);
-    view->setSizePolicy(sp);
 }
 
 static inline
@@ -111,9 +107,37 @@ void DlgSettingsLightSources::dragMotionCallback(void *data, SoDragger *drag)
     setValueSilently(self->ui->z_spnBox, dir[2]);
 }
 
+static inline
+SoMaterial *createMaterial(void)
+{
+    const QColor  ambientColor {0xff333333},
+                  diffuseColor {0xffd2d2ff},
+                 emissiveColor {0xff000000},
+                 specularColor {0xffcccccc};
+
+    auto material = new SoMaterial ();
+    material->ambientColor.setValue  (ambientColor.redF(),  ambientColor.greenF(),  ambientColor.blueF());
+    material->diffuseColor.setValue  (diffuseColor.redF(),  diffuseColor.greenF(),  diffuseColor.blueF());
+    material->emissiveColor.setValue(emissiveColor.redF(), emissiveColor.greenF(), emissiveColor.blueF());
+    material->specularColor.setValue(specularColor.redF(), specularColor.greenF(), specularColor.blueF());
+
+    material->shininess = 0.9f;
+
+    return material;
+}
+
+static inline
+SoSphere *createSphere(void)
+{
+    auto sphere = new SoSphere();
+    sphere->radius = 2;
+
+    return sphere;
+}
+
 void DlgSettingsLightSources::createViewer()
 {
-    const QColor default_bg_color {200, 200, 200};
+    const QColor default_bg_color {180, 180, 180};
     const SbVec3f default_view_direction {1.0f, 1.0f, -5.0f};
 
     // NOLINTBEGIN
@@ -127,6 +151,8 @@ void DlgSettingsLightSources::createViewer()
 
     auto root = static_cast<SoSeparator*>(view->getSceneGraph());
     root->addChild(createDragger());
+    root->addChild(createMaterial());
+    root->addChild(createSphere());
 
     auto callback = new SoEventCallback();
     root->addChild(callback);
@@ -139,8 +165,11 @@ void DlgSettingsLightSources::createViewer()
     view->setCameraType(SoOrthographicCamera::getClassTypeId());
     view->setViewDirection(default_view_direction);
     view->viewAll();
-    auto cam = dynamic_cast <SoOrthographicCamera *> (view->getCamera());
-    cam->height = cam->height.getValue() * 2.0f;
+
+    camera = dynamic_cast <SoOrthographicCamera *> (view->getCamera());
+    const float camera_height = camera->height.getValue() * 2.0f;
+    camera->height = camera_height;
+    cam_step = camera_height / 14.0f;
     // NOLINTEND
 }
 
@@ -268,6 +297,22 @@ void DlgSettingsLightSources::lightColor()
                                              color.greenF(),
                                              color.blueF());
     }
+}
+
+void DlgSettingsLightSources::pushIn(void)
+{
+    if (camera == nullptr)
+        return;
+
+    camera->height = camera->height.getValue() - cam_step;
+}
+
+void DlgSettingsLightSources::pullOut(void)
+{
+    if (camera == nullptr)
+        return;
+
+    camera->height = camera->height.getValue() + cam_step;
 }
 
 void DlgSettingsLightSources::changeEvent(QEvent* event)

@@ -1889,7 +1889,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Додај скицу кружног лука</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="157"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="158"/>
       <source>Add sketch circle</source>
       <translation>Додај скицу кружнице</translation>
     </message>
@@ -2146,59 +2146,59 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2822"/>
+      <location filename="../../../App/SketchObject.cpp" line="2796"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Није могуће одредити пресечну тачку кривих. Покушај да додаш ограничење подударности између тачака кривих где намераваш да направиш заобљење.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7094"/>
+      <location filename="../../../App/SketchObject.cpp" line="7068"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Не захтевате промену у вишеструкости чворова.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7088"/>
-      <location filename="../../../App/SketchObject.cpp" line="7274"/>
+      <location filename="../../../App/SketchObject.cpp" line="7062"/>
+      <location filename="../../../App/SketchObject.cpp" line="7248"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Индекс Б-Сплајн геометрије (GeoID) је ван граница.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7100"/>
-      <location filename="../../../App/SketchObject.cpp" line="7284"/>
+      <location filename="../../../App/SketchObject.cpp" line="7074"/>
+      <location filename="../../../App/SketchObject.cpp" line="7258"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Наведени Геометријски индеx (GeoId) није Б-сплајн крива.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7109"/>
+      <location filename="../../../App/SketchObject.cpp" line="7083"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Индекс чворова је ван граница. Имајте на уму да у складу са ОЦЦ напоменом, први чвор има индекс 1, а не нула.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7120"/>
+      <location filename="../../../App/SketchObject.cpp" line="7094"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Вишеструкост се не може повећати изнад степена Б-сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7128"/>
+      <location filename="../../../App/SketchObject.cpp" line="7102"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Вишеструкост не може бити мање од нуле.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7142"/>
+      <location filename="../../../App/SketchObject.cpp" line="7116"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC није у стању да смањи вишеструкост унутар максималне толеранције.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7278"/>
+      <location filename="../../../App/SketchObject.cpp" line="7252"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Чвор не може имати нулту вишеструкост.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7295"/>
+      <location filename="../../../App/SketchObject.cpp" line="7269"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Вишеструкост чворова не може бити већа од степена Б-Сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7301"/>
+      <location filename="../../../App/SketchObject.cpp" line="7275"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Чвор се не може уметнути изван опсега параметара Б-Сплајна.</translation>
     </message>
@@ -3143,14 +3143,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Да би сте могли уклоното осе поравнања потребно је имати изабран најмање један геометријски елемент који није спољњи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="587"/>
-      <location filename="../../TaskSketcherElements.cpp" line="634"/>
+      <location filename="../../TaskSketcherElements.cpp" line="603"/>
+      <location filename="../../TaskSketcherElements.cpp" line="650"/>
       <source>Unsupported visual layer operation</source>
       <translation type="unfinished">Unsupported visual layer operation</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="588"/>
-      <location filename="../../TaskSketcherElements.cpp" line="635"/>
+      <location filename="../../TaskSketcherElements.cpp" line="604"/>
+      <location filename="../../TaskSketcherElements.cpp" line="651"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
     </message>
@@ -3195,7 +3195,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Параметри лучног жљеба</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="262"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="263"/>
       <source>Circle parameters</source>
       <translation>Параметри кружнице</translation>
     </message>
@@ -3552,72 +3552,72 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="295"/>
+      <location filename="../../TaskSketcherElements.cpp" line="311"/>
       <source>Normal</source>
       <translation>Обичне</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="296"/>
+      <location filename="../../TaskSketcherElements.cpp" line="312"/>
       <source>Construction</source>
       <translation>Помоћна геометрија</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="297"/>
+      <location filename="../../TaskSketcherElements.cpp" line="313"/>
       <source>Internal</source>
       <translation>Унутрашњи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="298"/>
+      <location filename="../../TaskSketcherElements.cpp" line="314"/>
       <source>External</source>
       <translation>Спољни</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="299"/>
+      <location filename="../../TaskSketcherElements.cpp" line="315"/>
       <source>All types</source>
       <translation>Све врсте</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="300"/>
+      <location filename="../../TaskSketcherElements.cpp" line="316"/>
       <source>Point</source>
       <translation>Тачка</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="301"/>
+      <location filename="../../TaskSketcherElements.cpp" line="317"/>
       <source>Line</source>
       <translation>Дуж</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="302"/>
+      <location filename="../../TaskSketcherElements.cpp" line="318"/>
       <source>Circle</source>
       <translation>Круг</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="303"/>
+      <location filename="../../TaskSketcherElements.cpp" line="319"/>
       <source>Ellipse</source>
       <translation>Елипса</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="304"/>
+      <location filename="../../TaskSketcherElements.cpp" line="320"/>
       <source>Arc of circle</source>
       <translation>Кружни лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="305"/>
+      <location filename="../../TaskSketcherElements.cpp" line="321"/>
       <source>Arc of ellipse</source>
       <translation>Елиптични лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="306"/>
+      <location filename="../../TaskSketcherElements.cpp" line="322"/>
       <source>Arc of hyperbola</source>
       <translation>Хиперболични лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="307"/>
+      <location filename="../../TaskSketcherElements.cpp" line="323"/>
       <source>Arc of parabola</source>
       <translation>Параболични лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="308"/>
+      <location filename="../../TaskSketcherElements.cpp" line="324"/>
       <source>B-spline</source>
       <translation>Б-сплајн крива</translation>
     </message>
@@ -3740,27 +3740,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Изабери вертикалну осу</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
       <source>Layer</source>
       <translation>Слој</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
       <source>Layer 0</source>
       <translation>Слој 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="794"/>
       <source>Layer 1</source>
       <translation>Слој 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
       <source>Hidden</source>
       <translation>Заклоњење</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
+      <location filename="../../TaskSketcherElements.cpp" line="800"/>
       <source>Delete</source>
       <translation>Обриши</translation>
     </message>
@@ -4646,120 +4646,120 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>Подешавања</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1802"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1809"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1816"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1825"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1832"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1839"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1846"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1853"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1860"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1881"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
       <source>Construction</source>
       <translation>Помоћна геометрија</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1162"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1185"/>
       <source>Elements</source>
       <translation>Елементи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1800"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1805"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1964"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
       <source>Point</source>
       <translation>Тачка</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1803"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1810"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1817"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1824"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1831"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1838"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1845"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1852"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1859"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1875"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1882"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1888"/>
       <source>Internal</source>
       <translation>Унутрашњи</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1807"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1812"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1944"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1967"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
       <source>Line</source>
       <translation>Дуж</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1814"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1819"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
       <source>Arc</source>
       <translation>Кружни лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1821"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1951"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1973"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
       <source>Circle</source>
       <translation>Круг</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1976"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
       <source>Ellipse</source>
       <translation>Елипса</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1957"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1958"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1863"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1980"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1981"/>
       <source>Elliptical Arc</source>
       <translation>Елиптични Лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1961"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1962"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1870"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1984"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1985"/>
       <source>Hyperbolic Arc</source>
       <translation>Хиперболични лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1966"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1988"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1989"/>
       <source>Parabolic Arc</source>
       <translation>Параболични лук</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1969"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1991"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1992"/>
       <source>B-spline</source>
       <translation>Б-сплајн крива</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1862"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1890"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1993"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1994"/>
       <source>Other</source>
       <translation>Друго</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2011"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
       <source>Extended information</source>
       <translation>Проширене информације</translation>
     </message>
@@ -5234,12 +5234,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="350"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="352"/>
       <source>Center</source>
       <translation>По средини</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="351"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="353"/>
       <source>3 rim points</source>
       <translation>Кружница помоћу 3 тачке</translation>
     </message>
@@ -5966,7 +5966,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Скица има делимично сувишна ограничења!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10863"/>
+      <location filename="../../../App/SketchObject.cpp" line="10736"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Параболе су мигрирале. Мигриране датотеке неће бити могуће отварати у претходним верзијама FreeCAD-а!!
@@ -5983,7 +5983,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="253"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="165"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="166"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="251"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="330"/>
@@ -6001,7 +6001,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../CommandSketcherTools.cpp" line="1854"/>
       <location filename="../../CommandSketcherTools.cpp" line="2291"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="180"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="98"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
@@ -6097,7 +6097,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Додавање индиго копије није успело</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="166"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="167"/>
       <source>Failed to add circle</source>
       <translation>Додавање круга није успело</translation>
     </message>
@@ -6129,7 +6129,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerSlot.h" line="165"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArc.h" line="245"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="170"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="171"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
       <location filename="../../DrawSketchHandlerScale.h" line="135"/>
@@ -6139,7 +6139,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Извршавање алатке је прекинуто</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="99"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="94"/>
       <source>Failed to add point</source>
       <translation>Додавање тачке није успело</translation>
     </message>
@@ -7319,7 +7319,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="858"/>
       <source>Create a periodic B-spline.</source>
-      <translation type="unfinished">Create a periodic B-spline.</translation>
+      <translation>Направи периодичну Б-сплајн криву.</translation>
     </message>
   </context>
   <context>

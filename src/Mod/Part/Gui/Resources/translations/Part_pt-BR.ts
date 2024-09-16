@@ -3146,10 +3146,10 @@ Selecione uma ou mais arestas primeiro.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Se marcada, nenhuma junção em compostos será feita
-durante a leitura de arquivos. A importação levará mais tempo e mais detalhes serão trazidos.</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

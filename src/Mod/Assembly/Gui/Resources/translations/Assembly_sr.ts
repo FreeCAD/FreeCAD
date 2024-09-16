@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1556"/>
+      <location filename="../../../JointObject.py" line="1522"/>
       <source>Distance</source>
       <translation>Растојање</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1558"/>
+      <location filename="../../../JointObject.py" line="1524"/>
       <source>Angle</source>
       <translation>Угаони</translation>
     </message>
@@ -265,17 +265,17 @@
       <translation>Ремени</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1379"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Потребно је изабрати 2 елемента са 2 различита дела.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1560"/>
+      <location filename="../../../JointObject.py" line="1526"/>
       <source>Radius 1</source>
       <translation>Полупречник 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1562"/>
+      <location filename="../../../JointObject.py" line="1528"/>
       <source>Pitch radius</source>
       <translation>Подеони полупречник</translation>
     </message>
@@ -490,12 +490,12 @@
       <translation>Ово је максимално угаоно ограничење између координатних система (између њихових X оса).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1070"/>
+      <location filename="../../../JointObject.py" line="1035"/>
       <source>The object to ground</source>
       <translation>Објекат који треба учврстити</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1082"/>
+      <location filename="../../../JointObject.py" line="1047"/>
       <source>This is where the part is grounded.</source>
       <translation>Овде је место где је део учвршћен.</translation>
     </message>
@@ -660,17 +660,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Објекту су придружени један или више спојева.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Да ли желиш померити објекат и обрисати придружене спојеве?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="854"/>
       <source>Move part</source>
       <translation>Помеи део</translation>
     </message>
@@ -920,7 +920,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <translation>Објекат Саставница је документ који чува подешавања саставнице. То је објекат окружења Табеле и може се прегледати. Ако није потребно да објекат Саставница буде сачуван као документ, једноставно извези и откажи задатак.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

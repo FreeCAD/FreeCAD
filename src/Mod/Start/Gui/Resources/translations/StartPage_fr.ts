@@ -6,7 +6,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="95"/>
       <source>Done</source>
-      <translation>Fait</translation>
+      <translation>Valider</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="97"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../StartView.cpp" line="493"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>Ouvrir la fenêtre de configuration au démarrage</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="495"/>
@@ -167,7 +167,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="60"/>
       <source>FreeCAD Light</source>
-      <translation>FreeCAD Clair</translation>
+      <translation>FreeCAD clair</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="166"/>
@@ -189,7 +189,7 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="170"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation>FreeCAD Clair</translation>
+      <translation>FreeCAD clair</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="171"/>

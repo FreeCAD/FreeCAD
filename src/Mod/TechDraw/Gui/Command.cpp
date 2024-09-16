@@ -1199,8 +1199,8 @@ bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& 
 {
     // Let's see, if we can help speed up the placement of the balloon:
     // As of now we support:
-    //     Single selected vertex: place the ballon tip end here
-    //     Single selected edge:   place the ballon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
+    //     Single selected vertex: place the balloon tip end here
+    //     Single selected edge:   place the balloon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
     //
     // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
 

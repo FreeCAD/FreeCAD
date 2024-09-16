@@ -81,7 +81,7 @@
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Parametric Part</source>
-      <translation type="unfinished">Parametric Part</translation>
+      <translation>매개변수 부품</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="215"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../StartView.cpp" line="223"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
+      <translation>BIM/건축</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="224"/>

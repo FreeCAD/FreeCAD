@@ -164,7 +164,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation>Bug跟踪网址</translation>
+      <translation>Bug 跟踪网址</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>

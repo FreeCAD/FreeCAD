@@ -2740,7 +2740,7 @@ esto es más seguro si comienzas a obtener fallos cuando estableces múltiples n
     <message>
       <location filename="../ui/preferences-ifc.ui" line="148"/>
       <source>Import options</source>
-      <translation>Importar opciones</translation>
+      <translation>Opciones de importación</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="156"/>
@@ -2829,7 +2829,7 @@ Tenga en cuenta que esto podría ralentizar las cosas.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="296"/>
       <source>Detect extrusions</source>
-      <translation>Detectar extruciones</translation>
+      <translation>Detectar extrusiones</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="309"/>
@@ -2849,7 +2849,7 @@ Tenga en cuenta que esto podría ralentizar las cosas.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="328"/>
       <source>Prefix names with ID number</source>
-      <translation>Nombres con prefijo ID number</translation>
+      <translation>Nombres de prefijo con número de ID</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="341"/>
@@ -2861,7 +2861,7 @@ serán tratados como uno solo.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="345"/>
       <source>Merge materials with same name and same color</source>
-      <translation>Combina materiales con el mismo nombre y el mismo color</translation>
+      <translation>Combinar materiales con el mismo nombre y el mismo color</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="358"/>
@@ -2886,7 +2886,7 @@ serán tratados como uno solo.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="392"/>
       <source>Exclude list:</source>
-      <translation>Excluir lista:</translation>
+      <translation>Lista de exclusión:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="399"/>
@@ -2957,7 +2957,7 @@ se colocan en 'Group' en su lugar.
     <message>
       <location filename="../ui/preferences-dae.ui" line="67"/>
       <source>Mesher</source>
-      <translation>Mesher</translation>
+      <translation>Mallador</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="74"/>
@@ -2984,7 +2984,7 @@ Si utiliza Netgen, asegúrese de que está disponible.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and Mefisto mesher options</source>
-      <translation>Opciones de malla integradas y Mefisto</translation>
+      <translation>Opciones de malladores integrado y Mefisto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
@@ -2999,19 +2999,19 @@ Si utiliza Netgen, asegúrese de que está disponible.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
       <source>Netgen mesher options</source>
-      <translation>Opciones de netgen mesher</translation>
+      <translation>Opciones de mallador netgen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="155"/>
       <source>Grading</source>
-      <translation>Calificación</translation>
+      <translation>Gradación</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="162"/>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation>Valor de valoración a usar para mallar usando Netgen.
+      <translation>Valor de gradación a usar para mallar al usar Netgen.
 Este valor describe la velocidad con la que disminuye el tamaño de la malla.
 El gradiente del tamaño de la malla local h(x) está enlazado por |► h(x)| ► 1/valor.</translation>
     </message>
@@ -3074,7 +3074,7 @@ El gradiente del tamaño de la malla local h(x) está enlazado por |► h(x)| �
       <location filename="../ui/preferences-ifc-export.ui" line="26"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General options</source>
-      <translation>Opciones Generales</translation>
+      <translation>Opciones generales</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="32"/>
@@ -3132,7 +3132,7 @@ Use this to force all objects to be exported as BREP geometry.</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="122"/>
       <source>Use DAE triangulation options</source>
-      <translation>Utiliar opciones de triangulación DAE</translation>
+      <translation>Utilizar opciones de triangulación DAE</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="135"/>
@@ -3146,7 +3146,7 @@ Si se marca esta opción, se hará un cálculo adicional para unir las facetas c
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation>Unir facetas coplanares cuando triangule</translation>
+      <translation>Unir facetas coplanares al triangular</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="153"/>
@@ -3175,7 +3175,7 @@ Nota: ¡El serializador sigue siendo una característica experimental!</translat
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="180"/>
       <source>Use IfcOpenShell serializer if available</source>
-      <translation>Utilizar serializador IfcOpenShell si está disponible</translation>
+      <translation>Utilizar el serializador IfcOpenShell si está disponible</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="193"/>
@@ -3234,7 +3234,7 @@ as standard cases when the necessary conditions are met.</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="387"/>
       <source>Add default building if one is not found in the document</source>
-      <translation>Agrega un edificio predeterminado si no se encuentra uno en el documento</translation>
+      <translation>Agregar un edificio predeterminado si no se encuentra uno en el documento</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="403"/>
@@ -3244,12 +3244,12 @@ as standard cases when the necessary conditions are met.</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="406"/>
       <source>Export nested groups as assemblies</source>
-      <translation>Exportar grupos anidados como ensamblados</translation>
+      <translation>Exportar grupos anidados como ensamblajes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="272"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation>Auto-detectar y exportar como casos estándar cuando corresponda</translation>
+      <translation>Detectar automaticamente y exportar como casos estándar cuando corresponda</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="285"/>
@@ -3267,7 +3267,7 @@ Un sitio no es obligatorio pero una práctica común es tener al menos uno en el
       <location filename="../ui/preferences-ifc-export.ui" line="366"/>
       <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</source>
-      <translation>También verifica las preferencias específicas de NativeIFC en BIM -&gt; NativeIFC</translation>
+      <translation>También consulte las preferencias específicas de NativeIFC en Preferencias -&gt; BIM -&gt; NativeIFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="376"/>
@@ -3972,52 +3972,52 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Punto de corte no encontrado en el perfil.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="67"/>
+      <location filename="../../importers/importSHP.py" line="66"/>
       <source>Shapes elevation</source>
       <translation>Altura de las formas</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="68"/>
+      <location filename="../../importers/importSHP.py" line="67"/>
       <source>Choose which field provides shapes elevations:</source>
       <translation>Elegir qué campo proporciona elevaciones de formas:</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="109"/>
+      <location filename="../../importers/importSHP.py" line="108"/>
       <source>No shape found in this file</source>
       <translation>Forma no encontrada en este archivo</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="134"/>
+      <location filename="../../importers/importSHP.py" line="133"/>
       <source>Shapefile module not found</source>
       <translation>Módulo Shapefile no encontrado</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="135"/>
+      <location filename="../../importers/importSHP.py" line="134"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
       <translation>No se encontró la biblioteca Python de shapefile en su sistema. ¿Desea descargarla ahora desde %1? Se colocará en su carpeta de macros.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="141"/>
+      <location filename="../../importers/importSHP.py" line="140"/>
       <source>Error: Unable to download from %1</source>
       <translation>Error: no se puede descargar de %1</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="151"/>
+      <location filename="../../importers/importSHP.py" line="150"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation>No se pudo descargar el módulo Shapefile. Abortando.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="154"/>
+      <location filename="../../importers/importSHP.py" line="153"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation>Módulo Shapefile no descargado. Abortando.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="157"/>
+      <location filename="../../importers/importSHP.py" line="156"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation>Módulo Shapefile no encontrado. Abortando.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="158"/>
+      <location filename="../../importers/importSHP.py" line="157"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation>La biblioteca shapefile puede descargarse desde la siguiente URL e instalarse en la carpeta de macros:</translation>
     </message>
@@ -4069,44 +4069,44 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Altura de alfeizar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="869"/>
+      <location filename="../../ArchWindow.py" line="896"/>
       <source>This window has no defined opening</source>
       <translation>Esta ventana no tiene una apertura definida</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1146"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
-      <location filename="../../ArchWindow.py" line="1356"/>
+      <location filename="../../ArchWindow.py" line="1173"/>
+      <location filename="../../ArchWindow.py" line="1222"/>
+      <location filename="../../ArchWindow.py" line="1383"/>
       <source>Get selected edge</source>
       <translation>Obtener arista seleccionada</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1295"/>
+      <location filename="../../ArchWindow.py" line="1322"/>
       <source>Unable to create component</source>
       <translation>No es posible crear el componente</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1333"/>
+      <location filename="../../ArchWindow.py" line="1360"/>
       <source>Window elements</source>
       <translation>Elementos de ventana</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1334"/>
+      <location filename="../../ArchWindow.py" line="1361"/>
       <source>Hole wire</source>
       <translation>Agujero de alambre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1335"/>
+      <location filename="../../ArchWindow.py" line="1362"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>El número del alambre que define un agujero en el objeto huésped. Un valor de cero adoptará automáticamente el alambre más grande</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1336"/>
+      <location filename="../../ArchWindow.py" line="1363"/>
       <source>Pick selected</source>
       <translation>Elegir lo seleccionado</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1337"/>
+      <location filename="../../ArchWindow.py" line="1364"/>
       <location filename="../../ArchAxisSystem.py" line="323"/>
       <location filename="../../ArchAxis.py" line="752"/>
       <location filename="../../ArchComponent.py" line="1949"/>
@@ -4116,7 +4116,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Quitar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1338"/>
+      <location filename="../../ArchWindow.py" line="1365"/>
       <location filename="../../ArchAxisSystem.py" line="324"/>
       <location filename="../../ArchAxis.py" line="753"/>
       <location filename="../../ArchComponent.py" line="1950"/>
@@ -4127,7 +4127,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../ArchSite.py" line="856"/>
       <location filename="../../ArchReference.py" line="652"/>
-      <location filename="../../ArchWindow.py" line="1339"/>
+      <location filename="../../ArchWindow.py" line="1366"/>
       <location filename="../../ArchIFCView.py" line="56"/>
       <location filename="../../ArchAxisSystem.py" line="203"/>
       <location filename="../../ArchMaterial.py" line="367"/>
@@ -4141,41 +4141,41 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1340"/>
+      <location filename="../../ArchWindow.py" line="1367"/>
       <source>Create/update component</source>
       <translation>Crear/actualizar componente</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1341"/>
+      <location filename="../../ArchWindow.py" line="1368"/>
       <source>Base 2D object</source>
       <translation>Objeto base 2D</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1342"/>
-      <location filename="../../ArchWindow.py" line="1347"/>
+      <location filename="../../ArchWindow.py" line="1369"/>
+      <location filename="../../ArchWindow.py" line="1374"/>
       <source>Wires</source>
       <translation>Alambres</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1343"/>
+      <location filename="../../ArchWindow.py" line="1370"/>
       <location filename="../../ArchComponent.py" line="1957"/>
       <source>Components</source>
       <translation>Componentes</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1344"/>
+      <location filename="../../ArchWindow.py" line="1371"/>
       <source>Create new component</source>
       <translation>Crear nuevo componente</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1345"/>
+      <location filename="../../ArchWindow.py" line="1372"/>
       <location filename="../../ArchMaterial.py" line="747"/>
       <location filename="../../ArchMaterial.py" line="766"/>
       <source>Name</source>
       <translation>Nombre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1346"/>
+      <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
       <location filename="../../ArchCommands.py" line="1337"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
@@ -4183,7 +4183,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Tipo</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1348"/>
+      <location filename="../../ArchWindow.py" line="1375"/>
       <location filename="../../ArchMaterial.py" line="747"/>
       <location filename="../../ArchMaterial.py" line="766"/>
       <location filename="../../bimcommands/BimPanel.py" line="162"/>
@@ -4191,51 +4191,51 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Espesor</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1349"/>
+      <location filename="../../ArchWindow.py" line="1376"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>Desplazamiento</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1350"/>
+      <location filename="../../ArchWindow.py" line="1377"/>
       <source>Hinge</source>
       <translation>Bisagra</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1351"/>
+      <location filename="../../ArchWindow.py" line="1378"/>
       <source>Opening mode</source>
       <translation>Modo de apertura</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1352"/>
-      <location filename="../../ArchWindow.py" line="1354"/>
+      <location filename="../../ArchWindow.py" line="1379"/>
+      <location filename="../../ArchWindow.py" line="1381"/>
       <source>+ default</source>
       <translation>+ por defecto</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1353"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Si se marca esta opción, el valor predeterminado del marco de esta ventana se añadirá al valor ingresado aquí</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1355"/>
+      <location filename="../../ArchWindow.py" line="1382"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Si se marca esta opción, el valor predeterminado de offset de esta ventana se añadirá al valor ingresado aquí</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1357"/>
+      <location filename="../../ArchWindow.py" line="1384"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Presione para recuperar la arista seleccionada</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1358"/>
+      <location filename="../../ArchWindow.py" line="826"/>
+      <location filename="../../ArchWindow.py" line="1385"/>
       <source>Invert opening direction</source>
       <translation>Invertir la dirección de apertura</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="808"/>
-      <location filename="../../ArchWindow.py" line="1359"/>
+      <location filename="../../ArchWindow.py" line="835"/>
+      <location filename="../../ArchWindow.py" line="1386"/>
       <source>Invert hinge position</source>
       <translation>Invertir la posición de la bisagra</translation>
     </message>
@@ -4273,10 +4273,10 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Componentes del sistema de ejes</translation>
     </message>
     <message>
-      <location filename="../../importers/importJSON.py" line="61"/>
-      <location filename="../../importers/importWebGL.py" line="874"/>
-      <location filename="../../importers/importOBJ.py" line="261"/>
-      <location filename="../../importers/importOBJ.py" line="285"/>
+      <location filename="../../importers/importJSON.py" line="58"/>
+      <location filename="../../importers/importWebGL.py" line="873"/>
+      <location filename="../../importers/importOBJ.py" line="258"/>
+      <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
       <translation>Escrito correctamente</translation>
     </message>
@@ -4297,27 +4297,27 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Crear celosía</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="112"/>
+      <location filename="../../importers/importIFClegacy.py" line="110"/>
       <source>Couldn't locate IfcOpenShell</source>
       <translation>No se pudo localizar IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="389"/>
+      <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
       <translation>No se encuentra o está deshabilitado IfcOpenShell, cambiando a parser interno.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="395"/>
+      <location filename="../../importers/importIFClegacy.py" line="393"/>
       <source>IFC Schema not found, IFC import disabled.</source>
       <translation>Esquema de IFC no encontrado, IFC importación desactivada.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="930"/>
+      <location filename="../../importers/importIFClegacy.py" line="928"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation>Error: IfcOpenShell no está instalado</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="937"/>
+      <location filename="../../importers/importIFClegacy.py" line="935"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation>Error: la versión de IfcOpenShell está obsoleta</translation>
     </message>
@@ -4930,12 +4930,12 @@ Creación de planta cancelada.</translation>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="87"/>
+      <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Se ha encontrado una forma que contiene curvas, triangulando</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="367"/>
+      <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
       <translation>Importado con éxito</translation>
     </message>
@@ -6305,12 +6305,12 @@ Creación de Edificio cancelada.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="150"/>
       <source>The width of louvre elements</source>
-      <translation>El ancho de las rejillas</translation>
+      <translation>El ancho de las cuadrículas</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="152"/>
       <source>The space between louvre elements</source>
-      <translation>El espacio entre las rejillas</translation>
+      <translation>El espacio entre las cuadrículas</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="154"/>
@@ -6333,7 +6333,7 @@ Creación de Edificio cancelada.</translation>
       <translation>Muestra los símbolos de apertura de la elevación si están disponibles</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1085"/>
+      <location filename="../../ArchWindow.py" line="1112"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>El número del alambre que define el agujero. Un valor de 0 significa automático</translation>
     </message>
@@ -8519,7 +8519,7 @@ Creación de Edificio cancelada.</translation>
       <location filename="../../bimcommands/BimNudge.py" line="74"/>
       <location filename="../../bimcommands/BimNudge.py" line="153"/>
       <source>Auto</source>
-      <translation>Auto</translation>
+      <translation>Automático</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="137"/>
@@ -8891,7 +8891,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="322"/>
       <source>Line width</source>
-      <translation>Ancho de la línea</translation>
+      <translation>Ancho de línea</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="323"/>

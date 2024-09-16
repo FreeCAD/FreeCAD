@@ -31,6 +31,7 @@
 
 class SoDragger;
 class SoDirectionalLightDragger;
+class SoOrthographicCamera;
 
 namespace Gui {
 class View3DInventorViewer;
@@ -61,6 +62,9 @@ public Q_SLOTS:
     void lightIntensity(int value);
     void lightColor();
 
+    void pushIn (void);
+    void pullOut(void);
+
 protected:
     void changeEvent(QEvent* event) override;
 
@@ -75,6 +79,9 @@ private:
     std::unique_ptr<Ui_DlgSettingsLightSources> ui;
     QPointer <View3DInventorViewer> view;
     SoDirectionalLightDragger* lightDragger = nullptr;
+    SoOrthographicCamera *camera = nullptr;
+
+    float cam_step = 3.0f;
 };
 
 } // namespace Dialog

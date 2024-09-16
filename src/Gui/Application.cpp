@@ -81,6 +81,7 @@
 #include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
+#include "Placement.h"
 #include "SoFCDB.h"
 #include "Selection.h"
 #include "SelectionFilterPy.h"
@@ -359,6 +360,7 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 }  // namespace Gui
 
+// clang-format off
 Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
@@ -451,6 +453,10 @@ Application::Application(bool GUIenabled)
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(), module, "UiLoader");
         PyResource::init_type();
+
+        Gui::Dialog::TaskPlacementPy::init_type();
+        Base::Interpreter().addType(Gui::Dialog::TaskPlacementPy::type_object(),
+            module, "TaskPlacement");
 
         // PySide additions
         PyModule_AddObject(module, "PySideUic", Base::Interpreter().addModule(new PySideUicModule));
@@ -555,6 +561,7 @@ Application::Application(bool GUIenabled)
         MacroCommand::load();
     }
 }
+// clang-format on
 
 Application::~Application()
 {

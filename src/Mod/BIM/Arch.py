@@ -477,8 +477,8 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",profile[2])
-    obj.Label = profile[2]
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython", "Profile")
+    obj.Label = profile[2] + "_"
     if profile[3]=="C":
         ArchProfile._ProfileC(obj, profile)
     elif profile[3]=="H":

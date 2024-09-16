@@ -1884,7 +1884,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>スケッチ円弧を追加</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="157"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="158"/>
       <source>Add sketch circle</source>
       <translation>スケッチ円を追加</translation>
     </message>
@@ -2141,59 +2141,59 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2822"/>
+      <location filename="../../../App/SketchObject.cpp" line="2796"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>曲線の交点を推定できません。フィレット対象の曲線の頂点の間に一致拘束を追加してみてください。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7094"/>
+      <location filename="../../../App/SketchObject.cpp" line="7068"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>ノット多重度で変更が起きないように要求しています。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7088"/>
-      <location filename="../../../App/SketchObject.cpp" line="7274"/>
+      <location filename="../../../App/SketchObject.cpp" line="7062"/>
+      <location filename="../../../App/SketchObject.cpp" line="7248"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-スプラインのジオメトリ番号（ジオID）が範囲外です。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7100"/>
-      <location filename="../../../App/SketchObject.cpp" line="7284"/>
+      <location filename="../../../App/SketchObject.cpp" line="7074"/>
+      <location filename="../../../App/SketchObject.cpp" line="7258"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>入力されたジオメトリ番号（ジオID）はB-スプラインではありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7109"/>
+      <location filename="../../../App/SketchObject.cpp" line="7083"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>ノット・インデックスが境界外です。OCCの記法に従うと最初のノットは1と非ゼロのインデックスを持ちます。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7120"/>
+      <location filename="../../../App/SketchObject.cpp" line="7094"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>B-スプラインの次数を越えて多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7128"/>
+      <location filename="../../../App/SketchObject.cpp" line="7102"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>0を越えて多重度を減らすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7142"/>
+      <location filename="../../../App/SketchObject.cpp" line="7116"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCCは最大許容範囲内で多重度を減らすことができまぜん。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7278"/>
+      <location filename="../../../App/SketchObject.cpp" line="7252"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>ノットがゼロ多重性を持つことはでいません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7295"/>
+      <location filename="../../../App/SketchObject.cpp" line="7269"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>B-スプラインの次数を超えてノット多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7301"/>
+      <location filename="../../../App/SketchObject.cpp" line="7275"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>B-スプラインパラメーターの範囲外にノットを挿入することはできません。</translation>
     </message>
@@ -3138,14 +3138,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>軸配置を除去するには、非外部ジオメトリ要素を1つ以上選択する必要があります。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="587"/>
-      <location filename="../../TaskSketcherElements.cpp" line="634"/>
+      <location filename="../../TaskSketcherElements.cpp" line="603"/>
+      <location filename="../../TaskSketcherElements.cpp" line="650"/>
       <source>Unsupported visual layer operation</source>
       <translation>サポートされていない表示レイヤー操作です。</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="588"/>
-      <location filename="../../TaskSketcherElements.cpp" line="635"/>
+      <location filename="../../TaskSketcherElements.cpp" line="604"/>
+      <location filename="../../TaskSketcherElements.cpp" line="651"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>外部ジオメトリの別の表示レイヤーへの移動は現在サポートされていません。外部ジオメトリは省略されます。</translation>
     </message>
@@ -3190,7 +3190,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>円弧状の長円形のパラメーター</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="262"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="263"/>
       <source>Circle parameters</source>
       <translation>円パラメーター</translation>
     </message>
@@ -3547,72 +3547,72 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="295"/>
+      <location filename="../../TaskSketcherElements.cpp" line="311"/>
       <source>Normal</source>
       <translation>標準</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="296"/>
+      <location filename="../../TaskSketcherElements.cpp" line="312"/>
       <source>Construction</source>
       <translation>構築</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="297"/>
+      <location filename="../../TaskSketcherElements.cpp" line="313"/>
       <source>Internal</source>
       <translation>内部</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="298"/>
+      <location filename="../../TaskSketcherElements.cpp" line="314"/>
       <source>External</source>
       <translation>外部</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="299"/>
+      <location filename="../../TaskSketcherElements.cpp" line="315"/>
       <source>All types</source>
       <translation>全てのタイプ</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="300"/>
+      <location filename="../../TaskSketcherElements.cpp" line="316"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="301"/>
+      <location filename="../../TaskSketcherElements.cpp" line="317"/>
       <source>Line</source>
       <translation>直線</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="302"/>
+      <location filename="../../TaskSketcherElements.cpp" line="318"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="303"/>
+      <location filename="../../TaskSketcherElements.cpp" line="319"/>
       <source>Ellipse</source>
       <translation>楕円</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="304"/>
+      <location filename="../../TaskSketcherElements.cpp" line="320"/>
       <source>Arc of circle</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="305"/>
+      <location filename="../../TaskSketcherElements.cpp" line="321"/>
       <source>Arc of ellipse</source>
       <translation>楕円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="306"/>
+      <location filename="../../TaskSketcherElements.cpp" line="322"/>
       <source>Arc of hyperbola</source>
       <translation>双曲線弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="307"/>
+      <location filename="../../TaskSketcherElements.cpp" line="323"/>
       <source>Arc of parabola</source>
       <translation>放物線弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="308"/>
+      <location filename="../../TaskSketcherElements.cpp" line="324"/>
       <source>B-spline</source>
       <translation>B-スプライン</translation>
     </message>
@@ -3735,27 +3735,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>垂直軸を選択</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
       <source>Layer</source>
       <translation>レイヤー</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
       <source>Layer 0</source>
       <translation>レイヤー 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="794"/>
       <source>Layer 1</source>
       <translation>レイヤー 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
       <source>Hidden</source>
       <translation>非表示</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
+      <location filename="../../TaskSketcherElements.cpp" line="800"/>
       <source>Delete</source>
       <translation>削除</translation>
     </message>
@@ -4636,120 +4636,120 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>設定</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1802"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1809"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1816"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1825"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1832"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1839"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1846"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1853"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1860"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1881"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
       <source>Construction</source>
       <translation>構築</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1162"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1185"/>
       <source>Elements</source>
       <translation>要素</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1800"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1805"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1964"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1803"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1810"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1817"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1824"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1831"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1838"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1845"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1852"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1859"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1875"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1882"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1888"/>
       <source>Internal</source>
       <translation>内部</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1807"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1812"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1944"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1967"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
       <source>Line</source>
       <translation>直線</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1814"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1819"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1821"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1951"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1973"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1976"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
       <source>Ellipse</source>
       <translation>楕円</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1957"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1958"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1863"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1980"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1981"/>
       <source>Elliptical Arc</source>
       <translation>楕円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1961"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1962"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1870"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1984"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1985"/>
       <source>Hyperbolic Arc</source>
       <translation>双曲線の円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1966"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1988"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1989"/>
       <source>Parabolic Arc</source>
       <translation>放物線の円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1969"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1991"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1992"/>
       <source>B-spline</source>
       <translation>B-スプライン</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1862"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1890"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1993"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1994"/>
       <source>Other</source>
       <translation>その他</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2011"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
       <source>Extended information</source>
       <translation>拡張情報</translation>
     </message>
@@ -5221,12 +5221,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="350"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="352"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="351"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="353"/>
       <source>3 rim points</source>
       <translation>円上の3点</translation>
     </message>
@@ -5950,7 +5950,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>スケッチに一部が冗長な拘束があります!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10863"/>
+      <location filename="../../../App/SketchObject.cpp" line="10736"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>放物線がバージョン変換されました。変換されたファイルは以前のバージョンのFreeCADでは開けません!!
@@ -5967,7 +5967,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="253"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="165"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="166"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="251"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="330"/>
@@ -5985,7 +5985,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../CommandSketcherTools.cpp" line="1854"/>
       <location filename="../../CommandSketcherTools.cpp" line="2291"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="180"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="98"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
@@ -6081,7 +6081,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>カーボンコピーを追加できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="166"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="167"/>
       <source>Failed to add circle</source>
       <translation>円を追加できませんでした。</translation>
     </message>
@@ -6113,7 +6113,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../DrawSketchHandlerSlot.h" line="165"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArc.h" line="245"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="170"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="171"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
       <location filename="../../DrawSketchHandlerScale.h" line="135"/>
@@ -6123,7 +6123,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>ツールの実行が中止されました。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="99"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="94"/>
       <source>Failed to add point</source>
       <translation>点を追加できませんでした。</translation>
     </message>
@@ -7303,7 +7303,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="858"/>
       <source>Create a periodic B-spline.</source>
-      <translation type="unfinished">Create a periodic B-spline.</translation>
+      <translation>周期的なB-スプラインを作成</translation>
     </message>
   </context>
   <context>

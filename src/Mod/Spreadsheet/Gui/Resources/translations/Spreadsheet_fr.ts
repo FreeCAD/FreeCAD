@@ -741,7 +741,7 @@ Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
       <source>Spreadsheet</source>
-      <translation>Feuille de calcul</translation>
+      <translation>Spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -940,8 +940,8 @@ Defaults to: %V = %A
       <translation>Le format de la présentation personnalisée de la chaîne de caractères dans la cellule.
 Par défaut : %V = %A
 
-%A - nom d'alias
-%V - valeur de la cellule</translation>
+%V : valeur de la cellule
+%A : nom de l'alias</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>

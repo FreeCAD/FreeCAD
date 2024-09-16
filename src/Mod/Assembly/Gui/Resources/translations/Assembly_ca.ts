@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1556"/>
+      <location filename="../../../JointObject.py" line="1522"/>
       <source>Distance</source>
       <translation>Distància</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1558"/>
+      <location filename="../../../JointObject.py" line="1524"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
@@ -265,17 +265,17 @@
       <translation>Corretja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1413"/>
+      <location filename="../../../JointObject.py" line="1379"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Necessites seleccionar 2 elements de 2 peces separades.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1560"/>
+      <location filename="../../../JointObject.py" line="1526"/>
       <source>Radius 1</source>
       <translation>Radi 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1562"/>
+      <location filename="../../../JointObject.py" line="1528"/>
       <source>Pitch radius</source>
       <translation>Radi de pas</translation>
     </message>
@@ -490,12 +490,12 @@
       <translation>Aquest és el límit màxim de l'angle entre els dos sistemes de coordenades (entre el seu eix X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1070"/>
+      <location filename="../../../JointObject.py" line="1035"/>
       <source>The object to ground</source>
       <translation>L'objecte a bloquejar</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1082"/>
+      <location filename="../../../JointObject.py" line="1047"/>
       <source>This is where the part is grounded.</source>
       <translation>Aquest és on la peça és bloquejada.</translation>
     </message>
@@ -660,17 +660,17 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="177"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objecte està associat a una o més juntures.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="179"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vols moure l'objecte i eliminar les juntures associades?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="854"/>
       <source>Move part</source>
       <translation>Moure peça</translation>
     </message>
@@ -920,7 +920,7 @@ Perm ESC per a cancel·lar.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <translation>L'objecte BOM és un objecte de document que desa les preferències del teu Llistat de Materials. També és un full de càlcul perquè pugueu visualitzar fàcilment el llistat. Si no necessiteu que l'objecte BOM es desi com a objecte de document, podeu exportar i cancel·lar la tasca.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

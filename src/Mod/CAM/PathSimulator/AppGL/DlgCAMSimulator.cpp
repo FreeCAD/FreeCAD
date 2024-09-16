@@ -36,7 +36,7 @@ using namespace MillSim;
 namespace CAMSimulator
 {
 
-static const float MouseScrollDelta = 120.0f;
+static const float MouseScrollDelta = 120.0F;
 
 DlgCAMSimulator::DlgCAMSimulator(QWindow* parent)
     : QWindow(parent)
@@ -86,17 +86,33 @@ void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
     int modifiers = (ev->modifiers() & Qt::ShiftModifier) != 0 ? MS_KBD_SHIFT : 0;
     modifiers |= (ev->modifiers() & Qt::ControlModifier) != 0 ? MS_KBD_CONTROL : 0;
     modifiers |= (ev->modifiers() & Qt::AltModifier) != 0 ? MS_KBD_ALT : 0;
-    mMillSimulator->MouseMove(ev->x(), ev->y(), modifiers);
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QPoint pnt = ev->pos();
+#else
+    QPoint pnt = ev->position().toPoint();
+#endif
+    mMillSimulator->MouseMove(pnt.x(), pnt.y(), modifiers);
 }
 
 void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
 {
-    mMillSimulator->MousePress(ev->button(), true, ev->x(), ev->y());
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QPoint pnt = ev->pos();
+#else
+    QPoint pnt = ev->position().toPoint();
+#endif
+    mMillSimulator->MousePress(ev->button(), true, pnt.x(), pnt.y());
 }
 
 void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev)
 {
-    mMillSimulator->MousePress(ev->button(), false, ev->x(), ev->y());
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QPoint pnt = ev->pos();
+#else
+    QPoint pnt = ev->position().toPoint();
+#endif
+    mMillSimulator->MousePress(ev->button(), false, pnt.x(), pnt.y());
 }
 
 void DlgCAMSimulator::wheelEvent(QWheelEvent* ev)

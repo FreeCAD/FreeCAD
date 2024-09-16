@@ -76,7 +76,7 @@
     <message>
       <location filename="../../StartView.cpp" line="212"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation>Eine vorhandene CAD-Datei oder ein 3D-Modell öffnen</translation>
+      <translation>Öffnet eine vorhandene CAD-Datei oder ein 3D-Modell</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../StartView.cpp" line="215"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Ein Bauteil mit dem Part Design Arbeitsbereich erstellen</translation>
+      <translation>Erstellt ein Bauteil mit dem Arbeitsbereich Part Design</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../StartView.cpp" line="218"/>
       <source>Create an assembly project</source>
-      <translation>Ein Baugruppenprojekt erstellen</translation>
+      <translation>Erstellt ein Baugruppenprojekt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="220"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../StartView.cpp" line="221"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Eine 2D-Zeichnung mit dem Arbeitsbereich Draft erstellen</translation>
+      <translation>Erstellt eine 2D-Zeichnung mit dem Arbeitsbereich Draft</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="223"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../StartView.cpp" line="224"/>
       <source>Create an architectural project</source>
-      <translation>Ein Architekturprojekt erstellen</translation>
+      <translation>Erstellt ein Architekturprojekt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="488"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../StartView.cpp" line="493"/>
       <source>Open first start setup</source>
-      <translation type="unfinished">Open first start setup</translation>
+      <translation>Ersteinrichtung öffnen</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="495"/>

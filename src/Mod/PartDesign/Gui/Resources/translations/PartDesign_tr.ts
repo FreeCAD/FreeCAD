@@ -1453,12 +1453,12 @@ Sıfır ise Yarıçap2'ye eşittir</translation>
       <translation>Ortak</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="52"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="53"/>
       <source>Boolean parameters</source>
       <translation>Boolean parametreleri</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="86"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
@@ -1466,34 +1466,34 @@ Sıfır ise Yarıçap2'ye eşittir</translation>
   <context>
     <name>PartDesignGui::TaskBoxPrimitives</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="49"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="50"/>
       <source>Primitive parameters</source>
       <translation>Basit nesne parametreleri</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="911"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="916"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="921"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="928"/>
       <source>Invalid wedge parameters</source>
       <translation>Geçersiz kama değişkenleri</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="912"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
       <source>X min must not be equal to X max!</source>
       <translation>En küçük X, en büyük X 'e eşit olamaz!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="917"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="923"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>En küçük Y, en büyük Y 'ye eşit olamaz!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="922"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="929"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>En küçük Z, en büyük Z 'ye eşit olamaz!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="960"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="967"/>
       <source>Create primitive</source>
       <translation>Basit nesne oluştur</translation>
     </message>
@@ -1565,7 +1565,7 @@ seçimi bitirmek için tekrar basın</translation>
       <translation>Açı</translation>
     </message>
     <message>
-      <location filename="../../TaskChamferParameters.cpp" line="327"/>
+      <location filename="../../TaskChamferParameters.cpp" line="332"/>
       <source>Empty chamfer created !
 </source>
       <translation>Ek bir düz pah yaratıldı!
@@ -1575,17 +1575,17 @@ seçimi bitirmek için tekrar basın</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="347"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="388"/>
       <source>Empty body list</source>
       <translation>Boş gövde listesi</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="348"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="389"/>
       <source>The body list cannot be empty</source>
       <translation>Gövde listesi boş olamaz</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="360"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="403"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Kabul Ediyorum: Giriş hatası</translation>
     </message>
@@ -1661,7 +1661,7 @@ seçimi bitirmek için tekrar basın</translation>
       <translation>Çekme yönünü ters çevir</translation>
     </message>
     <message>
-      <location filename="../../TaskDraftParameters.cpp" line="284"/>
+      <location filename="../../TaskDraftParameters.cpp" line="292"/>
       <source>Empty draft created !
 </source>
       <translation>Boş bir taslak yaratıldı!
@@ -1681,17 +1681,17 @@ seçimi bitirmek için tekrar basın</translation>
       <translation>Seç</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="301"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="278"/>
       <source>Add all edges</source>
       <translation>Tüm kenarları ekle</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="308"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="285"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
       <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
     </message>
     <message>
-      <location filename="../../TaskDressUpParameters.cpp" line="316"/>
+      <location filename="../../TaskDressUpParameters.cpp" line="293"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
@@ -1699,64 +1699,64 @@ seçimi bitirmek için tekrar basın</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1212"/>
       <source>No face selected</source>
       <translation>Seçili yüz yok</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="157"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1016"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="160"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1047"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="173"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="176"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="259"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="264"/>
       <source>Preview</source>
       <translation>Önizleme</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="262"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="268"/>
       <source>Select faces</source>
       <translation>Yüzleri seç</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="490"/>
       <source>No shape selected</source>
       <translation>Şekil seçilmedi</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="589"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
       <source>Sketch normal</source>
       <translation>Eskize dik</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="591"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="601"/>
       <source>Face normal</source>
       <translation>Yüzey normali</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="594"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="605"/>
       <source>Select reference...</source>
       <translation type="unfinished">Select reference...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="600"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="609"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="614"/>
       <source>Custom direction</source>
       <translation>Özel yön</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="969"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="999"/>
       <source>Click on a shape in the model</source>
       <translation type="unfinished">Click on a shape in the model</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
       <source>Click on a face in the model</source>
       <translation>Modeldeki bir yüzeye tıklayın</translation>
     </message>
@@ -1799,52 +1799,52 @@ seçimi bitirmek için tekrar basın</translation>
       <translation>Çapraz referans oluştur</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="61"/>
+      <location filename="../../TaskFeaturePick.cpp" line="63"/>
       <source>Valid</source>
       <translation>Geçerli</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="62"/>
+      <location filename="../../TaskFeaturePick.cpp" line="65"/>
       <source>Invalid shape</source>
       <translation>Geçersiz şekil</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="63"/>
+      <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>No wire in sketch</source>
       <translation>Eskizde tel yok</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="64"/>
+      <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Sketch already used by other feature</source>
       <translation>Eskiz diğer özellik tarafından zaten kullanılıyor</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="65"/>
+      <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>Belongs to another body</source>
       <translation>Başka bir vücuda ait</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="66"/>
+      <location filename="../../TaskFeaturePick.cpp" line="73"/>
       <source>Belongs to another part</source>
       <translation>Başka bir parçaya ait</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="67"/>
+      <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Doesn't belong to any body</source>
       <translation>Herhangi bir vücuda ait değil</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="68"/>
+      <location filename="../../TaskFeaturePick.cpp" line="77"/>
       <source>Base plane</source>
       <translation>Taban düzlemi</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="69"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Feature is located after the tip feature</source>
       <translation>Özellik, uç özelliğinden sonra bulunur</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="80"/>
+      <location filename="../../TaskFeaturePick.cpp" line="89"/>
       <source>Select attachment</source>
       <translation type="unfinished">Select attachment</translation>
     </message>
@@ -1881,7 +1881,7 @@ seçimi bitirmek için tekrar basın</translation>
       <translation>Tüm Kenarları Kullan</translation>
     </message>
     <message>
-      <location filename="../../TaskFilletParameters.cpp" line="194"/>
+      <location filename="../../TaskFilletParameters.cpp" line="198"/>
       <source>Empty fillet created!</source>
       <translation type="unfinished">Empty fillet created!</translation>
     </message>
@@ -1905,43 +1905,43 @@ seçimi bitirmek için tekrar basın</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
-      <location filename="../../TaskHelixParameters.cpp" line="228"/>
+      <location filename="../../TaskHelixParameters.cpp" line="237"/>
       <source>Base X axis</source>
       <translation>Baz X ekseni</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="53"/>
-      <location filename="../../TaskHelixParameters.cpp" line="229"/>
+      <location filename="../../TaskHelixParameters.cpp" line="238"/>
       <source>Base Y axis</source>
       <translation>Baz Y ekseni</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="58"/>
-      <location filename="../../TaskHelixParameters.cpp" line="230"/>
+      <location filename="../../TaskHelixParameters.cpp" line="239"/>
       <source>Base Z axis</source>
       <translation>Baz Z ekseni</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="63"/>
-      <location filename="../../TaskHelixParameters.cpp" line="212"/>
+      <location filename="../../TaskHelixParameters.cpp" line="221"/>
       <source>Horizontal sketch axis</source>
       <translation>Yatay taslak ekseni</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="68"/>
-      <location filename="../../TaskHelixParameters.cpp" line="211"/>
+      <location filename="../../TaskHelixParameters.cpp" line="220"/>
       <source>Vertical sketch axis</source>
       <translation>Dikey taslak ekseni</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="73"/>
-      <location filename="../../TaskHelixParameters.cpp" line="210"/>
+      <location filename="../../TaskHelixParameters.cpp" line="219"/>
       <source>Normal sketch axis</source>
       <translation type="unfinished">Normal sketch axis</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
-      <location filename="../../TaskHelixParameters.cpp" line="196"/>
+      <location filename="../../TaskHelixParameters.cpp" line="204"/>
       <source>Select reference...</source>
       <translation type="unfinished">Select reference...</translation>
     </message>
@@ -2016,27 +2016,27 @@ seçimi bitirmek için tekrar basın</translation>
       <translation>Görünümü güncelle</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="52"/>
+      <location filename="../../TaskHelixParameters.cpp" line="56"/>
       <source>Helix parameters</source>
       <translation>Sarmal değişkenleri</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="214"/>
+      <location filename="../../TaskHelixParameters.cpp" line="223"/>
       <source>Construction line %1</source>
       <translation>Yapı hattı %1</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="277"/>
+      <location filename="../../TaskHelixParameters.cpp" line="289"/>
       <source>Warning: helix might be self intersecting</source>
       <translation type="unfinished">Warning: helix might be self intersecting</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="282"/>
+      <location filename="../../TaskHelixParameters.cpp" line="294"/>
       <source>Error: helix touches itself</source>
       <translation>Hata: Helis kendisi ile kesişiyor</translation>
     </message>
     <message>
-      <location filename="../../TaskHelixParameters.cpp" line="330"/>
+      <location filename="../../TaskHelixParameters.cpp" line="343"/>
       <source>Error: unsupported mode</source>
       <translation>Hata: desteklenmeyen kip</translation>
     </message>
@@ -2186,7 +2186,7 @@ seçimi bitirmek için tekrar basın</translation>
       <translation>Çatılama parametreleri</translation>
     </message>
     <message>
-      <location filename="../../TaskLoftParameters.cpp" line="72"/>
+      <location filename="../../TaskLoftParameters.cpp" line="74"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
@@ -2566,12 +2566,12 @@ belirlenen yön boyunca ölçülecek</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="536"/>
+      <location filename="../../TaskPipeParameters.cpp" line="579"/>
       <source>Section orientation</source>
       <translation>Bölüm yönlendirmesi</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="562"/>
+      <location filename="../../TaskPipeParameters.cpp" line="607"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
@@ -2630,18 +2630,18 @@ belirlenen yön boyunca ölçülecek</translation>
       <translation>Boru parametreleri</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="84"/>
+      <location filename="../../TaskPipeParameters.cpp" line="88"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="424"/>
-      <location filename="../../TaskPipeParameters.cpp" line="522"/>
+      <location filename="../../TaskPipeParameters.cpp" line="447"/>
+      <location filename="../../TaskPipeParameters.cpp" line="559"/>
       <source>Input error</source>
       <translation>Girdi hatası</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="424"/>
+      <location filename="../../TaskPipeParameters.cpp" line="447"/>
       <source>No active body</source>
       <translation>Etkin gövde yok</translation>
     </message>
@@ -2679,12 +2679,12 @@ belirlenen yön boyunca ölçülecek</translation>
       <translation>Liste, sürüklenerek tekrar sıralanabilir</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="816"/>
+      <location filename="../../TaskPipeParameters.cpp" line="879"/>
       <source>Section transformation</source>
       <translation>Bölüm dönüşümü</translation>
     </message>
     <message>
-      <location filename="../../TaskPipeParameters.cpp" line="832"/>
+      <location filename="../../TaskPipeParameters.cpp" line="896"/>
       <source>Remove</source>
       <translation>Kaldır</translation>
     </message>
@@ -2747,7 +2747,7 @@ belirlenen yön boyunca ölçülecek</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="46"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Ters yön</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="55"/>
@@ -2788,7 +2788,7 @@ belirlenen yön boyunca ölçülecek</translation>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="972"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="981"/>
       <source>Attachment</source>
       <translation>Eklenti</translation>
     </message>
@@ -3200,7 +3200,7 @@ seçimi bitirmek için tekrar basın</translation>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="37"/>
       <source>MultiTransform parameters</source>
-      <translation type="unfinished">MultiTransform parameters</translation>
+      <translation>Çoklu dönüşüm parametreleri</translation>
     </message>
   </context>
   <context>
@@ -3885,12 +3885,12 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="179"/>
       <source>One transformed shape does not intersect the support</source>
-      <translation type="unfinished">One transformed shape does not intersect the support</translation>
+      <translation>Dönüştürülmüş bir şekil desteği kesmez</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="181"/>
       <source>%1 transformed shapes do not intersect the support</source>
-      <translation type="unfinished">%1 transformed shapes do not intersect the support</translation>
+      <translation>%1 Dönüştürülmüş şekiller desteği kesmez</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="191"/>
@@ -3964,7 +3964,7 @@ Buna karşın, daha sonra istediğiniz an 'ParçaTasarımı-&gt;Geçiş...' 'Par
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
       <source>Edit multi-transform</source>
-      <translation type="unfinished">Edit multi-transform</translation>
+      <translation>Çoklu dönüşümü düzenle</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
@@ -4263,20 +4263,20 @@ Sadece diş açılmamış delikler içindir</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>
-      <location filename="../../TaskHoleParameters.cpp" line="631"/>
+      <location filename="../../TaskHoleParameters.cpp" line="660"/>
       <source>Standard</source>
       <translation>Standart</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="113"/>
-      <location filename="../../TaskHoleParameters.cpp" line="632"/>
-      <location filename="../../TaskHoleParameters.cpp" line="643"/>
+      <location filename="../../TaskHoleParameters.cpp" line="663"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Close</source>
       <translation>Kapat</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
-      <location filename="../../TaskHoleParameters.cpp" line="633"/>
+      <location filename="../../TaskHoleParameters.cpp" line="666"/>
       <source>Wide</source>
       <translation>Geniş</translation>
     </message>
@@ -4293,7 +4293,7 @@ Sadece diş açılmamış delikler içindir</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="692"/>
       <source>Drill Point</source>
-      <translation type="unfinished">Drill Point</translation>
+      <translation>Delme yeri</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="134"/>
@@ -4353,13 +4353,12 @@ Sadece diş açılmamış delikler içindir</translation>
       <location filename="../../TaskHoleParameters.ui" line="607"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation type="unfinished">For countersinks this is the depth of
-the screw's top below the surface</translation>
+      <translation>Bu havşalar için vidanın üst kısmının yüzeyin altında kalan derinliğidir</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="530"/>
       <source>Hole Cut Type</source>
-      <translation type="unfinished">Hole Cut Type</translation>
+      <translation>Delik kesim tipi</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
@@ -4414,12 +4413,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>Ters çevirilmiş</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="642"/>
+      <location filename="../../TaskHoleParameters.cpp" line="677"/>
       <source>Normal</source>
       <translation>Olağan</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="644"/>
+      <location filename="../../TaskHoleParameters.cpp" line="683"/>
       <source>Loose</source>
       <translation>Bol</translation>
     </message>
@@ -4520,7 +4519,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>Involute dişli tanımını oluşturur veya düzenler.</translation>
     </message>
   </context>
   <context>
@@ -4533,7 +4532,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>Dişli tanımını oluşturur veya düzenler.</translation>
     </message>
   </context>
   <context>
@@ -4596,12 +4595,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="76"/>
       <source>Add column</source>
-      <translation type="unfinished">Add column</translation>
+      <translation>Sütun ekle</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="122"/>
       <source>Section %s</source>
-      <translation type="unfinished">Section %s</translation>
+      <translation>Bölüm %s</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="150"/>
@@ -4622,17 +4621,17 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="153"/>
       <source>Bearing</source>
-      <translation type="unfinished">Bearing</translation>
+      <translation>Rulman</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="154"/>
       <source>Gear</source>
-      <translation type="unfinished">Gear</translation>
+      <translation>dişli</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="155"/>
       <source>Pulley</source>
-      <translation type="unfinished">Pulley</translation>
+      <translation>Kasnak</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="166"/>
@@ -4655,7 +4654,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="104"/>
       <source>Missing module</source>
-      <translation type="unfinished">Missing module</translation>
+      <translation>Eksik modül</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="105"/>
@@ -4749,35 +4748,19 @@ over 90: larger hole radius at the bottom</source>
       <translation type="unfinished">Tool shape is null</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="155"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="154"/>
       <source>Unsupported boolean operation</source>
       <translation type="unfinished">Unsupported boolean operation</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
-      <source>Fusion of tools failed</source>
-      <translation type="unfinished">Fusion of tools failed</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="736"/>
       <location filename="../../../App/FeaturePipe.cpp" line="397"/>
       <location filename="../../../App/FeaturePipe.cpp" line="417"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="172"/>
       <location filename="../../../App/FeatureLoft.cpp" line="248"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="126"/>
       <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <source>Resulting shape is not a solid</source>
       <translation type="unfinished">Resulting shape is not a solid</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="176"/>
-      <source>Cut out failed</source>
-      <translation type="unfinished">Cut out failed</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="181"/>
-      <source>Common operation failed</source>
-      <translation type="unfinished">Common operation failed</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="740"/>
@@ -4787,7 +4770,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="401"/>
       <location filename="../../../App/FeaturePipe.cpp" line="421"/>
       <location filename="../../../App/FeatureDraft.cpp" line="322"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="192"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="167"/>
       <location filename="../../../App/FeatureFillet.cpp" line="117"/>
       <location filename="../../../App/FeatureLoft.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="1905"/>
@@ -4922,13 +4905,13 @@ over 90: larger hole radius at the bottom</source>
       <translation>Çevirme ekseni taslak ile kesizşiyor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="227"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="228"/>
       <location filename="../../../App/FeatureGroove.cpp" line="157"/>
       <source>Could not revolve the sketch!</source>
       <translation type="unfinished">Could not revolve the sketch!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="239"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="240"/>
       <location filename="../../../App/FeatureGroove.cpp" line="201"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
@@ -5083,7 +5066,7 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation type="unfinished">Error: Adding the thread failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="160"/>
       <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation type="unfinished">Boolean operation failed</translation>

@@ -570,7 +570,7 @@ void SimDisplay::UpdateProjection()
     shaderLinePath.UpdateProjectionMat(projmat);
     shaderLinePath.UpdateObjColor(pathLineColorPassed);
 
-    projmat[2][2] *= 0.99999;
+    projmat[2][2] *= 0.99999F;
     shaderGeomCloser.Activate();
     shaderGeomCloser.UpdateProjectionMat(projmat);
 }

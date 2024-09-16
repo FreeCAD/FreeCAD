@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Pare</translation>
     </message>
   </context>
   <context>
@@ -144,17 +144,17 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</source>
-      <translation type="unfinished">The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</translation>
+      <translation>El nom del servidor BIM al qual us connecteu actualment. Podeu canviar els paràmetres en les preferències BIM</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>BIM Server</source>
-      <translation type="unfinished">BIM Server</translation>
+      <translation>Servidor BIM</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the BIM Server</source>
-      <translation type="unfinished">The list of projects present on the BIM Server</translation>
+      <translation>La llista de projectes present en el servidor BIM</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -409,37 +409,37 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="14"/>
       <source>IFC Properties Manager</source>
-      <translation type="unfinished">IFC Properties Manager</translation>
+      <translation>Gestor de propietats IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="20"/>
       <source>This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</source>
-      <translation type="unfinished">This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</translation>
+      <translation>Aquest diàleg us permet mostrar i gestionar les propietats IFC unides als objectes BIM. Només es mostraran i es podran modificar les propietats i conjunts presents en tots els objectes seleccionats.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="32"/>
       <source>Only selected objects</source>
-      <translation type="unfinished">Only selected objects</translation>
+      <translation>Només objectes seleccionats</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
-      <translation type="unfinished">Only visible BIM objects</translation>
+      <translation>Només objectes BIM visibles</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by:</source>
-      <translation type="unfinished">Order by:</translation>
+      <translation>Ordena per:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="111"/>
       <source>Search for a property or property set:</source>
-      <translation type="unfinished">Search for a property or property set:</translation>
+      <translation>Cerca una propietat o conjunt de propietats:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="131"/>
       <source>Only show matches</source>
-      <translation type="unfinished">Only show matches</translation>
+      <translation>Només mostrar coincidències</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
@@ -449,7 +449,7 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="150"/>
       <source>List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>Llista de propietats IFC per a l'objecte seleccionat. Feu doble clic per a editar, arrossegueu i deixeu anar per a reorganitzar</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
@@ -470,22 +470,22 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="14"/>
       <source>Classification manager</source>
-      <translation type="unfinished">Classification manager</translation>
+      <translation>Gestor de classificació</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
       <source>Objects &amp;&amp; Materials</source>
-      <translation type="unfinished">Objects &amp;&amp; Materials</translation>
+      <translation>Objectes &amp;&amp; Materials</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
       <source>Only visible objects</source>
-      <translation type="unfinished">Only visible objects</translation>
+      <translation>Només objectes visibles</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by:</source>
-      <translation type="unfinished">Sort by:</translation>
+      <translation>Ordena per:</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
@@ -499,7 +499,7 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
       <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="57"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>Tipus IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="88"/>
@@ -512,12 +512,12 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
       <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="72"/>
       <source>Model structure</source>
-      <translation type="unfinished">Model structure</translation>
+      <translation>Estructura del model</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="122"/>
       <source>Object / Material</source>
-      <translation type="unfinished">Object / Material</translation>
+      <translation>Objecte / Material</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="127"/>
@@ -527,62 +527,62 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="136"/>
       <source>Available classification systems</source>
-      <translation type="unfinished">Available classification systems</translation>
+      <translation>Sistemes de classificació disponibles</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="142"/>
       <source>Classification systems found on this computer</source>
-      <translation type="unfinished">Classification systems found on this computer</translation>
+      <translation>Sistemes de classificació trobats al vostre dispositiu</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="178"/>
       <source>Apply the selected class to selected materials</source>
-      <translation type="unfinished">Apply the selected class to selected materials</translation>
+      <translation>Aplica la classe seleccionada als materials seleccionats</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="181"/>
       <source>&lt;&lt; Apply to selected</source>
-      <translation type="unfinished">&lt;&lt; Apply to selected</translation>
+      <translation>&lt;&lt; Aplica als seleccionats</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="188"/>
       <source>Use this class as material name</source>
-      <translation type="unfinished">Use this class as material name</translation>
+      <translation>Utilitzar aquesta classe com a nom de material</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="191"/>
       <source>&lt;&lt; Set as name</source>
-      <translation type="unfinished">&lt;&lt; Set as name</translation>
+      <translation>&lt;&lt; Establir com a nom</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="200"/>
       <source>Prefix with class name when applying</source>
-      <translation type="unfinished">Prefix with class name when applying</translation>
+      <translation>Prefix amb el nom de classe en aplicar</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="214"/>
       <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</source>
-      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</translation>
+      <translation>Podeu baixar fitxers XML o IFC de diversos sistemes de classificació a &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; i col·loqueu-los a %s</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="14"/>
       <source>Single IFC document</source>
-      <translation type="unfinished">Single IFC document</translation>
+      <translation>Document IFC únic</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</source>
-      <translation type="unfinished">Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</translation>
+      <translation>Esteu segurs que voleu convertir aquest document a IFC? Responent 'Sí' convertirà automàticament tots els objectes nous a IFC, mentre que 'No', permetrà tenir ambdós elements IFC i no IFC al fitxer.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Add a default building structure (IfcSite, IfcBuilding and IfcBuildingStorey). You can also add the structure manually later.</source>
-      <translation type="unfinished">Add a default building structure (IfcSite, IfcBuilding and IfcBuildingStorey). You can also add the structure manually later.</translation>
+      <translation>Afegir una estructura de construcció predeterminada (IfcSite, IfcBuilding i IfcBuildingStorey). També pots afegir més endavant l'estructura manualment.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
       <source>Also create a default structure</source>
-      <translation type="unfinished">Also create a default structure</translation>
+      <translation>També crear una estructura predeterminada</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
@@ -590,78 +590,78 @@ Deixeu en blanc per a utilitzar tots els objectes del document</translation>
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document, 
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>Si està marcat, no se us demanarà més quan creeu un nou document de FreeCAD, 
+i aquest document no es convertirà automàticament en un document IFC.
+Encara podeu convertir un document de FreeCAD en un document IFC manualment, mitjançant
+Utilitats -&gt; Crea un projecte IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
-      <translation type="unfinished">Do not ask again</translation>
+      <translation>No m'ho tornis a preguntar</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="14"/>
       <source>Default structure</source>
-      <translation type="unfinished">Default structure</translation>
+      <translation>Estructura predeterminada</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="20"/>
       <source>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. You can then add the structure manually later.</source>
-      <translation type="unfinished">Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. You can then add the structure manually later.</translation>
+      <translation>Crear una estructura predeterminada (IfcProject, IfcSite, IfcBuilding i IfcBuildingStorey). Responent "No" només crearà IfcProject. Més endavant, podràs afegir una estructura manualment.</translation>
     </message>
     <message>
       <location filename="../ui/dialogExport.ui" line="20"/>
       <source>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</source>
-      <translation type="unfinished">One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</translation>
+      <translation>Un o més documents IFC continguts en aquest document FreeCAD han sigut modificats, però no desats. Ara es desaran automàticament.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="152"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
       <source>Ask me again next time</source>
-      <translation type="unfinished">Ask me again next time</translation>
+      <translation>Pregunta-m'ho de nou la pròxima vegada</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
       <source>IFC Elements Manager</source>
-      <translation type="unfinished">IFC Elements Manager</translation>
+      <translation>Gestor d'elements IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aquest diàleg et permet canviar el tipus i material IFC associat a qualsevol objecte BIM d'aquest document. Feu doble clic al tipus IFC per canviar-lo, o utilitzeu el menú desplegable sota de la llista.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <source>only visible BIM objects</source>
-      <translation type="unfinished">only visible BIM objects</translation>
+      <translation>només objectes BIM visibles</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>order by:</source>
-      <translation type="unfinished">order by:</translation>
+      <translation>ordena per:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="103"/>
       <source>change type to:</source>
-      <translation type="unfinished">change type to:</translation>
+      <translation>canvia el tipus a:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="110"/>
       <source>change material to:</source>
-      <translation type="unfinished">change material to:</translation>
+      <translation>canvia el material a:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
       <source>IFC Quantities Manager</source>
-      <translation type="unfinished">IFC Quantities Manager</translation>
+      <translation>Gestor de quantitats IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les quantitats marcades s'exportaran a IFC. Les quantitats marcades amb un símbol d'advertència indiquen un valor zero que potser haureu de comprovar. Fent clic a una capçalera d'una columna, ho aplicarà a tots els elements seleccionats.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Advertència&lt;/span&gt;: L'àrea horitzontal és l'àrea que s'obté en projectar l'objecte sobre el pla del terra (X,Y), però l'àrea vertical és la suma de totes les àrees de les cares que són verticals (ortogonals al pla del terra), de manera que una paret tindrà les seves dues cares comptades.&lt;/p&gt;&lt;p&gt;Els valors de longitud, amplada i alçada es poden canviar aquí, però aneu amb compte, és possible que canviï la geometria!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="59"/>
@@ -672,122 +672,122 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="14"/>
       <source>IFC import options</source>
-      <translation type="unfinished">IFC import options</translation>
+      <translation>Opcions d'importació IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Com s'importarà inicialment el fitxer IFC: Només un objecte, només l'estructura del projecte, o tots els objectes individuals.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Només l'objecte arrel (predeterminat)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="31"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Estructura del projecte (nivells)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="36"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Tots els objectes IFC individuals</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Importació inicial</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
       <source>This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</source>
-      <translation type="unfinished">This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</translation>
+      <translation>Això defineix com s'emmagatzemen les dades IFC al document de FreeCAD. 'Document IFC únic' significa que el document FreeCAD és el document IFC, tot el que hi creïs també pertany al document IFC. 'Utilitza l'objecte del document IFC' significa que es crearà un objecte dins del document FreeCAD per representar el document IFC. Al costat podreu afegir objectes que no siguin IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>Bloquejat (Només objectes IFC)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>Desbloquejat (es permeten objectes no IFC)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
       <source>Lock document</source>
-      <translation type="unfinished">Lock document</translation>
+      <translation>Bloqueja el document</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Tipus de representació</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
       <source>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>El tipus de l'objecte creat durant la importació. La malla és més ràpid, metre que les formes és més precís. Pots fer una conversió entre ambdues en qualsevol moment fent clic dret a l'arbre d'objectes</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation type="unfinished">Load the shape (slower)</translation>
+      <translation>Carregar la forma (més lent)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Només carregar la representació 3D, sense forma (predeterminat)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>Sense cap representació 3D</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
       <source>If this is checked, the workbench specified in Start preferences will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the workbench specified in Start preferences will be loaded after import</translation>
+      <translation>Si està marcat, el banc de treball especificat a les preferències d'Inici es carregarà després de la importació</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
       <source>Switch workbench after import</source>
-      <translation type="unfinished">Switch workbench after import</translation>
+      <translation>Canvia el banc de treball després de la importació</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
       <source>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</source>
-      <translation type="unfinished">Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</translation>
+      <translation>Precàrrega els conjunts de propietats de tots els objectes. Es recomana deixar-ho desmarcat i carregar els conjunts de propietats més tard, només quan es necessitin</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Precàrrega els conjunts de propietats</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="129"/>
       <source>Preload all materials fo the file. It is advised to leave this unchecked and load materials later, only when needed</source>
-      <translation type="unfinished">Preload all materials fo the file. It is advised to leave this unchecked and load materials later, only when needed</translation>
+      <translation>Precàrrega tots els materials del fitxer. Es recomana deixar-ho desmarcat i carregar els materials més tard, només quan es necessitin</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Precàrrega els materials</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
       <source>Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</source>
-      <translation type="unfinished">Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</translation>
+      <translation>Precàrrega totes les capes del fitxer. Es recomana deixar-ho desmarcat i carregar les capes més tard, només quan es necessitin</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="142"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Precàrrega les capes</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation type="unfinished">If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</translation>
+      <translation>Si està desmarcat, aquesta configuració s'aplicarà automàticament la pròxima vegada. Ho pots canviar al menú Editar -&gt; Preferències -&gt; BIM -&gt; NativeIFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
@@ -802,7 +802,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="36"/>
       <source>Adds this layer to an IFC project</source>
-      <translation type="unfinished">Adds this layer to an IFC project</translation>
+      <translation>Afegeix aquesta capa a un projecte IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="55"/>
@@ -823,12 +823,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="74"/>
       <source>Assign selected objects to the selected layer</source>
-      <translation type="unfinished">Assign selected objects to the selected layer</translation>
+      <translation>Assignar objectes seleccionats a la capa seleccionada</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="77"/>
       <source>Assign</source>
-      <translation type="unfinished">Assign</translation>
+      <translation>Assignar</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="616"/>
@@ -847,87 +847,87 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogMaterialChooser.ui" line="14"/>
       <source>Choose a material</source>
-      <translation type="unfinished">Choose a material</translation>
+      <translation>Escull un material</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="14"/>
       <source>Nudge</source>
-      <translation type="unfinished">Nudge</translation>
+      <translation>Empenta</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="20"/>
       <source>New nudge value:</source>
-      <translation type="unfinished">New nudge value:</translation>
+      <translation>Valor nou d'empenta:</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="20"/>
       <source>Below are the phases currently configured for this model:</source>
-      <translation type="unfinished">Below are the phases currently configured for this model:</translation>
+      <translation>A continuació es mostren les fases configurades actualment per a aquest model:</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="48"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Afegir...</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="14"/>
       <source>Test results</source>
-      <translation type="unfinished">Test results</translation>
+      <translation>Resultats del test</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="43"/>
       <source>Results of test:</source>
-      <translation type="unfinished">Results of test:</translation>
+      <translation>Resultats del test:</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="91"/>
       <source>to Report panel</source>
-      <translation type="unfinished">to Report panel</translation>
+      <translation>al tauler d'informes</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="14"/>
       <source>BIM Project Setup</source>
-      <translation type="unfinished">BIM Project Setup</translation>
+      <translation>Configuració del projecte BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="20"/>
       <source>This screen allows you to configure a new BIM project in FreeCAD.</source>
-      <translation type="unfinished">This screen allows you to configure a new BIM project in FreeCAD.</translation>
+      <translation>Aquesta pantalla us permet configurar un projecte BIM nou a FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="31"/>
       <source>Use preset...</source>
-      <translation type="unfinished">Use preset...</translation>
+      <translation>Utilitzar predefinit...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="41"/>
       <source>Saves the current document as a template, including all the current BIM settings</source>
-      <translation type="unfinished">Saves the current document as a template, including all the current BIM settings</translation>
+      <translation>Desa el document actual com a plantilla, inclosa tota la configuració BIM actual</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="44"/>
       <source>Save template...</source>
-      <translation type="unfinished">Save template...</translation>
+      <translation>Desar plantilla...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
       <source>Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</source>
-      <translation type="unfinished">Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</translation>
+      <translation>Carrega el contingut d’un fitxer FCStd al document actiu, aplicant totes les configuracions BIM que s’hi emmagatzemen, si n’hi ha</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
       <source>Load template...</source>
-      <translation type="unfinished">Load template...</translation>
+      <translation>Carregar plantilla...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="88"/>
       <source>Create new document</source>
-      <translation type="unfinished">Create new document</translation>
+      <translation>Crea un document nou</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="100"/>
       <source>Project name</source>
-      <translation type="unfinished">Project name</translation>
+      <translation>Nom del projecte</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="130"/>
@@ -942,27 +942,27 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</source>
-      <translation type="unfinished">If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</translation>
+      <translation>Si està marcat, s'afegirà una figura humana, la qual cosa us ajudarà molt a donar una sensació d'escala en visualitzar el model</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="120"/>
       <source>Add a human figure</source>
-      <translation type="unfinished">Add a human figure</translation>
+      <translation>Afegeix una figura humana</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="142"/>
       <source>The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</source>
-      <translation type="unfinished">The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</translation>
+      <translation>L'objecte lloc conté totes les dades relatives a la ubicació del projecte. Més tard podeu adjuntar un objecte físic que representi el terreny.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
       <source> E</source>
-      <translation type="unfinished"> E</translation>
+      <translation> E</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="170"/>
       <source>Elevation</source>
-      <translation type="unfinished">Elevation</translation>
+      <translation>Elevació</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="177"/>
@@ -972,7 +972,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="184"/>
       <source>Default Site</source>
-      <translation type="unfinished">Default Site</translation>
+      <translation>Lloc per defecte</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="191"/>
@@ -983,12 +983,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="198"/>
       <source> °</source>
-      <translation type="unfinished"> °</translation>
+      <translation> °</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="208"/>
       <source>Longitude</source>
-      <translation type="unfinished">Longitude</translation>
+      <translation>Longitud</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="225"/>
@@ -998,12 +998,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="232"/>
       <source>Latitude</source>
-      <translation type="unfinished">Latitude</translation>
+      <translation>Latitud</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
       <source> N</source>
-      <translation type="unfinished"> N</translation>
+      <translation> N</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="260"/>
@@ -1013,22 +1013,22 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="269"/>
       <source>This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</source>
-      <translation type="unfinished">This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</translation>
+      <translation>Això configurarà una construcció única per a aquest projecte. Si el vostre projecte està format per diverses construccions, podreu duplicar-lo després de crear-lo i actualitzar les seves propietats.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="281"/>
       <source>Gross building length</source>
-      <translation type="unfinished">Gross building length</translation>
+      <translation>Longitud bruta de la construcció</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="288"/>
       <source>Gross building width</source>
-      <translation type="unfinished">Gross building width</translation>
+      <translation>Amplada bruta de la construcció</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="302"/>
       <source>Default Building</source>
-      <translation type="unfinished">Default Building</translation>
+      <translation>Construcció predeterminada</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="309"/>
@@ -1038,7 +1038,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="316"/>
       <source>Distance between H axes</source>
-      <translation type="unfinished">Distance between H axes</translation>
+      <translation>Distància entre eixos H</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="323"/>
@@ -1048,12 +1048,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="346"/>
       <source>Distance between V axes</source>
-      <translation type="unfinished">Distance between V axes</translation>
+      <translation>Distància entre eixos V</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="363"/>
       <source>Main use</source>
-      <translation type="unfinished">Main use</translation>
+      <translation>Ús principal</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="377"/>
@@ -1062,47 +1062,47 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogProjectManager.ui" line="414"/>
       <location filename="../ui/dialogProjectManager.ui" line="479"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="424"/>
       <source>Axes line width</source>
-      <translation type="unfinished">Axes line width</translation>
+      <translation>Amplada de les línies dels eixos</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="442"/>
       <source>Axes color</source>
-      <translation type="unfinished">Axes color</translation>
+      <translation>Color dels eixos</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
       <source>Levels</source>
-      <translation type="unfinished">Levels</translation>
+      <translation>Nivells</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="472"/>
       <source>Level height</source>
-      <translation type="unfinished">Level height</translation>
+      <translation>Alçada del nivell</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="489"/>
       <source>Number of levels</source>
-      <translation type="unfinished">Number of levels</translation>
+      <translation>Nombre de nivells</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="498"/>
       <source>Bind levels to vertical axes</source>
-      <translation type="unfinished">Bind levels to vertical axes</translation>
+      <translation>Vincula els nivells als eixos verticals</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="505"/>
       <source>Define a working plane for each level</source>
-      <translation type="unfinished">Define a working plane for each level</translation>
+      <translation>Defineix un pla de treball per a cada nivell</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="512"/>
       <source>Default groups to be added to each level</source>
-      <translation type="unfinished">Default groups to be added to each level</translation>
+      <translation>Grups per defecte per a afegir a cada nivell</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="534"/>
@@ -1117,67 +1117,67 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="567"/>
       <source>The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</source>
-      <translation type="unfinished">The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</translation>
+      <translation>Els paràmetres anteriors s'han desat com a predefinits. Els valors predefinits s'emmagatzemen con a fitxers .txt a la carpeta d'usuari de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="579"/>
       <source>Save preset</source>
-      <translation type="unfinished">Save preset</translation>
+      <translation>Desar predefinit</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="62"/>
       <source>This screen lists all the components of the current document. You can select them to create a FreeCAD spreadsheet containing information from them.</source>
-      <translation type="unfinished">This screen lists all the components of the current document. You can select them to create a FreeCAD spreadsheet containing information from them.</translation>
+      <translation>Aquesta pantalla llista tots els components del document actual. Podeu seleccionar-los per a crear un full de càlcul de FreeCAD que contingui tota la seva informació.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="78"/>
       <source>This dialogue window will help you to generate list of components, dimensions, materials from a opened BIM file for Quantity Surveyor purposes.</source>
-      <translation type="unfinished">This dialogue window will help you to generate list of components, dimensions, materials from a opened BIM file for Quantity Surveyor purposes.</translation>
+      <translation>La finestra de diàleg us ajudarà a generar una llista de components, dimensions i materials des d'un fitxer BIM per a la supervisió de quantitats.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="94"/>
       <source>Select from these options the values you want from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</source>
-      <translation type="unfinished">Select from these options the values you want from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</translation>
+      <translation>Seleccioneu d'aquesta opció els valors que desitgeu per a cada component. FreeCAD generarà una línia en el full de càlcul amb aquests valors. (Si n'hi ha de presents).</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="110"/>
       <source>object.Length</source>
-      <translation type="unfinished">object.Length</translation>
+      <translation>object.Length</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="123"/>
       <source>Shape.Volume</source>
-      <translation type="unfinished">Shape.Volume</translation>
+      <translation>Shape.Volume</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="136"/>
       <source>object.Label</source>
-      <translation type="unfinished">object.Label</translation>
+      <translation>object.Label</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="149"/>
       <source>count</source>
-      <translation type="unfinished">count</translation>
+      <translation>recompte</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="175"/>
       <source>Select these components from the list if you want to hide the rest of them and move to Survey mode.</source>
-      <translation type="unfinished">Select these components from the list if you want to hide the rest of them and move to Survey mode.</translation>
+      <translation>Seleccioneu aquests components de la llista si voleu amagar els altres i canviar al mode Recollida de dades.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="217"/>
       <source>Select these components from the list if you want to hide the rest of them and move to schedule definition mode.</source>
-      <translation type="unfinished">Select these components from the list if you want to hide the rest of them and move to schedule definition mode.</translation>
+      <translation>Seleccioneu aquests components de la llista si voleu amagar els altres i canviar al mode de definicions.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="14"/>
       <source>Spaces manager</source>
-      <translation type="unfinished">Spaces manager</translation>
+      <translation>Gestor d'espais</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="20"/>
       <source>This screen will allow you to check the spaces configuration of your project and change some attributes.</source>
-      <translation type="unfinished">This screen will allow you to check the spaces configuration of your project and change some attributes.</translation>
+      <translation>Aquesta pantalla et permet comprovar les configuracions d'espais del teu projecte i canviar alguns atributs.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="37"/>
@@ -1206,34 +1206,34 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogSpaces.ui" line="68"/>
       <location filename="../ui/dialogSpaces.ui" line="135"/>
       <source>Occupants</source>
-      <translation type="unfinished">Occupants</translation>
+      <translation>Ocupants</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="75"/>
       <location filename="../ui/dialogSpaces.ui" line="145"/>
       <source>1.00 m²</source>
-      <translation type="unfinished">1.00 m²</translation>
+      <translation>1.00 m²</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="85"/>
       <location filename="../ui/dialogSpaces.ui" line="169"/>
       <source>Electric consumption</source>
-      <translation type="unfinished">Electric consumption</translation>
+      <translation>Consum elèctric</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="102"/>
       <source>0 W</source>
-      <translation type="unfinished">0 W</translation>
+      <translation>0 W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="115"/>
       <source>Space information</source>
-      <translation type="unfinished">Space information</translation>
+      <translation>Informació de l'espai</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="155"/>
@@ -1248,12 +1248,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="186"/>
       <source>Level name</source>
-      <translation type="unfinished">Level name</translation>
+      <translation>Nom del nivell</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="205"/>
       <source> W</source>
-      <translation type="unfinished"> W</translation>
+      <translation> W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="212"/>
@@ -1263,7 +1263,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogTree.ui" line="14"/>
       <source>IFC representation of</source>
-      <translation type="unfinished">IFC representation of</translation>
+      <translation>Representació IFC de</translation>
     </message>
     <message>
       <location filename="../ui/dialogTree.ui" line="40"/>
@@ -1283,42 +1283,42 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="56"/>
       <source>Welcome to the BIM workbench!</source>
-      <translation type="unfinished">Welcome to the BIM workbench!</translation>
+      <translation>Benvingut al banc de treball BIM!</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sembla que sigui la primera vegada que utilitzes el banc de treball BIM. Si premeu OK, la pantalla següent et proposarà establir algunes opcions típiques de FreeCAD adequades pel treball BIM. Les pots canviar en qualsevol moment al menú &lt;span style=" font-weight:600;"&gt;Gestiona&amp;gt;Configuració BIM...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="78"/>
       <source>How to get started?</source>
-      <translation type="unfinished">How to get started?</translation>
+      <translation>Com començar?</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="85"/>
       <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
+      <translation>FreeCAD és una aplicació complexa. Si aquesta és la primera vegada que utilitzeu FreeCAD, o mai has treballat amb 3D o BIM, podries estar interessat amb el &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;Tutorial BIM&lt;/a&gt; (També està disponible al menú &lt;span style=" font-weight:600;"&gt;Ajuda -&amp;gt;Tutorial BIM&lt;/span&gt;).</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="95"/>
       <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
+      <translation>El banc de treball BIM també té una &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;documentació completa&lt;/a&gt; disponible sota el menú Ajuda. El botó "Què és això?" també obre la pàgina d'ajuda de qualsevol eina de cada barra d'eines.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="105"/>
       <source>A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</source>
-      <translation type="unfinished">A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</translation>
+      <translation>Una bona manera de començar a construir un model BIM és establint les característiques bàsiques del projecte, sota el menú&lt;span style=" font-weight:600;"&gt;Gestiona -&amp;gt;Configuració del projecte&lt;/span&gt;. També pots configurar directament plans del pis del teu projecte, sota el menú&lt;span style=" font-weight:600;"&gt;Gestiona -&amp;gt; Nivells.&lt;/span&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="115"/>
       <source>There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</source>
-      <translation type="unfinished">There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</translation>
+      <translation>No hi ha cap comportament obligatori, i també pots començar creant parets i columnes directament, i preocupar-se d'organitzar les coses per nivells més endavant.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="125"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=" font-weight:600;"&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=" font-weight:600;"&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;També pots començar amb un pla del pis existent, o d'un model 3D fet en una altra aplicació. Sota el menú&lt;span style=" font-weight:600;"&gt;Fitxer -&amp;gt;Importa&lt;/span&gt;, pots trobar un rang ampli de formats de fitxers que es poden importar a FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1387,7 +1387,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
       <source>Multi-material definition</source>
-      <translation type="unfinished">Multi-material definition</translation>
+      <translation>Definició de multimaterial</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
@@ -1534,7 +1534,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogClasses.ui" line="14"/>
       <source>classManager</source>
-      <translation type="unfinished">classManager</translation>
+      <translation>classManager</translation>
     </message>
     <message>
       <location filename="../ui/dialogClasses.ui" line="25"/>
@@ -1551,7 +1551,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="14"/>
       <source>Custom properties</source>
-      <translation type="unfinished">Custom properties</translation>
+      <translation>Propietats personalitzades</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="23"/>
@@ -1561,7 +1561,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="30"/>
       <source>Can only contain alphanumerical characters and no spaces. Use CamelCase typing to define spaces automatically</source>
-      <translation type="unfinished">Can only contain alphanumerical characters and no spaces. Use CamelCase typing to define spaces automatically</translation>
+      <translation>Només pot contenir caràcters alfanumèrics i sense espais. Utilitza l'escriptura CamelCase per a definir espais automàticament</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="189"/>
@@ -1572,12 +1572,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="44"/>
       <source>A description for this property, can be in any language.</source>
-      <translation type="unfinished">A description for this property, can be in any language.</translation>
+      <translation>Una descripció per a aquesta propietat, pot ser en qualsevol idioma.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="51"/>
       <source>The property will be hidden in the interface, and can only be modified via Python script</source>
-      <translation type="unfinished">The property will be hidden in the interface, and can only be modified via Python script</translation>
+      <translation>Aquesta propietat estarà oculta de la interfície, i només es pot modificar mitjançant un script Python</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
@@ -1587,7 +1587,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="61"/>
       <source>The property is visible but cannot be modified by the user</source>
-      <translation type="unfinished">The property is visible but cannot be modified by the user</translation>
+      <translation>Aquesta propietat està visible, però l'usuari no la pot modificar</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="64"/>
@@ -1602,12 +1602,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
       <source>Library browser</source>
-      <translation type="unfinished">Library browser</translation>
+      <translation>Navegador de biblioteques</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="29"/>
       <source>Inserts the selected object in the current document</source>
-      <translation type="unfinished">Inserts the selected object in the current document</translation>
+      <translation>Insereix l'objecte seleccionat al document actual</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="32"/>
@@ -1617,12 +1617,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
       <source>or</source>
-      <translation type="unfinished">or</translation>
+      <translation>o</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="49"/>
       <source>Links the selected object in the current document. Only works in Offline mode</source>
-      <translation type="unfinished">Links the selected object in the current document. Only works in Offline mode</translation>
+      <translation>Enllaça els objectes seleccionats a l'objecte actual. Només funciona amb el mode fora de línia</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="52"/>
@@ -1632,17 +1632,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="63"/>
       <source>Search:</source>
-      <translation type="unfinished">Search:</translation>
+      <translation>Cerca:</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="79"/>
       <source>Search external websites</source>
-      <translation type="unfinished">Search external websites</translation>
+      <translation>Cerca en pàgines web externes</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="153"/>
@@ -1652,57 +1652,57 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="181"/>
       <source>Save thumbnails when saving a file</source>
-      <translation type="unfinished">Save thumbnails when saving a file</translation>
+      <translation>Desa les miniatures en desar un fitxer</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="193"/>
       <source>If this is checked, the library doesn't need to be installed. Contents will be fetched online.</source>
-      <translation type="unfinished">If this is checked, the library doesn't need to be installed. Contents will be fetched online.</translation>
+      <translation>Si està marcat, no cal instal·lar la biblioteca. Els continguts es poden extreure en línia.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="196"/>
       <source>Online mode</source>
-      <translation type="unfinished">Online mode</translation>
+      <translation>Mode en línia</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="206"/>
       <source>Open the search results inside FreeCAD's web browser instead of the system browser</source>
-      <translation type="unfinished">Open the search results inside FreeCAD's web browser instead of the system browser</translation>
+      <translation>Obrir els resultats de cerca dins del navegador FreeCAD en contres del navegador del sistema</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="209"/>
       <source>Open search in FreeCAD web view</source>
-      <translation type="unfinished">Open search in FreeCAD web view</translation>
+      <translation>Obrir la cerca a la vista web de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="216"/>
       <source>Opens a 3D preview of the selected file.</source>
-      <translation type="unfinished">Opens a 3D preview of the selected file.</translation>
+      <translation>Obrir previsualització 3D del fitxer seleccionat.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Preview model in 3D view</source>
-      <translation type="unfinished">Preview model in 3D view</translation>
+      <translation>Previsualitzar model en una vista 3D</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="229"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc...)</source>
-      <translation type="unfinished">Show available alternative file formats for library items (STEP, IFC, etc...)</translation>
+      <translation>Mostrar formats de fitxers alternatius disponibles pels elements de la biblioteca (STEP, IFC, etc.)</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="232"/>
       <source>Display alternative formats</source>
-      <translation type="unfinished">Display alternative formats</translation>
+      <translation>Mostrar formats alternatius</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="239"/>
       <source>Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</source>
-      <translation type="unfinished">Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</translation>
+      <translation>Nota: els fitxers STEP i BREP es poden col·locar a una ubicació personalitzada. Els fitxers FCStd i IFC es col·loquen on els objectes estan definits en el fitxer.</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="252"/>
       <source>Save thumbnails</source>
-      <translation type="unfinished">Save thumbnails</translation>
+      <translation>Desar miniatures</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="262"/>
@@ -1722,17 +1722,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
       <source>Warning, this can take some time!</source>
-      <translation type="unfinished">Warning, this can take some time!</translation>
+      <translation>Advertència, pot durar una estona!</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="33"/>
       <source>Run all tests</source>
-      <translation type="unfinished">Run all tests</translation>
+      <translation>Corre tots els tests</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="40"/>
       <source>Work on</source>
-      <translation type="unfinished">Work on</translation>
+      <translation>Treballant en</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="46"/>
@@ -1742,12 +1742,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="53"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Tots els objectes visibles</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="63"/>
       <source>Whole document</source>
-      <translation type="unfinished">Whole document</translation>
+      <translation>Tot el document</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
@@ -1973,7 +1973,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="14"/>
       <source>BIM tutorial</source>
-      <translation type="unfinished">BIM tutorial</translation>
+      <translation>Tutorial BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="20"/>
@@ -2088,7 +2088,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogWindows.ui" line="111"/>
       <location filename="../ui/dialogWindows.ui" line="121"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="161"/>
@@ -2129,32 +2129,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Importació inicial</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Com s'importarà inicialment el fitxer IFC: Només un objecte, només l'estructura del projecte, o tots els objectes individuals.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Només l'objecte arrel (predeterminat)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="50"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Estructura del projecte (nivells)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="55"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Tots els objectes IFC individuals</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="63"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Tipus de representació</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
@@ -2169,12 +2169,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Només carregar la representació 3D, sense forma (predeterminat)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>Sense cap representació 3D</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
@@ -2194,7 +2194,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Precàrrega els conjunts de propietats</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
@@ -2204,7 +2204,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Precàrrega els materials</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
@@ -2214,7 +2214,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="154"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Precàrrega les capes</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="167"/>
@@ -3954,52 +3954,52 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation type="unfinished">Crossing point not found in profile.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="67"/>
+      <location filename="../../importers/importSHP.py" line="66"/>
       <source>Shapes elevation</source>
       <translation type="unfinished">Shapes elevation</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="68"/>
+      <location filename="../../importers/importSHP.py" line="67"/>
       <source>Choose which field provides shapes elevations:</source>
       <translation type="unfinished">Choose which field provides shapes elevations:</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="109"/>
+      <location filename="../../importers/importSHP.py" line="108"/>
       <source>No shape found in this file</source>
       <translation type="unfinished">No shape found in this file</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="134"/>
+      <location filename="../../importers/importSHP.py" line="133"/>
       <source>Shapefile module not found</source>
       <translation type="unfinished">Shapefile module not found</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="135"/>
+      <location filename="../../importers/importSHP.py" line="134"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
       <translation type="unfinished">The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="141"/>
+      <location filename="../../importers/importSHP.py" line="140"/>
       <source>Error: Unable to download from %1</source>
       <translation type="unfinished">Error: Unable to download from %1</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="151"/>
+      <location filename="../../importers/importSHP.py" line="150"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="154"/>
+      <location filename="../../importers/importSHP.py" line="153"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="157"/>
+      <location filename="../../importers/importSHP.py" line="156"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation type="unfinished">Shapefile module not found. Aborting.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="158"/>
+      <location filename="../../importers/importSHP.py" line="157"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
     </message>
@@ -4051,44 +4051,44 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation type="unfinished">Sill height</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="869"/>
+      <location filename="../../ArchWindow.py" line="896"/>
       <source>This window has no defined opening</source>
       <translation type="unfinished">This window has no defined opening</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1146"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
-      <location filename="../../ArchWindow.py" line="1356"/>
+      <location filename="../../ArchWindow.py" line="1173"/>
+      <location filename="../../ArchWindow.py" line="1222"/>
+      <location filename="../../ArchWindow.py" line="1383"/>
       <source>Get selected edge</source>
       <translation type="unfinished">Get selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1295"/>
+      <location filename="../../ArchWindow.py" line="1322"/>
       <source>Unable to create component</source>
       <translation>No s'ha pogut crear el component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1333"/>
+      <location filename="../../ArchWindow.py" line="1360"/>
       <source>Window elements</source>
       <translation type="unfinished">Window elements</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1334"/>
+      <location filename="../../ArchWindow.py" line="1361"/>
       <source>Hole wire</source>
       <translation type="unfinished">Hole wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1335"/>
+      <location filename="../../ArchWindow.py" line="1362"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1336"/>
+      <location filename="../../ArchWindow.py" line="1363"/>
       <source>Pick selected</source>
       <translation>Tria el seleccionat</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1337"/>
+      <location filename="../../ArchWindow.py" line="1364"/>
       <location filename="../../ArchAxisSystem.py" line="323"/>
       <location filename="../../ArchAxis.py" line="752"/>
       <location filename="../../ArchComponent.py" line="1949"/>
@@ -4098,7 +4098,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1338"/>
+      <location filename="../../ArchWindow.py" line="1365"/>
       <location filename="../../ArchAxisSystem.py" line="324"/>
       <location filename="../../ArchAxis.py" line="753"/>
       <location filename="../../ArchComponent.py" line="1950"/>
@@ -4109,7 +4109,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchSite.py" line="856"/>
       <location filename="../../ArchReference.py" line="652"/>
-      <location filename="../../ArchWindow.py" line="1339"/>
+      <location filename="../../ArchWindow.py" line="1366"/>
       <location filename="../../ArchIFCView.py" line="56"/>
       <location filename="../../ArchAxisSystem.py" line="203"/>
       <location filename="../../ArchMaterial.py" line="367"/>
@@ -4123,41 +4123,41 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1340"/>
+      <location filename="../../ArchWindow.py" line="1367"/>
       <source>Create/update component</source>
       <translation>Crea/actualitza el component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1341"/>
+      <location filename="../../ArchWindow.py" line="1368"/>
       <source>Base 2D object</source>
       <translation type="unfinished">Base 2D object</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1342"/>
-      <location filename="../../ArchWindow.py" line="1347"/>
+      <location filename="../../ArchWindow.py" line="1369"/>
+      <location filename="../../ArchWindow.py" line="1374"/>
       <source>Wires</source>
       <translation type="unfinished">Wires</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1343"/>
+      <location filename="../../ArchWindow.py" line="1370"/>
       <location filename="../../ArchComponent.py" line="1957"/>
       <source>Components</source>
       <translation>Components</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1344"/>
+      <location filename="../../ArchWindow.py" line="1371"/>
       <source>Create new component</source>
       <translation>Crea un component nou</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1345"/>
+      <location filename="../../ArchWindow.py" line="1372"/>
       <location filename="../../ArchMaterial.py" line="747"/>
       <location filename="../../ArchMaterial.py" line="766"/>
       <source>Name</source>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1346"/>
+      <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
       <location filename="../../ArchCommands.py" line="1337"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
@@ -4165,7 +4165,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation>Tipus</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1348"/>
+      <location filename="../../ArchWindow.py" line="1375"/>
       <location filename="../../ArchMaterial.py" line="747"/>
       <location filename="../../ArchMaterial.py" line="766"/>
       <location filename="../../bimcommands/BimPanel.py" line="162"/>
@@ -4173,51 +4173,51 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation>Gruix</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1349"/>
+      <location filename="../../ArchWindow.py" line="1376"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>Equidistancia (ofset)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1350"/>
+      <location filename="../../ArchWindow.py" line="1377"/>
       <source>Hinge</source>
       <translation type="unfinished">Hinge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1351"/>
+      <location filename="../../ArchWindow.py" line="1378"/>
       <source>Opening mode</source>
       <translation type="unfinished">Opening mode</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1352"/>
-      <location filename="../../ArchWindow.py" line="1354"/>
+      <location filename="../../ArchWindow.py" line="1379"/>
+      <location filename="../../ArchWindow.py" line="1381"/>
       <source>+ default</source>
       <translation type="unfinished">+ default</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1353"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1355"/>
+      <location filename="../../ArchWindow.py" line="1382"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1357"/>
+      <location filename="../../ArchWindow.py" line="1384"/>
       <source>Press to retrieve the selected edge</source>
       <translation type="unfinished">Press to retrieve the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1358"/>
+      <location filename="../../ArchWindow.py" line="826"/>
+      <location filename="../../ArchWindow.py" line="1385"/>
       <source>Invert opening direction</source>
       <translation type="unfinished">Invert opening direction</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="808"/>
-      <location filename="../../ArchWindow.py" line="1359"/>
+      <location filename="../../ArchWindow.py" line="835"/>
+      <location filename="../../ArchWindow.py" line="1386"/>
       <source>Invert hinge position</source>
       <translation type="unfinished">Invert hinge position</translation>
     </message>
@@ -4255,10 +4255,10 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation type="unfinished">Axis system components</translation>
     </message>
     <message>
-      <location filename="../../importers/importJSON.py" line="61"/>
-      <location filename="../../importers/importWebGL.py" line="874"/>
-      <location filename="../../importers/importOBJ.py" line="261"/>
-      <location filename="../../importers/importOBJ.py" line="285"/>
+      <location filename="../../importers/importJSON.py" line="58"/>
+      <location filename="../../importers/importWebGL.py" line="873"/>
+      <location filename="../../importers/importOBJ.py" line="258"/>
+      <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
       <translation type="unfinished">Successfully written</translation>
     </message>
@@ -4279,27 +4279,27 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation>Crea una gelosia</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="112"/>
+      <location filename="../../importers/importIFClegacy.py" line="110"/>
       <source>Couldn't locate IfcOpenShell</source>
       <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="389"/>
+      <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
       <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="395"/>
+      <location filename="../../importers/importIFClegacy.py" line="393"/>
       <source>IFC Schema not found, IFC import disabled.</source>
       <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="930"/>
+      <location filename="../../importers/importIFClegacy.py" line="928"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="937"/>
+      <location filename="../../importers/importIFClegacy.py" line="935"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
     </message>
@@ -4606,7 +4606,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchPrecast.py" line="1417"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rotació</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="372"/>
@@ -4912,12 +4912,12 @@ Floor creation aborted.</translation>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="87"/>
+      <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation type="unfinished">Found a shape containing curves, triangulating</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="367"/>
+      <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
       <translation type="unfinished">Successfully imported</translation>
     </message>
@@ -6315,7 +6315,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Show elevation opening symbols if available</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1085"/>
+      <location filename="../../ArchWindow.py" line="1112"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>El nombre de filferros que defineix el forat. Un valor de 0 significa automàtic</translation>
     </message>
@@ -8667,7 +8667,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="202"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>Tipus IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
@@ -9308,7 +9308,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="334"/>
       <source>Save preset</source>
-      <translation type="unfinished">Save preset</translation>
+      <translation>Desar predefinit</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="335"/>
@@ -10018,7 +10018,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="44"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>Guia</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="47"/>
@@ -10627,7 +10627,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="489"/>
       <location filename="../ui/dialogSetup.ui" line="546"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="152"/>

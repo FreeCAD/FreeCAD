@@ -5661,12 +5661,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="800"/>
+      <location filename="../../../femcommands/commands.py" line="798"/>
       <source>FEM mesh group</source>
       <translation>Skupina MKP sítě</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="801"/>
+      <location filename="../../../femcommands/commands.py" line="799"/>
       <source>Creates a FEM mesh group</source>
       <translation>Vytvoří skupinu MKP sítě</translation>
     </message>
@@ -5674,12 +5674,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="813"/>
+      <location filename="../../../femcommands/commands.py" line="811"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>MKP síť z tvaru pomocí Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="817"/>
+      <location filename="../../../femcommands/commands.py" line="815"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Vytvoří MKP síť z tělesa nebo plochy tvaru pomocí vnitřního síťovače Netgen</translation>
     </message>
@@ -5687,12 +5687,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="869"/>
+      <location filename="../../../femcommands/commands.py" line="866"/>
       <source>Show result</source>
       <translation>Zobrazit výsledek</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="873"/>
+      <location filename="../../../femcommands/commands.py" line="870"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Zobrazuje a vizualizuje vybraná data výsledků</translation>
     </message>
@@ -5700,12 +5700,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="885"/>
+      <location filename="../../../femcommands/commands.py" line="882"/>
       <source>Purge results</source>
       <translation>Vymazat výsledky</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="889"/>
+      <location filename="../../../femcommands/commands.py" line="886"/>
       <source>Purges all results from active analysis</source>
       <translation>Vymaže všechny výsledky z aktivní analýzy</translation>
     </message>
@@ -5713,12 +5713,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="999"/>
+      <location filename="../../../femcommands/commands.py" line="996"/>
       <source>Solver CalculiX Standard</source>
       <translation>Řešič CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1004"/>
+      <location filename="../../../femcommands/commands.py" line="1001"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Vytvoří standardní MKP řešič CalculiX s nástroji ccx</translation>
     </message>
@@ -5726,12 +5726,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1052"/>
+      <location filename="../../../femcommands/commands.py" line="1049"/>
       <source>Solver job control</source>
       <translation>Ovládání úlohy řešiče</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1057"/>
+      <location filename="../../../femcommands/commands.py" line="1054"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Změní atributy řešiče a spustí výpočty pro vybraný řešič</translation>
     </message>
@@ -5739,12 +5739,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1069"/>
+      <location filename="../../../femcommands/commands.py" line="1066"/>
       <source>Solver Elmer</source>
       <translation>Řešič Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1071"/>
+      <location filename="../../../femcommands/commands.py" line="1068"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Vytvoří MKP řešič Elmer</translation>
     </message>
@@ -5752,12 +5752,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1082"/>
+      <location filename="../../../femcommands/commands.py" line="1079"/>
       <source>Solver Mystran</source>
       <translation>Řešič Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1084"/>
+      <location filename="../../../femcommands/commands.py" line="1081"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Vytvoří MKP řešič Mystran</translation>
     </message>
@@ -5765,12 +5765,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1094"/>
+      <location filename="../../../femcommands/commands.py" line="1091"/>
       <source>Run solver calculations</source>
       <translation>Spustit výpočty řešiče</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1098"/>
+      <location filename="../../../femcommands/commands.py" line="1095"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Spustí výpočty pro vybraný řešič</translation>
     </message>
@@ -5778,12 +5778,12 @@ používá se pro řešič Elmer</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1114"/>
+      <location filename="../../../femcommands/commands.py" line="1111"/>
       <source>Solver Z88</source>
       <translation>Řešič Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1116"/>
+      <location filename="../../../femcommands/commands.py" line="1113"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Vytvoří MKP řešič Z88</translation>
     </message>
@@ -6225,12 +6225,12 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1027"/>
+      <location filename="../../../femcommands/commands.py" line="1024"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>Solver CalculiX (nový framework)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1032"/>
+      <location filename="../../../femcommands/commands.py" line="1029"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Vytvoří MKP řešič CalculiX nový framework (méně výsledné zpracování chyb)</translation>
     </message>
@@ -6381,12 +6381,12 @@ Nejprve prosím vyberte typ výsledku.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="858"/>
+      <location filename="../../../femcommands/commands.py" line="855"/>
       <source>FEM mesh refinement</source>
       <translation>Zahuštění MKP sítě</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="859"/>
+      <location filename="../../../femcommands/commands.py" line="856"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Vytvoří zahuštění MKP sítě</translation>
     </message>

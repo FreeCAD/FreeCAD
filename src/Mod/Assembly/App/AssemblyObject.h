@@ -280,14 +280,6 @@ public:
                                                     const char* propName);
     static std::vector<std::string> getSubAsList(App::PropertyXLinkSub* prop);
     static std::vector<std::string> getSubAsList(App::DocumentObject* joint, const char* propName);
-    static std::vector<std::string> splitSubName(const std::string& subName);
-    static Base::Placement getPlacementFromProp(App::DocumentObject* obj, const char* propName);
-
-    static Base::Placement getGlobalPlacement(App::DocumentObject* targetObj,
-                                              App::DocumentObject* rootObj,
-                                              const std::string& sub);
-    static Base::Placement getGlobalPlacement(App::DocumentObject* targetObj,
-                                              App::PropertyXLinkSub* prop);
 };
 
 // using AssemblyObjectPython = App::FeaturePythonT<AssemblyObject>;

@@ -3154,10 +3154,10 @@ Kérem, válasszon ki legalább egyet.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Ha ez bejelölt, nem történik kapcsolat egyesítés
-a fájl olvasása közben (lassabb, de pontosabb).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

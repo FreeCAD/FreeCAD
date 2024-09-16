@@ -87,16 +87,12 @@ class _ViewProviderArchMaterialContainer:
         actionMergeByName = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),
                                           translate("Arch", "Merge duplicates"),
                                           menu)
-        QtCore.QObject.connect(actionMergeByName,
-                               QtCore.SIGNAL("triggered()"),
-                               self.mergeByName)
+        actionMergeByName.triggered.connect(self.mergeByName)
         menu.addAction(actionMergeByName)
 
         actionReorder = QtGui.QAction(translate("Arch", "Reorder children alphabetically"),
                                       menu)
-        QtCore.QObject.connect(actionReorder,
-                               QtCore.SIGNAL("triggered()"),
-                               self.reorder)
+        actionReorder.triggered.connect(self.reorder)
         menu.addAction(actionReorder)
 
     def mergeByName(self):
@@ -366,9 +362,7 @@ class _ViewProviderArchMaterial:
     def setupContextMenu(self, vobj, menu):
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
-        QtCore.QObject.connect(actionEdit,
-                               QtCore.SIGNAL("triggered()"),
-                               self.edit)
+        actionEdit.triggered.connect(self.edit)
         menu.addAction(actionEdit)
 
     def edit(self):
@@ -416,23 +410,22 @@ class _ArchMaterialTaskPanel:
         self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
         self.form.ButtonSectionColor.setIcon(QtGui.QIcon(colorPix))
         self.form.ButtonUrl.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
-        QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(QString)"), self.chooseMat)
-        QtCore.QObject.connect(self.form.comboBox_FromExisting, QtCore.SIGNAL("currentIndexChanged(int)"), self.fromExisting)
-        QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentIndexChanged(QString)"), self.setFather)
-        QtCore.QObject.connect(self.form.comboFather, QtCore.SIGNAL("currentTextChanged(QString)"), self.setFather)
-        QtCore.QObject.connect(self.form.ButtonColor,QtCore.SIGNAL("pressed()"),self.getColor)
-        QtCore.QObject.connect(self.form.ButtonSectionColor,QtCore.SIGNAL("pressed()"),self.getSectionColor)
-        QtCore.QObject.connect(self.form.ButtonUrl,QtCore.SIGNAL("pressed()"),self.openUrl)
-        QtCore.QObject.connect(self.form.ButtonEditor,QtCore.SIGNAL("pressed()"),self.openEditor)
-        QtCore.QObject.connect(self.form.ButtonCode,QtCore.SIGNAL("pressed()"),self.getCode)
+        self.form.comboBox_MaterialsInDir.currentIndexChanged.connect(self.chooseMat)
+        self.form.comboBox_FromExisting.currentIndexChanged.connect(self.fromExisting)
+        self.form.comboFather.currentTextChanged.connect(self.setFather)
+        self.form.ButtonColor.pressed.connect(self.getColor)
+        self.form.ButtonSectionColor.pressed.connect(self.getSectionColor)
+        self.form.ButtonUrl.pressed.connect(self.openUrl)
+        self.form.ButtonEditor.pressed.connect(self.openEditor)
+        self.form.ButtonCode.pressed.connect(self.getCode)
         self.fillMaterialCombo()
         self.fillExistingCombo()
         try:
-            import BimClassification
+            from bimcommands import BimClassification
         except Exception:
             self.form.ButtonCode.hide()
         else:
-            self.form.ButtonCode.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
+            self.form.ButtonCode.setIcon(QtGui.QIcon(":/icons/BIM_Classification.svg"))
         if self.obj:
             if hasattr(self.obj,"Material"):
                 self.material = self.obj.Material
@@ -536,10 +529,14 @@ class _ArchMaterialTaskPanel:
                     self.material = m.Material
                     self.setFields()
 
-    def setFather(self,text):
+    def setFather(self, text):
         "sets the father"
         if text:
-            if text != "None":
+            if text == "None":
+                if "Father" in self.material:
+                    # for some have Father at first and change to none
+                    self.material.pop("Father")
+            else:
                 self.material["Father"] = text
 
     def getColor(self):
@@ -664,9 +661,7 @@ class _ViewProviderArchMultiMaterial:
     def setupContextMenu(self, vobj, menu):
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
-        QtCore.QObject.connect(actionEdit,
-                               QtCore.SIGNAL("triggered()"),
-                               self.edit)
+        actionEdit.triggered.connect(self.edit)
         menu.addAction(actionEdit)
 
     def edit(self):
@@ -748,13 +743,13 @@ class _ArchMultiMaterialTaskPanel:
         self.form.tree.setModel(self.model)
         self.form.tree.setUniformRowHeights(True)
         self.form.tree.setItemDelegate(MultiMaterialDelegate())
-        QtCore.QObject.connect(self.form.chooseCombo, QtCore.SIGNAL("currentIndexChanged(int)"), self.fromExisting)
-        QtCore.QObject.connect(self.form.addButton,QtCore.SIGNAL("pressed()"),self.addLayer)
-        QtCore.QObject.connect(self.form.upButton,QtCore.SIGNAL("pressed()"),self.upLayer)
-        QtCore.QObject.connect(self.form.downButton,QtCore.SIGNAL("pressed()"),self.downLayer)
-        QtCore.QObject.connect(self.form.delButton,QtCore.SIGNAL("pressed()"),self.delLayer)
-        QtCore.QObject.connect(self.form.invertButton,QtCore.SIGNAL("pressed()"),self.invertLayer)
-        QtCore.QObject.connect(self.model,QtCore.SIGNAL("itemChanged(QStandardItem*)"),self.recalcThickness)
+        self.form.chooseCombo.currentIndexChanged.connect(self.fromExisting)
+        self.form.addButton.pressed.connect(self.addLayer)
+        self.form.upButton.pressed.connect(self.upLayer)
+        self.form.downButton.pressed.connect(self.downLayer)
+        self.form.delButton.pressed.connect(self.delLayer)
+        self.form.invertButton.pressed.connect(self.invertLayer)
+        self.model.itemChanged.connect(self.recalcThickness)
         self.fillExistingCombo()
         self.fillData()
 

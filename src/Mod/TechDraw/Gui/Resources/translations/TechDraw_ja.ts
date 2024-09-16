@@ -1279,7 +1279,7 @@ Left clicking on empty space will validate the current Dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="572"/>
       <location filename="../../CommandExtensionPack.cpp" line="719"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation>おねじの端面ビューに装飾用のねじ山を追加します。&lt;br&gt;線の属性を指定（オプション）&lt;br&gt;1つ以上の円を選択してください&lt;br&gt;このツールをクリック</translation>
+      <translation>ボルト/ねじ/棒の上面または底面のビューに表示用のねじ山を追加します:&lt;br&gt;- 線属性を指定 (オプション)&lt;br&gt;- 1つ以上の円を選択&lt;br&gt;- このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -2036,7 +2036,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>スプレッドシートビューを作成</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="395"/>
+      <location filename="../../PagePrinter.cpp" line="389"/>
       <source>Save page to dxf</source>
       <translation>用紙をDXFファイルに保存</translation>
     </message>
@@ -2262,12 +2262,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>画像を作成</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="497"/>
+      <location filename="../../QGIViewBalloon.cpp" line="509"/>
       <source>Drag Balloon</source>
       <translation>吹き出しをドラッグ</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="831"/>
+      <location filename="../../QGIViewDimension.cpp" line="873"/>
       <source>Drag Dimension</source>
       <translation>寸法をドラッグ</translation>
     </message>
@@ -2628,7 +2628,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>フォーマットをカスタマイズ</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="369"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="398"/>
       <source>Surface Finish Symbols</source>
       <translation>表面仕上げ記号</translation>
     </message>
@@ -2959,7 +2959,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../Command.cpp" line="604"/>
       <source>No Break objects found in this selection</source>
-      <translation type="unfinished">No Break objects found in this selection</translation>
+      <translation>選択されているものの中に壊れているオブジェクトは見つかりませんでした。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="830"/>
@@ -3937,37 +3937,37 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>面のハッチングを編集</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="247"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
       <source>Method</source>
       <translation>メソッド</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="253"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="283"/>
       <source>Addition</source>
       <translation type="unfinished">Addition</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="262"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="292"/>
       <source>Average roughness</source>
       <translation>平均粗さ</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="268"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="298"/>
       <source>Roughness sampling length</source>
       <translation>粗さのサンプリング長さ</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="307"/>
       <source>Lay symbol</source>
       <translation type="unfinished">Lay symbol</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="285"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="315"/>
       <source>Minimum roughness grade number</source>
       <translation>最小荒さ等級数</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="295"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="325"/>
       <source>Maximum roughness grade number</source>
       <translation>最大荒さ等級数</translation>
     </message>
@@ -4018,7 +4018,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>パラメーターエラー</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="332"/>
+      <location filename="../../PagePrinter.cpp" line="326"/>
       <source>Document Name:</source>
       <translation>ドキュメント名</translation>
     </message>
@@ -4102,7 +4102,7 @@ the following referencing objects might be lost:</source>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="198"/>
       <source>The following referencing object might break:</source>
-      <translation>以下の参照オブジェクトが壊れる可能性があります:</translation>
+      <translation>以下の参照オブジェクトが壊れている可能性があります:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderWeld.cpp" line="142"/>
@@ -4431,7 +4431,7 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="134"/>
       <source>Allow Crazy Edges</source>
-      <translation>おかしなエッジを許可する</translation>
+      <translation>おかしなエッジを許可</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="45"/>
@@ -4584,17 +4584,17 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="203"/>
       <source>If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</source>
-      <translation type="unfinished">If checked, the section annotation will be drawn on the Source view.  If unchecked, no section line, arrows or symbol will be shown in the Source view.</translation>
+      <translation>チェックされている場合、切断の注釈がソース・ビューに表示されます。 チェックされていない場合、ソース・ビューに切断線、矢印、記号は表示されません。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="206"/>
       <source>Show Section Line in Source View</source>
-      <translation type="unfinished">Show Section Line in Source View</translation>
+      <translation>ソース・ビューに切断線を表示</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="56"/>
       <source>This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</source>
-      <translation type="unfinished">This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</translation>
+      <translation>このチェックボックスは、詳細のソース・ビューで詳細領域の周りにハイライトを表示するかどうかを制御します。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="59"/>
@@ -4604,7 +4604,7 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="123"/>
       <source>If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</source>
-      <translation type="unfinished">If checked, the cut line will be drawn on the Source view.  If unchecked, only the change marks, arrows and symbols will be displayed.</translation>
+      <translation>チェックされている場合、切断線がソース・ビューに描画されます。チェックされていない場合は、変更マーク、矢印、記号のみが表示されます。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="126"/>
@@ -4614,7 +4614,7 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
-      <translation type="unfinished">Broken View Break Type</translation>
+      <translation>破断ビューの破断タイプ</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="464"/>
@@ -4639,7 +4639,7 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="547"/>
       <source>Standard to be used to draw non-continuous lines.</source>
-      <translation type="unfinished">Standard to be used to draw non-continuous lines.</translation>
+      <translation>不連続線の描画に使用する規格</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="749"/>
@@ -4774,7 +4774,7 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="163"/>
       <source>Complex Section Line Marks</source>
-      <translation type="unfinished">Complex Section Line Marks</translation>
+      <translation>複雑な切断線のマーク</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="771"/>
@@ -4784,7 +4784,7 @@ Then you need to increase the tile limit.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="664"/>
       <source>Line Standard</source>
-      <translation type="unfinished">Line Standard</translation>
+      <translation>線の規格</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="764"/>
@@ -4797,15 +4797,14 @@ Then you need to increase the tile limit.</source>
 always be the right choice.   Flat or square caps are useful 
 if you are planning to use a drawing as a 1:1 cutting guide.
 </source>
-      <translation type="unfinished">Shape of line end caps.  The default (round) should almost
-always be the right choice.   Flat or square caps are useful 
-if you are planning to use a drawing as a 1:1 cutting guide.
+      <translation>線端の形状。ほとんどの場合はデフォルト（丸）が適切です。
+1:1の切断指示として図面を使用するつもりである場合には正方形やフラットが便利です。
 </translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="695"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>円</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="705"/>
@@ -4815,12 +4814,12 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="796"/>
       <source>Break Line Style</source>
-      <translation>改行のスタイル</translation>
+      <translation>破断線のスタイル</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="803"/>
       <source>Style of line to be used in BrokenView.</source>
-      <translation type="unfinished">Style of line to be used in BrokenView.</translation>
+      <translation>破断ビューで使用する線のスタイル。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="833"/>
@@ -5029,7 +5028,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
       <source>Template Underline</source>
-      <translation>下線のテンプレート</translation>
+      <translation>テンプレートの下線</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="678"/>
@@ -5406,7 +5405,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="372"/>
       <source>Standard to be used to draw section lines.  This affects the position of arrows and symbol.</source>
-      <translation type="unfinished">Standard to be used to draw section lines.  This affects the position of arrows and symbol.</translation>
+      <translation>断面線の描画で使用する規格です。矢印と記号の位置に影響します。</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="385"/>
@@ -5421,7 +5420,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
       <source>Section Line Convention</source>
-      <translation type="unfinished">Section Line Convention</translation>
+      <translation>切断線の規則</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="421"/>
@@ -5576,7 +5575,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>Use 3d Camera Direction</source>
-      <translation type="unfinished">Use 3d Camera Direction</translation>
+      <translation>3Dカメラ方向を使用</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="871"/>
@@ -5590,6 +5589,31 @@ for ProjectionGroups</source>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="898"/>
+      <source>Snapping</source>
+      <translation type="unfinished">Snapping</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="906"/>
+      <source>Check this box if you want views to snap into alignment when being dragged.</source>
+      <translation type="unfinished">Check this box if you want views to snap into alignment when being dragged.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="909"/>
+      <source>Snap View Alignment</source>
+      <translation type="unfinished">Snap View Alignment</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="938"/>
+      <source>View Snapping Factor</source>
+      <translation type="unfinished">View Snapping Factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="945"/>
+      <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
+      <translation type="unfinished">When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="993"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt;表記の項目は新しいオブジェクトでのデフォルト値です。既存のオブジェクトには影響しません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6407,7 +6431,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="160"/>
-      <location filename="../../TaskCosVertex.cpp" line="253"/>
+      <location filename="../../TaskCosVertex.cpp" line="249"/>
       <source>Pick Points</source>
       <translation>点をピック</translation>
     </message>
@@ -6427,7 +6451,7 @@ Do you want to continue?</source>
       <translation>左クリックで点を設定</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="281"/>
+      <location filename="../../TaskCosVertex.cpp" line="277"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>処理中の編集を破棄しました。やり直してください。</translation>
     </message>
@@ -7497,7 +7521,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLineDecor.ui" line="99"/>
       <source>The use of the Qt line style is being phased out.  Please use a standard line style instead.</source>
-      <translation type="unfinished">The use of the Qt line style is being phased out.  Please use a standard line style instead.</translation>
+      <translation>Qtの線スタイルの使用は段階的に廃止されています。代わりに標準規格の線スタイルを使用してください。</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="145"/>
@@ -8105,7 +8129,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSectionView.ui" line="455"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now.  May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now.  May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ただちに表示を再構築。複雑なモデルでは遅くなる可能性があります。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="458"/>
@@ -8150,8 +8174,8 @@ using the given X/Y Spacing</source>
     <message numerus="yes">
       <location filename="../../TaskSectionView.cpp" line="435"/>
       <source>%n update(s) pending</source>
-      <translation type="unfinished">
-        <numerusform>%n update(s) pending</numerusform>
+      <translation>
+        <numerusform>%n 個の更新が保留されています。</numerusform>
       </translation>
     </message>
     <message>
@@ -8162,7 +8186,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSectionView.cpp" line="647"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
-      <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
+      <translation>続行できません。オブジェクト * %1 または %2 が見つかりません。</translation>
     </message>
   </context>
   <context>
@@ -8222,67 +8246,67 @@ using the given X/Y Spacing</source>
     <name>TechDrawGui::TaskSurfaceFinishSymbols</name>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="230"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="246"/>
       <source>Surface Finish Symbols</source>
       <translation>表面仕上げ記号</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="34"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="61"/>
       <source>Material removal prohibited, whole part</source>
-      <translation type="unfinished">Material removal prohibited, whole part</translation>
+      <translation>マテリアルの除去がパーツ全体で禁止されています。</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="44"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="95"/>
       <source>Any method allowed, whole part</source>
-      <translation type="unfinished">Any method allowed, whole part</translation>
+      <translation>任意の方法がパーツ全体で許可されます。</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="54"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="129"/>
       <source>Material removal required, whole part</source>
-      <translation type="unfinished">Material removal required, whole part</translation>
+      <translation>マテリアルの除去がパーツ全体で必要です。</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="64"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="163"/>
       <source>Material removal required</source>
-      <translation type="unfinished">Material removal required</translation>
+      <translation>マテリアルの除去が必要です。</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="74"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="197"/>
       <source>Material removal prohibited</source>
-      <translation type="unfinished">Material removal prohibited</translation>
+      <translation>マテリアルの除去が禁止されています。</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="84"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="231"/>
       <source>Any method allowed</source>
-      <translation type="unfinished">Any method allowed</translation>
+      <translation>任意の方法が許可されます。</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="105"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="255"/>
       <source>Rotation angle</source>
       <translation>回転角度</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="115"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="265"/>
       <source>Use ISO standard</source>
       <translation>ISO規格を使用</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="128"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="278"/>
       <source>Use ASME standard</source>
       <translation>ASME規格を使用</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="98"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="248"/>
       <source>Symbol angle:</source>
       <translation>記号の角度:</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="268"/>
       <source>ISO</source>
       <translation>ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
+      <location filename="../../TaskSurfaceFinishSymbols.ui" line="281"/>
       <source>ASME</source>
       <translation>ASME</translation>
     </message>
@@ -8410,7 +8434,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="52"/>
       <source>Check this box to reapply autofill to this field.  </source>
-      <translation type="unfinished">Check this box to reapply autofill to this field.  </translation>
+      <translation>このボックスをチェックすると、このフィールドに自動入力が再適用されます。  </translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>
@@ -8420,7 +8444,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value.</source>
-      <translation type="unfinished">The autofill replacement value.</translation>
+      <translation>自動入力の置換値。</translation>
     </message>
   </context>
   <context>
@@ -8842,7 +8866,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../DlgStringListEditor.ui" line="31"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ダブルクリックして行を編集します。新しい行がリスト内の現在の場所に追加されます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -9066,7 +9090,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="56"/>
+      <location filename="../../../App/DrawView.cpp" line="57"/>
       <source>Page</source>
       <translation>用紙</translation>
     </message>
@@ -9074,7 +9098,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>Template</source>
       <translation>テンプレート</translation>
     </message>
@@ -9082,7 +9106,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>View</source>
       <translation>ビュー</translation>
     </message>
@@ -9090,7 +9114,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>View</source>
       <translation>ビュー</translation>
     </message>
@@ -9098,7 +9122,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>Section</source>
       <translation>セクション</translation>
     </message>
@@ -9106,7 +9130,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Section</source>
       <translation>セクション</translation>
     </message>
@@ -9114,7 +9138,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Detail</source>
       <translation>詳細</translation>
     </message>
@@ -9122,7 +9146,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>ActiveView</source>
       <translation>アクティブビュー</translation>
     </message>
@@ -9130,7 +9154,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Annotation</source>
       <translation>注釈</translation>
     </message>
@@ -9138,7 +9162,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Image</source>
       <translation>画像</translation>
     </message>
@@ -9146,7 +9170,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Symbol</source>
       <translation>記号</translation>
     </message>
@@ -9154,7 +9178,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewArch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Arch</source>
       <translation>建築</translation>
     </message>
@@ -9162,7 +9186,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>Draft</source>
       <translation>抜き勾配</translation>
     </message>
@@ -9170,7 +9194,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>LeaderLine</source>
       <translation>引出線</translation>
     </message>
@@ -9178,7 +9202,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>Balloon</source>
       <translation>吹き出し</translation>
     </message>
@@ -9186,7 +9210,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Dimension</source>
       <translation>寸法</translation>
     </message>
@@ -9194,7 +9218,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Extent</source>
       <translation>範囲</translation>
     </message>
@@ -9202,7 +9226,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Hatch</source>
       <translation>ハッチング</translation>
     </message>
@@ -9210,7 +9234,7 @@ there is an open task dialog.</source>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>GeomHatch</source>
       <translation>GeomHatch</translation>
     </message>
@@ -9230,7 +9254,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="61"/>
       <source>Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</source>
-      <translation type="unfinished">Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</translation>
+      <translation>親ビュー内の中心点を2D点として扱います。Z座標は無視されます。</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
@@ -9240,7 +9264,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
       <source>Treat the center point as a 3d point and project it onto the parent View.</source>
-      <translation type="unfinished">Treat the center point as a 3d point and project it onto the parent View.</translation>
+      <translation>中心点を3D点として扱い、親ビューに投影します。</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
@@ -9280,7 +9304,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="212"/>
       <source>Check this box to make an arc from start angle to end angle in a clockwise direction.</source>
-      <translation type="unfinished">Check this box to make an arc from start angle to end angle in a clockwise direction.</translation>
+      <translation>このボックスにチェックを入れると、開始角度から終了角度まで時計回り方向に弧を描きます。</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="215"/>
@@ -9336,12 +9360,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1897"/>
       <source>Calculate the arc length of selected edges</source>
-      <translation type="unfinished">Calculate the arc length of selected edges</translation>
+      <translation>選択したエッジの円弧長さを計算</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1898"/>
       <source>Select several edges&lt;br&gt;    - click this tool</source>
-      <translation type="unfinished">Select several edges&lt;br&gt;    - click this tool</translation>
+      <translation>複数のエッジを選択&lt;br&gt;    - このツールをクリック</translation>
     </message>
   </context>
   <context>
@@ -9607,7 +9631,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="92"/>
       <source>Hidden</source>
-      <translation>非表示</translation>
+      <translation>かくれ線</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="93"/>
@@ -9672,12 +9696,12 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="105"/>
       <source>Stitch1</source>
-      <translation>ステッチ線1</translation>
+      <translation>縫い目線1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="106"/>
       <source>Stitch2</source>
-      <translation>ステッチ線2</translation>
+      <translation>縫い目線2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="107"/>
@@ -9759,7 +9783,7 @@ there is an open task dialog.</source>
       <location filename="../../Command.cpp" line="527"/>
       <location filename="../../Command.cpp" line="528"/>
       <source>Insert Broken View</source>
-      <translation>壊れたビューを挿入</translation>
+      <translation>破断ビューを挿入</translation>
     </message>
   </context>
   <context>

@@ -1232,12 +1232,12 @@
     <message>
       <location filename="../../Command.cpp" line="1247"/>
       <source>Boolean...</source>
-      <translation>Boolesche Operation...</translation>
+      <translation>Boolesche Verknüpfung...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1248"/>
       <source>Run a boolean operation with two shapes selected</source>
-      <translation>Eine boolesche Operation mit zwei ausgewählten Formen durchführen</translation>
+      <translation>Führt eine boolesche Verknüpfung mit zwei ausgewählten Formen durch</translation>
     </message>
   </context>
   <context>
@@ -2421,7 +2421,7 @@ Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargest
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
       <source>Boolean Operation</source>
-      <translation>Boolesche Operation</translation>
+      <translation>Boolesche Verknüpfung</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
@@ -2500,7 +2500,7 @@ Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargest
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="397"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Kann eine boolesche Operation mit der gleichen Form nicht ausführen</translation>
+      <translation>Kann eine boolesche Verknüpfung mit derselben Form nicht ausführen</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="407"/>
@@ -3155,9 +3155,10 @@ Bitte zuerst ein oder mehrere Kantenelemente markieren.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, no Compound merge will be done
+      <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation>Wenn aktiviert, werden beim Lesen der Datei keine Körper zusammengeführt (langsamer, aber höhere Details).</translation>
+      <translation type="unfinished">If checked, Compound merge will be done
+during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -4047,12 +4048,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation>Modell automatisch nach Boolescher Operation überprüfen</translation>
+      <translation>Modell automatisch nach Boolescher Verknüpfung überprüfen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="42"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation>Modell nach Boolescher Operation automatisch aufbereiten</translation>
+      <translation>Modell nach Boolescher Verknüpfung automatisch aufbereiten</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
@@ -5195,7 +5196,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="417"/>
       <source>Boolean operation check...</source>
-      <translation>Prüfung boolescher Operationen...</translation>
+      <translation>Prüfung boolescher Verknüpfungen...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="419"/>
@@ -5550,7 +5551,7 @@ für den Austragungspfad in der 3D-Ansicht auswählen.</translation>
       <location filename="../../Command.cpp" line="476"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Die Verwendung von Nicht-Festkörpern für boolesche Operationen kann zu unerwarteten Ergebnissen führen. Trotzdem fortfahren?</translation>
+      <translation>Die Verwendung von Nicht-Festkörpern für boolesche Verknüpfungen kann zu unerwarteten Ergebnissen führen. Trotzdem fortfahren?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="389"/>
@@ -5819,12 +5820,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>Boolean operation: Unknown check</source>
-      <translation>Boolesche Operation: Unbekannte Überprüfung</translation>
+      <translation>Boolesche Verknüpfung: Unbekannte Überprüfung</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>Boolean operation: Bad type</source>
-      <translation>Boolesche Operation: Falscher Typ</translation>
+      <translation>Boolesche Verknüpfung: Falscher Typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
@@ -5839,22 +5840,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: Non-recoverable face</source>
-      <translation>Boolesche Operation: Nicht wiederherstellbare Fläche</translation>
+      <translation>Boolesche Verknüpfung: Nicht wiederherstellbare Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: Incompatibility of vertex</source>
-      <translation>Boolesche Operation: Punkt nicht Kompatibel</translation>
+      <translation>Boolesche Operation: Punkt nicht kompatibel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: Incompatibility of edge</source>
-      <translation>Boolesche Operation: Kanten nicht Kompatibel</translation>
+      <translation>Boolesche Verknüpfung: Kanten nicht kompatibel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: Incompatibility of face</source>
-      <translation>Boolesche Operation: Flächen nicht Kompatibel</translation>
+      <translation>Boolesche Verknüpfung: Fläche nicht kompatibel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
@@ -5864,12 +5865,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>Boolean operation: GeomAbs_C0</source>
-      <translation>Boolesche Operation: GeomAbs_C0</translation>
+      <translation>Boolesche Verknüpfung: GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: Invalid curve on surface</source>
-      <translation>Boolesche Operation: Ungültige Kurve auf Oberfläche</translation>
+      <translation>Boolesche Verknüpfung: Ungültige Kurve auf Oberfläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
@@ -5972,7 +5973,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Boolean</source>
-      <translation>Boolesche Operation</translation>
+      <translation>Boolesche Verknüpfung</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6456,10 +6457,10 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Erstellt ein „ Boolean Fragments“-Objekt aus zwei oder mehr ausgewählten Objekten oder aus den Formen innerhalb eines Verbundobjekts.
+      <translation>Erstellt ein „ Boolesche Bestandteile“-Objekt aus zwei oder mehr ausgewählten Objekten oder aus den Formen innerhalb eines Verbundobjekts.
 Dies ist eine boolesche Vereinigung, die dann an den Schnittflächen
 der ursprünglichen Formen zerlegt wird.
-Ein „Compound Filter“-Objekt kann verwendet werden, um einzelne Abschnitte zu extrahieren.</translation>
+Ein „Verbund-Filter"-Objekt kann verwendet werden, um einzelne Abschnitte zu extrahieren.</translation>
     </message>
   </context>
   <context>

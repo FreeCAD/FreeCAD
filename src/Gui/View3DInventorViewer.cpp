@@ -127,9 +127,9 @@
 #include "Utilities.h"
 
 
-FC_LOG_LEVEL_INIT("3DViewer",true,true)
+FC_LOG_LEVEL_INIT("3DViewer", true, true)
 
-//#define FC_LOGGING_CB
+// #define FC_LOGGING_CB
 
 using namespace Gui;
 
@@ -1073,7 +1073,11 @@ void View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* vp, int Mod
 {
     this->editViewProvider = vp;
     this->editViewProvider->setEditViewer(this, ModNum);
+
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     this->navigation->findBoundingSphere();
+#endif
+
     addEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
 }
 
@@ -1536,7 +1540,9 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
         }
     }
 
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     navigation->findBoundingSphere();
+#endif
 }
 
 void View3DInventorViewer::savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const
@@ -3352,7 +3358,7 @@ void View3DInventorViewer::alignToSelection()
         return;
     }
 
-    const auto selection = Selection().getSelection();
+    const auto selection = Selection().getSelection(nullptr, ResolveMode::NoResolve);
 
     // Empty selection
     if (selection.empty()) {
@@ -3367,13 +3373,18 @@ void View3DInventorViewer::alignToSelection()
     // Get the geo feature
     App::GeoFeature* geoFeature = nullptr;
     App::ElementNamePair elementName;
-    App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, false, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
+    App::GeoFeature::resolveElement(selection[0].pObject, selection[0].SubName, elementName, true, App::GeoFeature::ElementNameType::Normal, nullptr, nullptr, &geoFeature);
     if (!geoFeature) {
         return;
     }
 
+    const auto globalPlacement = App::GeoFeature::getGlobalPlacement(selection[0].pResolvedObject, selection[0].pObject, elementName.oldName);
+    const auto rotation = globalPlacement.getRotation() * geoFeature->Placement.getValue().getRotation().inverse();
+    const auto geoFeatureSubName = Base::Tools::splitSubName(elementName.oldName).back();
+
     Base::Vector3d direction;
-    if (geoFeature->getCameraAlignmentDirection(direction, selection[0].SubName)) {
+    if (geoFeature->getCameraAlignmentDirection(direction, geoFeatureSubName.c_str())) {
+        rotation.multVec(direction, direction);
         const auto orientation = SbRotation(SbVec3f(0, 0, 1), Base::convertTo<SbVec3f>(direction));
         setCameraOrientation(orientation);
     }

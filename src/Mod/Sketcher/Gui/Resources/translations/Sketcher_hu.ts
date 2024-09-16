@@ -1889,7 +1889,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Vázlat ív hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="157"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="158"/>
       <source>Add sketch circle</source>
       <translation>Vázlat kör hozzáadása</translation>
     </message>
@@ -2146,59 +2146,59 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2822"/>
+      <location filename="../../../App/SketchObject.cpp" line="2796"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszerítést a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7094"/>
+      <location filename="../../../App/SketchObject.cpp" line="7068"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nem kér változtatást a csomó többszörözésére.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7088"/>
-      <location filename="../../../App/SketchObject.cpp" line="7274"/>
+      <location filename="../../../App/SketchObject.cpp" line="7062"/>
+      <location filename="../../../App/SketchObject.cpp" line="7248"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>A B-görbe geometriai indexe (GeoID) határon kívüli.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7100"/>
-      <location filename="../../../App/SketchObject.cpp" line="7284"/>
+      <location filename="../../../App/SketchObject.cpp" line="7074"/>
+      <location filename="../../../App/SketchObject.cpp" line="7258"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>A megadott geometriai index (GeoId) nem B-görbe.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7109"/>
+      <location filename="../../../App/SketchObject.cpp" line="7083"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>A csomó jelölés határvonalakon kívülre esik. Ne feledje, hogy a megfelelő OCC jelölés szerint, az első csomót jelölése 1 és nem nulla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7120"/>
+      <location filename="../../../App/SketchObject.cpp" line="7094"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>A sokszorozás nem nőhet a B-görbe szögének értéke fölé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7128"/>
+      <location filename="../../../App/SketchObject.cpp" line="7102"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>A sokszorozást nem csökkentheti nulla alá.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7142"/>
+      <location filename="../../../App/SketchObject.cpp" line="7116"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC képtelen csökkenteni a sokszorozást a maximális megengedett tűrésen belül.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7278"/>
+      <location filename="../../../App/SketchObject.cpp" line="7252"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>A csomónak nem lehet nulla sokszorozása.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7295"/>
+      <location filename="../../../App/SketchObject.cpp" line="7269"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>A csomópontok száma nem lehet nagyobb, mint a B-görbe fokozata.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7301"/>
+      <location filename="../../../App/SketchObject.cpp" line="7275"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>A csomó nem illeszthető be a B-görbe paramétertartományán kívül.</translation>
     </message>
@@ -3143,14 +3143,14 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>A tengelyek igazításának eltávolításához legalább egy kiválasztott nem külső geometriai elemre van szükség</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="587"/>
-      <location filename="../../TaskSketcherElements.cpp" line="634"/>
+      <location filename="../../TaskSketcherElements.cpp" line="603"/>
+      <location filename="../../TaskSketcherElements.cpp" line="650"/>
       <source>Unsupported visual layer operation</source>
       <translation>Nem támogatott vizuális réteg művelet</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="588"/>
-      <location filename="../../TaskSketcherElements.cpp" line="635"/>
+      <location filename="../../TaskSketcherElements.cpp" line="604"/>
+      <location filename="../../TaskSketcherElements.cpp" line="651"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>Jelenleg nem támogatott a külső geometria áthelyezése egy másik vizuális rétegre. A külső geometria kimarad</translation>
     </message>
@@ -3195,7 +3195,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Ív horony paraméterei</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="262"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="263"/>
       <source>Circle parameters</source>
       <translation>Kör paraméterei</translation>
     </message>
@@ -3552,72 +3552,72 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="295"/>
+      <location filename="../../TaskSketcherElements.cpp" line="311"/>
       <source>Normal</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="296"/>
+      <location filename="../../TaskSketcherElements.cpp" line="312"/>
       <source>Construction</source>
       <translation>Építési</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="297"/>
+      <location filename="../../TaskSketcherElements.cpp" line="313"/>
       <source>Internal</source>
       <translation>Belső</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="298"/>
+      <location filename="../../TaskSketcherElements.cpp" line="314"/>
       <source>External</source>
       <translation>Külső</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="299"/>
+      <location filename="../../TaskSketcherElements.cpp" line="315"/>
       <source>All types</source>
       <translation>Minden típus</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="300"/>
+      <location filename="../../TaskSketcherElements.cpp" line="316"/>
       <source>Point</source>
       <translation>Pont</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="301"/>
+      <location filename="../../TaskSketcherElements.cpp" line="317"/>
       <source>Line</source>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="302"/>
+      <location filename="../../TaskSketcherElements.cpp" line="318"/>
       <source>Circle</source>
       <translation>Kör</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="303"/>
+      <location filename="../../TaskSketcherElements.cpp" line="319"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="304"/>
+      <location filename="../../TaskSketcherElements.cpp" line="320"/>
       <source>Arc of circle</source>
       <translation>A kör íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="305"/>
+      <location filename="../../TaskSketcherElements.cpp" line="321"/>
       <source>Arc of ellipse</source>
       <translation>Az ellipszis íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="306"/>
+      <location filename="../../TaskSketcherElements.cpp" line="322"/>
       <source>Arc of hyperbola</source>
       <translation>A hiperbola íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="307"/>
+      <location filename="../../TaskSketcherElements.cpp" line="323"/>
       <source>Arc of parabola</source>
       <translation>A parabola íve</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="308"/>
+      <location filename="../../TaskSketcherElements.cpp" line="324"/>
       <source>B-spline</source>
       <translation>B-görbe</translation>
     </message>
@@ -3740,27 +3740,27 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Függőleges tengely kiválasztás</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
       <source>Layer</source>
       <translation>Réteg</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="793"/>
       <source>Layer 0</source>
       <translation>Réteg 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="794"/>
       <source>Layer 1</source>
       <translation>Réteg 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="795"/>
       <source>Hidden</source>
       <translation>Rejtett</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="784"/>
+      <location filename="../../TaskSketcherElements.cpp" line="800"/>
       <source>Delete</source>
       <translation>Törlés</translation>
     </message>
@@ -4644,120 +4644,120 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1802"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1809"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1816"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1864"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1825"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1832"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1839"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1846"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1853"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1860"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1881"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
       <source>Construction</source>
       <translation>Építési</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1162"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1185"/>
       <source>Elements</source>
       <translation>Elemek</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1800"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1805"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1823"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1964"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
       <source>Point</source>
       <translation>Pont</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1803"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1810"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1817"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1824"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1831"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1838"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1845"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1852"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1859"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1875"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1882"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1888"/>
       <source>Internal</source>
       <translation>Belső</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1807"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1812"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1944"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1830"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1967"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
       <source>Line</source>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1814"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1819"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1837"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
       <source>Arc</source>
       <translation>Ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1821"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1826"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1951"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1844"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1973"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
       <source>Circle</source>
       <translation>Kör</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1828"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1833"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1851"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1976"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1835"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1840"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1957"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1958"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1858"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1863"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1980"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1981"/>
       <source>Elliptical Arc</source>
       <translation>Elliptikus ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1842"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1847"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1961"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1962"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1870"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1984"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1985"/>
       <source>Hyperbolic Arc</source>
       <translation>Hiperbolikus ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1849"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1854"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1966"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1988"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1989"/>
       <source>Parabolic Arc</source>
       <translation>Parabolikus ív</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1856"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1861"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1969"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1879"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1991"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1992"/>
       <source>B-spline</source>
       <translation>B-görbe</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1862"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1867"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1885"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1890"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1993"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1994"/>
       <source>Other</source>
       <translation>Egyéb</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2011"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
       <source>Extended information</source>
       <translation>Részletes információ</translation>
     </message>
@@ -5231,12 +5231,12 @@ Ez a vázlat geometriáinak és kényszerítéseinek elemzésével történik.</
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="350"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="352"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="351"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="353"/>
       <source>3 rim points</source>
       <translation>3 perem pont</translation>
     </message>
@@ -5962,7 +5962,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>A vázlat részlegesen felesleges kényszerítéseket tartalmaz!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10863"/>
+      <location filename="../../../App/SketchObject.cpp" line="10736"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>A parabolákat áttelepítették. Az áttelepített fájlok nem nyílnak meg a FreeCAD korábbi verzióiban!!
@@ -5979,7 +5979,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="129"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="253"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="165"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="166"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="251"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="330"/>
@@ -5997,7 +5997,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <location filename="../../CommandSketcherTools.cpp" line="1854"/>
       <location filename="../../CommandSketcherTools.cpp" line="2291"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="180"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="98"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
@@ -6093,7 +6093,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>Sikertelen másolat hozzáadás</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="166"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="167"/>
       <source>Failed to add circle</source>
       <translation>Simertelen kör hozzáadás</translation>
     </message>
@@ -6125,7 +6125,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <location filename="../../DrawSketchHandlerSlot.h" line="165"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="134"/>
       <location filename="../../DrawSketchHandlerArc.h" line="245"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="170"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="171"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="139"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
       <location filename="../../DrawSketchHandlerScale.h" line="135"/>
@@ -6135,7 +6135,7 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
       <translation>Az eszköz végrehajtása megszakadt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="99"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="94"/>
       <source>Failed to add point</source>
       <translation>Sikertelen a pont hozzáadása</translation>
     </message>
@@ -7315,7 +7315,7 @@ Ehelyett az eredeti tárgyak és másolataik között egyenlő kényszereket alk
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="858"/>
       <source>Create a periodic B-spline.</source>
-      <translation type="unfinished">Create a periodic B-spline.</translation>
+      <translation>Hozzon létre egy rendszeres B-görbét.</translation>
     </message>
   </context>
   <context>

@@ -2368,7 +2368,7 @@ Bitte bhttp://www.openscad.org/index.html besuchen, um es zu installieren.</tran
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh boolean</source>
-      <translation>Mesh boolean</translation>
+      <translation>Boolsche Netzverknüpfung</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>

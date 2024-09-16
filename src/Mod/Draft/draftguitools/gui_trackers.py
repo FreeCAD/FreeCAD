@@ -89,13 +89,24 @@ class Tracker:
         ToDo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
+    def get_scene_graph(self):
+        """Returns the current scenegraph or None if this is not a 3D view
+        """
+        v = Draft.get3DView()
+        if v:
+            return v.getSceneGraph()
+        else:
+            return None
+
     def _insertSwitch(self, switch):
         """Insert self.switch into the scene graph.
 
         Must not be called
         from an event handler (or other scene graph traversal).
         """
-        sg = Draft.get3DView().getSceneGraph()
+        sg = self.get_scene_graph()
+        if not sg:
+            return
         if self.ontop:
             sg.insertChild(switch, 0)
         else:
@@ -107,7 +118,9 @@ class Tracker:
         As with _insertSwitch,
         must not be called during scene graph traversal).
         """
-        sg = Draft.get3DView().getSceneGraph()
+        sg = self.get_scene_graph()
+        if not sg:
+            return
         if sg.findChild(switch) >= 0:
             sg.removeChild(switch)
 
@@ -127,7 +140,9 @@ class Tracker:
         So it doesn't obscure the other objects.
         """
         if self.switch:
-            sg = Draft.get3DView().getSceneGraph()
+            sg = self.get_scene_graph()
+            if not sg:
+                return
             sg.removeChild(self.switch)
             sg.addChild(self.switch)
 
@@ -137,7 +152,9 @@ class Tracker:
         So it obscures the other objects.
         """
         if self.switch:
-            sg = Draft.get3DView().getSceneGraph()
+            sg = self.get_scene_graph()
+            if not sg:
+                return
             sg.removeChild(self.switch)
             sg.insertChild(self.switch, 0)
 
