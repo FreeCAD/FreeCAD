@@ -308,9 +308,9 @@ def export(exportList, filename, colors=None, preferences=None):
         project = contextCreator.project
         objectslist = [obj for obj in objectslist if obj != contextCreator.project_object]
 
-    if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
-        decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
-        contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
+        if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
+            decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
+            contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
 
     # reusable entity system
 
