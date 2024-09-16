@@ -156,6 +156,7 @@ SketchObject::SketchObject()
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
     geoLastId = 0;
+    geoHistoryLevel = 1;
 
     ADD_PROPERTY(InternalShape,
                  (Part::TopoShape()));
