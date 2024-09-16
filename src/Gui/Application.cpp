@@ -596,36 +596,6 @@ Application::~Application()
 // creating std commands
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-namespace
-{
-QByteArray LoadAndInsertObjectCode(
-    const std::string& unicodepath,
-    const char* Module,
-    const char* methodName,
-    const char* DocName = nullptr
-)
-{
-    return QStringLiteral(R"raw(
-try:
-    docName = "%1"
-    importArgs = []
-    importKwargs = {}
-
-    if docName:
-        importArgs.append(docName)
-    if hasattr(%2, "importOptions"):
-        importKwargs["options"] = %2.importOptions(u"%3")
-
-    %2.%4(u"%3", *importArgs, **importKwargs)
-except PyExc_FC_AbortIOException:
-    pass
-)raw")
-    .arg(QString::fromUtf8(DocName))
-    .arg(QString::fromUtf8(Module))
-    .arg(QString::fromStdString(unicodepath))
-    .arg(QString::fromUtf8(methodName)).toUtf8();
-}
-}
 
 void Application::open(const char* FileName, const char* Module)
 {
@@ -667,10 +637,21 @@ void Application::open(const char* FileName, const char* Module)
                 }
             }
             else {
-                // issue module loading
-                Command::doCommand(Command::App, "import %s", Module);
-
-                Gui::Command::runCommand(Gui::Command::App, LoadAndInsertObjectCode(unicodepath, Module, "open"));
+                // Load using provided python module
+                {
+                    Base::PyGILStateLocker locker;
+                    Py::Module moduleIo(PyImport_ImportModule("freecad.module_io"));
+                    const auto dictS = moduleIo.getDict().keys().as_string();
+                    if (!moduleIo.isNull() && moduleIo.hasAttr("OpenInsertObject"))
+                    {
+                        const Py::TupleN args(
+                            Py::Module(PyImport_ImportModule(Module)),
+                            Py::String(unicodepath),
+                            Py::String("open")
+                        );
+                        moduleIo.callMemberFunction("OpenInsertObject", args);
+                    }
+                }
 
                 // ViewFit
                 if (sendHasMsgToActiveView("ViewFit")) {
@@ -735,7 +716,22 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                Gui::Command::runCommand(Gui::Command::App, LoadAndInsertObjectCode(unicodepath, Module, "insert", DocName));
+                // Load using provided python module
+                {
+                    Base::PyGILStateLocker locker;
+                    Py::Module moduleIo(PyImport_ImportModule("freecad.module_io"));
+                    const auto dictS = moduleIo.getDict().keys().as_string();
+                    if (!moduleIo.isNull() && moduleIo.hasAttr("OpenInsertObject"))
+                    {
+                        const Py::TupleN args(
+                            Py::Module(PyImport_ImportModule(Module)),
+                            Py::String(unicodepath),
+                            Py::String("insert"),
+                            Py::String(DocName)
+                        );
+                        moduleIo.callMemberFunction("OpenInsertObject", args);
+                    }
+                }
 
                 // Commit the transaction
                 if (doc && !pendingCommand) {
