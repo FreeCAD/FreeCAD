@@ -122,6 +122,8 @@ CameraType NavlibInterface::getCamera() const
     return nullptr;
 }
 
+template SoCamera* NavlibInterface::getCamera<SoCamera*>() const;
+
 void NavlibInterface::onViewChanged(const Gui::MDIView* view)
 {
     if (view == nullptr)
