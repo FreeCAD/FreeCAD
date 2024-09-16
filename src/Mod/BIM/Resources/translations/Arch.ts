@@ -5,7 +5,7 @@
     <name>ArchMaterial</name>
     <message>
         <location filename="../ui/ArchMaterial.ui" line="14"/>
-        <source>Arch material</source>
+        <source>BIM material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3348,7 +3348,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
         <location filename="../../ArchStructure.py" line="463"/>
-        <location filename="../../bimcommands/BimWindow.py" line="306"/>
+        <location filename="../../bimcommands/BimWindow.py" line="307"/>
         <location filename="../../bimcommands/BimProfile.py" line="81"/>
         <location filename="../../bimcommands/BimPanel.py" line="138"/>
         <source>Preset</source>
@@ -3612,7 +3612,7 @@ unit to work with when opening the file.</source>
     </message>
     <message>
         <location filename="../../ArchBuildingPart.py" line="842"/>
-        <location filename="../../ArchMaterial.py" line="95"/>
+        <location filename="../../ArchMaterial.py" line="93"/>
         <source>Reorder children alphabetically</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3962,7 +3962,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
         <location filename="../../bimcommands/BimWindow.py" line="100"/>
         <location filename="../../bimcommands/BimWindow.py" line="119"/>
-        <location filename="../../bimcommands/BimWindow.py" line="166"/>
+        <location filename="../../bimcommands/BimWindow.py" line="167"/>
         <source>Create Window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3972,32 +3972,32 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimWindow.py" line="190"/>
+        <location filename="../../bimcommands/BimWindow.py" line="191"/>
         <source>Window not based on sketch. Window not aligned or resized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimWindow.py" line="200"/>
+        <location filename="../../bimcommands/BimWindow.py" line="201"/>
         <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimWindow.py" line="203"/>
+        <location filename="../../bimcommands/BimWindow.py" line="204"/>
         <source>No window found. Cannot continue.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimWindow.py" line="265"/>
+        <location filename="../../bimcommands/BimWindow.py" line="266"/>
         <source>Window options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimWindow.py" line="269"/>
+        <location filename="../../bimcommands/BimWindow.py" line="270"/>
         <source>Auto include in host object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimWindow.py" line="275"/>
+        <location filename="../../bimcommands/BimWindow.py" line="276"/>
         <source>Sill height</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4063,8 +4063,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <location filename="../../ArchWindow.py" line="1366"/>
         <location filename="../../ArchIFCView.py" line="56"/>
         <location filename="../../ArchAxisSystem.py" line="203"/>
-        <location filename="../../ArchMaterial.py" line="367"/>
-        <location filename="../../ArchMaterial.py" line="665"/>
+        <location filename="../../ArchMaterial.py" line="363"/>
+        <location filename="../../ArchMaterial.py" line="663"/>
         <location filename="../../ArchGrid.py" line="285"/>
         <location filename="../../ArchSchedule.py" line="432"/>
         <location filename="../../ArchAxis.py" line="581"/>
@@ -4102,8 +4102,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
         <location filename="../../ArchWindow.py" line="1372"/>
-        <location filename="../../ArchMaterial.py" line="747"/>
-        <location filename="../../ArchMaterial.py" line="766"/>
+        <location filename="../../ArchMaterial.py" line="743"/>
+        <location filename="../../ArchMaterial.py" line="762"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4117,8 +4117,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
         <location filename="../../ArchWindow.py" line="1375"/>
-        <location filename="../../ArchMaterial.py" line="747"/>
-        <location filename="../../ArchMaterial.py" line="766"/>
+        <location filename="../../ArchMaterial.py" line="743"/>
+        <location filename="../../ArchMaterial.py" line="762"/>
         <location filename="../../bimcommands/BimPanel.py" line="162"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
@@ -4300,8 +4300,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="747"/>
-        <location filename="../../ArchMaterial.py" line="766"/>
+        <location filename="../../ArchMaterial.py" line="743"/>
+        <location filename="../../ArchMaterial.py" line="762"/>
         <location filename="../../Arch.py" line="302"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
@@ -4312,17 +4312,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="797"/>
+        <location filename="../../ArchMaterial.py" line="793"/>
         <source>New layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="834"/>
+        <location filename="../../ArchMaterial.py" line="830"/>
         <source>Total thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="848"/>
+        <location filename="../../ArchMaterial.py" line="844"/>
         <source>depends on the object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5590,7 +5590,7 @@ Building creation aborted.</source>
     </message>
     <message>
         <location filename="../../ArchEquipment.py" line="192"/>
-        <location filename="../../ArchMaterial.py" line="170"/>
+        <location filename="../../ArchMaterial.py" line="166"/>
         <source>A standard code (MasterFormat, OmniClass,...)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6527,43 +6527,43 @@ Building creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="168"/>
-        <location filename="../../ArchMaterial.py" line="620"/>
+        <location filename="../../ArchMaterial.py" line="164"/>
+        <location filename="../../ArchMaterial.py" line="618"/>
         <source>A description for this material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="172"/>
+        <location filename="../../ArchMaterial.py" line="168"/>
         <source>A URL where to find information about this material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="174"/>
+        <location filename="../../ArchMaterial.py" line="170"/>
         <source>The transparency value of this material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="176"/>
+        <location filename="../../ArchMaterial.py" line="172"/>
         <source>The color of this material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="178"/>
+        <location filename="../../ArchMaterial.py" line="174"/>
         <source>The color of this material when cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="621"/>
+        <location filename="../../ArchMaterial.py" line="619"/>
         <source>The list of layer names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="622"/>
+        <location filename="../../ArchMaterial.py" line="620"/>
         <source>The list of layer materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchMaterial.py" line="623"/>
+        <location filename="../../ArchMaterial.py" line="621"/>
         <source>The list of layer thicknesses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7961,7 +7961,7 @@ Building creation aborted.</source>
     </message>
     <message>
         <location filename="../../ArchGrid.py" line="67"/>
-        <source>The sizes for rows</source>
+        <source>The sizes of rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9304,12 +9304,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimSetup.py" line="670"/>
+        <location filename="../../bimcommands/BimSetup.py" line="673"/>
         <source>IfcOpenShell not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimSetup.py" line="674"/>
+        <location filename="../../bimcommands/BimSetup.py" line="677"/>
         <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on your system. Would you like to download and install it now? It will be installed in FreeCAD&apos;s Macros directory.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9434,7 +9434,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../bimcommands/BimViews.py" line="281"/>
+        <location filename="../../bimcommands/BimViews.py" line="280"/>
         <source>Sheets</source>
         <translation type="unfinished"></translation>
     </message>
