@@ -251,6 +251,7 @@ void TaskMeasure::saveObject()
 
     _mDocument = App::GetApplication().getActiveDocument();
     _mDocument->addObject(_mMeasureObject, _mMeasureType->label.c_str());
+    _mMeasureObject = nullptr;
 }
 
 
@@ -386,6 +387,8 @@ bool TaskMeasure::apply()
 {
     saveObject();
     ensureGroup(_mMeasureObject);
+    _mMeasureType = nullptr;
+    _mMeasureObject = nullptr;
     reset();
 
     // Commit transaction
@@ -408,7 +411,6 @@ void TaskMeasure::reset()
 {
     // Reset tool state
     _mMeasureType = nullptr;
-    _mMeasureObject = nullptr;
     this->clearSelection();
 
     // Should the explicit mode also be reset?
