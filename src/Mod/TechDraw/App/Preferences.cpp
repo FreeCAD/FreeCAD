@@ -612,3 +612,32 @@ double Preferences::SnapLimitFactor()
 }
 
 
+//! returns the key combination that simulates multiple selection. Traditionally Ctrl+pick, as that
+//! is how QGraphicsScene implements multiple selection.  This method is likely to only be used by
+//! developers.
+Qt::KeyboardModifiers Preferences::multiselectModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("MultiselectModifiers", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ControlModifier;
+//    return testMods;
+}
+
+
+//! returns the key combination that modifies Balloon drag behaviour so that the bubble and leader
+//! are moved together.  Traditionally Ctrl+drag, but that can be in conflict with multi selection.
+Qt::KeyboardModifiers Preferences::balloonDragModifiers()
+{
+    uint iModifiers = getPreferenceGroup("General")->GetUnsigned("BalloonDragModifier", (uint)Qt::ControlModifier);
+    return (Qt::KeyboardModifiers)iModifiers;
+//    Qt::KeyboardModifiers testMods = Qt::ShiftModifier | Qt::ControlModifier;
+//    return testMods;
+}
+
+
+void Preferences::setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers)
+{
+    getPreferenceGroup("General")->SetUnsigned("BalloonDragModifier", (uint)newModifiers);
+}
+
+
