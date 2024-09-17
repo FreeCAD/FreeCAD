@@ -115,7 +115,7 @@ TaskMeasure::TaskMeasure()
         App::GetApplication().setActiveTransaction("Add Measurement");
     }
 
-
+    setAutoCloseOnDeletedDocument(true);
     // Call invoke method delayed, otherwise the dialog might not be fully initialized
     QTimer::singleShot(0, this, &TaskMeasure::invoke);
 }
