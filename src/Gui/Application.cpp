@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/interprocess/sync/file_lock.hpp>
+
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileInfo>
