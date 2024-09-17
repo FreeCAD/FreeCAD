@@ -104,6 +104,8 @@
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <BRepFeat_MakeRevol.hxx>
 
+#include "Tools.h"
+
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
 #if OCC_VERSION_HEX >= 0x070600
@@ -4231,39 +4233,21 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
     BRepFeat_MakePrism PrismMaker;
 
+    // don't remove limits of concave face
+    Base::Vector3d vCog;
+    profile.getCenterOfGravity(vCog);
+    gp_Pnt pCog(vCog.x, vCog.y, vCog.z);
+    checkLimits = ! Part::Tools::isConcave(TopoDS::Face(__uptoface.getShape()), pCog , direction);
+
     TopoShape _uptoface(__uptoface);
     if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE
         && !BRep_Tool::NaturalRestriction(TopoDS::Face(_uptoface.getShape()))) {
         // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
         // then the algorithm expects that the 'NaturalRestriction' flag is set in order
         // to work as expected.
-
-        // skip concave face
-        bool isConcave = false;
-        TopoDS_Face theFace = TopoDS::Face(_uptoface.getShape());
-        Handle(Geom_Surface) surf = BRep_Tool::Surface(theFace);
-        GeomAdaptor_Surface adapt(surf);
-        if(adapt.GetType() != GeomAbs_Plane){
-            // get parameters bounds
-            Standard_Real uMin, uMax, vMin, vMax;
-            surf->Bounds(uMin, uMax, vMin, vMax);
-            // compute normals at the middle
-            // TODO? find intersection point in UpToFace
-            gp_Pnt pt;
-            gp_Vec dU, dV;
-            surf->D1((uMin+uMax)/2, (vMin+vMax)/2, pt, dU, dV);
-            // check normals orientation
-            gp_Dir dirdU(dU);
-            isConcave = dirdU.Angle(direction) < M_PI_2;
-            gp_Dir dirdV(dV);
-            isConcave = isConcave || (dirdV.Angle(direction) < M_PI_2);
-        }
-
-        if (! isConcave){
-            BRep_Builder builder;
-            _uptoface = _uptoface.makeElementCopy();
-            builder.NaturalRestriction(TopoDS::Face(_uptoface.getShape()), Standard_True);
-        }
+        BRep_Builder builder;
+        _uptoface = _uptoface.makeElementCopy();
+        builder.NaturalRestriction(TopoDS::Face(_uptoface.getShape()), Standard_True);
     }
 
     TopoShape uptoface(_uptoface);
@@ -4317,10 +4301,7 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
             // use the placement of the adapter, not of the upToFace
             loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface(), Precision::Confusion());
-            if (!mkFace.IsDone()) {
-                remove_limits = false;
-            }
-            else {
+            if (mkFace.IsDone()) {
                 uptoface.setShape(located(mkFace.Shape(), loc), false);
             }
         }

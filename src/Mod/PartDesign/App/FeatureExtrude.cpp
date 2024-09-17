@@ -620,6 +620,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 if (faceCount == 0){
                     // No shape selected, use the base
                     upToShape = base;
+                    faceCount = 0;
                 }
             }
 
