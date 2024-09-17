@@ -88,6 +88,8 @@ void getSelectedShapes(Gui::Command* cmd,
                       App::DocumentObject* faceObj,
                       std::string& faceName);
 
+std::pair<App::DocumentObject*, std::string> faceFromSelection();
+std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
 
 class Vertex;
 using namespace TechDrawGui;
@@ -497,12 +499,17 @@ void CmdTechDrawView::activated(int iMsg)
     dvp->XSource.setValues(xShapes);
 
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(0.0, -1.0, 0.0)",
-        FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.RotationVector = FreeCAD.Vector(1.0, 0.0, 0.0)",
-        FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(1.0, 0.0, 0.0)",
-        FeatName.c_str());
+    auto dirs = viewDirection();
+    doCommand(Doc,
+              "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+    doCommand(Doc,
+              "App.activeDocument().%s.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    doCommand(Doc,
+              "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+
     getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
     commitCommand();
@@ -641,9 +648,9 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     }
 
     Base::Vector3d projDir = dirs.first;
-    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.6f,%.6f,%.6f)",
               FeatName.c_str(), projDir.x, projDir.y, projDir.z);
-    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.6f,%.6f,%.6f)",
                   FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
 
@@ -1972,3 +1979,39 @@ void getSelectedShapes(Gui::Command* cmd,
         }
     }
 }
+
+std::pair<Base::Vector3d, Base::Vector3d> viewDirection()
+{
+    if (!Preferences::useCameraDirection()) {
+        return { Base::Vector3d(0, -1, 0), Base::Vector3d(1, 0, 0) };
+    }
+
+    auto faceInfo = faceFromSelection();
+    if (faceInfo.first) {
+        return DrawGuiUtil::getProjDirFromFace(faceInfo.first, faceInfo.second);
+    }
+
+    return DrawGuiUtil::get3DDirAndRot();
+}
+
+std::pair<App::DocumentObject*, std::string> faceFromSelection()
+{
+    auto selection = Gui::Selection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+
+    if (selection.empty()) {
+        return { nullptr, "" };
+    }
+
+    for (auto& sel : selection) {
+        for (auto& sub : sel.getSubNames()) {
+            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
+                return { sel.getObject(), sub };
+            }
+        }
+    }
+
+    return { nullptr, "" };
+}
+
+
