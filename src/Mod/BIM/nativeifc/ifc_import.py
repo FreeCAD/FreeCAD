@@ -49,7 +49,7 @@ def open(filename):
     doc = FreeCAD.newDocument()
     doc.Label = name
     FreeCAD.setActiveDocument(doc.Name)
-    insert(filename, doc.Name, singledoc=True)
+    insert(filename, doc.Name)
     del FreeCAD.IsOpeningIFC
     QtCore.QTimer.singleShot(100, unset_modified)
     return doc
