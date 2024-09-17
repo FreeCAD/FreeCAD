@@ -8353,7 +8353,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
 
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
-    // ExternalGeometry is wiped out.!refSet.count(egf->getRef())
+    // ExternalGeometry is wiped out.
     for(auto &geo : ExternalGeo.getValues()) {
         auto egf = ExternalGeometryFacade::getFacade(geo);
         if(egf->getRef().size() && egf->testFlag(ExternalGeometryExtension::Missing)) {

@@ -129,6 +129,7 @@ class TestSketchValidateCoincidents(unittest.TestCase):
         del sketch, c
 
     def testExternalGeoDeletion(self):
+        """Make sure that we don't remove External Geometry references to deleted geometry"""
         doc = App.ActiveDocument
         doc.addObject("PartDesign::Body", "Body")
         doc.Body.Label = "Body"
@@ -198,12 +199,12 @@ class TestSketchValidateCoincidents(unittest.TestCase):
         doc.Sketch001.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -3, 1))
         doc.recompute()
         # Assert
-        self.assertEqual(len(doc.Sketch001.Constraints), 2)
+        self.assertEqual(len(doc.Sketch001.Constraints), 2)  # Still have the constraints
         self.assertEqual(len(doc.Sketch001.ExternalGeometry), 0)
         self.assertEqual(len(doc.Sketch001.Geometry), 1)
         self.assertEqual(
             len(doc.Sketch001.ExternalGeo), 3
-        )  # Two axis, plus one real reference that shouldn't be there
+        )  # Two axis, plus one the reference to deleted geometry
 
     def tearDown(self):
         # closing doc
