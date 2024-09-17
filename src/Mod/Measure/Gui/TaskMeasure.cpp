@@ -250,8 +250,9 @@ void TaskMeasure::saveObject()
     }
 
     _mDocument = App::GetApplication().getActiveDocument();
-    _mDocument->addObject(_mMeasureObject, _mMeasureType->label.c_str());
-    _mMeasureObject = nullptr;
+    _mDocument->addObject(_mMeasureObject,
+                          modeSwitch->currentIndex() != 0 ? modeSwitch->currentText().toLatin1()
+                                                          : QString().toLatin1());
 }
 
 
@@ -281,8 +282,6 @@ void TaskMeasure::update()
 
     valueResult->setText(QString::asprintf("-"));
 
-    // Get valid measure type
-
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
     App::MeasureSelection selection;
@@ -293,13 +292,15 @@ void TaskMeasure::update()
         selection.push_back(item);
     }
 
+    // Get valid measure type
+    App::MeasureType* measureType = nullptr;
     auto measureTypes = App::MeasureManager::getValidMeasureTypes(selection, mode);
     if (measureTypes.size() > 0) {
-        _mMeasureType = measureTypes.front();
+        measureType = measureTypes.front();
     }
 
 
-    if (!_mMeasureType) {
+    if (!measureType) {
 
         // Note: If there's no valid measure type we might just restart the selection,
         // however this requires enough coverage of measuretypes that we can access all of them
@@ -318,13 +319,12 @@ void TaskMeasure::update()
     }
 
     // Update tool mode display
-    setModeSilent(_mMeasureType);
+    setModeSilent(measureType);
 
-    if (!_mMeasureObject
-        || _mMeasureType->measureObject != _mMeasureObject->getTypeId().getName()) {
+    if (!_mMeasureObject || measureType->measureObject != _mMeasureObject->getTypeId().getName()) {
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
-        createObject(_mMeasureType);
+        createObject(measureType);
     }
 
     // we have a valid measure object so we can enable the annotate button
@@ -387,7 +387,6 @@ bool TaskMeasure::apply()
 {
     saveObject();
     ensureGroup(_mMeasureObject);
-    _mMeasureType = nullptr;
     _mMeasureObject = nullptr;
     reset();
 
@@ -410,7 +409,7 @@ bool TaskMeasure::reject()
 void TaskMeasure::reset()
 {
     // Reset tool state
-    _mMeasureType = nullptr;
+    _mMeasureObject = nullptr;
     this->clearSelection();
 
     // Should the explicit mode also be reset?
