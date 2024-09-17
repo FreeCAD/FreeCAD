@@ -72,7 +72,6 @@ private:
 
     App::Document* _mDocument = nullptr;
     Gui::Document* _mGuiDocument = nullptr;
-    App::MeasureType* _mMeasureType = nullptr;
     Measure::MeasureBase* _mMeasureObject = nullptr;
     Gui::ViewProviderDocumentObject* _mViewObject = nullptr;
 
