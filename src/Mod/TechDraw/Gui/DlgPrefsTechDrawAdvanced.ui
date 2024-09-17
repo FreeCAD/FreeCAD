@@ -467,56 +467,10 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QCheckBox" name="cbSnapShift">
-          <property name="toolTip">
-           <string>Check this box to include the Shift key in the modifiers.</string>
-          </property>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Shift</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QCheckBox" name="cbSnapDefault">
-          <property name="toolTip">
-           <string>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</string>
-          </property>
-          <property name="text">
-           <string>Use Default</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="cbBalloonShift">
-          <property name="toolTip">
-           <string>Check this box to include the Shift key in the modifiers.</string>
-          </property>
-          <property name="text">
-           <string>Shift</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QCheckBox" name="cbSnapAlt">
-          <property name="toolTip">
-           <string>Check this box to include the Alt key in the modifiers.</string>
-          </property>
-          <property name="text">
-           <string>Alt</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QCheckBox" name="cbBalloonMeta">
-          <property name="toolTip">
-           <string>Check this box to include the Meta/Start/Super key in the modifiers.</string>
-          </property>
-          <property name="text">
-           <string>Meta</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -524,43 +478,6 @@ can be a performance penalty in complex models.</string>
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>Balloon Drag</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Snap Override</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QCheckBox" name="cbSnapControl">
-          <property name="toolTip">
-           <string>Check this box to include the Control key in the modifiers.</string>
-          </property>
-          <property name="text">
-           <string>Control</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QCheckBox" name="cbBalloonControl">
-          <property name="toolTip">
-           <string>Check this box to include the Control key in the modifiers.</string>
-          </property>
-          <property name="text">
-           <string>Control</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QCheckBox" name="cbSnapMeta">
-          <property name="toolTip">
-           <string>Check this box to include the Meta/Start/Super key in the modifiers.</string>
-          </property>
-          <property name="text">
-           <string>Meta</string>
           </property>
          </widget>
         </item>
@@ -574,10 +491,33 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_8">
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="cbBalloonShift">
+          <property name="toolTip">
+           <string>Check this box to include the Shift key in the modifiers.</string>
+          </property>
           <property name="text">
-           <string/>
+           <string>Shift</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="cbBalloonMeta">
+          <property name="toolTip">
+           <string>Check this box to include the Meta/Start/Super key in the modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Meta</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="cbBalloonControl">
+          <property name="toolTip">
+           <string>Check this box to include the Control key in the modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Control</string>
           </property>
          </widget>
         </item>
