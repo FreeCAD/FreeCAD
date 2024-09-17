@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost/interprocess/sync/file_lock.hpp>
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileInfo>
@@ -36,7 +37,6 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QWindow>
-#include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
 #endif
@@ -52,7 +52,6 @@
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
-
 #include <Base/UnitsApi.h>
 
 #include <Language/Translator.h>
