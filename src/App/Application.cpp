@@ -2250,6 +2250,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("run-open,r", value<string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
+    ("disable-addon", value< vector<string> >()->composing(),"Disable a given addon.")
     ("single-instance", "Allow to run a single instance of the application")
     ("safe-mode", "Force enable safe mode")
     ("pass", value< vector<string> >()->multitoken(), "Ignores the following arguments and pass them through to be used by a script")
@@ -2429,6 +2430,16 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         vector<string> Paths = vm["python-path"].as< vector<string> >();
         for (const auto & It : Paths)
             Base::Interpreter().addPythonPath(It.c_str());
+    }
+
+    if (vm.count("disable-addon")) {
+        auto Addons = vm["disable-addon"].as< vector<string> >();
+        string temp;
+        for (const auto & It : Addons) {
+            temp += It + ";";
+        }
+        temp.erase(temp.end()-1);
+        mConfig["DisabledAddons"] = temp;
     }
 
     if (vm.count("input-file")) {
