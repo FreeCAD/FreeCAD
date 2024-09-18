@@ -29,8 +29,6 @@ import os
 import FreeCAD
 import Draft
 import Arch
-from importers import exportIFC
-from importers import exportIFCHelper
 
 import ifcopenshell
 from ifcopenshell import geom
@@ -47,6 +45,7 @@ from nativeifc import ifc_viewproviders
 from nativeifc import ifc_import
 from nativeifc import ifc_layers
 from nativeifc import ifc_status
+from nativeifc import ifc_export
 
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
 SHORT = False  # If True, only Step ID attribute is created
@@ -735,8 +734,6 @@ def filter_elements(elements, ifcfile, expand=True, spaces=False, assemblies=Tru
     elements = [e for e in elements if not e.is_a("IfcProject")]
     # skip furniture for now, they can be lazy loaded probably
     elements = [e for e in elements if not e.is_a("IfcFurnishingElement")]
-    # skip annotations for now
-    elements = [e for e in elements if not e.is_a("IfcAnnotation")]
     return elements
 
 
@@ -983,7 +980,10 @@ def aggregate(obj, parent):
         newobj = obj
         new = False
     else:
-        product = create_product(obj, parent, ifcfile)
+        if ifc_export.is_annotation(obj):
+            product = ifc_export.create_annotation(obj, ifcfile)
+        else:
+            product = ifc_export.create_product(obj, parent, ifcfile)
         shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
         newobj = create_object(product, obj.Document, ifcfile, shapemode)
         new = True
@@ -1037,50 +1037,6 @@ def deaggregate(obj, parent):
     parent.Proxy.removeObject(parent, obj)
 
 
-def create_product(obj, parent, ifcfile, ifcclass=None):
-    """Creates an IFC product out of a FreeCAD object"""
-
-    name = obj.Label
-    description = getattr(obj, "Description", None)
-    if not ifcclass:
-        ifcclass = get_ifctype(obj)
-    representation, placement = create_representation(obj, ifcfile)
-    product = api_run("root.create_entity", ifcfile, ifc_class=ifcclass, name=name)
-    set_attribute(ifcfile, product, "Description", description)
-    set_attribute(ifcfile, product, "ObjectPlacement", placement)
-    # TODO below cannot be used at the moment because the ArchIFC exporter returns an
-    # IfcProductDefinitionShape already and not an IfcShapeRepresentation
-    # api_run("geometry.assign_representation", ifcfile, product=product, representation=representation)
-    set_attribute(ifcfile, product, "Representation", representation)
-    # TODO treat subtractions/additions
-    return product
-
-
-def create_representation(obj, ifcfile):
-    """Creates a geometry representation for the given object"""
-
-    # TEMPORARY use the Arch exporter
-    # TODO this is temporary. We should rely on ifcopenshell for this with:
-    # https://blenderbim.org/docs-python/autoapi/ifcopenshell/api/root/create_entity/index.html
-    # a new FreeCAD 'engine' should be added to:
-    # https://blenderbim.org/docs-python/autoapi/ifcopenshell/api/geometry/index.html
-    # that should contain all typical use cases one could have to convert FreeCAD geometry
-    # to IFC.
-
-    # setup exporter - TODO do that in the module init
-    exportIFC.clones = {}
-    exportIFC.profiledefs = {}
-    exportIFC.surfstyles = {}
-    exportIFC.shapedefs = {}
-    exportIFC.ifcopenshell = ifcopenshell
-    exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
-    prefs, context = get_export_preferences(ifcfile)
-    representation, placement, shapetype = exportIFC.getRepresentation(
-        ifcfile, context, obj, preferences=prefs
-    )
-    return representation, placement
-
-
 def get_ifctype(obj):
     """Returns a valid IFC type from an object"""
 
@@ -1095,20 +1051,6 @@ def get_ifctype(obj):
     if dtype in ["App::DocumentObjectGroup"]:
         ifctype = "IfcGroup"
     return "IfcBuildingElementProxy"
-
-
-def get_export_preferences(ifcfile):
-    """returns a preferences dict for exportIFC"""
-
-    prefs = exportIFC.getPreferences()
-    prefs["SCHEMA"] = ifcfile.wrapped_data.schema_name()
-    s = ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
-    # the above lines yields meter -> file unit scale factor. We need mm
-    prefs["SCALE_FACTOR"] = 0.001 / s
-    context = ifcfile[
-        get_body_context_ids(ifcfile)[0]
-    ]  # we take the first one (first found subcontext)
-    return prefs, context
 
 
 def get_subvolume(obj):
@@ -1188,7 +1130,7 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
     ]:
         tempface, tempobj = get_subvolume(old_obj)
         if tempobj:
-            opening = create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
+            opening = ifc_export.create_product(tempobj, parent, ifcfile, "IfcOpeningElement")
             old_obj.Document.removeObject(tempobj.Name)
             if tempface:
                 old_obj.Document.removeObject(tempface.Name)
