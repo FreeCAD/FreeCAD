@@ -2741,7 +2741,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
 
     # Move layer contents to layers
     for (l, contents) in layerObjects.items():
-        l.Group = contents
+        l.Group += contents
 
     # Make blocks, if any
     if dxfMakeBlocks:
