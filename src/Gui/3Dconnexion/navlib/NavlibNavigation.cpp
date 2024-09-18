@@ -182,7 +182,8 @@ void NavlibInterface::enableNavigation()
         exportCommands(std::string(wb));
     });
 
-    exportCommands("StartWorkbench");
+    auto activeWorkbench = Gui::WorkbenchManager::instance()->activeName();
+    exportCommands(activeWorkbench);
 
     initializePivot();
     connectActiveTab();
