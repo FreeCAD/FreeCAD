@@ -992,7 +992,7 @@ void Application::slotFinishRestoreDocument([[maybe_unused]] const App::Document
     // allows them to 'FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")`
     const std::map<std::string, std::string>& Map = App::Application::Config();
     auto value = Map.find("SuppressRecomputeRequiredDialog");
-    bool skip = value not_eq Map.end() and not value->second.empty();   // Any non empty string is true.
+    bool skip = value != Map.end() && ! value->second.empty();   // Any non empty string is true.
     if (docs.empty() || skip )
         return;
     WaitCursor wc;
