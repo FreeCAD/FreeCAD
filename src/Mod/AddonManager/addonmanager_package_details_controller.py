@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Provides the PackageDetails widget. """
+"""Provides the PackageDetails widget."""
 
 import os
 from typing import Optional
@@ -237,7 +237,7 @@ class PackageDetailsController(QtCore.QObject):
             self.addon.set_status(self.original_status)
         self.update_status.emit(self.addon)
 
-    def branch_changed(self, name: str) -> None:
+    def branch_changed(self, old_branch: str, name: str) -> None:
         """Displays a dialog confirming the branch changed, and tries to access the
         metadata file from that branch."""
         QtWidgets.QMessageBox.information(
@@ -245,8 +245,12 @@ class PackageDetailsController(QtCore.QObject):
             translate("AddonsInstaller", "Success"),
             translate(
                 "AddonsInstaller",
-                "Branch change succeeded, please restart to use the new version.",
-            ),
+                "Branch change succeeded.\n"
+                "Moved\n"
+                "from: {}\n"
+                "to: {}\n"
+                "Please restart to use the new version.",
+            ).format(old_branch, name),
         )
         # See if this branch has a package.xml file:
         basedir = fci.getUserAppDataDir()
