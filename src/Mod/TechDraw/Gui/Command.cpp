@@ -559,6 +559,10 @@ void CmdTechDrawBrokenView::activated(int iMsg)
         xShapesFromBase = dvp->XSource.getValues();
     }
 
+    auto doc = getDocument();
+    if (dvp) {
+        doc = dvp->getDocument();
+    }
 
     // get the shape objects from the selection
     std::vector<App::DocumentObject*> shapes;
@@ -566,16 +570,17 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     App::DocumentObject* faceObj = nullptr;
     std::string faceName;
     getSelectedShapes(this, shapes, xShapes, faceObj, faceName);
-    shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
-    shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
 
-    if (!dvp || (shapes.empty() && xShapes.empty())) {
+    // we need either a base view (dvp) or some shape objects in the selection
+    if (!dvp && (shapes.empty() && xShapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
             QObject::tr("Please select objects to break or a base view and break definition objects."));
         return;
     }
 
-    auto doc = dvp->getDocument();
+    shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
+    shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
+
 
     // pick the Break objects out of the selected pile
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
