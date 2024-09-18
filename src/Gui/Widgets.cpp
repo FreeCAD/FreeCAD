@@ -1357,8 +1357,10 @@ void PropertyListEditor::highlightCurrentLine()
         QTextEdit::ExtraSelection selection;
 
         QColor lineColor = QColor(Qt::yellow).lighter(160);
-
         selection.format.setBackground(lineColor);
+        QColor textColor = QColor(Qt::black);
+        selection.format.setForeground(textColor);
+
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();
         selection.cursor.clearSelection();
