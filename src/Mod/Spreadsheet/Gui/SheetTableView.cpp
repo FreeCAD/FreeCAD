@@ -139,7 +139,7 @@ SheetTableView::SheetTableView(QWidget* parent)
             auto insert = menu.addAction(tr("Insert %n non-contiguous rows", "", selection.size()));
             connect(insert, &QAction::triggered, this, &SheetTableView::insertRows);
         }
-        auto remove = menu.addAction(tr("Remove row(s)", "", selection.size()));
+        auto remove = menu.addAction(tr("Remove %n row(s)", "", selection.size()));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeRows);
         menu.exec(verticalHeader()->mapToGlobal(point));
     });
@@ -169,7 +169,7 @@ SheetTableView::SheetTableView(QWidget* parent)
                 menu.addAction(tr("Insert %n non-contiguous columns", "", selection.size()));
             connect(insert, &QAction::triggered, this, &SheetTableView::insertColumns);
         }
-        auto remove = menu.addAction(tr("Remove column(s)", "", selection.size()));
+        auto remove = menu.addAction(tr("Remove %n column(s)", "", selection.size()));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeColumns);
         menu.exec(horizontalHeader()->mapToGlobal(point));
     });
