@@ -360,6 +360,7 @@ void StartView::openExistingFile() const
 {
     auto originalDocument = Gui::Application::Instance->activeDocument();
     Gui::Application::Instance->commandManager().runCommandByName("Std_Open");
+    Gui::Application::checkForRecomputes();
     if (Gui::Application::Instance->activeDocument() != originalDocument) {
         // Only run this if the user chose a new document to open (that is, they didn't cancel the
         // open file dialog)
@@ -436,6 +437,7 @@ void StartView::fileCardSelected(const QModelIndex& index)
     auto command = std::string("FreeCAD.loadFile('") + escapedstr + "')";
     try {
         Base::Interpreter().runString(command.c_str());
+        Gui::Application::checkForRecomputes();
         postStart(PostStartBehavior::doNotSwitchWorkbench);
     }
     catch (Base::PyException& e) {

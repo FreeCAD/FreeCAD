@@ -378,8 +378,6 @@ Application::Application(bool GUIenabled)
             std::bind(&Gui::Application::slotRelabelDocument, this, sp::_1));
         App::GetApplication().signalShowHidden.connect(
             std::bind(&Gui::Application::slotShowHidden, this, sp::_1));
-        App::GetApplication().signalFinishRestoreDocument.connect(
-            std::bind(&Gui::Application::slotFinishRestoreDocument, this, sp::_1));
         // NOLINTEND
         // install the last active language
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
@@ -634,6 +632,7 @@ void Application::open(const char* FileName, const char* Module)
                     Command::doCommand(Command::App,
                                        "FreeCAD.openDocument('%s')",
                                        unicodepath.c_str());
+                    Gui::Application::checkForRecomputes();
                 }
             }
             else {
@@ -979,8 +978,7 @@ void Application::slotShowHidden(const App::Document& Doc)
     signalShowHidden(*doc->second);
 }
 
-void Application::slotFinishRestoreDocument([[maybe_unused]] const App::Document& Doc) {
-    // Quietly gnore the doc parameter and check across all documents.
+void Application::checkForRecomputes() {
     std::vector<App::Document *> docs;
     for (auto doc: App::GetApplication().getDocuments()) {
         if (doc->testStatus(App::Document::RecomputeOnRestore)) {
