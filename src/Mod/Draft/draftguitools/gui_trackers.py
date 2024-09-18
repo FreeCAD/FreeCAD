@@ -1457,7 +1457,7 @@ class archDimTracker(Tracker):
 
     def setSize(self):
         """Set the text size."""
-        self.dimnode.size = round(float(params.get_param_view("MarkerSize") * 2))
+        self.dimnode.size = params.get_param_view("MarkerSize") * 2
         self.size_pixel = self.dimnode.size.getValue() * 96 / 72
 
     def setString(self, text=None):
