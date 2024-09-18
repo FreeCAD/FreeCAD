@@ -26,12 +26,14 @@ used by the execute() method of ifc_objects"""
 
 
 import time
+import re
 import FreeCAD
 from FreeCAD import Base
 import Part
 import ifcopenshell
 from ifcopenshell.util import element
 from nativeifc import ifc_tools
+from nativeifc import ifc_export
 import multiprocessing
 import FreeCADGui
 from pivy import coin
@@ -57,13 +59,32 @@ def generate_geometry(obj, cached=False):
         return
     colors = None
 
-    # workaround for Group property bug: Avoid having a null shape, otherwise
-    # a default representation will be created from the object's Group contents
-    # obj.Shape = Part.makeBox(1, 1, 1)
-    # fixed in FreeCAD 0.22 - uncomment the line above for earlier versions
+    ifcfile = ifc_tools.get_ifcfile(obj)
+
+    # annotations
+    if ifc_export.is_annotation(obj):
+        element = ifc_tools.get_ifc_element(obj)
+        if not element:
+            return
+        if obj.ShapeMode == "Shape":
+            shape, placement = get_annotation_shape(element, ifcfile)
+            if shape:
+                obj.Shape = shape
+                if placement:
+                    obj.Placement = placement
+        elif obj.ViewObject and obj.ShapeMode == "Coin":
+            node, placement = get_annotation_shape(element, ifcfile, coin=True)
+            if node:
+                set_representation(obj.ViewObject, node)
+                colors = node[0]
+            else:
+                set_representation(obj.ViewObject, None)
+                print_debug(obj)
+            if placement:
+                obj.Placement = placement
+        return
 
     # generate the shape or coin node
-    ifcfile = ifc_tools.get_ifcfile(obj)
     elements = get_decomposition(obj)
     if obj.ShapeMode == "Shape":
         shape, colors = generate_shape(ifcfile, elements, cached)
@@ -77,6 +98,7 @@ def generate_geometry(obj, cached=False):
     elif obj.ViewObject and obj.ShapeMode == "Coin":
         node, placement = generate_coin(ifcfile, elements, cached)
         if node:
+            # TODO this still needs to be fixed
             #QtCore.QTimer.singleShot(0, lambda: set_representation(obj.ViewObject, node))
             set_representation(obj.ViewObject, node)
             colors = node[0]
@@ -339,7 +361,6 @@ def filter_types(elements, obj_ids=[]):
     elements = [e for e in elements if not e.is_a("IfcOpeningElement")]
     elements = [e for e in elements if not e.is_a("IfcSpace")]
     elements = [e for e in elements if not e.is_a("IfcFurnishingElement")]
-    elements = [e for e in elements if not e.is_a("IfcAnnotation")]
     elements = [e for e in elements if not e.id() in obj_ids]
     return elements
 
@@ -451,11 +472,12 @@ def set_representation(vobj, node):
     coords.point.deleteValues(0)
     if not node:
         return
-    if node[1] and node[2] and node[3] and node[4]:
+    if node[1] and node[3]:
         coords.point.setValues(node[1])
-        fset.coordIndex.setValues(node[2])
-        fset.partIndex.setValues(node[4])
         eset.coordIndex.setValues(node[3])
+        if node[2] and node[4]:
+            fset.coordIndex.setValues(node[2])
+            fset.partIndex.setValues(node[4])
 
 
 def print_debug(obj):
@@ -524,3 +546,45 @@ def delete_ghost(document):
             sg = FreeCADGui.getDocument(document.Name).ActiveView.getSceneGraph()
             sg.removeChild(document.Proxy.ghost)
             del document.Proxy.ghost
+
+
+def get_annotation_shape(annotation, ifcfile, coin=False):
+    """Returns a shape or a coin node form an IFC annotation"""
+
+    import Part
+    from importers import importIFCHelper
+
+    shape = None
+    placement = None
+    ifcscale = importIFCHelper.getScaling(ifcfile)
+    shapes2d = []
+    for rep in annotation.Representation.Representations:
+        if rep.RepresentationIdentifier in ["Annotation", "FootPrint", "Axis"]:
+            sh = importIFCHelper.get2DShape(rep, ifcscale)
+            if sh:
+                shapes2d.extend(sh)
+    if shapes2d:
+        shape = Part.makeCompound(shapes2d)
+        placement = importIFCHelper.getPlacement(annotation.ObjectPlacement, ifcscale)
+        if coin:
+            iv = shape.writeInventor()
+            iv = iv.replace("\n", "")
+            segs = re.findall(r"point \[.*?\]",iv)
+            segs = [s.replace("point [","").replace("]","").strip() for s in segs]
+            segs = [s.split("    ") for s in segs]
+            verts = []
+            edges = []
+            for pair in segs:
+                v1 = tuple([float(v) for v in pair[0].split()])
+                v2 = tuple([float(v) for v in pair[1].split()])
+                if not v1 in verts:
+                    verts.append(v1)
+                edges.append(verts.index(v1))
+                if not v2 in verts:
+                    verts.append(v2)
+                edges.append(verts.index(v2))
+                edges.append(-1)
+            shape = [[None, verts, [], edges]]
+            # unify nodes
+            shape = unify(shape)
+    return shape, placement
