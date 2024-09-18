@@ -2499,14 +2499,17 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     """Creates an annotation object"""
 
     global curvestyles, ifcbin
-    objectType = None
-    ovc = None
-    zvc = None
-    xvc = None
     reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
     description = getattr(anno, "Description", None)
+    # uses global ifcbin, curvestyles
+    objectType = None
+    xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
+    zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
+    ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+    gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+    placement = ifcbin.createIfcLocalPlacement(gpl)
     if anno.isDerivedFrom("Part::Feature"):
         if Draft.getType(anno) == "Hatch":
             objectType = "HATCH"
@@ -2558,20 +2561,18 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     elif anno.isDerivedFrom("App::Annotation"):
         objectType = "TEXT"
         l = FreeCAD.Vector(anno.Position).multiply(preferences['SCALE_FACTOR'])
-        pos = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
+        pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
         tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
-        ovc = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
         s = ";".join(anno.LabelText)
         txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
         reps = [txt]
     elif Draft.getType(anno) in ["DraftText","Text"]:
         objectType = "TEXT"
         l = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
-        pos = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-        tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
-        ovc = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
-        zvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-        xvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+        pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
+        zdir = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+        xdir = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+        tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
         alg = "LEFT"
         if FreeCAD.GuiUp and hasattr(anno.ViewObject,"Justification"):
             if anno.ViewObject.Justification == "Right":
@@ -2644,14 +2645,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
             for rep in reps:
                 isi = ifcfile.createIfcStyledItem(rep,[psa],None)
             break
-    if not xvc:
-        xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
-    if not zvc:
-        zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
-    if not ovc:
-        ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-    gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-    placement = ifcbin.createIfcLocalPlacement(gpl)
+
     shp = ifcfile.createIfcShapeRepresentation(context,'Annotation','Annotation2D',reps)
     rep = ifcfile.createIfcProductDefinitionShape(None,None,[shp])
     label = anno.Label
