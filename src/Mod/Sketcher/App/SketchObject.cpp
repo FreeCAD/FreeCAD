@@ -9137,7 +9137,7 @@ void SketchObject::rebuildExternalGeometry(bool defining, bool addIntersection)
         if(!refSet.count(egf->getRef())) {
             FC_ERR( "External geometry " << getFullName() << ".e" << egf->getId()
                     << " missing reference: " << egf->getRef());
-             hasError = true;
+            hasError = true;
             egf->setFlag(ExternalGeometryExtension::Missing,true);
         } else {
             egf->setFlag(ExternalGeometryExtension::Missing,false);
