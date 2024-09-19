@@ -149,6 +149,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
                       << "Std_Copy"
                       << "Std_Paste"
                       << "Std_Delete"
+                      << "Std_SendToPythonConsole"
                       << "Separator";
             }
         }
