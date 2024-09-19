@@ -30,6 +30,7 @@ import json
 import os
 from typing import Dict
 from enum import Enum, auto
+import xml.etree.ElementTree
 
 from PySide import QtCore
 
@@ -188,7 +189,12 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         with open(new_xml_file, "w", encoding="utf-8") as f:
             string_data = self._ensure_string(data, repo.name, "package.xml")
             f.write(string_data)
-        metadata = MetadataReader.from_file(new_xml_file)
+        try:
+            metadata = MetadataReader.from_file(new_xml_file)
+        except xml.etree.ElementTree.ParseError:
+            fci.Console.PrintWarning("An invalid or corrupted package.xml file was downloaded for")
+            fci.Console.PrintWarning(f" {self.name}... ignoring the bad data.\n")
+            return
         repo.set_metadata(metadata)
         FreeCAD.Console.PrintLog(f"Downloaded package.xml for {repo.name}\n")
         self.status_message.emit(
