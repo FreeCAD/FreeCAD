@@ -3380,7 +3380,8 @@ void View3DInventorViewer::alignToSelection()
 
     const auto globalPlacement = App::GeoFeature::getGlobalPlacement(selection[0].pResolvedObject, selection[0].pObject, elementName.oldName);
     const auto rotation = globalPlacement.getRotation() * geoFeature->Placement.getValue().getRotation().inverse();
-    const auto geoFeatureSubName = Base::Tools::splitSubName(elementName.oldName).back();
+    const auto splitSubName = Base::Tools::splitSubName(elementName.oldName);
+    const auto geoFeatureSubName = !splitSubName.empty() ? splitSubName.back() : "";
 
     Base::Vector3d direction;
     if (geoFeature->getCameraAlignmentDirection(direction, geoFeatureSubName.c_str())) {
