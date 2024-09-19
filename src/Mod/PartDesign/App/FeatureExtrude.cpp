@@ -40,6 +40,7 @@
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
+#include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureExtrude.h"
 
@@ -129,6 +130,41 @@ bool FeatureExtrude::hasTaperedAngle() const
 {
     return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular()) ||
            fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
+}
+
+TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir){
+
+    // Find nearest/furthest face
+    std::vector<Part::cutTopoShapeFaces> cfaces =
+        Part::findAllFacesCutBy(shape, sketchshape, dir);
+    if (cfaces.empty()) {
+        dir = -dir;
+        cfaces = Part::findAllFacesCutBy(shape, sketchshape, dir);
+    }
+    struct Part::cutTopoShapeFaces *nearFace;
+    struct Part::cutTopoShapeFaces *farFace;
+    nearFace = farFace = &cfaces.front();
+    for (auto &face : cfaces) {
+        if (face.distsq > farFace->distsq) {
+            farFace = &face;
+        }
+        else if (face.distsq < nearFace->distsq) {
+            nearFace = &face;
+        }
+    }
+
+    if (nearFace != farFace) {
+        std::vector<TopoShape> faceList;
+        for (auto &face : shape.getSubTopoShapes(TopAbs_FACE)) {
+            if (! (face == farFace->face)){
+                // don't use the last face so the shell is open
+                // and OCC works better
+                faceList.push_back(face);
+            }
+        }
+        return shape.makeElementCompound(faceList);
+    }
+    return shape;
 }
 
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
@@ -579,12 +615,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 faceCount = 1;
             }
             else if (method == "UpToShape") {
-                try {
-                    faceCount = getUpToShapeFromLinkSubList(upToShape, UpToShape);
-                    upToShape.move(invObjLoc);
-                }
-                catch (Base::ValueError&){
-                    //no shape selected use the base
+                faceCount = getUpToShapeFromLinkSubList(upToShape, UpToShape);
+                upToShape.move(invObjLoc);
+                if (faceCount == 0){
+                    // No shape selected, use the base
                     upToShape = base;
                     faceCount = 0;
                 }
@@ -594,8 +628,12 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 getUpToFace(upToShape, base, supportface, sketchshape, method, dir);
                 addOffsetToFace(upToShape, dir, Offset.getValue());
             }
-            else if (fabs(Offset.getValue()) > Precision::Confusion()){
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Extrude: Can only offset one face"));
+            else{
+                if (fabs(Offset.getValue()) > Precision::Confusion()){
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Extrude: Can only offset one face"));
+                }
+                // open the shell by removing the furthest face
+                upToShape = makeShellFromUpToShape(upToShape, sketchshape, dir);
             }
 
             if (!supportface.hasSubShape(TopAbs_WIRE)) {
@@ -645,13 +683,22 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 this->Shape.setValue(getSolid(prism));
                 return App::DocumentObject::StdReturn;
             }
-            prism.makeElementPrismUntil(base,
-                                        sketchshape,
-                                        supportface,
-                                        upToShape,
-                                        dir,
-                                        TopoShape::PrismMode::None,
-                                        true /*CheckUpToFaceLimits.getValue()*/);
+            try {
+                prism.makeElementPrismUntil(base,
+                                            sketchshape,
+                                            supportface,
+                                            upToShape,
+                                            dir,
+                                            TopoShape::PrismMode::None,
+                                            true /*CheckUpToFaceLimits.getValue()*/);
+            }
+            catch (Base::Exception& e) {
+                if (method == "UpToShape" && faceCount > 1){
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                        "Exception",
+                        "Unable to reach the selected shape, please select faces"));
+                }
+            }
         }
         else {
             Part::ExtrusionParameters params;

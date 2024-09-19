@@ -104,6 +104,8 @@
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <BRepFeat_MakeRevol.hxx>
 
+#include "Tools.h"
+
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
 #if OCC_VERSION_HEX >= 0x070600
@@ -4231,6 +4233,12 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
     BRepFeat_MakePrism PrismMaker;
 
+    // don't remove limits of concave face
+    Base::Vector3d vCog;
+    profile.getCenterOfGravity(vCog);
+    gp_Pnt pCog(vCog.x, vCog.y, vCog.z);
+    checkLimits = ! Part::Tools::isConcave(TopoDS::Face(__uptoface.getShape()), pCog , direction);
+
     TopoShape _uptoface(__uptoface);
     if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE
         && !BRep_Tool::NaturalRestriction(TopoDS::Face(_uptoface.getShape()))) {
@@ -4252,7 +4260,8 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
-    if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE && uptoface.hasSubShape(TopAbs_WIRE)) {
+    if (checkLimits && uptoface.shapeType(true) == TopAbs_FACE
+        && uptoface.hasSubShape(TopAbs_WIRE)) {
         TopoDS_Face face = TopoDS::Face(uptoface.getShape());
         bool remove_limits = false;
         // Remove the limits of the upToFace so that the extrusion works even if profile is larger
@@ -4292,10 +4301,7 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
             // use the placement of the adapter, not of the upToFace
             loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface(), Precision::Confusion());
-            if (!mkFace.IsDone()) {
-                remove_limits = false;
-            }
-            else {
+            if (mkFace.IsDone()) {
                 uptoface.setShape(located(mkFace.Shape(), loc), false);
             }
         }
