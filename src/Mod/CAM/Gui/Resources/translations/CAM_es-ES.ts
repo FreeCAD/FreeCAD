@@ -78,27 +78,27 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Create Path Area View</source>
-      <translation>Crear Vista de Área de Ruta</translation>
+      <translation>Crear Vista de Área de Trayectoria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Create Path Area</source>
-      <translation>Crear Área de Ruta</translation>
+      <translation>Crear Área de Trayectoria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="209"/>
       <source>Select Workplane for Path Area</source>
-      <translation>Seleccionar Plano de Trabajo para el Área de Ruta</translation>
+      <translation>Seleccionar Plano de Trabajo para el Área de Trayectoria</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="268"/>
       <source>Create Path Compound</source>
-      <translation>Crear Ruta Compuesta</translation>
+      <translation>Crear Trayectoria Compuesta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Create Path Shape</source>
-      <translation>Crear Forma de Ruta</translation>
+      <translation>Crear Forma de Trayectoria</translation>
     </message>
   </context>
   <context>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</source>
-      <translation>Seleccione una plantilla para el trabajo. En caso de que no haya plantillas puede crear una a través del menú emergente de un trabajo existente. Nombre el archivo job_*.json y colóquelo en la macro o en el directorio de rutas (ver preferencias) para ser seleccionable de esta lista.</translation>
+      <translation>Seleccione una plantilla para el trabajo. En caso de que no haya plantillas puede crear una a través del menú emergente de un trabajo existente. Nombre el archivo job_*.json y colóquelo en la macro o en la ruta del directorio (ver preferencias) para ser seleccionable de esta lista.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -554,7 +554,7 @@ Para material a partir de la caja delimitadora del objeto Base, significa el mat
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
       <source>Select what type of shape to use to constrain the underlying Path.</source>
-      <translation>Seleccione qué tipo de forma usar para restringir la ruta subyacente.</translation>
+      <translation>Seleccione qué tipo de forma usar para restringir la trayectoria subyacente.</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
@@ -574,7 +574,7 @@ Para material a partir de la caja delimitadora del objeto Base, significa el mat
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
       <source>Select the body to be used to constrain the underlying Path.</source>
-      <translation>Seleccione el cuerpo a utilizar para restringir la ruta subyacente.</translation>
+      <translation>Seleccione el cuerpo a utilizar para restringir la trayectoria subyacente.</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="100"/>
@@ -649,7 +649,7 @@ Para material a partir de la caja delimitadora del objeto Base, significa el mat
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation>Si está marcado, la ruta es restringida por el sólido. De lo contrario, el volumen del sólido describe una zona de&apos; exclusión&apos;</translation>
+      <translation>Si está marcado, la trayectoria es restringida por el sólido. De lo contrario, el volumen del sólido describe una zona de&apos; exclusión&apos;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -1058,7 +1058,7 @@ Restablecer elimina todos los elementos actuales de la lista y llena la lista co
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
-      <translation>Cuánto levantar la herramienta durante el enlace rápido movido sobre las regiones despejadas. Si la ruta de enlace no está despejada se eleva a la altura libre.</translation>
+      <translation>Cuánto levantar la herramienta durante el enlace rápido movido sobre las regiones despejadas. Si la trayectoria de enlace no está despejada se eleva a la altura libre.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
@@ -1695,7 +1695,7 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="275"/>
       <source>Extend Path Start</source>
-      <translation>Extender Ruta Inicial</translation>
+      <translation>Extender Trayectoria Inicial</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="291"/>
@@ -1705,7 +1705,7 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="301"/>
       <source>Extend Path End</source>
-      <translation>Extender Ruta Final</translation>
+      <translation>Extender Trayectoria Final</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
@@ -1737,7 +1737,7 @@ Este último se puede utilizar para hacer frente a todo el área de stock para a
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
       <source>Path Orientation</source>
-      <translation>Orientación de la Ruta</translation>
+      <translation>Orientación de la Trayectoria</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
@@ -1913,7 +1913,7 @@ Un paso por encima del 100% da como resultado que no haya superposición entre d
       <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="267"/>
       <source>Optimize Linear Paths</source>
-      <translation>Optimizar Rutas Lineales</translation>
+      <translation>Optimizar Trayectorias Lineales</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="277"/>
@@ -2113,7 +2113,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
       <source>This value is used in discretizing arcs into segments. Smaller values will result in larger gcode. Larger values may cause unwanted segments in the medial line path.</source>
-      <translation>Este valor se utiliza para discrepar los arcos en segmentos. Los valores más pequeños resultarán en un código más grande. Los valores más grandes pueden causar segmentos no deseados en la ruta de línea medial.</translation>
+      <translation>Este valor se utiliza para discretizar los arcos en segmentos. Los valores más pequeños resultarán en un código más grande. Los valores más grandes pueden causar segmentos no deseados en la trayectoria de línea central.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
@@ -2276,23 +2276,23 @@ Por defecto: 3 mm</translation>
       <source>Set the default width of holding tags.
 
 If the width is set to 0 the dressup will try to guess a reasonable value based on the path itself.</source>
-      <translation>Establecer el ancho por defecto de las etiquetas sostenidas.
+      <translation>Establecer el ancho por defecto de las pestañas.
 
-Si el ancho se establece a 0, el revestimiento intentará adivinar un valor razonable basado en la ruta misma.</translation>
+Si el ancho se establece a 0, el retoque intentará adivinar un valor razonable basado en la trayectoria misma.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="49"/>
       <source>Default height of holding tags.
 
 If the specified height is 0 the dressup will use half the height of the part. Should the height be bigger than the height of the part the dressup will reduce the height to the height of the part.</source>
-      <translation>Altura predeterminada de las etiquetas sostenidas.
+      <translation>Altura predeterminada de las pestañas.
 
-Si la altura especificada es 0, el revestido usará la mitad de la altura de la parte. Si la altura es mayor que la altura de la pieza, el revestimiento reducirá la altura a la altura de la pieza.</translation>
+Si la altura especificada es 0, el retoque usará la mitad de la altura de la parte. Si la altura es mayor que la altura de la pieza, el retoque reducirá la altura a la altura de la pieza.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="65"/>
       <source>Plunge angle for ascent and descent of holding tag.</source>
-      <translation>Ángulo de plegado para ascenso y descenso de la etiqueta sostenida.</translation>
+      <translation>Ángulo de inmersión para ascenso y descenso de la pestaña.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="91"/>
@@ -2379,7 +2379,7 @@ Si el radio es mayor que el que soporta la forma de la etiqueta, la forma result
     <message>
       <location filename="../preferences/PathJob.ui" line="110"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
-      <translation>Valor predeterminado para nuevos trabajos, usado para calcular rutas. Más pequeño aumenta la precisión, pero ralentiza el cálculo</translation>
+      <translation>Valor predeterminado para nuevos trabajos, usado para calcular trayectorias. Más pequeño aumenta la precisión, pero ralentiza el cálculo</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="117"/>
@@ -2628,9 +2628,9 @@ Vea la política de guardado de archivos abajo sobre cómo tratar los conflictos
       <source>References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
 Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.
 Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths.</source>
-      <translation>Referencias a fresas y sus formas pueden almacenarse con una ruta absoluta o con una ruta relativa a la ruta de búsqueda.
-Generalmente se recomienda utilizar rutas relativas debido a su flexibilidad y robustez a los cambios de diseño.
-Si existen múltiples herramientas o formas de herramientas con el mismo nombre en diferentes directorios, puede ser necesario utilizar rutas absolutas.</translation>
+      <translation>Referencias a fresas y sus formas pueden almacenarse con una trayectoria absoluta o con una trayectoria relativa a la trayectoria de búsqueda.
+Generalmente se recomienda utilizar trayectorias relativas debido a su flexibilidad y robustez a los cambios de diseño.
+Si existen múltiples herramientas o formas de herramientas con el mismo nombre en diferentes directorios, puede ser necesario utilizar trayectorias absolutas.</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="658"/>
@@ -2732,12 +2732,12 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="326"/>
       <source>Path Selection Style</source>
-      <translation>Estilo de Selección de Ruta</translation>
+      <translation>Estilo de Selección de Trayectoria</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="339"/>
       <source>Default path shape selection behavior in 3D viewer</source>
-      <translation>Comportamiento por defecto de la selección de la forma de ruta en el visor 3D</translation>
+      <translation>Comportamiento por defecto de la selección de la forma de trayectoria en el visor 3D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="349"/>
@@ -2813,7 +2813,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
       <location filename="../preferences/Advanced.ui" line="64"/>
       <location filename="../preferences/Advanced.ui" line="83"/>
       <source>Suppress warning whenever a Path selection mode is activated</source>
-      <translation>Suprimir advertencia cada vez que se activa un modo de selección de ruta</translation>
+      <translation>Suprimir advertencia cada vez que se activa un modo de selección de trayectoria</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
@@ -2933,13 +2933,13 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
       <source>Dogbones</source>
-      <translation>Huesos de Perro</translation>
+      <translation>Alivios de esquina redondeada</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
       <location filename="../panels/ZCorrectEdit.ui" line="35"/>
       <source>Dressup</source>
-      <translation>Dressup</translation>
+      <translation>retoque</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="41"/>
@@ -2949,17 +2949,17 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/DogboneEdit.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired style of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the corner,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;T-bone&lt;/span&gt; ... extend a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleccionar el estilo deseado del retoque de alivios de esquina:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Alivio de esquina redondeado&lt;/span&gt; ... toma el camino más corto para cubrir la esquina,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Alivio de esquina en T&lt;/span&gt; . . extiende en una cierta dirección hasta que se cubra la esquina&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
       <source>Dogbone</source>
-      <translation>Dogbone</translation>
+      <translation>alivio de esquina redondeado</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
       <source>T-bone horizontal</source>
-      <translation>T-Hueso horizontal</translation>
+      <translation>Alivio de esquina en T horizontal</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="62"/>
@@ -2984,7 +2984,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/DogboneEdit.ui" line="87"/>
       <source>On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.</source>
-      <translation>En el lado en que se insertan los huesos del perfil - esto también determina qué esquinas se revestirán. El valor por defecto se determina basándose en el perfil que está siendo revestido.</translation>
+      <translation>En el lado en que se insertan los alivios de esquina del perfil - esto también determina qué esquinas serán retocadas. El valor por defecto se determina basándose en el perfil que está siendo retocado.</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="94"/>
@@ -3004,7 +3004,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let&apos;s you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determines the incision length of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the length is adapted to cover the corner based on the angle of its edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it&apos;s the radius of the tool (R) and for dogbones it&apos;s R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let&apos;s you specify a custom (fixed) length below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Determina la longitud de la incisión del alivio de esquinaHueso-T que se insertará en el perfil..&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptivo&lt;/span&gt; ... la longitud se adapta para cubrir la esquina según el ángulo de sus bordes, teniendo en cuenta el radio actual de la herramienta (predeterminado)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fijo&lt;/span&gt; ... es lo mismo que el modo adaptativo para ángulos rectos. Para alivios de esquina en T es el radio de la herramienta (R) y para alivios de esquina redondeados es R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;personalizado&lt;/span&gt; ... le deja especificar una longitud personalizada (fija) a continuación&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
@@ -3024,12 +3024,12 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=&quot; font-weight:600;&quot;&gt;Incision&lt;/span&gt; is set to &lt;span style=&quot; font-weight:600;&quot;&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter length for each bone if &lt;span style=&quot; font-weight:600;&quot;&gt;Incision&lt;/span&gt; is set to &lt;span style=&quot; font-weight:600;&quot;&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Introduzca la longitud de cada alivio de esquina si &lt;span style=&quot; font-weight:600;&quot;&gt;Incisión&lt;/span&gt; se establece en &lt;span style=&quot; font-weight:600;&quot;&gt;personalizado&lt;/span&gt;, ignorado en caso contrario.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don&apos;t want to be dressed up.&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogbone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you&apos;re trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lista de ubicaciones de los alivios de esquina (con todos los alivios de esquina en esa ubicación) que forman parte de este retoque. La lista está determinada por las esquinas del perfil y la zona seleccionada. &lt;span style=&quot; font-weight:600;&quot;&gt;De lado&lt;/span&gt; para los alivios de esquina. &lt;/p&gt;&lt;p&gt;Puede &lt;span style=&quot; font-weight:600;&quot;&gt;desmarcar&lt;/span&gt; los alivios de esquina que no quiere que sean retocados.&lt;/p&gt;&lt;p&gt;Si un alivio de essquina está &lt;span style=&quot; font-weight:600;&quot;&gt;atenuado&lt;/span&gt; significa que ya ha sido retocado por un retoque anterior. O dicho de otra manera, si vuelve a retocar este alivio de esquina, solo podrá seleccionar los alivios de esquina que no están marcados aquí.&lt;/p>&lt;p>Si esta lista está vacía, probablemente significa que lo está intentando crear alivios de esquina en el lado equivocado del perfil.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
@@ -3074,7 +3074,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="14"/>
       <source>Holding Tags</source>
-      <translation>Etiquetas Sostenidas</translation>
+      <translation>Pestañas</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="26"/>
@@ -3099,12 +3099,12 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="54"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
-      <translation type="unfinished">Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</translation>
+      <translation>Altura de la pestaña.Tenga en cuenta que la etiqueta resultante puede ser más pequeña si el ancho y el ángulo de la pestaña resultan en una forma triangular.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="61"/>
       <source>Plunge angle for ascent and descent of holding tag.</source>
-      <translation>Ángulo de plegado para ascenso y descenso de la etiqueta sostenida.</translation>
+      <translation>Ángulo de inmersión para ascenso y descenso de la pestaña.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
@@ -3114,7 +3114,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
-      <translation type="unfinished">List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</translation>
+      <translation>Lista de pestañas actuales. Edite coordenadas haciendo doble clic o el botón Editar. Las pestañas se deshabilitan automáticamente si se superponen con la pestaña anterior, o no se encuentran sobre el alambre base.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
@@ -3185,7 +3185,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation>Actualizar la ruta con los elementos eliminados y reordenados.</translation>
+      <translation>Actualizar la trayectoria con los elementos eliminados y reordenados.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>
@@ -3300,7 +3300,7 @@ Si existen múltiples herramientas o formas de herramientas con el mismo nombre 
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation>Simulador de Ruta</translation>
+      <translation>Simulador de Trayectoria</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
@@ -3671,8 +3671,8 @@ Ordenar por operación hará cada operación en todos los sistemas de coordenada
       <location filename="../panels/PathEdit.ui" line="254"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
 FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=&quot; font-style:italic;&quot;&gt;Work Offsets&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=&quot; font-style:italic;&quot;&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.
-FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your G-code output. The exact way in which the output is affected is controlled by the &apos;order by&apos; setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Sistemas de coordenadas de trabajo&lt;/span&gt; también llamadas &lt;span style=&quot; font-style:italic;&quot;&gt;Desplazamientos de trabajo&lt;/span&gt;, &lt;span style=&quot; font-style:italic;&quot;&gt;Desplazamientos de fijaciones&lt;/span&gt;, o &lt;span style=&quot; font-style:italic;&quot;&gt;Fijaciones &lt;/span&gt;son útiles para crear trabajos de producción eficientes en los que la misma pieza se realiza muchas veces en la máquina.
+FreeCAD no tiene conocimiento de dónde existe un sistema de coordenadas particular dentro del sistema de coordenadas de la máquina, por lo que agregar sistemas de coordenadas adicionales a su trabajo no tendrá ningún cambio visual dentro de su trabajo. Sin embargo, cambiará la salida del código G. La forma exacta en que se ve afectada la salida está controlada por el ajuste de &apos;order by&apos;ordenar por&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="409"/>
@@ -3927,13 +3927,13 @@ For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/s
 
 
 If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If True, post processing will create multiple output files based on the &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; setting.
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si es Verdadero, el posprocesamiento creará múltiples archivos de salida según el ajuste de &lt;span style=&quot; font-style:italic;&quot;&gt;ordenar por&lt;/span&gt;.
 
 
-For example, if &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to Tool, the first output file will contain the first tool change and all operations, in all coordinate systems, that can be done with that tool before the next tool change is called.
+Por ejemplo, si el ajuste &lt;span style=&quot; font-style:italic;&quot;&gt;ordenar por&lt;/span&gt; está configurado en Herramienta, el primer archivo de salida contendrá el primer cambio de herramienta y todas las operaciones, en todos los sistemas de coordenadas, que se pueden realizar con esa herramienta antes de llamar al siguiente cambio de herramienta.
 
 
-If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is set to &lt;span style=&quot; font-style:italic;&quot;&gt;operation&lt;/span&gt; and &lt;span style=&quot; font-style:italic;&quot;&gt;split output&lt;/span&gt; is true, each operation will be written to a separate file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+Si &lt;span style=&quot; font-style:italic;&quot;&gt;ordenar por&lt;/span&gt; está configurado en &lt;span style=&quot; font-style:italic;&quot;&gt;operación&lt;/span&gt; y &lt;span style=&quot; font-style:italic;&quot;&gt;separar salida&lt;/span&gt; es verdadero, cada operación se escribirá en un archivo separado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1060"/>
@@ -4211,7 +4211,7 @@ Por defecto: 3 mm</translation>
       <translation>El ángulo de esquina de corte (%.2f) da como resultado una longitud de punta negativa de la herramienta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation>Guardar informe de comprobación básica</translation>
     </message>
@@ -4349,37 +4349,37 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="203"/>
       <source>The base path to dress up</source>
-      <translation>Ruta predeterminada para compilar</translation>
+      <translation>Trayectoria predeterminada para compilar</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="211"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="421"/>
       <source>The side of path to insert bones</source>
-      <translation>El lado de la ruta a insertar huesos</translation>
+      <translation>El lado de la trayectoria a insertar alivios de esquina</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="228"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="429"/>
       <source>The style of bones</source>
-      <translation>Estilo de Huesos</translation>
+      <translation>El estilo de los alivios de esquina</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="237"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="445"/>
       <source>The algorithm to determine the bone length</source>
-      <translation>El algoritmo para determinar la longitud del hueso</translation>
+      <translation>El algoritmo para determinar la longitud del alivio de esquina</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="246"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="453"/>
       <source>Dressup length if incision is set to &apos;custom&apos;</source>
-      <translation type="unfinished">Dressup length if incision is set to &apos;custom&apos;</translation>
+      <translation>Longitud de retoque si incisión es 'personalizado'</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="254"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="437"/>
       <source>Bones that aren&apos;t dressed up</source>
-      <translation type="unfinished">Bones that aren&apos;t dressed up</translation>
+      <translation>Alivios de esquina que no son retocados</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="914"/>
@@ -4462,17 +4462,17 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="67"/>
       <source>Calculate roll-on to toolpath</source>
-      <translation type="unfinished">Calculate roll-on to toolpath</translation>
+      <translation>Calcular entrada gradual hacia trayectoria de herramienta</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
       <source>Calculate roll-off from toolpath</source>
-      <translation type="unfinished">Calculate roll-off from toolpath</translation>
+      <translation>Calcular salida gradual desde trayectoria de herramienta</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="79"/>
       <source>Keep the Tool Down in toolpath</source>
-      <translation type="unfinished">Keep the Tool Down in toolpath</translation>
+      <translation>Mantener la herramienta abajo en la trayectoria de herramienta</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="97"/>
@@ -4583,7 +4583,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="167"/>
       <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
-      <translation>Para rutas de cómputo; más pequeñas aumenta la precisión, pero ralentiza el cálculo</translation>
+      <translation>Para trayectorias de cómputo; más pequeñas aumenta la precisión, pero ralentiza el cálculo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="174"/>
@@ -4751,7 +4751,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="963"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
-      <translation>Longitud máxima de la herramienta en la ruta comparada con la distancia directa entre puntos</translation>
+      <translation>Longitud máxima de la herramienta en la trayectoria comparada con la distancia directa entre puntos</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="972"/>
@@ -4985,7 +4985,7 @@ Por defecto: 3 mm</translation>
       <location filename="../../../Path/Op/Drilling.py" line="110"/>
       <location filename="../../../Path/Op/Drilling.py" line="194"/>
       <source>Use G85 boring cycle with feed out</source>
-      <translation type="unfinished">Use G85 boring cycle with feed out</translation>
+      <translation>Utilizar G85 ciclo de mandrinado con avance de salida</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="122"/>
@@ -5146,7 +5146,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="170"/>
       <source>Use 3D Sorting of Path</source>
-      <translation>Usar clasificación 3D de ruta</translation>
+      <translation>Usar clasificación 3D de trayectoria</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="176"/>
@@ -5304,7 +5304,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="228"/>
       <source>The custom start point for the toolpath of this operation</source>
-      <translation type="unfinished">The custom start point for the toolpath of this operation</translation>
+      <translation>El punto de inicio personalizado para la trayectoria de herramienta de esta operación</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="409"/>
@@ -5446,7 +5446,7 @@ Por defecto: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="355"/>
       <location filename="../../../Path/Op/Waterline.py" line="401"/>
       <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
-      <translation type="unfinished">Set the stepover percentage, based on the tool&apos;s diameter.</translation>
+      <translation>Establecer el porcentaje de solapamiento, basado en el diámetro de la herramienta.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="364"/>
@@ -5597,7 +5597,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="45"/>
       <source>The toolpath(s) to array</source>
-      <translation type="unfinished">The toolpath(s) to array</translation>
+      <translation>La(s) trayectoria(s) a la matriz</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="51"/>
@@ -5869,7 +5869,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="480"/>
       <source>Unable to create path for face(s).</source>
-      <translation>No se puede crear la ruta para la(s) cara(s).</translation>
+      <translation>No se puede crear la trayectoria para la(s) cara(s).</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="619"/>
@@ -5935,7 +5935,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1116"/>
       <source>No profile path geometry returned.</source>
-      <translation>No se devolvió la geometría de la ruta del perfil.</translation>
+      <translation>No se devolvió la geometría de la trayectoria del perfil.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1131"/>
@@ -5945,7 +5945,7 @@ Por defecto: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1137"/>
       <source>No clearing path geometry returned.</source>
-      <translation>No se volvió a despejar ninguna geometría de ruta.</translation>
+      <translation>No se volvió a despejar ninguna geometría de trayectoria.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1157"/>
@@ -6300,7 +6300,7 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="301"/>
       <source>No base objects for PathArray.</source>
-      <translation>No hay objetos base para ruta.</translation>
+      <translation>No hay objetos base para trayectoria.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="322"/>
@@ -6572,7 +6572,7 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="260"/>
       <source>Creates a Boundary Dress-up from a selected toolpath</source>
-      <translation type="unfinished">Creates a Boundary Dress-up from a selected toolpath</translation>
+      <translation>Crea un retoque de contorno a partir de la trayectoria de herramienta seleccionada</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="275"/>
@@ -6600,7 +6600,7 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/TagPreferences.py" line="82"/>
       <source>Holding Tag</source>
-      <translation>Colocación de etiqueta</translation>
+      <translation>Pestaña</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="550"/>
@@ -6610,7 +6610,7 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="553"/>
       <source>Creates a Tag Dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a Tag Dress-up object from a selected toolpath</translation>
+      <translation>Crea un objeto de retoque de pestaña a partir de una trayectoria de herramienta seleccionada</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="567"/>
@@ -6662,13 +6662,13 @@ Abortando la creación de la op</translation>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1322"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="323"/>
       <source>Dogbone</source>
-      <translation>Dogbone</translation>
+      <translation>alivio de esquina redondeado</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1326"/>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="327"/>
       <source>Creates a Dogbone Dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a Dogbone Dress-up object from a selected toolpath</translation>
+      <translation>Crea un objeto de retoque de alivio de esquina redondeado a partir de una trayectoria de herramienta seleccionada</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1342"/>
@@ -6693,7 +6693,7 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="583"/>
       <source>Modifies a toolpath to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a toolpath to add dragknife corner actions</translation>
+      <translation>Modifica una trayectoria de herramienta para agregar acciones de esquina de cuchilla</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="599"/>
@@ -6769,7 +6769,7 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="868"/>
       <source>Creates a Ramp Entry Dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a Ramp Entry Dress-up object from a selected toolpath</translation>
+      <translation>Crea un objeto de retoque de entrada en rampa a partir de una trayectoria de herramienta seleccionada</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="883"/>
@@ -6957,17 +6957,17 @@ For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation type="unfinished">The currently selected unit schema:
-     &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
+      <translation>El esquema de unidadades seleccionadoactualmente:
+     &apos;{}&apos; para este documento
+ No utiliza &apos;minutos&apos; para valores de velocidad.
 
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
-Select a minute-based schema in preferences.
-For example:
-    &apos;Metric, Small Parts &amp; CNC&apos;
-    &apos;US Customary&apos;
-    &apos;Imperial Decimal&apos;</translation>
+Las máquinas CNC requieren que la velocidad de avance se exprese en
+unidad/minuto. Para garantizar un código G correcto:
+Seleccione un esquema basado en minutos en las preferencias.
+Por ejemplo:
+    &apos;Métrico, piezas pequeñas y CNC&apos;
+    &apos;Unidades tradicionales de EE.UU.&apos;
+    &apos;Decimal imperial&apos;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="75"/>
@@ -7034,13 +7034,13 @@ For example:
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
- Values will be converted to the desired unit during post processing.</translation>
+      <translation>&lt;b&gt;Nota&lt;/b&gt;: Este diálogo muestra los comandos de trayectoria en las unidades base de FreeCAD (mm/s).
+ Los valores se convertirán a la unidad deseada durante el post-procesamiento.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="255"/>
       <source>Inspect toolPath Commands</source>
-      <translation type="unfinished">Inspect toolPath Commands</translation>
+      <translation>Inspeccionar comandos de trayectorias de herramienta</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="259"/>
@@ -7346,14 +7346,14 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
       <source>The Job&apos;s last post-processed file is missing</source>
-      <translation type="unfinished">The Job&apos;s last post-processed file is missing</translation>
+      <translation>Falta el último archivo post-procesado del trabajo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
       <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
-                    supported by Path-Sanity</translation>
+      <translation>El número de herramienta {} es una herramienta antigua. Las herramientas heredadas no
+                        son soportadas por Path-Sanity</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="376"/>
@@ -7363,12 +7363,12 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="399"/>
       <source>Toolbit Shape for TC: {} not found</source>
-      <translation type="unfinished">Toolbit Shape for TC: {} not found</translation>
+      <translation>Forma de herramienta para TC: {} no encontrada</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="419"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; has no feedrate</translation>
+      <translation>El controlador de herramientas &apos;{}&apos; no tiene velocidad de avance</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
@@ -7378,7 +7378,7 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="457"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; is not used</translation>
+      <translation>El controlador de herramientas &apos;{}&apos; no está en uso</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="335"/>
@@ -7486,7 +7486,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="616"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
-      <translation type="unfinished">Parent job %s doesn&apos;t have a base object</translation>
+      <translation>El trabajo padre %s no tiene un objeto base</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="758"/>
@@ -7600,17 +7600,17 @@ For example:
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="647"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
+      <translation>La operación adaptativa no pudo determinar el alambre límite. ¿Ha seleccionado la geometría base?</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="74"/>
       <source>This operation requires a tool controller with a probe tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a probe tool</translation>
+      <translation>Esta operación requiere un controlador de herramienta con una sonda</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="117"/>
       <source>This operation requires a tool controller with a threadmilling tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a threadmilling tool</translation>
+      <translation>Esta operación requiere un controlador de herramienta con una herramienta de roscado</translation>
     </message>
   </context>
   <context>
@@ -7648,7 +7648,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="216"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
-      <translation type="unfinished">Creates a Drilling toolpath from the features of a base object</translation>
+      <translation>Crea una trayectoria de herramienta de perforación a partir de las características de un objeto base</translation>
     </message>
   </context>
   <context>
@@ -7661,7 +7661,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="111"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
-      <translation type="unfinished">Creates a Helical toolpath from the features of a base object</translation>
+      <translation>Crea una trayectoria de herramienta de hélice a partir de las características de un objeto base</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="71"/>
@@ -7862,12 +7862,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="607"/>
       <source>Custom points are identical. No slot path will be generated</source>
-      <translation type="unfinished">Custom points are identical. No slot path will be generated</translation>
+      <translation>Los puntos personalizados son idénticos. No se generará ninguna trayectoria de ranura</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="616"/>
       <source>Custom points not at same Z height. No slot path will be generated</source>
-      <translation type="unfinished">Custom points not at same Z height. No slot path will be generated</translation>
+      <translation>Los puntos personalizados no están a la misma altura Z. No se generará ninguna trayectoria de ranura</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="670"/>
@@ -7877,7 +7877,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Slot.py" line="686"/>
       <source>No path extensions available for full circles.</source>
-      <translation>No hay extensiones de ruta disponibles para círculos completos.</translation>
+      <translation>No hay extensiones de trayectoria disponibles para círculos completos.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="714"/>
@@ -7889,7 +7889,7 @@ For example:
       <location filename="../../../Path/Op/Slot.py" line="811"/>
       <location filename="../../../Path/Op/Slot.py" line="1094"/>
       <source>Verify slot path start and end points.</source>
-      <translation>Verifique los puntos de inicio y final de la ruta de la ranura.</translation>
+      <translation>Verifique los puntos de inicio y final de la trayectoria de la ranura.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="925"/>
@@ -8183,7 +8183,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
       <source>Creates a Thread Milling toolpath from features of a base object</source>
-      <translation type="unfinished">Creates a Thread Milling toolpath from features of a base object</translation>
+      <translation>Crea una trayectoria de herramienta de roscado a partir de las características de un objeto base</translation>
     </message>
   </context>
   <context>
@@ -8191,7 +8191,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="535"/>
       <source>VCarve requires an engraving cutter with a cutting edge angle</source>
-      <translation>Vtalve requiere un cortador de grillaje con ángulo de corte</translation>
+      <translation>VCarve requiere un cortador de grillaje con ángulo de corte</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="541"/>
@@ -8206,7 +8206,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="222"/>
       <source>Creates a medial line engraving toolpath</source>
-      <translation type="unfinished">Creates a medial line engraving toolpath</translation>
+      <translation>Crea una línea central de trayectoria de herramienta de grabado</translation>
     </message>
   </context>
   <context>
@@ -8219,12 +8219,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="449"/>
       <source>Creates an array from selected toolpath(s)</source>
-      <translation type="unfinished">Creates an array from selected toolpath(s)</translation>
+      <translation>Crea una matriz a partir de la(s) trayecrtorias(s) de herramienta seleccionadas</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="467"/>
       <source>Arrays can be created only from toolpath operations.</source>
-      <translation type="unfinished">Arrays can be created only from toolpath operations.</translation>
+      <translation>Las matrices sólo pueden ser creadas desde operaciones de trayectoria de herramienta.</translation>
     </message>
   </context>
   <context>
@@ -8276,7 +8276,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Deburr.py" line="142"/>
       <source>Creates a Deburr toolpath along Edges or around Faces</source>
-      <translation type="unfinished">Creates a Deburr toolpath along Edges or around Faces</translation>
+      <translation>Crea una trayectoria de herramienta de desbarbado a lo largo de las aristas o alrededor de las caras</translation>
     </message>
   </context>
   <context>
@@ -8289,7 +8289,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="170"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
-      <translation type="unfinished">Creates an Engraving toolpath around a Draft ShapeString</translation>
+      <translation>Crea una trayectoria de herramienta de grabado alrededor de una forma de cadena de texto de Draft</translation>
     </message>
   </context>
   <context>
@@ -8315,7 +8315,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Pocket.py" line="58"/>
       <source>Creates a 3D Pocket toolpath from a face or faces</source>
-      <translation type="unfinished">Creates a 3D Pocket toolpath from a face or faces</translation>
+      <translation>Crea la trayectoria de herramienta de un vaciado 3D desde una cara o caras</translation>
     </message>
   </context>
   <context>
@@ -8328,7 +8328,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="73"/>
       <source>Creates a pocket toolpath from a face or faces</source>
-      <translation type="unfinished">Creates a pocket toolpath from a face or faces</translation>
+      <translation>Crea la trayectoria de herramienta de un vaciado desde una cara o caras</translation>
     </message>
   </context>
   <context>
@@ -8368,12 +8368,12 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="171"/>
       <source>Waterline</source>
-      <translation>línea de navegación</translation>
+      <translation>Línea de nivel</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="172"/>
       <source>Create a Waterline toolpath from a model</source>
-      <translation type="unfinished">Create a Waterline toolpath from a model</translation>
+      <translation>Crear una trayectoria de herramienta de línea de nivel a partir de un modelo</translation>
     </message>
   </context>
   <context>
@@ -8504,34 +8504,34 @@ For example:
       <translation>¿Copiar archivos de ejemplo al nuevo directorio {}?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>JSON Tooltable (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation>Guardar librería "toolbit"</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Herramienta</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>Tabla de herramientas LinuxCNC (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation>Tabla de herramientas CAMotics (*.json)</translation>
     </message>

@@ -3157,8 +3157,7 @@ Bitte zuerst ein oder mehrere Kantenelemente markieren.</translation>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Wenn aktiviert, werden beim Lesen der Datei die Körper zusammengeführt (langsamer, aber höhere Details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

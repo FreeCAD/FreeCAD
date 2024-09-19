@@ -3153,8 +3153,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>チェックされている場合、ファイル読み込み中にコンパウンドのマージを行ないます（処理は遅くなりますが高精度になります）。</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

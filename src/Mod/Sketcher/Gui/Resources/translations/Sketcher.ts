@@ -2046,22 +2046,22 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="1057"/>
+        <location filename="../../ViewProviderSketch.cpp" line="1063"/>
         <source>Drag Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="1095"/>
+        <location filename="../../ViewProviderSketch.cpp" line="1101"/>
         <source>Drag Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="1165"/>
+        <location filename="../../ViewProviderSketch.cpp" line="1171"/>
         <source>Drag Constraint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="1365"/>
+        <location filename="../../ViewProviderSketch.cpp" line="1371"/>
         <source>Modify sketch constraints</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2138,59 +2138,59 @@ invalid constraints, degenerated geometry, etc.</source>
 <context>
     <name>Exceptions</name>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="2796"/>
+        <location filename="../../../App/SketchObject.cpp" line="2797"/>
         <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7068"/>
+        <location filename="../../../App/SketchObject.cpp" line="7070"/>
         <source>You are requesting no change in knot multiplicity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7062"/>
-        <location filename="../../../App/SketchObject.cpp" line="7248"/>
+        <location filename="../../../App/SketchObject.cpp" line="7064"/>
+        <location filename="../../../App/SketchObject.cpp" line="7250"/>
         <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7074"/>
-        <location filename="../../../App/SketchObject.cpp" line="7258"/>
+        <location filename="../../../App/SketchObject.cpp" line="7076"/>
+        <location filename="../../../App/SketchObject.cpp" line="7260"/>
         <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7083"/>
+        <location filename="../../../App/SketchObject.cpp" line="7085"/>
         <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7094"/>
+        <location filename="../../../App/SketchObject.cpp" line="7096"/>
         <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7102"/>
+        <location filename="../../../App/SketchObject.cpp" line="7104"/>
         <source>The multiplicity cannot be decreased beyond zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7116"/>
+        <location filename="../../../App/SketchObject.cpp" line="7118"/>
         <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7252"/>
+        <location filename="../../../App/SketchObject.cpp" line="7254"/>
         <source>Knot cannot have zero multiplicity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7269"/>
+        <location filename="../../../App/SketchObject.cpp" line="7271"/>
         <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="7275"/>
+        <location filename="../../../App/SketchObject.cpp" line="7277"/>
         <source>Knot cannot be inserted outside the B-spline parameter range.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4606,16 +4606,16 @@ However, no constraints linking to the endpoints were found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1825"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1832"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1839"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1846"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1853"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1860"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1867"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1874"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1881"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1887"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1829"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1836"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1843"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1850"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1857"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1864"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1871"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1878"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1885"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1891"/>
         <source>Construction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4625,101 +4625,101 @@ However, no constraints linking to the endpoints were found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1823"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1828"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1964"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1965"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1827"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1832"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1968"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1969"/>
         <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1826"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1833"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1840"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1847"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1854"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1861"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1868"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1875"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1882"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1888"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1830"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1837"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1844"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1851"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1858"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1865"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1872"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1879"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1886"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1892"/>
         <source>Internal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1830"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1835"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1967"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1968"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1834"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1839"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1972"/>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1837"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1842"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1970"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1841"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1846"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1974"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1975"/>
         <source>Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1844"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1849"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1973"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1974"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1848"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1853"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1977"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1978"/>
         <source>Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1851"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1856"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1976"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1977"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1855"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1860"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1980"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1981"/>
         <source>Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1858"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1863"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1980"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1981"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1862"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1867"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1984"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1985"/>
         <source>Elliptical Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1865"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1870"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1984"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1985"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1869"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1874"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1988"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1989"/>
         <source>Hyperbolic Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1872"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1877"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1988"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1989"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1876"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1881"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1992"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1993"/>
         <source>Parabolic Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1879"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1884"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1991"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1992"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1883"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1888"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1995"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1996"/>
         <source>B-spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="1885"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1890"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1993"/>
-        <location filename="../../TaskSketcherElements.cpp" line="1994"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1889"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1894"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1997"/>
+        <location filename="../../TaskSketcherElements.cpp" line="1998"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="2034"/>
+        <location filename="../../TaskSketcherElements.cpp" line="2038"/>
         <source>Extended information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4938,119 +4938,119 @@ This is done by analyzing the sketch geometries and constraints.</source>
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="2990"/>
+        <location filename="../../ViewProviderSketch.cpp" line="2997"/>
         <source>Edit sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3007"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3014"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3008"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3015"/>
         <source>Do you want to close this dialog?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3022"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3029"/>
         <source>Invalid sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3023"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3030"/>
         <source>Do you want to open the sketch validation tool?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3024"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3031"/>
         <source>The sketch is invalid and cannot be edited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3168"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3175"/>
         <source>Please remove the following constraint:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3169"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3176"/>
         <source>Please remove at least one of the following constraints:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3175"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3182"/>
         <source>Please remove the following redundant constraint:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3176"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3183"/>
         <source>Please remove the following redundant constraints:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3189"/>
         <source>The following constraint is partially redundant:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3190"/>
         <source>The following constraints are partially redundant:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3196"/>
         <source>Please remove the following malformed constraint:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3197"/>
         <source>Please remove the following malformed constraints:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3248"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3255"/>
         <source>Empty sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3253"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3260"/>
         <source>Over-constrained:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3259"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3266"/>
         <source>Malformed constraints:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3274"/>
         <source>Redundant constraints:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3280"/>
         <source>Partially redundant:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3280"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3287"/>
         <source>Solver failed to converge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3286"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3293"/>
         <source>Under-constrained:</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../../ViewProviderSketch.cpp" line="3288"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3295"/>
         <source>%n DoF(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3292"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3299"/>
         <source>Fully constrained</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5686,7 +5686,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
 <context>
     <name>ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="3232"/>
+        <location filename="../../ViewProviderSketch.cpp" line="3239"/>
         <source>and %1 more</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5902,17 +5902,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
 <context>
     <name>Notifications</name>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="557"/>
+        <location filename="../../../App/SketchObject.cpp" line="558"/>
         <source>The Sketch has malformed constraints!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="563"/>
+        <location filename="../../../App/SketchObject.cpp" line="564"/>
         <source>The Sketch has partially redundant constraints!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="10736"/>
+        <location filename="../../../App/SketchObject.cpp" line="10738"/>
         <source>Parabolas were migrated. Migrated files won&apos;t open in previous versions of FreeCAD!!
 </source>
         <translation type="unfinished"></translation>
@@ -6524,32 +6524,32 @@ Instead equal constraints are applied between the original objects and their cop
 <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1647"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1657"/>
         <source>Corner, width, height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1648"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
         <source>Center, width, height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1649"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
         <source>3 corners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1650"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1660"/>
         <source>Center, 2 corners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1655"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1665"/>
         <source>Rounded corners (U)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1668"/>
         <source>Create a rectangle with rounded corners.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6557,12 +6557,12 @@ Instead equal constraints are applied between the original objects and their cop
 <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1664"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1674"/>
         <source>Frame (J)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawSketchHandlerRectangle.h" line="1667"/>
+        <location filename="../../DrawSketchHandlerRectangle.h" line="1677"/>
         <source>Create two rectangles with a constant offset.</source>
         <translation type="unfinished"></translation>
     </message>

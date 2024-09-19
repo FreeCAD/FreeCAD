@@ -2988,12 +2988,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="84"/>
       <source>Skin</source>
-      <translation>Peau</translation>
+      <translation>Sans dessus</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="89"/>
       <source>Pipe</source>
-      <translation>Tuyau</translation>
+      <translation>Tube</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="94"/>

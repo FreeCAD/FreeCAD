@@ -737,7 +737,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
       <translation>Spreadsheet</translation>
     </message>
@@ -1161,7 +1161,7 @@ Standard: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>

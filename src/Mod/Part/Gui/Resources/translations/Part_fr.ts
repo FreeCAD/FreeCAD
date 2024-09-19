@@ -3151,8 +3151,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Si cette case est cochée, aucune fusion de composés ne sera faite au cours de la lecture du fichier (plus lent mais plus détaillé).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>
@@ -4765,13 +4764,13 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="412"/>
       <source>Done</source>
-      <translation>Confirmer</translation>
+      <translation>Valider</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Sélectionner une ou plusieurs arêtes connectées dans la vue 3D
-et appuyer sur "Confirmer".</translation>
+et appuyer sur "Valider".</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="436"/>
@@ -5304,12 +5303,12 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
       <source>Skin</source>
-      <translation>Peau</translation>
+      <translation>Sans dessus</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="47"/>
       <source>Pipe</source>
-      <translation>Tuyau</translation>
+      <translation>Tube</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
@@ -5491,12 +5490,12 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../TaskThickness.cpp" line="187"/>
       <source>Select faces of the source object and press 'Done'</source>
-      <translation>Sélectionner des faces de l'objet source et cliquer sur "Confirmer"</translation>
+      <translation>Sélectionner des faces de l'objet source et cliquer sur "Valider"</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="190"/>
       <source>Done</source>
-      <translation>Confirmer</translation>
+      <translation>Valider</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="255"/>
