@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot:</source>
-      <translation type="unfinished">Color plot:</translation>
+      <translation>Color del trazado:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
@@ -254,7 +254,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>ShaéTypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>ShaéTypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
-      <translation type="unfinished">TypeID: </translation>
+      <translation>TypeID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="221"/>
@@ -425,7 +425,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation type="unfinished">Model UUID: </translation>
+      <translation>UUID de modelo: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -1045,7 +1045,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../TextEdit.ui" line="14"/>
       <source>Text Edit</source>
-      <translation type="unfinished">Text Edit</translation>
+      <translation>Editar Texto</translation>
     </message>
   </context>
   <context>

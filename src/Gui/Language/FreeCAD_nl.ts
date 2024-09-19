@@ -91,7 +91,7 @@
       <translation>Bewerken</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="705"/>
+      <location filename="../Application.cpp" line="713"/>
       <source>Import</source>
       <translation>Importeren</translation>
     </message>
@@ -101,7 +101,7 @@
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1921"/>
+      <location filename="../CommandDoc.cpp" line="1922"/>
       <source>Paste expressions</source>
       <translation>Paste expressions</translation>
     </message>
@@ -156,8 +156,7 @@
       <translation>Uitlijnen</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="239"/>
-      <location filename="../Placement.cpp" line="244"/>
+      <location filename="../Placement.cpp" line="434"/>
       <source>Placement</source>
       <translation>Plaatsing</translation>
     </message>
@@ -425,42 +424,42 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="256"/>
+      <location filename="../Application.h" line="259"/>
       <source>Default</source>
       <translation>Standaard</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="257"/>
+      <location filename="../Application.h" line="260"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>Het object zal worden bewerkt met behulp van de intern gedefinieerde modus die het meest geschikt is voor dit type object</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="261"/>
+      <location filename="../Application.h" line="264"/>
       <source>Transform</source>
       <translation>Transformeren</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="262"/>
+      <location filename="../Application.h" line="265"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>De plaatsing van het object kan worden bewerkt met de Std TransformManip opdracht</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="266"/>
+      <location filename="../Application.h" line="269"/>
       <source>Cutting</source>
       <translation>Snijden</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="267"/>
+      <location filename="../Application.h" line="270"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>Deze bewerkingsmodus is geïmplementeerd zoals nu beschikbaar maar lijkt momenteel niet te worden gebruikt door een object</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="271"/>
+      <location filename="../Application.h" line="274"/>
       <source>Color</source>
       <translation>Kleur</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="272"/>
+      <location filename="../Application.h" line="275"/>
       <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
       <translation>De kleur van de individuele vlakken van het object kunnen worden bewerkt met de opdracht Weergave-Kleur per vlak</translation>
     </message>
@@ -1995,7 +1994,7 @@ Misschien een fout met bestandsrechten?</translation>
     <message>
       <location filename="../DlgMaterialProperties.ui" line="168"/>
       <source>%</source>
-      <translation type="unfinished">%</translation>
+      <translation>%</translation>
     </message>
     <message>
       <location filename="../DlgMaterialProperties.ui" line="71"/>
@@ -3892,7 +3891,7 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="14"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="374"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="375"/>
       <source>Navigation</source>
       <translation>Navigatie</translation>
     </message>
@@ -3952,99 +3951,99 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Draai naar dichtstbijzijnde</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="151"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="152"/>
       <source>Font name of the navigation cube</source>
       <translation>Lettertype naam van de navigatiekubus</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="164"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="165"/>
       <source>Default</source>
       <translation>Standaard</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="172"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="173"/>
       <source>Cube size</source>
       <translation>Kubus grootte</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="179"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="180"/>
       <source>Size of the navigation cube</source>
       <translation>Grootte van de navigatie kubus</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="207"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="208"/>
       <source>Opacity when inactive</source>
       <translation>Transparantie indien inactief</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="223"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="224"/>
       <source>Opacity of the navigation cube when not focused</source>
       <translation>Transparantie van de navigatiekubus indien niet gefocust</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="248"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="249"/>
       <source>Color</source>
       <translation>Kleur</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="255"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="256"/>
       <source>Base color for all elements</source>
       <translation>Basiskleur voor alle elementen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="278"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="279"/>
       <source>Rotation center indicator</source>
       <translation>Rotatiemiddelpunt indicator</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="287"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="288"/>
       <source>Sphere size</source>
       <translation>Bol grootte</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="294"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="295"/>
       <source>Color and transparency</source>
       <translation>Kleur en transparantie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="307"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="308"/>
       <source>The size of the rotation center indicator</source>
       <translation>De grootte van de rotatiemiddelpunt indicator</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="335"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="336"/>
       <source>The color of the rotation center indicator</source>
       <translation>De kleur van de rotatiemiddelpunt indicator</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="380"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="381"/>
       <source>3D Navigation</source>
       <translation>3D-navigatie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="417"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="418"/>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Geef een lijst met de configuratie van de muisknop voor elke gekozen navigatie-instelling.
 Selecteer een set en druk vervolgens op de knop om deze configuraties te bekijken.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="421"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="422"/>
       <source>Mouse...</source>
       <translation>Muis...</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="442"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="443"/>
       <source>Navigation settings set</source>
       <translation>Navigatie voorkeuren ingesteld</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="452"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="453"/>
       <source>Orbit style</source>
       <translation>Rotatiebaan stijl</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="471"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="472"/>
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
@@ -4055,104 +4054,104 @@ Draaitafel: het object wordt rond de z-as gedraaid (met beperkte assen).
 Vrije draaitafel: het object zal worden gedraaid rond de z-as.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="481"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="482"/>
       <source>Turntable</source>
       <translation>Draaitafel</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="486"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="487"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="491"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="492"/>
       <source>Free Turntable</source>
       <translation>Vrije draaitafel</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="499"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="500"/>
       <source>Rotation mode</source>
       <translation>Draai modus</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="518"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="519"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>Rotaties in 3D zullen de huidige cursorpositie als middelpunt voor de rotatie gebruiken</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="525"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="526"/>
       <source>Window center</source>
       <translation>Venster midden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="530"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="531"/>
       <source>Drag at cursor</source>
       <translation>Sleep bij cursor</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="535"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="536"/>
       <source>Object center</source>
       <translation>Object midden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="543"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="544"/>
       <source>Default camera orientation</source>
       <translation>Standaard cameraoriëntatie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="562"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="563"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Standaard cameraoriëntatie bij het aanmaken van een nieuw document of het selecteren van het startscherm</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="569"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="570"/>
       <source>Camera zoom</source>
       <translation>Camera zoom</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="576"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Stelt de camerazoom in voor nieuwe documenten.
 De waarde is de diameter van de bol die op het scherm past.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="580"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="581"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="726"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="727"/>
       <source>Animations</source>
       <translation>Animaties</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="792"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="793"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
       <translation>Activeer ronddraaiende animaties die in sommige navigatiestijlen worden gebruikt na het slepen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="795"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="796"/>
       <source>Enable spinning animations</source>
       <translation>Activeer ronddraaiende animaties</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="735"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="736"/>
       <source>Duration of navigation animations that have a fixed duration</source>
       <translation>Tijdsduur van de navigatie animaties met een vaste duur</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="738"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="739"/>
       <source>Animation duration</source>
       <translation>Duur van de animatie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="754"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="755"/>
       <source>The duration of navigation animations in milliseconds</source>
       <translation>De tijdsduur van de navigatie animaties in milliseconden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="621"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="622"/>
       <source>Zoom step</source>
       <translation>Zoomstap</translation>
     </message>
@@ -4162,34 +4161,34 @@ De waarde is de diameter van de bol die op het scherm past.</translation>
       <translation>Font naam</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="602"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="603"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>Zoombewerkingen worden uitgevoerd bij de positie van de muisaanwijzer</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="605"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="606"/>
       <source>Zoom at cursor</source>
       <translation>Inzoomen bij cursor</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="639"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="640"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Hoeveel er ingezoomd zal worden.
 Zoomstap van '1' betekent een factor 7,5 voor elke zoomstap.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="683"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="684"/>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Richting van zoombewerkingen zullen omgedraaid worden</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="686"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="687"/>
       <source>Invert zoom</source>
       <translation>Zoom omkeren</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="702"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="703"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4198,7 +4197,7 @@ Beïnvloedt alleen navigatie met gebaren.
 Kantelen met de muis wordt niet uitgeschakeld door deze instelling.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="707"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="708"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Touchscreen kantel gebaar uitschakelen</translation>
     </message>
@@ -4665,7 +4664,7 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
-      <location filename="../Placement.cpp" line="990"/>
+      <location filename="../Placement.cpp" line="1104"/>
       <source>Placement</source>
       <translation>Plaatsing</translation>
     </message>
@@ -5249,32 +5248,17 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Herstel</translation>
     </message>
     <message>
-      <location filename="../Placement.ui" line="492"/>
-      <source>OK</source>
-      <translation>OK</translation>
-    </message>
-    <message>
-      <location filename="../Placement.ui" line="499"/>
-      <source>Close</source>
-      <translation>Sluiten</translation>
-    </message>
-    <message>
-      <location filename="../Placement.ui" line="506"/>
-      <source>Apply</source>
-      <translation>Toepassen</translation>
-    </message>
-    <message>
-      <location filename="../Placement.cpp" line="613"/>
+      <location filename="../Placement.cpp" line="717"/>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
       <translation>Gelieve 1, 2 of 3 punten te selecteren voordat u op deze knop klikt. Een punt kan op een eindpunt, vlak of rand zijn. Indien op een vlak of rand, zal het gebruikte punt het punt zijn dat zich op de positie van de muis langs het vlak of de rand bevindt. Als 1 punt wordt geselecteerd, wordt het gebruikt als draaipunt. Als 2 punten worden geselecteerd, is het middelpunt daarvan het draaipunt en wordt er zo nodig een nieuwe aangepaste as gemaakt. Als 3 punten worden geselecteerd, wordt het eerste punt het draaipunt en ligt het op de vector die normaal is voor het vlak gedefinieerd door de 3 punten. Enige informatie over afstand en hoek wordt in de rapportweergave gegeven, wat nuttig kan zijn bij het uitlijnen van objecten. Voor uw gemak wordt, wanneer Shift + klik gebruikt worden, de juiste afstand of hoek naar het klembord gekopieerd.</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="709"/>
+      <location filename="../Placement.cpp" line="809"/>
       <source>Incorrect quantity</source>
       <translation>Verkeerd aantal</translation>
     </message>
     <message>
-      <location filename="../Placement.cpp" line="711"/>
+      <location filename="../Placement.cpp" line="811"/>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
       <translation>Er zijn invoervelden met verkeerde input, zorg voor geldige waarden van plaatsing!</translation>
     </message>
@@ -5413,13 +5397,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::Transform</name>
     <message>
       <location filename="../Transform.cpp" line="288"/>
-      <location filename="../Transform.cpp" line="416"/>
-      <source>Cancel</source>
-      <translation>Annuleren</translation>
-    </message>
-    <message>
-      <location filename="../Transform.cpp" line="289"/>
-      <location filename="../Transform.cpp" line="417"/>
+      <location filename="../Transform.cpp" line="413"/>
       <source>Transform</source>
       <translation>Transformeren</translation>
     </message>
@@ -5808,13 +5786,13 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="758"/>
-      <location filename="../FileDialog.cpp" line="760"/>
+      <location filename="../FileDialog.cpp" line="754"/>
+      <location filename="../FileDialog.cpp" line="756"/>
       <source>Select a file</source>
       <translation>Selecteer een bestand</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="763"/>
+      <location filename="../FileDialog.cpp" line="759"/>
       <source>Select a directory</source>
       <translation>Kies een map</translation>
     </message>
@@ -5822,13 +5800,13 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="219"/>
+      <location filename="../FileDialog.cpp" line="215"/>
       <source>Save as</source>
       <translation>Opslaan als</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="295"/>
-      <location filename="../FileDialog.cpp" line="348"/>
+      <location filename="../FileDialog.cpp" line="291"/>
+      <location filename="../FileDialog.cpp" line="344"/>
       <source>Open</source>
       <translation>Openen</translation>
     </message>
@@ -5836,12 +5814,12 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="457"/>
+      <location filename="../FileDialog.cpp" line="453"/>
       <source>Extended</source>
       <translation>Uitgebreid</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="497"/>
+      <location filename="../FileDialog.cpp" line="493"/>
       <source>All files (*.*)</source>
       <translation>Alle bestanden (*.*)</translation>
     </message>
@@ -6135,57 +6113,57 @@ Wilt u uw wijzigingen opslaan?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="174"/>
-      <location filename="../MainWindow.cpp" line="2415"/>
+      <location filename="../MainWindow.cpp" line="2422"/>
       <source>Dimension</source>
       <translation>Afmeting</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="523"/>
+      <location filename="../MainWindow.cpp" line="531"/>
       <source>Ready</source>
       <translation>Gereed</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1210"/>
+      <location filename="../MainWindow.cpp" line="1218"/>
       <source>Close All</source>
       <translation>Alles sluiten</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1435"/>
-      <location filename="../MainWindow.cpp" line="1436"/>
-      <location filename="../MainWindow.cpp" line="1437"/>
+      <location filename="../MainWindow.cpp" line="1443"/>
+      <location filename="../MainWindow.cpp" line="1444"/>
+      <location filename="../MainWindow.cpp" line="1445"/>
       <source>Toggles this toolbar</source>
       <translation>Schakelt deze werkbalk in/uit</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1456"/>
-      <location filename="../MainWindow.cpp" line="1457"/>
-      <location filename="../MainWindow.cpp" line="1458"/>
+      <location filename="../MainWindow.cpp" line="1464"/>
+      <location filename="../MainWindow.cpp" line="1465"/>
+      <location filename="../MainWindow.cpp" line="1466"/>
       <source>Toggles this dockable window</source>
       <translation>Schakelt dit dokbare venster in/uit</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1985"/>
+      <location filename="../MainWindow.cpp" line="1993"/>
       <source>WARNING: This is a development version.</source>
       <translation>WAARSCHUWING: Dit is een ontwikkelversie.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1986"/>
+      <location filename="../MainWindow.cpp" line="1994"/>
       <source>Please do not use it in a production environment.</source>
       <translation>Gebruik het alstublieft niet in een productieomgeving.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2206"/>
-      <location filename="../MainWindow.cpp" line="2298"/>
+      <location filename="../MainWindow.cpp" line="2213"/>
+      <location filename="../MainWindow.cpp" line="2305"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2207"/>
+      <location filename="../MainWindow.cpp" line="2214"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Het geëxporteerde object bevat een externe link. Sla het document minstens één keer op voordat u het exporteert.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2299"/>
+      <location filename="../MainWindow.cpp" line="2306"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Om een link naar externe objecten te kunnen maken, moet het document minstens één keer worden opgeslagen.
@@ -6773,12 +6751,12 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="856"/>
+      <location filename="../FileDialog.cpp" line="852"/>
       <source>Select module</source>
       <translation>Module selecteren</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="858"/>
+      <location filename="../FileDialog.cpp" line="854"/>
       <source>Open %1 as</source>
       <translation>Open %1 als</translation>
     </message>
@@ -7312,7 +7290,7 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="3670"/>
+      <location filename="../Tree.cpp" line="3665"/>
       <source>Tree view</source>
       <translation>Boomstructuurweergave</translation>
     </message>
@@ -7320,7 +7298,7 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="3598"/>
+      <location filename="../Tree.cpp" line="3593"/>
       <source>Search</source>
       <translation>Zoeken</translation>
     </message>
@@ -7378,148 +7356,148 @@ Wilt u een andere map opgeven?</translation>
       <translation>Groep</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3292"/>
+      <location filename="../Tree.cpp" line="3287"/>
       <source>Labels &amp; Attributes</source>
       <translation>Labels &amp; attributen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3293"/>
+      <location filename="../Tree.cpp" line="3288"/>
       <source>Description</source>
       <translation>Omschrijving</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3294"/>
+      <location filename="../Tree.cpp" line="3289"/>
       <source>Internal name</source>
       <translation>Interne naam</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3296"/>
+      <location filename="../Tree.cpp" line="3291"/>
       <source>Show items hidden in tree view</source>
       <translation>Items verborgen in boomweergave weergeven</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3297"/>
+      <location filename="../Tree.cpp" line="3292"/>
       <source>Show items that are marked as 'hidden' in the tree view</source>
       <translation>Toon items die in de structuurweergave gemarkeerd zijn als 'verborgen'</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3299"/>
+      <location filename="../Tree.cpp" line="3294"/>
       <source>Toggle visibility in tree view</source>
       <translation>Zichtbaarheid in de structuurweergave in-/uitschakelen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3300"/>
+      <location filename="../Tree.cpp" line="3295"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Schakelt de zichtbaarheid, in de structuurweergave, van de geselecteerde items aan/uit</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3302"/>
+      <location filename="../Tree.cpp" line="3297"/>
       <source>Create group</source>
       <translation>Groep maken</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3303"/>
+      <location filename="../Tree.cpp" line="3298"/>
       <source>Create a group</source>
       <translation>Maak een groep</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3305"/>
-      <location filename="../Tree.cpp" line="5520"/>
+      <location filename="../Tree.cpp" line="3300"/>
+      <location filename="../Tree.cpp" line="5515"/>
       <source>Rename</source>
       <translation>Hernoemen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3306"/>
+      <location filename="../Tree.cpp" line="3301"/>
       <source>Rename object</source>
       <translation>Object hernoemen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3308"/>
+      <location filename="../Tree.cpp" line="3303"/>
       <source>Finish editing</source>
       <translation>Bewerken gereed</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3309"/>
+      <location filename="../Tree.cpp" line="3304"/>
       <source>Finish editing object</source>
       <translation>Beëindig bewerken object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3311"/>
+      <location filename="../Tree.cpp" line="3306"/>
       <source>Add dependent objects to selection</source>
       <translation>Afhankelijke objecten toevoegen aan selectie</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3312"/>
+      <location filename="../Tree.cpp" line="3307"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Voegt alle afhankelijke objecten aan de selectie toe</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3314"/>
+      <location filename="../Tree.cpp" line="3309"/>
       <source>Close document</source>
       <translation>Sluit document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3315"/>
+      <location filename="../Tree.cpp" line="3310"/>
       <source>Close the document</source>
       <translation>Sluit het document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3317"/>
+      <location filename="../Tree.cpp" line="3312"/>
       <source>Reload document</source>
       <translation>Document opnieuw laden</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3318"/>
+      <location filename="../Tree.cpp" line="3313"/>
       <source>Reload a partially loaded document</source>
       <translation>Herlaad een gedeeltelijk geladen document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3320"/>
+      <location filename="../Tree.cpp" line="3315"/>
       <source>Skip recomputes</source>
       <translation>Herberekening overslaan</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3321"/>
+      <location filename="../Tree.cpp" line="3316"/>
       <source>Enable or disable recomputations of document</source>
       <translation>Herberekening van het document in- of uitschakelen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3323"/>
+      <location filename="../Tree.cpp" line="3318"/>
       <source>Allow partial recomputes</source>
       <translation>Sta gedeeltelijke herberekeningen toe</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3325"/>
+      <location filename="../Tree.cpp" line="3320"/>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Herberekening van het bewerkingsobject in- of uitschakelen wanneer 'herberekening overslaan' is ingeschakeld</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3327"/>
+      <location filename="../Tree.cpp" line="3322"/>
       <source>Mark to recompute</source>
       <translation>Markeren om te herberekenen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3328"/>
+      <location filename="../Tree.cpp" line="3323"/>
       <source>Mark this object to be recomputed</source>
       <translation>Object opnieuw berekenen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3331"/>
+      <location filename="../Tree.cpp" line="3326"/>
       <source>Recompute object</source>
       <translation>Herbereken object</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3332"/>
+      <location filename="../Tree.cpp" line="3327"/>
       <source>Recompute the selected object</source>
       <translation>Het geselecteerde object herberekenen</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5491"/>
+      <location filename="../Tree.cpp" line="5486"/>
       <source> (but must be executed)</source>
       <translation> (maar moet worden uitgevoerd)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="5493"/>
+      <location filename="../Tree.cpp" line="5488"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, interne naam: %2</translation>
     </message>
@@ -7731,47 +7709,47 @@ Wilt u een andere map opgeven?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="695"/>
+      <location filename="../MainWindow.cpp" line="703"/>
       <source>Tree view</source>
       <translation>Boomstructuurweergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="617"/>
+      <location filename="../MainWindow.cpp" line="625"/>
       <source>Tasks</source>
       <translation>Taken</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="721"/>
+      <location filename="../MainWindow.cpp" line="729"/>
       <source>Property view</source>
       <translation>Eigenschappen-aanzicht</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="634"/>
+      <location filename="../MainWindow.cpp" line="642"/>
       <source>Selection view</source>
       <translation>Selectieweergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="749"/>
+      <location filename="../MainWindow.cpp" line="757"/>
       <source>Task List</source>
       <translation>Taken lijst</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="774"/>
+      <location filename="../MainWindow.cpp" line="782"/>
       <source>Model</source>
       <translation>Model</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="800"/>
+      <location filename="../MainWindow.cpp" line="808"/>
       <source>DAG View</source>
       <translation>DAG weergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="652"/>
+      <location filename="../MainWindow.cpp" line="660"/>
       <source>Report view</source>
       <translation>Rapportweergave</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="672"/>
+      <location filename="../MainWindow.cpp" line="680"/>
       <source>Python console</source>
       <translation>Python Console</translation>
     </message>
@@ -7811,45 +7789,71 @@ Wilt u een andere map opgeven?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="670"/>
-      <location filename="../Application.cpp" line="784"/>
-      <location filename="../Application.cpp" line="861"/>
+      <location filename="../Application.cpp" line="678"/>
+      <location filename="../Application.cpp" line="792"/>
+      <location filename="../Application.cpp" line="869"/>
       <source>Unknown filetype</source>
       <translation>Onbekend bestandstype</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="671"/>
-      <location filename="../Application.cpp" line="785"/>
+      <location filename="../Application.cpp" line="679"/>
+      <location filename="../Application.cpp" line="793"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Kan onbekende bestandstype niet openen: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="852"/>
+      <location filename="../Application.cpp" line="860"/>
       <source>Export failed</source>
       <translation>Exporteren mislukt</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="862"/>
+      <location filename="../Application.cpp" line="870"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Kan onbekende bestandstype niet opslaan: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1622"/>
+      <location filename="../Application.cpp" line="1000"/>
+      <source>Recomputation required</source>
+      <translation type="unfinished">Recomputation required</translation>
+    </message>
+    <message>
+      <location filename="../Application.cpp" line="1001"/>
+      <source>Some document(s) require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
+
+Do you want to recompute now?</source>
+      <translation type="unfinished">Some document(s) require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
+
+Do you want to recompute now?</translation>
+    </message>
+    <message>
+      <location filename="../Application.cpp" line="1018"/>
+      <source>Recompute error</source>
+      <translation type="unfinished">Recompute error</translation>
+    </message>
+    <message>
+      <location filename="../Application.cpp" line="1019"/>
+      <source>Failed to recompute some document(s).
+Please check report view for more details.</source>
+      <translation type="unfinished">Failed to recompute some document(s).
+Please check report view for more details.</translation>
+    </message>
+    <message>
+      <location filename="../Application.cpp" line="1671"/>
       <source>Workbench failure</source>
       <translation>Werkbank falen</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1623"/>
+      <location filename="../Application.cpp" line="1672"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="336"/>
+      <location filename="../StartupProcess.cpp" line="331"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
       <translation>Dit systeem draait OpenGL %1.%2. FreeCAD vereist OpenGL 2.0 of hoger. Upgrade uw grafische stuurprogramma en/of grafische kaart indien nodig.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="345"/>
+      <location filename="../StartupProcess.cpp" line="340"/>
       <source>Invalid OpenGL Version</source>
       <translation>Verkeerde OpenGL versie</translation>
     </message>
@@ -7900,7 +7904,7 @@ Wilt u een andere map opgeven?</translation>
       <translation>Exporteren van PDF ...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="859"/>
+      <location filename="../MainWindow.cpp" line="867"/>
       <location filename="../CommandDoc.cpp" line="1231"/>
       <source>Unsaved document</source>
       <translation>Niet-opgeslagen document</translation>
@@ -7922,39 +7926,39 @@ Wilt u een andere map opgeven?</translation>
       <translation>Afhankelijkheidsfout</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1807"/>
+      <location filename="../CommandDoc.cpp" line="1808"/>
       <source>Copy selected</source>
       <translation>Kopieer geselecteerde</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1808"/>
+      <location filename="../CommandDoc.cpp" line="1809"/>
       <source>Copy active document</source>
       <translation>Kopieer actief document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1809"/>
+      <location filename="../CommandDoc.cpp" line="1810"/>
       <source>Copy all documents</source>
       <translation>Kopieer alle documenten</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1810"/>
+      <location filename="../CommandDoc.cpp" line="1811"/>
       <source>Paste</source>
       <translation>Plakken</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1915"/>
+      <location filename="../CommandDoc.cpp" line="1916"/>
       <source>Expression error</source>
       <translation>Expressiefout</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1916"/>
+      <location filename="../CommandDoc.cpp" line="1917"/>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
       <translation>Het ontleden van sommige uitdrukkingen is mislukt.
 Gelieve de rapportweergave te raadplegen voor meer details.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1940"/>
+      <location filename="../CommandDoc.cpp" line="1941"/>
       <source>Failed to paste expressions</source>
       <translation>Fout bij het plakken van expressie</translation>
     </message>
@@ -8192,7 +8196,7 @@ Do you want to continue?</source>
       <translation>Te veel geopende achtergrond meldingen. Meldingen worden weggelaten!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1074"/>
+      <location filename="../Document.cpp" line="1075"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8201,44 +8205,44 @@ Do you want to continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1075"/>
+      <location filename="../Document.cpp" line="1076"/>
       <source>Are you sure you want to continue?</source>
       <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1094"/>
+      <location filename="../Document.cpp" line="1095"/>
       <source>Please check report view for more...</source>
       <translation>Controleer de rapportweergave voor meer...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1097"/>
+      <location filename="../Document.cpp" line="1098"/>
       <source>Physical path:</source>
       <translation>Fysiek pad:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1099"/>
-      <location filename="../Document.cpp" line="1105"/>
+      <location filename="../Document.cpp" line="1100"/>
+      <location filename="../Document.cpp" line="1106"/>
       <source>Document:</source>
       <translation>Document:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1101"/>
-      <location filename="../Document.cpp" line="1107"/>
+      <location filename="../Document.cpp" line="1102"/>
+      <location filename="../Document.cpp" line="1108"/>
       <source>Path:</source>
       <translation>PAD:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1116"/>
+      <location filename="../Document.cpp" line="1117"/>
       <source>Identical physical path</source>
       <translation>Identische fysieke pad</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1124"/>
+      <location filename="../Document.cpp" line="1125"/>
       <source>Could not save document</source>
       <translation>Kan verzending niet opslaan</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1125"/>
+      <location filename="../Document.cpp" line="1126"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8251,102 +8255,102 @@ Would you like to save the file with a different name?</source>
 Wilt u het bestand met een andere naam opslaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1135"/>
-      <location filename="../Document.cpp" line="1271"/>
-      <location filename="../Document.cpp" line="1354"/>
+      <location filename="../Document.cpp" line="1136"/>
+      <location filename="../Document.cpp" line="1272"/>
+      <location filename="../Document.cpp" line="1355"/>
       <source>Saving aborted</source>
       <translation>Opslaan afgebroken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1182"/>
+      <location filename="../Document.cpp" line="1183"/>
       <source>Save dependent files</source>
       <translation>Bewaar afhankelijke bestanden</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1183"/>
+      <location filename="../Document.cpp" line="1184"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Het bestand bevat externe afhankelijkheden. Wilt u ook de afhankelijke bestanden opslaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1217"/>
-      <location filename="../Document.cpp" line="1265"/>
+      <location filename="../Document.cpp" line="1218"/>
+      <location filename="../Document.cpp" line="1266"/>
       <source>Saving document failed</source>
       <translation>Document opslaan is mislukt</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1231"/>
+      <location filename="../Document.cpp" line="1232"/>
       <source>Save document under new filename...</source>
       <translation>Document opslaan onder een nieuwe bestandsnaam...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1238"/>
-      <location filename="../Document.cpp" line="1339"/>
+      <location filename="../Document.cpp" line="1239"/>
+      <location filename="../Document.cpp" line="1340"/>
       <source>Save %1 Document</source>
       <translation>Document %1 opslaan</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1240"/>
+      <location filename="../Document.cpp" line="1241"/>
       <source>Document</source>
       <translation>Document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1284"/>
-      <location filename="../Document.cpp" line="1325"/>
+      <location filename="../Document.cpp" line="1285"/>
+      <location filename="../Document.cpp" line="1326"/>
       <source>Failed to save document</source>
       <translation>Opslaan document mislukt</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1285"/>
+      <location filename="../Document.cpp" line="1286"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Documenten bevatten cyclische afhankelijkheden. Wilt u ze nog opslaan?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1336"/>
+      <location filename="../Document.cpp" line="1337"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>Bewaar een copy van het actieve document onder een nieuwe naam...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1341"/>
+      <location filename="../Document.cpp" line="1342"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1 document (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2002"/>
+      <location filename="../Document.cpp" line="2003"/>
       <source>Document not closable</source>
       <translation>Document niet te sluiten</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2003"/>
+      <location filename="../Document.cpp" line="2004"/>
       <source>The document is not closable for the moment.</source>
       <translation>Het document kan nu niet gesloten worden.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2040"/>
+      <location filename="../Document.cpp" line="2041"/>
       <source>Document not saved</source>
       <translation>Document niet opgeslagen</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2041"/>
+      <location filename="../Document.cpp" line="2042"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>Het document%1 kon niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2369"/>
+      <location filename="../Document.cpp" line="2370"/>
       <source>Undo</source>
       <translation>Ongedaan maken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2369"/>
+      <location filename="../Document.cpp" line="2370"/>
       <source>Redo</source>
       <translation>Herstel ongedaan maken</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2371"/>
+      <location filename="../Document.cpp" line="2372"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Er zijn gegroepeerde transacties in de volgende documenten met andere voorgaande transacties</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2374"/>
+      <location filename="../Document.cpp" line="2375"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8419,12 +8423,12 @@ Kies 'Afbreken' om af te breken</translation>
       <translation>Opties...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2380"/>
+      <location filename="../View3DInventorViewer.cpp" line="2386"/>
       <source>Out of memory</source>
       <translation>Onvoldoende geheugen</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2381"/>
+      <location filename="../View3DInventorViewer.cpp" line="2387"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Niet genoeg geheugen beschikbaar om de gegevens weer te geven.</translation>
     </message>
@@ -8440,7 +8444,7 @@ Kies 'Afbreken' om af te breken</translation>
       <translation>Kan bestand %1 niet vinden noch in %2, noch in %3</translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1731"/>
+      <location filename="../NavigationStyle.cpp" line="1742"/>
       <source>Navigation styles</source>
       <translation>Navigatie stijlen</translation>
     </message>
@@ -8456,32 +8460,32 @@ Kies 'Afbreken' om af te breken</translation>
       <translation>Wilt u dit dialoogvenster sluiten?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="861"/>
+      <location filename="../MainWindow.cpp" line="869"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Wil je de wijzigingen in het document '%1' opslaan alvorens te sluiten?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="864"/>
+      <location filename="../MainWindow.cpp" line="872"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Wilt u de wijzigingen aan het document opslaan voordat u afsluit?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="866"/>
+      <location filename="../MainWindow.cpp" line="874"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Als u niet opslaat, zullen uw wijzigingen verloren gaan.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="871"/>
+      <location filename="../MainWindow.cpp" line="879"/>
       <source>Apply answer to all</source>
       <translation>Antwoord op alles toepassen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="961"/>
+      <location filename="../MainWindow.cpp" line="969"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Document(en) niet opgeslagen</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="962"/>
+      <location filename="../MainWindow.cpp" line="970"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Sommige documenten konden niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
     </message>
@@ -8618,8 +8622,8 @@ underscore bevatten en mag niet beginnen met een cijfer.</translation>
       <translation>Eigenschap toevoegen aan '%1': %2 mislukt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2318"/>
-      <location filename="../Tree.cpp" line="2680"/>
+      <location filename="../Tree.cpp" line="2313"/>
+      <location filename="../Tree.cpp" line="2675"/>
       <source>Drag &amp; drop failed</source>
       <translation>Verslepen en neerzetten mislukt</translation>
     </message>
@@ -8912,12 +8916,12 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection.cpp" line="641"/>
+      <location filename="../Selection.cpp" line="642"/>
       <source>Not allowed:</source>
       <translation>Niet toegestaan:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="937"/>
+      <location filename="../Selection.cpp" line="938"/>
       <source>Selection not allowed by filter</source>
       <translation>Selectie niet toegestaan door het filter</translation>
     </message>
@@ -9005,13 +9009,13 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1618"/>
+      <location filename="../CommandDoc.cpp" line="1619"/>
       <source>Alignment...</source>
       <translation>Uitlijning...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1619"/>
       <location filename="../CommandDoc.cpp" line="1620"/>
+      <location filename="../CommandDoc.cpp" line="1621"/>
       <source>Align the selected objects</source>
       <translation>Lijn de geselecteerde objecten uit</translation>
     </message>
@@ -9295,17 +9299,17 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1688"/>
+      <location filename="../CommandDoc.cpp" line="1689"/>
       <source>Toggle &amp;Edit mode</source>
       <translation>Bewerkingsmode</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1689"/>
+      <location filename="../CommandDoc.cpp" line="1690"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Verander de bewerkingsmode van het geselecteerde object</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1691"/>
+      <location filename="../CommandDoc.cpp" line="1692"/>
       <source>Activates or Deactivates the selected object's edit mode</source>
       <translation>Activeert of deactiveert de bewerkingsmodus van het geselecteerde object</translation>
     </message>
@@ -9337,13 +9341,13 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1763"/>
+      <location filename="../CommandDoc.cpp" line="1764"/>
       <source>Expression actions</source>
       <translation>Expressieacties</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1764"/>
-      <location filename="../CommandDoc.cpp" line="1766"/>
+      <location filename="../CommandDoc.cpp" line="1765"/>
+      <location filename="../CommandDoc.cpp" line="1767"/>
       <source>Actions that apply to expressions</source>
       <translation>Acties die van toepassing zijn op expressies</translation>
     </message>
@@ -9804,7 +9808,7 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
       <translation>Maak een nieuw leeg document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2403"/>
+      <location filename="../MainWindow.cpp" line="2410"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
@@ -10410,13 +10414,13 @@ onderstrepingsteken, en mag niet beginnen met een cijfer.</translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1584"/>
+      <location filename="../CommandDoc.cpp" line="1585"/>
       <source>Transform</source>
       <translation>Transformeren</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1585"/>
       <location filename="../CommandDoc.cpp" line="1586"/>
+      <location filename="../CommandDoc.cpp" line="1587"/>
       <source>Transform the selected object in the 3d view</source>
       <translation>Transformeren van het geselecteerde object in de 3D-weergave</translation>
     </message>
@@ -12920,64 +12924,39 @@ van de Python-console naar het rapportweergavepaneel</translation>
       <translation>Lichtbronnen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="33"/>
+      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="215"/>
+      <source>Push In</source>
+      <translation type="unfinished">Push In</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="235"/>
+      <source>Pull Out</source>
+      <translation type="unfinished">Pull Out</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="260"/>
       <source>Light sources</source>
       <translation>Lichtbronnen</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="39"/>
+      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="266"/>
       <source>Light source</source>
       <translation>Lichtbron</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="85"/>
+      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="312"/>
       <source>Intensity</source>
       <translation>Intensiteit</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="120"/>
+      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</source>
       <translation>Pas de oriëntatie van de gerichte lichtbron aan door de handgreep met de muis te verslepen of door de spin box te gebruiken voor de detailafstelling.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="123"/>
+      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="29"/>
       <source>Direction</source>
       <translation>Richting</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="159"/>
-      <source>q1</source>
-      <translation>q1</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="179"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;z&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>z</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="186"/>
-      <source>q2</source>
-      <translation>q2</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="193"/>
-      <source>q3</source>
-      <translation>q3</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="210"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="253"/>
-      <source>q0</source>
-      <translation>q0</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="260"/>
-      <source>x</source>
-      <translation>x</translation>
     </message>
   </context>
   <context>
@@ -13384,12 +13363,12 @@ the region are non-opaque.</translation>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1728"/>
+      <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Properties</source>
       <translation>Instellingen</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1729"/>
+      <location filename="../CommandDoc.cpp" line="1730"/>
       <source>Show the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Show the property view, which displays the properties of the selected object.</translation>
     </message>

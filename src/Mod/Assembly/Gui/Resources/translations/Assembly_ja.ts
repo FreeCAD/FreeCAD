@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1522"/>
+      <location filename="../../../JointObject.py" line="1554"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
@@ -236,11 +236,11 @@
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Perpendicular</source>
-      <translation>直交する|鉛直な</translation>
+      <translation>直角</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1524"/>
+      <location filename="../../../JointObject.py" line="1556"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
@@ -265,17 +265,17 @@
       <translation>ベルト</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1379"/>
+      <location filename="../../../JointObject.py" line="1409"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>2つの別々の部品から2つの要素を選択する必要があります。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1526"/>
+      <location filename="../../../JointObject.py" line="1558"/>
       <source>Radius 1</source>
       <translation>半径 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1528"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Pitch radius</source>
       <translation>ピッチ半径</translation>
     </message>
@@ -383,119 +383,121 @@
       <translation>ジョイントのタイプ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="210"/>
-      <location filename="../../../JointObject.py" line="474"/>
+      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="475"/>
       <source>The first reference of the joint</source>
       <translation>ジョイントの1つ目の参照</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
+      <location filename="../../../JointObject.py" line="222"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
       <translation>ジョイントに使用される Reference1 のオブジェクト内のローカル座標系です。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="241"/>
-      <location filename="../../../JointObject.py" line="497"/>
+      <location filename="../../../JointObject.py" line="244"/>
+      <location filename="../../../JointObject.py" line="518"/>
+      <source>This is the attachment offset of the first connector of the joint.</source>
+      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="253"/>
+      <location filename="../../../JointObject.py" line="498"/>
       <source>The second reference of the joint</source>
       <translation>ジョイントの2つ目の参照</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="252"/>
+      <location filename="../../../JointObject.py" line="264"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
       <translation>ジョイントに使用される Reference2 のオブジェクト内のローカル座標系です。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="430"/>
+      <location filename="../../../JointObject.py" line="286"/>
+      <location filename="../../../JointObject.py" line="528"/>
+      <source>This is the attachment offset of the second connector of the joint.</source>
+      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="431"/>
       <source>The first object of the joint</source>
       <translation>ジョイントの1つ目のオブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="232"/>
+      <location filename="../../../JointObject.py" line="233"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Placement1 の再計算はされなくなり、カスタムでの位置設定が可能になります。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="449"/>
+      <location filename="../../../JointObject.py" line="450"/>
       <source>The second object of the joint</source>
       <translation>ジョイントの2つ目のオブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="263"/>
+      <location filename="../../../JointObject.py" line="275"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Placement2 の再計算はされなくなり、カスタムでの位置設定が可能になります。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="275"/>
+      <location filename="../../../JointObject.py" line="298"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>ジョイントの距離。距離ジョイント、ラックピニオン (ピッチ半径)、スクリューとギアとベルト (半径1) でだけ使用されます。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="286"/>
+      <location filename="../../../JointObject.py" line="309"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>ジョイントの2つ目の距離。ギアジョイントでだけ2つ目の半径を格納するために使用されます。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="297"/>
-      <source>This is the rotation of the joint.</source>
-      <translation>ジョイントの回転。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="308"/>
-      <source>This is the offset vector of the joint.</source>
-      <translation>ジョイントのオフセットベクトル。</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="319"/>
+      <location filename="../../../JointObject.py" line="320"/>
       <source>This indicates if the joint is active.</source>
       <translation>ジョイントがアクティブかどうか</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="331"/>
+      <location filename="../../../JointObject.py" line="332"/>
       <source>Enable the minimum length limit of the joint.</source>
       <translation>ジョイントの最小長さ制限を有効にします。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="343"/>
+      <location filename="../../../JointObject.py" line="344"/>
       <source>Enable the maximum length limit of the joint.</source>
       <translation>ジョイントの最大長さ制限を有効にします。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="355"/>
+      <location filename="../../../JointObject.py" line="356"/>
       <source>Enable the minimum angle limit of the joint.</source>
       <translation>ジョイントの最小角度制限を有効にします。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="367"/>
+      <location filename="../../../JointObject.py" line="368"/>
       <source>Enable the minimum length of the joint.</source>
       <translation>ジョイントの最小長さを有効にします。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="379"/>
+      <location filename="../../../JointObject.py" line="380"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>両座標系の間の (Z軸に方向の) 長さの下限です。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="390"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>両座標系の間の (Z軸に方向の) 長さの上限です。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="401"/>
+      <location filename="../../../JointObject.py" line="402"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>両座標系の間の (X軸間の) 角度の下限です。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="412"/>
+      <location filename="../../../JointObject.py" line="413"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>両座標系の間の (X軸間の) 角度の上限です。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1035"/>
+      <location filename="../../../JointObject.py" line="1065"/>
       <source>The object to ground</source>
       <translation>接地オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1047"/>
+      <location filename="../../../JointObject.py" line="1077"/>
       <source>This is where the part is grounded.</source>
       <translation>これはパーツが接地される場所です。</translation>
     </message>
@@ -660,17 +662,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="178"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>The object is associated to one or more joints.</source>
       <translation>オブジェクトは1つ以上のジョイントに関連付けられています。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="182"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>オブジェクトを移動して関連付けられているジョイントを削除しますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="854"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="856"/>
       <source>Move part</source>
       <translation>パーツを移動</translation>
     </message>

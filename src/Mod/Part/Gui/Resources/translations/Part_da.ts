@@ -4260,7 +4260,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Tekstfarve</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="526"/>
@@ -4513,7 +4513,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Forskydning</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
@@ -5293,7 +5293,7 @@ Individual boolean operation checks:</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Forskydning</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>

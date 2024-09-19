@@ -4211,7 +4211,7 @@ Default: 3 mm</translation>
       <translation type="unfinished">Cutting Edge Angle (%.2f) results in negative tool tip length</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
@@ -8505,34 +8505,34 @@ For example:
       <translation type="unfinished">Copy example files to new {} directory?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation type="unfinished">Tooltable JSON (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation type="unfinished">Save toolbit library</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Εργαλείο</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Σχήμα</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation type="unfinished">LinuxCNC tooltable (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>

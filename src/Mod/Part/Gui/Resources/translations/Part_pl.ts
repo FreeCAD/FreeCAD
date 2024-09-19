@@ -3169,8 +3169,8 @@ Zaznacz najpierw jedną lub więcej krawędzi.</translation>
       <location filename="../../DlgImportStep.ui" line="26"/>
       <source>If checked, Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Jeśli opcja jest zaznaczona, połączenie złożenia zostanie wykonane
+podczas odczytu pliku (wolniejsze, ale wyższa szczegółowość).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="30"/>

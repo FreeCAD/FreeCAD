@@ -2307,7 +2307,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Hasta la forma</translation>
     </message>
   </context>
   <context>
@@ -2733,7 +2733,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to shape</source>
-      <translation type="unfinished">Up to shape</translation>
+      <translation>Hasta la forma</translation>
     </message>
   </context>
   <context>
@@ -3116,7 +3116,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="48"/>
       <source>Transform tool shapes</source>
-      <translation type="unfinished">Transform tool shapes</translation>
+      <translation>Transformar las formes de las herramientas</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
@@ -4353,7 +4353,7 @@ la parte superior del tornillo debajo de la superficie</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="530"/>
       <source>Hole Cut Type</source>
-      <translation type="unfinished">Hole Cut Type</translation>
+      <translation>Tipo de corte del agujero</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="633"/>
@@ -4882,17 +4882,17 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="635"/>
       <source>Up to face: Could not get SubShape!</source>
-      <translation type="unfinished">Up to face: Could not get SubShape!</translation>
+      <translation>Hasta la cara: ¡No se pudo obtener subforma!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="677"/>
       <source>Magnitude of taper angle matches or exceeds 90 degrees</source>
-      <translation type="unfinished">Magnitude of taper angle matches or exceeds 90 degrees</translation>
+      <translation>La magnitud del ángulo del cono coincide o supera los 90 grados</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="688"/>
       <source>Padding with draft angle failed</source>
-      <translation type="unfinished">Padding with draft angle failed</translation>
+      <translation>Falló la extrusión con ángulo de salida</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="158"/>
@@ -5102,12 +5102,12 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="168"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
+      <translation>Proyección aditiva: Fallo al crear una cara a partir del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="201"/>
       <source>Loft: Failed to create shell</source>
-      <translation type="unfinished">Loft: Failed to create shell</translation>
+      <translation>Proyección aditiva: Error al crear el cascarón</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="770"/>

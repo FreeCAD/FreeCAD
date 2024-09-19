@@ -1313,13 +1313,13 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
       <location filename="../../CommandExtensionPack.cpp" line="516"/>
       <location filename="../../CommandExtensionPack.cpp" line="697"/>
       <source>Add Cosmetic Thread Hole Bottom View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Bottom View</translation>
+      <translation>Adicionar vista inferior de furo de rosca cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="517"/>
       <location filename="../../CommandExtensionPack.cpp" line="700"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar rosca cosmética à vista superior ou inferior de furos: &lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;— Selecione um ou mais círculos&lt;br&gt;— Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1333,13 +1333,13 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
       <location filename="../../CommandExtensionPack.cpp" line="408"/>
       <location filename="../../CommandExtensionPack.cpp" line="688"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Adicionar vista lateral de furo de rosca cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="409"/>
       <location filename="../../CommandExtensionPack.cpp" line="690"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar rosca cosmética à vista lateral de um furo:&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione duas linhas paralelas&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1352,12 +1352,12 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="605"/>
       <source>Add Cosmetic Thread Hole Side View</source>
-      <translation type="unfinished">Add Cosmetic Thread Hole Side View</translation>
+      <translation>Adicionar vista lateral de furo de rosca cosmético</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="606"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar rosca cosmética à vista lateral de um furo&lt;br&gt;- Especifique os atributos da linha (opcional)&lt;br&gt;- Selecione duas linhas paralelas&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1370,12 +1370,12 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="842"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
-      <translation type="unfinished">Add Cosmetic Intersection Vertex(es)</translation>
+      <translation>Adicionar interseção de vértice(s) cosmética(s)</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="844"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges&lt;br&gt;- Click this tool</translation>
+      <translation>Adicionar vértice(s) cosmético(s) à(s) interseção(ões) das bordas selecionadas&lt;br&gt;- Selecione duas bordas&lt;br&gt;- Clique nesta ferramenta</translation>
     </message>
   </context>
   <context>
@@ -1492,7 +1492,7 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
     <message>
       <location filename="../../CommandDecorate.cpp" line="262"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
+      <translation>Arquivos de imagem (*.jpg *.jpeg *.png *.bmp);;Todos os arquivos (*)</translation>
     </message>
   </context>
   <context>
@@ -1702,7 +1702,7 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
     <message>
       <location filename="../../Command.cpp" line="701"/>
       <source>Insert a simple or complex Section View</source>
-      <translation type="unfinished">Insert a simple or complex Section View</translation>
+      <translation>Insira uma vista de corte simples ou complexa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="766"/>
@@ -1854,12 +1854,12 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1610"/>
       <source>Create a Surface Finish Symbol</source>
-      <translation type="unfinished">Create a Surface Finish Symbol</translation>
+      <translation>Criar um símbolo de conclusão de superfície</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1611"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
-      <translation type="unfinished">Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</translation>
+      <translation>Selecione uma vista&lt;br&gt;- clique neste botão&lt;br&gt;- selecione os atributos de conclusão de superfície no painel aberto</translation>
     </message>
   </context>
   <context>
@@ -1937,14 +1937,14 @@ Clique com o botão esquerdo em um espaço vazio para validar a dimensão atual.
       <source>Insert a View in current page.
 Selected objects, spreadsheets or Arch WB section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</source>
-      <translation type="unfinished">Insert a View in current page.
-Selected objects, spreadsheets or Arch WB section planes will be added.
-Without a selection, a file browser lets you select a SVG or image file.</translation>
+      <translation>Insira uma vista na página ativa.
+Objetos selecionados, folhas ou planos de corte da bancada Arch serão adicionados.
+Caso não haja seleção, um navegador permitirá selecionar um arquivo no formato SVG ou outro formato de imagem.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
-      <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
+      <translation>Se desejar inserir uma vista de objetos existentes, por favor selecione-os antes de recorrer a esta ferramenta. Caso não haja seleção, um navegador será aberto, para inserção de um arquivo no formato SVG ou outro formato de imagem.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
@@ -2090,36 +2090,36 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <location filename="../../CommandCreateDims.cpp" line="924"/>
       <location filename="../../CommandCreateDims.cpp" line="1185"/>
       <source>Add DistanceX Chamfer dimension</source>
-      <translation type="unfinished">Add DistanceX Chamfer dimension</translation>
+      <translation>Adicionar DistânciaX de dimensão de chanfro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="829"/>
       <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Add horizontal chain dimensions</source>
-      <translation type="unfinished">Add horizontal chain dimensions</translation>
+      <translation>Adicionar dimensões horizontais em cadeia</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="834"/>
       <location filename="../../CommandCreateDims.cpp" line="861"/>
       <source>Add horizontal coordinate dimensions</source>
-      <translation type="unfinished">Add horizontal coordinate dimensions</translation>
+      <translation>Adicionar dimensões de coordenadas horizontais</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="838"/>
       <location filename="../../CommandCreateDims.cpp" line="842"/>
       <location filename="../../CommandCreateDims.cpp" line="846"/>
       <source>Add 3-points angle dimension</source>
-      <translation type="unfinished">Add 3-points angle dimension</translation>
+      <translation>Adicionar dimensão de ângulo com três pontos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="856"/>
       <source>Add horizontal chain dimension</source>
-      <translation type="unfinished">Add horizontal chain dimension</translation>
+      <translation>Adicionar dimensão horizontal em cadeia</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="871"/>
       <source>Add point to line Distance dimension</source>
-      <translation type="unfinished">Add point to line Distance dimension</translation>
+      <translation>Adicionar ponto à dimensão de distância linear</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="882"/>
@@ -2136,12 +2136,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="950"/>
       <source>Add circle to line Distance dimension</source>
-      <translation type="unfinished">Add circle to line Distance dimension</translation>
+      <translation>Adicionar círculo à dimensão de distância linear</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="965"/>
       <source>Add ellipse to line Distance dimension</source>
-      <translation type="unfinished">Add ellipse to line Distance dimension</translation>
+      <translation>Adicionar elipse à dimensão de distância linear</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1089"/>
@@ -2157,12 +2157,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="999"/>
       <source>Add circle to circle Distance dimension</source>
-      <translation type="unfinished">Add circle to circle Distance dimension</translation>
+      <translation>Adicionar círculo à dimensão de distância circular</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1033"/>
       <source>Add ellipse to ellipse Distance dimension</source>
-      <translation type="unfinished">Add ellipse to ellipse Distance dimension</translation>
+      <translation>Adicionar elipse à dimensão de distância elíptica</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1048"/>
@@ -2177,52 +2177,52 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1188"/>
       <source>Add DistanceX dimension</source>
-      <translation type="unfinished">Add DistanceX dimension</translation>
+      <translation>Adicionar dimensão de DistânciaX</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1195"/>
       <source>Add DistanceY Chamfer dimension</source>
-      <translation type="unfinished">Add DistanceY Chamfer dimension</translation>
+      <translation>Adicionar dimensão de DistânciaY de chanfro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1198"/>
       <source>Add DistanceY dimension</source>
-      <translation type="unfinished">Add DistanceY dimension</translation>
+      <translation>Adicionar dimensão de DistânciaY</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1243"/>
       <source>Add DistanceX extent dimension</source>
-      <translation type="unfinished">Add DistanceX extent dimension</translation>
+      <translation>Adicionar dimensão de DistânciaX de extensão</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1248"/>
       <source>Add DistanceY extent dimension</source>
-      <translation type="unfinished">Add DistanceY extent dimension</translation>
+      <translation>Adicionar dimensão de DistânciaY de extensão</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1290"/>
       <source>Add horizontal coord dimensions</source>
-      <translation type="unfinished">Add horizontal coord dimensions</translation>
+      <translation>Adicionar dimensões de corda horizontais</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1297"/>
       <source>Add vertical chain dimensions</source>
-      <translation type="unfinished">Add vertical chain dimensions</translation>
+      <translation>Adicionar dimensões verticais em cadeia</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1301"/>
       <source>Add vertical coord dimensions</source>
-      <translation type="unfinished">Add vertical coord dimensions</translation>
+      <translation>Adicionar dimensões de corda verticais</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1307"/>
       <source>Add oblique chain dimensions</source>
-      <translation type="unfinished">Add oblique chain dimensions</translation>
+      <translation>Adicionar dimensões oblíquas em cadeia</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1311"/>
       <source>Add oblique coord dimensions</source>
-      <translation type="unfinished">Add oblique coord dimensions</translation>
+      <translation>Adicionar dimensões oblíquas de corda</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1383"/>
@@ -2262,7 +2262,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>Criar imagem</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="509"/>
+      <location filename="../../QGIViewBalloon.cpp" line="500"/>
       <source>Drag Balloon</source>
       <translation>Arrastar Balão</translation>
     </message>
@@ -2272,7 +2272,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>Arrastar Dimensão</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="572"/>
+      <location filename="../../QGSPage.cpp" line="570"/>
       <source>Create Balloon</source>
       <translation>Criar Balão</translation>
     </message>
@@ -2289,12 +2289,12 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="193"/>
       <source>Create Cosmetic Circle</source>
-      <translation type="unfinished">Create Cosmetic Circle</translation>
+      <translation>Criar Círculo Cosmético</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="267"/>
       <source>Update CosmeticCircle</source>
-      <translation type="unfinished">Update CosmeticCircle</translation>
+      <translation>Atualizar Círculo Cosmético</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="253"/>
@@ -2339,7 +2339,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../TaskComplexSection.cpp" line="560"/>
       <source>Create ComplexSection</source>
-      <translation type="unfinished">Create ComplexSection</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="653"/>
@@ -2390,7 +2390,7 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="637"/>
       <source>Pos Horiz Chain Dim</source>
-      <translation type="unfinished">Pos Horiz Chain Dim</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="698"/>
@@ -3549,28 +3549,28 @@ Without a selection, a file browser lets you select a SVG or image file.</transl
       <translation>Não há páginas no documento.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="315"/>
+      <location filename="../../MDIViewPage.cpp" line="318"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="316"/>
-      <location filename="../../MDIViewPage.cpp" line="503"/>
+      <location filename="../../MDIViewPage.cpp" line="319"/>
+      <location filename="../../MDIViewPage.cpp" line="506"/>
       <source>All Files (*.*)</source>
       <translation>Todos os arquivos (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="321"/>
       <source>Export Page As PDF</source>
       <translation>Exportar página para PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="502"/>
+      <location filename="../../MDIViewPage.cpp" line="505"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="505"/>
+      <location filename="../../MDIViewPage.cpp" line="508"/>
       <source>Export page as SVG</source>
       <translation>Exportar página para SVG</translation>
     </message>
@@ -4622,6 +4622,11 @@ Then you need to increase the tile limit.</translation>
       <translation type="unfinished">Include Cut Line in Section Annotation</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
+      <source>Balloon Leader Kink Length</source>
+      <translation type="unfinished">Balloon Leader Kink Length</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation type="unfinished">Broken View Break Type</translation>
@@ -4725,11 +4730,6 @@ Then you need to increase the tile limit.</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Comprimento de porção horizontal das linhas de balões</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
-      <source>Ballon Leader Kink Length</source>
-      <translation>Comprimento da dobra das linhas de balões</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -5852,90 +5852,90 @@ Rápido, mas produz uma coleção de linhas retas simples.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Alternar manter atualizado &amp;k</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
       <translation>Alternar Quadros &amp;F</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportar para SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>Export DXF</source>
       <translation>Exportar para DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export PDF</source>
       <translation>Exportar PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>Imprimir todas as páginas</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="409"/>
+      <location filename="../../MDIViewPage.cpp" line="412"/>
       <source>Different orientation</source>
       <translation>Orientação diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="410"/>
+      <location filename="../../MDIViewPage.cpp" line="413"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>A impressora utiliza uma orientação diferente do que o desenho. 
 Deseja continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="419"/>
+      <location filename="../../MDIViewPage.cpp" line="422"/>
       <source>Different paper size</source>
       <translation>Tamanho de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="420"/>
+      <location filename="../../MDIViewPage.cpp" line="423"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A impressora usa um tamanho de papel diferente do que o desenho. Deseja continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="434"/>
+      <location filename="../../MDIViewPage.cpp" line="437"/>
       <source>Opening file failed</source>
       <translation>Falha ao abrir arquivo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="435"/>
+      <location filename="../../MDIViewPage.cpp" line="438"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Não é possível abrir o arquivo '%1' para a gravação.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="526"/>
+      <location filename="../../MDIViewPage.cpp" line="529"/>
       <source>Save DXF file</source>
       <translation>Salvar arquivo DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="527"/>
+      <location filename="../../MDIViewPage.cpp" line="530"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="547"/>
+      <location filename="../../MDIViewPage.cpp" line="550"/>
       <source>Save PDF file</source>
       <translation type="unfinished">Save PDF file</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="548"/>
+      <location filename="../../MDIViewPage.cpp" line="551"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1092"/>
+      <location filename="../../MDIViewPage.cpp" line="1095"/>
       <source>Selected:</source>
       <translation>Selecionado:</translation>
     </message>

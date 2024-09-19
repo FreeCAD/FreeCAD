@@ -2262,7 +2262,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Создать изображение</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="509"/>
+      <location filename="../../QGIViewBalloon.cpp" line="500"/>
       <source>Drag Balloon</source>
       <translation>Переместить позиционную выноску</translation>
     </message>
@@ -2272,7 +2272,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Перетащите размер</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="572"/>
+      <location filename="../../QGSPage.cpp" line="570"/>
       <source>Create Balloon</source>
       <translation>Создать позиционную выноску</translation>
     </message>
@@ -3549,28 +3549,28 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>В документе нет страниц чертежа.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="315"/>
+      <location filename="../../MDIViewPage.cpp" line="318"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="316"/>
-      <location filename="../../MDIViewPage.cpp" line="503"/>
+      <location filename="../../MDIViewPage.cpp" line="319"/>
+      <location filename="../../MDIViewPage.cpp" line="506"/>
       <source>All Files (*.*)</source>
       <translation>Все файлы (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="321"/>
       <source>Export Page As PDF</source>
       <translation>Экспорт листа в PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="502"/>
+      <location filename="../../MDIViewPage.cpp" line="505"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="505"/>
+      <location filename="../../MDIViewPage.cpp" line="508"/>
       <source>Export page as SVG</source>
       <translation>Экспорт листа в SVG</translation>
     </message>
@@ -4618,6 +4618,11 @@ Then you need to increase the tile limit.</translation>
       <translation type="unfinished">Include Cut Line in Section Annotation</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
+      <source>Balloon Leader Kink Length</source>
+      <translation type="unfinished">Balloon Leader Kink Length</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation type="unfinished">Broken View Break Type</translation>
@@ -4721,11 +4726,6 @@ Then you need to increase the tile limit.</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Длина горизонтальной части выноски</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
-      <source>Ballon Leader Kink Length</source>
-      <translation>Длина перегиба выноски</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -5848,91 +5848,91 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Вкл/Выкл обновление</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
       <translation>Вкл/Выкл отображения маркеров редактируемых полей рамки</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Экспорт в SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>Export DXF</source>
       <translation>Экспорт в DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export PDF</source>
       <translation>Экспорт в PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>Распечатать все страницы</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="409"/>
+      <location filename="../../MDIViewPage.cpp" line="412"/>
       <source>Different orientation</source>
       <translation>Другая ориентация</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="410"/>
+      <location filename="../../MDIViewPage.cpp" line="413"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Принтер использует отличающуюся от чертежа ориентацию бумаги.
 Хотите продолжить?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="419"/>
+      <location filename="../../MDIViewPage.cpp" line="422"/>
       <source>Different paper size</source>
       <translation>Разный размер бумаги</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="420"/>
+      <location filename="../../MDIViewPage.cpp" line="423"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Принтер использует отличающийся от чертежа формат листа.
 Хотите продолжить?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="434"/>
+      <location filename="../../MDIViewPage.cpp" line="437"/>
       <source>Opening file failed</source>
       <translation>Ошибка при открытии файла</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="435"/>
+      <location filename="../../MDIViewPage.cpp" line="438"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Не удалось открыть файл %1 для записи.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="526"/>
+      <location filename="../../MDIViewPage.cpp" line="529"/>
       <source>Save DXF file</source>
       <translation>Сохранить файл в DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="527"/>
+      <location filename="../../MDIViewPage.cpp" line="530"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="547"/>
+      <location filename="../../MDIViewPage.cpp" line="550"/>
       <source>Save PDF file</source>
       <translation>Сохранить PDF файл</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="548"/>
+      <location filename="../../MDIViewPage.cpp" line="551"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1092"/>
+      <location filename="../../MDIViewPage.cpp" line="1095"/>
       <source>Selected:</source>
       <translation>Выбрано:</translation>
     </message>

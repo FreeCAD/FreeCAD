@@ -224,11 +224,11 @@ Qualsiasi valore della SetupSheet modificato, rispetto al valore di default, vie
 This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
 
 Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</source>
-      <translation type="unfinished">If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object&apos;s bounding box).
+      <translation>Se abilitato, la creazione del grezzo è inclusa nel modello. Se un modello non include una definizione del grezzo, vsarà utilizzato l'algoritmo di creazione del grezzo predefinito (creazione dal box di delimitazione dell'oggetto base).
 
-This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.
+Questa opzione è particolarmente utile se il grezzo è una scatola o un cilindro o se la macchina ha un posizionamento standard per la lavorazione.
 
-Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.</translation>
+Si noti che questa opzione è disabilitata se nel lavoro viene utilizzato un oggetto grezzo da un solido esistente: non è possibile memorizzarlo in un modello.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="184"/>
@@ -276,11 +276,11 @@ Si tenga presente che sono elencate solo le operazioni per le quali attualmente 
 For Box and Cylinder stocks this means the actual size of the stock solid being created.
 
 For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</source>
-      <translation type="unfinished">If enabled the current size settings for the stock object are included in the template.
+      <translation>Se abilitato, le impostazioni di dimensione correnti per l'oggetto grezzo sono incluse nel modello.
 
-For Box and Cylinder stocks this means the actual size of the stock solid being created.
+Per i grezzi Box e Cilindro ciò significa la dimensione effettiva del solido grezzo creato.
 
-For stock from the Base object&apos;s bounding box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job&apos;s Base object and apply the stored extra settings.</translation>
+Per il grezzo creato dal box di delimitazione dell'oggetto Base si intende il materiale extra in tutte le direzioni. Un oggetto grezzo standard creato da un modello di questo tipo otterrà la sua dimensione di base dall'oggetto Base del nuovo lavoro e si applicheranno le impostazioni aggiuntive memorizzate.</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="168"/>
@@ -385,7 +385,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</source>
-      <translation type="unfinished">Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &quot;Mixed Case&quot;</translation>
+      <translation>Nome della proprietà. Può contenere solo lettere, numeri e underscore. I nomi MixedCase verranno visualizzati con spazi &quot;Mixed Case&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
@@ -654,7 +654,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Estende il box di delimitazione del modello</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -695,7 +695,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation type="unfinished">Select one or more features in the 3d view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
+      <translation>Selezionare una o più caratteristiche nella vista 3D e premere &apos;Aggiungi&apos; per aggiungerle come elementi di base per questa operazione. Le caratteristiche selezionate possono essere completamente eliminate.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
@@ -770,7 +770,7 @@ Il tasto Reimposta elimina tutti gli elementi correnti dall'elenco e riempie l'e
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="66"/>
       <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
-      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job&apos;s base object.</translation>
+      <translation>Rimuove tutti gli elementi della lista e riempie la lista con tutte le feature ammissibili dall'oggetto base del lavoro.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
@@ -1121,7 +1121,7 @@ Il tasto Reimposta elimina tutti gli elementi correnti dall'elenco e riempie l'e
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="308"/>
       <source>Miter joint</source>
-      <translation type="unfinished">Miter joint</translation>
+      <translation>Giunto di mitragliatura</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="77"/>
@@ -1151,7 +1151,7 @@ Il tasto Reimposta elimina tutti gli elementi correnti dall'elenco e riempie l'e
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="78"/>
       <source>Peck</source>
-      <translation type="unfinished">Peck</translation>
+      <translation>Peck</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="145"/>
@@ -1171,7 +1171,7 @@ Il tasto Reimposta elimina tutti gli elementi correnti dall'elenco e riempie l'e
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
       <source>Don&apos;t retract after every hole</source>
-      <translation type="unfinished">Don&apos;t retract after every hole</translation>
+      <translation>Non ritrarre dopo ogni foro</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
@@ -1822,7 +1822,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Evita di tagliare le ultime facce 'N' nella lista della Geometria di Base delle facce selezionate.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
@@ -2103,7 +2103,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="177"/>
       <source>Lead In/Out</source>
-      <translation type="unfinished">Lead In/Out</translation>
+      <translation>Lead In/Out</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="65"/>
@@ -2560,7 +2560,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Estende il box di delimitazione del modello</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="429"/>
@@ -2772,7 +2772,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="391"/>
       <source>Multi Panel</source>
-      <translation type="unfinished">Multi Panel</translation>
+      <translation>Pannello Multiplo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="396"/>
@@ -3707,7 +3707,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
       <source>Extend Model&apos;s Bounding Box</source>
-      <translation type="unfinished">Extend Model&apos;s Bounding Box</translation>
+      <translation>Estende il box di delimitazione del modello</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="493"/>
@@ -3783,7 +3783,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="699"/>
       <source>XY in Stock</source>
-      <translation type="unfinished">XY in Stock</translation>
+      <translation>XY in Stock</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="709"/>
@@ -4076,7 +4076,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1554"/>
       <source>Op Defaults</source>
-      <translation type="unfinished">Op Defaults</translation>
+      <translation>Op Defaults</translation>
     </message>
   </context>
   <context>
@@ -4193,7 +4193,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="721"/>
       <source>Spindle RPM</source>
-      <translation type="unfinished">Spindle RPM</translation>
+      <translation>Spindle RPM</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="535"/>
@@ -4211,7 +4211,7 @@ Default: 3 mm</translation>
       <translation type="unfinished">Cutting Edge Angle (%.2f) results in negative tool tip length</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
@@ -5357,7 +5357,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Op/Surface.py" line="202"/>
       <location filename="../../../Path/Op/Waterline.py" line="230"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
-      <translation type="unfinished">Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</translation>
+      <translation>Evita di tagliare le ultime facce 'N' nella lista della Geometria di Base delle facce selezionate.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="210"/>
@@ -5809,7 +5809,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="186"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Mitra</translation>
     </message>
   </context>
   <context>
@@ -5859,7 +5859,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="201"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Mitra</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="380"/>
@@ -6522,7 +6522,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="454"/>
       <source>LeadInOut</source>
-      <translation type="unfinished">LeadInOut</translation>
+      <translation>LeadInOut</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="458"/>
@@ -6550,7 +6550,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="417"/>
       <source>PropertyBag</source>
-      <translation type="unfinished">PropertyBag</translation>
+      <translation>PropertyBag</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="421"/>
@@ -6624,7 +6624,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="253"/>
       <source>Axis Map</source>
-      <translation type="unfinished">Axis Map</translation>
+      <translation>Mappa Asse</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="255"/>
@@ -6725,17 +6725,17 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="131"/>
       <source>RampMethod1</source>
-      <translation type="unfinished">RampMethod1</translation>
+      <translation>RampMethod1</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="132"/>
       <source>RampMethod2</source>
-      <translation type="unfinished">RampMethod2</translation>
+      <translation>RampMethod2</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="133"/>
       <source>RampMethod3</source>
-      <translation type="unfinished">RampMethod3</translation>
+      <translation>RampMethod3</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="134"/>
@@ -7232,12 +7232,12 @@ For example:
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
       <source>Minimum Z</source>
-      <translation type="unfinished">Minimum Z</translation>
+      <translation>Minimo Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
       <source>Maximum Z</source>
-      <translation type="unfinished">Maximum Z</translation>
+      <translation>Massimo Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
@@ -7446,7 +7446,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="880"/>
       <source>Profiling</source>
-      <translation type="unfinished">Profiling</translation>
+      <translation>Profiling</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Adaptive.py" line="159"/>
@@ -7474,7 +7474,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Base.py" line="360"/>
       <source>Mist</source>
-      <translation type="unfinished">Mist</translation>
+      <translation>Mist</translation>
     </message>
   </context>
   <context>
@@ -8202,7 +8202,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="221"/>
       <source>Vcarve</source>
-      <translation type="unfinished">Vcarve</translation>
+      <translation>Vcarve</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="222"/>
@@ -8505,34 +8505,34 @@ For example:
       <translation>Copiare i file di esempio nella nuova directory {}?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Tabella degli utensili JSON (*.jfctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation>Salva libreria utensile</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Utensile</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>Tabella degli utensili LinuxCNC (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>

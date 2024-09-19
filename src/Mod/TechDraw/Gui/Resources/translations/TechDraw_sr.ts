@@ -2262,7 +2262,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Направи слику</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="509"/>
+      <location filename="../../QGIViewBalloon.cpp" line="500"/>
       <source>Drag Balloon</source>
       <translation>Превуци позициону ознаку</translation>
     </message>
@@ -2272,7 +2272,7 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Превуци коту</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="572"/>
+      <location filename="../../QGSPage.cpp" line="570"/>
       <source>Create Balloon</source>
       <translation>Направи позициону ознаку</translation>
     </message>
@@ -3549,28 +3549,28 @@ Without a selection, a file browser lets you select a SVG or image file.</source
       <translation>Нема цртежа у документу.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="315"/>
+      <location filename="../../MDIViewPage.cpp" line="318"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="316"/>
-      <location filename="../../MDIViewPage.cpp" line="503"/>
+      <location filename="../../MDIViewPage.cpp" line="319"/>
+      <location filename="../../MDIViewPage.cpp" line="506"/>
       <source>All Files (*.*)</source>
       <translation>Све Датотеке (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="321"/>
       <source>Export Page As PDF</source>
       <translation>Извези цртеж у PDF формату</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="502"/>
+      <location filename="../../MDIViewPage.cpp" line="505"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="505"/>
+      <location filename="../../MDIViewPage.cpp" line="508"/>
       <source>Export page as SVG</source>
       <translation>Извези цртеж у SVG формату</translation>
     </message>
@@ -4622,6 +4622,11 @@ Then you need to increase the tile limit.</source>
       <translation>Прикажи и линију пресека приликом обележавања пресека</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
+      <source>Balloon Leader Kink Length</source>
+      <translation type="unfinished">Balloon Leader Kink Length</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation>Врста линија прекида</translation>
@@ -4725,11 +4730,6 @@ Then you need to increase the tile limit.</source>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Дужина хоризонталног дела позиционе ознаке</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
-      <source>Ballon Leader Kink Length</source>
-      <translation>Хоризонтални део позиционе ознаке</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -5598,22 +5598,22 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="898"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Хватање за</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="906"/>
       <source>Check this box if you want views to snap into alignment when being dragged.</source>
-      <translation type="unfinished">Check this box if you want views to snap into alignment when being dragged.</translation>
+      <translation>Означи ако желиш да се ухвати поравнати положај погледа приликом превлачања.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="909"/>
       <source>Snap View Alignment</source>
-      <translation type="unfinished">Snap View Alignment</translation>
+      <translation>Ухвати поравнање погледа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="938"/>
       <source>View Snapping Factor</source>
-      <translation type="unfinished">View Snapping Factor</translation>
+      <translation>Коефицијент хватања погледа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="945"/>
@@ -5847,91 +5847,91 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Укљ/Искљ одржавај ажурним</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
       <translation>Прикажи/Сакриј оквире око погледа</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Извези SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>Export DXF</source>
       <translation>Извези DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export PDF</source>
       <translation>Извези PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>Штампај све странице</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="409"/>
+      <location filename="../../MDIViewPage.cpp" line="412"/>
       <source>Different orientation</source>
       <translation>Другачија оријентација</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="410"/>
+      <location filename="../../MDIViewPage.cpp" line="413"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Штампач користи другачију оријентацију од цртежа.
 Да ли желиш да наcтавиш?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="419"/>
+      <location filename="../../MDIViewPage.cpp" line="422"/>
       <source>Different paper size</source>
       <translation>Другачија величина папира</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="420"/>
+      <location filename="../../MDIViewPage.cpp" line="423"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Штампач користи другачију величину папира од цртежа.
 Да ли желиш да наставиш?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="434"/>
+      <location filename="../../MDIViewPage.cpp" line="437"/>
       <source>Opening file failed</source>
       <translation>Отварање датотеке неуcпешно</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="435"/>
+      <location filename="../../MDIViewPage.cpp" line="438"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Не могу да отворим датотеку %1 ради уписа.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="526"/>
+      <location filename="../../MDIViewPage.cpp" line="529"/>
       <source>Save DXF file</source>
       <translation>Сачувај DXF датотеку</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="527"/>
+      <location filename="../../MDIViewPage.cpp" line="530"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="547"/>
+      <location filename="../../MDIViewPage.cpp" line="550"/>
       <source>Save PDF file</source>
       <translation>Сачувај PDF датотеку</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="548"/>
+      <location filename="../../MDIViewPage.cpp" line="551"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1092"/>
+      <location filename="../../MDIViewPage.cpp" line="1095"/>
       <source>Selected:</source>
       <translation>Изабрано:</translation>
     </message>

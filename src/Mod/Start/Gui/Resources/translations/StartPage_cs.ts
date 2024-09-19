@@ -59,87 +59,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="208"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Empty file</source>
       <translation>Prázdný soubor</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>Vytvořit prázdný soubor FreeCADu</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="211"/>
+      <location filename="../../StartView.cpp" line="215"/>
       <source>Open File</source>
       <translation>Otevřít soubor</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="216"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Otevřít existující CAD soubor nebo 3D model</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Parametric Part</source>
       <translation>Parametrický díl</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="219"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Vytvořit díl v prostředí návrhu dílu</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Assembly</source>
       <translation>Sestava</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Create an assembly project</source>
       <translation>Vytvořit projekt sestavy</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="224"/>
       <source>2D Draft</source>
       <translation>2D návrh</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="225"/>
       <source>Create a 2D Draft with the Draft workbench</source>
       <translation>Vytvořit 2D návrh v prostředí návrhu</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Architektura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Create an architectural project</source>
       <translation>Vytvořit projekt architektury</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="488"/>
+      <location filename="../../StartView.cpp" line="492"/>
       <source>New File</source>
       <translation>Nový soubor</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="489"/>
+      <location filename="../../StartView.cpp" line="493"/>
       <source>Examples</source>
       <translation>Příklady</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="490"/>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>Recent Files</source>
       <translation>Nedávné soubory</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="493"/>
+      <location filename="../../StartView.cpp" line="497"/>
       <source>Open first start setup</source>
       <translation>Otevřít nastavení prvního spuštění</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="495"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Nezobrazovat příště tuto úvodní stránku (začít s prázdnou obrazovkou)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="482"/>
+      <location filename="../../StartView.cpp" line="486"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>

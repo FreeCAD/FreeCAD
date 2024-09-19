@@ -2120,7 +2120,7 @@ clica altre cop per finalitzar la selecció</translation>
       <location filename="../../TaskLinearPatternParameters.ui" line="68"/>
       <location filename="../../TaskLinearPatternParameters.ui" line="131"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="93"/>
@@ -2330,7 +2330,7 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="75"/>
       <source>Offset to face</source>
-      <translation>Desplaçament a la Cara</translation>
+      <translation>Equidistància a la Cara</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="130"/>
@@ -2699,7 +2699,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation>Desplaçament de la cara a la qual acabarà la cavitat</translation>
+      <translation>Equidistància de la cara a la qual acabarà la cavitat</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
@@ -2762,7 +2762,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="68"/>
       <source>Offset Angle</source>
-      <translation>Desplaçament de l'Angle</translation>
+      <translation>Equidistància de l'Angle</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="93"/>
@@ -2772,7 +2772,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="137"/>
       <source>Offset</source>
-      <translation>Equidistancia (ofset)</translation>
+      <translation>Equidistància</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="168"/>
@@ -4872,7 +4872,7 @@ més de 90: radi de forat més gran a la part inferior</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="598"/>
       <source>Extrude: Can only offset one face</source>
-      <translation>Extrusió: Només pots fer l'extrusió d'una cara</translation>
+      <translation>Extrusió: Només pots fer l'equidistància d'una cara</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="140"/>

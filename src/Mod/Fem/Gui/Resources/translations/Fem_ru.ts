@@ -301,7 +301,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Select a single FEM Mesh, please.</source>
-      <translation type="unfinished">Select a single FEM Mesh, please.</translation>
+      <translation>Выберите, пожалуйста, одну сетку FEM.</translation>
     </message>
   </context>
   <context>
@@ -692,12 +692,12 @@
     <message>
       <location filename="../../Command.cpp" line="1352"/>
       <source>Edit Elements set</source>
-      <translation type="unfinished">Edit Elements set</translation>
+      <translation>Редактировать набор элементов</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Create Elements set</source>
-      <translation type="unfinished">Create Elements set</translation>
+      <translation>Создать набор элементов</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1850"/>
@@ -1010,12 +1010,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Spooles equation solver</source>
-      <translation type="unfinished">Spooles equation solver</translation>
+      <translation>Решение для уравнения Sparse Object Oriented Linear Equations Solver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
       <source>Cholesky iterative solver</source>
-      <translation type="unfinished">Cholesky iterative solver</translation>
+      <translation>Итерационный решатель Холецкого</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
@@ -1106,7 +1106,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
       <source>Multi-core CPU support:</source>
-      <translation type="unfinished">Multi-core CPU support:</translation>
+      <translation>Поддержка многоядерных процессоров:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1276,7 +1276,7 @@ the constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
       <source>Working directory for solving analysis and Gmsh meshing</source>
-      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
+      <translation>Рабочий каталог для анализа решений и построения сетки Gmsh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1372,7 +1372,7 @@ when the results dialog is opened</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
       <source>Hide analysis features when opening result dialog</source>
-      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
+      <translation>Скрывать функции анализа при открытии диалогового окна результатов</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1422,7 +1422,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
       <source>Leave blank to use default Gmsh binary file</source>
-      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
+      <translation>Оставьте поле пустым, чтобы использовать исполняемый файл gmsh по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1576,7 +1576,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
       <source>Leave blank to use default Z88, z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
+      <translation>Оставьте поле пустым, чтобы использовать исполняемый файл Z88 z88r по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -2069,7 +2069,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
       <source>Length Scale [m]</source>
-      <translation type="unfinished">Length Scale [m]</translation>
+      <translation>Масштаб длины [м]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2628,12 +2628,12 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
       <source>Use FreeCAD material editor</source>
-      <translation type="unfinished">Use FreeCAD material editor</translation>
+      <translation>Использовать редактор материала FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
       <source>Use this task panel</source>
-      <translation type="unfinished">Use this task panel</translation>
+      <translation>Использовать эту панель задач</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2688,12 +2688,12 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
       <source>Thermal Properties</source>
-      <translation type="unfinished">Thermal Properties</translation>
+      <translation>Свойства Термала</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="497"/>
       <source>Specific Heat Capacity:</source>
-      <translation type="unfinished">Specific Heat Capacity:</translation>
+      <translation>Удельная теплоемкость:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -3476,7 +3476,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameters</source>
-      <translation type="unfinished">FEM Mesh Parameters</translation>
+      <translation>Параметр FEM сетки</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -3489,33 +3489,27 @@ Note: for 2D only setting for x is possible,
       <translation>Максимальный размер элемента (0.0 = Авто):</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="66"/>
-      <location filename="../ui/MeshGmsh.ui" line="110"/>
-      <source>0 mm</source>
-      <translation>0 мм</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGmsh.ui" line="91"/>
+      <location filename="../ui/MeshGmsh.ui" line="88"/>
       <source>Min element size (0.0 = Auto):</source>
       <translation>Минимальный размер элемента (0.0 = Авто):</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="138"/>
+      <location filename="../ui/MeshGmsh.ui" line="132"/>
       <source>Element order:</source>
       <translation>Порядок элемента:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="156"/>
+      <location filename="../ui/MeshGmsh.ui" line="150"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="181"/>
+      <location filename="../ui/MeshGmsh.ui" line="175"/>
       <source>Time:</source>
       <translation>Время:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="207"/>
+      <location filename="../ui/MeshGmsh.ui" line="201"/>
       <source>Gmsh version</source>
       <translation>Версия Gmsh</translation>
     </message>
@@ -4738,7 +4732,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="110"/>
       <source>System Rotation</source>
-      <translation type="unfinished">System Rotation</translation>
+      <translation>Вращение системы</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="116"/>
@@ -5107,12 +5101,12 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Number of Segments per Edge:</source>
-      <translation type="unfinished">Number of Segments per Edge:</translation>
+      <translation>Количество сегментов на ребро:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
       <source>Number of Segments per Radius:</source>
-      <translation type="unfinished">Number of Segments per Radius:</translation>
+      <translation>Количество сегментов на радиус:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5451,7 +5445,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
       <source>Creates a FEM equation for elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
+      <translation>Создает уравнение МКЭ для расчета упругости (напряжения)</translation>
     </message>
   </context>
   <context>
@@ -5678,12 +5672,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="866"/>
+      <location filename="../../../femcommands/commands.py" line="867"/>
       <source>Show result</source>
       <translation>Показать результат</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="870"/>
+      <location filename="../../../femcommands/commands.py" line="871"/>
       <source>Shows and visualizes selected result data</source>
       <translation>Наглядно показывает выбранные данные результата анализа</translation>
     </message>
@@ -5691,12 +5685,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="882"/>
+      <location filename="../../../femcommands/commands.py" line="883"/>
       <source>Purge results</source>
       <translation>Очистить результаты</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="886"/>
+      <location filename="../../../femcommands/commands.py" line="887"/>
       <source>Purges all results from active analysis</source>
       <translation>Удаляет все результаты из активного блока анализа</translation>
     </message>
@@ -5704,12 +5698,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="996"/>
+      <location filename="../../../femcommands/commands.py" line="997"/>
       <source>Solver CalculiX Standard</source>
       <translation>Решатель CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1001"/>
+      <location filename="../../../femcommands/commands.py" line="1002"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Создает стандартный решатель МКЭ CalculiX с помощью инструментов ccx</translation>
     </message>
@@ -5717,12 +5711,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1049"/>
+      <location filename="../../../femcommands/commands.py" line="1050"/>
       <source>Solver job control</source>
       <translation>Управление работой решателя</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1054"/>
+      <location filename="../../../femcommands/commands.py" line="1055"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Изменяет атрибуты решателя и выполняет алгоритмы вычисления выбранного решателя</translation>
     </message>
@@ -5730,12 +5724,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1066"/>
+      <location filename="../../../femcommands/commands.py" line="1067"/>
       <source>Solver Elmer</source>
       <translation>Решатель Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1068"/>
+      <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Создает задачу МКЭ для решателя Elmer</translation>
     </message>
@@ -5743,12 +5737,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1079"/>
+      <location filename="../../../femcommands/commands.py" line="1080"/>
       <source>Solver Mystran</source>
       <translation>Решатель Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1081"/>
+      <location filename="../../../femcommands/commands.py" line="1082"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Создает задачу МКЭ для решателя Mystran</translation>
     </message>
@@ -5756,12 +5750,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1091"/>
+      <location filename="../../../femcommands/commands.py" line="1092"/>
       <source>Run solver calculations</source>
       <translation>Запустить алгоритм расчета решателя</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1095"/>
+      <location filename="../../../femcommands/commands.py" line="1096"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Запускает вычисления для выбранного решателя</translation>
     </message>
@@ -5769,12 +5763,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1111"/>
+      <location filename="../../../femcommands/commands.py" line="1112"/>
       <source>Solver Z88</source>
       <translation>Решатель Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1113"/>
+      <location filename="../../../femcommands/commands.py" line="1114"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Создает задачу для решателя МКЭ Z88</translation>
     </message>
@@ -5856,7 +5850,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="131"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
+      <translation>Чтобы добавить ссылки: выберите их в 3D-виде и нажмите «Добавить».</translation>
     </message>
   </context>
   <context>
@@ -6011,7 +6005,8 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
       <source>Creates a FEM equation for 2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
+      <translation>Создает уравнение МКЭ для
+магнитодинамических сил</translation>
     </message>
   </context>
   <context>
@@ -6038,7 +6033,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
       <source>Creates a FEM equation for magnetodynamic forces</source>
-      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
+      <translation>Создает уравнение МКЭ длямагнитодинамических сил</translation>
     </message>
   </context>
   <context>
@@ -6118,7 +6113,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
+      <translation>Создать FEM уравнение для деформации (нелинейная эластичность)</translation>
     </message>
   </context>
   <context>
@@ -6216,12 +6211,12 @@ Please select a result type first.</source>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1024"/>
+      <location filename="../../../femcommands/commands.py" line="1025"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>Решатель CalculiX (новый фреймворк)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1029"/>
+      <location filename="../../../femcommands/commands.py" line="1030"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Создает новую структуру решателя МКЭ CalculiX (меньше обработки ошибок результатов)</translation>
     </message>
@@ -6372,12 +6367,12 @@ Please select a result type first.</source>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="855"/>
+      <location filename="../../../femcommands/commands.py" line="856"/>
       <source>FEM mesh refinement</source>
       <translation>Уточнение сетки МКЭ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="856"/>
+      <location filename="../../../femcommands/commands.py" line="857"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Создает сетку ПЭМ</translation>
     </message>
@@ -6493,7 +6488,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
-      <translation type="unfinished">Creates a rigid body constraint for a geometric entity</translation>
+      <translation>Создает жесткое ограничение для геометрического объекта</translation>
     </message>
   </context>
   <context>
@@ -6522,7 +6517,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
+      <translation>Допускается только один тип выбора (вершина, грань или ребро) на одно ограничение!</translation>
     </message>
   </context>
   <context>
@@ -6548,7 +6543,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase Elements by Polygon</source>
-      <translation type="unfinished">Erase Elements by Polygon</translation>
+      <translation>Стереть элементы из полигона</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -6585,18 +6580,18 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="232"/>
       <source>Can't copy ResultMesh to ResultMesh</source>
-      <translation type="unfinished">Can't copy ResultMesh to ResultMesh</translation>
+      <translation>Невозможно скопировать ResultMesh в ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
       <source>Mesh must be a Results mesh</source>
-      <translation type="unfinished">Mesh must be a Results mesh</translation>
+      <translation>Сетка должна быть сетью результатов</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="564"/>
       <source>No Data To Restore
 </source>
-      <translation type="unfinished">No Data To Restore
+      <translation>Нет данных для восстановления
 </translation>
     </message>
     <message>
@@ -6650,6 +6645,69 @@ Please select a result type first.</source>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Create Element set by Poly</source>
       <translation type="unfinished">Create Element set by Poly</translation>
+    </message>
+  </context>
+  <context>
+    <name>NetgenMesh</name>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="14"/>
+      <source>FEM Mesh by Netgen</source>
+      <translation type="unfinished">FEM Mesh by Netgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="26"/>
+      <source>Mesh Parameters</source>
+      <translation type="unfinished">Mesh Parameters</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="37"/>
+      <source>Fineness:</source>
+      <translation>Точность:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="47"/>
+      <source>Maximal Size:</source>
+      <translation type="unfinished">Maximal Size:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="88"/>
+      <source>Minimal Size:</source>
+      <translation type="unfinished">Minimal Size:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="129"/>
+      <source>Second Order</source>
+      <translation type="unfinished">Second Order</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="136"/>
+      <source>Growth Rate:</source>
+      <translation>Темп роста:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="159"/>
+      <source>Curvature Safety:</source>
+      <translation type="unfinished">Curvature Safety:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="176"/>
+      <source>Segments Per Edge:</source>
+      <translation type="unfinished">Segments Per Edge:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="204"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="229"/>
+      <source>Time:</source>
+      <translation>Время:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="255"/>
+      <source>Netgen version</source>
+      <translation type="unfinished">Netgen version</translation>
     </message>
   </context>
 </TS>

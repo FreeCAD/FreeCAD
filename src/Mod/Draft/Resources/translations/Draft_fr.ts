@@ -3006,8 +3006,8 @@ soit nécessaire d'appuyer sur la touche pour l'aimantation.</translation>
     <message>
       <location filename="../../DraftGui.py" line="491"/>
       <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="1469"/>
+      <location filename="../../DraftGui.py" line="1484"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3235,8 +3235,8 @@ vous n'aurez pas appuyé à nouveau sur le bouton de commande.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1487"/>
       <source>Autogroup off</source>
       <translation>Groupement automatique désactivé</translation>
     </message>
@@ -3330,32 +3330,32 @@ vous n'aurez pas appuyé à nouveau sur le bouton de commande.</translation>
       <translation>{} global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1480"/>
       <source>Autogroup:</source>
       <translation>Groupement automatique :</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1619"/>
       <source>Modify objects</source>
       <translation>Modifier des objets</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1768"/>
       <source>Faces</source>
       <translation>Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1769"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1770"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1771"/>
       <source>Facebinder elements</source>
       <translation>Éléments d'une surface liée</translation>
     </message>
@@ -4130,12 +4130,12 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="120"/>
       <source>This object is not supported.</source>
-      <translation type="unfinished">This object is not supported.</translation>
+      <translation>Cet objet n'est pas pris en compte.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="143"/>
       <source>Only a single face can be extruded.</source>
-      <translation type="unfinished">Only a single face can be extruded.</translation>
+      <translation>Une seule face peut être extrudée.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="182"/>
@@ -4880,29 +4880,29 @@ L'angle final sera l'angle de référence plus cette quantité.</translation>
       <translation>Le décalage de la fin est trop important par rapport à la longueur de la courbe moins le décalage du début. Utiliser zéro à la place.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="537"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>La longueur du vecteur tangent est zéro. La copie est non alignée.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="551"/>
+      <location filename="../../draftobjects/patharray.py" line="573"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>La longueur du vecteur normal est zéro. Utiliser un axe par défaut à la place.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="557"/>
+      <location filename="../../draftobjects/patharray.py" line="579"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Les vecteurs tangents et normaux sont parallèles. La normale est remplacée par un axe par défaut.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Impossible de calculer le vecteur normal. Utiliser la normale par défaut à la place.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>AlignMode {} is not implemented</source>
       <translation>Le mode aligner {} n'est pas implémenté</translation>
     </message>
@@ -5564,7 +5564,7 @@ des objets existants dans tous les documents ouverts ?</translation>
       <translation>propriétés de la vue mises à jour</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5653,7 +5653,7 @@ Pour permettre à FreeCAD de télécharger ces bibliothèques, répondez Oui.</t
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>

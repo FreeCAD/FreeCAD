@@ -647,7 +647,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation type="unfinished">If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</translation>
+      <translation>Je-li zaškrtnuto, cesta je zavazbena tělesem. V opačném případě popisuje objem tělesa zónu &apos;nevstupovat&apos;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -2297,9 +2297,9 @@ Pokud je zadaná výška 0, dressup použije polovinu výšky dílu. Pokud je v�
       <source>Radius of the fillet on the tag&apos;s top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
-      <translation type="unfinished">Radius of the fillet on the tag&apos;s top edge.
+      <translation>Poloměr zaoblení na horním hraně štítku.
 
-If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</translation>
+Pokud je poloměr větší než ten, který podporuje samotný tvar štítku, výsledným tvarem bude kopule.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="109"/>
@@ -4209,7 +4209,7 @@ Výchozí: 3 mm</translation>
       <translation>Úhel řezné hrany (%.2f) má za následek zápornou délku hrotu nástroje</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
@@ -8503,34 +8503,34 @@ For example:
       <translation>Kopírovat ukázkové soubory do nového adresáře {}?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Tooltable JSON (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation>Save toolbit library</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Nástroj</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Útvar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>LinuxCNC tooltable (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>

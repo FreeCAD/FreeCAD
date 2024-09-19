@@ -1106,7 +1106,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Dimensions</source>
-      <translation>Dimenzije</translation>
+      <translation>Kote</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
@@ -1995,7 +1995,7 @@ Ova vrednost je maksimalna dužina segmenta.</translation>
       <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation>Koristi se Pithon importer, u suprotnom slučaju se koristi noviji C++.
+      <translation>Koristi se Python importer, u suprotnom slučaju se koristi noviji C++.
 Napomena: C++ importer je brži, ali još nije toliko funkcionalan</translation>
     </message>
     <message>
@@ -2054,7 +2054,7 @@ iz Menadžera dodataka.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation>Ako želi[ da se uvezu i neimenovani blokovi (koji počinju sa *)</translation>
+      <translation>Ako želiš da se uvezu i neimenovani blokovi (koji počinju sa *)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="206"/>
@@ -2993,8 +2993,8 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="491"/>
       <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="1469"/>
+      <location filename="../../DraftGui.py" line="1484"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3220,8 +3220,8 @@ Nije dostupno ako je omogućena opcija podešavanja 'Koristi Part primitive'</tr
     </message>
     <message>
       <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1487"/>
       <source>Autogroup off</source>
       <translation>Automatsko grupisanje isključeno</translation>
     </message>
@@ -3315,32 +3315,32 @@ Nije dostupno ako je omogućena opcija podešavanja 'Koristi Part primitive'</tr
       <translation>Opšto {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1480"/>
       <source>Autogroup:</source>
       <translation>Automatsko grupisanje:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1619"/>
       <source>Modify objects</source>
       <translation>Izmeni objekte</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1768"/>
       <source>Faces</source>
       <translation>Stranice</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1769"/>
       <source>Remove</source>
       <translation>Ukloni</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1770"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1771"/>
       <source>Facebinder elements</source>
       <translation>Elementi Povezivača stranica</translation>
     </message>
@@ -4114,12 +4114,12 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="120"/>
       <source>This object is not supported.</source>
-      <translation type="unfinished">This object is not supported.</translation>
+      <translation>Ovaj objekat nije podržan.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="143"/>
       <source>Only a single face can be extruded.</source>
-      <translation type="unfinished">Only a single face can be extruded.</translation>
+      <translation>Izvlačiti se može samo jedna stranica.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="182"/>
@@ -4864,29 +4864,29 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Krajnji odmak je prevelik za razliku između dužine putanje i početnog odmaka. Koristi nulu umesto.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="537"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>Dužina tangentnog vektora je nula. Kopija nije poravnata.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="551"/>
+      <location filename="../../draftobjects/patharray.py" line="573"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>Dužina vektora normale je nula. Umesto njega koristite podrazumevanu osu.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="557"/>
+      <location filename="../../draftobjects/patharray.py" line="579"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Tangentni i normalni vektori su paralelni. Normalni je zamenjen podrazumevanom osom.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Nije moguće izračunati normalni vektor. Umesto toga koristite podrazumevanu normalu.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>AlignMode {} is not implemented</source>
       <translation type="unfinished">AlignMode {} is not implemented</translation>
     </message>
@@ -5548,7 +5548,7 @@ postojećih objekata u svim otvorenim dokumentima?</translation>
       <translation>osvežena svojstva prikaza</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5638,7 +5638,7 @@ Da bi omogućio FreeCAD-u da preuzme ove biblioteke, odgovori sa Da.</translatio
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -7868,7 +7868,7 @@ Ova osobina je samo za čitanje, pošto broj zavisi od tačaka u tačkastom obje
     <message>
       <location filename="../../draftobjects/fillet.py" line="45"/>
       <source>The start point of this line.</source>
-      <translation>Početna tačka ove linije.</translation>
+      <translation>Početna tačka duži.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="53"/>

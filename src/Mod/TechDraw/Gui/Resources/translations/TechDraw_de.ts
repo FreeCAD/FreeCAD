@@ -2320,7 +2320,7 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
       <translation>Bild erstellen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="509"/>
+      <location filename="../../QGIViewBalloon.cpp" line="500"/>
       <source>Drag Balloon</source>
       <translation>Hinweisfeld ziehen</translation>
     </message>
@@ -2330,7 +2330,7 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
       <translation>Maß ziehen</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="572"/>
+      <location filename="../../QGSPage.cpp" line="570"/>
       <source>Create Balloon</source>
       <translation>Hinweisfeld erstellen</translation>
     </message>
@@ -3607,28 +3607,28 @@ Ohne Auswahl öffnet sich ein Datei-Browser zur Auswahl einer SVG- oder Bilddate
       <translation>Das Dokument enthält keine Zeichnungsblätter.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="315"/>
+      <location filename="../../MDIViewPage.cpp" line="318"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="316"/>
-      <location filename="../../MDIViewPage.cpp" line="503"/>
+      <location filename="../../MDIViewPage.cpp" line="319"/>
+      <location filename="../../MDIViewPage.cpp" line="506"/>
       <source>All Files (*.*)</source>
       <translation>Alle Dateien (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="318"/>
+      <location filename="../../MDIViewPage.cpp" line="321"/>
       <source>Export Page As PDF</source>
       <translation>Seite als PDF-Datei exportieren</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="502"/>
+      <location filename="../../MDIViewPage.cpp" line="505"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="505"/>
+      <location filename="../../MDIViewPage.cpp" line="508"/>
       <source>Export page as SVG</source>
       <translation>Seite als SVG exportieren</translation>
     </message>
@@ -4674,6 +4674,11 @@ Dann muss das Kachellimit erhöht werden.</translation>
       <translation>Schnittlinie in die Beschriftung des Schnittes einbeziehen</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
+      <source>Balloon Leader Kink Length</source>
+      <translation type="unfinished">Balloon Leader Kink Length</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="447"/>
       <source>Broken View Break Type</source>
       <translation>Typ der unterbrochenen Ansicht</translation>
@@ -4777,11 +4782,6 @@ Dann muss das Kachellimit erhöht werden.</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="432"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>Länge des horizontalen Anteils der Linie des Hinweisfeldes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="435"/>
-      <source>Ballon Leader Kink Length</source>
-      <translation>Knicklänge der Linie des Hinweisfeldes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="40"/>
@@ -5661,22 +5661,22 @@ für Ansichtengruppen verteilen</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="906"/>
       <source>Check this box if you want views to snap into alignment when being dragged.</source>
-      <translation type="unfinished">Check this box if you want views to snap into alignment when being dragged.</translation>
+      <translation>Aktivieren, wenn Ansichten während des Ziehens in der richtigen Lage einrasten sollen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="909"/>
       <source>Snap View Alignment</source>
-      <translation type="unfinished">Snap View Alignment</translation>
+      <translation>Ausrichtung der Ansichten einrasten</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="938"/>
       <source>View Snapping Factor</source>
-      <translation type="unfinished">View Snapping Factor</translation>
+      <translation>Einrastfaktor für Ansichten</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="945"/>
       <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
-      <translation type="unfinished">When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</translation>
+      <translation>Während des Ziehens einer Ansicht, wird sie in der richtigen Lage einrasten, wenn sie sich innerhalb dieses Bruchteils der Ansichtsgröße der korrekten Ausrichtung befindet.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="993"/>
@@ -5905,90 +5905,90 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="94"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Automatisches Aktualisieren umschalten</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
       <translation>Rahmen umschalten</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportiere SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>Export DXF</source>
       <translation>Export nach DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export PDF</source>
       <translation>PDF exportieren</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>Alle Seiten drucken</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="409"/>
+      <location filename="../../MDIViewPage.cpp" line="412"/>
       <source>Different orientation</source>
       <translation>Andere Ausrichtung</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="410"/>
+      <location filename="../../MDIViewPage.cpp" line="413"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Der Drucker verwendet eine andere Ausrichtung als die Zeichnung.
 Trotzdem fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="419"/>
+      <location filename="../../MDIViewPage.cpp" line="422"/>
       <source>Different paper size</source>
       <translation>Anderes Papierformat</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="420"/>
+      <location filename="../../MDIViewPage.cpp" line="423"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Der Drucker verwendet eine andere Papiergröße als die Zeichnung. Möchten Sie fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="434"/>
+      <location filename="../../MDIViewPage.cpp" line="437"/>
       <source>Opening file failed</source>
       <translation>Fehler beim Öffnen der Datei</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="435"/>
+      <location filename="../../MDIViewPage.cpp" line="438"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Datei %1 kann nicht zum Schreiben geöffnet werden.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="526"/>
+      <location filename="../../MDIViewPage.cpp" line="529"/>
       <source>Save DXF file</source>
       <translation>DXF-Datei speichern</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="527"/>
+      <location filename="../../MDIViewPage.cpp" line="530"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="547"/>
+      <location filename="../../MDIViewPage.cpp" line="550"/>
       <source>Save PDF file</source>
       <translation>PDF-Datei speichern</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="548"/>
+      <location filename="../../MDIViewPage.cpp" line="551"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1092"/>
+      <location filename="../../MDIViewPage.cpp" line="1095"/>
       <source>Selected:</source>
       <translation>Ausgewählt:</translation>
     </message>
