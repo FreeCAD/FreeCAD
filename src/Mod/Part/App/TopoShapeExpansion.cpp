@@ -2165,9 +2165,6 @@ TopoShape& TopoShape::makeElementRuledSurface(const std::vector<TopoShape>& shap
         }
         auto countOfWires = s.countSubShapes(TopAbs_WIRE);
         if (countOfWires > 1) {
-            FC_THROWM(Base::CADKernelError, "Input shape has more than one wire");
-        }
-        if (countOfWires == 1) {
             curves[i++] = s.getSubTopoShape(TopAbs_WIRE, 1);
             continue;
         }
