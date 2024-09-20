@@ -58,8 +58,10 @@ def activateJoint(index):
     if JointObject.activeTask:
         JointObject.activeTask.reject()
 
-    panel = TaskAssemblyCreateJoint(index)
-    dialog = Gui.Control.showDialog(panel)
+    Gui.addModule("JointObject")  # NOLINT
+    Gui.doCommand(f"panel = JointObject.TaskAssemblyCreateJoint({index})")
+    Gui.doCommandGui("dialog = Gui.Control.showDialog(panel)")
+    dialog = Gui.doCommandEval("dialog")
     if dialog is not None:
         dialog.setAutoCloseOnTransactionChange(True)
         dialog.setDocumentName(App.ActiveDocument.Name)
@@ -476,16 +478,21 @@ class CommandGroupGearBelt:
 
 
 def createGroundedJoint(obj):
-    assembly = UtilsAssembly.activeAssembly()
-    if not assembly:
+    if not UtilsAssembly.activeAssembly():
         return
 
-    joint_group = UtilsAssembly.getJointGroup(assembly)
-
-    ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
-    JointObject.GroundedJoint(ground, obj)
-    JointObject.ViewProviderGroundedJoint(ground.ViewObject)
-    return ground
+    Gui.addModule("UtilsAssembly")
+    Gui.addModule("JointObject")
+    commands = (
+        f'obj = App.ActiveDocument.getObject("{obj.Name}")\n'
+        "assembly = UtilsAssembly.activeAssembly()\n"
+        "joint_group = UtilsAssembly.getJointGroup(assembly)\n"
+        'ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")\n'
+        "JointObject.GroundedJoint(ground, obj)"
+    )
+    Gui.doCommand(commands)
+    Gui.doCommandGui("JointObject.ViewProviderGroundedJoint(ground.ViewObject)")
+    return Gui.doCommandEval("ground")
 
 
 class CommandToggleGrounded:
@@ -540,9 +547,12 @@ class CommandToggleGrounded:
                 ungrounded = False
                 for joint in joint_group.Group:
                     if hasattr(joint, "ObjectToGround") and joint.ObjectToGround == moving_part:
-                        doc = App.ActiveDocument
-                        doc.removeObject(joint.Name)
-                        doc.recompute()
+                        commands = (
+                            "doc = App.ActiveDocument\n"
+                            f'doc.removeObject("{joint.Name}")\n'
+                            "doc.recompute()\n"
+                        )
+                        Gui.doCommand(commands)
                         ungrounded = True
                         break
                 if ungrounded:

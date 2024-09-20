@@ -1417,6 +1417,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         else:
             self.joint.Document.removeObject(self.joint.Name)
 
+        cmds = UtilsAssembly.generatePropertySettings("obj", self.joint)
+        Gui.doCommand(cmds)
+
         App.closeActiveTransaction()
         return True
 

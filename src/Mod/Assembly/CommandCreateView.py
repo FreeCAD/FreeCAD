@@ -74,8 +74,10 @@ class CommandCreateView:
         if not assembly:
             return
 
-        self.panel = TaskAssemblyCreateView()
-        Gui.Control.showDialog(self.panel)
+        Gui.addModule("CommandCreateView")  # NOLINT
+        Gui.doCommand("panel = CommandCreateView.TaskAssemblyCreateView()")
+        self.panel = Gui.doCommandEval("panel")
+        Gui.doCommandGui("Gui.Control.showDialog(panel)")
 
 
 ######### Exploded View Object ###########
@@ -524,6 +526,11 @@ class TaskAssemblyCreateView(QtCore.QObject):
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
         for move in self.viewObj.Moves:
             move.Visibility = False
+        commands = f'obj = App.ActiveDocument.getObject("{self.viewObj.Name}")\n'
+        for move in self.viewObj.Moves:
+            more = UtilsAssembly.generatePropertySettings("obj.Moves[0]", move)
+            commands = commands + more
+        Gui.doCommand(commands[:-1])  # Don't use the last \n
         App.closeActiveTransaction()
         return True
 
@@ -695,16 +702,27 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.blockDraggerMove = False
 
     def createExplodedViewObject(self):
-        view_group = UtilsAssembly.getViewGroup(self.assembly)
-        self.viewObj = view_group.newObject("App::FeaturePython", "Exploded View")
 
-        ExplodedView(self.viewObj)
-        ViewProviderExplodedView(self.viewObj.ViewObject)
+        Gui.addModule("UtilsAssembly")
+        commands = (
+            f'assembly = App.ActiveDocument.getObject("{self.assembly.Name}")\n'
+            "view_group = UtilsAssembly.getViewGroup(assembly)\n"
+            'viewObj = view_group.newObject("App::FeaturePython", "Exploded View")\n'
+            "CommandCreateView.ExplodedView(viewObj)"
+        )
+        Gui.doCommand(commands)
+        self.viewObj = Gui.doCommandEval("viewObj")
+        Gui.doCommandGui("CommandCreateView.ViewProviderExplodedView(viewObj.ViewObject)")
 
     def createExplodedStepObject(self, moveType_index=0):
-        self.currentStep = self.assembly.newObject("App::FeaturePython", "Move")
-        ExplodedViewStep(self.currentStep, moveType_index)
-        ViewProviderExplodedViewStep(self.currentStep.ViewObject)
+        commands = (
+            f'assembly = App.ActiveDocument.getObject("{self.assembly.Name}")\n'
+            'currentStep = assembly.newObject("App::FeaturePython", "Move")\n'
+            f"CommandCreateView.ExplodedViewStep(currentStep, {moveType_index})"
+        )
+        Gui.doCommand(commands)
+        self.currentStep = Gui.doCommandEval("currentStep")
+        Gui.doCommandGui("CommandCreateView.ViewProviderExplodedViewStep(currentStep.ViewObject)")
 
         self.currentStep.MovementTransform = App.Placement()
 
@@ -727,7 +745,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         for obj, init_plc in zip(self.selectedObjs, self.selectedObjsInitPlc):
             obj.Placement = init_plc
 
-        self.currentStep.Document.removeObject(self.currentStep.Name)
+        Gui.doCommand(f'App.ActiveDocument.removeObject("{self.currentStep.Name}")')
         self.currentStep = None
 
         Gui.Selection.clearSelection()

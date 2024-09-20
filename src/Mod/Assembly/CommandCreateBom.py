@@ -324,11 +324,16 @@ class TaskAssemblyCreateBom(QtCore.QObject):
 
     def createBomObject(self):
         assembly = UtilsAssembly.activeAssembly()
+        Gui.addModule("UtilsAssembly")
         if assembly is not None:
-            bom_group = UtilsAssembly.getBomGroup(assembly)
-            self.bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")
+            commands = (
+                "bom_group = UtilsAssembly.getBomGroup(assembly)\n"
+                'bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")'
+            )
         else:
-            self.bomObj = App.activeDocument().addObject("Assembly::BomObject", "Bill of Materials")
+            commands = 'bomObj = App.activeDocument().addObject("Assembly::BomObject", "Bill of Materials")'
+        Gui.doCommand(commands)
+        self.bomObj = Gui.doCommandEval("bomObj")
 
     def export(self):
         self.bomObj.recompute()
