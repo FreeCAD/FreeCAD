@@ -33,25 +33,25 @@ class Origin;
 /** Plane Object
  *  Used to define planar support for all kind of operations in the document space
  */
-class AppExport OriginFeature: public App::GeoFeature
+class AppExport DatumElement: public App::GeoFeature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::DatumElement);
 
 public:
     /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
     PropertyString Role;
 
     /// Constructor
-    OriginFeature();
-    ~OriginFeature() override;
+    DatumElement();
+    ~DatumElement() override;
 
     /// Finds the origin object this plane belongs to
     App::Origin* getOrigin();
 };
 
-class AppExport Plane: public App::OriginFeature
+class AppExport Plane: public App::DatumElement
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::DatumElement);
 
 public:
     const char* getViewProviderName() const override
@@ -60,9 +60,9 @@ public:
     }
 };
 
-class AppExport Line: public App::OriginFeature
+class AppExport Line: public App::DatumElement
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::DatumElement);
 
 public:
     const char* getViewProviderName() const override

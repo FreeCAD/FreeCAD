@@ -32,7 +32,7 @@
 #include <Base/Placement.h>
 
 #include "Origin.h"
-#include "OriginFeature.h"
+#include "Datums.h"
 
 
 #ifndef M_PI
@@ -60,15 +60,15 @@ Origin::Origin()
 
 Origin::~Origin() = default;
 
-App::OriginFeature* Origin::getOriginFeature(const char* role) const
+App::DatumElement* Origin::getOriginFeature(const char* role) const
 {
     const auto& features = OriginFeatures.getValues();
     auto featIt = std::find_if(features.begin(), features.end(), [role](App::DocumentObject* obj) {
-        return obj->isDerivedFrom(App::OriginFeature::getClassTypeId())
-            && strcmp(static_cast<App::OriginFeature*>(obj)->Role.getValue(), role) == 0;
+        return obj->isDerivedFrom(App::DatumElement::getClassTypeId())
+            && strcmp(static_cast<App::DatumElement*>(obj)->Role.getValue(), role) == 0;
     });
     if (featIt != features.end()) {
-        return static_cast<App::OriginFeature*>(*featIt);
+        return static_cast<App::DatumElement*>(*featIt);
     }
     else {
 
@@ -81,7 +81,7 @@ App::OriginFeature* Origin::getOriginFeature(const char* role) const
 
 App::Line* Origin::getAxis(const char* role) const
 {
-    App::OriginFeature* feat = getOriginFeature(role);
+    App::DatumElement* feat = getOriginFeature(role);
     if (feat->isDerivedFrom(App::Line::getClassTypeId())) {
         return static_cast<App::Line*>(feat);
     }
@@ -95,7 +95,7 @@ App::Line* Origin::getAxis(const char* role) const
 
 App::Plane* Origin::getPlane(const char* role) const
 {
-    App::OriginFeature* feat = getOriginFeature(role);
+    App::DatumElement* feat = getOriginFeature(role);
     if (feat->isDerivedFrom(App::Plane::getClassTypeId())) {
         return static_cast<App::Plane*>(feat);
     }
@@ -171,12 +171,12 @@ void Origin::setupObject()
         std::string objName = doc->getUniqueObjectName(data.role);
         App::DocumentObject* featureObj = doc->addObject(data.type.getName(), objName.c_str());
 
-        assert(featureObj && featureObj->isDerivedFrom(App::OriginFeature::getClassTypeId()));
+        assert(featureObj && featureObj->isDerivedFrom(App::DatumElement::getClassTypeId()));
 
         QByteArray byteArray = data.label.toUtf8();
         featureObj->Label.setValue(byteArray.constData());
 
-        App::OriginFeature* feature = static_cast<App::OriginFeature*>(featureObj);
+        App::DatumElement* feature = static_cast<App::DatumElement*>(featureObj);
         feature->Placement.setValue(Base::Placement(Base::Vector3d(), data.rot));
         feature->Role.setValue(data.role);
 

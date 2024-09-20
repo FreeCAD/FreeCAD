@@ -29,11 +29,11 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::OriginFeature, App::GeoFeature)
-PROPERTY_SOURCE(App::Plane, App::OriginFeature)
-PROPERTY_SOURCE(App::Line, App::OriginFeature)
+PROPERTY_SOURCE(App::DatumElement, App::GeoFeature)
+PROPERTY_SOURCE(App::Plane, App::DatumElement)
+PROPERTY_SOURCE(App::Line, App::DatumElement)
 
-OriginFeature::OriginFeature()
+DatumElement::DatumElement()
 {
     ADD_PROPERTY_TYPE(Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin");
 
@@ -41,9 +41,9 @@ OriginFeature::OriginFeature()
     Placement.setStatus(Property::Hidden, true);
 }
 
-OriginFeature::~OriginFeature() = default;
+DatumElement::~DatumElement() = default;
 
-Origin* OriginFeature::getOrigin()
+Origin* DatumElement::getOrigin()
 {
     App::Document* doc = getDocument();
     auto origins = doc->getObjectsOfType(App::Origin::getClassTypeId());

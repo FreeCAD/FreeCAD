@@ -101,13 +101,13 @@ public:
     }
 
     /// Returns all controlled objects (both planes and axis) to iterate on them
-    std::vector<App::OriginFeature*> baseObjects() const
+    std::vector<App::DatumElement*> baseObjects() const
     {
         return {getX(), getY(), getZ(), getXY(), getXZ(), getYZ()};
     }
 
     /// Returns an axis by it's name
-    App::OriginFeature* getOriginFeature(const char* role) const;
+    App::DatumElement* getOriginFeature(const char* role) const;
 
     /// Returns an axis by it's name
     App::Line* getAxis(const char* role) const;
