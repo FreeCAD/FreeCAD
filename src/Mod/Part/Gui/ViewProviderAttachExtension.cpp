@@ -113,6 +113,10 @@ void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject
 
 void ViewProviderAttachExtension::showAttachmentEditor()
 {
+    if (Gui::Control().activeDialog()) {
+        Gui::Control().closeDialog();
+    }
+
     // See PropertyEnumAttacherItem::openTask()
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     TaskDlgAttacher* task;
