@@ -28,41 +28,41 @@
 namespace App
 {
 
-class Origin;
+    class Origin;
 
-/** Plane Object
- *  Used to define planar support for all kind of operations in the document space
- */
-class AppExport OriginFeature: public App::GeoFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-public:
-    /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
-    PropertyString Role;
+    /** Plane Object
+     *  Used to define planar support for all kind of operations in the document space
+     */
+    class AppExport OriginFeature : public App::GeoFeature
+    {
+        PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    public:
+        /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
+        PropertyString Role;
 
-    /// Constructor
-    OriginFeature();
-    ~OriginFeature() override;
+        /// Constructor
+        OriginFeature();
+        ~OriginFeature() override;
 
-    /// Finds the origin object this plane belongs to
-    App::Origin *getOrigin ();
-};
+        /// Finds the origin object this plane belongs to
+        App::Origin* getOrigin();
+    };
 
-class AppExport Plane: public App::OriginFeature {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-public:
-    const char* getViewProviderName() const override {
-        return "Gui::ViewProviderPlane";
-    }
-};
+    class AppExport Plane : public App::OriginFeature {
+        PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    public:
+        const char* getViewProviderName() const override {
+            return "Gui::ViewProviderPlane";
+        }
+    };
 
-class AppExport Line: public App::OriginFeature {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-public:
-    const char* getViewProviderName() const override {
-        return "Gui::ViewProviderLine";
-    }
-};
+    class AppExport Line : public App::OriginFeature {
+        PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    public:
+        const char* getViewProviderName() const override {
+            return "Gui::ViewProviderLine";
+        }
+    };
 
 } //namespace App
 

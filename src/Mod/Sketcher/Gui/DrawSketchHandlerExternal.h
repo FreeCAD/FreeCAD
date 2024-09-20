@@ -23,7 +23,7 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
 #define SKETCHERGUI_DrawSketchHandlerExternal_H
 
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
 
 #include <Gui/Notifications.h>
