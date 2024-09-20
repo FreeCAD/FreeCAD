@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
- *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2024 Ondsel (PL Boyer) <development@ondsel.com>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,34 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
-#define GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
 
-#include "ViewProviderGeoFeatureGroup.h"
+#ifndef GUI_ViewProviderPoint_H
+#define GUI_ViewProviderPoint_H
 
+#include "ViewProviderDatum.h"
 
 namespace Gui
 {
 
-class GuiExport ViewProviderOriginGroupExtension : public ViewProviderGeoFeatureGroupExtension
-{
-    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOriginGroupExtension);
-
+class GuiExport ViewProviderPoint : public ViewProviderDatum {
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPoint);
 public:
     /// Constructor
-    ViewProviderOriginGroupExtension();
-    ~ViewProviderOriginGroupExtension() override;
+    ViewProviderPoint();
+    ~ViewProviderPoint() override;
 
-    std::vector<App::DocumentObject*> extensionClaimChildren()const override;
-    std::vector<App::DocumentObject*> extensionClaimChildren3D()const override;
-
-private:
-    std::vector<App::DocumentObject*> constructChildren (
-            const std::vector<App::DocumentObject*> &children ) const;
+    void attach ( App::DocumentObject * ) override;
 };
-
-using ViewProviderOriginGroupExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension>;
 
 } //namespace Gui
 
-#endif // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+
+#endif // GUI_ViewProviderPoint_H
