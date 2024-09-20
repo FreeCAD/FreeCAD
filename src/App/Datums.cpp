@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,57 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINFEATURE_H
-#define ORIGINFEATURE_H
+#include "PreCompiled.h"
 
-#include "GeoFeature.h"
+#include "Datums.h"
+#include "Document.h"
+#include "Origin.h"
 
-namespace App
+
+using namespace App;
+
+PROPERTY_SOURCE(App::OriginFeature, App::GeoFeature)
+PROPERTY_SOURCE(App::Plane, App::OriginFeature)
+PROPERTY_SOURCE(App::Line, App::OriginFeature)
+
+OriginFeature::OriginFeature()
 {
+    ADD_PROPERTY_TYPE(Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin");
 
-class Origin;
+    // Set placement to read-only
+    Placement.setStatus(Property::Hidden, true);
+}
 
-/** Plane Object
- *  Used to define planar support for all kind of operations in the document space
- */
-class AppExport OriginFeature: public App::GeoFeature
+OriginFeature::~OriginFeature() = default;
+
+Origin* OriginFeature::getOrigin()
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+    App::Document* doc = getDocument();
+    auto origins = doc->getObjectsOfType(App::Origin::getClassTypeId());
 
-public:
-    /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
-    PropertyString Role;
-
-    /// Constructor
-    OriginFeature();
-    ~OriginFeature() override;
-
-    /// Finds the origin object this plane belongs to
-    App::Origin* getOrigin();
-};
-
-class AppExport Plane: public App::OriginFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-
-public:
-    const char* getViewProviderName() const override
-    {
-        return "Gui::ViewProviderPlane";
+    auto originIt = std::find_if(origins.begin(), origins.end(), [this](DocumentObject* origin) {
+        assert(origin->isDerivedFrom(App::Origin::getClassTypeId()));
+        return static_cast<App::Origin*>(origin)->hasObject(this);
+    });
+    if (originIt == origins.end()) {
+        return nullptr;
     }
-};
-
-class AppExport Line: public App::OriginFeature
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
-
-public:
-    const char* getViewProviderName() const override
-    {
-        return "Gui::ViewProviderLine";
+    else {
+        assert((*originIt)->isDerivedFrom(App::Origin::getClassTypeId()));
+        return static_cast<App::Origin*>(*originIt);
     }
-};
-
-}  // namespace App
-
-#endif /* end of include guard: ORIGINFEATURE_H */
+}

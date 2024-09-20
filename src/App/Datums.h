@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,43 +20,57 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef DATUMS_H
+#define DATUMS_H
 
-#include "OriginFeature.h"
-#include "Document.h"
-#include "Origin.h"
+#include "GeoFeature.h"
 
-
-using namespace App;
-
-PROPERTY_SOURCE(App::OriginFeature, App::GeoFeature)
-PROPERTY_SOURCE(App::Plane, App::OriginFeature)
-PROPERTY_SOURCE(App::Line, App::OriginFeature)
-
-OriginFeature::OriginFeature()
+namespace App
 {
-    ADD_PROPERTY_TYPE(Role, (""), 0, App::Prop_ReadOnly, "Role of the feature in the Origin");
 
-    // Set placement to read-only
-    Placement.setStatus(Property::Hidden, true);
-}
+class Origin;
 
-OriginFeature::~OriginFeature() = default;
-
-Origin* OriginFeature::getOrigin()
+/** Plane Object
+ *  Used to define planar support for all kind of operations in the document space
+ */
+class AppExport OriginFeature: public App::GeoFeature
 {
-    App::Document* doc = getDocument();
-    auto origins = doc->getObjectsOfType(App::Origin::getClassTypeId());
+    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
 
-    auto originIt = std::find_if(origins.begin(), origins.end(), [this](DocumentObject* origin) {
-        assert(origin->isDerivedFrom(App::Origin::getClassTypeId()));
-        return static_cast<App::Origin*>(origin)->hasObject(this);
-    });
-    if (originIt == origins.end()) {
-        return nullptr;
+public:
+    /// additional information about the feature usage (e.g. "BasePlane-XY" or "Axis-X" in a Origin)
+    PropertyString Role;
+
+    /// Constructor
+    OriginFeature();
+    ~OriginFeature() override;
+
+    /// Finds the origin object this plane belongs to
+    App::Origin* getOrigin();
+};
+
+class AppExport Plane: public App::OriginFeature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+
+public:
+    const char* getViewProviderName() const override
+    {
+        return "Gui::ViewProviderPlane";
     }
-    else {
-        assert((*originIt)->isDerivedFrom(App::Origin::getClassTypeId()));
-        return static_cast<App::Origin*>(*originIt);
+};
+
+class AppExport Line: public App::OriginFeature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(App::OriginFeature);
+
+public:
+    const char* getViewProviderName() const override
+    {
+        return "Gui::ViewProviderLine";
     }
-}
+};
+
+}  // namespace App
+
+#endif /* end of include guard: DATUMS_H */

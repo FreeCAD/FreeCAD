@@ -38,7 +38,7 @@
 #include <App/Document.h>
 #include <App/GroupExtension.h>
 #include <App/Link.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/ElementNamingUtils.h>
 #include <Mod/Part/App/TopoShape.h>
 
