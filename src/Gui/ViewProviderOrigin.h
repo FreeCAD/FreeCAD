@@ -26,21 +26,18 @@
 
 #include <App/PropertyGeo.h>
 
-#include "ViewProviderDocumentObject.h"
+#include "ViewProviderGeoFeatureGroup.h"
 
 
 namespace Gui {
 
 class Document;
 
-class GuiExport ViewProviderOrigin : public ViewProviderDocumentObject
+class GuiExport ViewProviderOrigin : public ViewProviderGeoFeatureGroup
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOrigin);
 
 public:
-    /// Size of the origin as set by the part.
-    App::PropertyVector Size;
-
     /// constructor.
     ViewProviderOrigin();
     /// destructor.
@@ -83,7 +80,7 @@ public:
     // default color for origini: light-blue (50, 150, 250, 255 stored as 0xRRGGBBAA)
     static const uint32_t defaultColor = 0x3296faff;
 protected:
-    void onChanged(const App::Property* prop) override;
+    void updateData(const App::Property*) override;
     bool onDelete(const std::vector<std::string> &) override;
 
 private:

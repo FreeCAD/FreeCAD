@@ -25,11 +25,13 @@
 
 #include "ViewProviderGeometryObject.h"
 
-class SoAsciiText;
+class SoText2;
 class SoScale;
 
 namespace Gui
 {
+
+    class SoShapeScale;
 
     /**
      * View provider associated with an App::DatumElement.
@@ -38,20 +40,16 @@ namespace Gui
         PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDatum);
 
     public:
-        /// The display size of the feature
-        App::PropertyFloat  Size;
-
         ViewProviderDatum();
         ~ViewProviderDatum() override;
 
         /// Get point derived classes will add their specific stuff
-        SoSeparator* getOriginFeatureRoot() { return pOriginFeatureRoot; }
+        SoSeparator* getRoot() { return pRoot; }
 
         /// Get pointer to the text label associated with the feature
-        SoAsciiText* getLabel() { return pLabel; }
+        SoText2* getLabel() { return pLabel; }
 
         void attach(App::DocumentObject*) override;
-        void updateData(const App::Property*) override;
         std::vector<std::string> getDisplayModes() const override;
         void setDisplayMode(const char* ModeName) override;
 
@@ -69,9 +67,10 @@ namespace Gui
         void onChanged(const App::Property* prop) override;
         bool onDelete(const std::vector<std::string>&) override;
     protected:
-        SoSeparator* pOriginFeatureRoot;
-        SoScale* pScale;
-        SoAsciiText* pLabel;
+        SoSeparator* pRoot;
+        SoShapeScale* soScale;
+        SoText2* pLabel;
+        double lineThickness;
     };
 
 } /* Gui */

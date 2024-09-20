@@ -44,10 +44,10 @@ OriginGroupExtension::OriginGroupExtension()
     initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
 
     EXTENSION_ADD_PROPERTY_TYPE(Origin,
-                                (nullptr),
-                                0,
-                                App::Prop_Hidden,
-                                "Origin linked to the group");
+        (nullptr),
+        0,
+        App::Prop_Hidden,
+        "Origin linked to the group");
     Origin.setScope(LinkScope::Child);
 }
 
@@ -74,12 +74,12 @@ App::Origin* OriginGroupExtension::getOrigin() const
     }
 }
 
-bool OriginGroupExtension::extensionGetSubObject(DocumentObject*& ret,
-                                                 const char* subname,
-                                                 PyObject** pyObj,
-                                                 Base::Matrix4D* mat,
-                                                 bool transform,
-                                                 int depth) const
+bool OriginGroupExtension::extensionGetSubObject(DocumentObject * &ret,
+    const char* subname,
+    PyObject * *pyObj,
+    Base::Matrix4D * mat,
+    bool transform,
+    int depth) const
 {
     App::DocumentObject* originObj = Origin.getValue();
     const char* dot;
@@ -100,14 +100,14 @@ bool OriginGroupExtension::extensionGetSubObject(DocumentObject*& ret,
         }
     }
     return GeoFeatureGroupExtension::extensionGetSubObject(ret,
-                                                           subname,
-                                                           pyObj,
-                                                           mat,
-                                                           transform,
-                                                           depth);
+        subname,
+        pyObj,
+        mat,
+        transform,
+        depth);
 }
 
-App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject* obj)
+App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject * obj)
 {
 
     if (!obj) {
@@ -121,7 +121,8 @@ App::DocumentObject* OriginGroupExtension::getGroupOfObject(const DocumentObject
         if (o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
             return o;
         }
-        else if (isOriginFeature && o->isDerivedFrom(App::Origin::getClassTypeId())) {
+        else if (isOriginFeature
+            && o->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
             auto result = getGroupOfObject(o);
             if (result) {
                 return result;
@@ -155,7 +156,7 @@ App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute()
     return GeoFeatureGroupExtension::extensionExecute();
 }
 
-App::DocumentObject* OriginGroupExtension::getLocalizedOrigin(App::Document* doc)
+App::DocumentObject* OriginGroupExtension::getLocalizedOrigin(App::Document * doc)
 {
     App::DocumentObject* originObject = doc->addObject("App::Origin", "Origin");
     QByteArray byteArray = tr("Origin").toUtf8();
@@ -185,7 +186,7 @@ void OriginGroupExtension::onExtendedUnsetupObject()
     GeoFeatureGroupExtension::onExtendedUnsetupObject();
 }
 
-void OriginGroupExtension::extensionOnChanged(const Property* p)
+void OriginGroupExtension::extensionOnChanged(const Property * p)
 {
     if (p == &Origin) {
         App::DocumentObject* owner = getExtendedObject();
@@ -202,8 +203,8 @@ void OriginGroupExtension::extensionOnChanged(const Property* p)
                     // Temporarily reset 'Restoring' status to allow document to auto label new
                     // objects
                     Base::ObjectStatusLocker<Document::Status, Document> guard(Document::Restoring,
-                                                                               document,
-                                                                               false);
+                        document,
+                        false);
                     Origin.setValue(getLocalizedOrigin(document));
                     FC_WARN("Reset origin in " << owner->getFullName());
                     return;
@@ -214,24 +215,32 @@ void OriginGroupExtension::extensionOnChanged(const Property* p)
     GeoFeatureGroupExtension::extensionOnChanged(p);
 }
 
-void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
+void OriginGroupExtension::relinkToOrigin(App::DocumentObject * obj)
 {
     // we get all links and replace the origin objects if needed (subnames need not to change, they
     // would stay the same)
     std::vector<App::DocumentObject*> result;
     std::vector<App::Property*> list;
     obj->getPropertyList(list);
+    auto isOriginFeature = [](App::DocumentObject* obj) -> bool {
+        // Check if the object is a DatumElement
+        if (auto* datumElement = dynamic_cast<App::DatumElement*>(obj)) {
+            // Check if the DatumElement is an origin
+            return datumElement->isOriginFeature();
+        }
+        return false;
+    };
+
     for (App::Property* prop : list) {
         if (prop->isDerivedFrom<App::PropertyLink>()) {
 
             auto p = static_cast<App::PropertyLink*>(prop);
-            if (!p->getValue()
-                || !p->getValue()->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+            if (!p->getValue() || !isOriginFeature(p->getValue())) {
                 continue;
             }
 
-            p->setValue(getOrigin()->getOriginFeature(
-                static_cast<OriginFeature*>(p->getValue())->Role.getValue()));
+            p->setValue(getOrigin()->getDatumElement(
+                static_cast<DatumElement*>(p->getValue())->Role.getValue()));
         }
         else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
             auto p = static_cast<App::PropertyLinkList*>(prop);
@@ -239,12 +248,12 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
             std::vector<App::DocumentObject*> result;
             bool changed = false;
             for (App::DocumentObject* o : vec) {
-                if (!o || !o->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+                if (!isOriginFeature(o)) {
                     result.push_back(o);
                 }
                 else {
-                    result.push_back(getOrigin()->getOriginFeature(
-                        static_cast<OriginFeature*>(o)->Role.getValue()));
+                    result.push_back(getOrigin()->getDatumElement(
+                        static_cast<DatumElement*>(o)->Role.getValue()));
                     changed = true;
                 }
             }
@@ -254,23 +263,22 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
         }
         else if (prop->isDerivedFrom<App::PropertyLinkSub>()) {
             auto p = static_cast<App::PropertyLinkSub*>(prop);
-            if (!p->getValue()
-                || !p->getValue()->isDerivedFrom(App::DatumElement::getClassTypeId())) {
+            if (!p->getValue() || !isOriginFeature(p->getValue())) {
                 continue;
             }
 
             std::vector<std::string> subValues = p->getSubValues();
-            p->setValue(getOrigin()->getOriginFeature(
-                            static_cast<DatumElement*>(p->getValue())->Role.getValue()),
-                        subValues);
+            p->setValue(getOrigin()->getDatumElement(
+                static_cast<DatumElement*>(p->getValue())->Role.getValue()),
+                subValues);
         }
         else if (prop->isDerivedFrom<App::PropertyLinkSubList>()) {
             auto p = static_cast<App::PropertyLinkSubList*>(prop);
             auto vec = p->getSubListValues();
             bool changed = false;
             for (auto& v : vec) {
-                if (v.first && v.first->isDerivedFrom(App::DatumElement::getClassTypeId())) {
-                    v.first = getOrigin()->getOriginFeature(
+                if (isOriginFeature(v.first)) {
+                    v.first = getOrigin()->getDatumElement(
                         static_cast<DatumElement*>(v.first)->Role.getValue());
                     changed = true;
                 }
@@ -292,7 +300,7 @@ std::vector<DocumentObject*> OriginGroupExtension::addObjects(std::vector<Docume
     return App::GeoFeatureGroupExtension::addObjects(objs);
 }
 
-bool OriginGroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
+bool OriginGroupExtension::hasObject(const DocumentObject * obj, bool recursive) const
 {
 
     if (Origin.getValue() && (obj == getOrigin() || getOrigin()->hasObject(obj))) {
@@ -307,8 +315,8 @@ bool OriginGroupExtension::hasObject(const DocumentObject* obj, bool recursive) 
 
 namespace App
 {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::OriginGroupExtensionPython, App::OriginGroupExtension)
+    EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::OriginGroupExtensionPython, App::OriginGroupExtension)
 
-// explicit template instantiation
-template class AppExport ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>>;
+        // explicit template instantiation
+        template class AppExport ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>>;
 }  // namespace App
