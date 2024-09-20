@@ -83,7 +83,7 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
         return nullptr;
 
     //we will find origins, but not origin features
-    if(obj->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+    if(obj->isDerivedFrom(App::DatumElement::getClassTypeId()))
         return OriginGroupExtension::getGroupOfObject(obj);
 
     //compared to GroupExtension we do return here all GeoFeatureGroups including all extensions derived from it
@@ -278,7 +278,7 @@ void GeoFeatureGroupExtension::getCSOutList(const App::DocumentObject* obj,
 
     //we remove all links to origin features and origins, they belong to a CS too and can't be moved
     result.erase(std::remove_if(result.begin(), result.end(), [](App::DocumentObject* obj)->bool {
-        return (obj->isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
+        return (obj->isDerivedFrom(App::DatumElement::getClassTypeId()) ||
                 obj->isDerivedFrom(App::Origin::getClassTypeId()));
     }), result.end());
 

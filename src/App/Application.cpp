@@ -2129,7 +2129,7 @@ void Application::initTypes()
     App::TextDocument              ::init();
     App::Placement                 ::init();
     App::PlacementPython           ::init();
-    App::OriginFeature             ::init();
+    App::DatumElement              ::init();
     App::Plane                     ::init();
     App::Line                      ::init();
     App::Part                      ::init();
