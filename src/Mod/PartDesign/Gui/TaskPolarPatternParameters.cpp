@@ -32,7 +32,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>

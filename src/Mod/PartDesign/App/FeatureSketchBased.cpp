@@ -53,7 +53,7 @@
 #endif
 
 #include <App/Document.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
