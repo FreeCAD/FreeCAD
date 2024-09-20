@@ -25,12 +25,12 @@
 #ifndef GUI_ViewProviderLine_H
 #define GUI_ViewProviderLine_H
 
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderDatum.h"
 
 namespace Gui
 {
 
-class GuiExport ViewProviderLine : public ViewProviderOriginFeature {
+class GuiExport ViewProviderLine : public ViewProviderDatum {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLine);
 public:
     /// Constructor
