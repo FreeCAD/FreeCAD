@@ -217,6 +217,18 @@ PyObject* DocumentPy::getFileName(PyObject* args)
     return Py::new_reference_to(Py::String(fn));
 }
 
+PyObject* DocumentPy::getUniqueObjectName(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return nullptr;
+    PY_TRY {
+        auto newName  = getDocumentPtr()->getUniqueObjectName(sName);
+        return Py::new_reference_to(Py::String(newName));
+    }
+    PY_CATCH;
+}
+
 PyObject*  DocumentPy::mergeProject(PyObject * args)
 {
     char* filename;

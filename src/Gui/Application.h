@@ -28,8 +28,6 @@
 #include <map>
 #include <string>
 
-#define  putpix()
-
 #include <App/Application.h>
 
 class QCloseEvent;
@@ -340,6 +338,8 @@ public:
 
     static PyObject* sDoCommand                (PyObject *self,PyObject *args);
     static PyObject* sDoCommandGui             (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandEval            (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandSkip            (PyObject *self,PyObject *args);
     static PyObject* sAddModule                (PyObject *self,PyObject *args);
 
     static PyObject* sShowDownloads            (PyObject *self,PyObject *args);

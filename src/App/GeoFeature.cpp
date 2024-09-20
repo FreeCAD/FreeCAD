@@ -159,7 +159,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     }
     if(geoFeature)
         *geoFeature = geo;
-    if(!obj || (filter && geo!=filter))
+    if(filter && geo!=filter)
         return nullptr;
     if(!element || !element[0]) {
         if(append) 
