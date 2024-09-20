@@ -139,9 +139,9 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         }
 
         // check if we need to set any origin in temporary visibility mode
-        if (*statusIt != invalidShape
-            && (*objIt)->isDerivedFrom(App::OriginFeature::getClassTypeId())) {
-            App::Origin* origin = static_cast<App::OriginFeature*>(*objIt)->getOrigin();
+        auto* datum = dynamic_cast<App::DatumElement*>(*objIt);
+        if (*statusIt != invalidShape && datum) {
+            App::Origin* origin = dynamic_cast<App::Origin*>(datum->getLCS());
             if (origin) {
                 if ((*objIt)->isDerivedFrom(App::Plane::getClassTypeId())) {
                     originVisStatus[origin].set(planeBit, true);
