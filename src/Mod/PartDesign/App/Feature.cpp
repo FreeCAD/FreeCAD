@@ -32,7 +32,7 @@
 # include <TopoDS.hxx>
 #endif
 
-#include "App/OriginFeature.h"
+#include "App/Datums.h"
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/ElementNamingUtils.h>
