@@ -1917,13 +1917,18 @@ void MainWindow::startSplasher()
             GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
         // first search for an external image file
         if (hGrp->GetBool("ShowSplasher", true)) {
-            d->splashscreen = new SplashScreen(this->splashImage());
+            const auto isWayland = qGuiApp->platformName() == QLatin1String("wayland");
+            const auto flags = isWayland ? Qt::WindowFlags() : Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint;
+            d->splashscreen = new SplashScreen(this->splashImage(), flags);
 
             if (!hGrp->GetBool("ShowSplasherMessages", false)) {
                 d->splashscreen->setShowMessages(false);
             }
 
             d->splashscreen->show();
+            if (!isWayland) {
+                QApplication::processEvents();
+            }
         }
         else {
             d->splashscreen = nullptr;
@@ -1933,11 +1938,24 @@ void MainWindow::startSplasher()
 
 void MainWindow::stopSplasher()
 {
-    if (d->splashscreen) {
-        d->splashscreen->finish(this);
-        delete d->splashscreen;
-        d->splashscreen = nullptr;
+    const auto isWayland = qGuiApp->platformName() == QLatin1String("wayland");
+    if (isWayland) {
+        if (d->splashscreen) {
+            d->splashscreen->finish(this);
+            d->splashscreen->deleteLater();
+            d->splashscreen = nullptr;
+        }
+        return;
     }
+
+    QApplication::processEvents();
+    QTimer::singleShot(3000, this, [this]() {
+        if (d->splashscreen) {
+            d->splashscreen->finish(this);
+            d->splashscreen->deleteLater();
+            d->splashscreen = nullptr;
+        }
+    });
 }
 
 QPixmap MainWindow::aboutImage() const
