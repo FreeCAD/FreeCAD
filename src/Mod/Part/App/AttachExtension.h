@@ -35,7 +35,6 @@
 #include <Base/Placement.h>
 
 #include "Attacher.h"
-#include "PartFeature.h"
 
 
 namespace Part
