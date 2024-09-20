@@ -39,7 +39,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderOrigin.h"
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderDatum.h"
 
 
 using namespace Gui;
@@ -127,7 +127,7 @@ void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::Documen
 }
 
 void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
-    if ( !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () )) {
+    if ( !vp.isDerivedFrom ( Gui::ViewProviderDatum::getClassTypeId () )) {
         // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
         //          but may happen in documents designed in old versions of assembly branch )
         auto* ext = getExtendedViewProvider()->getObject();
