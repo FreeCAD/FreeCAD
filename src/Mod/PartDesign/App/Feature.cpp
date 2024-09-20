@@ -350,7 +350,7 @@ PyObject* Feature::getPyObject()
 
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
-    return feature->isDerivedFrom<App::OriginFeature>() ||
+    return feature->isDerivedFrom<App::DatumElement>() ||
            feature->isDerivedFrom<Part::Datum>();
 }
 
