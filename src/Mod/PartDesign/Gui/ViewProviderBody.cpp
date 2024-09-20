@@ -43,7 +43,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
-#include <Gui/ViewProviderOriginFeature.h>
+#include <Gui/ViewProviderDatum.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
@@ -282,7 +282,7 @@ void ViewProviderBody::slotChangedObjectGui (
     }
 
     if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
-         !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
+         !vp.isDerivedFrom ( Gui::ViewProviderDatum::getClassTypeId () ) ) {
         // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
         //          but may happen in documents designed in old versions of assembly branch )
         return;

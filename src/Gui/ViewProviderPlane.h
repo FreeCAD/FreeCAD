@@ -25,12 +25,12 @@
 #ifndef GUI_ViewProviderPlane_H
 #define GUI_ViewProviderPlane_H
 
-#include "ViewProviderOriginFeature.h"
+#include "ViewProviderDatum.h"
 
 namespace Gui
 {
 
-class GuiExport ViewProviderPlane : public ViewProviderOriginFeature
+class GuiExport ViewProviderPlane : public ViewProviderDatum
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPlane);
 public:
