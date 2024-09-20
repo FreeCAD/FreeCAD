@@ -579,6 +579,8 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
     // Arrange
     int geoId1 = 42, geoId2 = 10, geoId3 = 0, geoId4 = -8;
 
+    Sketcher::Constraint* nullConstr = nullptr;
+
     Sketcher::Constraint constr1;
     constr1.Type = Sketcher::ConstraintType::Coincident;
     constr1.First = geoId1;
@@ -594,6 +596,18 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
     constr2.SecondPos = Sketcher::PointPos::none;
     constr2.Third = geoId1;
     constr2.ThirdPos = Sketcher::PointPos::start;
+
+    // Act
+    auto nullConstrAfter = getObject()->getConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstrAfter, nullptr);
+
+    // Act
+    getObject()->changeConstraintAfterDeletingGeo(nullConstr, 5);
+
+    // Assert
+    EXPECT_EQ(nullConstr, nullptr);
 
     // Act
     // delete typical in-sketch geo
