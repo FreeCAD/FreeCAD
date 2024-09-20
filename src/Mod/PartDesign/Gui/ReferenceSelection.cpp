@@ -33,7 +33,7 @@
 
 #include <App/Document.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 #include <App/Part.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>

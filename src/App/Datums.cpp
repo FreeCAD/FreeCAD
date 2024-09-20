@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include "OriginFeature.h"
+#include "Datums.h"
 #include "Document.h"
 #include "Origin.h"
 
@@ -43,20 +43,19 @@ OriginFeature::OriginFeature()
 
 OriginFeature::~OriginFeature() = default;
 
-Origin* OriginFeature::getOrigin()
-{
+Origin* OriginFeature::getOrigin() {
     App::Document* doc = getDocument();
     auto origins = doc->getObjectsOfType(App::Origin::getClassTypeId());
 
     auto originIt = std::find_if(origins.begin(), origins.end(), [this](DocumentObject* origin) {
         assert(origin->isDerivedFrom(App::Origin::getClassTypeId()));
-        return static_cast<App::Origin*>(origin)->hasObject(this);
+        return static_cast<App::Origin*> (origin)->hasObject(this);
     });
     if (originIt == origins.end()) {
         return nullptr;
     }
     else {
         assert((*originIt)->isDerivedFrom(App::Origin::getClassTypeId()));
-        return static_cast<App::Origin*>(*originIt);
+        return static_cast<App::Origin*> (*originIt);
     }
 }

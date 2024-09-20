@@ -64,7 +64,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 
 #include "Mirroring.h"
 
