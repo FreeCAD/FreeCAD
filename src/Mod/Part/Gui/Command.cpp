@@ -51,6 +51,8 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
+#include <Mod/Part/App/Datums.h>
+
 #include "BoxSelection.h"
 #include "CrossSections.h"
 #include "DlgBooleanOperation.h"
@@ -2224,6 +2226,170 @@ bool CmdPartSectionCut::isActive()
     return hasActiveDocument();
 }
 
+
+//===========================================================================
+// Part_CoordinateSystem
+//===========================================================================
+DEF_STD_CMD_A(CmdPartCoordinateSystem)
+
+CmdPartCoordinateSystem::CmdPartCoordinateSystem()
+    : Command("Part_CoordinateSystem")
+{
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Create a Coordinate System");
+    sToolTipText = QT_TR_NOOP("A coordinate system object that can be attached to other objects.");
+    sWhatsThis = "Part_CoordinateSystem";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_CoordinateSystem";
+}
+
+void CmdPartCoordinateSystem::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a coordinate system"));
+
+    std::string name = getUniqueObjectName("LCS");
+    doCommand(Doc, "App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')", name.c_str());
+    doCommand(Doc, "App.ActiveDocument.getObject('%s').Visibility = True", name.c_str());
+    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+}
+
+bool CmdPartCoordinateSystem::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// Part_Plane
+//===========================================================================
+DEF_STD_CMD_A(CmdPartPlane)
+
+CmdPartPlane::CmdPartPlane()
+    : Command("Part_Plane")
+{
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Create a Plane");
+    sToolTipText = QT_TR_NOOP("A plane object that can be attached to other objects.");
+    sWhatsThis = "Part_Plane";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Plane";
+}
+
+void CmdPartPlane::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a plane"));
+
+    std::string name = getUniqueObjectName("Plane");
+    doCommand(Doc, "App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
+    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+}
+
+bool CmdPartPlane::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// Part_Line
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLine)
+
+CmdPartLine::CmdPartLine()
+    : Command("Part_Line")
+{
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Create a Line");
+    sToolTipText = QT_TR_NOOP("A line object that can be attached to other objects.");
+    sWhatsThis = "Part_Line";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Axis";
+}
+
+void CmdPartLine::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a line"));
+
+    std::string name = getUniqueObjectName("Line");
+    doCommand(Doc, "App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
+    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+}
+
+bool CmdPartLine::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
+// Part_Point
+//===========================================================================
+DEF_STD_CMD_A(CmdPartPoint)
+
+CmdPartPoint::CmdPartPoint()
+    : Command("Part_Point")
+{
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Create a point");
+    sToolTipText = QT_TR_NOOP("A point object that can be attached to other objects.");
+    sWhatsThis = "Part_Point";
+    sStatusTip = sToolTipText;
+    sPixmap = "Std_Point";
+}
+
+void CmdPartPoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add a point"));
+
+    std::string name = getUniqueObjectName("Point");
+    doCommand(Doc, "App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
+    doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", name.c_str());
+}
+
+bool CmdPartPoint::isActive()
+{
+    return hasActiveDocument();
+}
+
+
+//===========================================================================
+// Part_Datums
+//===========================================================================
+class CmdPartDatums : public Gui::GroupCommand
+{
+public:
+    CmdPartDatums()
+        : GroupCommand("Part_Datums")
+    {
+        sGroup = QT_TR_NOOP("Part");
+        sMenuText = QT_TR_NOOP("Create a datum");
+        sToolTipText = QT_TR_NOOP("Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.");
+        sWhatsThis = "Part_Datums";
+        sStatusTip = sToolTipText;
+
+        setCheckable(false);
+
+        addCommand("Part_CoordinateSystem");
+        addCommand("Part_Plane");
+        addCommand("Part_Line");
+        addCommand("Part_Point");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartDatums";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
+};
 //---------------------------------------------------------------
 
 void CreatePartCommands()
@@ -2269,4 +2435,10 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
     rcCmdMgr.addCommand(new CmdPartSectionCut());
+
+    rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
+    rcCmdMgr.addCommand(new CmdPartPlane());
+    rcCmdMgr.addCommand(new CmdPartLine());
+    rcCmdMgr.addCommand(new CmdPartPoint());
+    rcCmdMgr.addCommand(new CmdPartDatums());
 }
