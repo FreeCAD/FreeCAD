@@ -595,6 +595,7 @@ Application::~Application()
 // creating std commands
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 void Application::open(const char* FileName, const char* Module)
 {
     WaitCursor wc;
@@ -636,19 +637,21 @@ void Application::open(const char* FileName, const char* Module)
                 }
             }
             else {
-                // issue module loading
-                Command::doCommand(Command::App, "import %s", Module);
-
-                // check for additional import options
-                std::stringstream str;
-                str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                    << "    options = " << Module << ".importOptions(u\"" << unicodepath << "\")\n"
-                    << "    " << Module << ".open(u\"" << unicodepath << "\", options = options)\n"
-                    << "else:\n"
-                    << "    " << Module << ".open(u\"" << unicodepath << "\")\n";
-
-                std::string code = str.str();
-                Gui::Command::runCommand(Gui::Command::App, code.c_str());
+                // Load using provided python module
+                {
+                    Base::PyGILStateLocker locker;
+                    Py::Module moduleIo(PyImport_ImportModule("freecad.module_io"));
+                    const auto dictS = moduleIo.getDict().keys().as_string();
+                    if (!moduleIo.isNull() && moduleIo.hasAttr("OpenInsertObject"))
+                    {
+                        const Py::TupleN args(
+                            Py::Module(PyImport_ImportModule(Module)),
+                            Py::String(unicodepath),
+                            Py::String("open")
+                        );
+                        moduleIo.callMemberFunction("OpenInsertObject", args);
+                    }
+                }
 
                 // ViewFit
                 if (sendHasMsgToActiveView("ViewFit")) {
@@ -713,30 +716,22 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     }
                 }
 
-                // check for additional import options
-                std::stringstream str;
-                if (DocName) {
-                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                        << "    options = " << Module << ".importOptions(u\"" << unicodepath
-                        << "\")\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName
-                        << "\", options = options)\n"
-                        << "else:\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\", \"" << DocName
-                        << "\")\n";
+                // Load using provided python module
+                {
+                    Base::PyGILStateLocker locker;
+                    Py::Module moduleIo(PyImport_ImportModule("freecad.module_io"));
+                    const auto dictS = moduleIo.getDict().keys().as_string();
+                    if (!moduleIo.isNull() && moduleIo.hasAttr("OpenInsertObject"))
+                    {
+                        const Py::TupleN args(
+                            Py::Module(PyImport_ImportModule(Module)),
+                            Py::String(unicodepath),
+                            Py::String("insert"),
+                            Py::String(DocName)
+                        );
+                        moduleIo.callMemberFunction("OpenInsertObject", args);
+                    }
                 }
-                else {
-                    str << "if hasattr(" << Module << ", \"importOptions\"):\n"
-                        << "    options = " << Module << ".importOptions(u\"" << unicodepath
-                        << "\")\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath
-                        << "\", options = options)\n"
-                        << "else:\n"
-                        << "    " << Module << ".insert(u\"" << unicodepath << "\")\n";
-                }
-
-                std::string code = str.str();
-                Gui::Command::runCommand(Gui::Command::App, code.c_str());
 
                 // Commit the transaction
                 if (doc && !pendingCommand) {
