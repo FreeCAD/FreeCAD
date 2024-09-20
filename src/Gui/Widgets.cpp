@@ -1360,7 +1360,6 @@ void PropertyListEditor::highlightCurrentLine()
         selection.format.setBackground(palette.highlight().color());
         selection.format.setForeground(palette.highlightedText().color());
 
-        selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
         selection.cursor = textCursor();
         selection.cursor.clearSelection();
