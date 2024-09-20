@@ -427,6 +427,10 @@ void Application::setupPythonException(PyObject* module)
     Base::PyExc_FC_PropertyError = PyErr_NewException("Base.PropertyError", PyExc_AttributeError, nullptr);
     Py_INCREF(Base::PyExc_FC_PropertyError);
     PyModule_AddObject(module, "PropertyError", Base::PyExc_FC_PropertyError);
+
+    Base::PyExc_FC_AbortIOException = PyErr_NewException("Base.PyExc_FC_AbortIOException", PyExc_BaseException, nullptr);
+    Py_INCREF(Base::PyExc_FC_AbortIOException);
+    PyModule_AddObject(module, "AbortIOException", Base::PyExc_FC_AbortIOException);
 }
 // clang-format on
 
