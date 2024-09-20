@@ -219,7 +219,9 @@ bool Body::isAllowed(const App::DocumentObject *obj)
             //obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
             //obj->isDerivedFrom<Part::Feature>()
             // allow VarSets for parameterization
-            obj->isDerivedFrom<App::VarSet>()
+            obj->isDerivedFrom<App::VarSet>() ||
+            obj->isDerivedFrom<App::DatumElement>() ||
+            obj->isDerivedFrom<App::LocalCoordinateSystem>()
             );
 }
 
