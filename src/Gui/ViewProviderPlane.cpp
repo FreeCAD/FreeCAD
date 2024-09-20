@@ -42,7 +42,7 @@
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderOriginFeature)
+PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderDatum)
 
 
 ViewProviderPlane::ViewProviderPlane()
@@ -52,8 +52,8 @@ ViewProviderPlane::ViewProviderPlane()
 
 ViewProviderPlane::~ViewProviderPlane() = default;
 
-void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
-    ViewProviderOriginFeature::attach ( obj );
+void ViewProviderPlane::attach(App::DocumentObject * obj) {
+    ViewProviderDatum::attach(obj);
     static const float size = ViewProviderOrigin::defaultSize ();
 
     static const SbVec3f verts[4] = {
