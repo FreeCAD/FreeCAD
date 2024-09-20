@@ -38,7 +38,7 @@
 
 using namespace Gui;
 
-PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderOriginFeature)
+PROPERTY_SOURCE(Gui::ViewProviderLine, Gui::ViewProviderDatum)
 
 
 ViewProviderLine::ViewProviderLine()
@@ -48,8 +48,8 @@ ViewProviderLine::ViewProviderLine()
 
 ViewProviderLine::~ViewProviderLine() = default;
 
-void ViewProviderLine::attach ( App::DocumentObject *obj ) {
-    ViewProviderOriginFeature::attach ( obj );
+void ViewProviderLine::attach(App::DocumentObject *obj) {
+    ViewProviderDatum::attach(obj);
 
     static const float size = ViewProviderOrigin::defaultSize ();
 
