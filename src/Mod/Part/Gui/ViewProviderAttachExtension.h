@@ -44,7 +44,6 @@ public:
     void extensionUpdateData(const App::Property*) override;
     void extensionSetupContextMenu(QMenu*, QObject*, const char*) override;
 
-private:
     void showAttachmentEditor();
 };
 
