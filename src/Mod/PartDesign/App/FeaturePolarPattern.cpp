@@ -37,7 +37,7 @@
 #include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
-#include <App/OriginFeature.h>
+#include <App/Datums.h>
 
 #include "FeaturePolarPattern.h"
 
