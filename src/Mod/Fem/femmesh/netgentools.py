@@ -76,10 +76,14 @@ class NetgenTools:
         if not self.tmpdir:
             self.tmpdir = tempfile.mkdtemp(prefix="fem_")
 
-        sh = self.obj.Shape.getPropertyOfGeometry()
+        global_pla = self.obj.Shape.getGlobalPlacement()
+        geom = self.obj.Shape.getPropertyOfGeometry()
+        # get partner shape
+        geom_trans = geom.transformed(FreeCAD.Placement().Matrix)
+        geom_trans.Placement = global_pla
         self.brep_file = self.tmpdir + "/shape.brep"
         self.result_file = self.tmpdir + "/result.npy"
-        sh.exportBrep(self.brep_file)
+        geom_trans.exportBrep(self.brep_file)
 
     code = """
 from femmesh.netgentools import NetgenTools
