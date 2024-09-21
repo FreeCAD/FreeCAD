@@ -429,19 +429,6 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    QPainter p(printer);
-    // why use a QPainter to determine if we can write to a file?
-    if (!p.isActive() && !printer->outputFileName().isEmpty()) {
-        qApp->setOverrideCursor(Qt::ArrowCursor);
-        QMessageBox::critical(
-            this, tr("Opening file failed"),
-            tr("Can not open file %1 for writing.").arg(printer->outputFileName()));
-        qApp->restoreOverrideCursor();
-        return;
-    }
-    // free the printer from the painter
-    p.end();
-
     if (m_pagePrinter) {
         m_pagePrinter->print(printer);
     }
