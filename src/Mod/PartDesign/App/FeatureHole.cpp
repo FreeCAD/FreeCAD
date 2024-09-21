@@ -51,9 +51,13 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/TopoShapeMapper.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureHole.h"
 #include "json.hpp"
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 namespace PartDesign {
 
@@ -1885,28 +1889,23 @@ App::DocumentObjectExecReturn* Hole::execute()
         std::vector<TopoShape> holes;
         auto compound = findHoles(holes, profileshape, protoHole);
 
-        TopoShape result(0,getDocument()->getStringHasher());
+        TopoShape result(0);
 
         // set the subtractive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(compound);
-        if (isRecomputePaused())
-            return App::DocumentObject::StdReturn;
 
         if (base.isNull()) {
             Shape.setValue(compound);
             return App::DocumentObject::StdReturn;
         }
 
-        // First try cuting with compound which will be faster as it is done in
+        // First try cutting with compound which will be faster as it is done in
         // parallel
         bool retry = true;
         const char *maker;
         switch (getAddSubType()) {
             case Additive:
                 maker = Part::OpCodes::Fuse;
-                break;
-            case Intersecting:
-                maker = Part::OpCodes::Common;
                 break;
             default:
                 maker = Part::OpCodes::Cut;
@@ -1915,7 +1914,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             if (base.isNull())
                 result = compound;
             else
-                result.makEBoolean(maker, {base,compound});
+                result.makeElementBoolean(maker, {base,compound});
             result = getSolid(result);
             retry = false;
         } catch (Standard_Failure & e) {
@@ -1931,20 +1930,20 @@ App::DocumentObjectExecReturn* Hole::execute()
             for (auto & hole : holes) {
                 ++i;
                 try {
-                    result.makEBoolean(maker, {base,hole});
+                    result.makeElementBoolean(maker, {base,hole});
                 } catch (Standard_Failure &) {
                     std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 } catch (Base::Exception &e) {
                     e.ReportException();
-                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operataion failed on profile Edge"));
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 }
                 base = getSolid(result);
                 if (base.isNull()) {
-                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operataion produced non-solid on profile Edge"));
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation produced non-solid on profile Edge"));
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 }
@@ -1952,6 +1951,10 @@ App::DocumentObjectExecReturn* Hole::execute()
             result = base;
         }
 
+        if (!isSingleSolidRuleSatisfied(result.getShape())) {
+            return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
         this->Shape.setValue(result);
 
         return App::DocumentObject::StdReturn;
@@ -2030,7 +2033,7 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
                           const TopoShape& profileshape,
                           const TopoDS_Shape& protoHole) const
 {
-    TopoShape result(0,getDocument()->getStringHasher());
+    TopoShape result(0);
 
     int i = 0;
     for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
@@ -2053,16 +2056,16 @@ TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
                                                   gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
         Part::ShapeMapper mapper;
-        mapper.populate(true, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+        mapper.populate(Part::MappingStatus::Modified, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
-        TopoShape hole(-getID(), getDocument()->getStringHasher());
-        hole.makESHAPE(protoHole, mapper, {profileEdge});
+        TopoShape hole(-getID());
+        hole.makeShapeWithElementMap(protoHole, mapper, {profileEdge});
 
         // transform and generate element map.
-        hole = hole.makETransform(localSketchTransformation);
+        hole = hole.makeElementTransform(localSketchTransformation);
         holes.push_back(hole);
     }
-    return TopoShape().makECompound(holes);
+    return TopoShape().makeElementCompound(holes);
 }
 
 TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
