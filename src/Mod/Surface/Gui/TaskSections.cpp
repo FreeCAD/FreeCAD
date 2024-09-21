@@ -280,7 +280,7 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj)
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     {
-        auto &rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         action->setShortcut(QKeySequence(shortcut));
     }

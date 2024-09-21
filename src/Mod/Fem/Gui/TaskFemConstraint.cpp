@@ -169,7 +169,7 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 
     deleteAction = new QAction(tr("Delete"), this);
     {
-        auto &rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         deleteAction->setShortcut(QKeySequence(shortcut));
     }
