@@ -756,7 +756,7 @@ def onOrbit():
 def onOrbitShow():
     """Set turntable or trackball orbit style."""
 
-    OrbitStyle = pView.GetInt("OrbitStyle", 0)
+    OrbitStyle = pView.GetInt("OrbitStyle", 1)
     gOrbit.blockSignals(True)
     if OrbitStyle == 0:
         aTurntable.setChecked(True)
