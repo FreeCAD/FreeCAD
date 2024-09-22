@@ -1800,19 +1800,26 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
-        resolved = rootObj.resolveSubElement(sub_name)
-        element_name_TNP = resolved[1]
-        element_name = resolved[2]
+        target_link = sub_name
 
-        # Preprocess the sub_name to remove the TNP string
-        # We do this because after we need to add the vertex_name as well.
-        # And the names will be resolved anyway after.
-        if len(element_name_TNP.split(".")) == 2:
-            names = sub_name.split(".")
-            names.pop(-2)  # remove the TNP string
-            sub_name = ".".join(names)
-
-        ref = [rootObj, [sub_name]]
+        # There was extra code here to try to deal with TNP at a python layer.  That is to be avoided at all costs,
+        # and corrections have been made to the underlying c++ code in the PR that includes this comment.
+        #
+        # The original python code was flawed, but two possible correct implementation in python follow.  However the
+        # c++ approach is better, as the python layer should not know about TNP mitigation implementation.
+        #
+        # doc_obj, new_name, old_name = rootObj.resolveSubElement(sub_name)
+        # doc_obj, cont_obj, sub_sub_element_name, new_name = rootObj.resolve(sub_name)
+        # # The subname identified by selectionObserver has extra components in it.  To get the minimal reference to
+        # # the element we need, we must identify the extra piece sub_sub_element name and remove it, and then
+        # # identify the new_name ( TNP path ) and remove it, and put the old_name ( short name ) on.
+        # # Alternatively we could take just the element and build back up using the sub_sub_element name to get a
+        # # different legit path, but the first approach is preferable.
+        # #   element_name, *path_detail = sub_name.split(".")
+        # #   target_link = ".".join((element_name,sub_sub_element_name,old_name))
+        # element_name = sub_name.replace(sub_sub_element_name, "").replace(new_name, "")
+        # target_link = element_name[:-1] + old_name
+        ref = [rootObj, [target_link]]
 
         moving_part = self.getMovingPart(ref)
 
