@@ -1651,6 +1651,22 @@ void MainWindow::delayedStartup()
     if (hGrp->GetBool("RecoveryEnabled", true)) {
         Application::Instance->checkForPreviousCrashes();
     }
+
+    if (SafeMode::SafeModeEnabled()) {
+        auto safeModePopup = QMessageBox(
+            QMessageBox::Information,
+            tr("Safe mode enabled"),
+            tr("FreeCAD is now running in safe mode."),
+            QMessageBox::Ok
+        );
+        safeModePopup.setInformativeText(
+            tr(
+                "Safe mode temporarily disables your configurations and addons."
+                " Restart the application to exit safe mode."
+            )
+        );
+        safeModePopup.exec();
+    }
 }
 
 void MainWindow::appendRecentFile(const QString& filename)
