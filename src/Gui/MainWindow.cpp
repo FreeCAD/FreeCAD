@@ -70,6 +70,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/SafeMode.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -2612,6 +2613,10 @@ void MainWindow::setWindowTitle(const QString& string)
     }
     else {
         title = appname;
+    }
+
+    if (SafeMode::SafeModeEnabled()) {
+        title = QString::fromUtf8("%1 (%2)").arg(title, tr("Safe Mode"));
     }
 
     if (!string.isEmpty()) {
