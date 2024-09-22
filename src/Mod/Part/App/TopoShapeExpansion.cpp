@@ -4231,10 +4231,12 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
     BRepFeat_MakePrism PrismMaker;
 
     // don't remove limits of concave face
-    Base::Vector3d vCog;
-    profile.getCenterOfGravity(vCog);
-    gp_Pnt pCog(vCog.x, vCog.y, vCog.z);
-    checkLimits = ! Part::Tools::isConcave(TopoDS::Face(__uptoface.getShape()), pCog , direction);
+    if (checkLimits && __uptoface.shapeType(true) == TopAbs_FACE){
+        Base::Vector3d vCog;
+        profile.getCenterOfGravity(vCog);
+        gp_Pnt pCog(vCog.x, vCog.y, vCog.z);
+        checkLimits = ! Part::Tools::isConcave(TopoDS::Face(__uptoface.getShape()), pCog , direction);
+    }
 
     TopoShape _uptoface(__uptoface);
     if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE
