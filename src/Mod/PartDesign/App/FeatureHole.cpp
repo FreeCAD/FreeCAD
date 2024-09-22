@@ -51,9 +51,13 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/TopoShapeMapper.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureHole.h"
 #include "json.hpp"
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 namespace PartDesign {
 
@@ -1882,30 +1886,76 @@ App::DocumentObjectExecReturn* Hole::execute()
             // we reuse the name protoHole (only now it is threaded)
             protoHole = mkFuse.Shape();
         }
+        std::vector<TopoShape> holes;
+        auto compound = findHoles(holes, profileshape, protoHole);
 
-        TopoDS_Compound holes = findHoles(profileshape.getShape(), protoHole);
-        this->AddSubShape.setValue(holes);
+        TopoShape result(0);
 
-        // For some reason it is faster to do the cut through a BooleanOperation.
-        BRepAlgoAPI_Cut mkBool(base.getShape(), holes);
-        if (!mkBool.IsDone()) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
+        // set the subtractive shape property for later usage in e.g. pattern
+        this->AddSubShape.setValue(compound);
+
+        if (base.isNull()) {
+            Shape.setValue(compound);
+            return App::DocumentObject::StdReturn;
         }
-        TopoDS_Shape result = mkBool.Shape();
 
+        // First try cutting with compound which will be faster as it is done in
+        // parallel
+        bool retry = true;
+        const char *maker;
+        switch (getAddSubType()) {
+            case Additive:
+                maker = Part::OpCodes::Fuse;
+                break;
+            default:
+                maker = Part::OpCodes::Cut;
+        }
+        try {
+            if (base.isNull())
+                result = compound;
+            else
+                result.makeElementBoolean(maker, {base,compound});
+            result = getSolid(result);
+            retry = false;
+        } catch (Standard_Failure & e) {
+            FC_WARN(getFullName() << ": boolean operation with compound failed ("
+                                  << e.GetMessageString() << "), retry...");
+        } catch (Base::Exception & e)  {
+            FC_WARN(getFullName() << ": boolean operation with compound failed ("
+                                  << e.what() << "), retry...");
+        }
 
-        // We have to get the solids (fuse sometimes creates compounds)
-        base = getSolid(result);
-        if (base.isNull())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-        base = refineShapeIfActive(base);
+        if (retry) {
+            int i = 0;
+            for (auto & hole : holes) {
+                ++i;
+                try {
+                    result.makeElementBoolean(maker, {base,hole});
+                } catch (Standard_Failure &) {
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                }
+                base = getSolid(result);
+                if (base.isNull()) {
+                    std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation produced non-solid on profile Edge"));
+                    msg += std::to_string(i);
+                    return new App::DocumentObjectExecReturn(msg.c_str());
+                }
+            }
+            result = base;
+        }
 
-        if (!isSingleSolidRuleSatisfied(base.getShape())) {
+        if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
-
-        this->Shape.setValue(base);
+        this->Shape.setValue(result);
 
         return App::DocumentObject::StdReturn;
     }
@@ -1979,54 +2029,43 @@ gp_Vec Hole::computePerpendicular(const gp_Vec& zDir) const
     xDir.Normalize();
     return xDir;
 }
-
-TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
-                                const TopoDS_Shape& protohole) const
+TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
+                          const TopoShape& profileshape,
+                          const TopoDS_Shape& protoHole) const
 {
-    BRep_Builder builder;
-    TopoDS_Compound holes;
-    builder.MakeCompound(holes);
-    TopTools_IndexedMapOfShape edgeMap;
-    TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
-    std::vector<gp_Pnt> holePointsList;
-    for (int i = 1; i <= edgeMap.Extent(); i++) {
-        bool dupCenter = false;
+    TopoShape result(0);
+
+    int i = 0;
+    for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+        ++i;
         Standard_Real c_start;
         Standard_Real c_end;
-        TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
+        TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
         Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
 
         // Circle?
-        if (c.IsNull() || c->DynamicType() != STANDARD_TYPE(Geom_Circle)) {
+        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
             continue;
-        }
 
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
         gp_Pnt loc = circle->Axis().Location();
 
-        for (auto holePoint : holePointsList) {
-            if (holePoint.IsEqual(loc, Precision::Confusion())) {
-                Base::Console().Log(
-                    "PartDesign_Hole - There is a duplicate circle/curve center at %.2f : %.2f "
-                    ": %.2f therefore not passing parameter\n",
-                    loc.X(),
-                    loc.Y(),
-                    loc.Z());
-                dupCenter = true;
-            }
-        }
 
-        if (!dupCenter) {
-            holePointsList.push_back(loc);
-            gp_Trsf localSketchTransformation;
-            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0), loc);
-            TopoDS_Shape copy = protohole;
-            copy.Move(localSketchTransformation);
-            builder.Add(holes, copy);
-        }
+        gp_Trsf localSketchTransformation;
+        localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
+                                                  gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
+
+        Part::ShapeMapper mapper;
+        mapper.populate(Part::MappingStatus::Modified, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+
+        TopoShape hole(-getID());
+        hole.makeShapeWithElementMap(protoHole, mapper, {profileEdge});
+
+        // transform and generate element map.
+        hole = hole.makeElementTransform(localSketchTransformation);
+        holes.push_back(hole);
     }
-
-    return holes;
+    return TopoShape().makeElementCompound(holes);
 }
 
 TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
