@@ -126,7 +126,7 @@ void Shader::UpdateNormalTexSlot(int normalSlot)
 void Shader::UpdateNoiseTexSlot(int noiseSlot)
 {
     if (mNoisePos >= 0) {
-        glUniform1i(mAlbedoPos, noiseSlot);
+        glUniform1i(mNoisePos, noiseSlot);
     }
 }
 
@@ -464,8 +464,8 @@ const char* FragShaderSSAO = R"(
 
     // parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
     int kernelSize = 64;
-    float radius = 2.5f;
-    float bias = 0.025;
+    float radius = 30f;
+    float bias = 0.01;
 
     // tile noise texture over screen based on screen dimensions divided by noise size
     const vec2 noiseScale = vec2(800.0/4.0, 600.0/4.0);
@@ -505,7 +505,7 @@ const char* FragShaderSSAO = R"(
             occlusion += (sampleDepth >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;
         }
         occlusion = 1.0 - (occlusion / kernelSize);
-        FragColor = vec4(pow(occlusion, 2), 0, 0, 1);
+        FragColor = vec4(occlusion, 0, 0, 1);
     }
 )";
 
