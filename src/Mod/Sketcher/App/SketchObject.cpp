@@ -333,10 +333,8 @@ void SketchObject::buildShape() {
             int idx = getVertexIndexGeoPos(geoId -1, Sketcher::PointPos::start);
             std::string name = convertSubName(Data::IndexedName::fromConst("Vertex", idx+1), false);
             if (!vertex.hasElementMap()) {
-                // TODO: Eventually this will likely be made obsolete, when TopoShapes always have an element map
                 vertex.resetElementMap(std::make_shared<Data::ElementMap>());
-            }
-            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
+            }            vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1),
                                   Data::MappedName::fromRawData(name.c_str()),0L);
             vertices.push_back(vertex);
             vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
@@ -375,21 +373,17 @@ void SketchObject::buildShape() {
      } else {
          std::vector<Part::TopoShape> results;
          if (!shapes.empty()) {
-             // This call of makeElementWires() does not have the op code, in order to
-             // avoid duplication. Because we'll going to make a compound (to
-             // include the vertices) below with the same op code.
-             //
              // Note, that we HAVE TO add the Part::OpCodes::Sketch op code to all
              // geometry exposed through the Shape property, because
              // SketchObject::getElementName() relies on this op code to
              // differentiate geometries that are exposed with those in edit
              // mode.
-             auto wires = Part::TopoShape().makeElementWires(shapes);
+             auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
              for (const auto &wire : wires.getSubTopoShapes(TopAbs_WIRE))
                  results.push_back(wire);
          }
          results.insert(results.end(), vertices.begin(), vertices.end());
-         result.makeElementCompound(results, Part::OpCodes::Sketch);
+         result.makeElementCompound(results);
      }
     result.Tag = getID();
     InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
