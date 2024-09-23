@@ -164,6 +164,12 @@ class CAMWorkbench(Workbench):
                     toolcmdlist.append("CAM_Camotics")
             except (FileNotFoundError, ModuleNotFoundError):
                 pass
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to execute camotics command: {e}")
+            except ValueError as ve:
+                print(f"Version error: {ve}")
+            except Exception as ex:
+                print(f"An unexpected error occurred: {ex}")
 
             try:
                 try:
