@@ -228,15 +228,14 @@ class ViewProviderLayer:
         # Return if the property does not exist
         if not hasattr(vobj, prop):
             return
+        # If the override properties are not set return without change
+        if prop == "LineColor" and not vobj.OverrideLineColorChildren:
+            return
+        elif prop == "ShapeAppearance" and not vobj.OverrideShapeAppearanceChildren:
+            return
 
         for target_obj in obj.Group:
             target_vobj = target_obj.ViewObject
-
-            # If the override properties are not set return without change
-            if prop == "LineColor" and not vobj.OverrideLineColorChildren:
-                return
-            elif prop == "ShapeAppearance" and not vobj.OverrideShapeAppearanceChildren:
-                return
 
             # This checks that the property exists in the target object,
             # and then sets the target property accordingly

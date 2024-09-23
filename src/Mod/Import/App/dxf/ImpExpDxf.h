@@ -143,8 +143,10 @@ protected:
         void operator=(const Layer&) = delete;
         void operator=(Layer&&) = delete;
         ~Layer() override;
-        PyObject* const DraftLayer;
         PyObject* const DraftLayerView;
+        std::vector<App::DocumentObject*> Contents;
+        void FinishLayer() const;
+        App::PropertyLinkListHidden* GroupContents;
     };
 
     using FeaturePythonBuilder =
