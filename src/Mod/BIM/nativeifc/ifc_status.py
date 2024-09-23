@@ -270,6 +270,11 @@ def find_toplevel(objs):
     for obj in objs:
         for parent in obj.InListRecursive:
             if parent in objs:
+                # exception: The object is hosting another
+                if hasattr(parent,"Host") and parent.Host == obj:
+                    nobjs.append(obj)
+                elif hasattr(parent,"Hosts") and obj in parent.Hosts:
+                    nobjs.append(obj)
                 break
         else:
             nobjs.append(obj)

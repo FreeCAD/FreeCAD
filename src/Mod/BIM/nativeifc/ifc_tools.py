@@ -1004,6 +1004,13 @@ def aggregate(obj, parent):
             layer = FreeCAD.ActiveDocument.getObject(autogroup)
             if hasattr(layer, "StepId"):
                 ifc_layers.add_to_layer(newobj, layer)
+    # aggregate dependent objects
+    for child in obj.InList:
+        if hasattr(child,"Host") and child.Host == obj:
+            aggregate(child, newobj)
+        elif hasattr(child,"Hosts") and obj in child.Hosts:
+            #op = create_product(child, newobj, ifcfile, ifcclass="IfcOpeningElement")
+            aggregate(child, newobj)
     delete = not (PARAMS.GetBool("KeepAggregated", False))
     if new and delete and base:
         obj.Document.removeObject(base.Name)
@@ -1066,13 +1073,7 @@ def create_representation(obj, ifcfile):
     exportIFC.surfstyles = {}
     exportIFC.shapedefs = {}
     exportIFC.ifcopenshell = ifcopenshell
-    try:
-        exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
-    except:
-        FreeCAD.Console.PrintError(
-            "ERROR: You need a more recent version of FreeCAD >= 0.20.3\n"
-        )
-        return
+    exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
     prefs, context = get_export_preferences(ifcfile)
     representation, placement, shapetype = exportIFC.getRepresentation(
         ifcfile, context, obj, preferences=prefs
@@ -1115,12 +1116,12 @@ def get_subvolume(obj):
 
     tempface = None
     tempobj = None
-    subvolume = None
+    tempshape = None
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "getSubVolume"):
         tempshape = obj.Proxy.getSubVolume(obj)
     elif hasattr(obj, "Subvolume") and obj.Subvolume:
         tempshape = obj.Subvolume
-    if subvolume:
+    if tempshape:
         if len(tempshape.Faces) == 6:
             # We assume the standard output of ArchWindows
             faces = sorted(tempshape.Faces, key=lambda f: f.CenterOfMass.z)
@@ -1136,6 +1137,8 @@ def get_subvolume(obj):
         else:
             tempobj = obj.Document.addObject("Part::Feature", "Opening")
             tempobj.Shape = tempshape
+    if tempobj:
+        tempobj.recompute()
     return tempface, tempobj
 
 
@@ -1194,15 +1197,28 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
             )
             api_run("void.add_filling", ifcfile, opening=opening, element=element)
         # windows must also be part of a spatial container
-        api_run("spatial.unassign_container", ifcfile, product=element)
+        try:
+            api_run("spatial.unassign_container", ifcfile, products=[element])
+        except:
+            # old version of IfcOpenShell
+            api_run("spatial.unassign_container", ifcfile, product=element)
         if parent_element.ContainedInStructure:
             container = parent_element.ContainedInStructure[0].RelatingStructure
-            uprel = api_run(
-                "spatial.assign_container",
-                ifcfile,
-                product=element,
-                relating_structure=container,
-            )
+            try:
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    products=[element],
+                    relating_structure=container,
+                )
+            except:
+                # old version of IfcOpenShell
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    product=element,
+                    relating_structure=container,
+                )
         elif parent_element.Decomposes:
             container = parent_element.Decomposes[0].RelatingObject
             try:
