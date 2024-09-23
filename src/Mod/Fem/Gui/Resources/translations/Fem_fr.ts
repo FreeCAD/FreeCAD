@@ -1231,7 +1231,7 @@ FEM : seuls les éléments de l'atelier FEM seront exportés. Cela signifie que 
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="47"/>
       <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
       <translation>Paramètres des éléments :
-- Tout : tous les éléments, 
+- Tout : tous les éléments,
 - Les plus élevés : les éléments les plus élevés uniquement,
 - FEM : les éléments de l'atelier FEM seulement (seules les arêtes n'appartenant pas aux faces et les faces n'appartenant pas aux volumes).</translation>
     </message>

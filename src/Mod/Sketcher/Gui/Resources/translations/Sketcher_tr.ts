@@ -4479,7 +4479,7 @@ Bitiş noktalarını yeniden atamak için "Kısıtlamalardaki uç noktaları de�
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>%1 ters çevrilmiş dış geometri yayı bulundu. Uç noktaları 3 boyutlu görünümde çevrilidir. 
+      <translation>%1 ters çevrilmiş dış geometri yayı bulundu. Uç noktaları 3 boyutlu görünümde çevrilidir.
 
 Ancak, uç noktalara bağlanan hiçbir kısıtlama bulunamadı.</translation>
     </message>
@@ -5573,7 +5573,7 @@ BFGS çözümleyici, Broyden–Fletcher–Goldfarb–Shanno algoritmalarını ku
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="199"/>
       <source>Threshold for squared error that is used
 to determine whether a solution converges or not</source>
-      <translation>Bir çözümün yakınsayıp yakınsamadığını 
+      <translation>Bir çözümün yakınsayıp yakınsamadığını
 belirlemek için kullanılan hata karesi eşiği</translation>
     </message>
     <message>
