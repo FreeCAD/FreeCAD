@@ -335,7 +335,7 @@ StdCmdRestartInSafeMode::StdCmdRestartInSafeMode()
     sToolTipText  = QT_TR_NOOP("Restart in safe mode");
     sWhatsThis    = "Std_RestartInSafeMode";
     sStatusTip    = QT_TR_NOOP("Restart in safe mode");
-    sPixmap       = "view-refresh";
+    sPixmap       = "safe-mode-restart";
     eType         = 0;
 }
 
