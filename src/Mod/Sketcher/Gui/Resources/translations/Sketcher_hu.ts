@@ -2146,59 +2146,59 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2797"/>
+      <location filename="../../../App/SketchObject.cpp" line="2793"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszerítést a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7070"/>
+      <location filename="../../../App/SketchObject.cpp" line="7066"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nem kér változtatást a csomó többszörözésére.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7064"/>
-      <location filename="../../../App/SketchObject.cpp" line="7250"/>
+      <location filename="../../../App/SketchObject.cpp" line="7060"/>
+      <location filename="../../../App/SketchObject.cpp" line="7246"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>A B-görbe geometriai indexe (GeoID) határon kívüli.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7076"/>
-      <location filename="../../../App/SketchObject.cpp" line="7260"/>
+      <location filename="../../../App/SketchObject.cpp" line="7072"/>
+      <location filename="../../../App/SketchObject.cpp" line="7256"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>A megadott geometriai index (GeoId) nem B-görbe.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7085"/>
+      <location filename="../../../App/SketchObject.cpp" line="7081"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>A csomó jelölés határvonalakon kívülre esik. Ne feledje, hogy a megfelelő OCC jelölés szerint, az első csomót jelölése 1 és nem nulla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7096"/>
+      <location filename="../../../App/SketchObject.cpp" line="7092"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>A sokszorozás nem nőhet a B-görbe szögének értéke fölé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7104"/>
+      <location filename="../../../App/SketchObject.cpp" line="7100"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>A sokszorozást nem csökkentheti nulla alá.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7118"/>
+      <location filename="../../../App/SketchObject.cpp" line="7114"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC képtelen csökkenteni a sokszorozást a maximális megengedett tűrésen belül.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7254"/>
+      <location filename="../../../App/SketchObject.cpp" line="7250"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>A csomónak nem lehet nulla sokszorozása.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7271"/>
+      <location filename="../../../App/SketchObject.cpp" line="7267"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>A csomópontok száma nem lehet nagyobb, mint a B-görbe fokozata.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7277"/>
+      <location filename="../../../App/SketchObject.cpp" line="7273"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>A csomó nem illeszthető be a B-görbe paramétertartományán kívül.</translation>
     </message>
@@ -5952,17 +5952,17 @@ A rácsháló távolsága megváltozik, ha kisebb lesz, mint ez a pixelszám.</t
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="558"/>
+      <location filename="../../../App/SketchObject.cpp" line="554"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>A vázlat hibásan formázott kényszerítéseket tartalmaz!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="564"/>
+      <location filename="../../../App/SketchObject.cpp" line="560"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>A vázlat részlegesen felesleges kényszerítéseket tartalmaz!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10738"/>
+      <location filename="../../../App/SketchObject.cpp" line="10734"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>A parabolákat áttelepítették. Az áttelepített fájlok nem nyílnak meg a FreeCAD korábbi verzióiban!!

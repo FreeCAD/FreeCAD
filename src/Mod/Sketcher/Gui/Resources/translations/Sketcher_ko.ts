@@ -145,7 +145,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8587"/>
       <source>Constrain diameter</source>
-      <translation>직경 구속</translation>
+      <translation>지름 구속</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8593"/>
@@ -210,7 +210,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="332"/>
       <source>Create rectangle</source>
-      <translation>생성: 사각형</translation>
+      <translation>사각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="333"/>
@@ -238,12 +238,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1834"/>
       <source>Create regular polygon</source>
-      <translation>생성: 다각형</translation>
+      <translation>다각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1835"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation>스케치에 일반 다각형을 생성</translation>
+      <translation>스케치에 정다각형을 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1960"/>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2008"/>
       <source>Regular polygon</source>
-      <translation>일반 다각형</translation>
+      <translation>정다각형</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="7783"/>
       <source>Constrain diameter</source>
-      <translation>직경 구속</translation>
+      <translation>지름 구속</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7784"/>
@@ -577,7 +577,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1164"/>
       <source>Create a circle by 3 perimeter points</source>
-      <translation>세 점을 이용하여 원 생성</translation>
+      <translation>3개의 둘레 점을 이용하여 원 생성</translation>
     </message>
   </context>
   <context>
@@ -585,12 +585,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="462"/>
       <source>Create arc by center</source>
-      <translation>생성: 중점을 이용한 호</translation>
+      <translation>중심을 기준으로 호 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="463"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation>중점과 양 끝점을 이용하여 호 생성합니다.</translation>
+      <translation>중심과 양 끝점을 이용하여 호를 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -650,7 +650,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="597"/>
       <source>Create circle by center</source>
-      <translation>중심 으로 원 생성</translation>
+      <translation>중심을 기준으로 원 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="598"/>
@@ -663,7 +663,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="664"/>
       <source>Create ellipse by 3 points</source>
-      <translation>생성: 3점을 이용한 타원</translation>
+      <translation>3점을 이용한 타원 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="665"/>
@@ -676,12 +676,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="631"/>
       <source>Create ellipse by center</source>
-      <translation>생성: 타원</translation>
+      <translation>중심을 기준으로 타원 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="632"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>중점, 장축, 단축을 이용하여 타원 생성</translation>
+      <translation>중심을 기준으로 스케치에 타원 생성</translation>
     </message>
   </context>
   <context>
@@ -689,7 +689,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1226"/>
       <source>Create fillet</source>
-      <translation>생성: 모깍기(Fillet)</translation>
+      <translation>모깍기</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1227"/>
@@ -702,12 +702,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1741"/>
       <source>Create heptagon</source>
-      <translation>생성: 7각형</translation>
+      <translation>칠각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1742"/>
       <source>Create a heptagon in the sketch</source>
-      <translation>7각형 생성</translation>
+      <translation>스케치에 칠각형 생성</translation>
     </message>
   </context>
   <context>
@@ -715,12 +715,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1712"/>
       <source>Create hexagon</source>
-      <translation>생성: 6각형</translation>
+      <translation>육각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1713"/>
       <source>Create a hexagon in the sketch</source>
-      <translation>6각형 생성</translation>
+      <translation>스케치에 육각형 생성</translation>
     </message>
   </context>
   <context>
@@ -728,12 +728,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="170"/>
       <source>Create line</source>
-      <translation>생성: 선</translation>
+      <translation>선 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="171"/>
       <source>Create a line in the sketch</source>
-      <translation>두 점을 이용하여 선 생성</translation>
+      <translation>스케치에 선을 생성</translation>
     </message>
   </context>
   <context>
@@ -754,12 +754,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1770"/>
       <source>Create octagon</source>
-      <translation>생성: 8각형</translation>
+      <translation>팔각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1771"/>
       <source>Create an octagon in the sketch</source>
-      <translation>8각형 생성</translation>
+      <translation>스케치에 팔각형 생성</translation>
     </message>
   </context>
   <context>
@@ -767,12 +767,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1682"/>
       <source>Create pentagon</source>
-      <translation>생성: 5각형</translation>
+      <translation>오각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1683"/>
       <source>Create a pentagon in the sketch</source>
-      <translation>5각형 생성</translation>
+      <translation>스케치에 오각형 생성</translation>
     </message>
   </context>
   <context>
@@ -793,12 +793,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1197"/>
       <source>Create point</source>
-      <translation>생성: 점</translation>
+      <translation>점 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1198"/>
       <source>Create a point in the sketch</source>
-      <translation>점 생성</translation>
+      <translation>스케치에 점 생성</translation>
     </message>
   </context>
   <context>
@@ -819,7 +819,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="233"/>
       <source>Create rectangle</source>
-      <translation>생성: 사각형</translation>
+      <translation>사각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="234"/>
@@ -845,7 +845,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1799"/>
       <source>Create regular polygon</source>
-      <translation>생성: 다각형</translation>
+      <translation>다각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1800"/>
@@ -871,12 +871,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1653"/>
       <source>Create square</source>
-      <translation>생성: 정사각형</translation>
+      <translation>사각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1654"/>
       <source>Create a square in the sketch</source>
-      <translation>중점과 끝점을 이용하여 정사각형 생성</translation>
+      <translation>스케치에 사각형 생성</translation>
     </message>
   </context>
   <context>
@@ -884,12 +884,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1624"/>
       <source>Create equilateral triangle</source>
-      <translation>생성: 정삼각형</translation>
+      <translation>정삼각형 생성</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1625"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation>중점과 끝점을 이용하여 정삼각형 생성</translation>
+      <translation>스케치에 정삼각형 생성</translation>
     </message>
   </context>
   <context>
@@ -949,7 +949,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Edit sketch</source>
-      <translation>스케치 수정</translation>
+      <translation>스케치 편집</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
@@ -1053,7 +1053,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Attach sketch...</source>
-      <translation>스케치 부착하기...</translation>
+      <translation>스케치 부착...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="553"/>
@@ -1097,7 +1097,7 @@ then call this command, then choose the desired sketch.</source>
     <message>
       <location filename="../../Command.cpp" line="826"/>
       <source>Mirror sketch</source>
-      <translation>스케치 투영</translation>
+      <translation>스케치 대칭</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="827"/>
@@ -1458,7 +1458,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="751"/>
       <source>View sketch</source>
-      <translation>스케치 면에 수직 보기</translation>
+      <translation>스케치 보기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="752"/>
@@ -1845,7 +1845,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="707"/>
       <source>Attach sketch</source>
-      <translation>스케치 부착하기</translation>
+      <translation>스케치 부착</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="715"/>
@@ -1855,7 +1855,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="860"/>
       <source>Create a mirrored sketch for each selected sketch</source>
-      <translation>각 선택된 스케치에 대한 거울상 스케치 생성하기</translation>
+      <translation>각 선택된 스케치에 대칭되는 스케치 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="979"/>
@@ -1916,7 +1916,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../DrawSketchHandlerFillet.h" line="206"/>
       <location filename="../../DrawSketchHandlerFillet.h" line="261"/>
       <source>Create fillet</source>
-      <translation>생성: 모깍기(Fillet)</translation>
+      <translation>모깍기</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="171"/>
@@ -2140,59 +2140,59 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2797"/>
+      <location filename="../../../App/SketchObject.cpp" line="2793"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>곡선의 교차점을 추정할 수 없습니다. 모깎기 하려는 곡선의 정점들 사이에 일치 구속을 추가해 보십시오.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7070"/>
+      <location filename="../../../App/SketchObject.cpp" line="7066"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>매듭점 다중성에 대한 변경을 요청하지 않으셨습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7064"/>
-      <location filename="../../../App/SketchObject.cpp" line="7250"/>
+      <location filename="../../../App/SketchObject.cpp" line="7060"/>
+      <location filename="../../../App/SketchObject.cpp" line="7246"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-조절곡선 기하형상 인덱스(GeoID)가 범위를 벗어났습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7076"/>
-      <location filename="../../../App/SketchObject.cpp" line="7260"/>
+      <location filename="../../../App/SketchObject.cpp" line="7072"/>
+      <location filename="../../../App/SketchObject.cpp" line="7256"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>제공된 기하형상 인덱스(GeoId)는 B-조절곡선이 아닙니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7085"/>
+      <location filename="../../../App/SketchObject.cpp" line="7081"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>매듭 지수가 범위를 벗어났습니다. OCC 표기법에 따라 첫 번째 매듭은 0이 아닌 지수 1을 가집니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7096"/>
+      <location filename="../../../App/SketchObject.cpp" line="7092"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>다중도는 B-스플라인의 정도 이상으로 증가할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7104"/>
+      <location filename="../../../App/SketchObject.cpp" line="7100"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>다중도는 0 이상으로 감소할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7118"/>
+      <location filename="../../../App/SketchObject.cpp" line="7114"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC는 최대 공차 내에서 다중도를 감소시킬 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7254"/>
+      <location filename="../../../App/SketchObject.cpp" line="7250"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>매듭은 0개의 다중도를 가질 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7271"/>
+      <location filename="../../../App/SketchObject.cpp" line="7267"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>매듭 다중도는 B-조절곡선의 각도보다 높을 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7277"/>
+      <location filename="../../../App/SketchObject.cpp" line="7273"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>매듭은 B-조절곡선 매개변수 범위 밖에서 삽입할 수 없습니다.</translation>
     </message>
@@ -3362,7 +3362,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="127"/>
       <source>Weight</source>
-      <translation>중량</translation>
+      <translation>가중치</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="128"/>
@@ -3498,7 +3498,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="114"/>
       <source>Diameter:</source>
-      <translation>직경:</translation>
+      <translation>지름:</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="119"/>
@@ -3878,7 +3878,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="72"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>역방향</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="81"/>
@@ -3954,7 +3954,7 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="17"/>
       <source>Create regular polygon</source>
-      <translation>생성: 다각형</translation>
+      <translation>다각형 생성</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
@@ -4106,7 +4106,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.ui" line="287"/>
       <source>On-View-Parameters:</source>
-      <translation type="unfinished">On-View-Parameters:</translation>
+      <translation>즉석 매개변수</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="237"/>
@@ -4124,10 +4124,10 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+      <translation>즉석 매개변수의 표시 방법을 선택합니다:
+'비활성화': 즉석에서 입력 가능한 매개변수가 표시되지 않습니다.
+'치수만 표시': 즉석에서 입력 가능한 치수 매개변수만 표시됩니다. 가장 유용합니다. 예를 들면 원의 반지름을 즉석에서 입력하면서 스케치 할 수 있습니다.
+'모두 표시': 즉석에서 입력 가능한 치수 및 위치 매개변수를 모두 표시합니다. 위치는 커서의 (x,y) 위치입니다. 예를 들어 원의 중심의 좌표를 즉석에서 입력하며 스케치 할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="192"/>
@@ -4185,7 +4185,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="20"/>
       <source>Sketch editing</source>
-      <translation>스케치 수정</translation>
+      <translation>스케치 편집</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="208"/>
@@ -4548,7 +4548,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>여과기를 전환 하려면 선택</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
@@ -4622,7 +4622,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation type="unfinished">Check to toggle filters</translation>
+      <translation>여과기를 전환 하려면 선택</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
@@ -4814,7 +4814,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketcher validation</source>
-      <translation>스케쳐 validation</translation>
+      <translation>스케치 유효성 검사</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
@@ -4856,7 +4856,7 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
       <source>If checked, construction geometries are ignored in the search</source>
-      <translation type="unfinished">If checked, construction geometries are ignored in the search</translation>
+      <translation>선택하면, 검색에서 보조선은 무시됩니다</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
@@ -4976,7 +4976,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2997"/>
       <source>Edit sketch</source>
-      <translation>스케치 수정</translation>
+      <translation>스케치 편집</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3014"/>
@@ -5228,12 +5228,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="352"/>
       <source>Center</source>
-      <translation>중앙</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="353"/>
       <source>3 rim points</source>
-      <translation>세 점(3 points)</translation>
+      <translation>테두리 점 3개</translation>
     </message>
   </context>
   <context>
@@ -5242,7 +5242,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1993"/>
       <location filename="../../CommandCreateGeo.cpp" line="1996"/>
       <source>Create a heptagon by its center and by one corner</source>
-      <translation>중점과 모퉁이 한 점을 이용하여 칠각형을 생성합니다.</translation>
+      <translation>중심과 모퉁이 한 점을 이용하여 칠각형을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -5251,7 +5251,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1985"/>
       <location filename="../../CommandCreateGeo.cpp" line="1988"/>
       <source>Create a hexagon by its center and by one corner</source>
-      <translation>중점과 모퉁이 한 점을 이용하여 육각형을 생성합니다.</translation>
+      <translation>중심과 모퉁이 한 점을 이용하여 육각형을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -5268,13 +5268,13 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="2001"/>
       <location filename="../../CommandCreateGeo.cpp" line="2004"/>
       <source>Create an octagon by its center and by one corner</source>
-      <translation>중점과 모퉁이 한 점을 이용하여 팔각형을 생성합니다.</translation>
+      <translation>중심과 모퉁이 한 점을 이용하여 팔각형을 생성합니다.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2010"/>
       <location filename="../../CommandCreateGeo.cpp" line="2013"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation>중점과 모퉁이 한 점을 이용하여 정다각형을 생성합니다.</translation>
+      <translation>중심과 모퉁이 한 점을 이용하여 정다각형을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -5283,7 +5283,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1977"/>
       <location filename="../../CommandCreateGeo.cpp" line="1980"/>
       <source>Create a pentagon by its center and by one corner</source>
-      <translation>중점과 모퉁이 한 점을 이용하여 오각형을 생성합니다.</translation>
+      <translation>중심과 모퉁이 한 점을 이용하여 오각형을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -5308,7 +5308,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1969"/>
       <location filename="../../CommandCreateGeo.cpp" line="1972"/>
       <source>Create a square by its center and by one corner</source>
-      <translation>중점과 모퉁이 한 점을 이용하여 사각형을 생성합니다.</translation>
+      <translation>중심과 모퉁이 한 점을 이용하여 사각형을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -5317,7 +5317,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <location filename="../../CommandCreateGeo.cpp" line="1962"/>
       <location filename="../../CommandCreateGeo.cpp" line="1965"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
-      <translation>중점과 모퉁이 한 점을 이용하여 정삼각형을 생성합니다.</translation>
+      <translation>중심과 모퉁이 한 점을 이용하여 정삼각형을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -5459,7 +5459,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="22"/>
       <source>Default algorithm used for Sketch solving</source>
-      <translation>기본 알고리즘</translation>
+      <translation>스케치 해결에 사용되는 기본 연산법</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="25"/>
@@ -5479,7 +5479,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="47"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="393"/>
       <source>BFGS</source>
-      <translation type="unfinished">BFGS</translation>
+      <translation>BFGS</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="52"/>
@@ -5526,7 +5526,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="114"/>
       <source>Maximum number of iterations of the default algorithm</source>
-      <translation>기본 알고리즘의 계산을 위한 최대 반복 횟수</translation>
+      <translation>기본 연산법의 최대 반복 횟수</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="117"/>
@@ -5578,7 +5578,7 @@ to determine whether a solution converges or not</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>QR algorithm:</source>
-      <translation type="unfinished">QR algorithm:</translation>
+      <translation>QR연산법</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
@@ -5612,12 +5612,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
       <source>1E-13</source>
-      <translation type="unfinished">1E-13</translation>
+      <translation>1E-13</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="370"/>
       <source>Solving algorithm used for determination of Redundant constraints</source>
-      <translation>중복 구속 결정에 사용되는 해결 알고리즘</translation>
+      <translation>중복 구속 결정에 사용되는 해결 연산법</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
@@ -5647,7 +5647,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
       <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
-      <translation>선택 시, 중복 알고리즘의 최대 반복 값에 스케치의 크기가 곱해집니다.</translation>
+      <translation>선택 시, 중복 해결법의 최대 반복 값에 스케치의 크기가 곱해집니다.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>
@@ -5677,7 +5677,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="497"/>
       <source>1E-10</source>
-      <translation type="unfinished">1E-10</translation>
+      <translation>1E-10</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="589"/>
@@ -5815,12 +5815,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid settings</source>
-      <translation type="unfinished">Grid settings</translation>
+      <translation>격자 설정</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
       <source>A grid will be shown</source>
-      <translation type="unfinished">A grid will be shown</translation>
+      <translation>격자가 보여짐</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="57"/>
@@ -5830,7 +5830,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid Auto Spacing</source>
-      <translation type="unfinished">Grid Auto Spacing</translation>
+      <translation>격자 자동 간격</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="73"/>
@@ -5841,8 +5841,8 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
       <source>Distance between two subsequent grid lines.
 If 'Grid Auto Spacing' is enabled, will be used as base value.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.
-If 'Grid Auto Spacing' is enabled, will be used as base value.</translation>
+      <translation>두 개의 후속 격자선 사이의 거리.
+'격자 자동 간격'이 활성화된 경우, 기본 값으로 사용됩니다.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="115"/>
@@ -5859,38 +5859,38 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="151"/>
       <source>Grid display</source>
-      <translation type="unfinished">Grid display</translation>
+      <translation>격자 표시</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="163"/>
       <source>Minor grid lines</source>
-      <translation type="unfinished">Minor grid lines</translation>
+      <translation>보조 격자선</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="269"/>
       <source>Major grid lines</source>
-      <translation type="unfinished">Major grid lines</translation>
+      <translation>주 격자선</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="281"/>
       <source>Major grid line every:</source>
-      <translation type="unfinished">Major grid line every:</translation>
+      <translation>주 격자선 간격:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="291"/>
       <source>Every N lines there will be a major line. Set to 1 to disable major lines.</source>
-      <translation type="unfinished">Every N lines there will be a major line. Set to 1 to disable major lines.</translation>
+      <translation>N번째 마다 주 격자선이 있습니다. 주 격자선을 비활성화 하려면 1로 설정합니다.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="175"/>
       <location filename="../../SketcherSettingsGrid.ui" line="313"/>
       <source>Line pattern</source>
-      <translation type="unfinished">Line pattern</translation>
+      <translation>선 종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="185"/>
       <source>Line pattern used for grid lines.</source>
-      <translation type="unfinished">Line pattern used for grid lines.</translation>
+      <translation>주 격자선을 표시하는 선의 종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="195"/>
@@ -5901,7 +5901,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="205"/>
       <source>Distance between two subsequent grid lines</source>
-      <translation type="unfinished">Distance between two subsequent grid lines</translation>
+      <translation>두 개의 후속 격자선 사이의 거리</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="230"/>
@@ -5912,7 +5912,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="323"/>
       <source>Line pattern used for grid division.</source>
-      <translation type="unfinished">Line pattern used for grid division.</translation>
+      <translation>격자 분할에 사용되는 선의 종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="343"/>
@@ -5925,38 +5925,38 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1120"/>
       <source>Grid auto spacing</source>
-      <translation type="unfinished">Grid auto spacing</translation>
+      <translation>격자 자동 간격</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1121"/>
       <source>Resize grid automatically depending on zoom.</source>
-      <translation type="unfinished">Resize grid automatically depending on zoom.</translation>
+      <translation>확대/축소에 따라 자동으로 격자 크기 조정</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1124"/>
       <source>Spacing</source>
-      <translation type="unfinished">Spacing</translation>
+      <translation>간격</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1125"/>
       <source>Distance between two subsequent grid lines.</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.</translation>
+      <translation>두 개의 후속 격자선 사이의 거리.</translation>
     </message>
   </context>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="558"/>
+      <location filename="../../../App/SketchObject.cpp" line="554"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>스케치에 잘못된 구속들이 있습니다!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="564"/>
+      <location filename="../../../App/SketchObject.cpp" line="560"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>스케치에 부분적으로 중복되는 구속들이 있습니다!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10738"/>
+      <location filename="../../../App/SketchObject.cpp" line="10734"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
@@ -6245,34 +6245,34 @@ The grid spacing change if it becomes smaller than this number of pixel.</transl
     <message>
       <location filename="../../Command.cpp" line="1364"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>개체에 포착</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>새 점이 현재 선택된 개체에 포착됩니다. 또한 선과 호의 중점에도 포착됩니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1369"/>
       <source>Snap to grid</source>
-      <translation type="unfinished">Snap to grid</translation>
+      <translation>격자에 포착</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1371"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
-      <translation type="unfinished">New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid spacing to a grid line to snap.</translation>
+      <translation>새 점은 가장 가까운 격자선에 포착됩니다.
+점을 격자선에 격자 간격의 5분의 1보다 가깝게 가져가야 포착할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>포착 각도</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at Angle' (line for instance). Hold CTRL to enable 'Snap at Angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>'각도에 포착'을 사용하는 도구(예: 선) 의 각도 단계 입니다. '각도에 포착'을 활성화하려면 CTRL 키를 누릅니다. 각도는 스케치의 양(+) 의 X축에서 시작됩니다.</translation>
     </message>
   </context>
   <context>
@@ -6317,7 +6317,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1221"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>격자 전환</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1223"/>
@@ -6330,12 +6330,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1477"/>
       <source>Toggle snap</source>
-      <translation type="unfinished">Toggle snap</translation>
+      <translation>포착 전환</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1479"/>
       <source>Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</source>
-      <translation type="unfinished">Toggle all snap functionality. In the menu you can toggle 'Snap to grid' and 'Snap to objects' individually, and change further snap settings.</translation>
+      <translation>모든 포착 기능을 전환합니다. 메뉴에서 '격자에 포착' 및 '개체에 포착'을 개별적으로 전환할 수 있고 추가 포착 설정을 변경할 수 있습니다.</translation>
     </message>
   </context>
   <context>
@@ -6496,7 +6496,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="308"/>
       <source>Checkbox 1</source>
-      <translation type="unfinished">Checkbox 1</translation>
+      <translation>확인란 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="327"/>
@@ -6506,7 +6506,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="330"/>
       <source>Checkbox 2</source>
-      <translation type="unfinished">Checkbox 2</translation>
+      <translation>확인란 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="349"/>
@@ -6516,7 +6516,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="352"/>
       <source>Checkbox 3</source>
-      <translation type="unfinished">Checkbox 3</translation>
+      <translation>확인란 3</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="371"/>
@@ -6526,7 +6526,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="374"/>
       <source>Checkbox 4</source>
-      <translation type="unfinished">Checkbox 4</translation>
+      <translation>확인란 4</translation>
     </message>
   </context>
   <context>
@@ -6580,7 +6580,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1658"/>
       <source>Center, width, height</source>
-      <translation>중점, 너비, 높이</translation>
+      <translation>중심, 너비, 높이</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1659"/>
@@ -6590,7 +6590,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1660"/>
       <source>Center, 2 corners</source>
-      <translation>중점, 두 모퉁이</translation>
+      <translation>중심, 두 모퉁이</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1665"/>
@@ -6608,7 +6608,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1674"/>
       <source>Frame (J)</source>
-      <translation type="unfinished">Frame (J)</translation>
+      <translation>틀(J)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="1677"/>
@@ -6720,7 +6720,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="14"/>
       <source>Appearance</source>
-      <translation>설정</translation>
+      <translation>외관</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
@@ -6777,7 +6777,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="172"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>선종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="179"/>
@@ -6802,17 +6802,17 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="387"/>
       <source>Internal alignment geometry</source>
-      <translation type="unfinished">Internal alignment geometry</translation>
+      <translation>내부 정렬선</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="400"/>
       <source>Color of fully constrained internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+      <translation>편집 상태에서 완전히 구속된 내부 정렬선의 색상</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="426"/>
       <source>Color of internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+      <translation>편집 상태에서 내부 정렬선의 색상</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="555"/>
@@ -6862,7 +6862,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="258"/>
       <source>Line pattern of normal edges.</source>
-      <translation type="unfinished">Line pattern of normal edges.</translation>
+      <translation>일반적인 도형을 나타내는 선의 종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="268"/>
@@ -6882,7 +6882,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="352"/>
       <source>Line pattern of construction edges.</source>
-      <translation type="unfinished">Line pattern of construction edges.</translation>
+      <translation>보조선을 나타내는 선의 종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="362"/>
@@ -6892,12 +6892,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="446"/>
       <source>Line pattern of internal aligned edges.</source>
-      <translation type="unfinished">Line pattern of internal aligned edges.</translation>
+      <translation>도형 내부 정렬선의 종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="456"/>
       <source>Width of internal aligned edges.</source>
-      <translation type="unfinished">Width of internal aligned edges.</translation>
+      <translation>도형 내부 정렬선의 두께</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="481"/>
@@ -6912,7 +6912,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="514"/>
       <source>Line pattern of external edges.</source>
-      <translation type="unfinished">Line pattern of external edges.</translation>
+      <translation>외부 도형을 나타내는 선의 종류</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="524"/>
@@ -6985,7 +6985,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="500"/>
       <source>Copies (+'U'/ -'J')</source>
-      <translation type="unfinished">Copies (+'U'/ -'J')</translation>
+      <translation>복사본 (+'U'/-'J')</translation>
     </message>
   </context>
   <context>
@@ -7006,7 +7006,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="405"/>
       <source>Keep original geometries (U)</source>
-      <translation type="unfinished">Keep original geometries (U)</translation>
+      <translation>원본 도형 유지(U)</translation>
     </message>
   </context>
   <context>
@@ -7092,7 +7092,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="516"/>
       <source>Copies (+'U'/-'J')</source>
-      <translation type="unfinished">Copies (+'U'/-'J')</translation>
+      <translation>복사본 (+'U'/-'J')</translation>
     </message>
   </context>
   <context>
@@ -7100,7 +7100,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="519"/>
       <source>Rows (+'R'/-'F')</source>
-      <translation type="unfinished">Rows (+'R'/-'F')</translation>
+      <translation>열 (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -7108,12 +7108,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="460"/>
       <source>Center</source>
-      <translation>중앙</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="461"/>
       <source>3 rim points</source>
-      <translation>세 점(3 points)</translation>
+      <translation>테두리 점 3개</translation>
     </message>
   </context>
   <context>
@@ -7126,7 +7126,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1258"/>
       <source>Create a chamfer between two lines or at a coincident point</source>
-      <translation type="unfinished">Create a chamfer between two lines or at a coincident point</translation>
+      <translation>두 선 사이 또는 일치 점에 모따기 생성</translation>
     </message>
   </context>
   <context>
@@ -7139,7 +7139,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1289"/>
       <source>Create a fillet or chamfer between two lines</source>
-      <translation type="unfinished">Create a fillet or chamfer between two lines</translation>
+      <translation>두 선 사이에 모깎기 또는 모따기 생성</translation>
     </message>
   </context>
   <context>
@@ -7160,7 +7160,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="420"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="421"/>

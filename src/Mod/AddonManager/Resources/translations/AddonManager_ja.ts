@@ -2098,32 +2098,32 @@ installed addons will be checked for available updates</source>
       <translation>拡張機能 {} をインストールできませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="195"/>
+      <location filename="../../addonmanager_workers_installation.py" line="201"/>
       <source>Downloaded package.xml for {}</source>
       <translation>{} のpackage.xmlをダウンロードしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="233"/>
+      <location filename="../../addonmanager_workers_installation.py" line="239"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>{} ファイルを拡張機能 &apos;{}&apos; 用にデコードできませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="242"/>
+      <location filename="../../addonmanager_workers_installation.py" line="248"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>このファイル内の依存関係の情報は無視されます</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="249"/>
+      <location filename="../../addonmanager_workers_installation.py" line="255"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>{} のmetadata.txtをダウンロードしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="292"/>
+      <location filename="../../addonmanager_workers_installation.py" line="298"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>{} のrequirements.txtをダウンロードしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="310"/>
+      <location filename="../../addonmanager_workers_installation.py" line="316"/>
       <source>Downloaded icon for {}</source>
       <translation>{} のアイコンをダウンロードしました</translation>
     </message>
@@ -2158,23 +2158,23 @@ installed addons will be checked for available updates</source>
       <translation>マクロ指定ファイル {} が見つかりませんでした ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="442"/>
+      <location filename="../../Addon.py" line="457"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}：認識できない内部ワークベンチ &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="475"/>
+      <location filename="../../Addon.py" line="490"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>拡張機能開発者警告: 拡張機能 {} ({}) のpackage.xmlファイルに設定されているリポジトリURLが ({}) から取得したURLと一致しませんでした</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="483"/>
+      <location filename="../../Addon.py" line="498"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>拡張機能開発者警告: 拡張機能 {} ({}) のpackage.xmlファイルに設定されているリポジトリのブランチが ({}) から取得したブランチと一致しませんでした</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="859"/>
-      <location filename="../../Addon.py" line="875"/>
+      <location filename="../../Addon.py" line="874"/>
+      <location filename="../../Addon.py" line="890"/>
       <source>Got an error when trying to import {}</source>
       <translation>{} のインポートでエラーが発生しました。</translation>
     </message>
@@ -2209,137 +2209,137 @@ installed addons will be checked for available updates</source>
       <translation>マクロファイル {} の削除中にエラーが発生しました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="121"/>
+      <location filename="../../addonmanager_workers_startup.py" line="123"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>GitHubに接続できませんでした。インターネット接続とプロキシ設定を確認してください。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="179"/>
+      <location filename="../../addonmanager_workers_startup.py" line="181"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>警告：重複する拡張機能 {} は無視されました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="252"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Workbenches list was updated.</source>
       <translation>ワークベンチの一覧を更新しました。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="268"/>
+      <location filename="../../addonmanager_workers_startup.py" line="284"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Gitを無効にしているため、Gitマクロは拡張機能の一覧に表示されません。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="316"/>
+      <location filename="../../addonmanager_workers_startup.py" line="332"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>非GitなマクロがGitを使用するように設定を変更しています
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="333"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>GitHubのマクロを更新中にエラーが発生しました。チェックアウトを削除しています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="337"/>
+      <location filename="../../addonmanager_workers_startup.py" line="353"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>チェックアウトを削除しています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="349"/>
+      <location filename="../../addonmanager_workers_startup.py" line="365"/>
       <source>Clean checkout succeeded</source>
       <translation>チェックアウトを削除しました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="359"/>
+      <location filename="../../addonmanager_workers_startup.py" line="375"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>GitHub からマクロを更新できませんでした。「拡張機能の管理」のキャッシュを削除してみてください。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="382"/>
+      <location filename="../../addonmanager_workers_startup.py" line="398"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Wikiへの接続中にエラーが発生しました。現在、FreeCADはWikiのマクロ一覧を取得できません。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="591"/>
+      <location filename="../../addonmanager_workers_startup.py" line="607"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>ワークベンチ {} のGitの更新を取得できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="604"/>
+      <location filename="../../addonmanager_workers_startup.py" line="620"/>
       <source>git status failed for {}</source>
       <translation>{} にgit statusを実行できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="672"/>
+      <location filename="../../addonmanager_workers_startup.py" line="688"/>
       <source>Failed to read metadata from {name}</source>
       <translation>{name} からメタデータを読み込めませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="695"/>
+      <location filename="../../addonmanager_workers_startup.py" line="711"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>マクロ &apos;{name}&apos; のコードが取得できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="748"/>
+      <location filename="../../addonmanager_workers_startup.py" line="764"/>
       <source>Caching macro code...</source>
       <translation>マクロのコードをキャッシュしています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="771"/>
+      <location filename="../../addonmanager_workers_startup.py" line="787"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>拡張機能の管理：{name} の取得中にワーカープロセスが処理を完了できませんでした</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="786"/>
+      <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>{num_macros}個のマクロのうち、{num_failed}個が処理中にタイムアウトしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="809"/>
+      <location filename="../../addonmanager_workers_startup.py" line="825"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>拡張機能の管理：ワーカープロセスは停止できませんでした（{name}）</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="848"/>
+      <location filename="../../addonmanager_workers_startup.py" line="864"/>
       <source>Getting metadata from macro {}</source>
       <translation>マクロ {} のメタデータを取得しています</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="862"/>
+      <location filename="../../addonmanager_workers_startup.py" line="878"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>マクロ {} のメタデータを取得中にタイムアウトしました</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="873"/>
+      <location filename="../../addonmanager_workers_startup.py" line="889"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>マクロ {} のプロセスを強制終了できませんでした。
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="910"/>
       <source>Retrieving macro description...</source>
       <translation>マクロの説明を取得しています…</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="896"/>
+      <location filename="../../addonmanager_workers_startup.py" line="912"/>
       <source>Retrieving info from git</source>
       <translation>Gitから情報を取得しています</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="899"/>
+      <location filename="../../addonmanager_workers_startup.py" line="915"/>
       <source>Retrieving info from wiki</source>
       <translation>Wikiから情報を取得しています</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="941"/>
+      <location filename="../../addonmanager_workers_startup.py" line="957"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>{} から拡張機能の統計データを取得できませんでした。アルファベット順での並べ替えのみ正しいものになります</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="973"/>
+      <location filename="../../addonmanager_workers_startup.py" line="989"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>&apos;{}&apos; から拡張機能のスコアを取得できませんでした。スコア順での並べ替えはできません

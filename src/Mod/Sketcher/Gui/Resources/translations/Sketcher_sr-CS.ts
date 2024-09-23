@@ -2146,59 +2146,59 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2797"/>
+      <location filename="../../../App/SketchObject.cpp" line="2793"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nije moguće odrediti presečnu tačku krivih. Pokušaj da dodaš ograničenje podudarnosti između tačaka krivih gde nameravaš da napraviš zaobljenje.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7070"/>
+      <location filename="../../../App/SketchObject.cpp" line="7066"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Ne zahtevate promenu u višestrukosti čvorova.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7064"/>
-      <location filename="../../../App/SketchObject.cpp" line="7250"/>
+      <location filename="../../../App/SketchObject.cpp" line="7060"/>
+      <location filename="../../../App/SketchObject.cpp" line="7246"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks B-Splajn geometrije (GeoID) je van granica.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7076"/>
-      <location filename="../../../App/SketchObject.cpp" line="7260"/>
+      <location filename="../../../App/SketchObject.cpp" line="7072"/>
+      <location filename="../../../App/SketchObject.cpp" line="7256"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Navedeni Geometrijski index (GeoId) nije B-splajn kriva.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7085"/>
+      <location filename="../../../App/SketchObject.cpp" line="7081"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks čvorova je van granica. Imajte na umu da u skladu sa OCC napomenom, prvi čvor ima indeks 1, a ne nula.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7096"/>
+      <location filename="../../../App/SketchObject.cpp" line="7092"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Višestrukost se ne može povećati iznad stepena B-splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7104"/>
+      <location filename="../../../App/SketchObject.cpp" line="7100"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Višestrukost ne može biti manje od nule.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7118"/>
+      <location filename="../../../App/SketchObject.cpp" line="7114"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nije u stanju da smanji višestrukost unutar maksimalne tolerancije.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7254"/>
+      <location filename="../../../App/SketchObject.cpp" line="7250"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Čvor ne može imati nultu višestrukost.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7271"/>
+      <location filename="../../../App/SketchObject.cpp" line="7267"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Višestrukost čvorova ne može biti veća od stepena B-Splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7277"/>
+      <location filename="../../../App/SketchObject.cpp" line="7273"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Čvor se ne može umetnuti izvan opsega parametara B-Splajna.</translation>
     </message>
@@ -5956,17 +5956,17 @@ Razmak mreže se menja ako postane manji od ovog broja piksela.</translation>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="558"/>
+      <location filename="../../../App/SketchObject.cpp" line="554"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Skica ima deformisana ograničenja!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="564"/>
+      <location filename="../../../App/SketchObject.cpp" line="560"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Skica ima delimično suvišna ograničenja!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10738"/>
+      <location filename="../../../App/SketchObject.cpp" line="10734"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole su migrirale. Migrirane datoteke neće biti moguće otvarati u prethodnim verzijama FreeCAD-a!!

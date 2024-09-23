@@ -2147,59 +2147,59 @@ ungültiger Randbedingungen, degenerierter Geometrien usw.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2797"/>
+      <location filename="../../../App/SketchObject.cpp" line="2793"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Der Schnittpunkt der Kurven kann nicht ermittelt werden. Die Randbedingung Koinzidenz festlegen, angewendet auf die Endpunkte der Kurven, die verrundet werden sollen, kann hier helfen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7070"/>
+      <location filename="../../../App/SketchObject.cpp" line="7066"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Es wird keine Änderung in der Vielfachheit der Knoten gefordert.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7064"/>
-      <location filename="../../../App/SketchObject.cpp" line="7250"/>
+      <location filename="../../../App/SketchObject.cpp" line="7060"/>
+      <location filename="../../../App/SketchObject.cpp" line="7246"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-Spline Geometrie Index (GeoID) ist außerhalb des gültigen Bereichs.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7076"/>
-      <location filename="../../../App/SketchObject.cpp" line="7260"/>
+      <location filename="../../../App/SketchObject.cpp" line="7072"/>
+      <location filename="../../../App/SketchObject.cpp" line="7256"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Der bereitgestellte Geometrieindex (GeoId) ist keine B-Spline-Kurve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7085"/>
+      <location filename="../../../App/SketchObject.cpp" line="7081"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Der Knotenindex ist außerhalb der Grenzen. Beachten, dass der erste Knoten gemäß der OCC-Notation den Index 1 und nicht Null hat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7096"/>
+      <location filename="../../../App/SketchObject.cpp" line="7092"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Die Vielfachheit kann nicht über den Grad des B-Splines hinaus erhöht werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7104"/>
+      <location filename="../../../App/SketchObject.cpp" line="7100"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Die Vielfachheit kann nicht über Null hinaus verringert werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7118"/>
+      <location filename="../../../App/SketchObject.cpp" line="7114"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kann die Multiplizität innerhalb der maximalen Toleranz nicht verringern.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7254"/>
+      <location filename="../../../App/SketchObject.cpp" line="7250"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Ein Knoten kann nicht die Vielfachheit Null haben.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7271"/>
+      <location filename="../../../App/SketchObject.cpp" line="7267"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Die Vielfachheit kann nicht höher als der Grad des B-Splines sein.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7277"/>
+      <location filename="../../../App/SketchObject.cpp" line="7273"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Knoten kann nicht außerhalb des B-Spline-Parameterbereichs eingefügt werden.</translation>
     </message>
@@ -5952,17 +5952,17 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="558"/>
+      <location filename="../../../App/SketchObject.cpp" line="554"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Die Skizze enthält fehlerhafte Randbedingungen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="564"/>
+      <location filename="../../../App/SketchObject.cpp" line="560"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Die Skizze enthält teilweise redundante Randbedingungen!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10738"/>
+      <location filename="../../../App/SketchObject.cpp" line="10734"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabeln wurden intern umstrukturiert. Solche Dateien lassen sich mit früheren Versionen von FreeCAD nicht mehr öffnen!!

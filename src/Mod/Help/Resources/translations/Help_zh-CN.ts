@@ -149,27 +149,27 @@ Markdown 版本的情况下，这才会起作用。</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="72"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="76"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="80"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgets 模块不可用。帮助渲染由系统浏览器完成</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="84"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>您的系统未安装 Markdown 渲染器，因此本帮助页面按原样渲染。请安装 Markdown 或 Pandoc Python 模块，以改善本页面的渲染效果。</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="113"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>帮助</translation>
     </message>
@@ -177,7 +177,7 @@ Markdown 版本的情况下，这才会起作用。</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="389"/>
+      <location filename="../../Help.py" line="425"/>
       <source>General</source>
       <translation>常规</translation>
     </message>

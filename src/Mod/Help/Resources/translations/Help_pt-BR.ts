@@ -136,27 +136,27 @@ Markdown version above.</source>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="72"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>O conteúdo desta página não pôde ser recuperado. Por favor, verifique as configurações no menu Editar -&gt; Preferências -&gt; Geral -&gt; Ajuda</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="76"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Não foi possível determinar o local dos arquivos de ajuda. Por favor, verifique as configurações no menu Editar -&gt; Preferências -&gt; Geral -&gt; Ajuda</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="80"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>O módulo PySide QtWebEngineWidgets está indisponível. A ajuda é mostrada no navegador do sistema</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="84"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Não há nenhum renderizador markdown instalado em seu sistema, por tanto esta página de ajuda não será renderizada. Instale os módulos python "markdown" ou "pandoc" para melhorar a renderização desta página.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="113"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Ajuda</translation>
     </message>
@@ -164,7 +164,7 @@ Markdown version above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="389"/>
+      <location filename="../../Help.py" line="425"/>
       <source>General</source>
       <translation>Geral</translation>
     </message>

@@ -2106,32 +2106,32 @@ installed addons will be checked for available updates</source>
       <translation>Не атрымалася ўсталяваць дадатак {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="195"/>
+      <location filename="../../addonmanager_workers_installation.py" line="201"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Спампаваць package.xml для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="233"/>
+      <location filename="../../addonmanager_workers_installation.py" line="239"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Не атрымалася дэкадаваць файл {} для дадатку &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="242"/>
+      <location filename="../../addonmanager_workers_installation.py" line="248"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Любая інфармацыя пра залежнасці ў файле будзе прапушчаная</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="249"/>
+      <location filename="../../addonmanager_workers_installation.py" line="255"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Спампаваць metadata.txt для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="292"/>
+      <location filename="../../addonmanager_workers_installation.py" line="298"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Спампаваць requirements.txt для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="310"/>
+      <location filename="../../addonmanager_workers_installation.py" line="316"/>
       <source>Downloaded icon for {}</source>
       <translation>Спампаваць гузік для {}</translation>
     </message>
@@ -2166,23 +2166,23 @@ installed addons will be checked for available updates</source>
       <translation>Не атрымалася знайсці паказаны файл макраса {} (чакаецца ў {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="442"/>
+      <location filename="../../Addon.py" line="457"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: Непрызнаны ўнутраны варштат &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="475"/>
+      <location filename="../../Addon.py" line="490"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>Папярэджанне распрацоўкі дадатку: URL-адрас сховішча, які ўсталяваны ў файле package.xml для дадатку {} ({}) не адпавядае спасылку, з якога ён быў выняты ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="483"/>
+      <location filename="../../Addon.py" line="498"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>Папярэджанне распрацоўкі дадатку: галіна сховішча, якая ўсталявана ў файле package.xml для дадатку {} ({}) не адпавядае галіне, з якой яна была вынята ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="859"/>
-      <location filename="../../Addon.py" line="875"/>
+      <location filename="../../Addon.py" line="874"/>
+      <location filename="../../Addon.py" line="890"/>
       <source>Got an error when trying to import {}</source>
       <translation>Адбылася памылка пры спробе імпартаваць {}</translation>
     </message>
@@ -2217,138 +2217,138 @@ installed addons will be checked for available updates</source>
       <translation>Памылка пры спробе выдаліць файл макраса {}:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="121"/>
+      <location filename="../../addonmanager_workers_startup.py" line="123"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Не атрымалася падлучыцца да GitHub. Калі ласка, праверце вашае падключэнне і налады проксі.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="179"/>
+      <location filename="../../addonmanager_workers_startup.py" line="181"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>УВАГА: Паўторны дадатак {} прапушчаны</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="252"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Workbenches list was updated.</source>
       <translation>Спіс варштатаў быў абноўлены.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="268"/>
+      <location filename="../../addonmanager_workers_startup.py" line="284"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git адключаны, прапушчаны макрасы git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="316"/>
+      <location filename="../../addonmanager_workers_startup.py" line="332"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Спроба змяніць наладу макраса, які адрозніваецца ад git, на ўжыванне git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="333"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Адбылася памылка пры абнаўленні макрасаў з GitHub, спроба зрабіць clean checkout...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="337"/>
+      <location filename="../../addonmanager_workers_startup.py" line="353"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Спроба выканаць clean checkout...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="349"/>
+      <location filename="../../addonmanager_workers_startup.py" line="365"/>
       <source>Clean checkout succeeded</source>
       <translation>Паспяховы clean checkout</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="359"/>
+      <location filename="../../addonmanager_workers_startup.py" line="375"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Не атрымалася абнавіць макрасы з GitHub -- паспрабуйце ачысціць кэш Кіравання дадаткамі.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="382"/>
+      <location filename="../../addonmanager_workers_startup.py" line="398"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Памылка злучэння з Wiki, FreeCAD ў бягучы час не можа атрымаць спіс макрасаў Wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="591"/>
+      <location filename="../../addonmanager_workers_startup.py" line="607"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Немагчыма атрымаць абнаўленні git для варштату {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="604"/>
+      <location filename="../../addonmanager_workers_startup.py" line="620"/>
       <source>git status failed for {}</source>
       <translation>Памылка git status для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="672"/>
+      <location filename="../../addonmanager_workers_startup.py" line="688"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Не атрымалася прачытаць метададзеныя з {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="695"/>
+      <location filename="../../addonmanager_workers_startup.py" line="711"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Не атрымалася выняць код для макраса &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="748"/>
+      <location filename="../../addonmanager_workers_startup.py" line="764"/>
       <source>Caching macro code...</source>
       <translation>Кэшаванне коду макраса...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="771"/>
+      <location filename="../../addonmanager_workers_startup.py" line="787"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Кіраванне дадаткамі: працоўнаму працэсу не атрымалася выняць {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="786"/>
+      <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Для {num_macros} макрасаў скончыўся час чакання {num_failed} падчас апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="809"/>
+      <location filename="../../addonmanager_workers_startup.py" line="825"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Кіраванне дадаткамі: не атрымалася спыніць працоўны працэс ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="848"/>
+      <location filename="../../addonmanager_workers_startup.py" line="864"/>
       <source>Getting metadata from macro {}</source>
       <translation>Атрыманне метададзеных з макраса {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="862"/>
+      <location filename="../../addonmanager_workers_startup.py" line="878"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Выйшаў час чакання пры выманні метададзеных з макрасу {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="873"/>
+      <location filename="../../addonmanager_workers_startup.py" line="889"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Не атрымалася завяршыць працэс для макраса {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="910"/>
       <source>Retrieving macro description...</source>
       <translation>Атрыманне апісання макрасу...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="896"/>
+      <location filename="../../addonmanager_workers_startup.py" line="912"/>
       <source>Retrieving info from git</source>
       <translation>Атрыманне інфармацыі з git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="899"/>
+      <location filename="../../addonmanager_workers_startup.py" line="915"/>
       <source>Retrieving info from wiki</source>
       <translation>Атрыманне інфармацыі з вікі</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="941"/>
+      <location filename="../../addonmanager_workers_startup.py" line="957"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Не атрымалася атрымаць статыстыку па дадатку з {} -- дакладнай будзе толькі ўпарадкаванне па алфавіце
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="973"/>
+      <location filename="../../addonmanager_workers_startup.py" line="989"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Не атрымалася атрымаць ацэнкі дадаткаў з &apos;{}&apos; -- упарадкаванне па ацэнках завяршылася памылкай

@@ -2170,59 +2170,59 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2797"/>
+      <location filename="../../../App/SketchObject.cpp" line="2793"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić punktu przecięcia się krzywych. Spróbuj dodać wiązanie zbieżne pomiędzy wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7070"/>
+      <location filename="../../../App/SketchObject.cpp" line="7066"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Żądasz niezmienności w wielokrotności węzłów.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7064"/>
-      <location filename="../../../App/SketchObject.cpp" line="7250"/>
+      <location filename="../../../App/SketchObject.cpp" line="7060"/>
+      <location filename="../../../App/SketchObject.cpp" line="7246"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks geometrii krzywej złożonej (GeoID) jest poza zakresem.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7076"/>
-      <location filename="../../../App/SketchObject.cpp" line="7260"/>
+      <location filename="../../../App/SketchObject.cpp" line="7072"/>
+      <location filename="../../../App/SketchObject.cpp" line="7256"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Podany indeks geometrii krzywej złożonej (GeoId) nie jest łukiem krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7085"/>
+      <location filename="../../../App/SketchObject.cpp" line="7081"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks węzłów jest poza wiązaniem. Zauważ, że zgodnie z zapisem OCC, pierwszy węzeł ma indeks 1, a nie zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7096"/>
+      <location filename="../../../App/SketchObject.cpp" line="7092"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7104"/>
+      <location filename="../../../App/SketchObject.cpp" line="7100"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Wielokrotność nie może zostać zmniejszona poniżej zera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7118"/>
+      <location filename="../../../App/SketchObject.cpp" line="7114"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nie jest w stanie zmniejszyć wielokrotności w ramach maksymalnej tolerancji.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7254"/>
+      <location filename="../../../App/SketchObject.cpp" line="7250"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Węzeł nie może mieć zerowej krotności.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7271"/>
+      <location filename="../../../App/SketchObject.cpp" line="7267"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Krotność węzłów nie może być większa niż stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="7277"/>
+      <location filename="../../../App/SketchObject.cpp" line="7273"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Węzła nie można wstawić poza zakresem parametrów krzywej złożonej.</translation>
     </message>
@@ -6003,17 +6003,17 @@ Rozstaw siatki zmienia się, jeśli staje się mniejszy niż określona liczba p
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="558"/>
+      <location filename="../../../App/SketchObject.cpp" line="554"/>
       <source>The Sketch has malformed constraints!</source>
       <translation>Szkic zawiera zniekształcone wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="564"/>
+      <location filename="../../../App/SketchObject.cpp" line="560"/>
       <source>The Sketch has partially redundant constraints!</source>
       <translation>Szkic zawiera częściowo zbędne wiązania!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10738"/>
+      <location filename="../../../App/SketchObject.cpp" line="10734"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabole zostały poddane migracji. Pliki po imporcie nie otworzą się w poprzednich wersjach programu FreeCAD!!</translation>

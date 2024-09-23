@@ -1689,13 +1689,13 @@ Spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Vous devez spécifier au moins une référence</translation>
     </message>
@@ -6632,12 +6632,12 @@ Sélectionner d'abord un type de résultat.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>Maillage FEM par Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
       <source>Mesh Parameters</source>
-      <translation type="unfinished">Mesh Parameters</translation>
+      <translation>Paramètres de maillage</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
@@ -6647,17 +6647,17 @@ Sélectionner d'abord un type de résultat.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximal Size:</source>
-      <translation type="unfinished">Maximal Size:</translation>
+      <translation>Taille maximale :</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="88"/>
       <source>Minimal Size:</source>
-      <translation type="unfinished">Minimal Size:</translation>
+      <translation>Taille minimale :</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="129"/>
       <source>Second Order</source>
-      <translation type="unfinished">Second Order</translation>
+      <translation>Second ordre</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="136"/>
@@ -6667,12 +6667,12 @@ Sélectionner d'abord un type de résultat.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="159"/>
       <source>Curvature Safety:</source>
-      <translation type="unfinished">Curvature Safety:</translation>
+      <translation>Sécurité de la courbure :</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="176"/>
       <source>Segments Per Edge:</source>
-      <translation type="unfinished">Segments Per Edge:</translation>
+      <translation>Segments par arête :</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="204"/>
@@ -6687,7 +6687,7 @@ Sélectionner d'abord un type de résultat.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="255"/>
       <source>Netgen version</source>
-      <translation type="unfinished">Netgen version</translation>
+      <translation>Version de Netgen</translation>
     </message>
   </context>
 </TS>

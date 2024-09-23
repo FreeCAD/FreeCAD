@@ -5227,24 +5227,24 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Pogrešan unos: mora biti broj između 0 i 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="491"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="490"/>
       <source>Activate this layer</source>
       <translation>Aktiviraj ovaj sloj</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="497"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="496"/>
       <source>Select layer contents</source>
       <translation>Izaberi sadržaj sloja</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="535"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="549"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="534"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="548"/>
       <source>Merge layer duplicates</source>
       <translation>Objedini duplikate sloja</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="541"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="594"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="540"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="593"/>
       <source>Add new layer</source>
       <translation>Dodaj novi sloj</translation>
     </message>
@@ -5521,7 +5521,7 @@ Krajnji ugao će biti početni ugao plus ovaj iznos.</translation>
       <translation>Da bi odredio radnu ravan izaberi 3 tačke, jedan ili više oblika ili objekat</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="182"/>
+      <location filename="../../draftutils/params.py" line="194"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>Želite li da ažurirate opcije SVG šablona

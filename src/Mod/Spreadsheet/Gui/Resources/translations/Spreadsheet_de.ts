@@ -1002,7 +1002,7 @@ Standard: %V = %A
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>%n Zeile darüber einfügen</numerusform>
-        <numerusform>%n Zeile(n) darüber einfügen</numerusform>
+        <numerusform>%n Zeilen darüber einfügen</numerusform>
       </translation>
     </message>
     <message numerus="yes">

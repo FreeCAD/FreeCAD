@@ -2100,32 +2100,32 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>L'installation de l'extension {} a échoué.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="195"/>
+      <location filename="../../addonmanager_workers_installation.py" line="201"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Le fichier package.xml a été téléchargé pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="233"/>
+      <location filename="../../addonmanager_workers_installation.py" line="239"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Impossible de décoder le fichier {} pour l'extension "{}"</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="242"/>
+      <location filename="../../addonmanager_workers_installation.py" line="248"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Toutes les informations de dépendance dans ce fichier seront ignorées</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="249"/>
+      <location filename="../../addonmanager_workers_installation.py" line="255"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Le fichier metadata.txt a été téléchargé pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="292"/>
+      <location filename="../../addonmanager_workers_installation.py" line="298"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Le fichier requirements.txt a été téléchargé pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="310"/>
+      <location filename="../../addonmanager_workers_installation.py" line="316"/>
       <source>Downloaded icon for {}</source>
       <translation>L'icône a été téléchargée pour {}</translation>
     </message>
@@ -2160,23 +2160,23 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Impossible de localiser le fichier {} spécifié par la macro (attendu à {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="442"/>
+      <location filename="../../Addon.py" line="457"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{} : atelier interne non reconnu "{}"</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="475"/>
+      <location filename="../../Addon.py" line="490"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>Avertissement du développeur de l'extension : l'URL du répertoire défini dans le fichier package.xml pour l'extension {} ({}) ne correspond pas à l'URL depuis laquelle il a été récupéré ({}).</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="483"/>
+      <location filename="../../Addon.py" line="498"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>Avertissement du développeur de l'extension : la branche du répertoire définie dans le fichier package.xml pour l'extension {} ({}) ne correspond pas à la branche depuis laquelle il a été récupéré ({}).</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="859"/>
-      <location filename="../../Addon.py" line="875"/>
+      <location filename="../../Addon.py" line="874"/>
+      <location filename="../../Addon.py" line="890"/>
       <source>Got an error when trying to import {}</source>
       <translation>Une erreur s'est produite lors de l'importation de {}</translation>
     </message>
@@ -2211,135 +2211,135 @@ D'autres paquets Python dont dépendent ces paquets peuvent également avoir ét
       <translation>Erreur lors de la suppression du fichier de la macro {} :</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="121"/>
+      <location filename="../../addonmanager_workers_startup.py" line="123"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Impossible de connecter à GitHub. Vérifiez vos paramètres de connexion et de proxy.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="179"/>
+      <location filename="../../addonmanager_workers_startup.py" line="181"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>ATTENTION : l'extension dupliquée {} est ignorée.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="252"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Workbenches list was updated.</source>
       <translation>La liste des ateliers a été mise à jour.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="268"/>
+      <location filename="../../addonmanager_workers_startup.py" line="284"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git est désactivé, les macros sous git sont ignorées.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="316"/>
+      <location filename="../../addonmanager_workers_startup.py" line="332"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Tentative de changement de la configuration des macro non-git pour utiliser git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="333"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Une erreur est survenue lors de la mise à jour des macros depuis GitHub, en tentant un checkout propre...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="337"/>
+      <location filename="../../addonmanager_workers_startup.py" line="353"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Tentative de faire un checkout propre...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="349"/>
+      <location filename="../../addonmanager_workers_startup.py" line="365"/>
       <source>Clean checkout succeeded</source>
       <translation>Checkout propre réussi</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="359"/>
+      <location filename="../../addonmanager_workers_startup.py" line="375"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Impossible de mettre à jour des macros depuis GitHub. Essayez de vider le cache du gestionnaire des extensions.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="382"/>
+      <location filename="../../addonmanager_workers_startup.py" line="398"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Erreur de connexion au wiki : FreeCAD ne peut pas récupérer la liste des macros du wiki pour le moment</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="591"/>
+      <location filename="../../addonmanager_workers_startup.py" line="607"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Impossible de récupérer les mises à jour sous git pour l'atelier {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="604"/>
+      <location filename="../../addonmanager_workers_startup.py" line="620"/>
       <source>git status failed for {}</source>
       <translation>le statut de git a échoué pour {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="672"/>
+      <location filename="../../addonmanager_workers_startup.py" line="688"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Impossible de lire les métadonnées de {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="695"/>
+      <location filename="../../addonmanager_workers_startup.py" line="711"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Impossible de récupérer le code de la macro "{name}"</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="748"/>
+      <location filename="../../addonmanager_workers_startup.py" line="764"/>
       <source>Caching macro code...</source>
       <translation>Mise en cache du code de la macro...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="771"/>
+      <location filename="../../addonmanager_workers_startup.py" line="787"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Gestionnaire des extensions : un processus n'a pas abouti lors de la récupération de {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="786"/>
+      <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Sur {num_macros} macros, {num_failed} sont tombées en panne pendant le traitement</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="809"/>
+      <location filename="../../addonmanager_workers_startup.py" line="825"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Gestionnaire des extensions : un processus n'a pas pu arrêter ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="848"/>
+      <location filename="../../addonmanager_workers_startup.py" line="864"/>
       <source>Getting metadata from macro {}</source>
       <translation>Récupération des métadonnées de la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="862"/>
+      <location filename="../../addonmanager_workers_startup.py" line="878"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Délai de récupération des métadonnées de la macro {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="873"/>
+      <location filename="../../addonmanager_workers_startup.py" line="889"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Impossible d'arrêter la macro {} !</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="910"/>
       <source>Retrieving macro description...</source>
       <translation>Récupération de la description de la macro...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="896"/>
+      <location filename="../../addonmanager_workers_startup.py" line="912"/>
       <source>Retrieving info from git</source>
       <translation>Récupération des informations depuis git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="899"/>
+      <location filename="../../addonmanager_workers_startup.py" line="915"/>
       <source>Retrieving info from wiki</source>
       <translation>Récupération des informations depuis le wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="941"/>
+      <location filename="../../addonmanager_workers_startup.py" line="957"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Impossible de récupérer les statistiques de l'extension {}, seul le tri par ordre alphabétique sera correct.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="973"/>
+      <location filename="../../addonmanager_workers_startup.py" line="989"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Impossible de récupérer le score de l'extension de "{}". Le tri par score échouera.</translation>

@@ -2100,32 +2100,32 @@ installerede tilføjelser for opdateringer ifm. start af Tilføjelseshåndtering
       <translation>Installation af tilføjelsen {} mislykkedes</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="195"/>
+      <location filename="../../addonmanager_workers_installation.py" line="201"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Downloadet package.xml til {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="233"/>
+      <location filename="../../addonmanager_workers_installation.py" line="239"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Mislykkedes at afkode {}-filen til tilføjelsen &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="242"/>
+      <location filename="../../addonmanager_workers_installation.py" line="248"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Enhver afhængighedsinformation i denne fil ignoreres</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="249"/>
+      <location filename="../../addonmanager_workers_installation.py" line="255"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Downloadet metadata.txt til {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="292"/>
+      <location filename="../../addonmanager_workers_installation.py" line="298"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Downloadet requirements.txt til {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="310"/>
+      <location filename="../../addonmanager_workers_installation.py" line="316"/>
       <source>Downloaded icon for {}</source>
       <translation>Downloadet ikon til {}</translation>
     </message>
@@ -2160,23 +2160,23 @@ installerede tilføjelser for opdateringer ifm. start af Tilføjelseshåndtering
       <translation>Kunne ikke finde makrospecificeret fil {} (forventet på {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="442"/>
+      <location filename="../../Addon.py" line="457"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: Ukendt internt arbejdsbord &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="475"/>
+      <location filename="../../Addon.py" line="490"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>Tiløjelsesudvikleradvarsel: Repo-URL angivet i package.xml fil til tilføjelsen {} ({}) matcher ikke URL'en, den blev hentet fra ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="483"/>
+      <location filename="../../Addon.py" line="498"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>Tiløjelsesudvikleradvarsel: Repo-grenen angivet i package.xml fil til tilføjelsen {} ({}) matcher ikke grenen, den blev hentet fra ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="859"/>
-      <location filename="../../Addon.py" line="875"/>
+      <location filename="../../Addon.py" line="874"/>
+      <location filename="../../Addon.py" line="890"/>
       <source>Got an error when trying to import {}</source>
       <translation>Fik en fejl under forsøget på at importere {}</translation>
     </message>
@@ -2211,138 +2211,138 @@ installerede tilføjelser for opdateringer ifm. start af Tilføjelseshåndtering
       <translation>Fejl under forsøget på at fjerne makrofilen {}:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="121"/>
+      <location filename="../../addonmanager_workers_startup.py" line="123"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Kunne ikke oprette forbindelse til GitHub. Tjek forbindelsen og proxyindstillingerne.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="179"/>
+      <location filename="../../addonmanager_workers_startup.py" line="181"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>ADVARSEL: Dublettilføjelsen {} ignoreret</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="252"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Workbenches list was updated.</source>
       <translation>Arbejdsbordlisten er opdateret.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="268"/>
+      <location filename="../../addonmanager_workers_startup.py" line="284"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git er deaktiveret, overspringer git-makroer</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="316"/>
+      <location filename="../../addonmanager_workers_startup.py" line="332"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Forsøger at ændre ikke-git Makroopsætning for at bruge git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="333"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>En fejl opstod under opdatering af makroer fra GitHub, forsøger ren tjekud...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="337"/>
+      <location filename="../../addonmanager_workers_startup.py" line="353"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Forsøger at foretage en ren tjekud...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="349"/>
+      <location filename="../../addonmanager_workers_startup.py" line="365"/>
       <source>Clean checkout succeeded</source>
       <translation>Ren tjekud lykkedes</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="359"/>
+      <location filename="../../addonmanager_workers_startup.py" line="375"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Mislykkedes at opdatere makroer fra GitHub – prøv at rydde Tilføjelseshåndtering-cachen.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="382"/>
+      <location filename="../../addonmanager_workers_startup.py" line="398"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Fejl ved tilslutning til Wiki. FreeCAD kan ikke p.t. hente Wiki-makrolisten</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="591"/>
+      <location filename="../../addonmanager_workers_startup.py" line="607"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Kan ikke hente git-opdateringer til arbejdsbordet {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="604"/>
+      <location filename="../../addonmanager_workers_startup.py" line="620"/>
       <source>git status failed for {}</source>
       <translation>git-status mislykkedes for {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="672"/>
+      <location filename="../../addonmanager_workers_startup.py" line="688"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Kunne ikke læse metadata fra {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="695"/>
+      <location filename="../../addonmanager_workers_startup.py" line="711"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Kunne ikke hente kode til makroen &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="748"/>
+      <location filename="../../addonmanager_workers_startup.py" line="764"/>
       <source>Caching macro code...</source>
       <translation>Cacher makrokode...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="771"/>
+      <location filename="../../addonmanager_workers_startup.py" line="787"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Tilføjelseshåndtering: En worker-proces kunne ikke færdiggøres under hentningen af {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="786"/>
+      <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Ud af {num_macros} makroer, fik {num_failed} timeout under behandling</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="809"/>
+      <location filename="../../addonmanager_workers_startup.py" line="825"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Tilføjelseshåndtering: En worker-proces kunne ikke standse ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="848"/>
+      <location filename="../../addonmanager_workers_startup.py" line="864"/>
       <source>Getting metadata from macro {}</source>
       <translation>Henter metadata fra makroen {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="862"/>
+      <location filename="../../addonmanager_workers_startup.py" line="878"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Timeout under hentning af metadata til makroen {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="873"/>
+      <location filename="../../addonmanager_workers_startup.py" line="889"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Mislykkedes at standse processen for makroen {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="910"/>
       <source>Retrieving macro description...</source>
       <translation>Henter makrobeskrivelse...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="896"/>
+      <location filename="../../addonmanager_workers_startup.py" line="912"/>
       <source>Retrieving info from git</source>
       <translation>Henter info fra git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="899"/>
+      <location filename="../../addonmanager_workers_startup.py" line="915"/>
       <source>Retrieving info from wiki</source>
       <translation>Henter info fra wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="941"/>
+      <location filename="../../addonmanager_workers_startup.py" line="957"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Kunne ikke hente tilføjelsesstatistik fra {} – kun alfabetisk sortering vil være præcis
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="973"/>
+      <location filename="../../addonmanager_workers_startup.py" line="989"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Kunne ikke få tilføjelsesscore fra &apos;{}&apos; – sortering efter score vil mislykkes
