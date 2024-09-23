@@ -172,6 +172,6 @@ fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Materia
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${Material_Ui_Files})
 
 INSTALL(TARGETS MatGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "Mod/Material/Resources/icons")
-INSTALL(FILES ${MatGuiImages} DESTINATION "Mod/Material/Resources/images")
+INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/icons")
+INSTALL(FILES ${MatGuiImages} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/images")
 INSTALL(FILES ${Material_Ui_Files} DESTINATION "Mod/Material/Resources/ui")
