@@ -1643,11 +1643,11 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Μέγιστες θέσεις σε τυχαίο διάνυσμα.
-(αριθμός κόμπων ανά στοιχείο επί τον
+(αριθμός κόμπων ανά στοιχείο επί τον 
 αριθμό των πεπερασμένων στοιχείων)
 
 Ίσως, χρειαστεί να το αυξήσετε όταν χρησιμοποιείτε
-έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα
+έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα 
 σφάλματος ότι πρέπει να αυξηθεί το "MAXKOI".</translation>
     </message>
     <message>
@@ -1702,13 +1702,13 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Πρέπει να καθορίσετε τουλάχιστον μια αναφορά</translation>
     </message>
@@ -4663,7 +4663,7 @@ normal vector of the face is used as direction</source>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Ποια ακαμψία πρέπει να
+      <translation>Ποια ακαμψία πρέπει να 
 χρησιμοποιηθεί για τον επιλύτη Elmer</translation>
     </message>
     <message>

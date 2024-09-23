@@ -104,7 +104,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>Οι Οδηγίες θα ανοίξουν σε ένα διάλογο προσάρτησης μέσα στο παράθυρο του FreeCAD, που σας επιτρέπει να το διατηρήσετε ανοιχτό ενώ εργάζεστε στην τρισδιάστατη προβολή.
+      <translation>Οι Οδηγίες θα ανοίξουν σε ένα διάλογο προσάρτησης μέσα στο παράθυρο του FreeCAD, που σας επιτρέπει να το διατηρήσετε ανοιχτό ενώ εργάζεστε στην τρισδιάστατη προβολή. 
 Αυτό απαιτεί το στοιχείο PySide QtWebengineWidgets</translation>
     </message>
     <message>
@@ -112,7 +112,7 @@ which allows you to keep it open while working in the 3D view. This requires the
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation>Εδώ μπορείτε να υποδείξετε τη διαδρομή προς ένα εναλλακτικό αρχείο CSS που θα χρησιμοποιηθεί για να διαμορφώσετε τις σελίδες Markdown.
+      <translation>Εδώ μπορείτε να υποδείξετε τη διαδρομή προς ένα εναλλακτικό αρχείο CSS που θα χρησιμοποιηθεί για να διαμορφώσετε τις σελίδες Markdown. 
 Αυτό θα λειτουργήσει μόνο αν έχετε επιλέξει την έκδοση Markdown παραπάνω.</translation>
     </message>
     <message>
@@ -144,27 +144,27 @@ Markdown version above.</source>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="72"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Δεν ήταν δυνατή η ανάκτηση του περιεχομένου αυτής της σελίδας. Ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία -&gt; Προτιμήσεις -&gt; Γενικά -&gt; Βοήθεια</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="76"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Δεν ήταν δυνατός ο προσδιορισμός της τοποθεσίας των αρχείων βοήθειας. Παρακαλώ ελέγξτε τις ρυθμίσεις στο μενού Επεξεργασία -&gt; Προτιμήσεις -&gt; General -&gt; Βοήθεια</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="80"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Η λειτουργική μονάδα PySide QtWebEngineWidgets δεν είναι διαθέσιμη. Η απόδοση της βοήθειας πραγματοποιείται με το πρόγραμμα περιήγησης συστήματος</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="84"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Δεν υπάρχει εγκατεστημένο πρόγραμμα απόδοσης Markdown στο σύστημά σας, επομένως αυτή η σελίδα βοήθειας αποδίδεται ως έχει. Εγκαταστήστε τις λειτουργικές μονάδες Markdown ή Pandoc Python για να βελτιώσετε την απόδοση αυτής της σελίδας.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="113"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Βοήθεια</translation>
     </message>
@@ -172,7 +172,7 @@ Markdown version above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="389"/>
+      <location filename="../../Help.py" line="425"/>
       <source>General</source>
       <translation>Γενικές</translation>
     </message>

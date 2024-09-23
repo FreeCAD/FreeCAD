@@ -119,27 +119,27 @@
       <translation>Napravi arhitektonski projekat</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="492"/>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>New File</source>
       <translation>Nova datoteka</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="493"/>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Examples</source>
       <translation>Primeri</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="496"/>
       <source>Recent Files</source>
       <translation>Nedavne datoteke</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Open first start setup</source>
       <translation>Otvori početna podešavanja</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="499"/>
+      <location filename="../../StartView.cpp" line="501"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Ne prikazuj ponovo ovu početnu stranu (počni sa praznim ekranom)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="486"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>

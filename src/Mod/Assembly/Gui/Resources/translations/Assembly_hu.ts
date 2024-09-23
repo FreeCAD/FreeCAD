@@ -138,7 +138,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="60"/>
       <source>Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation>Beszúr egy alkatrészt az aktív összeállításba.
+      <translation>Beszúr egy alkatrészt az aktív összeállításba. 
 Ez dinamikus kapcsolatokat hoz létre alkatrészekhez, szilárd testekhez, alaptestekhez és összeállításokhoz.
 Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&gt;nyitva van az aktuális munkamenetben&lt;/b&gt;</translation>
     </message>
@@ -399,7 +399,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <location filename="../../../JointObject.py" line="244"/>
       <location filename="../../../JointObject.py" line="518"/>
       <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+      <translation>Ez az első közös csatlakozó rögzítésének eltolódása.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="253"/>
@@ -416,7 +416,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <location filename="../../../JointObject.py" line="286"/>
       <location filename="../../../JointObject.py" line="528"/>
       <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+      <translation>Ez a második közös csatlakozó rögzítésének eltolódása.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="431"/>

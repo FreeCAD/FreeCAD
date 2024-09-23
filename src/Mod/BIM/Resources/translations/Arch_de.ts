@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>BIM material</source>
-      <translation type="unfinished">BIM material</translation>
+      <translation>BIM-Material</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -1971,7 +1971,7 @@ Ein FreeCAD-Dokument kann immer noch manuell in ein IFC-Dokument umgewandelt wer
     <message>
       <location filename="../ui/dialogTutorial.ui" line="14"/>
       <source>BIM tutorial</source>
-      <translation>BIM-Tutorial</translation>
+      <translation>BIM-Anleitung</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="20"/>
@@ -1997,7 +1997,7 @@ p, li { white-space: pre-wrap ; }
     <message>
       <location filename="../ui/dialogTutorial.ui" line="41"/>
       <source>Tasks to complete:</source>
-      <translation>Zu erledigende Aufträge:</translation>
+      <translation>Zu erledigende Aufgaben:</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="50"/>
@@ -4799,12 +4799,12 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
       <translation>Kalkulationstabelle anhängen</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="568"/>
+      <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
       <translation>CSV-Datei importieren</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="601"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
       <translation>CSV-Datei exportieren</translation>
     </message>
@@ -4814,20 +4814,20 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
       <translation>CSV-Datei exportieren</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
       <translation>Dateityp nicht erkannt</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>Beschreibung</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
       <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
@@ -4835,14 +4835,14 @@ Wenn Länge = 0 dann wird die Länge so berechnet, dass die Höhe gleich dem rel
       <translation>Wert</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>Einheit</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="723"/>
+      <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
       <translation>Zeitplan</translation>
     </message>
@@ -9413,7 +9413,7 @@ STRG + / um zwischen automatischem und manuellem Mosus umzuschalten</translation
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="247"/>
       <source>BIM Tutorial - step</source>
-      <translation>BIM-Tutorial - Schritt</translation>
+      <translation>BIM-Anleitung - Schritt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="134"/>
@@ -10314,7 +10314,7 @@ STRG + / um zwischen automatischem und manuellem Mosus umzuschalten</translation
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
       <source>Creates a new TechDraw page from a template</source>
-      <translation>Erstellt eine neue TechDraw-Seite aus einer Vorlage</translation>
+      <translation>Erstellt ein neues TechDraw-Zeichnungsblatt aus einer Vorlage</translation>
     </message>
   </context>
   <context>
@@ -10374,12 +10374,12 @@ STRG + / um zwischen automatischem und manuellem Mosus umzuschalten</translation
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="47"/>
       <source>BIM Tutorial</source>
-      <translation>BIM-Tutorial</translation>
+      <translation>BIM-Anleitung</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="50"/>
       <source>Starts or continues the BIM in-game tutorial</source>
-      <translation>Startet oder setzt das BIM-In-Game-Tutorial fort</translation>
+      <translation>Startet oder setzt die anwendungsinterne BIM-Anleitung fort</translation>
     </message>
   </context>
   <context>

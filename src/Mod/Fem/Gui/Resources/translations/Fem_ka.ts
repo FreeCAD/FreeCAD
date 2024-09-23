@@ -790,7 +790,7 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
       <source>Insert component's
  initial temperature:</source>
-      <translation>შეიყვანეთ კომპონენტის
+      <translation>შეიყვანეთ კომპონენტის 
  საწყისი ტემპერატურა:</translation>
     </message>
   </context>
@@ -1641,11 +1641,11 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>მაქსიმალური ადგილები დამთხვევის ვექტორში
-(თითოეული ელემენტის კვანძების რიცხვი
+(თითოეული ელემენტის კვანძების რიცხვი 
  გამრავლებული სასრული ელემენტების რიცხვზე).
 
-შეიძლება დაგჭირდეთ ამისი გაზრდა, თუ იყენებთ
-იტერაციულ ამომხსნელს და დაინახავთ
+შეიძლება დაგჭირდეთ ამისი გაზრდა, თუ იყენებთ 
+იტერაციულ ამომხსნელს და დაინახავთ 
 შეცდომას, რომ საჭიროა "MAXKOI"-ის გაზრდა.</translation>
     </message>
     <message>
@@ -1659,7 +1659,7 @@ that "MAXKOI" needs to be increased.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>მითითებული z88r-ის გამშვები ფაილი
+      <translation>მითითებული z88r-ის გამშვები ფაილი 
 '%1'
  არ არსებობს!
 მიუთითეთ სხვა ფაილი.</translation>
@@ -1700,13 +1700,13 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>აუცილებელია მიუთითოთ ერთი ბმა მაინც</translation>
     </message>
@@ -3085,7 +3085,7 @@ Specify another file please.</source>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>წარმოდგენითი ნაწილი მხოლოდ ჰარმონიული/რხევადი
+      <translation>წარმოდგენითი ნაწილი მხოლოდ ჰარმონიული/რხევადი 
 მამოძრავებელი ძალის მქონე ტოლობებთან ერთად გამოიყენება</translation>
     </message>
     <message>
@@ -6652,12 +6652,12 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>სემ ბადე Netgen-თ</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
       <source>Mesh Parameters</source>
-      <translation type="unfinished">Mesh Parameters</translation>
+      <translation>ბადის პარამეტრები</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
@@ -6687,12 +6687,12 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="159"/>
       <source>Curvature Safety:</source>
-      <translation type="unfinished">Curvature Safety:</translation>
+      <translation>სიმრუდის უსაფრთხოება:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="176"/>
       <source>Segments Per Edge:</source>
-      <translation type="unfinished">Segments Per Edge:</translation>
+      <translation>სეგმენტი თითოეული წიბოსთვის:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="204"/>

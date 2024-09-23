@@ -1070,7 +1070,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1172,7 +1172,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1261,7 +1261,7 @@ Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
       <translation>A hálócsoportok is exportálásra kerülnek.
-Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll,
+Minden elemzési funkció és, ha vannak különböző anyagok, anyag két hálócsoportból, felületből és csomópontból áll, 
 ahol
 a kényszerítést vagy az anyagot alkalmazzák.</translation>
     </message>
@@ -1435,7 +1435,7 @@ elemzési konténer hozzáadásakor</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1545,7 +1545,7 @@ FreeCAD eredménytárgy: Az importált adatok FreeCAD VEM eredménytárgyá alak
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott végrehajtható fájl
+      <translation>A megadott végrehajtható fájl 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1640,8 +1640,8 @@ that "MAXKOI" needs to be increased.</source>
 (csomópontok száma elemenként szorozva
  véges elemek száma)
 
-Előfordulhat, hogy növelnie kell ezt a paramétert, ha
-egy iteratív megoldó használata esetén a "MAXKOI" paraméter
+Előfordulhat, hogy növelnie kell ezt a paramétert, ha 
+egy iteratív megoldó használata esetén a "MAXKOI" paraméter 
 értékét növelni kell hibaüzenet jelenik meg.</translation>
     </message>
     <message>
@@ -1655,7 +1655,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>A megadott z88r végrehajtható
+      <translation>A megadott z88r végrehajtható 
 '%1'
  nem létezik!
 Kérjük, adjon meg egy másik fájlt.</translation>
@@ -1696,13 +1696,13 @@ Kérjük, adjon meg egy másik fájlt.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Meg kell adnia legalább egy hivatkozást</translation>
     </message>
@@ -6649,12 +6649,12 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>VEM háló Netgen által</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
       <source>Mesh Parameters</source>
-      <translation type="unfinished">Mesh Parameters</translation>
+      <translation>VEM háló paraméterek</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
@@ -6664,17 +6664,17 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximal Size:</source>
-      <translation type="unfinished">Maximal Size:</translation>
+      <translation>Maximális méret:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="88"/>
       <source>Minimal Size:</source>
-      <translation type="unfinished">Minimal Size:</translation>
+      <translation>Maximális méret:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="129"/>
       <source>Second Order</source>
-      <translation type="unfinished">Second Order</translation>
+      <translation>Második sorrend</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="136"/>
@@ -6684,12 +6684,12 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="159"/>
       <source>Curvature Safety:</source>
-      <translation type="unfinished">Curvature Safety:</translation>
+      <translation>Görbületbiztonság:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="176"/>
       <source>Segments Per Edge:</source>
-      <translation type="unfinished">Segments Per Edge:</translation>
+      <translation>Élenkénti szakaszok:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="204"/>
@@ -6704,7 +6704,7 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="255"/>
       <source>Netgen version</source>
-      <translation type="unfinished">Netgen version</translation>
+      <translation>Netgen verzió</translation>
     </message>
   </context>
 </TS>

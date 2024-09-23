@@ -1069,7 +1069,7 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny
+      <translation>Wskazany plik wykonywalny 
 "%1"
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1171,7 +1171,7 @@ zostaną połączone, aby uczynić granice objętości niewidocznymi.</translati
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny
+      <translation>Wskazany plik wykonywalny 
 "%1"
  nie istnieje!
 Proszę, wybierz inny.
@@ -1261,9 +1261,9 @@ MES: Tylko elementy MES zostaną wyeksportowane. Oznacza to tylko krawędzie nie
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
-      <translation>Grupy siatki są eksportowane.
-Każdy element analizy i, jeśli istnieją różne materiały,
-materiał składa się z dwóch grup siatek, ścian i węzłów,
+      <translation>Grupy siatki są eksportowane. 
+Każdy element analizy i, jeśli istnieją różne materiały, 
+materiał składa się z dwóch grup siatek, ścian i węzłów, 
 w których zastosowano wiązanie lub materiał.</translation>
     </message>
   </context>
@@ -1312,7 +1312,7 @@ w których zastosowano wiązanie lub materiał.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="160"/>
       <source>Use directory set below. Create own subdirectory for every solver. Name directory after the solver label prefixed with the document name.</source>
-      <translation>Użyj katalogu ustawionego poniżej. Utwórz podkatalog dla każdego solvera.
+      <translation>Użyj katalogu ustawionego poniżej. Utwórz podkatalog dla każdego solvera. 
 Nazwij katalog nazwą solvera poprzedzoną nazwą dokumentu.</translation>
     </message>
     <message>
@@ -1437,7 +1437,7 @@ tworzeniu nowej analizy</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny
+      <translation>Wskazany plik wykonywalny 
 "%1"
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1472,16 +1472,16 @@ FreeCAD result object: The imported data will be converted into a
 FreeCAD FEM Result object. Note: this setting needs the exact result
 component names and thus it only works properly with VTK files
 exported from FreeCAD.</source>
-      <translation>Obiekt wyników VTK:
-Obiekt wyników FreeCAD MES VTK zostanie zaimportowany
+      <translation>Obiekt wyników VTK: 
+Obiekt wyników FreeCAD MES VTK zostanie zaimportowany 
 (równe obiektowi, który został wyeksportowany).
 
-Obiekt siatki MES:
+Obiekt siatki MES: 
 Wyniki w pliku VTK zostaną pominięte, tylko dane siatki będą zaimportowane i obiekt siatki FreeCAD MES zostanie utworzony.
 
-Obiekt wyników FreeCAD:
-Zaimportowane dane zostaną przekonwetowane na obiekt wyników FreeCAD FEM.
-Uwaga: to ustawienie potrzebuje dokładnych nazw komponentów wyników,
+Obiekt wyników FreeCAD: 
+Zaimportowane dane zostaną przekonwetowane na obiekt wyników FreeCAD FEM. 
+Uwaga: to ustawienie potrzebuje dokładnych nazw komponentów wyników, 
 a więc działa prawidłowo tylko z plikami VTK eksportowanymi z FreeCAD.</translation>
     </message>
     <message>
@@ -1553,7 +1553,7 @@ a więc działa prawidłowo tylko z plikami VTK eksportowanymi z FreeCAD.</trans
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny
+      <translation>Wskazany plik wykonywalny 
 "%1"
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1665,7 +1665,7 @@ iteracyjnego solvera, gdy pojawi się komunikat o błędzie,
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Wskazany plik wykonywalny z88r
+      <translation>Wskazany plik wykonywalny z88r 
 '%1'
  nie istnieje!
 Proszę, wybierz inny.</translation>
@@ -1706,13 +1706,13 @@ Proszę, wybierz inny.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Należy określić co najmniej jedno odniesienie</translation>
     </message>
@@ -5068,7 +5068,7 @@ użyta przez solver Elmer</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness:</source>
-      <translation>Stopień rozdrobnienia:</translation>
+      <translation>Stopień zagęszczenia:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
@@ -6659,32 +6659,32 @@ Proszę najpierw wybrać typ wyniku.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>Siatka MES przy użyciu Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
       <source>Mesh Parameters</source>
-      <translation type="unfinished">Mesh Parameters</translation>
+      <translation>Parametry siatki</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
       <source>Fineness:</source>
-      <translation>Stopień rozdrobnienia:</translation>
+      <translation>Stopień zagęszczenia:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximal Size:</source>
-      <translation type="unfinished">Maximal Size:</translation>
+      <translation>Rozmiar maksymalny:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="88"/>
       <source>Minimal Size:</source>
-      <translation type="unfinished">Minimal Size:</translation>
+      <translation>Rozmiar minimalny:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="129"/>
       <source>Second Order</source>
-      <translation type="unfinished">Second Order</translation>
+      <translation>Elementy drugiego rzędu</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="136"/>
@@ -6694,12 +6694,12 @@ Proszę najpierw wybrać typ wyniku.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="159"/>
       <source>Curvature Safety:</source>
-      <translation type="unfinished">Curvature Safety:</translation>
+      <translation>Bezpieczeństwo krzywizny:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="176"/>
       <source>Segments Per Edge:</source>
-      <translation type="unfinished">Segments Per Edge:</translation>
+      <translation>Liczba segmentów na krawędź:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="204"/>
@@ -6714,7 +6714,7 @@ Proszę najpierw wybrać typ wyniku.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="255"/>
       <source>Netgen version</source>
-      <translation type="unfinished">Netgen version</translation>
+      <translation>Wersja Netgen</translation>
     </message>
   </context>
 </TS>

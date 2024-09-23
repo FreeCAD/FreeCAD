@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>BIM material</source>
-      <translation type="unfinished">BIM material</translation>
+      <translation>Material de BIM</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -1712,7 +1712,7 @@ Utilitats -&gt; Crea un projecte IFC</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="14"/>
       <source>IFC Preflight</source>
-      <translation type="unfinished">IFC Preflight</translation>
+      <translation>Prova preliminar d'IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
@@ -4022,44 +4022,44 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="191"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>La finestra no està basada en un croquis. La finestra no està alineada o redimensionada.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="201"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>No hi ha cap restricció d'Amplada/Alçada a la finestra del croquis. No s'ha redimensionat la finestra.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="204"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>No s'ha trobat cap finestra. No es pot continuar.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="266"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Opcions de finestra</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="270"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>Inclou automàticament a l'objecte amfitrió</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="276"/>
       <source>Sill height</source>
-      <translation type="unfinished">Sill height</translation>
+      <translation>Alçada de suport</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="896"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Aquesta finestra no té obertura definida</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1173"/>
       <location filename="../../ArchWindow.py" line="1222"/>
       <location filename="../../ArchWindow.py" line="1383"/>
       <source>Get selected edge</source>
-      <translation type="unfinished">Get selected edge</translation>
+      <translation>Obtingui la vora seleccionada</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1322"/>
@@ -4069,17 +4069,17 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchWindow.py" line="1360"/>
       <source>Window elements</source>
-      <translation type="unfinished">Window elements</translation>
+      <translation>Elements de finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1361"/>
       <source>Hole wire</source>
-      <translation type="unfinished">Hole wire</translation>
+      <translation>Nombre de fils</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1362"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
+      <translation>El nombre de fils que defineixen un forat en l'objecte amfitrió. Un valor de zero automàticament adoptarà el fil més gran</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1363"/>
@@ -4129,13 +4129,13 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchWindow.py" line="1368"/>
       <source>Base 2D object</source>
-      <translation type="unfinished">Base 2D object</translation>
+      <translation>Objecte base 2D</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1369"/>
       <location filename="../../ArchWindow.py" line="1374"/>
       <source>Wires</source>
-      <translation type="unfinished">Wires</translation>
+      <translation>Filferros</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1370"/>
@@ -4180,45 +4180,45 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchWindow.py" line="1377"/>
       <source>Hinge</source>
-      <translation type="unfinished">Hinge</translation>
+      <translation>Frontissa</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1378"/>
       <source>Opening mode</source>
-      <translation type="unfinished">Opening mode</translation>
+      <translation>Mode d'obertura</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1379"/>
       <location filename="../../ArchWindow.py" line="1381"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ predeterminat</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1380"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
+      <translation>Si està marcat, el valor predeterminat del marc d'aquesta finestra s'afegirà al valor introduït aquí</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1382"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
+      <translation>Si està marcat, el valor predeterminat de l'equidistància d'aquesta finestra s'afegirà al valor introduït aquí</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1384"/>
       <source>Press to retrieve the selected edge</source>
-      <translation type="unfinished">Press to retrieve the selected edge</translation>
+      <translation>Premeu-ho per a recuperar la vora seleccionada</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="826"/>
       <location filename="../../ArchWindow.py" line="1385"/>
       <source>Invert opening direction</source>
-      <translation type="unfinished">Invert opening direction</translation>
+      <translation>Invertir direcció d'obertura</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="835"/>
       <location filename="../../ArchWindow.py" line="1386"/>
       <source>Invert hinge position</source>
-      <translation type="unfinished">Invert hinge position</translation>
+      <translation>Invertir posició de la frontissa</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="95"/>
@@ -4228,7 +4228,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="79"/>
       <source>Only axes must be selected</source>
-      <translation type="unfinished">Only axes must be selected</translation>
+      <translation>Només es poden seleccionar eixos</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="83"/>
@@ -4238,7 +4238,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="88"/>
       <source>Please select at least one axis</source>
-      <translation type="unfinished">Please select at least one axis</translation>
+      <translation>Si us plau, selecciona almenys un eix</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="322"/>
@@ -4246,12 +4246,12 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <location filename="../../Arch.py" line="68"/>
       <location filename="../../ArchComponent.py" line="1956"/>
       <source>Axes</source>
-      <translation type="unfinished">Axes</translation>
+      <translation>Eixos</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="325"/>
       <source>Axis system components</source>
-      <translation type="unfinished">Axis system components</translation>
+      <translation>Components del sistema d'eixos</translation>
     </message>
     <message>
       <location filename="../../importers/importJSON.py" line="58"/>
@@ -4259,7 +4259,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <location filename="../../importers/importOBJ.py" line="258"/>
       <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
-      <translation type="unfinished">Successfully written</translation>
+      <translation>S'ha escrit correctament</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="919"/>
@@ -4270,7 +4270,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <location filename="../../bimcommands/BimCurtainwall.py" line="56"/>
       <location filename="../../bimcommands/BimTruss.py" line="55"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>Si us plau, seleccioneu només un objecte base, o cap</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTruss.py" line="86"/>
@@ -4280,27 +4280,27 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../importers/importIFClegacy.py" line="110"/>
       <source>Couldn't locate IfcOpenShell</source>
-      <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
+      <translation>No s'ha pogut localitzar IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
-      <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
+      <translation>No s'ha trobat IfcOpenShell o està inhabilitat, s'utilitzarà l'analitzador intern.</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="393"/>
       <source>IFC Schema not found, IFC import disabled.</source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
+      <translation>No s'ha trobat l'Esquema IFC, s'ha desactivat la importació IFC.</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="928"/>
       <source>Error: IfcOpenShell is not installed</source>
-      <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
+      <translation>Error: IfcOpenShell no està instal·lat</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="935"/>
       <source>Error: your IfcOpenShell version is too old</source>
-      <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
+      <translation>Error: la versió d'IfcOpenShell és massa antiga</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="531"/>
@@ -4315,7 +4315,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../Arch.py" line="877"/>
       <source>Railing</source>
-      <translation type="unfinished">Railing</translation>
+      <translation>Barana</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="55"/>
@@ -4325,12 +4325,12 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchStairs.py" line="236"/>
       <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>s'han eliminat les propietats 'OutlineWireLeft' i 'OutlineWireRight', i s'han afegit les propietats 'RailingLeft' i 'RailingRight'</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="250"/>
       <source>changed the type of properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">changed the type of properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>s'ha canviat el tipus de les propietats 'RailingLeft' i 'RailingRight'</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="567"/>
@@ -4345,7 +4345,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Fusiona els duplicats</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="743"/>
@@ -4357,12 +4357,12 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../Arch.py" line="322"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>Multimaterial</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="793"/>
       <source>New layer</source>
-      <translation type="unfinished">New layer</translation>
+      <translation>Capa nova</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="830"/>
@@ -4372,23 +4372,23 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchMaterial.py" line="844"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>depèn de l'objecte</translation>
     </message>
     <message>
       <location filename="../../importers/importGBXML.py" line="46"/>
       <location filename="../../importers/importGBXML.py" line="50"/>
       <source>This exporter can currently only export one site object</source>
-      <translation type="unfinished">This exporter can currently only export one site object</translation>
+      <translation>Actualment, aquest exportador només pot exportar un objecte lloc</translation>
     </message>
     <message>
       <location filename="../../importers/importGBXML.py" line="92"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
-      <translation type="unfinished">Error: Space '%s' has no Zone. Aborting.</translation>
+      <translation>Error: l'espai '%s' no té zona. Operació avortada.</translation>
     </message>
     <message>
       <location filename="../../importers/importDAE.py" line="60"/>
       <source>pycollada not found, collada support is disabled.</source>
-      <translation type="unfinished">pycollada not found, collada support is disabled.</translation>
+      <translation>No s'ha trobat el mòdul «pycollada», el suport per a «collada» està inhabilitat.</translation>
     </message>
     <message>
       <location filename="../../importers/importDAE.py" line="311"/>
@@ -4403,22 +4403,22 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchGrid.py" line="109"/>
       <source>Auto height is larger than height</source>
-      <translation type="unfinished">Auto height is larger than height</translation>
+      <translation>L'alçada automàtica és més gran que l'alçada</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="118"/>
       <source>Total row size is larger than height</source>
-      <translation type="unfinished">Total row size is larger than height</translation>
+      <translation>La mida total de la fila és més gran que l'alçada</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="140"/>
       <source>Auto width is larger than width</source>
-      <translation type="unfinished">Auto width is larger than width</translation>
+      <translation>L'amplada automàtica és més gran que l'amplada</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="149"/>
       <source>Total column size is larger than width</source>
-      <translation type="unfinished">Total column size is larger than width</translation>
+      <translation>La mida total de la columna és més gran que l'amplada</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="385"/>
@@ -4429,7 +4429,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchGrid.py" line="386"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>Amplada total</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="387"/>
@@ -4454,7 +4454,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchGrid.py" line="391"/>
       <source>Del column</source>
-      <translation type="unfinished">Del column</translation>
+      <translation>Suprimeix la columna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="392"/>
@@ -4464,12 +4464,12 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchGrid.py" line="393"/>
       <source>Remove span</source>
-      <translation type="unfinished">Remove span</translation>
+      <translation>Suprimeix l'extensió</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="394"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>Files</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="394"/>
@@ -4479,12 +4479,12 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Precast elements</source>
-      <translation type="unfinished">Precast elements</translation>
+      <translation>Elements prefabricats</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Slab type</source>
-      <translation type="unfinished">Slab type</translation>
+      <translation>Tipus de llosa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
@@ -4494,22 +4494,22 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Dent length</source>
-      <translation type="unfinished">Dent length</translation>
+      <translation>Longitud de l'aleta</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1009"/>
       <source>Dent width</source>
-      <translation type="unfinished">Dent width</translation>
+      <translation>Amplada de l'aleta</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Dent height</source>
-      <translation type="unfinished">Dent height</translation>
+      <translation>Alçada de l'aleta</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1011"/>
       <source>Slab base</source>
-      <translation type="unfinished">Slab base</translation>
+      <translation>Base de llosa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1012"/>
@@ -4519,17 +4519,17 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchPrecast.py" line="1013"/>
       <source>Major diameter of holes</source>
-      <translation type="unfinished">Major diameter of holes</translation>
+      <translation>Diàmetre major dels forats</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1014"/>
       <source>Minor diameter of holes</source>
-      <translation type="unfinished">Minor diameter of holes</translation>
+      <translation>Diàmetre menor dels forats</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1015"/>
       <source>Spacing between holes</source>
-      <translation type="unfinished">Spacing between holes</translation>
+      <translation>Espaiat entre forats</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1016"/>
@@ -4539,17 +4539,17 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchPrecast.py" line="1017"/>
       <source>Depth of grooves</source>
-      <translation type="unfinished">Depth of grooves</translation>
+      <translation>Profunditat de les ranures</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1018"/>
       <source>Height of grooves</source>
-      <translation type="unfinished">Height of grooves</translation>
+      <translation>Alçada de les ranures</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1019"/>
       <source>Spacing between grooves</source>
-      <translation type="unfinished">Spacing between grooves</translation>
+      <translation>Espaiat entre ranures</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1020"/>
@@ -4559,42 +4559,42 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchPrecast.py" line="1021"/>
       <source>Length of down floor</source>
-      <translation type="unfinished">Length of down floor</translation>
+      <translation>Longitud de la planta baixa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1022"/>
       <source>Height of risers</source>
-      <translation type="unfinished">Height of risers</translation>
+      <translation>Alçada de les contrapetges</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1023"/>
       <source>Depth of treads</source>
-      <translation type="unfinished">Depth of treads</translation>
+      <translation>Profunditat de les esteses</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Precast options</source>
-      <translation type="unfinished">Precast options</translation>
+      <translation>Opcions de prefabricats</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Dents list</source>
-      <translation type="unfinished">Dents list</translation>
+      <translation>Llista d'aletes</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Add dent</source>
-      <translation type="unfinished">Add dent</translation>
+      <translation>Afegeix una aleta</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1411"/>
       <source>Remove dent</source>
-      <translation type="unfinished">Remove dent</translation>
+      <translation>Elimina l'aleta</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Slant</source>
-      <translation type="unfinished">Slant</translation>
+      <translation>Inclinació</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
@@ -4610,7 +4610,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../Arch.py" line="372"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Panell</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="395"/>
@@ -4620,7 +4620,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../Arch.py" line="411"/>
       <source>PanelSheet</source>
-      <translation type="unfinished">PanelSheet</translation>
+      <translation>Full de planells</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="80"/>
@@ -4631,7 +4631,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="134"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>Opcions de planell</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="169"/>
@@ -4671,7 +4671,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../Arch.py" line="200"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Mur cortina</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="60"/>
@@ -4687,7 +4687,7 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../Arch.py" line="462"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>Connector</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="58"/>
@@ -4698,12 +4698,12 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="95"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation type="unfinished">Please select exactly 2 or 3 Pipe objects</translation>
+      <translation>Seleccioneu exactament 2 o 3 objectes Tub</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="100"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Seleccioneu només objectes Tub</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="104"/>
@@ -4713,124 +4713,124 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
     <message>
       <location filename="../../ArchPipe.py" line="124"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>No s'ha pogut construir el camí de base</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="140"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>No s'ha pogut construir el perfil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="180"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>No s'ha pogut construir el tub</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="199"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>L'objecte base no és una Peça</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="202"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Hi ha massa filferros a la forma base</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="205"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>El filferro base està tancat</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="219"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>El perfil no és una Peça 2D</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="222"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>El perfil no està tancat</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="310"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>Només es connectaran els 3 primers filferros</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="330"/>
       <location filename="../../ArchPipe.py" line="391"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>No s'ha trobat el vèrtex comú</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="351"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Els tubs ja estan alineats</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="380"/>
       <source>Unable to revolve this connector</source>
-      <translation type="unfinished">Unable to revolve this connector</translation>
+      <translation>No s'ha pogut efectuar la revolució d'aquest connector</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="403"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>S'han d'alinear com a mínim 2 tubs</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="97"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>s'ha eliminat la propietat 'Result', i s'ha afegit la propietat 'AutoUpdate'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="99"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>s'ha afegit la propietat 'Schedule'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="341"/>
       <source>Unable to retrieve value from object</source>
-      <translation type="unfinished">Unable to retrieve value from object</translation>
+      <translation>No s'ha pogut recuperar el valor d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="441"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Esborrar full de càlcul</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="443"/>
       <source>Attach spreadsheet</source>
-      <translation type="unfinished">Attach spreadsheet</translation>
+      <translation>Adjuntar full de càlcul</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="568"/>
+      <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
-      <translation type="unfinished">Import CSV file</translation>
+      <translation>Importar fitxer CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="601"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
-      <translation type="unfinished">Export CSV file</translation>
+      <translation>Exportar fitxer CSV</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1098"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>Exportar fitxer CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>No es pot reconèixer el tipus de fitxer</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>Descripció</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
       <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
@@ -4838,16 +4838,16 @@ Si Distància = 0 aleshores la distància es calcula de manera que l'alçària s
       <translation>Valor</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>Unitat</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="723"/>
+      <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Guió</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="155"/>
@@ -4858,22 +4858,22 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Podeu col·locar qualsevol cosa en un objecte Planta excepte els objectes Lloc, Construcció i Planta.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+L'objecte Planta no accepta els Objectes Lloc, Construcció i Planta.
 
-Site, Building, and Floor objects will be removed from the selection.
+Els objectes Lloc, Construcció i Planta s'eliminaran de la selecció.
 
-You can change that in the preferences.</translation>
+Podeu canviar això en les preferències.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="159"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>No hi ha cap objecte vàlid en la selecció.
 
-Floor creation aborted.</translation>
+S'interromp la creació de la planta.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="166"/>
@@ -4888,7 +4888,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="754"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Distàncies (mm) i angles (graus) entre eixos</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="755"/>
@@ -4913,27 +4913,27 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>S'ha trobat una forma que conté corbes, s'està triangulant</translation>
     </message>
     <message>
       <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
-      <translation type="unfinished">Successfully imported</translation>
+      <translation>S'ha importat correctament</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="930"/>
       <source>Error computing the shape of this object</source>
-      <translation type="unfinished">Error computing the shape of this object</translation>
+      <translation>S'ha produït un error en calcular la forma d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="951"/>
       <source>has no solid</source>
-      <translation type="unfinished">has no solid</translation>
+      <translation>no té cap sòlid</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="958"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>té una forma invàlida</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="130"/>
@@ -4944,44 +4944,44 @@ Floor creation aborted.</translation>
       <location filename="../../ArchPrecast.py" line="681"/>
       <location filename="../../ArchComponent.py" line="960"/>
       <source>has a null shape</source>
-      <translation type="unfinished">has a null shape</translation>
+      <translation>té una forma nul·la</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="864"/>
       <location filename="../../ArchComponent.py" line="1514"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Alternar els subcomponents</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1640"/>
       <source>Closing Sketch edit</source>
-      <translation type="unfinished">Closing Sketch edit</translation>
+      <translation>S'està tancant l'edició del Croquis</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1948"/>
       <location filename="../../ArchCommands.py" line="214"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Component</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1951"/>
       <source>Components of this object</source>
-      <translation type="unfinished">Components of this object</translation>
+      <translation>Components d'aquest objecte</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1952"/>
       <source>Base component</source>
-      <translation type="unfinished">Base component</translation>
+      <translation>Component base</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1953"/>
       <source>Additions</source>
-      <translation type="unfinished">Additions</translation>
+      <translation>Addicions</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1954"/>
       <source>Subtractions</source>
-      <translation type="unfinished">Subtractions</translation>
+      <translation>Subtraccions</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1955"/>
@@ -4991,7 +4991,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1958"/>
       <source>Fixtures</source>
-      <translation type="unfinished">Fixtures</translation>
+      <translation>Accessoris</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1959"/>
@@ -5011,7 +5011,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1962"/>
       <source>Edit standard code</source>
-      <translation type="unfinished">Edit standard code</translation>
+      <translation>Editar codi estàndard</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2011"/>
@@ -5022,12 +5022,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2016"/>
       <source>Add property...</source>
-      <translation type="unfinished">Add property...</translation>
+      <translation>Afegeix propietat...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2017"/>
       <source>Add property set...</source>
-      <translation type="unfinished">Add property set...</translation>
+      <translation>Afegeix conjunt de propietats...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2018"/>
@@ -5038,13 +5038,13 @@ Floor creation aborted.</translation>
       <location filename="../../ArchComponent.py" line="2156"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="632"/>
       <source>New property</source>
-      <translation type="unfinished">New property</translation>
+      <translation>Propietat nova</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2191"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="681"/>
       <source>New property set</source>
-      <translation type="unfinished">New property set</translation>
+      <translation>Conjunt de propietats nou</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="551"/>
@@ -5060,7 +5060,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="92"/>
       <source>Please select a base face on a structural object</source>
-      <translation type="unfinished">Please select a base face on a structural object</translation>
+      <translation>Seleccioneu una cara base en un objecte d'estructura</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="686"/>
@@ -5075,17 +5075,17 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1146"/>
       <source>Toggle Cutview</source>
-      <translation type="unfinished">Toggle Cutview</translation>
+      <translation>Alterna la vista de tall</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1323"/>
       <source>Section plane settings</source>
-      <translation type="unfinished">Section plane settings</translation>
+      <translation>Configuració del pla de secció</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1325"/>
       <source>Remove highlighted objects from the list above</source>
-      <translation type="unfinished">Remove highlighted objects from the list above</translation>
+      <translation>Elimina els objectes ressaltats de la llista anterior</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1326"/>
@@ -5095,57 +5095,57 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1327"/>
       <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
+      <translation>Afegeix l'objecte o els objectes seleccionats a l'àmbit d'aquest pla de secció</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1328"/>
       <source>Objects seen by this section plane:</source>
-      <translation type="unfinished">Objects seen by this section plane:</translation>
+      <translation>Objectes vists per aquest pla de secció:</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1329"/>
       <source>Section plane placement:</source>
-      <translation type="unfinished">Section plane placement:</translation>
+      <translation>Posicionament del pla de secció:</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1330"/>
       <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
+      <translation>Rotar X</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1331"/>
       <source>Rotates the plane along the X axis</source>
-      <translation type="unfinished">Rotates the plane along the X axis</translation>
+      <translation>Gira el pla al llarg de l'eix X</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1332"/>
       <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
+      <translation>Rotar Y</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1333"/>
       <source>Rotates the plane along the Y axis</source>
-      <translation type="unfinished">Rotates the plane along the Y axis</translation>
+      <translation>Gira el pla al llarg de l'eix Y</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1334"/>
       <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
+      <translation>Rotar Z</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1335"/>
       <source>Rotates the plane along the Z axis</source>
-      <translation type="unfinished">Rotates the plane along the Z axis</translation>
+      <translation>Gira el pla al llarg de l'eix Z</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1336"/>
       <source>Resize</source>
-      <translation type="unfinished">Resize</translation>
+      <translation>Redimensionar</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1337"/>
       <source>Resizes the plane to fit the objects in the list above</source>
-      <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
+      <translation>Redimensiona el pla per a ajustar els objectes de la llista anterior</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1338"/>
@@ -5156,7 +5156,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1339"/>
       <source>Centers the plane on the objects in the list above</source>
-      <translation type="unfinished">Centers the plane on the objects in the list above</translation>
+      <translation>Centra el pla sobre els objectes de la llista anterior</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="138"/>
@@ -5173,22 +5173,22 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
+      <translation>Podeu col·locar qualsevol cosa en un objecte Construcció excepte els objectes en un objecte Construcció.
 
-Building object is not allowed to accept Site and Building objects.
+L'objecte Construcció no permet acceptar els objectes Lloc i Construcció.
 
-Site and Building objects will be removed from the selection.
+Els objectes Lloc i Construcció s'eliminaran de la selecció.
 
-You can change that in the preferences.</translation>
+Podeu canviar això en les preferències.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="251"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>No hi ha cap objecte vàlid en la selecció.
 
-Building creation aborted.</translation>
+S'avorta la creació de la construcció.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="258"/>
@@ -5209,12 +5209,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="721"/>
       <source>Set text position</source>
-      <translation type="unfinished">Set text position</translation>
+      <translation>Estableix la posició del text</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="725"/>
       <source>Space boundaries</source>
-      <translation type="unfinished">Space boundaries</translation>
+      <translation>Límits de l'espai</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="982"/>
@@ -5224,7 +5224,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../Arch.py" line="989"/>
       <source>Walls can only be based on Part or Mesh objects</source>
-      <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
+      <translation>Els murs només es poden crear a partir d'objectes Peça o Malla</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="90"/>
@@ -5236,7 +5236,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="119"/>
       <source>First point of wall</source>
-      <translation type="unfinished">First point of wall</translation>
+      <translation>Primer punt del mur</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="274"/>
@@ -5246,7 +5246,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="278"/>
       <source>Wall Presets...</source>
-      <translation type="unfinished">Wall Presets...</translation>
+      <translation>Valors predeterminats de Mur...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="279"/>
@@ -5276,29 +5276,29 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="467"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation type="unfinished">The selected wall contains no subwall to merge</translation>
+      <translation>El mur seleccionat no conté cap submur per a fusionar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="470"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="474"/>
       <source>Please select only wall objects</source>
-      <translation type="unfinished">Please select only wall objects</translation>
+      <translation>Seleccioneu només objectes mur</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="461"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="476"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>Fusiona els murs</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="407"/>
       <source>Cannot compute blocks for wall</source>
-      <translation type="unfinished">Cannot compute blocks for wall</translation>
+      <translation>No es poden calcular els blocs pel mur</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="518"/>
       <source>Error: Unable to modify the base object of this wall</source>
-      <translation type="unfinished">Error: Unable to modify the base object of this wall</translation>
+      <translation>Error: No es pot modificar l'objecte base d'aquest mur</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1280"/>
@@ -5308,7 +5308,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="408"/>
       <source>Invalid cut plane</source>
-      <translation type="unfinished">Invalid cut plane</translation>
+      <translation>Pla de tall invàlid</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="691"/>
@@ -5323,17 +5323,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="695"/>
       <source>doesn't contain any solid</source>
-      <translation type="unfinished">doesn't contain any solid</translation>
+      <translation>no conté cap sòlid</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="701"/>
       <source>contains a non-closed solid</source>
-      <translation type="unfinished">contains a non-closed solid</translation>
+      <translation>conté un sòlid no tancat</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="703"/>
       <source>contains faces that are not part of any solid</source>
-      <translation type="unfinished">contains faces that are not part of any solid</translation>
+      <translation>conté cares que no formen part de cap sòlid</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1003"/>
@@ -5343,7 +5343,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1004"/>
       <source>Set description</source>
-      <translation type="unfinished">Set description</translation>
+      <translation>Estableix una descripció</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1005"/>
@@ -5363,7 +5363,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1008"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>Exporta CSV</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1011"/>
@@ -5378,18 +5378,18 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1136"/>
       <source>Object doesn't have settable IFC attributes</source>
-      <translation type="unfinished">Object doesn't have settable IFC attributes</translation>
+      <translation>L'objecte no té atributs d'IFC configurables</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1142"/>
       <source>Disabling B-rep force flag of object</source>
-      <translation type="unfinished">Disabling B-rep force flag of object</translation>
+      <translation>Desactiva l'indicador de B-rep forçat de l'objecte</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1145"/>
       <location filename="../../ArchCommands.py" line="1148"/>
       <source>Enabling B-rep force flag of object</source>
-      <translation type="unfinished">Enabling B-rep force flag of object</translation>
+      <translation>Activa l'indicador de B-rep forçat de l'objecte</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="54"/>
@@ -5399,27 +5399,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
       <source>Grouping</source>
-      <translation type="unfinished">Grouping</translation>
+      <translation>Agrupar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="89"/>
       <source>Remove space boundary</source>
-      <translation type="unfinished">Remove space boundary</translation>
+      <translation>Suprimeix el límit d'espai</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="93"/>
       <source>Ungrouping</source>
-      <translation type="unfinished">Ungrouping</translation>
+      <translation>Desagrupar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="127"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Divideix la malla</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="170"/>
       <source>Mesh to Shape</source>
-      <translation type="unfinished">Mesh to Shape</translation>
+      <translation>De malla a forma</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="260"/>
@@ -5435,7 +5435,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1336"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Clau</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1346"/>
@@ -5450,17 +5450,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="55"/>
       <source>Create Level</source>
-      <translation type="unfinished">Create Level</translation>
+      <translation>Crear un nivell</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="52"/>
       <source>Create Fence</source>
-      <translation type="unfinished">Create Fence</translation>
+      <translation>Crear una tanca</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="283"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>Crear una caixa</translation>
     </message>
   </context>
   <context>
@@ -5468,12 +5468,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Estructures múltiples</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
       <source>Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Crea múltiples estructures BIM a partir d'una base seleccionada, utilitzant cada vora seleccionada com a camí d'extrusió</translation>
     </message>
   </context>
   <context>
@@ -5486,7 +5486,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="237"/>
       <source>Create a structural system from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system from a selected structure and axis</translation>
+      <translation>Crea un sistema estructural a partir d'una estructura i un eix seleccionats</translation>
     </message>
   </context>
   <context>
@@ -5499,7 +5499,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="275"/>
       <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Crea una estructura des de zero o d'un objecte seleccionat (croquis, filferro, cara o sòlid)</translation>
     </message>
   </context>
   <context>
@@ -5508,37 +5508,37 @@ Building creation aborted.</translation>
       <location filename="../../ArchStructure.py" line="684"/>
       <location filename="../../ArchStructure.py" line="1361"/>
       <source>An optional extrusion path for this element</source>
-      <translation type="unfinished">An optional extrusion path for this element</translation>
+      <translation>Un camí d'extrusió opcional per a aquest element</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="686"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>La longitud calculada del camí d'extrusió</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="688"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distància de l'equidistància inicial al llarg del camí d'extrusió (positiva: allarga, negativa: escurça)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="690"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Distància de l'equidistància final al llarg del camí d'extrusió (positiva: allarga, negativa: escurça)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="692"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Alinea automàticament la base de l'estructura perpendicularment a l'eix d'eines</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="694"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Equidistància X entre l'origen de Base i l'eix d'eines (només es fa servir si BasePerpendicularToTool és Cert)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="696"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Equidistància Y entre l'origen de Base i l'eix d'eines (només es fa servir si BasePerpendicularToTool és Cert)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="698"/>
@@ -8140,7 +8140,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Mur cortina</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="47"/>
@@ -8188,7 +8188,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="41"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Guió</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="44"/>
@@ -8294,7 +8294,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="428"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>Fusiona els murs</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="431"/>
@@ -8333,7 +8333,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="116"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Divideix la malla</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="119"/>
@@ -8346,7 +8346,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="144"/>
       <source>Mesh to Shape</source>
-      <translation type="unfinished">Mesh to Shape</translation>
+      <translation>De malla a forma</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="147"/>
@@ -8411,7 +8411,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="308"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Component</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="312"/>
@@ -8450,7 +8450,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="390"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Alternar els subcomponents</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="393"/>
@@ -8773,12 +8773,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="130"/>
       <source>Add property...</source>
-      <translation type="unfinished">Add property...</translation>
+      <translation>Afegeix propietat...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="133"/>
       <source>Add property set...</source>
-      <translation type="unfinished">Add property set...</translation>
+      <translation>Afegeix conjunt de propietats...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
@@ -8803,7 +8803,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
-      <translation type="unfinished">New property set</translation>
+      <translation>Conjunt de propietats nou</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="684"/>
@@ -9043,7 +9043,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="142"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Fusiona els duplicats</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="150"/>
@@ -9287,7 +9287,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="235"/>
       <source>Axes</source>
-      <translation type="unfinished">Axes</translation>
+      <translation>Eixos</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="249"/>

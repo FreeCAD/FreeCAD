@@ -258,7 +258,7 @@ Vegye figyelembe, hogy ez a lehetőség ki van kapcsolva, ha a munkában egy meg
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation>Engedélyezze az összes olyan műveletet, amelyre a konfigurációs értékeket exportálni kell.
+      <translation>Engedélyezze az összes olyan műveletet, amelyre a konfigurációs értékeket exportálni kell. 
 
 Ne feledje, hogy csak olyan műveletek vannak felsorolva, amelyek jelenleg konfigurációs értékekkel rendelkeznek.</translation>
     </message>
@@ -738,9 +738,9 @@ Az alap tárgy határoló keretéből származó készletek esetében ez az öss
 You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation>A furat jellemzőinek és a kapcsolódó furat meghatározott sugarának meghatározása.
+      <translation>A furat jellemzőinek és a kapcsolódó furat meghatározott sugarának meghatározása. 
 
-A feldolgozáshoz használható funkciót úgy adhat hozzá, hogy kiválasztja őket, majd megnyomja a Hozzáadás gombot. Ha egy funkció véletlenül hozzáadódik a listához, az eltávolítható az Eltávolítás segítségével, és a továbbiakban nem lesz feldolgozva.
+A feldolgozáshoz használható funkciót úgy adhat hozzá, hogy kiválasztja őket, majd megnyomja a Hozzáadás gombot. Ha egy funkció véletlenül hozzáadódik a listához, az eltávolítható az Eltávolítás segítségével, és a továbbiakban nem lesz feldolgozva. 
 
 A Visszaállítás törli az összes aktuális elemet a listából, és kitölti a listát a modellből a műveletre jogosult összes kör alakú furattal. Ezt követően ismét finomíthatja a listát a funkciók engedélyezésével/letiltásával, eltávolításával és hozzáadásával.</translation>
     </message>
@@ -3307,13 +3307,13 @@ Ha több azonos nevű eszköz vagy szerszámforma létezik különböző könyvt
       <translation>Megállít</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation>Szimulátor aktiválás / folytatás</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>Lejátszás</translation>
@@ -4074,60 +4074,60 @@ Default: 3 mm</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="189"/>
+      <location filename="../../../InitGui.py" line="195"/>
       <source>Project Setup</source>
       <translation>Terv beállító</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="190"/>
+      <location filename="../../../InitGui.py" line="196"/>
       <source>Tool Commands</source>
       <translation>Eszköz parancsok</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>New Operations</source>
       <translation>Új műveletek</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="195"/>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="201"/>
+      <location filename="../../../InitGui.py" line="235"/>
       <source>Path Modification</source>
       <translation>Szerszámpálya módosítása</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="197"/>
+      <location filename="../../../InitGui.py" line="203"/>
       <source>Helpful Tools</source>
       <translation>Hasznos eszközök</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="200"/>
-      <location filename="../../../InitGui.py" line="214"/>
-      <location filename="../../../InitGui.py" line="221"/>
-      <location filename="../../../InitGui.py" line="228"/>
-      <location filename="../../../InitGui.py" line="236"/>
+      <location filename="../../../InitGui.py" line="206"/>
+      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="227"/>
+      <location filename="../../../InitGui.py" line="234"/>
       <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="244"/>
-      <location filename="../../../InitGui.py" line="247"/>
+      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="253"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="215"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Path Dressup</source>
       <translation>Szerszámpálya felépítés</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="222"/>
+      <location filename="../../../InitGui.py" line="228"/>
       <source>Supplemental Commands</source>
       <translation>Kiegészítő parancsok</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="237"/>
+      <location filename="../../../InitGui.py" line="243"/>
       <source>Specialty Operations</source>
       <translation>Speciális műveletek</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="254"/>
       <source>Utils</source>
       <translation>Munkaeszközök</translation>
     </message>
@@ -5551,9 +5551,9 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="327"/>
-      <source>Cutoff for removing colinear segments (degrees).
+      <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
-      <translation>Vágási érték a colinear szakaszok eltávolításához (fokban).
+      <translation>Vágási érték a colinear szakaszok eltávolításához (fokban). 
                         alapértelmezett=10.0.</translation>
     </message>
     <message>
@@ -6337,7 +6337,7 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="92"/>
-      <location filename="../../../InitGui.py" line="265"/>
+      <location filename="../../../InitGui.py" line="271"/>
       <location filename="../../AppPathGui.cpp" line="91"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -6354,7 +6354,7 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="182"/>
+      <location filename="../../../InitGui.py" line="188"/>
       <source>3D Operations</source>
       <translation>3D műveletek</translation>
     </message>
@@ -6939,22 +6939,22 @@ Az op-létrehozás megszakítása</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
-      <source>The currently selected unit schema:
+      <source>The currently selected unit schema: 
      &apos;{}&apos; for this document
- Does not use &apos;minutes&apos; for velocity values.
-
-CNC machines require feed rate to be expressed in
-unit/minute. To ensure correct G-code:
+ Does not use &apos;minutes&apos; for velocity values. 
+ 
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
 Select a minute-based schema in preferences.
 For example:
     &apos;Metric, Small Parts &amp; CNC&apos;
     &apos;US Customary&apos;
     &apos;Imperial Decimal&apos;</source>
-      <translation>Az aktuálisan kiválasztott egységséma:
+      <translation>Az aktuálisan kiválasztott egységséma: 
      &apos;{}&apos; ehhez a dokumentumhoz
- Nem használja a &apos; perc &apos; értékeket a sebességértékekhez.
-A CNC-gépek megkövetelik, hogy az előtolási sebesség a következő mértékegységben legyen megadva
-egység/perc. A helyes G-kód biztosítása érdekében:
+ Nem használja a &apos; perc &apos; értékeket a sebességértékekhez. 
+A CNC-gépek megkövetelik, hogy az előtolási sebesség a következő mértékegységben legyen megadva 
+egység/perc. A helyes G-kód biztosítása érdekében: 
 Válasszon perc alapú sémát a beállításokban.
 Például:
     Például: &apos;Metrikus, kis alkatrészek és CNC&apos;
@@ -7024,9 +7024,9 @@ Például:
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Megjegyzés&lt;/b&gt;: Ez a párbeszédablak a FreeCAD alapegységekben (mm/s) jeleníti meg az elérési út parancsokat.
+      <translation>&lt;b&gt;Megjegyzés&lt;/b&gt;: Ez a párbeszédablak a FreeCAD alapegységekben (mm/s) jeleníti meg az elérési út parancsokat. 
  Az értékek az utófeldolgozás során a kívánt egységre konvertálódnak.</translation>
     </message>
     <message>
@@ -7342,9 +7342,9 @@ Például:
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not
+      <source>Tool number {} is a legacy tool. Legacy tools not 
                     supported by Path-Sanity</source>
-      <translation>A {} számú eszköz egy örökölt eszköz. Az örökölt eszközök
+      <translation>A {} számú eszköz egy örökölt eszköz. Az örökölt eszközök 
                     Path-Sanity által nem támogatottak</translation>
     </message>
     <message>
@@ -8484,10 +8484,10 @@ Például:
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="126"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {}
+ {} 
  Create them?</source>
       <translation>A szerszámbetét munkakönyvtárnak {} a következő könyvtárakra van szüksége:
- {}
+ {} 
  Hozza létre őket?</translation>
     </message>
     <message>
