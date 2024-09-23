@@ -98,7 +98,7 @@ private:
 int main(int argc, char** argv)
 {
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-    setlocale(LC_ALL, "");  // use native environment settings
+    setlocale(LC_ALL, "");       // use native environment settings
     setlocale(LC_NUMERIC, "C");  // except for numbers to not break XML import
     // See https://github.com/FreeCAD/FreeCAD/issues/16724
 
