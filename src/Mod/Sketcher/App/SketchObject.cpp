@@ -603,9 +603,7 @@ class SketchObject::GeoHistory
 private:
     static constexpr int bgiMaxElements = 16;
 
-public:
     using Parameters = bgi::linear<bgiMaxElements>;
-
     using IdSet = std::set<long>;
     using IdSets = std::pair<IdSet, IdSet>;
     using AdjList = std::list<IdSet>;
@@ -620,6 +618,7 @@ public:
     AdjMap adjmap;
     bgi::rtree<Value,Parameters> rtree;
 
+public:
     AdjList::iterator find(const Base::Vector3d &pt,bool strict=true){
         std::vector<Value> ret;
         rtree.query(bgi::nearest(pt, 1), std::back_inserter(ret));
