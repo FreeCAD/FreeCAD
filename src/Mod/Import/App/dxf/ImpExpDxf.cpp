@@ -103,7 +103,10 @@ bool ImpExpDxfRead::ReadEntitiesSection()
         // TODO: We do end-to-end joining or complete merging as selected by the options.
         for (auto& shapeSet : ShapesToCombine) {
             m_entityAttributes = shapeSet.first;
-            CombineShapes(shapeSet.second, "Compound");
+            CombineShapes(shapeSet.second,
+                          m_entityAttributes.m_Layer == nullptr
+                              ? "Compound"
+                              : m_entityAttributes.m_Layer->Name.c_str());
         }
     }
     else {
@@ -644,7 +647,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
         App::Color appColor = ObjectColor(color);
         PyObject* draftModule = nullptr;
         PyObject* layer = nullptr;
-        draftModule = PyImport_ImportModule("Draft");
+        draftModule = getDraftModule();
         if (draftModule != nullptr) {
             // After the colours, I also want to pass the draw_style, but there is an intervening
             // line-width parameter. It is easier to just pass that parameter's default value than
@@ -667,12 +670,13 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
                                                          appColor.b,
                                                          2.0,
                                                          "Solid");
-            Py_DECREF(draftModule);
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
         if (result->DraftLayerView != nullptr) {
             PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", Py_False);
-            PyObject_SetAttrString(result->DraftLayerView, "OverrideShapeColorChildren", Py_False);
+            PyObject_SetAttrString(result->DraftLayerView,
+                                   "OverrideShapeAppearanceChildren",
+                                   Py_False);
         }
 
         // We make our own layer class even if we could not make a layer. MoveToLayer will ignore

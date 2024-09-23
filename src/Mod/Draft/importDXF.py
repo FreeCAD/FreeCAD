@@ -2832,10 +2832,11 @@ def open(filename):
         FreeCAD.setActiveDocument(doc.Name)
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2874,10 +2875,11 @@ def insert(filename, docname):
     else:
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
