@@ -55,12 +55,12 @@
       <translation>Arreglo 2D</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="76"/>
+      <location filename="../../Array2D.cpp" line="78"/>
       <source>Delete row</source>
       <translation>Eliminar fila</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="134"/>
+      <location filename="../../Array2D.cpp" line="140"/>
       <source>Context menu</source>
       <translation>Menú contextual</translation>
     </message>
@@ -695,8 +695,8 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="476"/>
-      <location filename="../../MaterialSave.cpp" line="486"/>
+      <location filename="../../MaterialSave.cpp" line="482"/>
+      <location filename="../../MaterialSave.cpp" line="492"/>
       <source>New Folder</source>
       <translation>Nueva carpeta</translation>
     </message>
@@ -711,62 +711,62 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <translation>Guardar como heredado</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="89"/>
+      <location filename="../../MaterialSave.cpp" line="91"/>
       <source>Delete</source>
       <translation>Eliminar</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="184"/>
+      <location filename="../../MaterialSave.cpp" line="190"/>
       <source>Are you sure you want to save over &apos;%1&apos;?</source>
       <translation>¿Está seguro que desea guardar sobre &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="187"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Guardar sobre el archivo original puede causar que otros documentos se dañen. Esto no es recomendado.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="209"/>
+      <location filename="../../MaterialSave.cpp" line="215"/>
       <source>Confirm Save As New Material</source>
       <translation>Confirmar guardar como material nuevo</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="211"/>
+      <location filename="../../MaterialSave.cpp" line="217"/>
       <source>Save as new material</source>
       <translation>Guardar como material nuevo</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="214"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
       <translation>Este material ya existe en esta biblioteca. ¿Quiere guardar como un nuevo material?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="236"/>
+      <location filename="../../MaterialSave.cpp" line="242"/>
       <source>Confirm Save As Copy</source>
       <translation>Confirmar guardar como copia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="238"/>
+      <location filename="../../MaterialSave.cpp" line="244"/>
       <source>Save as Copy</source>
       <translation>Guardar como copia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="241"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
       <translation>No se recomienda guardar una copia, ya que puede dañar otros documentos. Recomendamos guardar como un material nuevo.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save Copy</source>
       <translation>Guardar copia</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="251"/>
       <source>Save As New</source>
       <translation>Guardar como nuevo</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="526"/>
+      <location filename="../../MaterialSave.cpp" line="532"/>
       <source>Context menu</source>
       <translation>Menú contextual</translation>
     </message>
@@ -1138,23 +1138,23 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="181"/>
+      <location filename="../../MaterialSave.cpp" line="187"/>
       <source>Confirm Overwrite</source>
       <translation>Confirmar sobrescritura</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="370"/>
-      <location filename="../../MaterialSave.cpp" line="371"/>
+      <location filename="../../MaterialSave.cpp" line="376"/>
+      <location filename="../../MaterialSave.cpp" line="377"/>
       <source>No writeable library</source>
       <translation>No hay biblioteca escribible</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="558"/>
+      <location filename="../../MaterialSave.cpp" line="564"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
       <translation>¿Está seguro que desea eliminar &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="562"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Al eliminar esto también se eliminará todo el contenido.</translation>
     </message>
@@ -1179,14 +1179,14 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <translation>De no guardar, se perderán los cambios.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="166"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="555"/>
+      <location filename="../../MaterialSave.cpp" line="561"/>
       <source>Confirm Delete</source>
       <translation>Confirmar eliminación</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="168"/>
+      <location filename="../../Array2D.cpp" line="174"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
       <translation>¿Está seguro de que desea eliminar la fila?</translation>

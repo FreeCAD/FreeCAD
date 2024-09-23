@@ -2530,7 +2530,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="571"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation>이 옵션을 선택하면 클립보드에 있는 텍스트에 단위가 포함됩니다. 그렇지 않으면 내부 단위(밀리미터) 로 표시되는 단순한 숫자가 될 것입니다.</translation>
+      <translation>이 것을 선택하면 오림판에 있는 문자에 단위가 포함됩니다. 그렇지 않으면 내부 단위(밀리미터) 로 표시되는 단순한 숫자가 될 것입니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="574"/>
@@ -4817,12 +4817,12 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>스프레드시트 첨부</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="568"/>
+      <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
       <translation>CSV 파일 가져오기</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="601"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
       <translation>CSV 파일로 내보내기</translation>
     </message>
@@ -4832,20 +4832,20 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>CSV 파일로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
       <translation>해당 파일 형식을 인식할 수 없음</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>설명</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
       <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
@@ -4853,14 +4853,14 @@ Run = 0인 경우 Height가 상대 프로파일과 동일하도록 Run이 계산
       <translation>값</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>단위</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="723"/>
+      <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
       <translation>일정</translation>
     </message>
@@ -5166,7 +5166,7 @@ Floor creation aborted.</source>
       <location filename="../../ArchSectionPlane.py" line="1338"/>
       <location filename="../../bimcommands/BimWall.py" line="313"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1339"/>

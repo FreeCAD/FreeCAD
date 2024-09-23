@@ -420,7 +420,7 @@ Nazwy tych kolumn można zmienić, klikając dwukrotnie lub naciskając klawisz 
       <location filename="../../../JointObject.py" line="244"/>
       <location filename="../../../JointObject.py" line="518"/>
       <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+      <translation>Jest to odsunięcie mocowania pierwszego złącza połączenia. </translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="253"/>
@@ -437,7 +437,7 @@ Nazwy tych kolumn można zmienić, klikając dwukrotnie lub naciskając klawisz 
       <location filename="../../../JointObject.py" line="286"/>
       <location filename="../../../JointObject.py" line="528"/>
       <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+      <translation>Jest to odsunięcie mocowania drugiego złącza połączenia.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="431"/>

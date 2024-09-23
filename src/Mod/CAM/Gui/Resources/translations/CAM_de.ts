@@ -3310,13 +3310,13 @@ Sollten mehrere Werkzeuge oder Werkzeugformen mit dem gleichen Namen in verschie
       <translation>Beenden</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation>Wiederaufnahme der Simulation</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>Wiedergabe</translation>
@@ -4079,60 +4079,60 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="189"/>
+      <location filename="../../../InitGui.py" line="195"/>
       <source>Project Setup</source>
       <translation>Projekteinrichtung</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="190"/>
+      <location filename="../../../InitGui.py" line="196"/>
       <source>Tool Commands</source>
       <translation>Werkzeugbefehle</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>New Operations</source>
       <translation>Neue Bearbeitungen</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="195"/>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="201"/>
+      <location filename="../../../InitGui.py" line="235"/>
       <source>Path Modification</source>
       <translation>Pfadmodifikation</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="197"/>
+      <location filename="../../../InitGui.py" line="203"/>
       <source>Helpful Tools</source>
       <translation>Hilfreiche Werkzeuge</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="200"/>
-      <location filename="../../../InitGui.py" line="214"/>
-      <location filename="../../../InitGui.py" line="221"/>
-      <location filename="../../../InitGui.py" line="228"/>
-      <location filename="../../../InitGui.py" line="236"/>
+      <location filename="../../../InitGui.py" line="206"/>
+      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="227"/>
+      <location filename="../../../InitGui.py" line="234"/>
       <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="244"/>
-      <location filename="../../../InitGui.py" line="247"/>
+      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="253"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="215"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Path Dressup</source>
       <translation>Pfad-Aufbereitung</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="222"/>
+      <location filename="../../../InitGui.py" line="228"/>
       <source>Supplemental Commands</source>
       <translation>Zusätzliche Befehle</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="237"/>
+      <location filename="../../../InitGui.py" line="243"/>
       <source>Specialty Operations</source>
       <translation>Spezialbearbeitungen</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="254"/>
       <source>Utils</source>
       <translation>Dienstprogramme</translation>
     </message>
@@ -6341,7 +6341,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="92"/>
-      <location filename="../../../InitGui.py" line="265"/>
+      <location filename="../../../InitGui.py" line="271"/>
       <location filename="../../AppPathGui.cpp" line="91"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -6358,7 +6358,7 @@ Abbruch der OP-Erstellung</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="182"/>
+      <location filename="../../../InitGui.py" line="188"/>
       <source>3D Operations</source>
       <translation>3D-Bearbeitungen</translation>
     </message>

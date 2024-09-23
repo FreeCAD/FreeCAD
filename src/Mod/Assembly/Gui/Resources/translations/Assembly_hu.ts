@@ -399,7 +399,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <location filename="../../../JointObject.py" line="244"/>
       <location filename="../../../JointObject.py" line="518"/>
       <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+      <translation>Ez az első közös csatlakozó rögzítésének eltolódása.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="253"/>
@@ -416,7 +416,7 @@ Külső komponensek beszúrásához győződjön meg arról, hogy a fájl &lt;b&
       <location filename="../../../JointObject.py" line="286"/>
       <location filename="../../../JointObject.py" line="528"/>
       <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+      <translation>Ez a második közös csatlakozó rögzítésének eltolódása.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="431"/>

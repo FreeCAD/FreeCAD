@@ -397,7 +397,7 @@
       <location filename="../../../JointObject.py" line="244"/>
       <location filename="../../../JointObject.py" line="518"/>
       <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+      <translation>Este é o deslocamento de fixação do primeiro conector da junta.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="253"/>
@@ -414,7 +414,7 @@
       <location filename="../../../JointObject.py" line="286"/>
       <location filename="../../../JointObject.py" line="528"/>
       <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+      <translation>Este é o deslocamento de fixação do segundo conector da junta.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="431"/>
@@ -922,7 +922,7 @@ Pressione ESC para cancelar.</translation>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <translation>O objeto LDM é um objeto de documento que armazena as configurações da sua LDM. É também um objeto de planilha para poder você visualizar facilmente a LDM. Se você não precisa que o objeto BOM seja salvo como um objeto de documento, basta exportar e cancelar a tarefa.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>

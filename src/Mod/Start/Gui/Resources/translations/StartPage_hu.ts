@@ -119,27 +119,27 @@
       <translation>Építészeti terv létrehozása</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="492"/>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>New File</source>
       <translation>Új fájl</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="493"/>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Examples</source>
       <translation>Példák</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="496"/>
       <source>Recent Files</source>
       <translation>Legutóbbi fájlok</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Open first start setup</source>
       <translation>Első indítási beállítás megnyitása</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="499"/>
+      <location filename="../../StartView.cpp" line="501"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Ne jelenítse meg újra ezt a kezdőlapot (üres képernyővel kezdje)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="486"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>Start</source>
       <translation>Kezdő időpont</translation>
     </message>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>BIM material</source>
-      <translation type="unfinished">BIM material</translation>
+      <translation>Matériau BIM</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -4870,12 +4870,12 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <translation>Joindre une feuille de calcul</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="568"/>
+      <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
       <translation>Importer un fichier CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="601"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
       <translation>Exporter un fichier CSV</translation>
     </message>
@@ -4885,20 +4885,20 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <translation>Exporter vers un fichier CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
       <translation>Impossible de reconnaître ce type de fichier</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
       <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
@@ -4906,14 +4906,14 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
       <translation>Valeur</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>Unité</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="723"/>
+      <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
       <translation>Nomenclature</translation>
     </message>
@@ -8097,7 +8097,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../ArchGrid.py" line="67"/>
       <source>The sizes of rows</source>
-      <translation type="unfinished">The sizes of rows</translation>
+      <translation>La taille des lignes</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="69"/>

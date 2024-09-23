@@ -119,27 +119,27 @@
       <translation>Δημιουργήστε ένα έργο αρχιτεκτονικής</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="492"/>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>New File</source>
       <translation>Νέο αρχείο</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="493"/>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Examples</source>
       <translation>Παραδείγματα</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="496"/>
       <source>Recent Files</source>
       <translation>Πρόσφατα αρχεία</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Open first start setup</source>
       <translation type="unfinished">Open first start setup</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="499"/>
+      <location filename="../../StartView.cpp" line="501"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>Να μην εμφανιστεί ξανά αυτή η αρχική σελίδα (έναρξη με κενή οθόνη)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="486"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>Start</source>
       <translation>Εκκίνηση</translation>
     </message>

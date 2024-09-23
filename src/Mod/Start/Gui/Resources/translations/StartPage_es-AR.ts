@@ -119,27 +119,27 @@
       <translation>Crear un proyecto arquitectónico</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="492"/>
+      <location filename="../../StartView.cpp" line="494"/>
       <source>New File</source>
       <translation>Nuevo archivo</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="493"/>
+      <location filename="../../StartView.cpp" line="495"/>
       <source>Examples</source>
       <translation>Ejemplos</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="496"/>
       <source>Recent Files</source>
       <translation>Archivos recientes</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Open first start setup</source>
       <translation>Abrir configuración de primer inicio</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="499"/>
+      <location filename="../../StartView.cpp" line="501"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>No volver a mostrar esta página de inicio (empezar con la pantalla en blanco)</translation>
     </message>
@@ -147,7 +147,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="486"/>
+      <location filename="../../StartView.cpp" line="488"/>
       <source>Start</source>
       <translation>Inicio</translation>
     </message>

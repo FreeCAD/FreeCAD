@@ -1706,13 +1706,13 @@ Zadejte prosím jiný soubor.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Musíte specifikovat nejméně jednu referenci</translation>
     </message>

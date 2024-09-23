@@ -661,7 +661,7 @@
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>Make pulley constraint</source>
-      <translation type="unfinished">Make pulley constraint</translation>
+      <translation>Criar uma restrição de polia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1009"/>
@@ -1704,13 +1704,13 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Erro de entrada</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Você deve especificar pelo menos uma referência</translation>
     </message>
@@ -3814,22 +3814,22 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="90"/>
       <source>stress: sxx, syy, szz, sxy, sxz, syz</source>
-      <translation type="unfinished">stress: sxx, syy, szz, sxy, sxz, syz</translation>
+      <translation>estresse: sxx, syy, szz, sxy, sxz, syz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
       <source>network pressure: NP</source>
-      <translation type="unfinished">network pressure: NP</translation>
+      <translation>pressão de rede: NP</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="128"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation type="unfinished">strain: exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>deformação: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="138"/>
       <source>mass flow rate: MF</source>
-      <translation type="unfinished">mass flow rate: MF</translation>
+      <translation>vazão mássica: MF</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="158"/>
@@ -3839,7 +3839,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>max shear stress: MS</source>
-      <translation type="unfinished">max shear stress: MS</translation>
+      <translation>tensão de cisalhamento máxima: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
@@ -4210,17 +4210,17 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="203"/>
       <source>Enable Friction</source>
-      <translation type="unfinished">Enable Friction</translation>
+      <translation>Habilitar Atrito</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="210"/>
       <source>Friction Coefficient</source>
-      <translation type="unfinished">Friction Coefficient</translation>
+      <translation>Coeficiente de Atrito</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="233"/>
       <source>Stick Slope</source>
-      <translation type="unfinished">Stick Slope</translation>
+      <translation>Inclinação de Aderência</translation>
     </message>
   </context>
   <context>
@@ -6673,17 +6673,17 @@ Por favor, selecione primeiramente um tipo de resultado.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximal Size:</source>
-      <translation type="unfinished">Maximal Size:</translation>
+      <translation>Tamanho Máximo:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="88"/>
       <source>Minimal Size:</source>
-      <translation type="unfinished">Minimal Size:</translation>
+      <translation>Tamanho Mínimo:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="129"/>
       <source>Second Order</source>
-      <translation type="unfinished">Second Order</translation>
+      <translation>Segunda ordem</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="136"/>

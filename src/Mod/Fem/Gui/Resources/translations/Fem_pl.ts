@@ -1706,13 +1706,13 @@ Proszę, wybierz inny.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Należy określić co najmniej jedno odniesienie</translation>
     </message>
@@ -5068,7 +5068,7 @@ użyta przez solver Elmer</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness:</source>
-      <translation>Stopień rozdrobnienia:</translation>
+      <translation>Stopień zagęszczenia:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
@@ -6659,32 +6659,32 @@ Proszę najpierw wybrać typ wyniku.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>Siatka MES przy użyciu Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
       <source>Mesh Parameters</source>
-      <translation type="unfinished">Mesh Parameters</translation>
+      <translation>Parametry siatki</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
       <source>Fineness:</source>
-      <translation>Stopień rozdrobnienia:</translation>
+      <translation>Stopień zagęszczenia:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximal Size:</source>
-      <translation type="unfinished">Maximal Size:</translation>
+      <translation>Rozmiar maksymalny:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="88"/>
       <source>Minimal Size:</source>
-      <translation type="unfinished">Minimal Size:</translation>
+      <translation>Rozmiar minimalny:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="129"/>
       <source>Second Order</source>
-      <translation type="unfinished">Second Order</translation>
+      <translation>Elementy drugiego rzędu</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="136"/>
@@ -6694,12 +6694,12 @@ Proszę najpierw wybrać typ wyniku.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="159"/>
       <source>Curvature Safety:</source>
-      <translation type="unfinished">Curvature Safety:</translation>
+      <translation>Bezpieczeństwo krzywizny:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="176"/>
       <source>Segments Per Edge:</source>
-      <translation type="unfinished">Segments Per Edge:</translation>
+      <translation>Liczba segmentów na krawędź:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="204"/>
@@ -6714,7 +6714,7 @@ Proszę najpierw wybrać typ wyniku.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="255"/>
       <source>Netgen version</source>
-      <translation type="unfinished">Netgen version</translation>
+      <translation>Wersja Netgen</translation>
     </message>
   </context>
 </TS>

@@ -1697,13 +1697,13 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>Ошибка ввода</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>Необходимо указать как минимум одну ссылку</translation>
     </message>
@@ -2869,7 +2869,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
       <source>Head Loss [mm]</source>
-      <translation type="unfinished">Head Loss [mm]</translation>
+      <translation>Потери напора [mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
@@ -3463,7 +3463,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="86"/>
       <source>Dissipation Rate:</source>
-      <translation type="unfinished">Dissipation Rate:</translation>
+      <translation>Уровень рассеивания:</translation>
     </message>
   </context>
   <context>
@@ -6602,7 +6602,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="760"/>
       <source>All Elements Erased - no mesh generated.</source>
-      <translation type="unfinished">All Elements Erased - no mesh generated.</translation>
+      <translation>Все элементы удалены - сетка не создана.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
@@ -6617,7 +6617,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>Creates a FEM mesh elements set</source>
-      <translation type="unfinished">Creates a FEM mesh elements set</translation>
+      <translation>Создает набор элементов сетки FEM</translation>
     </message>
   </context>
   <context>
@@ -6638,13 +6638,13 @@ Please select a result type first.</source>
     <message>
       <location filename="../../Command.cpp" line="1282"/>
       <source>Element set by poly</source>
-      <translation type="unfinished">Element set by poly</translation>
+      <translation>Элемент, заданный полигоном</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1283"/>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Create Element set by Poly</source>
-      <translation type="unfinished">Create Element set by Poly</translation>
+      <translation>Создать элемент набора Полигон</translation>
     </message>
   </context>
   <context>
@@ -6652,12 +6652,12 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation type="unfinished">FEM Mesh by Netgen</translation>
+      <translation>Сетка FEM от Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="26"/>
       <source>Mesh Parameters</source>
-      <translation type="unfinished">Mesh Parameters</translation>
+      <translation>Параметры сетки</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
@@ -6667,17 +6667,17 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximal Size:</source>
-      <translation type="unfinished">Maximal Size:</translation>
+      <translation>Максимальный размер:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="88"/>
       <source>Minimal Size:</source>
-      <translation type="unfinished">Minimal Size:</translation>
+      <translation>Минимальный размер:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="129"/>
       <source>Second Order</source>
-      <translation type="unfinished">Second Order</translation>
+      <translation>Второй порядок</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="136"/>
@@ -6687,12 +6687,12 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="159"/>
       <source>Curvature Safety:</source>
-      <translation type="unfinished">Curvature Safety:</translation>
+      <translation>Безопасность кривизны:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="176"/>
       <source>Segments Per Edge:</source>
-      <translation type="unfinished">Segments Per Edge:</translation>
+      <translation>Сегментов на ребро:</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="204"/>
@@ -6707,7 +6707,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="255"/>
       <source>Netgen version</source>
-      <translation type="unfinished">Netgen version</translation>
+      <translation>Версия Netgen</translation>
     </message>
   </context>
 </TS>

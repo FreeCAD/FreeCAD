@@ -538,12 +538,12 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="89"/>
       <source>Offset</source>
-      <translation>Versetzen</translation>
+      <translation>Versatz</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="113"/>
       <source>Rotation</source>
-      <translation>Drehverbindung</translation>
+      <translation>Drehwinkel</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="141"/>
@@ -573,7 +573,7 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
       <source>Min angle</source>
-      <translation>Mindestwinkel</translation>
+      <translation>Minimaler Winkel</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="236"/>
