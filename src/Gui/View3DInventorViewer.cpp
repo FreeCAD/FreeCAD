@@ -656,11 +656,10 @@ static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, 
     Q_UNUSED(dpr)
 #endif
 #ifdef HAS_QTBUG_95434
-    QPixmap pixmap;
     if (qGuiApp->platformName() == QLatin1String("wayland")) {
         QImage img = bitmap.toImage();
         img.convertTo(QImage::Format_ARGB32);
-        pixmap = QPixmap::fromImage(img);
+        QPixmap pixmap = QPixmap::fromImage(img);
         pixmap.setMask(mask);
         return QCursor(pixmap, hotX, hotY);
     }
