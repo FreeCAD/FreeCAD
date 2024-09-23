@@ -86,7 +86,11 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        remove->setShortcut(QKeySequence(shortcut));
+    }
     remove->setShortcutContext(Qt::WidgetShortcut);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
@@ -605,7 +609,11 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        remove->setShortcut(QKeySequence(shortcut));
+    }
     remove->setShortcutContext(Qt::WidgetShortcut);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
@@ -894,7 +902,11 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        remove->setShortcut(QKeySequence(shortcut));
+    }
     remove->setShortcutContext(Qt::WidgetShortcut);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
