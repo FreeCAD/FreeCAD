@@ -72,7 +72,9 @@ Loft::getSectionShape(const char *name,
                       size_t expected_size)
 {
     std::vector<TopoShape> shapes;
-    if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end()) {
+    auto subName = subs.empty() ? "" : subs.front();
+    // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single vertex - backward compatibility (#16630)
+    if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end() || ( obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&  subName.compare(0, 6, "Vertex") != 0)) {
         shapes.push_back(Part::Feature::getTopoShape(obj));
         if (shapes.back().isNull())
             FC_THROWM(Part::NullShapeException, "Failed to get shape of "
