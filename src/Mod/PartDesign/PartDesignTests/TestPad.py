@@ -22,6 +22,7 @@
 import unittest
 
 import FreeCAD
+from FreeCAD import Base
 import TestSketcherApp
 
 class TestPad(unittest.TestCase):
@@ -211,35 +212,52 @@ class TestPad(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.Pad.Shape.Volume, 2208.0963, places=4)
 
-        def testPadToShapeCase(self):
-            self.Body = self.Doc.addObject('PartDesign::Body','Body')
-            # Make first offset cube Pad
-            self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
-            self.Body.addObject(self.PadSketch)
-            TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1))
-            self.Doc.recompute()
-            self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
-            self.Body.addObject(self.Pad)
-            self.Pad.Profile = self.PadSketch
-            self.Pad.Length = 1
-            self.Doc.recompute()
-            # Make second pad on different plane and pad to first
-            self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
-            self.Body.addObject(self.PadSketch1)
-            self.PadSketch1.MapMode = 'FlatFace'
-            self.PadSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
-            self.PadSketch1.AttachmentOffset.Rotation.Axis = App.Vector(0,1,0)
-            self.PadSketch1.AttachmentOffset.Rotation.Angle =  0.436332 # 25°
-            self.PadSketch1.AttachmentOffset.Base.z = 1
-            self.Doc.recompute()
-            TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (1, 0), (1, 1))
-            self.Doc.recompute()
-            self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
-            self.Body.addObject(self.Pad1)
-            self.Pad1.Profile = self.PadSketch1
-            self.Pad1.Type = 5
-            self.Doc.recompute()
-            self.assertAlmostEqual(self.Pad1.Shape.Volume, 2.58787, places=4)
+    def testPadToShapeCase(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1))
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Doc.recompute()
+        # Make second pad on different plane and pad to first
+        self.PadSketch1 = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad1')
+        self.Body.addObject(self.PadSketch1)
+        self.PadSketch1.MapMode = 'FlatFace'
+        self.PadSketch1.AttachmentSupport = (self.Doc.XZ_Plane, [''])
+        self.PadSketch1.AttachmentOffset.Rotation.Axis = Base.Vector(0,1,0)
+        self.PadSketch1.AttachmentOffset.Rotation.Angle =  0.436332 # 25°
+        self.PadSketch1.AttachmentOffset.Base.z = 1
+        self.Doc.recompute()
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch1, (1, 0), (1, 1))
+        self.Doc.recompute()
+        self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
+        self.Body.addObject(self.Pad1)
+        self.Pad1.Profile = self.PadSketch1
+        self.Pad1.Type = 5
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad1.Shape.Volume, 2.58787, places=4)
+
+    def testPadToPlaneCustomDir(self):
+        self.Body = self.Doc.addObject('PartDesign::Body','Body')
+        # Make first offset cube Pad
+        self.PadSketch = self.Doc.addObject('Sketcher::SketchObject', 'SketchPad')
+        self.Body.addObject(self.PadSketch)
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 1), (1, 1))
+        self.Doc.recompute()
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Type = 3
+        self.Doc.Pad.UseCustomVector = True
+        self.Doc.Pad.Direction = Base.Vector(0,1,1)
+        self.Pad.UpToFace = (self.Doc.XZ_Plane, [''])
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad.Shape.Volume, 1.5)
 
     def tearDown(self):
         #closing doc
