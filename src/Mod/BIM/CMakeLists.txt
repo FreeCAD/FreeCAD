@@ -105,6 +105,7 @@ SET(bimcommands_SRCS
     bimcommands/BimDiff.py
     bimcommands/BimDimensions.py
     bimcommands/BimDoor.py
+    bimcommands/BimDrawingView.py
     bimcommands/BimEmptyTrash.py
     bimcommands/BimEquipment.py
     bimcommands/BimExamples.py
