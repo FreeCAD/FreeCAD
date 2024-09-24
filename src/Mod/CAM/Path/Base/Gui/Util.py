@@ -79,7 +79,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     else:
         if hasattr(obj, "ExpressionEngine"):
             exprSet = False
-            for (prp, expr) in obj.ExpressionEngine:
+            for prp, expr in obj.ExpressionEngine:
                 if prp == prop:
                     exprSet = True
                     Path.Log.debug('prop = "expression": {} = "{}"'.format(prp, expr))
@@ -100,9 +100,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
             widget.update()
 
     if isDiff:
-        Path.Log.debug(
-            "updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, attr, value)
-        )
+        Path.Log.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, attr, value))
         if onBeforeChange:
             onBeforeChange(obj)
         PathUtil.setProperty(obj, prop, value)
@@ -164,9 +162,7 @@ class QuantitySpinBox(QtCore.QObject):
                 self.widget.setProperty("binding", "%s.%s" % (obj.Name, prop))
                 self.valid = True
             else:
-                Path.Log.warning(
-                    "Cannot find property {} of {}".format(prop, obj.Label)
-                )
+                Path.Log.warning("Cannot find property {} of {}".format(prop, obj.Label))
                 self.valid = False
         else:
             self.valid = False
@@ -216,13 +212,11 @@ class QuantitySpinBox(QtCore.QObject):
         """updateProperty() ... update the bound property with the value from the spin box"""
         Path.Log.track(self.prop, self.valid)
         if self.valid:
-            return updateInputField(
-                self.obj, self.prop, self.widget, self.onBeforeChange
-            )
+            return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
         return None
 
     def _hasExpression(self):
-        for (prop, exp) in self.obj.ExpressionEngine:
+        for prop, exp in self.obj.ExpressionEngine:
             if prop == self.prop:
                 return exp
         return None

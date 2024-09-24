@@ -103,7 +103,10 @@ bool ImpExpDxfRead::ReadEntitiesSection()
         // TODO: We do end-to-end joining or complete merging as selected by the options.
         for (auto& shapeSet : ShapesToCombine) {
             m_entityAttributes = shapeSet.first;
-            CombineShapes(shapeSet.second, "Compound");
+            CombineShapes(shapeSet.second,
+                          m_entityAttributes.m_Layer == nullptr
+                              ? "Compound"
+                              : m_entityAttributes.m_Layer->Name.c_str());
         }
     }
     else {
@@ -112,14 +115,8 @@ bool ImpExpDxfRead::ReadEntitiesSection()
         }
     }
     if (m_preserveLayers) {
-        // Hide the Hidden layers if possible (if GUI exists)
-        // We do this now rather than when the layer is created so all objects
-        // within the layers also become hidden.
         for (auto& layerEntry : Layers) {
-            auto layer = (Layer*)layerEntry.second;
-            if (layer->DraftLayerView != nullptr && layer->Hidden) {
-                PyObject_CallMethod(layer->DraftLayerView, "hide", nullptr);
-            }
+            ((Layer*)layerEntry.second)->FinishLayer();
         }
     }
     return true;
@@ -610,14 +607,36 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
                             std::string&& lineType,
                             PyObject* drawingLayer)
     : CDxfRead::Layer(name, color, std::move(lineType))
-    , DraftLayer(drawingLayer)
+    , GroupContents(
+          drawingLayer == nullptr
+              ? nullptr
+              : (App::PropertyLinkListHidden*)(((App::FeaturePythonPyT<App::DocumentObjectPy>*)
+                                                    drawingLayer)
+                                                   ->getPropertyContainerPtr())
+                    ->getDynamicPropertyByName("Group"))
     , DraftLayerView(drawingLayer == nullptr ? nullptr
                                              : PyObject_GetAttrString(drawingLayer, "ViewObject"))
 {}
 ImpExpDxfRead::Layer::~Layer()
 {
-    Py_XDECREF(DraftLayer);
     Py_XDECREF(DraftLayerView);
+}
+
+void ImpExpDxfRead::Layer::FinishLayer() const
+{
+    if (GroupContents != nullptr) {
+        // We have to move the object to layer->DraftLayer
+        // The DraftLayer will have a Proxy attribute which has a addObject attribute which we
+        // call with (draftLayer, draftObject) Checking from python, the layer is a
+        // App::FeaturePython, and its Proxy is a draftobjects.layer.Layer
+        GroupContents->setValue(Contents);
+    }
+    if (DraftLayerView != nullptr && Hidden) {
+        // Hide the Hidden layers if possible (if GUI exists)
+        // We do this now rather than when the layer is created so all objects
+        // within the layers also become hidden.
+        PyObject_CallMethod(DraftLayerView, "hide", nullptr);
+    }
 }
 
 CDxfRead::Layer*
@@ -628,7 +647,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
         App::Color appColor = ObjectColor(color);
         PyObject* draftModule = nullptr;
         PyObject* layer = nullptr;
-        draftModule = PyImport_ImportModule("Draft");
+        draftModule = getDraftModule();
         if (draftModule != nullptr) {
             // After the colours, I also want to pass the draw_style, but there is an intervening
             // line-width parameter. It is easier to just pass that parameter's default value than
@@ -651,12 +670,13 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
                                                          appColor.b,
                                                          2.0,
                                                          "Solid");
-            Py_DECREF(draftModule);
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
         if (result->DraftLayerView != nullptr) {
             PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", Py_False);
-            PyObject_SetAttrString(result->DraftLayerView, "OverrideShapeColorChildren", Py_False);
+            PyObject_SetAttrString(result->DraftLayerView,
+                                   "OverrideShapeAppearanceChildren",
+                                   Py_False);
         }
 
         // We make our own layer class even if we could not make a layer. MoveToLayer will ignore
@@ -669,26 +689,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
 void ImpExpDxfRead::MoveToLayer(App::DocumentObject* object) const
 {
     if (m_preserveLayers) {
-        static PyObject* addObjectName =
-            PyUnicode_FromString("addObject");  // This never gets freed, we always have a reference
-        auto layer = static_cast<const Layer*>(m_entityAttributes.m_Layer);
-        if (layer->DraftLayer != nullptr) {
-            // We have to move the object to layer->DraftLayer
-            // The DraftLayer will have a Proxy attribute which has a addObject attribute which we
-            // call with (draftLayer, draftObject) Checking from python, the layer is a
-            // App::FeaturePython, and its Proxy is a draftobjects.layer.Layer
-            PyObject* proxy = PyObject_GetAttrString(layer->DraftLayer, "Proxy");
-            if (proxy != nullptr) {
-                // TODO: De we have to check if the method exists? The legacy importer does.
-                PyObject_CallMethodObjArgs(proxy,
-                                           addObjectName,
-                                           layer->DraftLayer,
-                                           object->getPyObject(),
-                                           nullptr);
-                Py_DECREF(proxy);
-                return;
-            }
-        }
+        static_cast<Layer*>(m_entityAttributes.m_Layer)->Contents.push_back(object);
     }
     // TODO: else Hide the object if it is in a Hidden layer? That won't work because we've cleared
     // out m_entityAttributes.m_Layer

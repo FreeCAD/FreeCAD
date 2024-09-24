@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="605"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson Oberflächenrekonstruktion</translation>
+      <translation>Poisson-Oberflächenrekonstruktion</translation>
     </message>
   </context>
   <context>
@@ -236,7 +236,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>B-Spline einpassen</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>

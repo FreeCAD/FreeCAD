@@ -242,6 +242,16 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
 
     grid->addWidget(labelShininess, row, 0);
     grid->addWidget(editShininess, row, 1);
+    row += 1;
+
+    auto* labelTransparency = new QLabel();
+    labelTransparency->setText(tr("Transparency"));
+    auto* editTransparency = new QLineEdit();
+    editTransparency->setText(QString::number(material.transparency));
+    editTransparency->setEnabled(false);
+
+    grid->addWidget(labelTransparency, row, 0);
+    grid->addWidget(editTransparency, row, 1);
 
     return tab;
 }

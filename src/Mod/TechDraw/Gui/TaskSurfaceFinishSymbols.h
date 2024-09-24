@@ -105,7 +105,9 @@ private:
     QComboBox *cbRA, *cbMinRought, *cbMaxRought, *cbLay;
     symbolType activeIcon;
     bool isISO;
+    QGraphicsPixmapItem* currentIcon;
     std::unique_ptr<Ui_TaskSurfaceFinishSymbols> ui;
+    QColor getPenColor();
 
 private Q_SLOTS:
     void onIconChanged();

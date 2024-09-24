@@ -37,7 +37,7 @@ constexpr std::array<const char*, InternalType::NumInternalGeometryType>
 constexpr std::array<const char*, GeometryMode::NumGeometryMode>
     SketchGeometryExtension::geometrymode2str;
 
-TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension, Part::GeometryPersistenceExtension)
+TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension, Part::GeometryMigrationPersistenceExtension)
 
 // scoped within the class, multithread ready
 std::atomic<long> SketchGeometryExtension::_GeometryID;
@@ -86,11 +86,9 @@ void SketchGeometryExtension::saveAttributes(Base::Writer& writer) const
 {
     Part::GeometryPersistenceExtension::saveAttributes(writer);
 
-    // This is removed as the stored Id is not used and it may interfere with RT's future
-    // implementation
-    writer.Stream()  // << "\" id=\"" << Id
-        << "\" internalGeometryType=\"" << (int)InternalGeometryType << "\" geometryModeFlags=\""
-        << GeometryModeFlags.to_string() << "\" geometryLayer=\"" << GeometryLayer;
+    writer.Stream() << "\" id=\"" << Id << "\" internalGeometryType=\"" << (int)InternalGeometryType
+                    << "\" geometryModeFlags=\"" << GeometryModeFlags.to_string()
+                    << "\" geometryLayer=\"" << GeometryLayer;
 }
 
 void SketchGeometryExtension::preSave(Base::Writer& writer) const

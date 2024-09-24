@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Anmerkungs Stil Editor</translation>
+      <translation>Beschriftungsstil-Editor</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -62,7 +62,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle on/off</source>
-      <translation>Umschalten ein/aus</translation>
+      <translation>Ein-/Ausschalten</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
@@ -82,12 +82,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation>Stile aus json Datei importieren</translation>
+      <translation>Stile aus json-Datei importieren</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation>Stile in json Datei exportieren</translation>
+      <translation>Stile in json-Datei exportieren</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
@@ -125,7 +125,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="288"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
       <source>The width of the lines</source>
-      <translation>Die Strichstärke der Linien</translation>
+      <translation>Die Breite der Linien</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
@@ -156,16 +156,16 @@
       <translation>Linien- und Pfeilfarbe</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="501"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="497"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
       <source>The distance the dimension line is additionally extended</source>
       <translation>Die Länge, um die die Maßlinie zusätzlich erweitert wird</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="531"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="537"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="547"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
-      <translation>Die Länge, um die die Maßhilfslinien zusätzlich über die Maßlinie hinaus erweitert werden</translation>
+      <translation>Die Strecke, um die die Maßhilfslinien zusätzlich über die Maßlinie hinaus erweitert werden</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -203,7 +203,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="408"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="418"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation>Ein Multiplikator, der die Größe von Texten und Hervorhebungen beeinflusst</translation>
+      <translation>Ein Multiplikationsfaktor, der die Größe von Texten und Kennzeichnungen beeinflusst</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
@@ -211,46 +211,46 @@
       <translation>Skalenfaktor</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="435"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Wenn angehakt, wird die Einheit neben der Maßzahl angezeigt</translation>
+      <translation>Wenn aktiviert, wird die Maßeinheit neben der Maßzahl angezeigt</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="428"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>Show unit</source>
       <translation>Einheit anzeigen</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="458"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="454"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Lege eine gültige Längeneinheit wie mm, m, in, ft, fest, um die Anzeige des Maßwertes in dieser Einheit zu erzwingen</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
       <source>Unit override</source>
       <translation>Einheit überschreiben</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Die Anzahl der Dezimalstellen, die für Maßzahlen dargestellt werden</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
       <source>Decimals</source>
       <translation>Nachkommastellen</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="557"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="567"/>
       <source>The distance between the dimension text and the dimension line</source>
       <translation>Der Abstand zwischen der Maßlinie und dem Bemaßungstext</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="560"/>
       <source>Text spacing</source>
       <translation>Textabstand</translation>
     </message>
@@ -258,7 +258,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="262"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="272"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation>Wenn aktiviert, wird die Maßlinie angezeigt</translation>
+      <translation>Wenn dies angehakt ist, wird die Maßlinie angezeigt</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
@@ -301,28 +301,28 @@
       <translation>Pfeilgröße</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Dimension details</source>
       <translation>Bemaßungseinstellungen</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>Dimension overshoot</source>
       <translation>Maßlinienüberstand</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="511"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="517"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
       <source>The length of the extension lines</source>
       <translation>Länge der Maßhilfslinien</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
       <source>Extension lines</source>
       <translation>Maßhilfslinie</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="540"/>
       <source>Extension overshoot</source>
       <translation>Maßhilfslinienüberstand</translation>
     </message>
@@ -871,7 +871,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="196"/>
       <location filename="../ui/TaskSelectPlane.ui" line="206"/>
       <source>The number of squares between major grid lines</source>
-      <translation>Die Anzahl der Quadrate zwischen den Hauptgitterlinien</translation>
+      <translation>Die Anzahl der Quadrate zwischen den Hauptrasterlinien</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
@@ -888,7 +888,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
       <location filename="../ui/TaskSelectPlane.ui" line="226"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation>Die Anzahl der Quadrate in X- und Y-Richtung des Gitters</translation>
+      <translation>Die Anzahl der Quadrate in X- und Y-Richtung des Rasters</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="219"/>
@@ -899,7 +899,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="242"/>
       <location filename="../ui/TaskSelectPlane.ui" line="252"/>
       <source>The distance at which a point can be snapped to</source>
-      <translation>Die Entfernung, in der ein Punkt gefangen werden kann</translation>
+      <translation>Die Entfernung, in der ein Punkt einrasten kann</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="289"/>
@@ -1003,7 +1003,7 @@ will be moved to the center of the view.</source>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="386"/>
       <source>Line width</source>
       <translation>Linienbreite</translation>
     </message>
@@ -1011,7 +1011,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="393"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1091,27 +1091,27 @@ will be moved to the center of the view.</source>
       <translation>Formfarbe</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="592"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="598"/>
       <source>Annotations</source>
       <translation>Anmerkungen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="555"/>
       <source>Text spacing</source>
       <translation>Textabstand</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Text color</source>
       <translation>Textfarbe</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="458"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Dimensions</source>
       <translation>Maße</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source>Dot</source>
       <translation>Punkt</translation>
     </message>
@@ -1138,47 +1138,47 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
 Anmerkungsskala-Widget. Bei einer Skala von 1:100 beträgt der Multiplikator 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Lines and arrows</source>
       <translation>Linien und Pfeile</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="413"/>
       <source>Circle</source>
       <translation>Kreis</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="412"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="418"/>
       <source>Arrow</source>
       <translation>Pfeil</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
       <source>Tick</source>
       <translation>Schrägstrich</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
       <source>Tick-2</source>
       <translation>Schrägstrich-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="471"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation>Wenn aktiviert, wird die Einheit zu Maßtexten hinzugefügt</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Einheit überschreiben für Abmessungen. Leer lassen, um die aktuelle FreeCAD-Einheit zu verwenden.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Die Länge, um die die Maßlinie über die Maßhilfslinien hinaus verlängert wird</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>Die Farbe für Texte, Maße und Hinweistexte</translation>
     </message>
@@ -1213,32 +1213,32 @@ Anmerkungsskala-Widget. Bei einer Skala von 1:100 beträgt der Multiplikator 100
       <translation>Skalenfaktor</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Line and arrow color</source>
       <translation>Linien- und Pfeilfarbe</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="400"/>
       <source>Arrow type</source>
       <translation>Pfeiltyp</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="436"/>
       <source>Arrow size</source>
       <translation>Pfeilgröße</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="501"/>
       <source>Dim line overshoot</source>
-      <translation>Bemaßungslinienüberstand</translation>
+      <translation>Maßlinienüberstand</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="518"/>
       <source>Ext line length</source>
       <translation>Länge der Maßhilfslinie</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1248,42 +1248,42 @@ legt die Lücke zwischen den Enden der Maßhilfslinien und den gemessenen Punkte
 Ein positiver Wert legt die maximale Länge der Maßhilfslinien fest. Wird nur für lineare Maße verwendet.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="538"/>
       <source>Ext line overshoot</source>
       <translation>Maßhilfslinienüberstand</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>Die Länge der Erweiterungslinien oberhalb der Bemaßungslinie</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Der Abstand zwischen der Maßlinie und dem Bemaßungstext</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="581"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Den obenstehenden Stil auf ausgewählte(n) Objekt(e) anwenden</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="595"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Den obigen Stil auf alle Beschriftungen anwenden (Texte, Maße und Hinweise)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>Show unit</source>
       <translation>Einheit anzeigen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="481"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
       <source>Unit override</source>
       <translation>Einheit überschreiben</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="578"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="584"/>
       <source>Selected</source>
       <translation>Ausgewählt</translation>
     </message>
@@ -1599,7 +1599,7 @@ pattern definitions to be added to the standard patterns</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>Texte und Bemaßungen</translation>
     </message>
@@ -1621,7 +1621,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1992,30 +1992,30 @@ Dieser Wert ist die maximale Segmentlänge.</translation>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>Dieser Einstellungsdialog wird angezeigt, wenn DXF-Dateien importiert/exportiert werden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Diesen Dialog beim importieren und exportieren anzeigen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>Der Python-Importeur wird verwendet, ansonsten wird der neuere C++ verwendet.
 Hinweis: Der C++-Import ist schneller, ist aber noch nicht so funktionsfähig</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>Der Python-Exporter wird verwendet, ansonsten wird der neuere C++ verwendet. Beachte: Der C++-Exporter ist schneller aber noch nicht so umfangreich</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -2024,89 +2024,89 @@ Dies kann auch manuell durch die Installation des "dxf_library" Arbeitsbereichs
 im Addon-Manager erfolgen.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation>FreeCAD das automatische Herunterladen und Aktualisieren der DXF-Bibliotheken erlauben</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>Import Einstellungen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>Importieren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>Sofern nicht ausgewählt, werden Texte und mtexte nicht importiert</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>Sofern nicht ausgewählt, werden Punkte nicht importiert</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>Punkte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>Wenn aktiviert, werden auch die Papierbereiche importiert</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation>Wenn die nicht benannten Blöcke (beginnend mit einem *) auch importieren werden sollen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation>*Blöcke</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>Erstellen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>Wenn aktiviert, werden nur Standard-Grundkörper erstellt (schnellste Möglichkeit)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>Parametrische Entwurfsobjekte werden wann immer möglich erstellt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
       <translation>Draft-Objekte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>Skizzen werden wann immer möglich erstellt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>Skizzen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>Skalierungsfaktor angewendet auf importierte Dateien</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2117,136 +2117,136 @@ Beispiel: für Dateien in Millimeter: 1, in Zentimter: 10,
                              in Meter: 1000, im Zoll: 25.4, in Fuß: 304.8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation>Objekte aus den gleichen Ebenen werden in Draft-Blöcke verbunden,
 die Anzeige wird dadurch beschleunigt, aber sie werden dadurch weniger leicht editierbar.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation>Projiziere exportierte Objekte entlang der aktuellen Blickrichtung</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation>FreeCAD wird versuchen, zusammenfallende Objekte in Drähte zu verbinden.
+      <translation>FreeCAD versucht, zusammenfallende Objekte zu Linienzügen zu verbinden.
 Dies kann eine Weile dauern!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation>Farben werden wie in der DXF-Datei angegeben, wann immer dies möglich ist.
 Andernfalls werden Standardfarben verwendet.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation>Automatische Aktualisierung (nur Altimporteur/-exporteur)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
-      <translation type="unfinished">Use legacy Python importer</translation>
+      <translation>Einen älteren Python-Importer verwenden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Use legacy Python exporter</source>
-      <translation type="unfinished">Use legacy Python exporter</translation>
+      <translation>Einen älteren Python-Exporter verwenden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation>Einige Optionen sind für den neuen Importeur noch nicht verfügbar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>Layouts</source>
-      <translation type="unfinished">Layouts</translation>
+      <translation>Layouts</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
       <source>Simple Part shapes</source>
       <translation>Einfache Grundkörper-Formen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
       <translation>Farben der DXF-Datei verwenden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
       <translation>Geometrie vereinen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
       <translation>Gruppiere Ebenen in Blöcken</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>Importierte Texte erhalten die standardmäßige Entwurfs-Schriftgröße, statt ihrer Ursprungsgröße im DXF Dokument</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>Standard Schriftgröße für Texte verwenden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>Wenn dies aktiviert ist, werden DXF-Layer als Draft-Layer importiert</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>Schraffuren werden in einfache Drähte umgewandelt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
-      <translation>Fügt Schraffurgrenzen als Drähte hinzu</translation>
+      <translation>Fügt Schraffurränder als Linienzüge hinzu</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>Wenn Linienzüge eine festgelegte Breite haben, werden sie
 als geschlossene Kantenzüge mit der korrekten Breite dargestellt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation>Polylinien mit Breite rendern</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation>Einige Optionen sind für den neuen Importeur noch nicht verfügbar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation>Der Export von Ellipsen wird nur teilweise unterstützt. Mit dieser Option werden diese stattdessen als Polygonzüge exportiert.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>Behandle Ellipsen und Splines wie Polylinien</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation>Max. Länge eines Spline-Segments:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>Maximale Länge aller Linienzugabschnitte.
@@ -2254,39 +2254,39 @@ Wenn sie auf '0' gesetzt ist, wird der gesamte Spline als geradliniger Abschnitt
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>Export Einstellungen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
       <translation>Ebenen verwenden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>Alle Objekte, die Flächen enthalten, werden als 3D-Polyfaces exportiert</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>3D Objekte als Polyface Meshes exportieren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>TechDraw Views werden als Blöcke exportiert.
 Dies kann bei neueren als DXF R12 Vorlagen fehlschlagen.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>TechDraw Views als Blöcke exportieren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Exportierte Objekte werden entsprechen der momentanen Ansichtsrichtung projiziert</translation>
     </message>
@@ -2316,7 +2316,8 @@ Dies kann bei neueren als DXF R12 Vorlagen fehlschlagen.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
-      <translation>Die Anzahl der Quadrate zwischen den Hauptgitterlinien. Hauptgitterlinien sind dicker als Nebengitterlinien.</translation>
+      <translation>Die Anzahl der Quadrate zwischen den Hauptrasterlinien.
+Hauptrasterlinien sind breiter als Nebenrasterlinien.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="150"/>
@@ -2327,7 +2328,7 @@ Major grid lines are thicker than minor grid lines.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="218"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation>Die Anzahl der Quadrate in X- und Y-Richtung des Gitters</translation>
+      <translation>Die Anzahl der Quadrate in X- und Y-Richtung des Rasters</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="394"/>
@@ -3001,8 +3002,8 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     <message>
       <location filename="../../DraftGui.py" line="491"/>
       <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="1469"/>
+      <location filename="../../DraftGui.py" line="1484"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3065,7 +3066,7 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     </message>
     <message>
       <location filename="../../DraftGui.py" line="531"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Angle</source>
       <translation>Winkel</translation>
     </message>
@@ -3228,8 +3229,8 @@ Nicht verfügbar, wenn die Option "Part-Grundkörper erstellen, wenn möglich" a
     </message>
     <message>
       <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1487"/>
       <source>Autogroup off</source>
       <translation>Autogruppe aus</translation>
     </message>
@@ -3286,14 +3287,14 @@ Nicht verfügbar, wenn die Option "Part-Grundkörper erstellen, wenn möglich" a
     <message>
       <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="212"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
       <source>Distance</source>
       <translation>Entfernung</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="780"/>
       <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="214"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Offset distance</source>
       <translation>Versatzabstand</translation>
     </message>
@@ -3323,32 +3324,32 @@ Nicht verfügbar, wenn die Option "Part-Grundkörper erstellen, wenn möglich" a
       <translation>Globales {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1480"/>
       <source>Autogroup:</source>
       <translation>Autogruppe:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1619"/>
       <source>Modify objects</source>
       <translation>Objekte bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1768"/>
       <source>Faces</source>
       <translation>Flächen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1769"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1770"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1771"/>
       <source>Facebinder elements</source>
       <translation>Flächen-Verbund-Elemente</translation>
     </message>
@@ -4121,33 +4122,43 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <translation>Objekte zum Trimmen/Erweitern</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="120"/>
+      <source>This object is not supported.</source>
+      <translation>Dieses Objekt wird nicht unterstützt.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="143"/>
+      <source>Only a single face can be extruded.</source>
+      <translation>Nur eine einzelne Fläche kann extrudiert werden.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation>Abstand auswählen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="219"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
       <source>Offset angle</source>
       <translation>Versatzwinkel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="479"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation>Objekte könne nicht getrimmt werden, nur Draft Linien und Bögen werden unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="484"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Objekte könne nicht getrimmt werden, zu viele Kantenzüge</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="501"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
       <source>These objects don't intersect.</source>
       <translation>Diese Objekte überschneiden sich nicht.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="504"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
       <source>Too many intersection points.</source>
       <translation>Zu viele Schnittpunkte.</translation>
     </message>
@@ -4295,7 +4306,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="778"/>
       <source>Endpoint of Bézier curve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of Bézier curve can't be smoothed</translation>
+      <translation>Endpunkt einer Bézierkurve kann nicht geglättet werden</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="76"/>
@@ -4863,29 +4874,29 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <translation>End-Offset ist zu groß für die Pfadlänge minus Start-Offset. Verwende stattdessen Null.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="537"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation>Länge des Tangent-Vektors ist Null. Kopie nicht ausgerichtet.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="551"/>
+      <location filename="../../draftobjects/patharray.py" line="573"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation>Die Länge des normalen Vektors ist Null. Verwende stattdessen eine Standardachse.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="557"/>
+      <location filename="../../draftobjects/patharray.py" line="579"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation>Tangente und normale Vektoren sind parallel. Normal ersetzt durch eine Standardachse.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation>Kann den normalen Vektor nicht berechnen. Stattdessen die Standardeinstellung verwenden.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>AlignMode {} is not implemented</source>
       <translation>AlignMode {} ist nicht implementiert</translation>
     </message>
@@ -5226,24 +5237,24 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <translation>Falsche Eingabe: muss eine Zahl zwischen 0 und 100 sein.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="490"/>
       <source>Activate this layer</source>
       <translation>Diese Ebene aktivieren</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="496"/>
       <source>Select layer contents</source>
       <translation>Ebeneninhalt auswählen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="534"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="548"/>
       <source>Merge layer duplicates</source>
       <translation>Ebenenduplikate zusammenführen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="540"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="593"/>
       <source>Add new layer</source>
       <translation>Neue Ebene hinzufügen</translation>
     </message>
@@ -5520,7 +5531,7 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
       <translation>3 Knoten, eine bzw. mehrere Formen oder ein Objekt auswählen, um eine Arbeitsebene zu definieren</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="182"/>
+      <location filename="../../draftutils/params.py" line="194"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation>Sollen die Optionen der SVG-Muster existierender
@@ -5547,7 +5558,7 @@ of existing objects in all opened documents?</source>
       <translation>aktualisierte Ansichtseigenschaften</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5556,19 +5567,17 @@ Please either allow FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either allow FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+      <translation>Die von FreeCAD benötigten DXF-Import/Export-Bibliotheken wurden auf diesem System nicht gefunden. 
+Bitte entweder diese Bibliotheken aktivieren
+  1 - Lade Arbeitsbereich "Draft"
+  2 - Menü Bearbeiten &gt; Einstellungen &gt; Import-Export &gt; DXF &gt; automatische Downloads aktivieren
+oderdiese Bibliotheken manuell herunterladenn, wie unter folgendem Link erklärt: https://github.com/yorikvanhavre/Draft-dxf-importer erklärt.
+Ein Klick auf "Ja", gestattet FreeCAD den automatischen Download der Bibliotheken.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use the default Sketcher editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use the default Sketcher editor</translation>
+      <translation>Die Skizze ist zu komplex zum Bearbeiten: Es wird empfohlen, den standardmäßigen Sketch-Editor zu verwenden</translation>
     </message>
   </context>
   <context>
@@ -5637,7 +5646,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -6406,9 +6415,8 @@ STRG zum Fangen, SHIFT zum Festlegen.</translation>
       <source>Edits the active object.
 Press E or ALT + Left Click to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT + Left Click to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Bearbeitet das aktive Objekt.
+Mit E oder Alt + Linksklick wird das Kontextmenü an unterstützten Knoten und Objekten angezeigt.</translation>
     </message>
   </context>
   <context>
@@ -6483,8 +6491,8 @@ STRG zum Fangen, SHIFT zum Festlegen. ALT gedrückt halten beim Klicken, um mit 
       <location filename="../../draftguitools/gui_groups.py" line="77"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation>Verschiebt die ausgewählten Objekte in eine bestehende Gruppe oder entfernt sie aus jeder Gruppe.
-Erstellen Sie zuerst eine Gruppe, um dieses Werkzeug zu verwenden.</translation>
+      <translation>Verschiebt die ausgewählten Objekte in eine bestehende Gruppe oder entfernt sie aus allen Gruppen.
+Zuerst eine Gruppe erstellen, um dieses Werkzeug zu verwenden.</translation>
     </message>
   </context>
   <context>
@@ -6510,7 +6518,7 @@ Erstellen Sie zuerst eine Gruppe, um dieses Werkzeug zu verwenden.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="212"/>
       <source>Select a group to add all Draft and BIM objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and BIM objects to.</translation>
+      <translation>Eine Gruppe auswählen, um automatisch alle Draft- und BIM-Objekte hinzuzufügen.</translation>
     </message>
   </context>
   <context>
@@ -6548,7 +6556,7 @@ Es wird eine Hilfsgeometriegruppe erstellt, wenn noch keine vorhanden ist.</tran
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="46"/>
       <source>Create working plane proxy</source>
-      <translation>Arbeitsebenen Proxy erstellen</translation>
+      <translation>Arbeitsebenen-Proxy erstellen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_planeproxy.py" line="49"/>

@@ -162,8 +162,7 @@ private:
 
             // in the exceptional event that this may lead to a circle, do not
             // exposeInternalGeometry
-            if (!ShapeGeometry.empty()
-                && ShapeGeometry[0]->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            if (!ShapeGeometry.empty() && ShapeGeometry[0]->is<Part::GeomEllipse>()) {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                       "exposeInternalGeometry(%d)",
                                       ellipseGeoId);
@@ -713,8 +712,7 @@ void DSHEllipseController::addConstraints()
 
         using namespace Sketcher;
 
-        if (!handler->ShapeGeometry.empty()
-            && handler->ShapeGeometry[0]->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        if (!handler->ShapeGeometry.empty() && handler->ShapeGeometry[0]->is<Part::GeomEllipse>()) {
 
             int firstLine = firstCurve + 1;   // this is always the major axis
             int secondLine = firstCurve + 2;  // this is always the minor axis

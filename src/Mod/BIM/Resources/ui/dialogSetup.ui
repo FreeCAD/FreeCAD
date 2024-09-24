@@ -512,22 +512,22 @@
            </item>
            <item>
             <property name="text">
-             <string>CC-BY</string>
+             <string notr="true">CC-BY</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>CC-BY-SA</string>
+             <string notr="true">CC-BY-SA</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>CC-BY-NC</string>
+             <string notr="true">CC-BY-NC</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>CC-BY-SA-NC</string>
+             <string notr="true">CC-BY-SA-NC</string>
             </property>
            </item>
            <item>

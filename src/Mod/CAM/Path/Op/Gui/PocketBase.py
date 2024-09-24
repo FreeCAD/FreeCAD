@@ -93,7 +93,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if not (FeatureRestMachining & self.pocketFeatures()):
             form.useRestMachining.hide()
 
-
         return form
 
     def updateMinTravel(self, obj, setModel=True):
@@ -148,9 +147,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.form.stepOverPercent.setValue(obj.StepOver)
         self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(
-                obj.ExtraOffset.Value, FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString
         )
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
         self.form.useRestMachining.setChecked(obj.UseRestMachining)

@@ -11,6 +11,7 @@
 #include <array>
 #include <boost/filesystem.hpp>
 #include <fstream>
+#include <xercesc/util/PlatformUtils.hpp>
 
 namespace fs = boost::filesystem;
 
@@ -19,7 +20,7 @@ class ReaderTest: public ::testing::Test
 protected:
     void SetUp() override
     {
-        xercesc_3_2::XMLPlatformUtils::Initialize();
+        XERCES_CPP_NAMESPACE::XMLPlatformUtils::Initialize();
         _tempDir = fs::temp_directory_path();
         std::string filename = "unit_test_Reader.xml";
         _tempFile = _tempDir / filename;
@@ -307,7 +308,7 @@ TEST_F(ReaderTest, validDefaults)
     const char* value2 = Reader()->getAttribute("missing", "expected value");
     int value4 = Reader()->getAttributeAsInteger("missing", "-123");
     unsigned value6 = Reader()->getAttributeAsUnsigned("missing", "123");
-    float value8 = Reader()->getAttributeAsFloat("missing", "1.234");
+    double value8 = Reader()->getAttributeAsFloat("missing", "1.234");
 
     // Assert
     EXPECT_THROW({ Reader()->getAttributeAsInteger("missing"); }, Base::XMLBaseException);
@@ -331,10 +332,13 @@ TEST_F(ReaderTest, invalidDefaults)
     givenDataAsXMLStream(xmlBody);
 
     // Act / Assert
-    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
-                 std::invalid_argument);
-    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
-                 std::invalid_argument);
-    EXPECT_THROW({ Reader()->getAttributeAsInteger("missing", "Not a Float"); },
-                 std::invalid_argument);
+    EXPECT_THROW(
+        { Reader()->getAttributeAsInteger("missing", "Not an Integer"); },
+        std::invalid_argument);
+    EXPECT_THROW(
+        { Reader()->getAttributeAsInteger("missing", "Not an Unsigned"); },
+        std::invalid_argument);
+    EXPECT_THROW(
+        { Reader()->getAttributeAsInteger("missing", "Not a Float"); },
+        std::invalid_argument);
 }

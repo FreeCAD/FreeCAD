@@ -462,18 +462,7 @@ const std::string& StringHasher::getPersistenceFileName() const
 void StringHasher::Save(Base::Writer& writer) const
 {
 
-    size_t count = 0;
-    if (_hashes->SaveAll) {
-        count = _hashes->size();
-    }
-    else {
-        count = 0;
-        for (auto& hasher : _hashes->right) {
-            if (hasher.second->isMarked() || hasher.second->isPersistent()) {
-                ++count;
-            }
-        }
-    }
+    std::size_t count = _hashes->SaveAll ? _hashes->size() : this->count();
 
     writer.Stream() << writer.ind() << "<StringHasher saveall=\"" << _hashes->SaveAll
                     << "\" threshold=\"" << _hashes->Threshold << "\"";
@@ -617,7 +606,7 @@ void StringHasher::RestoreDocFile(Base::Reader& reader)
         restoreStreamNew(reader, count);
         return;
     }
-    count = atoi(marker.c_str());
+    reader >> count;
     restoreStream(reader, count);
 }
 
@@ -788,7 +777,7 @@ size_t StringHasher::count() const
 {
     size_t count = 0;
     for (auto& hasher : _hashes->right) {
-        if (hasher.second->getRefCount() > 1) {
+        if (hasher.second->isMarked() || hasher.second->isPersistent() ) {
             ++count;
         }
     }

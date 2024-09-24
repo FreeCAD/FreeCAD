@@ -308,6 +308,7 @@ DlgFilletEdges::~DlgFilletEdges()
 
 void DlgFilletEdges::setupConnections()
 {
+    // clang-format off
     connect(ui->shapeObject, qOverload<int>(&QComboBox::activated),
             this, &DlgFilletEdges::onShapeObjectActivated);
     connect(ui->selectEdges, &QRadioButton::toggled,
@@ -326,6 +327,7 @@ void DlgFilletEdges::setupConnections()
     connect(ui->filletEndRadius,
             qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
             this, &DlgFilletEdges::onFilletEndRadiusValueChanged);
+    // clang-format on
 }
 
 void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)

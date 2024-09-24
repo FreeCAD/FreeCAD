@@ -50,7 +50,7 @@ using namespace MeasureGui;
 
 QuickMeasure::QuickMeasure(QObject* parent)
     : QObject(parent)
-    , measurement{new Measure::Measurement()}
+    , measurement {new Measure::Measurement()}
 {
     selectionTimer = new QTimer(this);
     pendingProcessing = false;
@@ -103,8 +103,8 @@ void QuickMeasure::tryMeasureSelection()
 
 bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
 {
-    if (msg.Type == Gui::SelectionChanges::SetPreselect ||
-        msg.Type == Gui::SelectionChanges::RmvPreselect) {
+    if (msg.Type == Gui::SelectionChanges::SetPreselect
+        || msg.Type == Gui::SelectionChanges::RmvPreselect) {
         return false;
     }
 
@@ -117,15 +117,23 @@ void QuickMeasure::addSelectionToMeasurement()
     int count = 0;
     int limit = 100;
 
-    for (auto& selObj : Gui::Selection().getSelectionEx()) {
-        App::DocumentObject* obj = selObj.getObject();
-
+    // Lambda function to check whether to continue
+    auto shouldSkip = [](App::DocumentObject* obj) {
         std::string vpType = obj->getViewProviderName();
         auto* vp = Gui::Application::Instance->getViewProvider(obj);
-        if (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing()) {
-            continue;
-        }
+        return (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing())
+            || vpType.find("Gui::ViewProviderOrigin") != std::string::npos
+            || vpType.find("Gui::ViewProviderPart") != std::string::npos
+            || vpType.find("SpreadsheetGui") != std::string::npos
+            || vpType.find("TechDrawGui") != std::string::npos;
+    };
 
+    auto selObjs = Gui::Selection().getSelectionEx(nullptr,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   Gui::ResolveMode::NoResolve);
+
+    for (auto& selObj : selObjs) {
+        App::DocumentObject* rootObj = selObj.getObject();
         const std::vector<std::string> subNames = selObj.getSubNames();
 
         // Check that there's not too many selection
@@ -136,12 +144,19 @@ void QuickMeasure::addSelectionToMeasurement()
         }
 
         if (subNames.empty()) {
-            measurement->addReference3D(obj, "");
-        }
-        else {
-            for (auto& subName : subNames) {
-                measurement->addReference3D(obj, subName);
+            if (!shouldSkip(rootObj)) {
+                measurement->addReference3D(rootObj, "");
             }
+            continue;
+        }
+
+        for (auto& subName : subNames) {
+            App::DocumentObject* obj = rootObj->getSubObject(subName.c_str());
+
+            if (shouldSkip(obj)) {
+                continue;
+            }
+            measurement->addReference3D(rootObj, subName);
         }
     }
 }
@@ -158,7 +173,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Volumes) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity vol(measurement->volume(), Base::Unit::Volume);
-        print(tr("Volume: %1, Area: %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
+        print(tr("Volume: %1, Area:
+    %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
     }*/
     else if (mtype == MeasureType::TwoPlanes) {
         Base::Quantity dist(measurement->planePlaneDistance(), Base::Unit::Length);
@@ -168,7 +184,8 @@ void QuickMeasure::printResult()
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         print(tr("Area: %1").arg(area.getUserString()));
     }
-    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere || mtype == MeasureType::Torus) {
+    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere
+             || mtype == MeasureType::Torus) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity rad(measurement->radius(), Base::Unit::Length);
         print(tr("Area: %1, Radius: %2").arg(area.getSafeUserString(), rad.getSafeUserString()));
@@ -184,7 +201,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::TwoLines) {
         Base::Quantity angle(measurement->angle(), Base::Unit::Length);
         Base::Quantity dist(measurement->length(), Base::Unit::Length);
-        print(tr("Angle: %1, Total length: %2").arg(angle.getSafeUserString(), dist.getSafeUserString()));
+        print(tr("Angle: %1, Total length: %2")
+                  .arg(angle.getSafeUserString(), dist.getSafeUserString()));
     }
     else if (mtype == MeasureType::Line) {
         Base::Quantity dist(measurement->length(), Base::Unit::Length);

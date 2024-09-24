@@ -415,6 +415,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui
     Resources/ui/MeshGroupXDMFExport.ui
+    Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui

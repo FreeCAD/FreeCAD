@@ -27,12 +27,14 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "TaskGeomHatch.h"
 #include "ui_TaskGeomHatch.h"
@@ -42,6 +44,7 @@
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
+using DU = DrawUtil;
 
 TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui::ViewProviderGeomHatch* inVp, bool mode) :
     ui(new Ui_TaskGeomHatch),
@@ -91,7 +94,8 @@ void TaskGeomHatch::initUi()
 
 void TaskGeomHatch::onFileChanged()
 {
-    m_file = ui->fcFile->fileName().toUtf8().constData();
+    auto filespec = Base::Tools::toStdString(ui->fcFile->fileName());
+    m_file = DU::cleanFilespecBackslash(filespec);
     std::vector<std::string> names = PATLineSpec::getPatternList(m_file);
     QStringList qsNames = listToQ(names);
     ui->cbName->clear();

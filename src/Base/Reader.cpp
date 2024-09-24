@@ -46,8 +46,12 @@
 #include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+#else
 XERCES_CPP_NAMESPACE_USE
+#endif
 
 using namespace std;
 
@@ -177,6 +181,8 @@ bool Base::XMLReader::read()
 void Base::XMLReader::readElement(const char* ElementName)
 {
     bool ok {};
+
+    endCharStream();
     int currentLevel = Level;
     std::string currentName = LocalName;
     do {
@@ -244,6 +250,8 @@ bool Base::XMLReader::isEndOfDocument() const
 
 void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
+    endCharStream();
+
     // if we are already at the end of the current element
     if ((ReadType == EndElement || ReadType == StartEndElement) && ElementName
         && LocalName == ElementName && (level < 0 || level == Level)) {

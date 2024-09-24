@@ -224,7 +224,7 @@ private:
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
-    TopoDS_Compound findHoles(const TopoDS_Shape& profileshape, const TopoDS_Shape& protohole) const;
+    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);

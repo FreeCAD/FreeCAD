@@ -70,15 +70,24 @@ class CommandCreateAssembly:
         App.setActiveTransaction("Create assembly")
 
         activeAssembly = UtilsAssembly.activeAssembly()
+        Gui.addModule("UtilsAssembly")
         if activeAssembly:
-            assembly = activeAssembly.newObject("Assembly::AssemblyObject", "Assembly")
+            commands = (
+                "activeAssembly = UtilsAssembly.activeAssembly()\n"
+                'assembly = activeAssembly.newObject("Assembly::AssemblyObject", "Assembly")\n'
+            )
         else:
-            assembly = App.ActiveDocument.addObject("Assembly::AssemblyObject", "Assembly")
+            commands = (
+                'assembly = App.ActiveDocument.addObject("Assembly::AssemblyObject", "Assembly")\n'
+            )
 
-        assembly.Type = "Assembly"
+        commands = commands + 'assembly.Type = "Assembly"\n'
+        commands = commands + 'assembly.newObject("Assembly::JointGroup", "Joints")'
+
+        Gui.doCommand(commands)
         if not activeAssembly:
-            Gui.ActiveDocument.setEdit(assembly)
-        assembly.newObject("Assembly::JointGroup", "Joints")
+            Gui.doCommandGui("Gui.ActiveDocument.setEdit(assembly)")
+
         App.closeActiveTransaction()
 
 

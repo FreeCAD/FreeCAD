@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QInputDialog>
-# include <QLabel>
-# include <QMessageBox>
-# include <QComboBox>
-# include <QSignalBlocker>
-# include <QTextStream>
+#include <QInputDialog>
+#include <QLabel>
+#include <QMessageBox>
+#include <QComboBox>
+#include <QSignalBlocker>
+#include <QTextStream>
 #endif
 
 #include <App/Document.h>
@@ -50,21 +50,24 @@
 using namespace Gui;
 using namespace Gui::Dialog;
 
-namespace Gui {
-    namespace Dialog {
-        class MacroItem : public QTreeWidgetItem
-        {
-        public:
-            MacroItem(QTreeWidget * widget, bool systemwide)
-            : QTreeWidgetItem(widget),
-            systemWide(systemwide){}
+namespace Gui
+{
+namespace Dialog
+{
+class MacroItem: public QTreeWidgetItem
+{
+public:
+    MacroItem(QTreeWidget* widget, bool systemwide)
+        : QTreeWidgetItem(widget)
+        , systemWide(systemwide)
+    {}
 
-            ~MacroItem() override = default;
+    ~MacroItem() override = default;
 
-            bool systemWide;
-        };
-    }
-}
+    bool systemWide;
+};
+}  // namespace Dialog
+}  // namespace Gui
 
 
 /* TRANSLATOR Gui::Dialog::DlgMacroExecuteImp */
@@ -76,9 +79,9 @@ namespace Gui {
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
-    : QDialog( parent, fl )
-    , WindowParameter( "Macro" )
+DlgMacroExecuteImp::DlgMacroExecuteImp(QWidget* parent, Qt::WindowFlags fl)
+    : QDialog(parent, fl)
+    , WindowParameter("Macro")
     , ui(new Ui_DlgMacroExecute)
 {
     watcher = std::make_unique<PythonTracingWatcher>(this);
@@ -88,14 +91,16 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     // retrieve the macro path from parameter or use the user data as default
     {
         QSignalBlocker blocker(ui->fileChooser);
-        std::string path = getWindowParameter()->GetASCII("MacroPath",
-            App::Application::getUserMacroDir().c_str());
+        std::string path =
+            getWindowParameter()->GetASCII("MacroPath",
+                                           App::Application::getUserMacroDir().c_str());
         this->macroPath = QString::fromUtf8(path.c_str());
         ui->fileChooser->setFileName(this->macroPath);
     }
 
     // Fill the List box
-    QStringList labels; labels << tr("Macros");
+    QStringList labels;
+    labels << tr("Macros");
     ui->userMacroListBox->setHeaderLabels(labels);
     ui->userMacroListBox->header()->hide();
     ui->systemMacroListBox->setHeaderLabels(labels);
@@ -111,6 +116,7 @@ DlgMacroExecuteImp::~DlgMacroExecuteImp() = default;
 
 void DlgMacroExecuteImp::setupConnections()
 {
+    // clang-format off
     connect(ui->fileChooser, &FileChooser::fileNameChanged,
             this, &DlgMacroExecuteImp::onFileChooserFileNameChanged);
     connect(ui->createButton, &QPushButton::clicked,
@@ -137,6 +143,7 @@ void DlgMacroExecuteImp::setupConnections()
             this, &DlgMacroExecuteImp::onLineEditFindTextChanged);
     connect(ui->LineEditFindInFiles, &QLineEdit::textChanged,
             this, &DlgMacroExecuteImp::onLineEditFindInFilesTextChanged);
+    // clang-format on
 }
 
 /** Take a folder and return a StringList of the filenames in it
@@ -154,27 +161,30 @@ void DlgMacroExecuteImp::setupConnections()
  * doing both the User and System macro list boxes in the fillUpList() function.
  */
 
-QStringList DlgMacroExecuteImp::filterFiles(const QString& folder){
+QStringList DlgMacroExecuteImp::filterFiles(const QString& folder)
+{
     QDir dir(folder, QLatin1String("*.FCMacro *.py"));
-    QStringList unfiltered = dir.entryList(); //all .fcmacro and .py files
-    QString fileFilter = ui->LineEditFind->text(); //used to search by filename
-    QString searchText = ui->LineEditFindInFiles->text(); //used to search in file content
+    QStringList unfiltered = dir.entryList();              // all .fcmacro and .py files
+    QString fileFilter = ui->LineEditFind->text();         // used to search by filename
+    QString searchText = ui->LineEditFindInFiles->text();  // used to search in file content
 
-    if (fileFilter.isEmpty() && searchText.isEmpty()){ //skip filtering if no filters
+    if (fileFilter.isEmpty() && searchText.isEmpty()) {  // skip filtering if no filters
         return unfiltered;
     }
     QStringList filteredByFileName;
-    if (fileFilter.isEmpty()){
-        filteredByFileName = unfiltered; //skip the loop if no file filter
-    } else {
+    if (fileFilter.isEmpty()) {
+        filteredByFileName = unfiltered;  // skip the loop if no file filter
+    }
+    else {
         QRegularExpression regexFileName(fileFilter, QRegularExpression::CaseInsensitiveOption);
-        bool isValidFileFilter = regexFileName.isValid(); //check here instead of inside the loop
-        for (auto uf : unfiltered){
-            if (isValidFileFilter){
+        bool isValidFileFilter = regexFileName.isValid();  // check here instead of inside the loop
+        for (auto uf : unfiltered) {
+            if (isValidFileFilter) {
                 if (regexFileName.match(uf).hasMatch()) {
                     filteredByFileName.append(uf);
                 }
-            } else { //not valid, so do a simple text search
+            }
+            else {  // not valid, so do a simple text search
                 if (uf.contains(fileFilter, Qt::CaseInsensitive)) {
                     filteredByFileName.append(uf);
                 }
@@ -182,7 +192,7 @@ QStringList DlgMacroExecuteImp::filterFiles(const QString& folder){
         }
     }
 
-    if (searchText.isEmpty()){ //skip reading file contents if no find in file filter
+    if (searchText.isEmpty()) {  // skip reading file contents if no find in file filter
         return filteredByFileName;
     }
 
@@ -190,18 +200,19 @@ QStringList DlgMacroExecuteImp::filterFiles(const QString& folder){
     bool isValidContentFilter = regexContent.isValid();
     QStringList filteredByContent;
     for (auto fn : filteredByFileName) {
-        const QString &fileName = fn;
+        const QString& fileName = fn;
         QString filePath = dir.filePath(fileName);
         QFile file(filePath);
         if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QTextStream in(&file);
             QString fileContent = in.readAll();
-            if (isValidContentFilter){
+            if (isValidContentFilter) {
                 if (regexContent.match(fileContent).hasMatch()) {
                     filteredByContent.append(fileName);
                 }
-            } else {
-                if (fileContent.contains(searchText, Qt::CaseInsensitive)){
+            }
+            else {
+                if (fileContent.contains(searchText, Qt::CaseInsensitive)) {
                     filteredByContent.append(fileName);
                 }
             }
@@ -219,17 +230,18 @@ void DlgMacroExecuteImp::fillUpList()
 {
     QStringList filteredByContent = this->filterFiles(this->macroPath);
     ui->userMacroListBox->clear();
-    for (auto fn : filteredByContent){
-        auto item = new MacroItem(ui->userMacroListBox,false);
+    for (auto fn : filteredByContent) {
+        auto item = new MacroItem(ui->userMacroListBox, false);
         item->setText(0, fn);
     }
 
-    QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+    QString dirstr =
+        QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
     filteredByContent = this->filterFiles(dirstr);
 
     ui->systemMacroListBox->clear();
     for (auto fn : filteredByContent) {
-        auto item = new MacroItem(ui->systemMacroListBox,true);
+        auto item = new MacroItem(ui->systemMacroListBox, true);
         item->setText(0, fn);
     }
 }
@@ -262,12 +274,14 @@ void DlgMacroExecuteImp::onUserMacroListBoxCurrentItemChanged(QTreeWidgetItem* i
     }
 }
 
-void DlgMacroExecuteImp::onLineEditFindTextChanged(const QString &text){
+void DlgMacroExecuteImp::onLineEditFindTextChanged(const QString& text)
+{
     Q_UNUSED(text);
     this->fillUpList();
 }
 
-void DlgMacroExecuteImp::onLineEditFindInFilesTextChanged(const QString &text){
+void DlgMacroExecuteImp::onLineEditFindInFilesTextChanged(const QString& text)
+{
     Q_UNUSED(text);
     this->fillUpList();
 }
@@ -281,7 +295,7 @@ void DlgMacroExecuteImp::onSystemMacroListBoxCurrentItemChanged(QTreeWidgetItem*
         ui->deleteButton->setEnabled(false);
         ui->toolbarButton->setEnabled(false);
         ui->createButton->setEnabled(false);
-        ui->editButton->setEnabled(true); //look but don't touch
+        ui->editButton->setEnabled(true);  // look but don't touch
         ui->renameButton->setEnabled(false);
         ui->duplicateButton->setEnabled(false);
     }
@@ -300,7 +314,7 @@ void DlgMacroExecuteImp::onTabMacroWidgetCurrentChanged(int index)
 {
     QTreeWidgetItem* item;
 
-    if (index == 0) { //user-specific
+    if (index == 0) {  // user-specific
         item = ui->userMacroListBox->currentItem();
         if (item) {
             ui->executeButton->setEnabled(true);
@@ -321,7 +335,7 @@ void DlgMacroExecuteImp::onTabMacroWidgetCurrentChanged(int index)
             ui->duplicateButton->setEnabled(false);
         }
     }
-    else { //index==1 system-wide
+    else {  // index==1 system-wide
         item = ui->systemMacroListBox->currentItem();
 
         if (item) {
@@ -329,7 +343,7 @@ void DlgMacroExecuteImp::onTabMacroWidgetCurrentChanged(int index)
             ui->deleteButton->setEnabled(false);
             ui->toolbarButton->setEnabled(false);
             ui->createButton->setEnabled(false);
-            ui->editButton->setEnabled(true); //but you can't save it
+            ui->editButton->setEnabled(true);  // but you can't save it
             ui->renameButton->setEnabled(false);
             ui->duplicateButton->setEnabled(false);
         }
@@ -360,27 +374,29 @@ void DlgMacroExecuteImp::accept()
     QTreeWidgetItem* item;
 
     int index = ui->tabMacroWidget->currentIndex();
-    if (index == 0) { //user-specific
+    if (index == 0) {  // user-specific
         item = ui->userMacroListBox->currentItem();
     }
     else {
-        //index == 1 system-wide
+        // index == 1 system-wide
         item = ui->systemMacroListBox->currentItem();
     }
-    if (!item)
+    if (!item) {
         return;
+    }
 
     QDialog::accept();
 
-    auto mitem = static_cast<MacroItem *>(item);
+    auto mitem = static_cast<MacroItem*>(item);
 
     QDir dir;
 
-    if (!mitem->systemWide){
-        dir =QDir(this->macroPath);
+    if (!mitem->systemWide) {
+        dir = QDir(this->macroPath);
     }
     else {
-        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString dirstr =
+            QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
         dir = QDir(dirstr);
     }
 
@@ -392,8 +408,9 @@ void DlgMacroExecuteImp::accept()
         getMainWindow()->appendRecentMacro(fi.filePath());
         Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
         // after macro run recalculate the document
-        if (Application::Instance->activeDocument())
+        if (Application::Instance->activeDocument()) {
             Application::Instance->activeDocument()->getDocument()->recompute();
+        }
         getMainWindow()->unsetCursor();
     }
     catch (const Base::SystemExitException&) {
@@ -410,11 +427,10 @@ void DlgMacroExecuteImp::accept()
  */
 void DlgMacroExecuteImp::onFileChooserFileNameChanged(const QString& fn)
 {
-    if (!fn.isEmpty())
-    {
+    if (!fn.isEmpty()) {
         // save the path in the parameters
         this->macroPath = fn;
-        getWindowParameter()->SetASCII("MacroPath",fn.toUtf8());
+        getWindowParameter()->SetASCII("MacroPath", fn.toUtf8());
         // fill the list box
         fillUpList();
     }
@@ -429,20 +445,22 @@ void DlgMacroExecuteImp::onEditButtonClicked()
     QTreeWidgetItem* item = nullptr;
 
     int index = ui->tabMacroWidget->currentIndex();
-    if (index == 0) { //user-specific
+    if (index == 0) {  // user-specific
         item = ui->userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
     else {
-        //index == 1 system-wide
+        // index == 1 system-wide
         item = ui->systemMacroListBox->currentItem();
-        dir.setPath(QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro"));
+        dir.setPath(QString::fromStdString(App::Application::getHomePath())
+                    + QString::fromLatin1("Macro"));
     }
 
-    if (!item)
+    if (!item) {
         return;
+    }
 
-    auto mitem = static_cast<MacroItem *>(item);
+    auto mitem = static_cast<MacroItem*>(item);
 
     QString file = QString::fromLatin1("%1/%2").arg(dir.absolutePath(), item->text(0));
     auto editor = new PythonEditor();
@@ -467,37 +485,47 @@ void DlgMacroExecuteImp::onEditButtonClicked()
 void DlgMacroExecuteImp::onCreateButtonClicked()
 {
     // query file name
-    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
+    bool replaceSpaces = App::GetApplication()
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                             ->GetBool("ReplaceSpaces", true);
+    App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+        ->SetBool("ReplaceSpaces", replaceSpaces);  // create parameter
 
-    QString fn = QInputDialog::getText(this, tr("Macro file"), tr("Enter a file name, please:"),
-        QLineEdit::Normal, QString(), nullptr, Qt::MSWindowsFixedSizeDialogHint);
+    QString fn = QInputDialog::getText(this,
+                                       tr("Macro file"),
+                                       tr("Enter a file name, please:"),
+                                       QLineEdit::Normal,
+                                       QString(),
+                                       nullptr,
+                                       Qt::MSWindowsFixedSizeDialogHint);
 
-    if(replaceSpaces){
-        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    if (replaceSpaces) {
+        fn = fn.replace(QString::fromStdString(" "), QString::fromStdString("_"));
     }
 
-    if (!fn.isEmpty())
-    {
+    if (!fn.isEmpty()) {
         QString suffix = QFileInfo(fn).suffix().toLower();
-        if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
+        if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")) {
             fn += QLatin1String(".FCMacro");
+        }
         QDir dir(this->macroPath);
         // create the macroPath if nonexistent
         if (!dir.exists()) {
             dir.mkpath(this->macroPath);
         }
         QFileInfo fi(dir, fn);
-        if (fi.exists() && fi.isFile())
-        {
-            QMessageBox::warning(this, tr("Existing file"),
-                tr("'%1'.\nThis file already exists.").arg(fi.fileName()));
+        if (fi.exists() && fi.isFile()) {
+            QMessageBox::warning(this,
+                                 tr("Existing file"),
+                                 tr("'%1'.\nThis file already exists.").arg(fi.fileName()));
         }
-        else
-        {
+        else {
             QFile file(fi.absoluteFilePath());
             if (!file.open(QFile::WriteOnly)) {
-                QMessageBox::warning(this, tr("Cannot create file"),
+                QMessageBox::warning(
+                    this,
+                    tr("Cannot create file"),
                     tr("Creation of file '%1' failed.").arg(fi.absoluteFilePath()));
                 return;
             }
@@ -519,21 +547,25 @@ void DlgMacroExecuteImp::onCreateButtonClicked()
 void DlgMacroExecuteImp::onDeleteButtonClicked()
 {
     QTreeWidgetItem* item = ui->userMacroListBox->currentItem();
-    if (!item)
+    if (!item) {
         return;
+    }
 
-    auto mitem = static_cast<MacroItem *>(item);
+    auto mitem = static_cast<MacroItem*>(item);
 
     if (mitem->systemWide) {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Delete macro"),
-            QObject::tr("Not allowed to delete system-wide macros"));
+        QMessageBox::critical(Gui::getMainWindow(),
+                              QObject::tr("Delete macro"),
+                              QObject::tr("Not allowed to delete system-wide macros"));
         return;
     }
 
     QString fn = item->text(0);
-    auto ret = QMessageBox::question(this, tr("Delete macro"),
-        tr("Do you really want to delete the macro '%1'?").arg( fn ),
-        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    auto ret = QMessageBox::question(this,
+                                     tr("Delete macro"),
+                                     tr("Do you really want to delete the macro '%1'?").arg(fn),
+                                     QMessageBox::Yes | QMessageBox::No,
+                                     QMessageBox::No);
     if (ret == QMessageBox::Yes) {
         QDir dir(this->macroPath);
         dir.remove(fn);
@@ -556,12 +588,15 @@ void DlgMacroExecuteImp::onToolbarButtonClicked()
     /**
      * advise user of what we are doing, offer chance to cancel
      * unless user already said not to show this messagebox again
-    **/
+     **/
 
-    bool showAgain = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ShowWalkthroughMessage", true);
-    if (showAgain){
+    bool showAgain = App::GetApplication()
+                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                         ->GetBool("ShowWalkthroughMessage", true);
+    if (showAgain) {
         QMessageBox msgBox;
-        QAbstractButton* doNotShowAgainButton = msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
+        QAbstractButton* doNotShowAgainButton =
+            msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
         msgBox.setText(tr("Guided Walkthrough"));
         msgBox.setInformativeText(tr("This will guide you in setting up this macro in a custom \
 global toolbar.  Instructions will be in red text inside the dialog.\n\
@@ -570,33 +605,40 @@ Note: your changes will be applied when you next switch workbenches\n"));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Ok);
         int result = msgBox.exec();
-        if (result == QMessageBox::Cancel){
+        if (result == QMessageBox::Cancel) {
             return;
         }
-        if (msgBox.clickedButton() == doNotShowAgainButton){
-            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ShowWalkthroughMessage",false);
+        if (msgBox.clickedButton() == doNotShowAgainButton) {
+            App::GetApplication()
+                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                ->SetBool("ShowWalkthroughMessage", false);
         }
     }
 
     QTreeWidgetItem* item = ui->userMacroListBox->currentItem();
-    if (!item)
+    if (!item) {
         return;
+    }
 
     QString fn = item->text(0);
-    QString bareFileName = QFileInfo(fn).baseName(); //for use as default menu text (filename without extension)
+    QString bareFileName =
+        QFileInfo(fn).baseName();  // for use as default menu text (filename without extension)
 
     /** check if user already has custom toolbar, so we can tailor instructions accordingly **/
     bool hasCustomToolbar = true;
-    if (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Workbench/Global/Toolbar")->GetGroups().empty()) {
-        hasCustomToolbar=false;
+    if (App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Workbench/Global/Toolbar")
+            ->GetGroups()
+            .empty()) {
+        hasCustomToolbar = false;
     }
 
     /** check if user already has this macro command created, if so skip dialog 1 **/
     bool hasMacroCommand = false;
     QString macroMenuText;
-    CommandManager & cCmdMgr = Application::Instance->commandManager();
+    CommandManager& cCmdMgr = Application::Instance->commandManager();
     std::vector<Command*> aCmds = cCmdMgr.getGroupCommands("Macros");
-    for (const auto & aCmd : aCmds) {
+    for (const auto& aCmd : aCmds) {
         auto mc = dynamic_cast<MacroCommand*>(aCmd);
         if (mc && fn.compare(QLatin1String(mc->getScriptName())) == 0) {
             hasMacroCommand = true;
@@ -606,7 +648,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
 
     QTabWidget* tabWidget = nullptr;
 
-    if (!hasMacroCommand){
+    if (!hasMacroCommand) {
         /** first the custom macros page dialog **/
         Gui::Dialog::DlgCustomizeImp dlg(this);
 
@@ -619,43 +661,55 @@ Note: your changes will be applied when you next switch workbenches\n"));
             return;
         }
 
-        auto setupCustomMacrosPage = tabWidget->findChild<QWidget*>(QString::fromLatin1("Gui__Dialog__DlgCustomActions"));
+        auto setupCustomMacrosPage =
+            tabWidget->findChild<QWidget*>(QString::fromLatin1("Gui__Dialog__DlgCustomActions"));
         if (!setupCustomMacrosPage) {
-            std::cerr << "Toolbar walkthrough error: Unable to find setupCustomMacrosPage" << std::endl;
+            std::cerr << "Toolbar walkthrough error: Unable to find setupCustomMacrosPage"
+                      << std::endl;
             return;
         }
         tabWidget->setCurrentWidget(setupCustomMacrosPage);
 
-        auto groupBox7 = setupCustomMacrosPage->findChild<QGroupBox*>(QString::fromLatin1("GroupBox7"));
+        auto groupBox7 =
+            setupCustomMacrosPage->findChild<QGroupBox*>(QString::fromLatin1("GroupBox7"));
         if (!groupBox7) {
             Base::Console().Warning("Toolbar walkthrough: Unable to find groupBox7\n");
-            //just warn when not a fatal error
-        } else {
+            // just warn when not a fatal error
+        }
+        else {
             /** normally the groupbox title is "Setup Custom Macros", but we change it here **/
-            groupBox7->setTitle(tr("Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close"));
+            groupBox7->setTitle(tr("Walkthrough instructions: Fill in missing fields (optional) "
+                                   "then click Add, then Close"));
             groupBox7->setStyleSheet(QString::fromLatin1("QGroupBox::title {color:red}"));
         }
 
-        auto buttonAddAction = setupCustomMacrosPage->findChild<QPushButton*>(QString::fromLatin1("buttonAddAction"));
+        auto buttonAddAction =
+            setupCustomMacrosPage->findChild<QPushButton*>(QString::fromLatin1("buttonAddAction"));
         if (!buttonAddAction) {
             Base::Console().Warning("Toolbar walkthrough: Unable to find buttonAddAction\n");
-        } else {
+        }
+        else {
             buttonAddAction->setStyleSheet(QString::fromLatin1("color:red"));
         }
 
-        auto macroListBox = setupCustomMacrosPage->findChild<QComboBox*>(QString::fromLatin1("actionMacros"));
+        auto macroListBox =
+            setupCustomMacrosPage->findChild<QComboBox*>(QString::fromLatin1("actionMacros"));
         if (!macroListBox) {
             Base::Console().Warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
-        } else {
-            int macroIndex = macroListBox->findText(fn); //fn is the macro filename
-            macroListBox->setCurrentIndex(macroIndex); //select it for the user so they don't have to
+        }
+        else {
+            int macroIndex = macroListBox->findText(fn);  // fn is the macro filename
+            macroListBox->setCurrentIndex(
+                macroIndex);  // select it for the user so they don't have to
         }
 
-        auto menuText = setupCustomMacrosPage->findChild<QLineEdit*>(QString::fromLatin1("actionMenu"));
+        auto menuText =
+            setupCustomMacrosPage->findChild<QLineEdit*>(QString::fromLatin1("actionMenu"));
         if (!menuText) {
             Base::Console().Warning("Toolbar walkthrough: Unable to find actionMenu menuText\n");
-        } else {
-            menuText->setText(bareFileName); //user can fill in other fields, e.g. tooltip
+        }
+        else {
+            menuText->setText(bareFileName);  // user can fill in other fields, e.g. tooltip
         }
 
         dlg.exec();
@@ -665,38 +719,47 @@ Note: your changes will be applied when you next switch workbenches\n"));
 
     Gui::Dialog::DlgCustomizeImp dlg(this);
 
-    if (hasMacroCommand){
+    if (hasMacroCommand) {
         dlg.setWindowTitle(tr("Walkthrough, dialog 1 of 1"));
-    } else {
+    }
+    else {
         dlg.setWindowTitle(tr("Walkthrough, dialog 2 of 2"));
     }
 
     tabWidget = nullptr;
     tabWidget = dlg.findChild<QTabWidget*>(QString::fromLatin1("Gui__Dialog__TabWidget"));
     if (!tabWidget) {
-        std::cerr << "Toolbar walkthrough: Unable to find tabWidget Gui__Dialog__TabWidget" << std::endl;
+        std::cerr << "Toolbar walkthrough: Unable to find tabWidget Gui__Dialog__TabWidget"
+                  << std::endl;
         return;
     }
 
-    auto setupToolbarPage = tabWidget->findChild<DlgCustomToolbars*>(QString::fromLatin1("Gui__Dialog__DlgCustomToolbars"));
-    if (!setupToolbarPage){
-        std::cerr << "Toolbar walkthrough: Unable to find setupToolbarPage Gui__Dialog__DlgCustomToolbars" << std::endl;
+    auto setupToolbarPage = tabWidget->findChild<DlgCustomToolbars*>(
+        QString::fromLatin1("Gui__Dialog__DlgCustomToolbars"));
+    if (!setupToolbarPage) {
+        std::cerr
+            << "Toolbar walkthrough: Unable to find setupToolbarPage Gui__Dialog__DlgCustomToolbars"
+            << std::endl;
         return;
     }
 
     tabWidget->setCurrentWidget(setupToolbarPage);
-    auto moveActionRightButton = setupToolbarPage->findChild<QPushButton*>(QString::fromLatin1("moveActionRightButton"));
-    if (!moveActionRightButton){
+    auto moveActionRightButton =
+        setupToolbarPage->findChild<QPushButton*>(QString::fromLatin1("moveActionRightButton"));
+    if (!moveActionRightButton) {
         Base::Console().Warning("Toolbar walkthrough: Unable to find moveActionRightButton\n");
-    } else {
+    }
+    else {
         moveActionRightButton->setStyleSheet(QString::fromLatin1("background-color: red"));
     }
     /** tailor instructions depending on whether user already has custom toolbar created
      * if not, they need to click New button to create one first
-    **/
+     **/
 
-    QString instructions2 = tr("Walkthrough instructions: Click right arrow button (->), then Close.");
-    auto workbenchBox = setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("workbenchBox"));
+    QString instructions2 =
+        tr("Walkthrough instructions: Click right arrow button (->), then Close.");
+    auto workbenchBox =
+        setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("workbenchBox"));
     if (!workbenchBox) {
         Base::Console().Warning("Toolbar walkthrough: Unable to find workbenchBox\n");
     }
@@ -704,70 +767,89 @@ Note: your changes will be applied when you next switch workbenches\n"));
         /** find the Global workbench and select it for the user **/
 
         int globalIdx = workbenchBox->findData(QString::fromLatin1("Global"));
-        if (globalIdx != -1){
+        if (globalIdx != -1) {
             workbenchBox->setCurrentIndex(globalIdx);
-            QMetaObject::invokeMethod(setupToolbarPage, "on_workbenchBox_activated",
-                Qt::DirectConnection,
-                Q_ARG(int, globalIdx));
-        } else {
+            QMetaObject::invokeMethod(setupToolbarPage,
+                                      "on_workbenchBox_activated",
+                                      Qt::DirectConnection,
+                                      Q_ARG(int, globalIdx));
+        }
+        else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Global workbench\n");
         }
 
-        if (!hasCustomToolbar){
-            auto newButton = setupToolbarPage->findChild<QPushButton*>(QString::fromLatin1("newButton"));
-            if (!newButton){
+        if (!hasCustomToolbar) {
+            auto newButton =
+                setupToolbarPage->findChild<QPushButton*>(QString::fromLatin1("newButton"));
+            if (!newButton) {
                 Base::Console().Warning("Toolbar walkthrough: Unable to find newButton\n");
-            } else {
+            }
+            else {
                 newButton->setStyleSheet(QString::fromLatin1("color:red"));
-                instructions2 = tr("Walkthrough instructions: Click New, then right arrow (->) button, then Close.");
+                instructions2 = tr("Walkthrough instructions: Click New, then right arrow (->) "
+                                   "button, then Close.");
             }
         }
     }
-    /** "label" normally says "Note: the changes become active the next time you load the appropriate workbench" **/
+    /** "label" normally says "Note: the changes become active the next time you load the
+     * appropriate workbench" **/
 
     auto label = setupToolbarPage->findChild<QLabel*>(QString::fromLatin1("label"));
-    if (!label){
+    if (!label) {
         Base::Console().Warning("Toolbar walkthrough: Unable to find label\n");
-    } else {
+    }
+    else {
         label->setText(instructions2);
         label->setStyleSheet(QString::fromLatin1("color:red"));
     }
 
     /** find Macros category and select it for the user **/
     auto categoryBox = setupToolbarPage->findChild<QComboBox*>(QString::fromLatin1("categoryBox"));
-    if (!categoryBox){
+    if (!categoryBox) {
         Base::Console().Warning("Toolbar walkthrough: Unable to find categoryBox\n");
-    } else {
+    }
+    else {
         int macrosIdx = categoryBox->findText(tr("Macros"));
-        if (macrosIdx != -1){
+        if (macrosIdx != -1) {
             categoryBox->setCurrentIndex(macrosIdx);
-            QMetaObject::invokeMethod(setupToolbarPage, "on_categoryBox_activated",
-                Qt::DirectConnection,
-                Q_ARG(int, macrosIdx));
-        } else {
+            QMetaObject::invokeMethod(setupToolbarPage,
+                                      "on_categoryBox_activated",
+                                      Qt::DirectConnection,
+                                      Q_ARG(int, macrosIdx));
+        }
+        else {
             Base::Console().Warning("Toolbar walkthrough: Unable to find Macros in categoryBox\n");
         }
     }
 
     /** expand custom toolbar items **/
-    auto toolbarTreeWidget = setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("toolbarTreeWidget"));
+    auto toolbarTreeWidget =
+        setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("toolbarTreeWidget"));
     if (!toolbarTreeWidget) {
         Base::Console().Warning("Toolbar walkthrough: Unable to find toolbarTreeWidget\n");
-    } else {
+    }
+    else {
         toolbarTreeWidget->expandAll();
     }
 
     /** preselect macro command for user **/
 
-    auto commandTreeWidget = setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("commandTreeWidget"));
+    auto commandTreeWidget =
+        setupToolbarPage->findChild<QTreeWidget*>(QString::fromLatin1("commandTreeWidget"));
     if (!commandTreeWidget) {
         Base::Console().Warning("Toolbar walkthrough: Unable to find commandTreeWidget\n");
-    } else {
-        if (!hasMacroCommand){  //will be the last in the list, the one just created
-            commandTreeWidget->setCurrentItem(commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount()-1));
+    }
+    else {
+        if (!hasMacroCommand) {  // will be the last in the list, the one just created
+            commandTreeWidget->setCurrentItem(
+                commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount() - 1));
             commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
-        } else {  //pre-select it for the user (will be the macro menu text)
-            QList <QTreeWidgetItem*> items = commandTreeWidget->findItems(macroMenuText, Qt::MatchFixedString | Qt::MatchWrap,1);
+        }
+        else {  // pre-select it for the user (will be the macro menu text)
+            QList<QTreeWidgetItem*> items =
+                commandTreeWidget->findItems(macroMenuText,
+                                             Qt::MatchFixedString | Qt::MatchWrap,
+                                             1);
             if (!items.empty()) {
                 commandTreeWidget->setCurrentItem(items[0]);
                 commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
@@ -776,7 +858,6 @@ Note: your changes will be applied when you next switch workbenches\n"));
     }
     dlg.exec();
 }
-
 
 
 /**
@@ -788,42 +869,56 @@ void DlgMacroExecuteImp::onRenameButtonClicked()
     QTreeWidgetItem* item = nullptr;
 
     int index = ui->tabMacroWidget->currentIndex();
-    if (index == 0) { //user-specific
+    if (index == 0) {  // user-specific
         item = ui->userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
 
-    if (!item)
+    if (!item) {
         return;
+    }
 
-    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
+    bool replaceSpaces = App::GetApplication()
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                             ->GetBool("ReplaceSpaces", true);
+    App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+        ->SetBool("ReplaceSpaces", replaceSpaces);  // create parameter
 
     QString oldName = item->text(0);
     QFileInfo oldfi(dir, oldName);
     QFile oldfile(oldfi.absoluteFilePath());
 
     // query new name
-    QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
-        tr("Enter new name:"), QLineEdit::Normal, oldName, nullptr, Qt::MSWindowsFixedSizeDialogHint);
+    QString fn = QInputDialog::getText(this,
+                                       tr("Renaming Macro File"),
+                                       tr("Enter new name:"),
+                                       QLineEdit::Normal,
+                                       oldName,
+                                       nullptr,
+                                       Qt::MSWindowsFixedSizeDialogHint);
 
-    if(replaceSpaces){
-        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    if (replaceSpaces) {
+        fn = fn.replace(QString::fromStdString(" "), QString::fromStdString("_"));
     }
 
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
-        if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
+        if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")) {
             fn += QLatin1String(".FCMacro");
+        }
         QFileInfo fi(dir, fn);
         // check if new name exists
         if (fi.exists()) {
-            QMessageBox::warning(this, tr("Existing file"),
-                tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
+            QMessageBox::warning(this,
+                                 tr("Existing file"),
+                                 tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
         }
         else if (!oldfile.rename(fi.absoluteFilePath())) {
-            QMessageBox::warning(this, tr("Rename Failed"),
-                tr("Failed to rename to '%1'.\nPerhaps a file permission error?").arg(fi.absoluteFilePath()));
+            QMessageBox::warning(this,
+                                 tr("Rename Failed"),
+                                 tr("Failed to rename to '%1'.\nPerhaps a file permission error?")
+                                     .arg(fi.absoluteFilePath()));
         }
         else {
             // keep the item selected although it's not necessarily in alphabetic order
@@ -845,75 +940,92 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
     QDir dir;
     QTreeWidgetItem* item = nullptr;
 
-    //When duplicating a macro we can either begin trying to find a unique name with @001 or begin with the current @NNN if applicable
+    // When duplicating a macro we can either begin trying to find a unique name with @001 or begin
+    // with the current @NNN if applicable
 
-    bool from001 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("DuplicateFrom001", false);
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("DuplicateFrom001", from001); //create parameter
+    bool from001 = App::GetApplication()
+                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                       ->GetBool("DuplicateFrom001", false);
+    App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+        ->SetBool("DuplicateFrom001", from001);  // create parameter
 
-    //A user may wish to add a note to end of the filename when duplicating
-    //example: mymacro@005.fix_bug_in_dialog.FCMacro
-    //and then when duplicating to have the extra note removed so the suggested new name is:
-    //mymacro@006.FCMacro instead of mymacro@006.fix_bug_in_dialog.FCMacro since the new duplicate will be given a new note
+    // A user may wish to add a note to end of the filename when duplicating
+    // example: mymacro@005.fix_bug_in_dialog.FCMacro
+    // and then when duplicating to have the extra note removed so the suggested new name is:
+    // mymacro@006.FCMacro instead of mymacro@006.fix_bug_in_dialog.FCMacro since the new duplicate
+    // will be given a new note
 
-    bool ignoreExtra = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("DuplicateIgnoreExtraNote", false);
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("DuplicateIgnoreExtraNote", ignoreExtra); //create parameter
+    bool ignoreExtra = App::GetApplication()
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                           ->GetBool("DuplicateIgnoreExtraNote", false);
+    App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+        ->SetBool("DuplicateIgnoreExtraNote", ignoreExtra);  // create parameter
 
-    //when creating a note it will be convenient to convert spaces to underscores if the user desires this behavior
+    // when creating a note it will be convenient to convert spaces to underscores if the user
+    // desires this behavior
 
-    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
-    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
+    bool replaceSpaces = App::GetApplication()
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                             ->GetBool("ReplaceSpaces", true);
+    App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+        ->SetBool("ReplaceSpaces", replaceSpaces);  // create parameter
 
     int index = ui->tabMacroWidget->currentIndex();
-    if (index == 0) { //user-specific
+    if (index == 0) {  // user-specific
         item = ui->userMacroListBox->currentItem();
         dir.setPath(this->macroPath);
     }
 
-    if (!item){
+    if (!item) {
         return;
     }
 
     QString oldName = item->text(0);
     QFileInfo oldfi(dir, oldName);
     QFile oldfile(oldfi.absoluteFilePath());
-    QString completeSuffix = oldfi.completeSuffix(); //everything after the first "."
-    QString extraNote = completeSuffix.left(completeSuffix.size()-oldfi.suffix().size());
-    QString baseName = oldfi.baseName(); //everything before first "."
+    QString completeSuffix = oldfi.completeSuffix();  // everything after the first "."
+    QString extraNote = completeSuffix.left(completeSuffix.size() - oldfi.suffix().size());
+    QString baseName = oldfi.baseName();  // everything before first "."
     QString neutralSymbol = QString::fromStdString("@");
     QString last3 = baseName.right(3);
-    bool ok = true; //was conversion to int successful?
+    bool ok = true;  // was conversion to int successful?
     int nLast3 = last3.toInt(&ok);
-    last3 = QString::fromStdString("001"); //increment beginning with 001 unless from001 = false
-    if (ok ){
-        //last3 were all digits, so we strip them from the base name
-        if (baseName.size()>3){ //if <= 3 leave be (e.g. 2.py becomes 2@001.py)
-            if(!from001){
-                last3 = baseName.right(3); //use these instead of 001
+    last3 = QString::fromStdString("001");  // increment beginning with 001 unless from001 = false
+    if (ok) {
+        // last3 were all digits, so we strip them from the base name
+        if (baseName.size() > 3) {  // if <= 3 leave be (e.g. 2.py becomes 2@001.py)
+            if (!from001) {
+                last3 = baseName.right(3);  // use these instead of 001
             }
-            baseName = baseName.left(baseName.size()-3); //strip digits
-            if (baseName.endsWith(neutralSymbol)){
-                baseName = baseName.left(baseName.size()-1); //trim the "@", will be added back later
+            baseName = baseName.left(baseName.size() - 3);  // strip digits
+            if (baseName.endsWith(neutralSymbol)) {
+                baseName =
+                    baseName.left(baseName.size() - 1);  // trim the "@", will be added back later
             }
         }
     }
-    //at this point baseName = the base name without any digits, e.g. "MyMacro"
-    //neutralSymbol = "@"
-    //last3 is a string representing 3 digits, always "001"
-    //unless from001 = false, in which case we begin with previous numbers
-    //completeSuffix = FCMacro or py or FCMacro.py or else suffix will become FCMacro below
-    //if ignoreExtra any extra notes added between @NN. and .FCMacro will be ignored
-    //when suggesting a new filename
+    // at this point baseName = the base name without any digits, e.g. "MyMacro"
+    // neutralSymbol = "@"
+    // last3 is a string representing 3 digits, always "001"
+    // unless from001 = false, in which case we begin with previous numbers
+    // completeSuffix = FCMacro or py or FCMacro.py or else suffix will become FCMacro below
+    // if ignoreExtra any extra notes added between @NN. and .FCMacro will be ignored
+    // when suggesting a new filename
 
-    if(ignoreExtra && !extraNote.isEmpty()){
+    if (ignoreExtra && !extraNote.isEmpty()) {
         nLast3++;
         last3 = QString::number(nLast3);
-        while (last3.size()<3){
-            last3.prepend(QString::fromStdString("0")); //pad 0's if needed
+        while (last3.size() < 3) {
+            last3.prepend(QString::fromStdString("0"));  // pad 0's if needed
         }
     }
 
 
-    QString oldNameDigitized = baseName+neutralSymbol+last3+QString::fromStdString(".")+completeSuffix;
+    QString oldNameDigitized =
+        baseName + neutralSymbol + last3 + QString::fromStdString(".") + completeSuffix;
     QFileInfo fi(dir, oldNameDigitized);
 
 
@@ -921,48 +1033,56 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
     // test from "001" through "999", then give up and let user enter name of choice
 
     while (fi.exists()) {
-        nLast3 = last3.toInt()+1;
-        if (nLast3 >=1000){ //avoid infinite loop, 999 files will have to be enough
+        nLast3 = last3.toInt() + 1;
+        if (nLast3 >= 1000) {  // avoid infinite loop, 999 files will have to be enough
             break;
         }
         last3 = QString::number(nLast3);
-        while (last3.size()<3){
-            last3.prepend(QString::fromStdString("0")); //pad 0's if needed
+        while (last3.size() < 3) {
+            last3.prepend(QString::fromStdString("0"));  // pad 0's if needed
         }
-        oldNameDigitized = baseName+neutralSymbol+last3+QString::fromStdString(".")+completeSuffix;
-        fi = QFileInfo(dir,oldNameDigitized);
+        oldNameDigitized =
+            baseName + neutralSymbol + last3 + QString::fromStdString(".") + completeSuffix;
+        fi = QFileInfo(dir, oldNameDigitized);
     }
 
-    if(ignoreExtra && !extraNote.isEmpty()){
+    if (ignoreExtra && !extraNote.isEmpty()) {
         oldNameDigitized = oldNameDigitized.remove(extraNote);
     }
 
     // give user a chance to pick a different name from digitized name suggested
-    QString fn = QInputDialog::getText(this, tr("Duplicate Macro"),
-        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 
-        nullptr, Qt::MSWindowsFixedSizeDialogHint);
-    if (replaceSpaces){
-        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    QString fn = QInputDialog::getText(this,
+                                       tr("Duplicate Macro"),
+                                       tr("Enter new name:"),
+                                       QLineEdit::Normal,
+                                       oldNameDigitized,
+                                       nullptr,
+                                       Qt::MSWindowsFixedSizeDialogHint);
+    if (replaceSpaces) {
+        fn = fn.replace(QString::fromStdString(" "), QString::fromStdString("_"));
     }
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
-        if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")){
+        if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")) {
             fn += QLatin1String(".FCMacro");
         }
         QFileInfo fi(dir, fn);
         // check again if new name exists in case user changed it
         if (fi.exists()) {
-            QMessageBox::warning(this, tr("Existing file"),
-                tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
+            QMessageBox::warning(this,
+                                 tr("Existing file"),
+                                 tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
         }
         else if (!oldfile.copy(fi.absoluteFilePath())) {
-            QMessageBox::warning(this, tr("Duplicate Failed"),
-                tr("Failed to duplicate to '%1'.\nPerhaps a file permission error?").arg(fi.absoluteFilePath()));
+            QMessageBox::warning(
+                this,
+                tr("Duplicate Failed"),
+                tr("Failed to duplicate to '%1'.\nPerhaps a file permission error?")
+                    .arg(fi.absoluteFilePath()));
         }
 
-        this->fillUpList(); //repopulate list to show new file
+        this->fillUpList();  // repopulate list to show new file
     }
-
 }
 
 /**
@@ -971,7 +1091,7 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
  */
 void DlgMacroExecuteImp::onAddonsButtonClicked()
 {
-    CommandManager& rMgr=Application::Instance->commandManager();
+    CommandManager& rMgr = Application::Instance->commandManager();
     rMgr.runCommandByName("Std_AddonMgr");
     this->fillUpList();
 }

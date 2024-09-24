@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC (mm, mm/min)</translation>
+      <translation>Piezas pequeñas métricas y CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation>Metro decimal (m, m², m³)</translation>
+      <translation>Métrico decimal (m, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

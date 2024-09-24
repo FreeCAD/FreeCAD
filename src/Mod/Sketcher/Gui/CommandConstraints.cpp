@@ -406,7 +406,7 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoE.x, PoE.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoE.x, PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -486,7 +486,7 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoE.x, PoE.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoE.x, PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -583,7 +583,7 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoH.x, PoH.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoH.x, PoH.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -673,7 +673,7 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
 
     try {
         // Add a point
-        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)))", PoP.x, PoP.y);
+        Gui::cmdAppObjectArgs(Obj, "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)", PoP.x, PoP.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
@@ -3777,7 +3777,9 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsPoin
         if ((*it)->Type == Sketcher::Tangent && (*it)->FirstPos == Sketcher::PointPos::none
             && (*it)->SecondPos == Sketcher::PointPos::none && (*it)->Third == GeoEnum::GeoUndef
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+            && (PosId1 == Sketcher::PointPos::start
+                || PosId1 == Sketcher::PointPos::end)) {
 
             // NOTE: This function does not either open or commit a command as it is used for group
             // addition it relies on such infrastructure being provided by the caller.
@@ -3813,6 +3815,12 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsCoin
         if ((*it)->Type == Sketcher::Tangent && (*it)->Third == GeoEnum::GeoUndef
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
                 || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+            if (!(PosId1 == Sketcher::PointPos::start
+                  || PosId1 == Sketcher::PointPos::end)
+                || !(PosId2 == Sketcher::PointPos::start
+                     || PosId2 == Sketcher::PointPos::end)) {
+                continue;
+            }
             if ((*it)->FirstPos == Sketcher::PointPos::none
                 && (*it)->SecondPos == Sketcher::PointPos::none) {
 
@@ -6142,7 +6150,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 try {
                     // Add a point
                     Gui::cmdAppObjectArgs(Obj,
-                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)",
                                           PoO.x,
                                           PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();
@@ -6343,7 +6351,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 try {
                     // Add a point
                     Gui::cmdAppObjectArgs(Obj,
-                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                          "addGeometry(Part.Point(App.Vector(%f,%f,0)), True)",
                                           PoO.x,
                                           PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();
@@ -6569,8 +6577,11 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
          ++it, ++cid) {
         if ((*it)->Type == Sketcher::Coincident
             && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
-
+                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+            && ((*it)->FirstPos == Sketcher::PointPos::start
+                || (*it)->FirstPos == Sketcher::PointPos::end)
+            && ((*it)->SecondPos == Sketcher::PointPos::start
+                || (*it)->SecondPos == Sketcher::PointPos::end)) {
             // save values because 'doEndpointTangency' changes the
             // constraint property and thus invalidates this iterator
             int first = (*it)->First;
@@ -6596,8 +6607,9 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
         }
         else if ((*it)->Type == Sketcher::PointOnObject
                  && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                     || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
-
+                     || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+                 && ((*it)->FirstPos == Sketcher::PointPos::start
+                     || (*it)->FirstPos == Sketcher::PointPos::end)) {
             Gui::Command::openCommand(
                 QT_TRANSLATE_NOOP("Command",
                                   "Swap point on object and tangency with point to curve tangency"));

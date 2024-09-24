@@ -524,6 +524,9 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     if (strcmp("ZoomOut", pMsg) == 0) {
         return true;
     }
+    if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
 
     return false;
 }

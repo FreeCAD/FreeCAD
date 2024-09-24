@@ -23,34 +23,34 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QApplication>
-# include <Inventor/draggers/SoTranslate2Dragger.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoFontStyle.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/engines/SoCalculator.h>
-# include <Inventor/engines/SoComposeVec3f.h>
-# include <Inventor/engines/SoConcatenate.h>
-# include <Inventor/engines/SoComposeMatrix.h>
-# include <Inventor/engines/SoComposeRotation.h>
-# include <Inventor/engines/SoComposeRotationFromTo.h>
-# include <Inventor/engines/SoDecomposeRotation.h>
-# include <Inventor/engines/SoTransformVec3f.h>
-# include <Inventor/nodekits/SoShapeKit.h>
-# include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoMatrixTransform.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodekits/SoBaseKit.h>
+#include <sstream>
+#include <QApplication>
+#include <Inventor/draggers/SoTranslate2Dragger.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoFontStyle.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/engines/SoCalculator.h>
+#include <Inventor/engines/SoComposeVec3f.h>
+#include <Inventor/engines/SoConcatenate.h>
+#include <Inventor/engines/SoComposeMatrix.h>
+#include <Inventor/engines/SoComposeRotation.h>
+#include <Inventor/engines/SoComposeRotationFromTo.h>
+#include <Inventor/engines/SoDecomposeRotation.h>
+#include <Inventor/engines/SoTransformVec3f.h>
+#include <Inventor/nodekits/SoShapeKit.h>
+#include <Inventor/nodes/SoFont.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoVertexProperty.h>
+#include <Inventor/nodekits/SoBaseKit.h>
 #endif
 
 #include <Precision.hxx>
@@ -59,8 +59,8 @@
 #include <gp_Vec.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pnt.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <GeomAPI_ExtremaCurveCurve.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -80,13 +80,15 @@
 using namespace MeasureGui;
 using namespace Measure;
 
-gp_Lin getLine(gp_Vec& vec, gp_Vec& origin) {
+gp_Lin getLine(gp_Vec& vec, gp_Vec& origin)
+{
     gp_Pnt tempOrigin;
     tempOrigin.SetXYZ(origin.XYZ());
     return gp_Lin(tempOrigin, gp_Dir(vec));
 }
 
-SbMatrix ViewProviderMeasureAngle::getMatrix() {
+SbMatrix ViewProviderMeasureAngle::getMatrix()
+{
     // Code ported from src/Mod/Part/Gui/TaskDimension.cpp
 
     if (pcObject == nullptr) {
@@ -95,10 +97,10 @@ SbMatrix ViewProviderMeasureAngle::getMatrix() {
 
     Measure::MeasureAngle* measurement = static_cast<Measure::MeasureAngle*>(pcObject);
 
-    if (!measurement->Element1.getValue() || measurement->Element1.getSubValues().empty()){
+    if (!measurement->Element1.getValue() || measurement->Element1.getSubValues().empty()) {
         return SbMatrix();
     }
-    if (!measurement->Element2.getValue() || measurement->Element2.getSubValues().empty()){
+    if (!measurement->Element2.getValue() || measurement->Element2.getSubValues().empty()) {
         return SbMatrix();
     }
 
@@ -120,24 +122,24 @@ SbMatrix ViewProviderMeasureAngle::getMatrix() {
     double radius;
 
     if (vector1.IsParallel(vector2, Precision::Angular())) {
-        //take first point project it onto second vector.
+        // take first point project it onto second vector.
         Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
         gp_Pnt tempPoint(loc1.XYZ());
 
         GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine2);
-        if (projection.NbPoints() < 1)
-        {
+        if (projection.NbPoints() < 1) {
             throw Base::RuntimeError("parallel vectors: couldn't project onto line");
         }
         gp_Vec newPoint2;
         newPoint2.SetXYZ(projection.Point(1).XYZ());
 
-        //if points are colinear, projection doesn't work and returns the same point.
-        //In this case we just use the original point.
-        if ((newPoint2 - loc1).Magnitude() < Precision::Confusion())
+        // if points are colinear, projection doesn't work and returns the same point.
+        // In this case we just use the original point.
+        if ((newPoint2 - loc1).Magnitude() < Precision::Confusion()) {
             newPoint2 = loc2;
+        }
 
-        //now get midpoint between for dim origin.
+        // now get midpoint between for dim origin.
         gp_Vec point1 = loc1;
         gp_Vec midPointProjection = newPoint2 - point1;
         double distance = midPointProjection.Magnitude();
@@ -146,53 +148,65 @@ SbMatrix ViewProviderMeasureAngle::getMatrix() {
 
         gp_Vec origin = point1 + midPointProjection;
 
-        //yaxis should be the same as vector1, but doing this to eliminate any potential slop from
-        //using precision::angular. If lines are colinear and we have no plane, we can't establish zAxis from crossing.
-        //we just the absolute axis.
+        // yaxis should be the same as vector1, but doing this to eliminate any potential slop from
+        // using precision::angular. If lines are colinear and we have no plane, we can't establish
+        // zAxis from crossing. we just the absolute axis.
         gp_Vec xAxis = (point1 - origin).Normalized();
         gp_Vec zAxis;
         if (xAxis.IsParallel(vector1, Precision::Angular())) {
-            if (!xAxis.IsParallel(gp_Vec(0.0, 0.0, 1.0), Precision::Angular()))
-            zAxis = gp_Vec(0.0, 0.0, 1.0);
-            else
-            zAxis = gp_Vec(0.0, 1.0, 0.0);
+            if (!xAxis.IsParallel(gp_Vec(0.0, 0.0, 1.0), Precision::Angular())) {
+                zAxis = gp_Vec(0.0, 0.0, 1.0);
+            }
+            else {
+                zAxis = gp_Vec(0.0, 1.0, 0.0);
+            }
         }
-        else
+        else {
             zAxis = xAxis.Crossed(vector1).Normalized();
+        }
         gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
         zAxis = xAxis.Crossed(yAxis).Normalized();
 
-        dimSys = SbMatrix
-        (
-            xAxis.X(), yAxis.X(), zAxis.X(), origin.X(),
-            xAxis.Y(), yAxis.Y(), zAxis.Y(), origin.Y(),
-            xAxis.Z(), yAxis.Z(), zAxis.Z(), origin.Z(),
-            0.0, 0.0, 0.0, 1.0
-        );
+        dimSys = SbMatrix(xAxis.X(),
+                          yAxis.X(),
+                          zAxis.X(),
+                          origin.X(),
+                          xAxis.Y(),
+                          yAxis.Y(),
+                          zAxis.Y(),
+                          origin.Y(),
+                          xAxis.Z(),
+                          yAxis.Z(),
+                          zAxis.Z(),
+                          origin.Z(),
+                          0.0,
+                          0.0,
+                          0.0,
+                          1.0);
         dimSys = dimSys.transpose();
 
         radius = midPointProjection.Magnitude();
-    } else {
+    }
+    else {
         Handle(Geom_Curve) heapLine1 = new Geom_Line(lin1);
         Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
 
         GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
 
-        if (extrema.NbExtrema() < 1)
-        {
+        if (extrema.NbExtrema() < 1) {
             throw Base::RuntimeError("couldn't get extrema");
         }
 
         gp_Pnt extremaPoint1, extremaPoint2, dimensionOriginPoint;
         extrema.Points(1, extremaPoint1, extremaPoint2);
-        if (extremaPoint1.Distance(extremaPoint2) < Precision::Confusion())
+        if (extremaPoint1.Distance(extremaPoint2) < Precision::Confusion()) {
             dimensionOriginPoint = extremaPoint1;
-        else
-        {
-            //find halfway point in between extrema points for dimension origin.
+        }
+        else {
+            // find halfway point in between extrema points for dimension origin.
             gp_Vec vec1(extremaPoint1.XYZ());
             gp_Vec vec2(extremaPoint2.XYZ());
-            gp_Vec connection(vec2-vec1);
+            gp_Vec connection(vec2 - vec1);
             Standard_Real distance = connection.Magnitude();
             connection.Normalize();
             connection *= (distance / 2.0);
@@ -204,8 +218,7 @@ SbMatrix ViewProviderMeasureAngle::getMatrix() {
         gp_Vec extrema2Vector(extremaPoint2.XYZ());
         radius = (loc1 - originVector).Magnitude();
         double legOne = (extrema2Vector - originVector).Magnitude();
-        if (legOne > Precision::Confusion())
-        {
+        if (legOne > Precision::Confusion()) {
             double legTwo = sqrt(pow(radius, 2) - pow(legOne, 2));
             gp_Vec projectionVector(vector2);
             projectionVector.Normalize();
@@ -222,20 +235,28 @@ SbMatrix ViewProviderMeasureAngle::getMatrix() {
         gp_Vec zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
         gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
 
-        dimSys = SbMatrix
-        (
-            xAxis.X(), yAxis.X(), zAxis.X(), dimensionOriginPoint.X(),
-            xAxis.Y(), yAxis.Y(), zAxis.Y(), dimensionOriginPoint.Y(),
-            xAxis.Z(), yAxis.Z(), zAxis.Z(), dimensionOriginPoint.Z(),
-            0.0, 0.0, 0.0, 1.0
-        );
+        dimSys = SbMatrix(xAxis.X(),
+                          yAxis.X(),
+                          zAxis.X(),
+                          dimensionOriginPoint.X(),
+                          xAxis.Y(),
+                          yAxis.Y(),
+                          zAxis.Y(),
+                          dimensionOriginPoint.Y(),
+                          xAxis.Z(),
+                          yAxis.Z(),
+                          zAxis.Z(),
+                          dimensionOriginPoint.Z(),
+                          0.0,
+                          0.0,
+                          0.0,
+                          1.0);
 
         dimSys = dimSys.transpose();
     }
 
     return dimSys;
 }
-
 
 
 PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureAngle, MeasureGui::ViewProviderMeasureBase)
@@ -246,7 +267,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     sPixmap = "Measurement-Angle";
 
     // Primary Arc
-    Gui::ArcEngine *arcEngine = new Gui::ArcEngine();
+    Gui::ArcEngine* arcEngine = new Gui::ArcEngine();
     arcEngine->angle.connectFrom(&fieldAngle);
 
     auto calculatorRadius = new SoCalculator();
@@ -255,10 +276,10 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     arcEngine->radius.connectFrom(&calculatorRadius->oa);
     arcEngine->deviation.setValue(0.1f);
 
-    SoCoordinate3 *coordinates = new SoCoordinate3();
+    SoCoordinate3* coordinates = new SoCoordinate3();
     coordinates->point.connectFrom(&arcEngine->points);
 
-    SoLineSet *lineSet = new SoLineSet();
+    SoLineSet* lineSet = new SoLineSet();
     lineSet->vertexProperty.setValue(coordinates);
     lineSet->numVertices.connectFrom(&arcEngine->pointCount);
     lineSet->startIndex.setValue(0);
@@ -269,16 +290,17 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     auto engineAngle = new SoCalculator();
     engineAngle->A.connectFrom(&arcEngine->midpoint);
     engineAngle->B.connectFrom(&pLabelTranslation->translation);
-    engineAngle->expression.setValue("tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])");
+    engineAngle->expression.setValue(
+        "tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])");
 
-    Gui::ArcEngine *arcEngineSecondary = new Gui::ArcEngine();
+    Gui::ArcEngine* arcEngineSecondary = new Gui::ArcEngine();
     arcEngineSecondary->radius.connectFrom(&calculatorRadius->oa);
     arcEngineSecondary->deviation.setValue(0.1f);
     arcEngineSecondary->angle.connectFrom(&engineAngle->oa);
 
     // Rotate arc
-    auto engineRotMidpoint = new SoComposeRotationFromTo(); // absolute angle to midpoint
-    engineRotMidpoint->from.setValue(SbVec3f(1.0, 0.0, 0.0)); 
+    auto engineRotMidpoint = new SoComposeRotationFromTo();  // absolute angle to midpoint
+    engineRotMidpoint->from.setValue(SbVec3f(1.0, 0.0, 0.0));
     engineRotMidpoint->to.connectFrom(&arcEngine->midpoint);
 
     auto matrixEngine = new SoComposeMatrix();
@@ -287,10 +309,10 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     transformEngine->matrix.connectFrom(&matrixEngine->matrix);
     transformEngine->vector.connectFrom(&arcEngineSecondary->points);
 
-    SoCoordinate3 *coordinatesSecondary = new SoCoordinate3();
+    SoCoordinate3* coordinatesSecondary = new SoCoordinate3();
     coordinatesSecondary->point.connectFrom(&transformEngine->point);
-    
-    SoLineSet *lineSetSecondary = new SoLineSet();
+
+    SoLineSet* lineSetSecondary = new SoLineSet();
     lineSetSecondary->vertexProperty.setValue(coordinatesSecondary);
     lineSetSecondary->numVertices.connectFrom(&arcEngineSecondary->pointCount);
     lineSetSecondary->startIndex.setValue(0);
@@ -304,15 +326,16 @@ void ViewProviderMeasureAngle::redrawAnnotation()
     auto obj = dynamic_cast<Measure::MeasureAngle*>(getMeasureObject());
     double angleDeg = obj->Angle.getValue();
     constexpr double radiansPerDegree = M_PI / 180.0;
-    this->fieldAngle =  angleDeg * radiansPerDegree;
+    this->fieldAngle = angleDeg * radiansPerDegree;
 
     // Set matrix
     try {
         SbMatrix matrix = getMatrix();
         pcTransform->setMatrix(matrix);
-    
-    } catch (const Base::Exception& e) {
-        Base::Console().Error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
+                              e.what());
         return;
     }
 
@@ -332,8 +355,8 @@ Measure::MeasureAngle* ViewProviderMeasureAngle::getMeasureAngle()
 }
 
 
-void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureObject) {
+void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureObject)
+{
     (void)measureObject;
     setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
 }
-

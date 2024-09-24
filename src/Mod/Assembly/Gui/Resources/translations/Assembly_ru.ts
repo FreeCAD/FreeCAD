@@ -123,7 +123,7 @@
       <translation>Экспортировать файл ASMT</translation>
     </message>
     <message>
-      <location filename="../../../CommandExportASMT.py" line="52"/>
+      <location filename="../../../CommandExportASMT.py" line="51"/>
       <source>Export currently active assembly as a ASMT file.</source>
       <translation>Экспорт текущей активной сборки в файл ASMT.</translation>
     </message>
@@ -200,7 +200,7 @@
     <message>
       <location filename="../../../JointObject.py" line="46"/>
       <source>Fixed</source>
-      <translation>Зафиксировано</translation>
+      <translation>Исправлено</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="47"/>
@@ -224,7 +224,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
-      <location filename="../../../JointObject.py" line="1533"/>
+      <location filename="../../../JointObject.py" line="1554"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
@@ -240,7 +240,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
-      <location filename="../../../JointObject.py" line="1535"/>
+      <location filename="../../../JointObject.py" line="1556"/>
       <source>Angle</source>
       <translation>Угол</translation>
     </message>
@@ -265,19 +265,19 @@
       <translation>Ремень</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1365"/>
+      <location filename="../../../JointObject.py" line="1409"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Необходимо выбрать 2 элемента от 2 отдельных деталей.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1537"/>
+      <location filename="../../../JointObject.py" line="1558"/>
       <source>Radius 1</source>
       <translation>Радиус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1539"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Радиус шага</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -297,12 +297,12 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>Индекс (авто)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
       <source>Name (auto)</source>
-      <translation type="unfinished">Name (auto)</translation>
+      <translation>Имя (авто)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
@@ -312,12 +312,12 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
       <source>File Name (auto)</source>
-      <translation type="unfinished">File Name (auto)</translation>
+      <translation>Имя файла (авто)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
       <source>Quantity (auto)</source>
-      <translation type="unfinished">Quantity (auto)</translation>
+      <translation>Количество (авто)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="197"/>
@@ -327,32 +327,32 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="293"/>
       <source>Duplicate Name</source>
-      <translation type="unfinished">Duplicate Name</translation>
+      <translation>Повторяющееся имя</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="294"/>
       <source>This name is already used. Please choose a different name.</source>
-      <translation type="unfinished">This name is already used. Please choose a different name.</translation>
+      <translation>Это имя уже используется. Пожалуйста, выберите другое имя.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="367"/>
       <source>Options:</source>
-      <translation type="unfinished">Options:</translation>
+      <translation>Параметры:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="374"/>
       <source>Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation type="unfinished">Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.</translation>
+      <translation>Дочерние подсборки: если этот флажок установлен, дочерние подсборки будут добавлены в спецификацию материалов.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="380"/>
       <source>Parts children : If checked, Parts children will be added to the bill of materials.</source>
-      <translation type="unfinished">Parts children : If checked, Parts children will be added to the bill of materials.</translation>
+      <translation>Дочерние детали: Если отмечено, дочерние детали будут добавлены в список материалов.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation type="unfinished">Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+      <translation>Только детали: если отмечено, в спецификацию материалов будут добавлены только контейнеры и подсборки деталей. Твердые тела, такие как тела PartDesign, крепежи или примитивы верстака деталей, будут игнорироваться.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="388"/>
@@ -362,160 +362,158 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="395"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
-      <translation type="unfinished">Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</translation>
+      <translation>Автостолбцы: (Индекс, Количество, Имя...) заполняются автоматически. Любые внесенные вами изменения будут переопределены. Эти столбцы нельзя переименовать.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="401"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</source>
-      <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</translation>
+      <translation>Пользовательские столбцы: «Описание» и другие пользовательские столбцы, которые вы добавляете, нажимая «Добавить столбец», не будут перезаписывать свои данные. Эти столбцы можно переименовать, дважды щелкнув или нажав F2 (переименование столбца в настоящее время приведет к потере данных).</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="407"/>
       <source>Any column (custom or not) can be deleted by pressing Del.</source>
-      <translation type="unfinished">Any column (custom or not) can be deleted by pressing Del.</translation>
+      <translation>Любой столбец (пользовательский или нет) можно удалить, нажав клавишу Del.</translation>
     </message>
   </context>
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../../JointObject.py" line="192"/>
+      <location filename="../../../JointObject.py" line="188"/>
       <source>The type of the joint</source>
       <translation>Тип соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="213"/>
-      <location filename="../../../JointObject.py" line="449"/>
+      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="475"/>
+      <source>The first reference of the joint</source>
+      <translation>Первая ссылка соединения</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="222"/>
+      <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
+      <translation>Это локальная система координат внутри объекта Reference1, которая будет использоваться для соединения.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="244"/>
+      <location filename="../../../JointObject.py" line="518"/>
+      <source>This is the attachment offset of the first connector of the joint.</source>
+      <translation>Это смещение крепления первого соединителя соединения.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="253"/>
+      <location filename="../../../JointObject.py" line="498"/>
+      <source>The second reference of the joint</source>
+      <translation>Вторая ссылка на совместное</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="264"/>
+      <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
+      <translation>Это локальная система координат внутри объекта Reference2, которая будет использоваться для соединения.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="286"/>
+      <location filename="../../../JointObject.py" line="528"/>
+      <source>This is the attachment offset of the second connector of the joint.</source>
+      <translation>Это смещение крепления второго соединителя соединения.</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="431"/>
       <source>The first object of the joint</source>
       <translation>Первый объект объединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="221"/>
-      <source>The first part of the joint</source>
-      <translation>Первая часть соединения</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="232"/>
-      <source>This is the local coordinate system within object1 that will be used for the joint.</source>
-      <translation>Это локальная система координат внутри объекта 1, которая будет использоваться для соединения.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="243"/>
+      <location filename="../../../JointObject.py" line="233"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Это предотвращает перерасчет Placement1, позволяя настраивать позиционирование места размещения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="252"/>
-      <location filename="../../../JointObject.py" line="468"/>
+      <location filename="../../../JointObject.py" line="450"/>
       <source>The second object of the joint</source>
       <translation>Второй объект соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="260"/>
-      <source>The second part of the joint</source>
-      <translation>Вторая деталь соединения</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="271"/>
-      <source>This is the local coordinate system within object2 that will be used for the joint.</source>
-      <translation>Это локальная система координат внутри объекта 2, которая будет использоваться для соединения.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="275"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Это предотвращает перерасчет Placement2, позволяя настраивать позиционирование места размещения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="294"/>
+      <location filename="../../../JointObject.py" line="298"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation type="unfinished">This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</translation>
+      <translation>Это расстояние соединения. Используется только дистанционным соединением и зубчатой ​​рейкой (радиус шага), винтом и шестернями и ремнем (радиус 1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="305"/>
+      <location filename="../../../JointObject.py" line="309"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Это второе расстояние сустава. Он используется только зубчатым соединением для хранения второго радиуса.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="316"/>
-      <source>This is the rotation of the joint.</source>
-      <translation>Это вращение соединения.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="327"/>
-      <source>This is the offset vector of the joint.</source>
-      <translation>Это вектор смещения соединения.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="338"/>
+      <location filename="../../../JointObject.py" line="320"/>
       <source>This indicates if the joint is active.</source>
       <translation>Это указывает на то, активно ли соединение.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="350"/>
+      <location filename="../../../JointObject.py" line="332"/>
       <source>Enable the minimum length limit of the joint.</source>
-      <translation type="unfinished">Enable the minimum length limit of the joint.</translation>
+      <translation>Включите ограничение минимальной длины соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="362"/>
+      <location filename="../../../JointObject.py" line="344"/>
       <source>Enable the maximum length limit of the joint.</source>
-      <translation type="unfinished">Enable the maximum length limit of the joint.</translation>
+      <translation>Включить ограничение максимальной длины соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="374"/>
+      <location filename="../../../JointObject.py" line="356"/>
       <source>Enable the minimum angle limit of the joint.</source>
-      <translation type="unfinished">Enable the minimum angle limit of the joint.</translation>
+      <translation>Включить ограничение минимального угла соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="386"/>
+      <location filename="../../../JointObject.py" line="368"/>
       <source>Enable the minimum length of the joint.</source>
-      <translation type="unfinished">Enable the minimum length of the joint.</translation>
+      <translation>Включите минимальную длину стыка.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="398"/>
+      <location filename="../../../JointObject.py" line="380"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Это минимальный предел длины между обеими системами координат (вдоль их оси Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="409"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Это максимальный предел длины между обеими системами координат (вдоль их оси Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="402"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Это минимальный предел угла между обеими системами координат (между их осью X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="431"/>
+      <location filename="../../../JointObject.py" line="413"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Это максимальный предел угла между обеими системами координат (между их осью X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1021"/>
+      <location filename="../../../JointObject.py" line="1065"/>
       <source>The object to ground</source>
       <translation>Объект для закрепления</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1033"/>
+      <location filename="../../../JointObject.py" line="1077"/>
       <source>This is where the part is grounded.</source>
       <translation>Это деталь для крепления.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="235"/>
-      <source>The object moved by the move</source>
-      <translation>Объект, перемещенный перемещением</translation>
+      <location filename="../../../CommandCreateView.py" line="246"/>
+      <location filename="../../../CommandCreateView.py" line="280"/>
+      <source>The objects moved by the move</source>
+      <translation>Объекты перемещены инструментом "Переместить"</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="242"/>
-      <source>The containing parts of objects moved by the move</source>
-      <translation>Содержащие части объектов, перемещаемых при перемещении</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateView.py" line="252"/>
+      <location filename="../../../CommandCreateView.py" line="257"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Это движение движения. Конечное размещение является результатом начального размещения * этого размещения.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="259"/>
+      <location filename="../../../CommandCreateView.py" line="265"/>
       <source>The type of the move</source>
       <translation>Тип хода</translation>
     </message>
@@ -565,22 +563,22 @@
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="161"/>
       <source>Min length</source>
-      <translation type="unfinished">Min length</translation>
+      <translation>Мин. длина</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="184"/>
       <source>Max length</source>
-      <translation type="unfinished">Max length</translation>
+      <translation>Макс. длина</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
       <source>Min angle</source>
-      <translation type="unfinished">Min angle</translation>
+      <translation>Мин. угол</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="236"/>
       <source>Max angle</source>
-      <translation type="unfinished">Max angle</translation>
+      <translation>Макс. угол</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="268"/>
@@ -636,19 +634,19 @@
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
       <source>Esc leaves edit mode</source>
-      <translation type="unfinished">Esc leaves edit mode</translation>
+      <translation>Esc выйти из режима редактирования</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful if you want to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
-      <translation type="unfinished">Log the dragging steps of the solver. Useful if you want to report a bug.
-The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</translation>
+      <translation>Записывайте шаги перетаскивания решателя. Полезно, если вы хотите сообщить об ошибке.
+Файлы называются "runPreDrag.asmt" и "dragging.log" и находятся в каталоге по умолчанию std::ofstream (в Windows это рабочий стол)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
       <source>Log dragging steps</source>
-      <translation type="unfinished">Log dragging steps</translation>
+      <translation>Шаги перетаскивания (Log)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
@@ -664,22 +662,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="150"/>
-      <source>Delete associated joints</source>
-      <translation>Удалить связанные соединения</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="162"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="180"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Объект связан с одним или несколькими соединениями.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="164"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="182"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Вы хотите переместить объект и удалить связанные соединения?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="780"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="856"/>
       <source>Move part</source>
       <translation>Переместить деталь</translation>
     </message>
@@ -822,37 +815,37 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="14"/>
       <source>Create Bill Of Materials</source>
-      <translation type="unfinished">Create Bill Of Materials</translation>
+      <translation>Создать список материалов</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>If checked, Sub assemblies children will be added to the bill of materials.</source>
-      <translation type="unfinished">If checked, Sub assemblies children will be added to the bill of materials.</translation>
+      <translation>Если этот флажок установлен, дочерние элементы подсборок будут добавлены в спецификацию материалов.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
       <source>Sub-assemblies children</source>
-      <translation type="unfinished">Sub-assemblies children</translation>
+      <translation>Подсистемы детей</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>If checked, Parts children will be added to the bill of materials.</source>
-      <translation type="unfinished">If checked, Parts children will be added to the bill of materials.</translation>
+      <translation>Если этот флажок установлен, дочерние элементы будут добавлены в спецификацию материалов.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
       <source>Parts children</source>
-      <translation type="unfinished">Parts children</translation>
+      <translation>Части детей</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</source>
-      <translation type="unfinished">If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</translation>
+      <translation>Если флажок установлен, в спецификацию материалов будут добавлены только контейнеры и подсборки деталей. Твердые тела, такие как тела PartDesign, крепежи или примитивы верстака деталей, будут игнорироваться.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
       <source>Only parts</source>
-      <translation type="unfinished">Only parts</translation>
+      <translation>Только части</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
@@ -919,22 +912,22 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateBom.py" line="69"/>
       <source>Create Bill of Materials</source>
-      <translation type="unfinished">Create Bill of Materials</translation>
+      <translation>Создать список материалов</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</source>
-      <translation type="unfinished">Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</translation>
+      <translation>Создать спецификацию текущей сборки. Если сборка активна, это будет спецификация этой сборки. В противном случае это будет спецификация всего документа.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
-      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the bom. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you don't need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
+      <translation>Объект BOM — это объект документа, в котором хранятся настройки вашего BOM. Это также объект электронной таблицы, поэтому вы можете легко визуализировать BOM. Если вам не нужно сохранять объект BOM как объект документа, вы можете просто экспортировать и отменить задачу.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>
       <source>The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</source>
-      <translation type="unfinished">The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</translation>
+      <translation>Столбцы «Индекс», «Имя», «Имя файла» и «Количество» автоматически генерируются при пересчете. Столбцы «Описание» и пользовательские столбцы не перезаписываются.</translation>
     </message>
   </context>
 </TS>

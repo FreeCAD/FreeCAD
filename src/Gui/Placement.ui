@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>277</width>
-    <height>394</height>
+    <width>456</width>
+    <height>492</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -233,7 +233,7 @@
         </item>
        </widget>
       </item>
-     <item row="1" column="0">
+      <item row="1" column="0">
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
          <number>1</number>
@@ -415,7 +415,7 @@
         <widget class="QWidget" name="page_2"/>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
@@ -487,23 +487,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="oKButton">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="closeButton">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="applyButton">
-       <property name="text">
-        <string>Apply</string>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -525,44 +511,9 @@
   <tabstop>yAxis</tabstop>
   <tabstop>zAxis</tabstop>
   <tabstop>applyIncrementalPlacement</tabstop>
-  <tabstop>oKButton</tabstop>
-  <tabstop>applyButton</tabstop>
-  <tabstop>closeButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>oKButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Gui::Dialog::Placement</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>164</x>
-     <y>252</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>8</x>
-     <y>28</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>closeButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Gui::Dialog::Placement</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>252</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>179</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>rotationInput</sender>
    <signal>activated(int)</signal>
@@ -576,6 +527,38 @@
     <hint type="destinationlabel">
      <x>278</x>
      <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Gui::Dialog::Placement</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>469</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>245</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Gui::Dialog::Placement</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>469</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>245</y>
     </hint>
    </hints>
   </connection>

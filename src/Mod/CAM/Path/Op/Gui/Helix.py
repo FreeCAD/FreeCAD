@@ -85,9 +85,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupCoolant(obj, self.form.coolantController)
 
         self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(
-                obj.OffsetExtra.Value, FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
         )
 
     def getSignalsForUpdate(self, obj):
@@ -110,9 +108,7 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Helix",
     QT_TRANSLATE_NOOP("CAM_Helix", "Helix"),
-    QT_TRANSLATE_NOOP(
-        "CAM_Helix", "Creates a Helical toolpath from the features of a base object"
-    ),
+    QT_TRANSLATE_NOOP("CAM_Helix", "Creates a Helical toolpath from the features of a base object"),
     PathHelix.SetupProperties,
 )
 

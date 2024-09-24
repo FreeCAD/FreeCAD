@@ -23,7 +23,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
-         <string>If checked, no Compound merge will be done
+         <string>If checked, Compound merge will be done
 during file reading (slower but higher details).</string>
         </property>
         <property name="text">

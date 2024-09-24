@@ -2690,7 +2690,7 @@ public:
         qreal pRatio = widget->devicePixelRatioF();
         qreal hotXF = hotX;
         qreal hotYF = hotY;
-#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MACOS)
         if (qApp->platformName() == QLatin1String("xcb")) {
             hotXF *= pRatio;
             hotYF *= pRatio;
@@ -2925,7 +2925,8 @@ static void doSelect(void* ud, SoEventCallback * cb)
             Gui::Selection().clearSelection(doc->getName());
         }
 
-        for(auto obj : doc->getObjects()) {
+        const std::vector<App::DocumentObject*> objects = doc->getObjects();
+        for(auto obj : objects) {
             if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
                 continue;
 

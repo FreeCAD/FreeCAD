@@ -726,19 +726,19 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
       <translation>Kopiranje in Lepljenje spodletelo</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Vzdevek vsebuje neveljavne znake!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Na polje se sklicuj z vzdevkom, npr.
 Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
       <translation>Preglednica</translation>
     </message>
@@ -1143,12 +1143,12 @@ Privzeto: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Izvozi v PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>PDF datoteka</translation>
     </message>
@@ -1179,7 +1179,7 @@ Privzeto: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>

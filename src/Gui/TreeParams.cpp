@@ -117,9 +117,9 @@ public:
         funcs["KeepRootOrder"] = &TreeParamsP::updateKeepRootOrder;
         TreeActiveAutoExpand = handle->GetBool("TreeActiveAutoExpand", true);
         funcs["TreeActiveAutoExpand"] = &TreeParamsP::updateTreeActiveAutoExpand;
-        TreeActiveColor = handle->GetUnsigned("TreeActiveColor", 3873898495);
+        TreeActiveColor = handle->GetUnsigned("TreeActiveColor", 1538528255);
         funcs["TreeActiveColor"] = &TreeParamsP::updateTreeActiveColor;
-        TreeEditColor = handle->GetUnsigned("TreeEditColor", 2459042047);
+        TreeEditColor = handle->GetUnsigned("TreeEditColor", 563609599);
         funcs["TreeEditColor"] = &TreeParamsP::updateTreeEditColor;
         SelectingGroupColor = handle->GetUnsigned("SelectingGroupColor", 1082163711);
         funcs["SelectingGroupColor"] = &TreeParamsP::updateSelectingGroupColor;

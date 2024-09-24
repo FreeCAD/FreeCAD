@@ -69,14 +69,15 @@ public:
     ~GUISingleApplication() override;
 
     bool isRunning() const;
-    bool sendMessage(const QByteArray &message, int timeout = 5000);
+    bool sendMessage(const QString &message, int timeout = 5000);
 
 private Q_SLOTS:
     void receiveConnection();
     void processMessages();
+    void readFromSocket();
 
 Q_SIGNALS:
-    void messageReceived(const QList<QByteArray> &);
+    void messageReceived(const QList<QString> &);
 
 private:
     class Private;

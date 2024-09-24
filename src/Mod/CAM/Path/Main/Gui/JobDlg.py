@@ -68,13 +68,9 @@ class JobCreate:
                             "The currently selected unit schema: \n     '{}' for this document\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct G-code: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
                         ).format(current_schema)
                         header = translate("CAM_Job", "Warning")
-                        msgbox = QtGui.QMessageBox(
-                            QtGui.QMessageBox.Warning, header, msg
-                        )
+                        msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
 
-                        msgbox.addButton(
-                            translate("CAM_Job", "Ok"), QtGui.QMessageBox.AcceptRole
-                        )
+                        msgbox.addButton(translate("CAM_Job", "Ok"), QtGui.QMessageBox.AcceptRole)
                         msgbox.addButton(
                             translate("CAM_Job", "Don't Show This Anymore"),
                             QtGui.QMessageBox.ActionRole,
@@ -110,14 +106,10 @@ class JobCreate:
             )
             jobResources = job.Model.Group + [job.Stock]
         else:
-            preSelected = Counter(
-                [obj.Label for obj in FreeCADGui.Selection.getSelection()]
-            )
+            preSelected = Counter([obj.Label for obj in FreeCADGui.Selection.getSelection()])
             jobResources = []
 
-        self.candidates = sorted(
-            PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label
-        )
+        self.candidates = sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label)
 
         # If there is only one possibility we might as well make sure it's selected
         if not preSelected and 1 == len(self.candidates):
@@ -187,7 +179,9 @@ class JobCreate:
 
         self.delegate = _ItemDelegate(self, self.dialog.modelTree)
         self.model = QtGui.QStandardItemModel(self.dialog)
-        self.model.setHorizontalHeaderLabels([translate("CAM_Job","Model"), translate("CAM_Job", "Count")])
+        self.model.setHorizontalHeaderLabels(
+            [translate("CAM_Job", "Model"), translate("CAM_Job", "Count")]
+        )
 
         if self.itemsSolid.hasChildren():
             self.model.appendRow(self.itemsSolid)
@@ -299,9 +293,7 @@ class JobCreate:
                 # Note that we do want to use the models (resource clones) of the
                 # source job as base objects for the new job in order to get the
                 # identical placement, and anything else that's been customized.
-                models.extend(
-                    self.itemsJob.child(i, 0).data(self.DataObject).Model.Group
-                )
+                models.extend(self.itemsJob.child(i, 0).data(self.DataObject).Model.Group)
 
         return models
 
@@ -353,9 +345,7 @@ class JobTemplateExport:
         if job.Stock and not PathJob.isResourceClone(job, "Stock", "Stock"):
             stockType = PathStock.StockType.FromStock(job.Stock)
             if stockType == PathStock.StockType.FromBase:
-                seHint = translate(
-                    "CAM_Job", "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f"
-                ) % (
+                seHint = translate("CAM_Job", "Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f") % (
                     job.Stock.ExtXneg,
                     job.Stock.ExtXpos,
                     job.Stock.ExtYneg,

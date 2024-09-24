@@ -35,31 +35,28 @@ EndMill::EndMill(int toolid, float diameter)
 EndMill::EndMill(const std::vector<float>& toolProfile, int toolid, float diameter)
     : EndMill(toolid, diameter)
 {
-    profilePoints = nullptr;
-    mHandleAllocation = false;
+    profilePoints.clear();
 
-    int srcBuffSize = static_cast<int>(toolProfile.size());
+    int srcBuffSize = toolProfile.size();
     nPoints = srcBuffSize / 2;
     if (nPoints < 2) {
         return;
     }
 
     // make sure last point is at 0,0 else, add it
-    bool missingCenterPoint = fabs(toolProfile[nPoints * 2 - 2]) > 0.0001F;
+    bool missingCenterPoint = fabs(toolProfile[nPoints * 2 - 2]) > 0.0001f;
     if (missingCenterPoint) {
         nPoints++;
     }
 
     int buffSize = PROFILE_BUFFER_SIZE(nPoints);
-    profilePoints = new float[buffSize];
-    if (profilePoints == nullptr) {
-        return;
-    }
+    profilePoints.resize(buffSize);
 
     // copy profile points
-    mHandleAllocation = true;
-    for (int i = 0; i < srcBuffSize; i++) {
-        profilePoints[i] = toolProfile[i] + 0.01F;  // add some width to reduce simulation artifacts
+    for (int i = 0; i < srcBuffSize; i += 2) {
+        // add some width to reduce simulation artifacts
+        profilePoints[i] = toolProfile[i] + diameter * 0.01f;
+        profilePoints[i + 1] = toolProfile[i + 1] - diameter * 0.01f;
     }
     if (missingCenterPoint) {
         profilePoints[srcBuffSize] = 0.0F;
@@ -74,9 +71,6 @@ EndMill::~EndMill()
     toolShape.FreeResources();
     halfToolShape.FreeResources();
     pathShape.FreeResources();
-    if (mHandleAllocation) {
-        delete[] profilePoints;
-    }
 }
 
 void EndMill::GenerateDisplayLists(float quality)
@@ -91,21 +85,21 @@ void EndMill::GenerateDisplayLists(float quality)
     }
 
     // full tool
-    toolShape.RotateProfile(profilePoints, nPoints, 0,  nslices, false);
+    toolShape.RotateProfile(profilePoints.data(), nPoints, 0, 0, nslices, false);
 
     // half tool
-    halfToolShape.RotateProfile(profilePoints, nPoints, 0,  nslices / 2, true);
+    halfToolShape.RotateProfile(profilePoints.data(), nPoints, 0, 0, nslices / 2, true);
 
     // unit path
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
-    pathShape.ExtrudeProfileLinear(profilePoints, nFullPoints, 0, 1, 0, 0, true, false);
+    pathShape.ExtrudeProfileLinear(profilePoints.data(), nFullPoints, 0, 1, 0, 0, true, false);
 }
 
 unsigned int
 EndMill::GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape)
 {
     int nFullPoints = PROFILE_BUFFER_POINTS(nPoints);
-    retShape->ExtrudeProfileRadial(profilePoints,
+    retShape->ExtrudeProfileRadial(profilePoints.data(),
                                    nFullPoints,
                                    radius,
                                    angleRad,

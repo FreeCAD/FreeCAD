@@ -341,8 +341,17 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &_diffuseColor) {
         // Used to load the old DiffuseColor values asynchronously
-        ShapeAppearance.setDiffuseColors(_diffuseColor.getValues());
-        ShapeAppearance.setTransparency(Transparency.getValue() / 100.0F);
+        // v0.21 used the alpha channel to store transparency values
+        std::vector<App::Color> colors = _diffuseColor.getValues();
+        std::vector<float> transparencies;
+        transparencies.resize(static_cast<int>(colors.size()));
+        for (int i = 0; i < static_cast<int>(colors.size()); i++) {
+            Base::Console().Log("%d: %f\n", i, colors[i].a);
+            transparencies[i] = colors[i].a;
+            colors[i].a = 1.0;
+        }
+        ShapeAppearance.setDiffuseColors(colors);
+        ShapeAppearance.setTransparencies(transparencies);
     }
     else if (prop == &ShapeAppearance) {
         setHighlightedFaces(ShapeAppearance);

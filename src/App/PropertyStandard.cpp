@@ -3018,6 +3018,17 @@ void PropertyMaterialList::setTransparency(int index, float val)
     hasSetValue();
 }
 
+void PropertyMaterialList::setTransparencies(const std::vector<float>& transparencies)
+{
+    aboutToSetValue();
+    setSize(transparencies.size(), _lValueList[0]);
+
+    for (std::size_t i = 0; i < transparencies.size(); i++) {
+        _lValueList[i].transparency = transparencies[i];
+    }
+    hasSetValue();
+}
+
 const Color& PropertyMaterialList::getAmbientColor() const
 {
     return _lValueList[0].ambientColor;

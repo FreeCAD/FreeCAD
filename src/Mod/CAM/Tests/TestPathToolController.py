@@ -31,9 +31,11 @@ from Tests.PathTestUtils import PathTestBase
 class TestPathToolController(PathTestBase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathToolController")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     def createTool(self, name="t1", diameter=1.75):
         attrs = {

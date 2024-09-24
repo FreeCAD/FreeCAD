@@ -74,6 +74,7 @@ private:
     void setImportImageFormats();
     bool hiddenMainWindow() const;
     void showMainWindow();
+    void showSplashScreen();
     void activateWorkbench();
     void checkParameters();
 

@@ -4,17 +4,17 @@
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="210"/>
+      <location filename="../../CommandInsertRobot.cpp" line="240"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="211"/>
+      <location filename="../../CommandInsertRobot.cpp" line="241"/>
       <source>Add tool</source>
       <translation>Pridėti įrankį</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="212"/>
+      <location filename="../../CommandInsertRobot.cpp" line="242"/>
       <source>Add a tool shape to the robot</source>
       <translation>Pridėti robotui įrankio formą</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdRobotConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
+      <location filename="../../Command.cpp" line="163"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Place robot...</source>
       <translation>Padėti robotą...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="156"/>
+      <location filename="../../Command.cpp" line="165"/>
       <source>Place a robot (experimental!)</source>
       <translation>Padėti robotą (bandomasis!)</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="314"/>
+      <location filename="../../CommandTrajectory.cpp" line="360"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="315"/>
+      <location filename="../../CommandTrajectory.cpp" line="361"/>
       <source>Edge to Trajectory...</source>
       <translation>Judėjimo kelio kraštinė...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="316"/>
+      <location filename="../../CommandTrajectory.cpp" line="362"/>
       <source>Generate a Trajectory from a set of edges</source>
       <translation>Kurti Judėjimo kelią iš kraštinių</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-      <location filename="../../CommandExport.cpp" line="108"/>
+      <location filename="../../CommandExport.cpp" line="121"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="109"/>
+      <location filename="../../CommandExport.cpp" line="122"/>
       <source>Kuka full subroutine...</source>
       <translation>Kuka pilnoji paprogramė...</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="110"/>
+      <location filename="../../CommandExport.cpp" line="123"/>
       <source>Export the trajectory as a full KRL subroutine.</source>
       <translation>Eksportuoti judėjimo kelią kaip pilnąją KRL paprogramę.</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdRobotInsertKukaIR125</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="169"/>
+      <location filename="../../CommandInsertRobot.cpp" line="192"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="170"/>
+      <location filename="../../CommandInsertRobot.cpp" line="193"/>
       <source>Kuka IR125</source>
       <translation>Kuka IR125</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="171"/>
+      <location filename="../../CommandInsertRobot.cpp" line="194"/>
       <source>Insert a Kuka IR125 into the document.</source>
       <translation>Į dokumentą įterpti Kuka IR125.</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdRobotInsertKukaIR16</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="88"/>
+      <location filename="../../CommandInsertRobot.cpp" line="97"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="89"/>
+      <location filename="../../CommandInsertRobot.cpp" line="98"/>
       <source>Kuka IR16</source>
       <translation>Kuka IR16</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="90"/>
+      <location filename="../../CommandInsertRobot.cpp" line="99"/>
       <source>Insert a Kuka IR16 into the document.</source>
       <translation>Įterpti Kuka IR16 į dokumentą.</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdRobotInsertKukaIR210</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="129"/>
+      <location filename="../../CommandInsertRobot.cpp" line="145"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="130"/>
+      <location filename="../../CommandInsertRobot.cpp" line="146"/>
       <source>Kuka IR210</source>
       <translation>Kuka IR210</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="131"/>
+      <location filename="../../CommandInsertRobot.cpp" line="147"/>
       <source>Insert a Kuka IR210 into the document.</source>
       <translation>Į dokumentą įterpti Kuka IR210.</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdRobotInsertWaypoint</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="88"/>
+      <location filename="../../CommandTrajectory.cpp" line="89"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="89"/>
+      <location filename="../../CommandTrajectory.cpp" line="90"/>
       <source>Insert in trajectory</source>
       <translation>Įterpti į judėjimo kelią</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="90"/>
+      <location filename="../../CommandTrajectory.cpp" line="91"/>
       <source>Insert robot Tool location into trajectory</source>
       <translation>Į judėjimo kelią Įterpti roboto Įrankio padėtį</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdRobotInsertWaypointPreselect</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="145"/>
+      <location filename="../../CommandTrajectory.cpp" line="158"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="146"/>
+      <location filename="../../CommandTrajectory.cpp" line="159"/>
       <source>Insert in trajectory</source>
       <translation>Įterpti į judėjimo kelią</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="147"/>
+      <location filename="../../CommandTrajectory.cpp" line="160"/>
       <source>Insert preselection position into trajectory (W)</source>
       <translation>Įterpti pirminę padėtį į judėjimo kelią (W)</translation>
     </message>
@@ -220,13 +220,13 @@
   <context>
     <name>CmdRobotRestoreHomePos</name>
     <message>
-      <location filename="../../Command.cpp" line="100"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Move to home</source>
       <translation>Perkelti į pradžią</translation>
     </message>
@@ -234,17 +234,17 @@
   <context>
     <name>CmdRobotSetDefaultOrientation</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="209"/>
+      <location filename="../../CommandTrajectory.cpp" line="235"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="210"/>
+      <location filename="../../CommandTrajectory.cpp" line="236"/>
       <source>Set default orientation</source>
       <translation>Nustatyti numatytąją erdvinę padėtį</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="211"/>
+      <location filename="../../CommandTrajectory.cpp" line="238"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
       <translation>Nustatyti numatytąją erdvinę padėtį sekančioms komandoms tarpinio taško sukūrimui</translation>
     </message>
@@ -252,17 +252,17 @@
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="248"/>
+      <location filename="../../CommandTrajectory.cpp" line="279"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="249"/>
+      <location filename="../../CommandTrajectory.cpp" line="280"/>
       <source>Set default values</source>
       <translation>Nustatyti numatytąsias reikšmes</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="250"/>
+      <location filename="../../CommandTrajectory.cpp" line="281"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Nustatyti numatytąsias greičio, pagreičio ir glotnumo reikšmes sekantiems veiksmams tarpinių taškų sukūrimui</translation>
     </message>
@@ -284,17 +284,17 @@
   <context>
     <name>CmdRobotSimulate</name>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Simulate a trajectory</source>
       <translation>Modeliuoti judėjimo kelią</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="197"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Run a simulation on a trajectory</source>
       <translation>Vykdyti judėjimo kelio modeliavimą</translation>
     </message>
@@ -302,17 +302,17 @@
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="425"/>
+      <location filename="../../CommandTrajectory.cpp" line="483"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="426"/>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
       <source>Trajectory compound...</source>
       <translation>Judėjimo kelio junginys...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="427"/>
+      <location filename="../../CommandTrajectory.cpp" line="485"/>
       <source>Group and connect some trajectories to one</source>
       <translation>Grupuoti ir apjungti kelis judėjimo kelius į vieną</translation>
     </message>
@@ -320,17 +320,17 @@
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="378"/>
+      <location filename="../../CommandTrajectory.cpp" line="426"/>
       <source>Robot</source>
       <translation>Robotas</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="379"/>
+      <location filename="../../CommandTrajectory.cpp" line="427"/>
       <source>Dress-up trajectory...</source>
       <translation>Judėjimo kelio keitimas...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="380"/>
+      <location filename="../../CommandTrajectory.cpp" line="429"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
       <translation>Sukurti keičiantįjį objektą, kuris pakeičia judėjimo kelio savybes</translation>
     </message>
@@ -356,17 +356,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandInsertRobot.cpp" line="260"/>
+      <location filename="../../CommandTrajectory.cpp" line="106"/>
+      <location filename="../../CommandTrajectory.cpp" line="173"/>
+      <location filename="../../CommandTrajectory.cpp" line="192"/>
+      <location filename="../../CommandTrajectory.cpp" line="464"/>
       <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="120"/>
-      <location filename="../../Command.cpp" line="220"/>
-      <location filename="../../Command.cpp" line="249"/>
-      <location filename="../../CommandExport.cpp" line="61"/>
-      <location filename="../../CommandExport.cpp" line="123"/>
-      <location filename="../../CommandInsertRobot.cpp" line="229"/>
-      <location filename="../../CommandTrajectory.cpp" line="104"/>
-      <location filename="../../CommandTrajectory.cpp" line="160"/>
-      <location filename="../../CommandTrajectory.cpp" line="177"/>
-      <location filename="../../CommandTrajectory.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
       <translation>Netinkama pasirinktis</translation>
     </message>
@@ -376,115 +375,114 @@
       <translation>Pasirinkite vieną robotą pradinei padėčiai nustatyti</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="131"/>
       <source>Select one Robot</source>
       <translation>Pasirinkite vieną Robotą</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="221"/>
-      <location filename="../../Command.cpp" line="250"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="124"/>
-      <location filename="../../CommandTrajectory.cpp" line="105"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../CommandExport.cpp" line="63"/>
+      <location filename="../../CommandExport.cpp" line="138"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Pasirinkite vieną robotą ir vieną judėjimo kelio objektą.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
       <translation>Klaidingas judėjimo kelias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="227"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Trajektorijos modeliavimui jums reikia bent dviejų tarpinių taškų.</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="84"/>
-      <location filename="../../CommandExport.cpp" line="146"/>
+      <location filename="../../CommandExport.cpp" line="89"/>
+      <location filename="../../CommandExport.cpp" line="164"/>
       <source>KRL file</source>
       <translation>KRL failas</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="85"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../CommandExport.cpp" line="90"/>
+      <location filename="../../CommandExport.cpp" line="165"/>
       <source>All Files</source>
       <translation>Visi failai</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="86"/>
-      <location filename="../../CommandExport.cpp" line="148"/>
+      <location filename="../../CommandExport.cpp" line="92"/>
+      <location filename="../../CommandExport.cpp" line="167"/>
       <source>Export program</source>
       <translation>Eksportuoti programą</translation>
     </message>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="230"/>
+      <location filename="../../CommandInsertRobot.cpp" line="261"/>
       <source>Select one robot and one shape or VRML object.</source>
       <translation>Pasirinkite vieną robotą ir vieną geometrinę figūrą arba VRML objektą.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="161"/>
-      <location filename="../../CommandTrajectory.cpp" line="178"/>
+      <location filename="../../CommandTrajectory.cpp" line="174"/>
+      <location filename="../../CommandTrajectory.cpp" line="193"/>
       <source>Select one Trajectory object.</source>
       <translation>Pasirinkite vieną judėjimo kelio objektą.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="184"/>
+      <location filename="../../CommandTrajectory.cpp" line="201"/>
       <source>No preselection</source>
       <translation>Nėra pirminio pažymėjimo</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="185"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
       <source>You have to hover above a geometry (Preselection) with the mouse to use this command. See documentation for details.</source>
       <translation>Užveskite pelės žymeklį virš (pirminės) geometrijos, kad galėtumėte pasinaudoti šia komanda. Ieškokite smulkesnės informacijos žinyne.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="262"/>
+      <location filename="../../CommandTrajectory.cpp" line="294"/>
       <source>Set default speed</source>
       <translation>Nustatyti numatytąjį greitį</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="263"/>
+      <location filename="../../CommandTrajectory.cpp" line="295"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>greitis: (pvz., 1 m/s arba 3 cm/s)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="272"/>
+      <location filename="../../CommandTrajectory.cpp" line="308"/>
       <source>Set default continuity</source>
       <translation>Nustatyti numatytąjį glotnumą</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="273"/>
+      <location filename="../../CommandTrajectory.cpp" line="309"/>
       <source>continuous ?</source>
       <translation>glotnus?</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="279"/>
+      <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Set default acceleration</source>
       <translation>Nustatyti numatytąjį pagreitį</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="280"/>
+      <location filename="../../CommandTrajectory.cpp" line="323"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>pagreitis: (pvz. 1 m/s^2 arba 3 cm/s^2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="407"/>
+      <location filename="../../CommandTrajectory.cpp" line="465"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>Pasirinkite judėjimo kelią, kurį jūs norite pakeisti.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTrajectory.cpp" line="149"/>
+      <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
       <source>Modify</source>
       <translation>Keisti</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="79"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>No robot files installed</source>
       <translation>Nėra įdiegta robotų failų</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="80"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Prašome apsilankyti %1 ir nukopijuoti failus į %2</translation>
     </message>
@@ -554,14 +552,34 @@
       <source>TaskEdge2TracParameter</source>
       <translation type="unfinished">TaskEdge2TracParameter</translation>
     </message>
+    <message>
+      <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
+      <source>Hide / Show</source>
+      <translation>Slėpti/Rodyti</translation>
+    </message>
+    <message>
+      <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
+      <source>Edges: 0</source>
+      <translation>Kraštinių: 0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskEdge2TracParameter.ui" line="61"/>
+      <source>Cluster: 0</source>
+      <translation>Sankaupos: 0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
+      <source>Sizing Value:</source>
+      <translation>Kalibravimo Reikšmė:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
+      <source>Use orientation of edge</source>
+      <translation>Naudoti kraštinės kampinę padėtį</translation>
+    </message>
   </context>
   <context>
     <name>RobotGui::TaskRobot6Axis</name>
-    <message>
-      <location filename="../../TaskRobot6Axis.ui" line="14"/>
-      <source>Form</source>
-      <translation>Pavidalas</translation>
-    </message>
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="22"/>
       <source>A1</source>
@@ -611,159 +629,9 @@
   <context>
     <name>RobotGui::TaskRobotControl</name>
     <message>
-      <location filename="../../TaskRobotControl.cpp" line="35"/>
+      <location filename="../../TaskRobotControl.cpp" line="36"/>
       <source>TaskRobotControl</source>
       <translation type="unfinished">TaskRobotControl</translation>
-    </message>
-  </context>
-  <context>
-    <name>RobotGui::TaskRobotMessages</name>
-    <message>
-      <location filename="../../TaskRobotMessages.cpp" line="35"/>
-      <source>TaskRobotMessages</source>
-      <translation type="unfinished">TaskRobotMessages</translation>
-    </message>
-  </context>
-  <context>
-    <name>RobotGui::TaskTrajectory</name>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="20"/>
-      <source>Form</source>
-      <translation>Pavidalas</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="58"/>
-      <source>|&lt;</source>
-      <translation>|&lt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="89"/>
-      <source>&lt;</source>
-      <translation>&lt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="151"/>
-      <source>|&gt;</source>
-      <translation>|&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="182"/>
-      <source>&gt;</source>
-      <translation>&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="213"/>
-      <source>&gt;|</source>
-      <translation>&gt;|</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="254"/>
-      <source>10 ms</source>
-      <translation>10 ms</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="259"/>
-      <source>50 ms</source>
-      <translation>50 ms</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="264"/>
-      <source>100 ms</source>
-      <translation>100 ms</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="269"/>
-      <source>500 ms</source>
-      <translation>500 ms</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="274"/>
-      <source>1 s</source>
-      <translation>1 s</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="291"/>
-      <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
-      <translation>Padėtis: (200.23, 300.23, 400.23, 234, 343, 343)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="317"/>
-      <source>Type</source>
-      <translation>Rūšis</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="322"/>
-      <source>Name</source>
-      <translation>Pavadinimas</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="327"/>
-      <source>C</source>
-      <translation>C</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="332"/>
-      <source>V</source>
-      <translation>V</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.ui" line="337"/>
-      <source>A</source>
-      <translation>A</translation>
-    </message>
-    <message>
-      <location filename="../../TaskTrajectory.cpp" line="37"/>
-      <source>Trajectory</source>
-      <translation type="unfinished">Trajectory</translation>
-    </message>
-  </context>
-  <context>
-    <name>RobotGui::TaskTrajectoryDressUpParameter</name>
-    <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="41"/>
-      <source>Dress Up Parameter</source>
-      <translation type="unfinished">Dress Up Parameter</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskEdge2TracParameter</name>
-    <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Pavidalas</translation>
-    </message>
-    <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="29"/>
-      <source>Hide / Show</source>
-      <translation>Slėpti/Rodyti</translation>
-    </message>
-    <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="47"/>
-      <source>Edges: 0</source>
-      <translation>Kraštinių: 0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="61"/>
-      <source>Cluster: 0</source>
-      <translation>Sankaupos: 0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="72"/>
-      <source>Sizing Value:</source>
-      <translation>Kalibravimo Reikšmė:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskEdge2TracParameter.ui" line="103"/>
-      <source>Use orientation of edge</source>
-      <translation>Naudoti kraštinės kampinę padėtį</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskRobotControl</name>
-    <message>
-      <location filename="../../TaskRobotControl.ui" line="14"/>
-      <source>Form</source>
-      <translation>Pavidalas</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="37"/>
@@ -877,11 +745,11 @@
     </message>
   </context>
   <context>
-    <name>TaskRobotMessages</name>
+    <name>RobotGui::TaskRobotMessages</name>
     <message>
-      <location filename="../../TaskRobotMessages.ui" line="14"/>
-      <source>Form</source>
-      <translation>Pavidalas</translation>
+      <location filename="../../TaskRobotMessages.cpp" line="35"/>
+      <source>TaskRobotMessages</source>
+      <translation type="unfinished">TaskRobotMessages</translation>
     </message>
     <message>
       <location filename="../../TaskRobotMessages.ui" line="20"/>
@@ -890,11 +758,99 @@
     </message>
   </context>
   <context>
-    <name>TaskTrajectoryDressUpParameter</name>
+    <name>RobotGui::TaskTrajectory</name>
     <message>
-      <location filename="../../TaskTrajectoryDressUpParameter.ui" line="14"/>
-      <source>Form</source>
-      <translation>Pavidalas</translation>
+      <location filename="../../TaskTrajectory.ui" line="58"/>
+      <source>|&lt;</source>
+      <translation>|&lt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="89"/>
+      <source>&lt;</source>
+      <translation>&lt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="151"/>
+      <source>|&gt;</source>
+      <translation>|&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="182"/>
+      <source>&gt;</source>
+      <translation>&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="213"/>
+      <source>&gt;|</source>
+      <translation>&gt;|</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="254"/>
+      <source>10 ms</source>
+      <translation>10 ms</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="259"/>
+      <source>50 ms</source>
+      <translation>50 ms</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="264"/>
+      <source>100 ms</source>
+      <translation>100 ms</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="269"/>
+      <source>500 ms</source>
+      <translation>500 ms</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="274"/>
+      <source>1 s</source>
+      <translation>1 s</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="291"/>
+      <source>Pos: (200.23, 300.23, 400.23, 234, 343 ,343)</source>
+      <translation>Padėtis: (200.23, 300.23, 400.23, 234, 343, 343)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="317"/>
+      <source>Type</source>
+      <translation>Rūšis</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="322"/>
+      <source>Name</source>
+      <translation>Pavadinimas</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="327"/>
+      <source>C</source>
+      <translation>C</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="332"/>
+      <source>V</source>
+      <translation>V</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.ui" line="337"/>
+      <source>A</source>
+      <translation>A</translation>
+    </message>
+    <message>
+      <location filename="../../TaskTrajectory.cpp" line="39"/>
+      <source>Trajectory</source>
+      <translation type="unfinished">Trajectory</translation>
+    </message>
+  </context>
+  <context>
+    <name>RobotGui::TaskTrajectoryDressUpParameter</name>
+    <message>
+      <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="42"/>
+      <source>Dress Up Parameter</source>
+      <translation type="unfinished">Dress Up Parameter</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="20"/>

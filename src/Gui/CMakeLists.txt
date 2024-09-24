@@ -70,13 +70,6 @@ if(MSVC)
          ${OPENGL_gl_LIBRARY}
     )
 
-    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
-        list(APPEND FreeCADGui_LIBS
-            Qt6::GuiPrivate
-        )
-    endif()
-
-
     if(FREECAD_USE_3DCONNEXION)
         list(APPEND FreeCADGui_LIBS
             hid
@@ -92,6 +85,14 @@ else(MSVC)
         ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
+
+if (WIN32)
+    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        list(APPEND FreeCADGui_LIBS
+            Qt6::GuiPrivate
+        )
+    endif()
+endif()
 
 include_directories(
     ${QtCore_INCLUDE_DIRS}
@@ -946,7 +947,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderImagePlane.cpp
     ViewProviderInventorObject.cpp
     ViewProviderPyImp.cpp
-    ViewProviderPythonFeature.cpp
+    ViewProviderFeaturePython.cpp
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
@@ -983,7 +984,7 @@ SET(Viewprovider_SRCS
     ViewProviderGeometryObject.h
     ViewProviderImagePlane.h
     ViewProviderInventorObject.h
-    ViewProviderPythonFeature.h
+    ViewProviderFeaturePython.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h

@@ -25,7 +25,7 @@
 
 #include "ViewProviderDragger.h"
 #include "ViewProviderOriginGroup.h"
-#include "ViewProviderPythonFeature.h"
+#include "ViewProviderFeaturePython.h"
 
 
 namespace Gui {
@@ -61,7 +61,7 @@ protected:
 
 };
 
-using ViewProviderPartPython = ViewProviderPythonFeatureT<ViewProviderPart>;
+using ViewProviderPartPython = ViewProviderFeaturePythonT<ViewProviderPart>;
 
 } // namespace Gui
 

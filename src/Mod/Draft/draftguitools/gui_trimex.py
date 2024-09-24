@@ -115,6 +115,9 @@ class Trimex(gui_base_original.Modifier):
         import Part
 
         if "Shape" not in self.obj.PropertiesList:
+            self.obj = None
+            self.finish()
+            _err(translate("draft", "This object is not supported."))
             return
         if "Placement" in self.obj.PropertiesList:
             self.placement = self.obj.Placement
@@ -127,14 +130,18 @@ class Trimex(gui_base_original.Modifier):
         elif len(self.obj.Shape.Faces) > 1:
             # face extrude mode, a new object is created
             ss = Gui.Selection.getSelectionEx()[0]
-            if len(ss.SubObjects) == 1:
-                if ss.SubObjects[0].ShapeType == "Face":
-                    self.obj = self.doc.addObject("Part::Feature", "Face")
-                    self.obj.Shape = ss.SubObjects[0]
-                    self.extrudeMode = True
-                    self.ghost = [trackers.ghostTracker([self.obj])]
-                    self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                    self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
+            if len(ss.SubObjects) == 1 and ss.SubObjects[0].ShapeType == "Face":
+                self.obj = self.doc.addObject("Part::Feature", "Face")
+                self.obj.Shape = ss.SubObjects[0]
+                self.extrudeMode = True
+                self.ghost = [trackers.ghostTracker([self.obj])]
+                self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
+                self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
+            else:
+                self.obj = None
+                self.finish()
+                _err(translate("draft", "Only a single face can be extruded."))
+                return
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
@@ -160,7 +167,9 @@ class Trimex(gui_base_original.Modifier):
                     self.ghost.append(trackers.arcTracker(scolor=sc,
                                                           swidth=sw))
         if not self.ghost:
+            self.obj = None
             self.finish()
+            return
         for g in self.ghost:
             g.on()
         self.activePoint = 0

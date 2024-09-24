@@ -102,7 +102,11 @@ void TaskTransformedParameters::setupUI()
 
     // Create context menu
     auto action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    {
+        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
+        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
+        action->setShortcut(QKeySequence(shortcut));
+    }
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
     ui->listWidgetFeatures->addAction(action);

@@ -372,3 +372,24 @@ std::string Base::Tools::currentDateTimeString()
         .toString(Qt::ISODate)
         .toStdString();
 }
+
+std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)
+{
+    // Turns 'Part.Part001.Body.Pad.Edge1'
+    // Into ['Part', 'Part001', 'Body', 'Pad', 'Edge1']
+    std::vector<std::string> subNames;
+    std::string subName;
+    std::istringstream subNameStream(subname);
+    while (std::getline(subNameStream, subName, '.')) {
+        subNames.push_back(subName);
+    }
+
+    // Check if the last character of the input string is the delimiter.
+    // If so, add an empty string to the subNames vector.
+    // Because the last subname is the element name and can be empty.
+    if (!subname.empty() && subname.back() == '.') {
+        subNames.push_back("");  // Append empty string for trailing dot.
+    }
+
+    return subNames;
+}

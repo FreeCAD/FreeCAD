@@ -16,7 +16,7 @@ std::string MeasureBasePy::representation() const
     return "<Measure::MeasureBase>";
 }
 
-PyObject *MeasureBasePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* MeasureBasePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of MeasureBasePy and the Twin object
     return new MeasureBasePy(new MeasureBase);
@@ -26,10 +26,10 @@ PyObject *MeasureBasePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  /
 // constructor method
 int MeasureBasePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
-   return 0;
+    return 0;
 }
 
-PyObject *MeasureBasePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* MeasureBasePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

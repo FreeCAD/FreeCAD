@@ -71,7 +71,7 @@ class Generic(PostProcessor):
 
         Implementing it would be a good idea
         """
-        return  tooltip
+        return tooltip
 
     @property
     def tooltipArgs(self):

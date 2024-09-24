@@ -351,7 +351,7 @@ class _Wall(ArchComponent.Component):
                                                 else:
                                                     cuts2.append(sh)
                                             offset += (obj.BlockLength.Value + obj.Joint.Value)
-                                        offset -= (edge.Length - obj.Joint.Value)
+                                        offset -= edge.Length
 
                             if isinstance(bplates,list):
                                 bplates = bplates[0]
@@ -803,8 +803,8 @@ class _Wall(ArchComponent.Component):
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
                         for i in skGeom:
                             if not i.Construction:
-                                # support Line, Arc, Circle for Sketch as Base at the moment
-                                if isinstance(i.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+                                # support Line, Arc, Circle, Ellipse for Sketch as Base at the moment
+                                if isinstance(i.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)):
                                     skGeomEdgesI = i.Geometry.toShape()
                                     skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):

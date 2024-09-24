@@ -308,7 +308,11 @@ void ToolBarGrip::mouseMoveEvent(QMouseEvent *me)
         return;
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     QPoint pos = me->globalPos();
+#else
+    QPoint pos = me->globalPosition().toPoint();
+#endif
     QRect rect(toolbar->mapToGlobal(QPoint(0,0)), toolbar->size());
 
     // if mouse did not leave the area of toolbar do not continue with undocking it

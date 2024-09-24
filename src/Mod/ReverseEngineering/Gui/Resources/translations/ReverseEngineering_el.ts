@@ -236,7 +236,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <source>Fit B-spline</source>
-      <translation type="unfinished">Fit B-spline</translation>
+      <translation>Προσαρμογή B-Spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="83"/>
@@ -393,7 +393,7 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Please select a point cloud.</source>
-      <translation type="unfinished">Please select a point cloud.</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
@@ -612,7 +612,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>Κεντρομόλος</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>

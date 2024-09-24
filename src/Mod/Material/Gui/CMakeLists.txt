@@ -40,7 +40,7 @@ generate_from_xml(MaterialTreeWidgetPy)
 
 SET(Python_SRCS
     MaterialTreeWidgetPy.xml
-    MaterialTreeWidgetPyImpl.cpp
+    MaterialTreeWidgetPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -169,9 +169,9 @@ SET_PYTHON_PREFIX_SUFFIX(MatGui)
 
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiIcon_SVG})
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiImages})
-fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/Mod/Material" ${Material_Ui_Files})
+fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${Material_Ui_Files})
 
 INSTALL(TARGETS MatGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/icons")
 INSTALL(FILES ${MatGuiImages} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/images")
-INSTALL(FILES ${Material_Ui_Files} DESTINATION "${CMAKE_BINARY_DIR}/Mod/Material/Resources/ui")
+INSTALL(FILES ${Material_Ui_Files} DESTINATION "Mod/Material/Resources/ui")

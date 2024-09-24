@@ -88,7 +88,7 @@ class ObjectSlot(PathOp.ObjectOp):
         Path.Log.track()
         self.addNewProps = list()
 
-        for (prtyp, nm, grp, tt) in self.opPropertyDefinitions():
+        for prtyp, nm, grp, tt in self.opPropertyDefinitions():
             if not hasattr(obj, nm):
                 obj.addProperty(prtyp, nm, grp, tt)
                 self.addNewProps.append(nm)
@@ -231,9 +231,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "UseStartPoint",
                 "Start Point",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property", "Make True, if specifying a Start Point"
-                ),
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if specifying a Start Point"),
             ),
         ]
 
@@ -335,9 +333,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 subCnt = len(subsList)
                 if subCnt == 1:
                     # Adjust available enumerations
-                    ENUMS["Reference1"] = self._makeReference1Enumerations(
-                        subsList[0], True
-                    )
+                    ENUMS["Reference1"] = self._makeReference1Enumerations(subsList[0], True)
                 elif subCnt == 2:
                     # Adjust available enumerations
                     ENUMS["Reference1"] = self._makeReference1Enumerations(subsList[0])
@@ -538,9 +534,7 @@ class ObjectSlot(PathOp.ObjectOp):
         self.commandlist.append(Path.Command("N ({})".format(obj.Label), {}))
         self.commandlist.append(Path.Command("N (Tool type: {})".format(toolType), {}))
         self.commandlist.append(
-            Path.Command(
-                "N (Compensated Tool Path. Diameter: {})".format(tool.Diameter), {}
-            )
+            Path.Command("N (Compensated Tool Path. Diameter: {})".format(tool.Diameter), {})
         )
         self.commandlist.append(Path.Command("N ({})".format(output), {}))
         self.commandlist.append(
@@ -578,9 +572,7 @@ class ObjectSlot(PathOp.ObjectOp):
             CMDS.extend(cmds)
 
         # Save gcode produced
-        CMDS.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
+        CMDS.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
         self.commandlist.extend(CMDS)
 
         # ######  CLOSING COMMANDS FOR OPERATION ######
@@ -609,14 +601,18 @@ class ObjectSlot(PathOp.ObjectOp):
             p1 = obj.CustomPoint1
             p2 = obj.CustomPoint2
             if p1 == p2:
-                msg = translate("CAM_Slot", "Custom points are identical. No slot path will be generated")
+                msg = translate(
+                    "CAM_Slot", "Custom points are identical. No slot path will be generated"
+                )
                 FreeCAD.Console.PrintUserWarning(msg + "\n")
                 return False
             elif p1.z == p2.z:
                 pnts = (p1, p2)
                 featureCount = 2
             else:
-                msg = translate("CAM_Slot", "Custom points not at same Z height. No slot path will be generated")
+                msg = translate(
+                    "CAM_Slot", "Custom points not at same Z height. No slot path will be generated"
+                )
                 FreeCAD.Console.PrintUserWarning(msg + "\n")
                 return False
         else:
@@ -659,17 +655,13 @@ class ObjectSlot(PathOp.ObjectOp):
         """This method finishes an Arc Slot operation.
         It returns the gcode for the slot operation."""
         Path.Log.debug("arc center: {}".format(self.arcCenter))
-        self._addDebugObject(
-            Part.makeLine(self.arcCenter, self.arcMidPnt), "CentToMidPnt"
-        )
+        self._addDebugObject(Part.makeLine(self.arcCenter, self.arcMidPnt), "CentToMidPnt")
 
         # Path.Log.debug('Pre-offset points are:\np1 = {}\np2 = {}'.format(p1, p2))
         if obj.ExtendRadius.Value != 0:
             # verify offset does not force radius < 0
             newRadius = self.arcRadius + obj.ExtendRadius.Value
-            Path.Log.debug(
-                "arc radius: {};  offset radius: {}".format(self.arcRadius, newRadius)
-            )
+            Path.Log.debug("arc radius: {};  offset radius: {}".format(self.arcRadius, newRadius))
             if newRadius <= 0:
                 msg = translate(
                     "CAM_Slot",
@@ -690,9 +682,7 @@ class ObjectSlot(PathOp.ObjectOp):
         if self.isArc == 1:
             # Complete circle
             if obj.ExtendPathStart.Value != 0 or obj.ExtendPathEnd.Value != 0:
-                msg = translate(
-                    "CAM_Slot", "No path extensions available for full circles."
-                )
+                msg = translate("CAM_Slot", "No path extensions available for full circles.")
                 FreeCAD.Console.PrintWarning(msg + "\n")
         else:
             # Arc segment
@@ -742,9 +732,7 @@ class ObjectSlot(PathOp.ObjectOp):
             cmds = list()
             (st_pt, end_pt, arcCmd) = POINTS
             # cmds.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
-            cmds.append(
-                Path.Command("G0", {"X": st_pt.x, "Y": st_pt.y, "F": self.horizRapid})
-            )
+            cmds.append(Path.Command("G0", {"X": st_pt.x, "Y": st_pt.y, "F": self.horizRapid}))
             cmds.append(Path.Command("G1", {"Z": depth, "F": self.vertFeed}))
             vtc = self.arcCenter.sub(st_pt)  # vector to center
             cmds.append(
@@ -768,9 +756,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 for depth in self.depthParams:
                     CMDS.extend(arcPass(PATHS[path_index], depth))
                     CMDS.append(
-                        Path.Command(
-                            "G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}
-                        )
+                        Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
                     )
             elif obj.CutPattern == "ZigZag":
                 i = 0
@@ -781,9 +767,7 @@ class ObjectSlot(PathOp.ObjectOp):
                         CMDS.extend(arcPass(PATHS[not path_index], depth))
                     i += 1
         # Raise to SafeHeight when finished
-        CMDS.append(
-            Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-        )
+        CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
         if self.isDebug:
             Path.Log.debug("G-code arc command is: {}".format(PATHS[path_index][2]))
@@ -808,16 +792,10 @@ class ObjectSlot(PathOp.ObjectOp):
             if perpZero:
                 (p1, p2) = pnts
                 initPerpDist = p1.sub(p2).Length
-                pnts = self._makePerpendicular(
-                    p1, p2, initPerpDist
-                )  # 10.0 offset below
+                pnts = self._makePerpendicular(p1, p2, initPerpDist)  # 10.0 offset below
         else:
             # Modify path points if user selected two parallel edges
-            if (
-                featureCnt == 2
-                and self.shapeType1 == "Edge"
-                and self.shapeType2 == "Edge"
-            ):
+            if featureCnt == 2 and self.shapeType1 == "Edge" and self.shapeType2 == "Edge":
                 if self.featureDetails[0] == "arc" and self.featureDetails[1] == "arc":
                     perpZero = False
                 elif self._isParallel(self.dYdX1, self.dYdX2):
@@ -826,14 +804,10 @@ class ObjectSlot(PathOp.ObjectOp):
                     edg1_len = self.shape1.Length
                     edg2_len = self.shape2.Length
                     set_length = max(edg1_len, edg2_len)
-                    pnts = self._makePerpendicular(
-                        p1, p2, 10.0 + set_length
-                    )  # 10.0 offset below
+                    pnts = self._makePerpendicular(p1, p2, 10.0 + set_length)  # 10.0 offset below
                     if edg1_len != edg2_len:
                         msg = obj.Label + " "
-                        msg += translate(
-                            "CAM_Slot", "Verify slot path start and end points."
-                        )
+                        msg += translate("CAM_Slot", "Verify slot path start and end points.")
                         FreeCAD.Console.PrintWarning(msg + "\n")
             else:
                 perpZero = False
@@ -883,9 +857,7 @@ class ObjectSlot(PathOp.ObjectOp):
         def linePass(p1, p2, depth):
             cmds = list()
             # cmds.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
-            cmds.append(
-                Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid})
-            )
+            cmds.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
             cmds.append(Path.Command("G1", {"Z": depth, "F": self.vertFeed}))
             cmds.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
             return cmds
@@ -893,42 +865,26 @@ class ObjectSlot(PathOp.ObjectOp):
         # CMDS.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
         if obj.LayerMode == "Single-pass":
             CMDS.extend(linePass(p1, p2, obj.FinalDepth.Value))
-            CMDS.append(
-                Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-            )
+            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
         else:
             if obj.CutPattern == "Line":
                 for dep in self.depthParams:
                     CMDS.extend(linePass(p1, p2, dep))
                     CMDS.append(
-                        Path.Command(
-                            "G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}
-                        )
+                        Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
                     )
             elif obj.CutPattern == "ZigZag":
-                CMDS.append(
-                    Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid})
-                )
+                CMDS.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
                 i = 0
                 for dep in self.depthParams:
                     if i % 2.0 == 0:  # even
                         CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
-                        CMDS.append(
-                            Path.Command(
-                                "G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}
-                            )
-                        )
+                        CMDS.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
                     else:  # odd
                         CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
-                        CMDS.append(
-                            Path.Command(
-                                "G1", {"X": p1.x, "Y": p1.y, "F": self.horizFeed}
-                            )
-                        )
+                        CMDS.append(Path.Command("G1", {"X": p1.x, "Y": p1.y, "F": self.horizFeed}))
                     i += 1
-            CMDS.append(
-                Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-            )
+            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
         return CMDS
 
@@ -1008,9 +964,7 @@ class ObjectSlot(PathOp.ObjectOp):
 
         # Reject triangular faces
         if len(shape.Edges) < 4:
-            msg = translate(
-                "CAM_Slot", "A single selected face must have four edges minimum."
-            )
+            msg = translate("CAM_Slot", "A single selected face must have four edges minimum.")
             FreeCAD.Console.PrintError(msg + "\n")
             return False
 
@@ -1060,10 +1014,8 @@ class ObjectSlot(PathOp.ObjectOp):
 
         if self.isDebug:
             Path.Log.debug(" -pairCnt: {}".format(pairCnt))
-            for (a, b) in parallel_edge_pairs:
-                Path.Log.debug(
-                    " -pair: {}, {}".format(round(a.Length, 4), round(b.Length, 4))
-                )
+            for a, b in parallel_edge_pairs:
+                Path.Log.debug(" -pair: {}, {}".format(round(a.Length, 4), round(b.Length, 4)))
             Path.Log.debug(" -parallel_edge_flags: {}".format(parallel_edge_flags))
 
         if pairCnt == 0:
@@ -1401,9 +1353,7 @@ class ObjectSlot(PathOp.ObjectOp):
             norm = shape.normalAt(0.0, 0.0)
             # FreeCAD.Console.PrintMessage('{} normal {}.\n'.format(sub, norm))
             if norm.z != 0:
-                msg = translate(
-                    "CAM_Slot", "The selected face is not oriented vertically:"
-                )
+                msg = translate("CAM_Slot", "The selected face is not oriented vertically:")
                 FreeCAD.Console.PrintError(msg + " {}.\n".format(sub))
                 return False
 
@@ -1478,7 +1428,9 @@ class ObjectSlot(PathOp.ObjectOp):
 
             beginRadians = self._getVectorAngle(p1.sub(self.arcCenter))
             if begExt < 0:
-                beginRadians += 0  # negative Ext shortens slot so chord endpoint is slot start point
+                beginRadians += (
+                    0  # negative Ext shortens slot so chord endpoint is slot start point
+                )
             else:
                 beginRadians -= (
                     2 * ExtRadians
@@ -1759,9 +1711,7 @@ class ObjectSlot(PathOp.ObjectOp):
                 face = Part.Face(wires[0])
                 if face.Area > 0:
                     face.translate(
-                        FreeCAD.Vector(
-                            0.0, 0.0, shape.BoundBox.ZMin - face.BoundBox.ZMin
-                        )
+                        FreeCAD.Vector(0.0, 0.0, shape.BoundBox.ZMin - face.BoundBox.ZMin)
                     )
                     return ("Face", face)
             return ("Wire", wires[0])
@@ -1915,9 +1865,7 @@ class ObjectSlot(PathOp.ObjectOp):
             newRadius = arcRadius - rad
             # Path.Log.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
             if newRadius <= 0:
-                msg = translate(
-                    "CAM_Slot", "Current offset value produces negative radius."
-                )
+                msg = translate("CAM_Slot", "Current offset value produces negative radius.")
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False
             else:
@@ -1929,9 +1877,7 @@ class ObjectSlot(PathOp.ObjectOp):
             newRadius = arcRadius + rad
             # Path.Log.debug('arcRadius, newRadius: {}, {}'.format(arcRadius, newRadius))
             if newRadius <= 0:
-                msg = translate(
-                    "CAM_Slot", "Current offset value produces negative radius."
-                )
+                msg = translate("CAM_Slot", "Current offset value produces negative radius.")
                 FreeCAD.Console.PrintError(msg + "\n")
                 return False
             else:

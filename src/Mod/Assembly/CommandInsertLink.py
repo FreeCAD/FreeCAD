@@ -80,7 +80,6 @@ class CommandInsertLink:
         if not assembly:
             return
         view = Gui.activeDocument().activeView()
-
         self.panel = TaskAssemblyInsertLink(assembly, view)
         Gui.Control.showDialog(self.panel)
 
@@ -125,7 +124,32 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         # if self.partMoving:
         #    self.endMove()
+        Gui.addModule("UtilsAssembly")
+        commands = "assembly = UtilsAssembly.activeAssembly()\n"
+        for insertionItem in self.insertionStack:
+            object = insertionItem["addedObject"]
+            translation = insertionItem["translation"]
+            commands = commands + (
+                f'item = assembly.newObject("App::Link", "{object.Name}")\n'
+                f'item.LinkedObject = App.ActiveDocument.getObject("{object.LinkedObject.Name}")\n'
+                f'item.Label = "{object.Label}"\n'
+            )
 
+            if translation != App.Vector():
+                commands = commands + (
+                    f"item.Placement.base = App.Vector({translation.x}."
+                    f"{translation.y},"
+                    f"{translation.z})\n"
+                )
+
+        # Ground the first item if that happened
+        if self.groundedObj:
+            commands = (
+                commands
+                + f'CommandCreateJoint.createGroundedJoint(App.ActiveDocument.getObject("{self.groundedObj.Name}"))\n'
+            )
+
+        Gui.doCommandSkip(commands[:-1])  # Get rid of last \n
         App.closeActiveTransaction()
         return True
 

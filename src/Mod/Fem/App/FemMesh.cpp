@@ -82,39 +82,35 @@ using namespace Fem;
 using namespace Base;
 using namespace boost;
 
-#if SMESH_VERSION_MAJOR < 9
-static int StatCount = 0;
-#endif
-
 SMESH_Gen* FemMesh::_mesh_gen = nullptr;
 
 TYPESYSTEM_SOURCE(Fem::FemMesh, Base::Persistence)
 
 FemMesh::FemMesh()
+    : myMesh(nullptr)
+    , myStudyId(0)
 {
-    // Base::Console().Log("FemMesh::FemMesh():%p (id=%i)\n",this,StatCount);
-    //  create a mesh always with new StudyId to avoid overlapping destruction
 #if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);
 #else
-    myMesh = getGenerator()->CreateMesh(StatCount++, false);
+    myMesh = getGenerator()->CreateMesh(myStudyId, false);
 #endif
 }
 
 FemMesh::FemMesh(const FemMesh& mesh)
+    : myMesh(nullptr)
+    , myStudyId(0)
 {
 #if SMESH_VERSION_MAJOR >= 9
     myMesh = getGenerator()->CreateMesh(false);
 #else
-    myMesh = getGenerator()->CreateMesh(StatCount++, false);
+    myMesh = getGenerator()->CreateMesh(myStudyId, false);
 #endif
     copyMeshData(mesh);
 }
 
 FemMesh::~FemMesh()
 {
-    // Base::Console().Log("FemMesh::~FemMesh():%p\n",this);
-
     try {
         TopoDS_Shape aNull;
         myMesh->ShapeToMesh(aNull);
@@ -132,7 +128,7 @@ FemMesh& FemMesh::operator=(const FemMesh& mesh)
 #if SMESH_VERSION_MAJOR >= 9
         myMesh = getGenerator()->CreateMesh(true);
 #else
-        myMesh = getGenerator()->CreateMesh(0, true);
+        myMesh = getGenerator()->CreateMesh(myStudyId, true);
 #endif
         copyMeshData(mesh);
     }
@@ -537,75 +533,41 @@ void FemMesh::addHypothesis(const TopoDS_Shape& aSubShape, SMESH_HypothesisPtr h
 
 void FemMesh::setStandardHypotheses()
 {
-    if (!hypoth.empty()) {
+    TopoDS_Shape shape = getSMesh()->GetShapeToMesh();
+    if (shape.IsNull()) {
         return;
     }
-#if SMESH_VERSION_MAJOR >= 9
+
     int hyp = 0;
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, getGenerator()));
+
+    auto len = createHypothesis<StdMeshers_MaxLength>(hyp++);
     static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
-    hypoth.push_back(len);
+    addHypothesis(shape, len);
 
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, getGenerator()));
+    auto loc = createHypothesis<StdMeshers_LocalLength>(hyp++);
     static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
-    hypoth.push_back(loc);
+    addHypothesis(shape, loc);
 
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, getGenerator()));
+    auto area = createHypothesis<StdMeshers_MaxElementArea>(hyp++);
     static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
-    hypoth.push_back(area);
+    addHypothesis(shape, area);
 
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, getGenerator()));
+    auto segm = createHypothesis<StdMeshers_NumberOfSegments>(hyp++);
     static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
-    hypoth.push_back(segm);
+    addHypothesis(shape, segm);
 
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, getGenerator()));
+    auto defl = createHypothesis<StdMeshers_Deflection1D>(hyp++);
     static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
-    hypoth.push_back(defl);
+    addHypothesis(shape, defl);
 
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, getGenerator()));
-    hypoth.push_back(reg);
+    auto reg = createHypothesis<StdMeshers_Regular_1D>(hyp++);
+    addHypothesis(shape, reg);
 
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++, getGenerator()));
-    hypoth.push_back(qdp);
+    auto qdp = createHypothesis<StdMeshers_QuadranglePreference>(hyp++);
+    addHypothesis(shape, qdp);
 
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++, getGenerator()));
-    hypoth.push_back(q2d);
-#else
-    int hyp = 0;
-    SMESH_HypothesisPtr len(new StdMeshers_MaxLength(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_MaxLength*>(len.get())->SetLength(1.0);
-    hypoth.push_back(len);
-
-    SMESH_HypothesisPtr loc(new StdMeshers_LocalLength(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_LocalLength*>(loc.get())->SetLength(1.0);
-    hypoth.push_back(loc);
-
-    SMESH_HypothesisPtr area(new StdMeshers_MaxElementArea(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_MaxElementArea*>(area.get())->SetMaxArea(1.0);
-    hypoth.push_back(area);
-
-    SMESH_HypothesisPtr segm(new StdMeshers_NumberOfSegments(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_NumberOfSegments*>(segm.get())->SetNumberOfSegments(1);
-    hypoth.push_back(segm);
-
-    SMESH_HypothesisPtr defl(new StdMeshers_Deflection1D(hyp++, 1, getGenerator()));
-    static_cast<StdMeshers_Deflection1D*>(defl.get())->SetDeflection(0.01);
-    hypoth.push_back(defl);
-
-    SMESH_HypothesisPtr reg(new StdMeshers_Regular_1D(hyp++, 1, getGenerator()));
-    hypoth.push_back(reg);
-
-    SMESH_HypothesisPtr qdp(new StdMeshers_QuadranglePreference(hyp++, 1, getGenerator()));
-    hypoth.push_back(qdp);
-
-    SMESH_HypothesisPtr q2d(new StdMeshers_Quadrangle_2D(hyp++, 1, getGenerator()));
-    hypoth.push_back(q2d);
-#endif
-
-    // Apply hypothesis
-    for (int i = 0; i < hyp; i++) {
-        myMesh->AddHypothesis(myMesh->GetShapeToMesh(), i);
-    }
+    auto q2d = createHypothesis<StdMeshers_Quadrangle_2D>(hyp++);
+    addHypothesis(shape, q2d);
 }
 
 void FemMesh::compute()

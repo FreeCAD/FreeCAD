@@ -148,7 +148,6 @@ public:
      * @return bool whether or not a direction is found.
      */
     virtual bool getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname = nullptr) const;
-#ifdef FC_USE_TNP_FIX
     /** Search sub element using internal cached geometry
      *
      * @param element: element name
@@ -180,12 +179,14 @@ public:
     /// Return the higher level element names of the given element
     virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
 
+    static Base::Placement getPlacementFromProp(DocumentObject* obj, const char* propName);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, DocumentObject* rootObj, const std::string& sub);
+    static Base::Placement getGlobalPlacement(DocumentObject* targetObj, PropertyXLinkSub* prop);
+
 protected:
     void onChanged(const Property* prop) override;
 //    void onDocumentRestored() override;
     void updateElementReference();
-#endif
-
 protected:
     ElementNamePair _getElementName(const char* name,
                                     const Data::MappedElement& mapped) const;

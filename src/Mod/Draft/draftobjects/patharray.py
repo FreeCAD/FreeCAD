@@ -475,14 +475,17 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         end = endOffset
 
     cdist = cdist - start - end
-    step = cdist / (count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1)
+    count = max(count, 1)
+    n = count if (DraftGeomUtils.isReallyClosed(pathwire) and not (start or end)) else count - 1
+    n = max(n, 1)
+    step = cdist / n
     remains = 0
     travel = start
     placements = []
 
-    for i in range(0, count):
+    for i in range(count):
         # which edge in path should contain this shape?
-        for j in range(0, len(ends)):
+        for j in range(len(ends)):
             if travel <= ends[j]:
                 iend = j
                 remains = ends[iend] - travel

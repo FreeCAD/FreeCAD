@@ -22,11 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
 # include <QComboBox>
 # include <QGraphicsProxyWidget>
 # include <QLineEdit>
 #endif
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -84,6 +86,7 @@ std::string SvgString::finish()
 //===========================================================================
 
 TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName) :
+    currentIcon(nullptr),
     ui(new Ui_TaskSurfaceFinishSymbols)
 {
     App::Document *doc = App::GetApplication().getActiveDocument();
@@ -141,26 +144,39 @@ TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName)
     setUiEdit();
 }
 
+QColor TaskSurfaceFinishSymbols::getPenColor()
+{
+    // TODO: should be dependent on global API giving pen color - not from hacking stylesheet name
+    const std::string stylesheetName = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("StyleSheet");
+    if(boost::icontains(stylesheetName, "dark")) {
+        return Qt::white;
+    }
+    return Qt::black;
+}
+
 QPixmap TaskSurfaceFinishSymbols::baseSymbol(symbolType type)
 // return QPixmap showing a base symbol
 {
     QImage img (50, 64, QImage::Format_ARGB32_Premultiplied);
-    img.fill(QColor(240, 240, 240));
+    img.fill(Qt::transparent);
+
+    // TODO: color should depend on theme/background
     QPainter painter;
     painter.begin(&img);
-    painter.setPen(QPen(Qt::black, 2, Qt::SolidLine,
+    painter.setPen(QPen(getPenColor(), 2, Qt::SolidLine,
                         Qt::RoundCap, Qt::RoundJoin));
     painter.setRenderHints(QPainter::Antialiasing |
                            QPainter::SmoothPixmapTransform |
                            QPainter::TextAntialiasing);
-    painter.drawLine(QLine(0, 44, 12, 64));
-    painter.drawLine(QLine(12, 64, 42, 14));
+    painter.drawLine(QLine(0, 40, 12, 60));
+    painter.drawLine(QLine(12, 60, 42, 10));
     if (type == removeProhibit || type == removeProhibitAll)
-        painter.drawEllipse(QPoint(12, 46), 9,9);
+        painter.drawEllipse(QPoint(12, 42), 9,9);
     if (type == removeRequired || type == removeRequiredAll)
-        painter.drawLine(QLine(0, 44, 24, 44));
+        painter.drawLine(QLine(0, 40, 24, 40));
     if (type > removeRequired)
-        painter.drawEllipse(QPoint(42, 14), 6,6);
+        painter.drawEllipse(QPoint(42, 10), 6,6);
     painter.end();
     return QPixmap::fromImage(img);
 }
@@ -235,12 +251,26 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     ui->pbIcon04->setIcon(baseSymbol(anyMethodAll));
     ui->pbIcon05->setIcon(baseSymbol(removeProhibitAll));
     ui->pbIcon06->setIcon(baseSymbol(removeRequiredAll));
+
+    int w = ui->pbIcon01->width();
+    int h = ui->pbIcon01->height();
+    ui->pbIcon01->setIconSize(QSize(w, h));
+    ui->pbIcon02->setIconSize(QSize(w, h));
+    ui->pbIcon03->setIconSize(QSize(w, h));
+    ui->pbIcon04->setIconSize(QSize(w, h));
+    ui->pbIcon05->setIconSize(QSize(w, h));
+    ui->pbIcon06->setIconSize(QSize(w, h));
+
+
     activeIcon = anyMethod ;
     isISO = true;
 
     // Create scene and all items used in the scene
     symbolScene = new(QGraphicsScene);
+    // symbolScene->setBackgroundBrush(Qt::blue);
+    ui->graphicsView->setBackgroundBrush(Qt::NoBrush);
     ui->graphicsView->setScene(symbolScene);
+
     // QLineEdit showing method
     leMethod = new(QLineEdit);
     leMethod->resize(90, 20);
@@ -252,7 +282,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     leAddition->resize(25, 20);
     leAddition->setToolTip(QObject::tr("Addition"));
     QGraphicsProxyWidget* proxyAddition = symbolScene->addWidget(leAddition);
-    proxyAddition->setPos(-80, -85);
+    proxyAddition->setPos(-110, -85);
     proxyAddition->setZValue(-2);
     // QComboBox showing RA values
     cbRA = new(QComboBox);
@@ -284,7 +314,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
         cbMinRought->addItem(QString::fromStdString(nextGrade));
     cbMinRought->setToolTip(QObject::tr("Minimum roughness grade number"));
     proxyMinRough = symbolScene->addWidget(cbMinRought);
-    proxyMinRough->setPos(-80, -118);
+    proxyMinRough->setPos(-100, -118);
     proxyMinRough-> setZValue(1);
     proxyMinRough->hide();
     // QComboBox showing maximal roughness grade
@@ -294,20 +324,13 @@ void TaskSurfaceFinishSymbols::setUiEdit()
         cbMaxRought->addItem(QString::fromStdString(nextGrade));
     cbMaxRought->setToolTip(QObject::tr("Maximum roughness grade number"));
     proxyMaxRough = symbolScene->addWidget(cbMaxRought);
-    proxyMaxRough->setPos(-80, -143);
+    proxyMaxRough->setPos(-100, -143);
     proxyMaxRough->setZValue(1);
     proxyMaxRough->hide();
     // add horizontal line
     symbolScene->addLine(QLine(-8, -116, 90, -116),
-                         QPen(Qt::black, 2,Qt::SolidLine,
+                         QPen(getPenColor(), 2,Qt::SolidLine,
                          Qt::RoundCap, Qt::RoundJoin));
-    // add pixmap of the surface finish symbol
-    QIcon symbolIcon = ui->pbIcon01->icon();
-    QGraphicsPixmapItem* pixmapItem = new(QGraphicsPixmapItem);
-    pixmapItem->setPixmap(symbolIcon.pixmap(50, 64));
-    pixmapItem->setPos(-50, -130);
-    pixmapItem->setZValue(-1);
-    symbolScene->addItem(pixmapItem);
 
     connect(ui->pbIcon01, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
     connect(ui->pbIcon02, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
@@ -317,6 +340,9 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     connect(ui->pbIcon06, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
     connect(ui->rbISO, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onISO);
     connect(ui->rbASME, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onASME);
+
+    // set initial icon
+    ui->pbIcon01->click();
 }
 
 void TaskSurfaceFinishSymbols::onIconChanged()
@@ -336,11 +362,14 @@ void TaskSurfaceFinishSymbols::onIconChanged()
     if (ui->pbIcon06 == pressedButton) activeIcon = removeRequiredAll;
 
     QIcon symbolIcon = pressedButton->icon();
-    QGraphicsPixmapItem* pixmapItem = new(QGraphicsPixmapItem);
-    pixmapItem->setPixmap(symbolIcon.pixmap(50, 64));
-    pixmapItem->setPos(-50, -130);
-    pixmapItem->setZValue(-1);
-    symbolScene->addItem(pixmapItem);
+    if(currentIcon) {
+        symbolScene->removeItem(currentIcon);
+    }
+    currentIcon = new(QGraphicsPixmapItem);
+    currentIcon->setPixmap(symbolIcon.pixmap(50, 64));
+    currentIcon->setPos(-50, -126);
+    currentIcon->setZValue(-1);
+    symbolScene->addItem(currentIcon);
 }
 
 void TaskSurfaceFinishSymbols::onISO()

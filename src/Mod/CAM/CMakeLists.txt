@@ -292,6 +292,7 @@ SET(Tests_SRCS
     Tests/boxtest1.fcstd
     Tests/Drilling_1.FCStd
     Tests/drill_test1.FCStd
+    Tests/FilePathTestUtils.py
     Tests/PathTestUtils.py
     Tests/test_adaptive.fcstd
     Tests/test_profile.fcstd

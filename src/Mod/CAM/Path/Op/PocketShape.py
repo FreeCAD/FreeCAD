@@ -34,9 +34,7 @@ Part = LazyLoader("Part", globals(), "Part")
 TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
 math = LazyLoader("math", globals(), "math")
 PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
-FeatureExtensions = LazyLoader(
-    "Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension"
-)
+FeatureExtensions = LazyLoader("Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension")
 
 
 __title__ = "CAM Pocket Shape Operation"
@@ -65,9 +63,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 "App::PropertyBool",
                 "UseOutline",
                 "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Uses the outline of the base geometry."
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."),
             )
 
         FeatureExtensions.initialize_properties(obj)
@@ -105,14 +101,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Path.Log.debug("base items exist.  Processing...")
             self.horiz = []
             self.vert = []
-            for (base, subList) in obj.Base:
+            for base, subList in obj.Base:
                 for sub in subList:
                     if "Face" in sub:
                         if sub not in avoidFeatures and not self.clasifySub(base, sub):
                             Path.Log.error(
-                                "Pocket does not support shape {}.{}".format(
-                                    base.Label, sub
-                                )
+                                "Pocket does not support shape {}.{}".format(base.Label, sub)
                             )
 
             # Convert horizontal faces to use outline only if requested
@@ -158,26 +152,19 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 buffer = self.job.GeometryTolerance.Value / 10.0
             for h in self.horizontal:
                 h.translate(
-                    FreeCAD.Vector(
-                        0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin - buffer
-                    )
+                    FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin - buffer)
                 )
 
             # extrude all faces up to StartDepth plus buffer and those are the removal shapes
-            extent = FreeCAD.Vector(
-                0, 0, obj.StartDepth.Value - obj.FinalDepth.Value + buffer
-            )
+            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value + buffer)
             self.removalshapes = [
-                (face.removeSplitter().extrude(extent), False)
-                for face in self.horizontal
+                (face.removeSplitter().extrude(extent), False) for face in self.horizontal
             ]
 
         else:  # process the job base object as a whole
             Path.Log.debug("processing the whole job base object")
             self.outlines = [
-                Part.Face(
-                    TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1))
-                )
+                Part.Face(TechDraw.findShapeOutline(base.Shape, 1, FreeCAD.Vector(0, 0, 1)))
                 for base in self.model
             ]
             stockBB = self.stock.Shape.BoundBox
@@ -232,9 +219,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             else:
                 return False
 
-        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(
-            face.Surface.Axis
-        ):
+        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(face.Surface.Axis):
             Path.Log.debug("type() == Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
@@ -242,9 +227,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 # complete cylinder
                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                 disk = Part.Face(Part.Wire(circle))
-                disk.translate(
-                    FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin)
-                )
+                disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
                 self.horiz.append(disk)
                 return True
 
@@ -274,9 +257,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
 def SetupProperties():
     setup = PathPocketBase.SetupProperties()  # Add properties from PocketBase module
-    setup.extend(
-        FeatureExtensions.SetupProperties()
-    )  # Add properties from Extensions Feature
+    setup.extend(FeatureExtensions.SetupProperties())  # Add properties from Extensions Feature
 
     # Add properties initialized here in PocketShape
     setup.append("UseOutline")

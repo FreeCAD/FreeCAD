@@ -68,12 +68,17 @@ PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
     static const std::array<const char*, 3> kwlist {"stock", "resolution", nullptr};
     PyObject* pObjStock;
     float resolution;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds,"O!f",
-        kwlist, &(Part::TopoShapePy::Type), &pObjStock, &resolution)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "O!f",
+                                             kwlist,
+                                             &(Part::TopoShapePy::Type),
+                                             &pObjStock,
+                                             &resolution)) {
         return nullptr;
     }
     CAMSim* sim = getCAMSimPtr();
-    Part::TopoShape* stock = static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
+    const Part::TopoShape& stock = *static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
     sim->BeginSimulation(stock, resolution);
     Py_IncRef(Py_None);
     return Py_None;
@@ -81,14 +86,23 @@ PyObject* CAMSimPy::BeginSimulation(PyObject* args, PyObject* kwds)
 
 PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
 {
-    static const std::array<const char*, 5> kwlist {
-        "shape", "toolnumber", "diameter", "resolution", nullptr};
+    static const std::array<const char*, 5> kwlist {"shape",
+                                                    "toolnumber",
+                                                    "diameter",
+                                                    "resolution",
+                                                    nullptr};
     PyObject* pObjToolShape;
     int toolNumber;
     float resolution;
     float diameter;
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "Oiff", kwlist, &pObjToolShape,
-         &toolNumber, &diameter, &resolution)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "Oiff",
+                                             kwlist,
+                                             &pObjToolShape,
+                                             &toolNumber,
+                                             &diameter,
+                                             &resolution)) {
         return nullptr;
     }
     // The tool shape is defined by a list of 2d points that represents the tool revolving profile
@@ -102,6 +116,33 @@ PyObject* CAMSimPy::AddTool(PyObject* args, PyObject* kwds)
     CAMSim* sim = getCAMSimPtr();
     sim->addTool(toolProfile, toolNumber, diameter, resolution);
 
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* CAMSimPy::SetBaseShape(PyObject* args, PyObject* kwds)
+{
+    static const std::array<const char*, 3> kwlist {"shape", "resolution", nullptr};
+    PyObject* pObjBaseShape;
+    float resolution;
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "O!f",
+                                             kwlist,
+                                             &(Part::TopoShapePy::Type),
+                                             &pObjBaseShape,
+                                             &resolution)) {
+        return nullptr;
+    }
+    if (!PyArg_ParseTuple(args, "O!f", &(Part::TopoShapePy::Type), &pObjBaseShape, &resolution)) {
+        return nullptr;
+    }
+    CAMSim* sim = getCAMSimPtr();
+    const Part::TopoShape& baseShape =
+        static_cast<Part::TopoShapePy*>(pObjBaseShape)->getTopoShapePtr()->getShape();
+    sim->SetBaseShape(baseShape, resolution);
+
+    Py_IncRef(Py_None);
     return Py_None;
 }
 
@@ -114,6 +155,8 @@ PyObject* CAMSimPy::AddCommand(PyObject* args)
     CAMSim* sim = getCAMSimPtr();
     Path::Command* cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
     sim->AddCommand(cmd);
+
+    Py_INCREF(Py_None);
     return Py_None;
 }
 

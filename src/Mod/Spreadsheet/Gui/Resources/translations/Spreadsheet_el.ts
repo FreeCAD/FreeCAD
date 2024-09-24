@@ -652,7 +652,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Κείμενο για τη μονάδα</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -716,19 +716,19 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Η αντιγραφή &amp; επικόλληση απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Το ψευδώνυμο περιέχει μη έγκυρους χαρακτήρες!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Ανατρέξτε στο κελί με το ψευδώνυμο, για παράδειγμα
 Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
@@ -1117,12 +1117,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Εξαγωγή σε PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>Αρχείο PDF</translation>
     </message>
@@ -1153,7 +1153,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>

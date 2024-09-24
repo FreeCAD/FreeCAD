@@ -728,19 +728,19 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Kopioi ja liitä epäonnistui</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="485"/>
+      <location filename="../../SpreadsheetView.cpp" line="488"/>
       <source>Alias contains invalid characters!</source>
       <translation>Vaihtoehtoinen nimi (alias) sisältää virheellisiä merkkejä!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="491"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Viittaa soluihin vaihtoehtoisella nimellä (alias), esimerkiksi
 Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
       <translation>Laskentataulukko</translation>
     </message>
@@ -1129,12 +1129,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="294"/>
+      <location filename="../../SpreadsheetView.cpp" line="297"/>
       <source>Export PDF</source>
       <translation>Vie PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="296"/>
+      <location filename="../../SpreadsheetView.cpp" line="299"/>
       <source>PDF file</source>
       <translation>PDF-tiedosto</translation>
     </message>
@@ -1165,7 +1165,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
       <translation>Nimetön</translation>
     </message>

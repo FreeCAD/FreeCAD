@@ -1011,12 +1011,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Spooles equation solver</source>
-      <translation type="unfinished">Spooles equation solver</translation>
+      <translation>Spooles ტოლობის ამომხსნელი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
       <source>Cholesky iterative solver</source>
-      <translation type="unfinished">Cholesky iterative solver</translation>
+      <translation>ჩოლესკის იტერაციული ამომხსნელი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
@@ -1107,7 +1107,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
       <source>Multi-core CPU support:</source>
-      <translation type="unfinished">Multi-core CPU support:</translation>
+      <translation>მრავალნაკადიანი CPU-ის მხარდაჭერა:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1278,7 +1278,7 @@ the constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
       <source>Working directory for solving analysis and Gmsh meshing</source>
-      <translation type="unfinished">Working directory for solving analysis and Gmsh meshing</translation>
+      <translation>Gmsh მეშინგისა და ამოხსნის ანალიზის სამუშაო საქაღალდე</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="48"/>
@@ -1374,7 +1374,7 @@ when the results dialog is opened</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
       <source>Hide analysis features when opening result dialog</source>
-      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
+      <translation>ანალიზის თვისებების დამალვა შედეგის დიალოგური ფანჯრის გახსნისას</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1424,7 +1424,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="99"/>
       <source>Leave blank to use default Gmsh binary file</source>
-      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
+      <translation>ნაგულისხმევი Gmsh გამშვები ფაილის გამოსაყენებლად დატოვეთ ცარიელი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
@@ -1578,7 +1578,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
       <source>Leave blank to use default Z88, z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default Z88, z88r binary file</translation>
+      <translation>ნაგულისხმევი Z88 ან z88r გამშვები ფაილის გამოსაყენებლად დატოვეთ ცარიელი</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1700,13 +1700,13 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="217"/>
-      <location filename="../../TaskFemConstraint.cpp" line="235"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="218"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>აუცილებელია მიუთითოთ ერთი ბმა მაინც</translation>
     </message>
@@ -1714,7 +1714,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="381"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="376"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1730,7 +1730,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="739"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="602"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1738,7 +1738,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1097"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1092"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1746,7 +1746,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="467"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="462"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1762,7 +1762,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="530"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="525"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1778,7 +1778,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="312"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1794,7 +1794,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="326"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1802,7 +1802,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="390"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="385"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1810,7 +1810,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="609"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="604"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -1852,7 +1852,7 @@ Specify another file please.</source>
       <translation>ანალიზის თვისების მორგება</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="150"/>
+      <location filename="../../TaskFemConstraint.cpp" line="170"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
@@ -1982,28 +1982,28 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="318"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="328"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="366"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="288"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Selection error</source>
       <translation>მონიშნულის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="318"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="311"/>
       <source>Nothing selected!</source>
       <translation>არაფერია მონიშნული!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="328"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="399"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="250"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="321"/>
       <source>Selected object is not a part!</source>
       <translation>მონიშნული ობიექტი ნაწილი არაა!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="364"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="286"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
       <translation>ერთ ანალიზის თვისებას, მხოლოდ ერთი მონიშნული ტიპი (წვერო, ზედაპირი ან წიბო) შეიძლება, ჰქონდეს!</translation>
     </message>
@@ -2072,7 +2072,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="512"/>
       <source>Length Scale [m]</source>
-      <translation type="unfinished">Length Scale [m]</translation>
+      <translation>სიგრძის მასშტაბი [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="515"/>
@@ -2631,12 +2631,12 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
       <source>Use FreeCAD material editor</source>
-      <translation type="unfinished">Use FreeCAD material editor</translation>
+      <translation>'FreeCAD'-ის მასალების რედაქტორის გამოყენება</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
       <source>Use this task panel</source>
-      <translation type="unfinished">Use this task panel</translation>
+      <translation>ამ ამოცანის პანელის გამოყენება</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2691,12 +2691,12 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="392"/>
       <source>Thermal Properties</source>
-      <translation type="unfinished">Thermal Properties</translation>
+      <translation>თერმული თვისებები</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="497"/>
       <source>Specific Heat Capacity:</source>
-      <translation type="unfinished">Specific Heat Capacity:</translation>
+      <translation>კუთრი თბოტევადობა:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="403"/>
@@ -2872,7 +2872,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
       <source>Head Loss [mm]</source>
-      <translation type="unfinished">Head Loss [mm]</translation>
+      <translation>დაწნევის დანაკარგი[მმ]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
@@ -3479,7 +3479,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameters</source>
-      <translation type="unfinished">FEM Mesh Parameters</translation>
+      <translation>სემ ბადის პარამეტრები</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -3492,33 +3492,27 @@ Note: for 2D only setting for x is possible,
       <translation>მაქს ელემენტის ზომა (0.0 = ავტომატური)</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="66"/>
-      <location filename="../ui/MeshGmsh.ui" line="110"/>
-      <source>0 mm</source>
-      <translation>0 მმ</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGmsh.ui" line="91"/>
+      <location filename="../ui/MeshGmsh.ui" line="88"/>
       <source>Min element size (0.0 = Auto):</source>
       <translation>მინ ელემენტის ზომა (0.0 = ავტომატური)</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="138"/>
+      <location filename="../ui/MeshGmsh.ui" line="132"/>
       <source>Element order:</source>
       <translation>ელემენტის რიგი:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="156"/>
+      <location filename="../ui/MeshGmsh.ui" line="150"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="181"/>
+      <location filename="../ui/MeshGmsh.ui" line="175"/>
       <source>Time:</source>
       <translation>დრო:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="207"/>
+      <location filename="../ui/MeshGmsh.ui" line="201"/>
       <source>Gmsh version</source>
       <translation>Gmsh-ის ვერსია</translation>
     </message>
@@ -3568,13 +3562,13 @@ Note: for 2D only setting for x is possible,
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="949"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="963"/>
       <source>A dialog is already open in the task panel</source>
       <translation>ფანჯარა უკვე ღიაა ამოცანების პანელზე</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="950"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="964"/>
       <source>Do you want to close this dialog?</source>
       <translation>ნამდვილად გსურთ ამ ფანჯრის დახურვა?</translation>
     </message>
@@ -3584,18 +3578,18 @@ Note: for 2D only setting for x is possible,
       <translation>ბადის აგება</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="179"/>
-      <location filename="../../AppFemGui.cpp" line="180"/>
       <location filename="../../AppFemGui.cpp" line="181"/>
       <location filename="../../AppFemGui.cpp" line="182"/>
       <location filename="../../AppFemGui.cpp" line="183"/>
       <location filename="../../AppFemGui.cpp" line="184"/>
+      <location filename="../../AppFemGui.cpp" line="185"/>
+      <location filename="../../AppFemGui.cpp" line="186"/>
       <source>FEM</source>
       <translation>სემ</translation>
     </message>
     <message>
-      <location filename="../../AppFemGui.cpp" line="187"/>
-      <location filename="../../AppFemGui.cpp" line="188"/>
+      <location filename="../../AppFemGui.cpp" line="189"/>
+      <location filename="../../AppFemGui.cpp" line="190"/>
       <source>Import-Export</source>
       <translation>შეტანა-გატანა</translation>
     </message>
@@ -4254,47 +4248,37 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="119"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="170"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="199"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="275"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="301"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="327"/>
-      <source>Fixed</source>
-      <translation>დამაგრებული</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="126"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="159"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="152"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="185"/>
       <source>Formulas are only valid
 for the Elmer solver</source>
       <translation>ფორმულები მხოლოდ
 Elmer ამოხსნელისთვისაა სწორი</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="130"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="163"/>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="210"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="123"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="156"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="189"/>
       <source>Formula</source>
       <translation>ფორმულა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="147"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="140"/>
       <source>Displacement y</source>
       <translation>გადაადგილება y</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="187"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="173"/>
       <source>Displacement z</source>
       <translation>გადაადგილება z</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="217"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="196"/>
       <source>mm</source>
       <translation>მმ</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="227"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="206"/>
       <source>Flow solution is used to determine
 surface force (and thus displacement)
 generated by the flow
@@ -4305,27 +4289,27 @@ generated by the flow
 (პარამეტრი მხოლოდ Elmer ამომხსნელს ეხება)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="233"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="212"/>
       <source>Surface force by flow</source>
       <translation>ნაკადის ზედაპირული ძალა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="253"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="232"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
       <translation>შემობრუნება შესაძლებელია მხოლოდ გარსის და კოჭის ტიპის ელემენტებისათვის.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="266"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation x</source>
       <translation>შებრუნება X</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="292"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation y</source>
       <translation>შებრუნება Y</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
+      <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation z</source>
       <translation>შებრუნება z</translation>
     </message>
@@ -4413,7 +4397,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
       <source>Temperature [K]</source>
-      <translation type="unfinished">Temperature [K]</translation>
+      <translation>ტემპერატურა[K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
@@ -5118,12 +5102,12 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
       <source>Number of Segments per Edge:</source>
-      <translation type="unfinished">Number of Segments per Edge:</translation>
+      <translation>სეგმენტების რაოდენობა თითოეული წიბოსთვის:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="146"/>
       <source>Number of Segments per Radius:</source>
-      <translation type="unfinished">Number of Segments per Radius:</translation>
+      <translation>სეგმენტების რაოდენობა თითო რადიუსზე:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="162"/>
@@ -5462,7 +5446,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
       <source>Creates a FEM equation for elasticity (stress)</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity (stress)</translation>
+      <translation>სემ განტოლების შექმნა ელასტიურობისთვის (სტრესი)</translation>
     </message>
   </context>
   <context>
@@ -5663,12 +5647,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="792"/>
+      <location filename="../../../femcommands/commands.py" line="798"/>
       <source>FEM mesh group</source>
       <translation>სემ ბადეების ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="793"/>
+      <location filename="../../../femcommands/commands.py" line="799"/>
       <source>Creates a FEM mesh group</source>
       <translation>სემ ბადის ჯგუფის შექმნა</translation>
     </message>
@@ -5676,12 +5660,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="805"/>
+      <location filename="../../../femcommands/commands.py" line="811"/>
       <source>FEM mesh from shape by Netgen</source>
       <translation>მონახაზიდან სემ ბადის Netgen-ის გამოყენებით შექმნა</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="809"/>
+      <location filename="../../../femcommands/commands.py" line="815"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>შექმნის სემ ბადის მყარი სხეულისაგან ან ზედაპირის მოხაზულობისგან Netgen შიდა მეშერით</translation>
     </message>
@@ -5689,12 +5673,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="861"/>
+      <location filename="../../../femcommands/commands.py" line="867"/>
       <source>Show result</source>
       <translation>შედეგების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="865"/>
+      <location filename="../../../femcommands/commands.py" line="871"/>
       <source>Shows and visualizes selected result data</source>
       <translation>შედეგის მონიშნული მონაცემების ჩვენება და ვიზუალიზაცია</translation>
     </message>
@@ -5702,12 +5686,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="877"/>
+      <location filename="../../../femcommands/commands.py" line="883"/>
       <source>Purge results</source>
       <translation>შედეგების გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="881"/>
+      <location filename="../../../femcommands/commands.py" line="887"/>
       <source>Purges all results from active analysis</source>
       <translation>აქტიური ანალიზის ყველა შედეგის წაშლა</translation>
     </message>
@@ -5715,12 +5699,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="991"/>
+      <location filename="../../../femcommands/commands.py" line="997"/>
       <source>Solver CalculiX Standard</source>
       <translation>ამომხსნელის CalculiX სტანდარტი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="996"/>
+      <location filename="../../../femcommands/commands.py" line="1002"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Cxx ხელსაწყოებით სტანდარტული CalculiX სემ ამომხსნელის შექმნა</translation>
     </message>
@@ -5728,12 +5712,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1044"/>
+      <location filename="../../../femcommands/commands.py" line="1050"/>
       <source>Solver job control</source>
       <translation>გადამწყვეტის ამოცანების კონტროლი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1049"/>
+      <location filename="../../../femcommands/commands.py" line="1055"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>ცვლის ამომხსნელის ატრიბუტებს და აწარმოებს გამოთვლებს არჩეული ამომხსნელისთვის</translation>
     </message>
@@ -5741,12 +5725,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1061"/>
+      <location filename="../../../femcommands/commands.py" line="1067"/>
       <source>Solver Elmer</source>
       <translation>გადამწყვეტი Elmder</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1063"/>
+      <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>სემ „Elmer“ ამოხსნელის შექმნა</translation>
     </message>
@@ -5754,12 +5738,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1074"/>
+      <location filename="../../../femcommands/commands.py" line="1080"/>
       <source>Solver Mystran</source>
       <translation>Mystran ამომხსნელი</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1082"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>სემ „Mystran“ ამოხსნელის შექმნა</translation>
     </message>
@@ -5767,12 +5751,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1086"/>
+      <location filename="../../../femcommands/commands.py" line="1092"/>
       <source>Run solver calculations</source>
       <translation>ამომხსნელის გამოთვლების გაშვება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1090"/>
+      <location filename="../../../femcommands/commands.py" line="1096"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>გამოთვლების არჩეული ამომხსნელით გაშვება</translation>
     </message>
@@ -5780,12 +5764,12 @@ used for the Elmer solver</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1106"/>
+      <location filename="../../../femcommands/commands.py" line="1112"/>
       <source>Solver Z88</source>
       <translation>გადამწყვეტი Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1108"/>
+      <location filename="../../../femcommands/commands.py" line="1114"/>
       <source>Creates a FEM solver Z88</source>
       <translation>სემ Z88 ამოხსნელისთვის ამოცანის შექმნა</translation>
     </message>
@@ -6022,7 +6006,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="501"/>
       <source>Creates a FEM equation for 2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates a FEM equation for 2D magnetodynamic forces</translation>
+      <translation>სემ განტოლების შექმნა 2D მაგნიტოდინამიკური ძალებისთვის</translation>
     </message>
   </context>
   <context>
@@ -6049,7 +6033,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="485"/>
       <source>Creates a FEM equation for magnetodynamic forces</source>
-      <translation type="unfinished">Creates a FEM equation for magnetodynamic forces</translation>
+      <translation>სემ განტოლების შექმნა მაგნიტოდინამიკური ძალებისთვის</translation>
     </message>
   </context>
   <context>
@@ -6129,7 +6113,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Creates a FEM equation for deformation (nonlinear elasticity)</source>
-      <translation type="unfinished">Creates a FEM equation for deformation (nonlinear elasticity)</translation>
+      <translation>ქმნის სემ ტოლობას დეფორმაციისთვის (არახაზოვანი ელასტიურობა)</translation>
     </message>
   </context>
   <context>
@@ -6227,12 +6211,12 @@ Please select a result type first.</source>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1019"/>
+      <location filename="../../../femcommands/commands.py" line="1025"/>
       <source>Solver CalculiX (new framework)</source>
       <translation>ამომხსნელი CalculiX-ი (ახალი framework)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1024"/>
+      <location filename="../../../femcommands/commands.py" line="1030"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>სემ ამომხსნელის CalculiX ახალი Framework-ით შექმნა (ნაკლები შედეგის შეცდომები)</translation>
     </message>
@@ -6383,12 +6367,12 @@ Please select a result type first.</source>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="850"/>
+      <location filename="../../../femcommands/commands.py" line="856"/>
       <source>FEM mesh refinement</source>
       <translation>სემ ბადის გაუმჯობესება</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="851"/>
+      <location filename="../../../femcommands/commands.py" line="857"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>სემ ბადის გაუმჯობესების შექმნა</translation>
     </message>
@@ -6533,13 +6517,13 @@ Please select a result type first.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per constraint allowed!</translation>
+      <translation>ერთ შეზღუდვას მხოლოდ ერთი მონიშნული ტიპი (წვერო, ზედაპირი ან წიბო) შეიძლება, ჰქონდეს!</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="748"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="743"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
@@ -6661,6 +6645,69 @@ Please select a result type first.</source>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Create Element set by Poly</source>
       <translation>მრავალკუთხედით დაყენებული ელემენტის შექმნა</translation>
+    </message>
+  </context>
+  <context>
+    <name>NetgenMesh</name>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="14"/>
+      <source>FEM Mesh by Netgen</source>
+      <translation>სემ ბადე Netgen-თ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="26"/>
+      <source>Mesh Parameters</source>
+      <translation>ბადის პარამეტრები</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="37"/>
+      <source>Fineness:</source>
+      <translation>სიზუსტე:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="47"/>
+      <source>Maximal Size:</source>
+      <translation>მაქსიმალური ზომა:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="88"/>
+      <source>Minimal Size:</source>
+      <translation>მინიმალური ზომა:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="129"/>
+      <source>Second Order</source>
+      <translation>მეორე რიგი</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="136"/>
+      <source>Growth Rate:</source>
+      <translation>ზრდის ტემპი:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="159"/>
+      <source>Curvature Safety:</source>
+      <translation>სიმრუდის უსაფრთხოება:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="176"/>
+      <source>Segments Per Edge:</source>
+      <translation>სეგმენტი თითოეული წიბოსთვის:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="204"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="229"/>
+      <source>Time:</source>
+      <translation>დრო:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="255"/>
+      <source>Netgen version</source>
+      <translation>Netgen-ის ვერსია</translation>
     </message>
   </context>
 </TS>

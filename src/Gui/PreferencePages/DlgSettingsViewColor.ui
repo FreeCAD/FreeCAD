@@ -342,9 +342,9 @@
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>0</blue>
+            <red>94</red>
+            <green>170</green>
+            <blue>35</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
@@ -373,11 +373,11 @@
           <property name="toolTip">
            <string>Background color for active containers in tree view</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color" stdset="0">rgb(60, 145, 252)
            <color>
-            <red>230</red>
-            <green>230</green>
-            <blue>255</blue>
+            <red>60</red>
+            <green>145</green>
+            <blue>252</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">

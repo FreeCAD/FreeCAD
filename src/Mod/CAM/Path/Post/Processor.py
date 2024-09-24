@@ -147,8 +147,7 @@ class PostProcessor:
                 c2 = Path.Command(
                     "G0 Z"
                     + str(
-                        job.Stock.Shape.BoundBox.ZMax
-                        + job.SetupSheet.ClearanceHeightOffset.Value
+                        job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value
                     )
                 )
                 fobj.Path.addCommands(c2)
@@ -278,9 +277,7 @@ class PostProcessor:
             return postlist
 
         Path.Log.track()
-        finalpostlist = [
-            ("allitems", [item for slist in postlist for item in slist[1]])
-        ]
+        finalpostlist = [("allitems", [item for slist in postlist for item in slist[1]])]
         Path.Log.debug(f"Postlist: {postlist}")
         return finalpostlist
 
@@ -289,9 +286,7 @@ class WrapperPost(PostProcessor):
     """Wrapper class for old post processors that are scripts."""
 
     def __init__(self, job, script_path, *args, **kwargs):
-        super().__init__(
-            job, tooltip=None, tooltipargs=None, units=None, *args, **kwargs
-        )
+        super().__init__(job, tooltip=None, tooltipargs=None, units=None, *args, **kwargs)
         self.script_path = script_path
         Path.Log.debug(f"WrapperPost.__init__({script_path})")
         self.load_script()
@@ -299,9 +294,7 @@ class WrapperPost(PostProcessor):
     def load_script(self):
         # Dynamically load the script as a module
         try:
-            spec = importlib.util.spec_from_file_location(
-                "script_module", self.script_path
-            )
+            spec = importlib.util.spec_from_file_location("script_module", self.script_path)
             self.script_module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(self.script_module)
         except Exception as e:
@@ -311,9 +304,7 @@ class WrapperPost(PostProcessor):
             raise AttributeError("The script does not have an 'export' function.")
 
         # Set properties based on attributes of the module
-        self._units = (
-            "Metric" if getattr(self.script_module, "UNITS", "G21") == "G21" else "Inch"
-        )
+        self._units = "Metric" if getattr(self.script_module, "UNITS", "G21") == "G21" else "Inch"
         self._tooltip = getattr(self.script_module, "TOOLTIP", "No tooltip provided")
         self._tooltipargs = getattr(self.script_module, "TOOLTIP_ARGS", [])
 

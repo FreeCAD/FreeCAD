@@ -81,9 +81,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.CutPattern != str(self.form.cutPattern.currentData()):
             obj.CutPattern = str(self.form.cutPattern.currentData())
 
-        PathGuiUtil.updateInputField(
-            obj, "BoundaryAdjustment", self.form.boundaryAdjustment
-        )
+        PathGuiUtil.updateInputField(obj, "BoundaryAdjustment", self.form.boundaryAdjustment)
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
@@ -102,15 +100,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.LayerMode, self.form.layerMode)
         self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.form.boundaryAdjustment.setText(
-            FreeCAD.Units.Quantity(
-                obj.BoundaryAdjustment.Value, FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(obj.BoundaryAdjustment.Value, FreeCAD.Units.Length).UserString
         )
         self.form.stepOver.setValue(obj.StepOver)
         self.form.sampleInterval.setText(
-            FreeCAD.Units.Quantity(
-                obj.SampleInterval.Value, FreeCAD.Units.Length
-            ).UserString
+            FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString
         )
 
         if obj.OptimizeLinearPaths:

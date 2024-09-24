@@ -143,6 +143,7 @@ DlgExtrusion::~DlgExtrusion()
 
 void DlgExtrusion::setupConnections()
 {
+    // clang-format off
     connect(ui->rbDirModeCustom, &QRadioButton::toggled,
             this, &DlgExtrusion::onDirModeCustomToggled);
     connect(ui->rbDirModeEdge, &QRadioButton::toggled,
@@ -161,6 +162,7 @@ void DlgExtrusion::setupConnections()
             this, &DlgExtrusion::onCheckSymmetricToggled);
     connect(ui->txtLink, &QLineEdit::textChanged,
             this, &DlgExtrusion::onTextLinkTextChanged);
+    // clang-format on
 }
 
 void DlgExtrusion::changeEvent(QEvent *e)

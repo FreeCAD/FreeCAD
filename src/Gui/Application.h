@@ -28,8 +28,6 @@
 #include <map>
 #include <string>
 
-#define  putpix()
-
 #include <App/Application.h>
 
 class QCloseEvent;
@@ -74,6 +72,8 @@ public:
     void exportTo(const char* FileName, const char* DocName, const char* Module);
     /// Reload a partial opened document
     App::Document *reopen(App::Document *doc);
+    /// Prompt about recomputing if needed
+    static void checkForRecomputes();
     //@}
 
 
@@ -338,6 +338,8 @@ public:
 
     static PyObject* sDoCommand                (PyObject *self,PyObject *args);
     static PyObject* sDoCommandGui             (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandEval            (PyObject *self,PyObject *args);
+    static PyObject* sDoCommandSkip            (PyObject *self,PyObject *args);
     static PyObject* sAddModule                (PyObject *self,PyObject *args);
 
     static PyObject* sShowDownloads            (PyObject *self,PyObject *args);

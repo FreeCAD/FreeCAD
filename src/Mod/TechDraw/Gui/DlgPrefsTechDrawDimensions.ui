@@ -28,18 +28,6 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="baseSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="title">
       <string>Dimensions</string>
      </property>
@@ -54,17 +42,8 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Arrowhead size</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <double>5.000000000000000</double>
@@ -97,12 +76,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Arrowhead style</string>
           </property>
@@ -131,12 +104,6 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>184</width>
-            <height>22</height>
-           </size>
           </property>
           <property name="toolTip">
            <string>Standard to be used for dimensional values</string>
@@ -189,12 +156,6 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Append unit to dimension values</string>
           </property>
@@ -211,12 +172,6 @@
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_16">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <italic>true</italic>
@@ -235,17 +190,8 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Dimension text font size</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <double>4.000000000000000</double>
@@ -309,9 +255,6 @@ Multiplier of 'Font Size'</string>
           <property name="accessibleName">
            <string/>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="singleStep">
            <double>0.100000000000000</double>
           </property>
@@ -328,12 +271,6 @@ Multiplier of 'Font Size'</string>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="lbl_LabelFont">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="baseSize">
            <size>
             <width>0</width>
@@ -361,17 +298,8 @@ Multiplier of 'Font Size'</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="toolTip">
            <string>Number of decimals if 'Use Global Decimals' is not used</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <number>2</number>
@@ -392,12 +320,6 @@ Multiplier of 'Font Size'</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <pointsize>12</pointsize>
@@ -408,9 +330,6 @@ Multiplier of 'Font Size'</string>
           </property>
           <property name="text">
            <string notr="true">⌀</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DiameterSymbol</cstring>
@@ -495,9 +414,6 @@ Multiplier of 'Font Size'</string>
           <property name="toolTip">
            <string>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>formatSpec</cstring>
           </property>
@@ -528,9 +444,6 @@ Multiplier of 'Font Size'</string>
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="value">
            <double>0.000000000000000</double>
           </property>
@@ -547,9 +460,6 @@ Multiplier of 'Font Size'</string>
           <property name="toolTip">
            <string>Controls the size of the gap between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <double>0.000000000000000</double>
@@ -582,9 +492,6 @@ Multiplier of 'Font Size'</string>
           <property name="toolTip">
            <string>Controls the size of spacing between dimension line and dimension text.
  Value * linewidth is the line spacing.</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <double>2.000000000000000</double>

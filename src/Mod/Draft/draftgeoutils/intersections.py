@@ -48,7 +48,7 @@ def findIntersection(edge1, edge2,
     """Return a list containing the intersection points of 2 edges.
 
     You can also feed 4 points instead of `edge1` and `edge2`.
-    If `dts` is used, `Shape.distToShape()` is used, which can be buggy.
+    If `dts` is used, `Shape.section()` is used.
     """
 
     def getLineIntersections(pt1, pt2, pt3, pt4, infinite1, infinite2):
@@ -104,24 +104,20 @@ def findIntersection(edge1, edge2,
         else:
             return []  # Lines aren't on same plane
 
+    tol = pow(10, -precision())
+
     # First, check bound boxes
     if (isinstance(edge1, Part.Edge) and isinstance(edge2, Part.Edge)
             and (not infinite1) and (not infinite2)):
         bb1 = edge1.BoundBox
-        bb1.enlarge(pow(10, -precision()))  # enlarge one box to account for rounding errors
+        bb1.enlarge(tol)  # enlarge one box to account for rounding errors
         if not bb1.intersect(edge2.BoundBox):
             return []  # bound boxes don't intersect
 
-    # First, try to use distToShape if possible
+    # First, try to use Shape.section if possible
     if (dts and isinstance(edge1, Part.Edge) and isinstance(edge2, Part.Edge)
             and (not infinite1) and (not infinite2)):
-        dist, pts, geom = edge1.distToShape(edge2)
-        sol = []
-        if round(dist, precision()) == 0:
-            for p in pts:
-                if p[0] not in sol:
-                    sol.append(p[0])
-        return sol
+        return [v.Point for v in edge1.section((edge2), tol).Vertexes]
 
     pt1 = None
 

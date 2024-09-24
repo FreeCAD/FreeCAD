@@ -22,11 +22,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QApplication>
-# include <QBuffer>
-# include <QImageWriter>
-# include <QMessageBox>
-# include <QTcpSocket>
+#include <QApplication>
+#include <QBuffer>
+#include <QImageWriter>
+#include <QMessageBox>
+#include <QTcpSocket>
 #endif
 
 #include <Base/Interpreter.h>
@@ -39,6 +39,7 @@
 using namespace Gui;
 
 // the favicon
+// clang-format off
 // NOLINTBEGIN
 static const unsigned int navicon_data_len = 318;
 static const unsigned char navicon_data[] = {
@@ -66,6 +67,7 @@ static const unsigned char navicon_data[] = {
     0x9c,0x3d,0x00,0x00,0x9f,0xfd,0x00,0x00,0x80,0xfd,0x00,0x00,0xff,0x7d,
     0x00,0x00,0xfe,0x01,0x00,0x00,0xff,0x7f,0x00,0x00};
 // NOLINTEND
+// clang-format on
 
 PythonOnlineHelp::PythonOnlineHelp() = default;
 
@@ -103,7 +105,7 @@ QByteArray PythonOnlineHelp::loadFavicon() const
     else {
         // fallback
         res.reserve(navicon_data_len);
-        for (int i=0; i<(int)navicon_data_len;i++) {
+        for (int i = 0; i < (int)navicon_data_len; i++) {
             res[i] = navicon_data[i];
         }
     }
@@ -175,7 +177,8 @@ QByteArray PythonOnlineHelp::fileNotFound() const
         "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
         "<tr bgcolor=\"#7799ee\">"
         "<td valign=bottom>&nbsp;<br>"
-        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
+        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD "
+        "Documentation</strong></big></big></font></td>"
         "<td align=right valign=bottom>"
         "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
         "<p><p>"
@@ -184,13 +187,13 @@ QByteArray PythonOnlineHelp::fileNotFound() const
         "</strong></p>"
         "</div></body>"
         "</html>"
-        "\r\n"
-    );
+        "\r\n");
 
     QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader = http.arg(pageNotFound).arg(QString::fromLatin1("File not found"), header);
+    QString httpResponseHeader =
+        http.arg(pageNotFound).arg(QString::fromLatin1("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
@@ -199,37 +202,40 @@ QByteArray PythonOnlineHelp::fileNotFound() const
 QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
 {
     const int pageNotFound = 404;
-    QString contentType = QString::fromLatin1(
-        "text/html\r\n"
-        "\r\n"
-        "<html><head><title>Error</title></head>"
-        "<body bgcolor=\"#f0f0f8\">"
-        "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
-        "<tr bgcolor=\"#7799ee\">"
-        "<td valign=bottom>&nbsp;<br>"
-        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
-        "<td align=right valign=bottom>"
-        "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
-        "<p><p>"
-        "<h1>%1</h1>"
-        "</body>"
-        "</html>"
-        "\r\n"
-    ).arg(error);
+    QString contentType =
+        QString::fromLatin1(
+            "text/html\r\n"
+            "\r\n"
+            "<html><head><title>Error</title></head>"
+            "<body bgcolor=\"#f0f0f8\">"
+            "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
+            "<tr bgcolor=\"#7799ee\">"
+            "<td valign=bottom>&nbsp;<br>"
+            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD "
+            "Documentation</strong></big></big></font></td>"
+            "<td align=right valign=bottom>"
+            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
+            "<p><p>"
+            "<h1>%1</h1>"
+            "</body>"
+            "</html>"
+            "\r\n")
+            .arg(error);
 
     QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
 
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
-    QString httpResponseHeader = http.arg(pageNotFound).arg(QString::fromLatin1("File not found"), header);
+    QString httpResponseHeader =
+        http.arg(pageNotFound).arg(QString::fromLatin1("File not found"), header);
 
     QByteArray res = httpResponseHeader.toLatin1();
     return res;
 }
 
 HttpServer::HttpServer(QObject* parent)
-  : QTcpServer(parent), disabled(false)
-{
-}
+    : QTcpServer(parent)
+    , disabled(false)
+{}
 
 void HttpServer::incomingConnection(qintptr socket)
 {
@@ -279,8 +285,8 @@ void HttpServer::readClient()
                 QString p = lst[1];
                 if (lst.count() > 2) {
                     QString v = lst[2];
-                    if (v.length() >= 8 && v.left(5) == QLatin1String("HTTP/") &&
-                        v[5].isDigit() && v[6] == QLatin1Char('.') && v[7].isDigit()) {
+                    if (v.length() >= 8 && v.left(5) == QLatin1String("HTTP/") && v[5].isDigit()
+                        && v[6] == QLatin1Char('.') && v[7].isDigit()) {
                         method = m;
                         path = p;
                     }
@@ -293,7 +299,7 @@ void HttpServer::readClient()
             socket->write(help.loadResource(path));
             socket->close();
             if (socket->state() == QTcpSocket::UnconnectedState) {
-                //mark the socket for deletion but do not destroy immediately
+                // mark the socket for deletion but do not destroy immediately
                 socket->deleteLater();
             }
         }
@@ -312,14 +318,15 @@ void HttpServer::discardClient()
 /* TRANSLATOR Gui::StdCmdPythonHelp */
 
 StdCmdPythonHelp::StdCmdPythonHelp()
-  : Command("Std_PythonHelp"), server(nullptr)
+    : Command("Std_PythonHelp")
+    , server(nullptr)
 {
-    sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Automatic Python modules documentation");
-    sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
-    sWhatsThis    = "Std_PythonHelp";
-    sStatusTip    = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
-    sPixmap       = "applications-python";
+    sGroup = "Tools";
+    sMenuText = QT_TR_NOOP("Automatic Python modules documentation");
+    sToolTipText = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sWhatsThis = "Std_PythonHelp";
+    sStatusTip = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
+    sPixmap = "applications-python";
 }
 
 StdCmdPythonHelp::~StdCmdPythonHelp()
@@ -340,19 +347,22 @@ void StdCmdPythonHelp::activated(int iMsg)
     }
 
     // if server is not yet running try to open one
-    if (this->server->isListening() ||
-        this->server->listen(QHostAddress(QHostAddress::LocalHost), port)) {
+    if (this->server->isListening()
+        || this->server->listen(QHostAddress(QHostAddress::LocalHost), port)) {
         std::string url = "http://localhost:";
         url += std::to_string(port);
         OpenURLInBrowser(url.c_str());
     }
     else {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Server"),
-            QObject::tr("Unable to start the server to port %1: %2.").arg(port).arg(server->errorString()));
+        QMessageBox::critical(Gui::getMainWindow(),
+                              QObject::tr("No Server"),
+                              QObject::tr("Unable to start the server to port %1: %2.")
+                                  .arg(port)
+                                  .arg(server->errorString()));
     }
 }
 
-bool Gui::OpenURLInBrowser(const char * URL)
+bool Gui::OpenURLInBrowser(const char* URL)
 {
     // The webbrowser Python module allows to start the system browser in an OS-independent way
     Base::PyGILStateLocker lock;
@@ -368,12 +378,12 @@ bool Gui::OpenURLInBrowser(const char * URL)
     }
     catch (Py::Exception& e) {
         e.clear();
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"),
-            QObject::tr("Unable to open your system browser."));
+        QMessageBox::critical(Gui::getMainWindow(),
+                              QObject::tr("No Browser"),
+                              QObject::tr("Unable to open your system browser."));
         return false;
     }
 }
 
 
 #include "moc_OnlineDocumentation.cpp"
-

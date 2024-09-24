@@ -28,6 +28,9 @@ inputs:
   compiler:
     description: "Binary name/path of compiler to be used"
     required: true
+  qt_major_version:
+    description: "Major version number of qt to be used"
+    required: true
 outputs:
   cacheKey:
     description: "Cache key with distro and compiler version"
@@ -39,6 +42,6 @@ runs:
     - id: generateCacheKey
       shell: bash -l {0}
       run: |
-        cacheKey=$(lsb_release -ds | tr -d ' ')-$(basename ${{ inputs.compiler }})$(${{ inputs.compiler }} -dumpfullversion -dumpversion)
+        cacheKey=$(lsb_release -ds | tr -d ' ')-$(basename ${{ inputs.compiler }})$(${{ inputs.compiler }} -dumpfullversion -dumpversion)-qt${{ inputs.qt_major_version }}
         echo "Generated cache key : $cacheKey"
         echo "cacheKey=$cacheKey" >> $GITHUB_OUTPUT

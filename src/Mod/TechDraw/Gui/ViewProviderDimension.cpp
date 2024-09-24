@@ -197,7 +197,7 @@ void ViewProviderDimension::setPixmapForType()
     } else if (getViewObject()->Type.isValue("Angle3Pt")) {
         sPixmap = "TechDraw_3PtAngleDimension";
     } else if (getViewObject()->Type.isValue("Area")) {
-        sPixmap = "TechDraw_ExtensionAreaAnnotation";
+        sPixmap = "TechDraw_AreaDimension";
     }
 }
 

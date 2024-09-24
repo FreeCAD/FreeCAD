@@ -1156,6 +1156,7 @@ public:
 
     void setTransparency(float);
     void setTransparency(int index, float);
+    void setTransparencies(const std::vector<float>& transparencies);
 
     const Color& getAmbientColor() const;
     const Color& getAmbientColor(int index) const;

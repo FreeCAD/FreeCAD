@@ -54,9 +54,7 @@ class TestPathLanguage(PathTestUtils.PathTestBase):
         self.assertEqual(str(MNVR("G0")), "G0{}")
         self.assertEqual(str(MNVR("G0X3")), "G0{'X': 3.0}")
         self.assertEqual(str(MNVR("G0X3Y7")), "G0{'X': 3.0, 'Y': 7.0}")
-        self.assertEqual(
-            str(MNVR("G0X3Y7/G0Z0")), "G0{'X': 3.0, 'Y': 7.0}\nG0{'Z': 0.0}"
-        )
+        self.assertEqual(str(MNVR("G0X3Y7/G0Z0")), "G0{'X': 3.0, 'Y': 7.0}\nG0{'Z': 0.0}")
         self.assertEqual(len(MNVR("G0X3Y7").instr), 1)
         self.assertEqual(len(MNVR("G0X3Y7/G0Z0").instr), 2)
         self.assertEqual(type(MNVR("G0X3Y7").instr[0]), PathLanguage.MoveStraight)
@@ -66,9 +64,7 @@ class TestPathLanguage(PathTestUtils.PathTestBase):
         self.assertEqual(str(MNVR("G1")), "G1{}")
         self.assertEqual(str(MNVR("G1X3")), "G1{'X': 3.0}")
         self.assertEqual(str(MNVR("G1X3Y7")), "G1{'X': 3.0, 'Y': 7.0}")
-        self.assertEqual(
-            str(MNVR("G1X3Y7/G1Z0")), "G1{'X': 3.0, 'Y': 7.0}\nG1{'Z': 0.0}"
-        )
+        self.assertEqual(str(MNVR("G1X3Y7/G1Z0")), "G1{'X': 3.0, 'Y': 7.0}\nG1{'Z': 0.0}")
         self.assertEqual(len(MNVR("G1X3Y7").instr), 1)
         self.assertEqual(len(MNVR("G1X3Y7/G1Z0").instr), 2)
         self.assertEqual(type(MNVR("G1X3Y7").instr[0]), PathLanguage.MoveStraight)

@@ -100,10 +100,8 @@ class ObjectOp(PathOp.ObjectOp):
                 for i in range(len(shape.Edges)):
                     if (
                         type(shape.Edges[i].Curve) == Part.Circle
-                        and shape.Edges[i].Curve.Radius * 2
-                        < shape.BoundBox.XLength * 1.1
-                        and shape.Edges[i].Curve.Radius * 2
-                        > shape.BoundBox.XLength * 0.9
+                        and shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength * 1.1
+                        and shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength * 0.9
                     ):
                         return shape.Edges[i].Curve.Radius * 2
 
@@ -135,9 +133,7 @@ class ObjectOp(PathOp.ObjectOp):
 
             if shape.ShapeType == "Face":
                 if hasattr(shape.Surface, "Center"):
-                    return FreeCAD.Vector(
-                        shape.Surface.Center.x, shape.Surface.Center.y, 0
-                    )
+                    return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
                 if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
                     return shape.Edges[0].Curve.Center
         except Part.OCCError as e:
@@ -213,9 +209,7 @@ class ObjectOp(PathOp.ObjectOp):
         features = []
         for base in self.model:
             features.extend(
-                Drillable.getDrillableTargets(
-                    base, ToolDiameter=tooldiameter, vector=matchvector
-                )
+                Drillable.getDrillableTargets(base, ToolDiameter=tooldiameter, vector=matchvector)
             )
         obj.Base = features
         obj.Disabled = []

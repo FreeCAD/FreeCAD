@@ -106,6 +106,7 @@ protected:
                                    App::Property* prop) override;
 
     virtual void positionBySupport();
+    TopoShape refineShapeIfActive(const TopoShape&) const;
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 

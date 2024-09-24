@@ -599,3 +599,16 @@ bool Preferences::alwaysShowLabel()
 {
     return getPreferenceGroup("General")->GetBool("AlwaysShowLabel", false);
 }
+
+bool Preferences::SnapViews()
+{
+    return getPreferenceGroup("General")->GetBool("SnapViews", true);
+}
+
+//! percentage of view size to use in deciding to snap view or not
+double Preferences::SnapLimitFactor()
+{
+    return getPreferenceGroup("General")->GetFloat("SnapLimitFactor", 0.05);
+}
+
+

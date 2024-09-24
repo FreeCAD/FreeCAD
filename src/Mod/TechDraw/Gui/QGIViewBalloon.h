@@ -78,15 +78,17 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
     void setLabelCenter();
+    Base::Vector3d getLabelCenter() const;
     void setPosFromCenter(const double& xCenter, const double& yCenter);
-    double X() const
+
+    double getCenterX() const
     {
-        return posX;
+        return mapToParent(m_labelText->boundingRect().center()).x();
     }
-    double Y() const
+    double getCenterY() const
     {
-        return posY;
-    }//minus posY?
+        return mapToParent(m_labelText->boundingRect().center()).y();
+    }
 
     void setFont(QFont font);
     QFont getFont()
@@ -113,6 +115,7 @@ public:
 
     void setDimText(QGCustomText* newText)
     {
+        newText->setTightBounding(true);
         m_labelText = newText;
     }
     bool getVerticalSep() const
@@ -131,6 +134,7 @@ public:
     {
         seps = newSeps;
     }
+    QGCustomText* m_labelText;
 
 Q_SIGNALS:
     void dragging(bool state);
@@ -152,11 +156,8 @@ private:
     bool verticalSep;
     std::vector<int> seps;
 
-    QGCustomText* m_labelText;
     QColor m_colNormal;
 
-    double posX;
-    double posY;
     bool m_ctrl;
     bool m_drag;
 };
@@ -226,6 +227,13 @@ protected:
     QString getPrecision();
     void parentViewMousePressed(QGIView* view, QPointF pos);
     TechDraw::DrawView* getSourceView() const;
+    Base::Vector3d arrowPosInDrag();
+    void getBalloonPoints(TechDraw::DrawViewBalloon* balloon,
+                          TechDraw::DrawView* refObj,
+                          bool isDragging,
+                          Base::Vector3d& labelPos,
+                          Base::Vector3d& arrowPos);
+
 
 private:
     TechDraw::DrawViewBalloon* dvBalloon;
@@ -241,7 +249,9 @@ private:
     bool m_dragInProgress;
     bool m_originDragged = false;
     bool m_ctrl;
-    Base::Vector3d m_saveOffset;
+    Base::Vector3d m_saveOriginOffset;
+    Base::Vector3d m_saveOrigin;
+    Base::Vector3d m_savePosition;
 };
 
 }// namespace TechDrawGui

@@ -58,8 +58,10 @@ def activateJoint(index):
     if JointObject.activeTask:
         JointObject.activeTask.reject()
 
-    panel = TaskAssemblyCreateJoint(index)
-    dialog = Gui.Control.showDialog(panel)
+    Gui.addModule("JointObject")  # NOLINT
+    Gui.doCommand(f"panel = JointObject.TaskAssemblyCreateJoint({index})")
+    Gui.doCommandGui("dialog = Gui.Control.showDialog(panel)")
+    dialog = Gui.doCommandEval("dialog")
     if dialog is not None:
         dialog.setAutoCloseOnTransactionChange(True)
         dialog.setDocumentName(App.ActiveDocument.Name)
@@ -476,16 +478,21 @@ class CommandGroupGearBelt:
 
 
 def createGroundedJoint(obj):
-    assembly = UtilsAssembly.activeAssembly()
-    if not assembly:
+    if not UtilsAssembly.activeAssembly():
         return
 
-    joint_group = UtilsAssembly.getJointGroup(assembly)
-
-    ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
-    JointObject.GroundedJoint(ground, obj)
-    JointObject.ViewProviderGroundedJoint(ground.ViewObject)
-    return ground
+    Gui.addModule("UtilsAssembly")
+    Gui.addModule("JointObject")
+    commands = (
+        f'obj = App.ActiveDocument.getObject("{obj.Name}")\n'
+        "assembly = UtilsAssembly.activeAssembly()\n"
+        "joint_group = UtilsAssembly.getJointGroup(assembly)\n"
+        'ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")\n'
+        "JointObject.GroundedJoint(ground, obj)"
+    )
+    Gui.doCommand(commands)
+    Gui.doCommandGui("JointObject.ViewProviderGroundedJoint(ground.ViewObject)")
+    return Gui.doCommandEval("ground")
 
 
 class CommandToggleGrounded:
@@ -529,32 +536,30 @@ class CommandToggleGrounded:
             # If you select 2 solids (bodies for example) within an assembly.
             # There'll be a single sel but 2 SubElementNames.
             for sub in sel.SubElementNames:
-                # Only objects within the assembly.
-                objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(sel.ObjectName, sub)
-                if assembly.Name not in objs_names:
-                    continue
+                ref = [sel.Object, [sub, sub]]
+                moving_part = UtilsAssembly.getMovingPart(assembly, ref)
 
-                full_element_name = UtilsAssembly.getFullElementName(sel.ObjectName, sub)
-                obj = UtilsAssembly.getObject(full_element_name)
-                part_containing_obj = UtilsAssembly.getContainingPart(full_element_name, obj)
+                # Only objects within the assembly.
+                if moving_part is None:
+                    continue
 
                 # Check if part is grounded and if so delete the joint.
                 ungrounded = False
                 for joint in joint_group.Group:
-                    if (
-                        hasattr(joint, "ObjectToGround")
-                        and joint.ObjectToGround == part_containing_obj
-                    ):
-                        doc = App.ActiveDocument
-                        doc.removeObject(joint.Name)
-                        doc.recompute()
+                    if hasattr(joint, "ObjectToGround") and joint.ObjectToGround == moving_part:
+                        commands = (
+                            "doc = App.ActiveDocument\n"
+                            f'doc.removeObject("{joint.Name}")\n'
+                            "doc.recompute()\n"
+                        )
+                        Gui.doCommand(commands)
                         ungrounded = True
                         break
                 if ungrounded:
                     continue
 
                 # Create groundedJoint.
-                createGroundedJoint(part_containing_obj)
+                createGroundedJoint(moving_part)
         App.closeActiveTransaction()
 
 

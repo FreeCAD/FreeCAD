@@ -74,7 +74,7 @@ class CommandExportASMT:
         )
 
         if filePath:
-            assembly.exportAsASMT(filePath)
+            Gui.doCommand(f'assembly.exportAsASMT("{filePath}")')
 
 
 if App.GuiUp:

@@ -156,14 +156,14 @@
       <translation>선과 화살표 색상</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="501"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="497"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
       <source>The distance the dimension line is additionally extended</source>
       <translation>치수선의 길이가 늘어 났습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="531"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="541"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="537"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="547"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
       <translation>치수선 보조선들의 길이가 치수선 위치를 넘어 가도록 증가 되었습니다</translation>
     </message>
@@ -192,7 +192,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="402"/>
@@ -211,46 +211,46 @@
       <translation>축척 계수</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="425"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="435"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>선택하면 치수 값 옆에 장치가 표시됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="428"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>Show unit</source>
       <translation>단위 표시</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="458"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="454"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>mm, m, in, ft와 같은 유효한 길이 단위를 지정하여 이 단위에 치수 값을 표시합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="457"/>
       <source>Unit override</source>
       <translation>단위 재정의</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="471"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>치수 값에 대해 표시할 소수점 수</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
       <source>Decimals</source>
       <translation>소수점</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="551"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="561"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="557"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="567"/>
       <source>The distance between the dimension text and the dimension line</source>
       <translation>치수선과 치수문자 사이의 간격</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="554"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="560"/>
       <source>Text spacing</source>
       <translation>문자 간격</translation>
     </message>
@@ -301,28 +301,28 @@
       <translation>화살표 크기</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Dimension details</source>
       <translation>치수 상세</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>Dimension overshoot</source>
       <translation>치수선 돌출</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="511"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="521"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="517"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
       <source>The length of the extension lines</source>
       <translation>연장선의 길이</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="520"/>
       <source>Extension lines</source>
       <translation>연장선</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="540"/>
       <source>Extension overshoot</source>
       <translation>연장선 돌출</translation>
     </message>
@@ -720,7 +720,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="138"/>
       <source>Text to be made into ShapeString</source>
-      <translation type="unfinished">Text to be made into ShapeString</translation>
+      <translation>문자 형상으로 만들 문자</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="149"/>
@@ -812,16 +812,15 @@ view each time a command is started</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation>작업 기준면에 제공할 선택적 오프셋
-기본 위치보다 위에. 이것을 하나와 함께 사용하세요.
-위에 있는 버튼의</translation>
+      <translation>기본 위치보다 높은 작업 평면에 적용할 선택적 편차입니다. 이 편차를 위의 버튼 중 하나와 함께 사용하세요.
+</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="106"/>
@@ -861,19 +860,19 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="162"/>
       <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
+      <translation>격자선 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="176"/>
       <location filename="../ui/TaskSelectPlane.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>격자선 사이의 거리</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="196"/>
       <location filename="../ui/TaskSelectPlane.ui" line="206"/>
       <source>The number of squares between major grid lines</source>
-      <translation type="unfinished">The number of squares between major grid lines</translation>
+      <translation>주 격자선 사이의 사각형 갯수</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="199"/>
@@ -890,7 +889,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="216"/>
       <location filename="../ui/TaskSelectPlane.ui" line="226"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>격자의 X 및 Y방향의 사각형 갯수</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="219"/>
@@ -966,7 +965,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="63"/>
       <source>Shape appearance</source>
-      <translation type="unfinished">Shape appearance</translation>
+      <translation>형상의 외관</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
@@ -986,12 +985,12 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="113"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>형상 투명도</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="130"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>형상의 광택</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="150"/>
@@ -1005,7 +1004,7 @@ will be moved to the center of the view.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="386"/>
       <source>Line width</source>
       <translation>선 두께</translation>
     </message>
@@ -1013,7 +1012,7 @@ will be moved to the center of the view.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="255"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="387"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="393"/>
       <source> px</source>
       <translation> px</translation>
     </message>
@@ -1025,7 +1024,7 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
       <source>Solid</source>
-      <translation>복합체</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
@@ -1075,12 +1074,12 @@ will be moved to the center of the view.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation type="unfinished">Point color</translation>
+      <translation>점 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
       <source>Point size</source>
-      <translation type="unfinished">Point size</translation>
+      <translation>점 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
@@ -1093,34 +1092,34 @@ will be moved to the center of the view.</translation>
       <translation>모양 색상</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="592"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="598"/>
       <source>Annotations</source>
       <translation>주석</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="549"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="555"/>
       <source>Text spacing</source>
       <translation>문자 간격</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="357"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="458"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>Dimensions</source>
       <translation>면적</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source>Dot</source>
       <translation>점</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>주석</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
@@ -1140,47 +1139,47 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="374"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="380"/>
       <source>Lines and arrows</source>
       <translation>선과 화살표</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="407"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="413"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="412"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="418"/>
       <source>Arrow</source>
       <translation>화살표</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
       <source>Tick</source>
       <translation>두꺼움</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
       <source>Tick-2</source>
       <translation>확인-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="471"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
       <source>If checked, a unit symbol is added to dimension texts</source>
       <translation type="unfinished">If checked, a unit symbol is added to dimension texts</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="494"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation type="unfinished">The unit override for dimensions. Leave blank to use the current FreeCAD unit.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="502"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="508"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation type="unfinished">The color for texts, dimension texts and label texts</translation>
     </message>
@@ -1215,32 +1214,32 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</translati
       <translation>축척 계수</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="444"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Line and arrow color</source>
       <translation>선과 화살표 색상</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="394"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="400"/>
       <source>Arrow type</source>
       <translation>화살표 유형</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="430"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="436"/>
       <source>Arrow size</source>
       <translation>화살표 크기</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="495"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="501"/>
       <source>Dim line overshoot</source>
       <translation type="unfinished">Dim line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="512"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="518"/>
       <source>Ext line length</source>
       <translation type="unfinished">Ext line length</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1251,42 +1250,42 @@ A positive value defines the maximum length of the extension lines. Only used
 for linear dimensions.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="532"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="538"/>
       <source>Ext line overshoot</source>
       <translation type="unfinished">Ext line overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>The length of extension lines above the dimension line</source>
       <translation type="unfinished">The length of extension lines above the dimension line</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>치수 선과 치수 텍스트의 간격</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="575"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="581"/>
       <source>Apply the above style to selected object(s)</source>
       <translation type="unfinished">Apply the above style to selected object(s)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="589"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="595"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation type="unfinished">Apply the above style to all annotations (texts, dimensions and labels)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>Show unit</source>
       <translation>단위 표시</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="481"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
       <source>Unit override</source>
       <translation>단위 재정의</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="578"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="584"/>
       <source>Selected</source>
       <translation type="unfinished">Selected</translation>
     </message>
@@ -1527,7 +1526,7 @@ accidentally and modifying the entered value.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="402"/>
       <source>Construction</source>
-      <translation>Construction</translation>
+      <translation>보조선</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="415"/>
@@ -1605,7 +1604,7 @@ pattern definitions to be added to the standard patterns</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
-      <location filename="../ui/preferences-dxf.ui" line="167"/>
+      <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>Texts and dimensions</source>
       <translation>텍스트 및 치수</translation>
     </message>
@@ -1627,7 +1626,7 @@ pattern definitions to be added to the standard patterns</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="540"/>
       <location filename="../ui/preferences-drafttexts.ui" line="569"/>
       <location filename="../ui/preferences-drafttexts.ui" line="598"/>
-      <location filename="../ui/preferences-dxf.ui" line="588"/>
+      <location filename="../ui/preferences-dxf.ui" line="579"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1695,7 +1694,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="155"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="162"/>
@@ -1725,7 +1724,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</tr
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="217"/>
       <source>The default line width</source>
-      <translation type="unfinished">The default line width</translation>
+      <translation>기본 선 두께</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="220"/>
@@ -1998,31 +1997,31 @@ This value is the maximum segment length.</translation>
       <translation>DXF</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="35"/>
+      <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
       <translation>이 기본 설정 대화상자는 DXF 파일을 가져오거나 내보낼 때 표시됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="38"/>
+      <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>가져오기 및 내보내기를 할 때 이 대화 상자 표시</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="54"/>
+      <location filename="../ui/preferences-dxf.ui" line="45"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
       <translation>파이썬 가져오기가 사용되고, 그렇지 않으면 최신 C++가 사용된다.
 참고: C++ 가져오기가 더 빠르지만 아직 기능이 부족합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="74"/>
+      <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
       <translation>파이썬 내보내기가 사용되고, 그렇지 않으면 최신 C++가 사용된다.
 참고: C++ 내보내기는 더 빠르지만 아직 기능이 부족합니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="99"/>
+      <location filename="../ui/preferences-dxf.ui" line="90"/>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
@@ -2031,89 +2030,89 @@ You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="104"/>
+      <location filename="../ui/preferences-dxf.ui" line="95"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
       <translation type="unfinished">Allow FreeCAD to automatically download and update the DXF libraries</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <location filename="../ui/preferences-oca.ui" line="26"/>
-      <location filename="../ui/preferences-dxf.ui" line="122"/>
+      <location filename="../ui/preferences-dxf.ui" line="113"/>
       <source>Import options</source>
       <translation>가져오기 옵션</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="157"/>
+      <location filename="../ui/preferences-dxf.ui" line="148"/>
       <source>Import</source>
       <translation>가져오기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="164"/>
+      <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
       <translation>선택하지 않으면 텍스트 및 m텍스트를 가져오지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="180"/>
+      <location filename="../ui/preferences-dxf.ui" line="171"/>
       <source>If unchecked, points won't be imported</source>
       <translation>선택하지 않으면  포인트를 가져오지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="183"/>
+      <location filename="../ui/preferences-dxf.ui" line="174"/>
       <source>points</source>
       <translation>포인트</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="196"/>
+      <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If checked, paper space objects will be imported too</source>
       <translation>이 항목을 선택하면 용지 공간 오브젝트도 가져옵니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="212"/>
+      <location filename="../ui/preferences-dxf.ui" line="203"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
       <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="215"/>
+      <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>*blocks</source>
       <translation type="unfinished">*blocks</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="235"/>
+      <location filename="../ui/preferences-dxf.ui" line="226"/>
       <source>Create</source>
       <translation>만들기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="245"/>
+      <location filename="../ui/preferences-dxf.ui" line="236"/>
       <source>Only standard Part objects will be created (fastest)</source>
       <translation>표준 부품 개체만 생성됩니다(가장 빠름)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="267"/>
+      <location filename="../ui/preferences-dxf.ui" line="258"/>
       <source>Parametric Draft objects will be created whenever possible</source>
       <translation>가능한 경우 언제든지 Parametric Draft 개체가 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="270"/>
+      <location filename="../ui/preferences-dxf.ui" line="261"/>
       <source>Draft objects</source>
       <translation>Draft 객체</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="286"/>
+      <location filename="../ui/preferences-dxf.ui" line="277"/>
       <source>Sketches will be created whenever possible</source>
       <translation>스케치는 가능한 한 항상 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="289"/>
+      <location filename="../ui/preferences-dxf.ui" line="280"/>
       <source>Sketches</source>
       <translation>스케치</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="309"/>
+      <location filename="../ui/preferences-dxf.ui" line="300"/>
       <source>Scale factor to apply to imported files</source>
       <translation>가져온 파일에 적용할 축척 계수</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="329"/>
+      <location filename="../ui/preferences-dxf.ui" line="320"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Example: for files in millimeters: 1, in centimeters: 10,
@@ -2124,137 +2123,137 @@ Example: for files in millimeters: 1, in centimeters: 10,
                              미터는 1000, 인치는 25.4, 피트는 304.8</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="403"/>
+      <location filename="../ui/preferences-dxf.ui" line="394"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</source>
       <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="664"/>
+      <location filename="../ui/preferences-dxf.ui" line="655"/>
       <source>Project exported objects along current view direction</source>
       <translation type="unfinished">Project exported objects along current view direction</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="382"/>
+      <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
       <translation>FreeCAD는 일치하는 개체를 와이어에 결합하려고 합니다.
 이 작업은 시간이 걸릴 수 있습니다!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="358"/>
+      <location filename="../ui/preferences-dxf.ui" line="349"/>
       <source>Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</source>
       <translation type="unfinished">Colors will set as specified in the DXF file whenever possible.
 Otherwise default colors will be applied.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="91"/>
+      <location filename="../ui/preferences-dxf.ui" line="82"/>
       <source>Automatic update (legacy importer/exporter only)</source>
       <translation type="unfinished">Automatic update (legacy importer/exporter only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="58"/>
+      <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy Python importer</source>
       <translation type="unfinished">Use legacy Python importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="78"/>
+      <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Use legacy Python exporter</source>
       <translation type="unfinished">Use legacy Python exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="148"/>
+      <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>Some options are not yet available for the new importer</source>
       <translation type="unfinished">Some options are not yet available for the new importer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="199"/>
+      <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>Layouts</source>
       <translation type="unfinished">Layouts</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="248"/>
+      <location filename="../ui/preferences-dxf.ui" line="239"/>
       <source>Simple Part shapes</source>
       <translation>간단한 부분 모양</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="362"/>
+      <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>Use colors from the DXF file</source>
       <translation type="unfinished">Use colors from the DXF file</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="386"/>
+      <location filename="../ui/preferences-dxf.ui" line="377"/>
       <source>Join geometry</source>
       <translation>geometry를 결합</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="407"/>
+      <location filename="../ui/preferences-dxf.ui" line="398"/>
       <source>Group layers into blocks</source>
       <translation>도면층을 블록으로 그룹화</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="427"/>
+      <location filename="../ui/preferences-dxf.ui" line="418"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
       <translation>가져온 텍스트는 표준 초안 텍스트 크기를 갖습니다.
 DXF 문서에 있는 크기 대신</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="431"/>
+      <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>Use standard font size for texts</source>
       <translation>텍스트에 표준 글꼴 크기 사용</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="448"/>
+      <location filename="../ui/preferences-dxf.ui" line="439"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
       <translation>이 옵션을 선택하면 DXF 도면층을 초안 도면층으로 가져옵니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="474"/>
+      <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Hatches will be converted into simple wires</source>
       <translation>해치가 단순 와이어로 변환됩니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="477"/>
+      <location filename="../ui/preferences-dxf.ui" line="468"/>
       <source>Import hatch boundaries as wires</source>
       <translation type="unfinished">Import hatch boundaries as wires</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="497"/>
+      <location filename="../ui/preferences-dxf.ui" line="488"/>
       <source>If polylines have a width defined, they will be rendered
 as closed wires with correct width</source>
       <translation>폴리선에 너비가 정의된 경우 렌더링됩니다.
 정확한 폭의 폐선으로서.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="501"/>
+      <location filename="../ui/preferences-dxf.ui" line="492"/>
       <source>Render polylines with width</source>
       <translation type="unfinished">Render polylines with width</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="530"/>
+      <location filename="../ui/preferences-dxf.ui" line="521"/>
       <source>Some options are not yet available for the new exporter</source>
       <translation type="unfinished">Some options are not yet available for the new exporter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="539"/>
+      <location filename="../ui/preferences-dxf.ui" line="530"/>
       <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
       <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="542"/>
+      <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>Treat ellipses and splines as polylines</source>
       <translation>타원과 스플라인을 폴리라인으로 처리</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="571"/>
+      <location filename="../ui/preferences-dxf.ui" line="562"/>
       <source>Max Spline Segment:</source>
       <translation type="unfinished">Max Spline Segment:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="581"/>
+      <location filename="../ui/preferences-dxf.ui" line="572"/>
       <source>Maximum length of each of the polyline segments.
 If it is set to '0' the whole spline is treated as a straight segment.</source>
       <translation>각 폴리선 세그먼트의 최대 길이입니다.
@@ -2262,39 +2261,39 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="107"/>
-      <location filename="../ui/preferences-dxf.ui" line="519"/>
+      <location filename="../ui/preferences-dxf.ui" line="510"/>
       <source>Export options</source>
       <translation>내보내기 옵션</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="451"/>
+      <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>Use layers</source>
       <translation type="unfinished">Use layers</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="614"/>
+      <location filename="../ui/preferences-dxf.ui" line="605"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
       <translation>면을 포함하는 모든 객체가 3D 폴리페이스로 내보내집니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="617"/>
+      <location filename="../ui/preferences-dxf.ui" line="608"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation type="unfinished">Export 3D objects as polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="634"/>
+      <location filename="../ui/preferences-dxf.ui" line="625"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>TechDraw 뷰가 블록으로 내보내집니다.
 DXF R12 이후 템플릿 에서는 실패할 수도 있습니다.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="638"/>
+      <location filename="../ui/preferences-dxf.ui" line="629"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>TechDraw 뷰를 블록으로 내보내기</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="661"/>
+      <location filename="../ui/preferences-dxf.ui" line="652"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>내보낸 객체가 현재 뷰 방향을 반영하도록 투영됩니다.</translation>
     </message>
@@ -2324,8 +2323,8 @@ DXF R12 이후 템플릿 에서는 실패할 수도 있습니다.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="146"/>
       <source>The number of squares between major grid lines.
 Major grid lines are thicker than minor grid lines.</source>
-      <translation type="unfinished">The number of squares between major grid lines.
-Major grid lines are thicker than minor grid lines.</translation>
+      <translation>주 격자선 사이의 사각형 갯수입니다.
+주 격자선은 보조 격자선보다 두껍습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="150"/>
@@ -2336,7 +2335,7 @@ Major grid lines are thicker than minor grid lines.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="218"/>
       <source>The number of squares in the X and Y direction of the grid</source>
-      <translation type="unfinished">The number of squares in the X and Y direction of the grid</translation>
+      <translation>격자의 X 및 Y방향의 사각형 갯수</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="394"/>
@@ -2392,7 +2391,7 @@ Use Draft ToggleGrid to change this for the active view.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="186"/>
       <source>The distance between grid lines</source>
-      <translation type="unfinished">The distance between grid lines</translation>
+      <translation>격자선 사이의 거리</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="303"/>
@@ -2477,7 +2476,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="240"/>
       <source>Grid transparency</source>
-      <translation type="unfinished">Grid transparency</translation>
+      <translation>격자 투명도</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="250"/>
@@ -2487,7 +2486,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="266"/>
       <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
+      <translation>격자선 색상</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="296"/>
@@ -2608,7 +2607,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="426"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>계속</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="362"/>
@@ -2763,7 +2762,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="298"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>실행취소</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="439"/>
@@ -2788,7 +2787,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="554"/>
       <source>Snap</source>
-      <translation>스냅</translation>
+      <translation>포착</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="567"/>
@@ -2845,7 +2844,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../DraftGui.py" line="563"/>
       <location filename="../../DraftGui.py" line="823"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>계속</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="61"/>
@@ -3010,8 +3009,8 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="491"/>
       <location filename="../../DraftGui.py" line="519"/>
-      <location filename="../../DraftGui.py" line="1463"/>
-      <location filename="../../DraftGui.py" line="1478"/>
+      <location filename="../../DraftGui.py" line="1469"/>
+      <location filename="../../DraftGui.py" line="1484"/>
       <location filename="../../draftguitools/gui_groups.py" line="239"/>
       <location filename="../../draftguitools/gui_groups.py" line="244"/>
       <source>None</source>
@@ -3074,7 +3073,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="531"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Angle</source>
       <translation>각</translation>
     </message>
@@ -3097,7 +3096,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
       <location filename="../../DraftGui.py" line="537"/>
       <location filename="../../DraftGui.py" line="805"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="538"/>
@@ -3149,17 +3148,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="566"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation>이 옵션을 선택하면 기존 오프셋 대신 OCC 스타일 오프셋이 수행됩니다.</translation>
+      <translation>이것을 선택하면 고전적 편차 대신 OCC 방식의 편차가 적용됩니다</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="567"/>
       <source>OCC-style offset</source>
-      <translation type="unfinished">OCC-style offset</translation>
+      <translation>OCC 방식의 편차</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="569"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>실행취소</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="583"/>
@@ -3219,12 +3218,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="586"/>
       <source>Create text</source>
-      <translation type="unfinished">Create text</translation>
+      <translation>문자 생성</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="587"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
-      <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
+      <translation>이 단추를 눌러 문자를 생성하거나, 빈 줄 두개로 문자를 마무리 하세요.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="609"/>
@@ -3238,8 +3237,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     </message>
     <message>
       <location filename="../../DraftGui.py" line="611"/>
-      <location filename="../../DraftGui.py" line="1466"/>
-      <location filename="../../DraftGui.py" line="1481"/>
+      <location filename="../../DraftGui.py" line="1472"/>
+      <location filename="../../DraftGui.py" line="1487"/>
       <source>Autogroup off</source>
       <translation type="unfinished">Autogroup off</translation>
     </message>
@@ -3291,21 +3290,21 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="323"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="779"/>
       <location filename="../../DraftGui.py" line="797"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="212"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="780"/>
       <location filename="../../DraftGui.py" line="798"/>
-      <location filename="../../draftguitools/gui_trimex.py" line="214"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Offset distance</source>
-      <translation type="unfinished">Offset distance</translation>
+      <translation>편차 거리</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="794"/>
@@ -3333,32 +3332,32 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1474"/>
+      <location filename="../../DraftGui.py" line="1480"/>
       <source>Autogroup:</source>
       <translation type="unfinished">Autogroup:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1613"/>
+      <location filename="../../DraftGui.py" line="1619"/>
       <source>Modify objects</source>
       <translation type="unfinished">Modify objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1762"/>
+      <location filename="../../DraftGui.py" line="1768"/>
       <source>Faces</source>
       <translation type="unfinished">Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1763"/>
+      <location filename="../../DraftGui.py" line="1769"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1764"/>
+      <location filename="../../DraftGui.py" line="1770"/>
       <source>Add</source>
       <translation>추가하기</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1765"/>
+      <location filename="../../DraftGui.py" line="1771"/>
       <source>Facebinder elements</source>
       <translation type="unfinished">Facebinder elements</translation>
     </message>
@@ -3428,7 +3427,7 @@ or try saving to a lower DWG version.</translation>
       <location filename="../../draftmake/make_sketch.py" line="126"/>
       <location filename="../../draftmake/make_sketch.py" line="138"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>모든 형상들은 동일 평면상에 있어야 합니다.</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="861"/>
@@ -3557,7 +3556,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="676"/>
       <source>Wire</source>
-      <translation>와이어</translation>
+      <translation>철사</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="708"/>
@@ -3712,7 +3711,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="126"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>문자 생성</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="67"/>
@@ -3843,7 +3842,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="54"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>격자 전환</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="109"/>
@@ -4079,27 +4078,27 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="77"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>모깎기 반지름</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="80"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>모깎기 반지름</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="108"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>반지름 입력.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="146"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>모깎기를 만들 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="171"/>
       <source>Create fillet</source>
-      <translation>생성: 모깍기(Fillet)</translation>
+      <translation>모깍기</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="69"/>
@@ -4132,40 +4131,50 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Select objects to trim or extend</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="120"/>
+      <source>This object is not supported.</source>
+      <translation type="unfinished">This object is not supported.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="143"/>
+      <source>Only a single face can be extruded.</source>
+      <translation type="unfinished">Only a single face can be extruded.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="182"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
       <translation type="unfinished">Pick distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="219"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="228"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>편차 각도</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="479"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
       <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="484"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="493"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation type="unfinished">Unable to trim these objects, too many wires</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="501"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="510"/>
       <source>These objects don't intersect.</source>
       <translation type="unfinished">These objects don't intersect.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="504"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="513"/>
       <source>Too many intersection points.</source>
       <translation type="unfinished">Too many intersection points.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation>B-스플라인</translation>
+      <translation>B-조절곡선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="122"/>
@@ -4182,7 +4191,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="185"/>
       <source>Create B-spline</source>
-      <translation>생성: B-spline</translation>
+      <translation>B-조절곡선 생성</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="66"/>
@@ -4573,22 +4582,22 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>편차를 생성할 대상을 선택하세요</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>편차 생성은 한번에 하나의 대상에만 가능합니다.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>이 유형의 대상은 편차를 생성할 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>베지어 곡선에 대한 편차 생성은 현재 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="110"/>
@@ -4866,37 +4875,37 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftobjects/patharray.py" line="466"/>
       <source>Start Offset too large for path length. Using zero instead.</source>
-      <translation type="unfinished">Start Offset too large for path length. Using zero instead.</translation>
+      <translation>경로 길이에 비해 시작 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="472"/>
       <source>End Offset too large for path length minus Start Offset. Using zero instead.</source>
-      <translation type="unfinished">End Offset too large for path length minus Start Offset. Using zero instead.</translation>
+      <translation>경로 길이에 비해 종료 편차가 너무 큽니다. 대신 0을 사용하세요.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="534"/>
+      <location filename="../../draftobjects/patharray.py" line="537"/>
       <source>Length of tangent vector is zero. Copy not aligned.</source>
       <translation type="unfinished">Length of tangent vector is zero. Copy not aligned.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="548"/>
-      <location filename="../../draftobjects/patharray.py" line="570"/>
+      <location filename="../../draftobjects/patharray.py" line="551"/>
+      <location filename="../../draftobjects/patharray.py" line="573"/>
       <source>Length of normal vector is zero. Using a default axis instead.</source>
       <translation type="unfinished">Length of normal vector is zero. Using a default axis instead.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="554"/>
-      <location filename="../../draftobjects/patharray.py" line="576"/>
+      <location filename="../../draftobjects/patharray.py" line="557"/>
+      <location filename="../../draftobjects/patharray.py" line="579"/>
       <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
       <translation type="unfinished">Tangent and normal vectors are parallel. Normal replaced by a default axis.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="566"/>
+      <location filename="../../draftobjects/patharray.py" line="569"/>
       <source>Cannot calculate normal vector. Using the default normal instead.</source>
       <translation type="unfinished">Cannot calculate normal vector. Using the default normal instead.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="582"/>
+      <location filename="../../draftobjects/patharray.py" line="585"/>
       <source>AlignMode {} is not implemented</source>
       <translation type="unfinished">AlignMode {} is not implemented</translation>
     </message>
@@ -4913,17 +4922,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="62"/>
       <source>Two objects are needed.</source>
-      <translation type="unfinished">Two objects are needed.</translation>
+      <translation>두 대상이 필요합니다.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="69"/>
       <source>One object is not valid.</source>
-      <translation type="unfinished">One object is not valid.</translation>
+      <translation>한쪽이 유효하지 않습니다.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="74"/>
       <source>Edges are not connected or radius is too large.</source>
-      <translation type="unfinished">Edges are not connected or radius is too large.</translation>
+      <translation>모서리가 연결되지 않았거나 반지름이 너무 큽니다.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="124"/>
@@ -5237,24 +5246,24 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="495"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="490"/>
       <source>Activate this layer</source>
       <translation type="unfinished">Activate this layer</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="501"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="496"/>
       <source>Select layer contents</source>
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="539"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="534"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="548"/>
       <source>Merge layer duplicates</source>
       <translation type="unfinished">Merge layer duplicates</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="545"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="598"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="540"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="593"/>
       <source>Add new layer</source>
       <translation type="unfinished">Add new layer</translation>
     </message>
@@ -5531,7 +5540,7 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Select 3 vertices, one or more shapes or an object to define a working plane</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="182"/>
+      <location filename="../../draftutils/params.py" line="194"/>
       <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
       <translation type="unfinished">Do you want to update the SVG pattern options
@@ -5558,7 +5567,7 @@ of existing objects in all opened documents?</translation>
       <translation type="unfinished">updated view properties</translation>
     </message>
     <message>
-      <location filename="../../importDXF.py" line="143"/>
+      <location filename="../../importDXF.py" line="144"/>
       <source>The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either allow FreeCAD to download these libraries:
@@ -5648,7 +5657,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../importDXF.py" line="126"/>
+      <location filename="../../importDXF.py" line="127"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
@@ -5669,12 +5678,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>원본을 삭제합니다</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>모따기</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="421"/>
@@ -5720,7 +5729,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="328"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>편차 방향이 정의되지 않았습니다. 먼저 객체의 양쪽에서 마우스를 움직여 방향을 지정하세요.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="143"/>
@@ -6206,7 +6215,7 @@ However, a single sketch with disconnected traces will be converted into several
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>포착 각도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="167"/>
@@ -6383,7 +6392,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="60"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>격자 전환</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>
@@ -6677,7 +6686,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="60"/>
       <source>B-spline</source>
-      <translation type="unfinished">B-spline</translation>
+      <translation>B-조절곡선</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="63"/>
@@ -7097,16 +7106,16 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="63"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편차</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>선택한 개체의 편차입니다.
+또한 원본 개체의 편차 복사본을 만들 수도 있습니다.
+스냅하려면 CTRL, 구속하려면 Shift 키를 누릅니다. Alt 키를 누른 상태에서 클릭할 때마다 복사본을 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -7353,7 +7362,7 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/rectangle.py" line="51"/>
       <location filename="../../draftobjects/wire.py" line="76"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>모퉁이를 모깎기하는데 사용할 반지름</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="63"/>
@@ -7894,7 +7903,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/fillet.py" line="69"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>모퉁이를 모깎기하는데 사용할 반지름</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="136"/>
@@ -8069,7 +8078,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="53"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>모든 면에 적용할 선택적 편차 값</translation>
     </message>
     <message>
       <location filename="../../draftobjects/facebinder.py" line="56"/>
@@ -8164,7 +8173,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="135"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="86"/>

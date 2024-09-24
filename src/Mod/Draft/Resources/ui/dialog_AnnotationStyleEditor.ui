@@ -417,6 +417,12 @@
             <property name="toolTip">
              <string>A multiplier factor that affects the size of texts and markers</string>
             </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">

@@ -67,7 +67,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.form.baseList.blockSignals(True)
         self.form.baseList.clearContents()
         self.form.baseList.setRowCount(0)
-        for (base, subs) in obj.Base:
+        for base, subs in obj.Base:
             for sub in subs:
                 self.form.baseList.insertRow(self.form.baseList.rowCount())
 
@@ -84,10 +84,8 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 self.form.baseList.setItem(self.form.baseList.rowCount() - 1, 0, item)
 
                 dia = obj.Proxy.holeDiameter(obj, base, sub)
-                item = QtGui.QTableWidgetItem("{:.3f}".format(dia))
-                item.setData(self.DataFeatureName, name)
-                item.setData(self.DataObject, base)
-                item.setData(self.DataObjectSub, sub)
+                item = QtGui.QTableWidgetItem()
+                item.setData(QtCore.Qt.DisplayRole, float(dia))
                 item.setTextAlignment(QtCore.Qt.AlignHCenter)
                 self.form.baseList.setItem(self.form.baseList.rowCount() - 1, 1, item)
 
@@ -120,9 +118,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     def deleteBase(self):
         """deleteBase() ... callback for push button"""
         Path.Log.track()
-        selected = [
-            self.form.baseList.row(item) for item in self.form.baseList.selectedItems()
-        ]
+        selected = [self.form.baseList.row(item) for item in self.form.baseList.selectedItems()]
         self.form.baseList.blockSignals(True)
         for row in sorted(list(set(selected)), key=lambda row: -row):
             self.form.baseList.removeRow(row)

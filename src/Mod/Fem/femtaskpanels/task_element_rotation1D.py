@@ -35,16 +35,16 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of ElementRotation1D objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -68,18 +68,12 @@ class _TaskPanel:
 
     def accept(self):
         self.obj.Rotation = self.rotation
-        self.recompute_and_set_back_all()
-        return True
+        self.selectionWidget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
         self.selectionWidget.finish_selection()
-        doc.resetEdit()
+        return super().reject()
 
     def rotation_changed(self, base_quantity_value):
         self.rotation = base_quantity_value

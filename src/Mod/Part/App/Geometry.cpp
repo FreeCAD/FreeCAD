@@ -102,6 +102,7 @@
 # include <GeomAdaptor_HCurve.hxx>
 # endif
 
+# include <boost/random.hpp>
 # include <cmath>
 # include <ctime>
 #endif //_PreComp_

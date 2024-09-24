@@ -6,12 +6,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>Estandarra (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="73"/>

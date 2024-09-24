@@ -904,14 +904,26 @@ def get_svg(obj,
     return svg
 
 
+# Similar function as in view_layer.py
+def _get_layer(obj):
+    """Get the layer the object belongs to."""
+    finds = obj.Document.findObjects(Name="LayerContainer")
+    if not finds:
+        return None
+    for layer in finds[0].Group:
+        if utils.get_type(layer) == "Layer" and obj in layer.Group:
+            return layer
+    return None
+
+
 def get_print_color(obj):
-    """returns the print color of the parent layer, if available"""
-    for parent in obj.InListRecursive:
-        if (hasattr(parent,"ViewObject")
-                and hasattr(parent.ViewObject,"UsePrintColor")
-                and parent.ViewObject.UsePrintColor):
-            if hasattr(parent.ViewObject,"LinePrintColor"):
-                return parent.ViewObject.LinePrintColor
+    """Return the print color of the parent layer, if available."""
+    # Layers are not in the Inlist of obj because a layer's Group is App::PropertyLinkListHidden:
+    layer = _get_layer(obj)
+    if layer is None:
+        return None
+    if layer.ViewObject.UsePrintColor:
+        return layer.ViewObject.LinePrintColor
     return None
 
 

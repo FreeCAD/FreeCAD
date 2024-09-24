@@ -95,9 +95,9 @@ protected:
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
     //@}
 
+public:
     void addViewProvider(Gui::ViewProviderDocumentObject*);
 
-public:
     /** @name Signals of the document */
     //@{
     /// signal on new Object
@@ -227,7 +227,11 @@ public:
     void setAnnotationViewProvider(const char* name, ViewProvider *pcProvider);
     /// get an annotation view provider
     ViewProvider * getAnnotationViewProvider(const char* name) const;
-    /// remove an annotation view provider
+    /// return true if the view provider is added as an annotation view provider
+    bool isAnnotationViewProvider(const ViewProvider* vp) const;
+    /// remove an annotation view provider from the document and return it
+    ViewProvider* takeAnnotationViewProvider(const char* name);
+    /// remove and delete an annotation view provider
     void removeAnnotationViewProvider(const char* name);
     /// test if the feature is in show
     bool isShow(const char* name);

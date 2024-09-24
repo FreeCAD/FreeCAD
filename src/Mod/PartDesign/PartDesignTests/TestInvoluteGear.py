@@ -34,8 +34,10 @@ FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 class TestInvoluteGear(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestInvoluteGear")
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
     def tearDown(self):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
         FreeCAD.closeDocument(self.Doc.Name)
 
     def testDefaultGearProfile(self):

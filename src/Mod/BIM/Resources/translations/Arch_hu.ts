@@ -5,8 +5,8 @@
     <name>ArchMaterial</name>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
-      <source>Arch material</source>
-      <translation>Építészeti anyag</translation>
+      <source>BIM material</source>
+      <translation>BIM anyag</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Szülő</translation>
     </message>
   </context>
   <context>
@@ -144,17 +144,17 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</source>
-      <translation type="unfinished">The name of the BIM Server you are currently connecting to. Change settings in the BIM preferences</translation>
+      <translation>A BIM-kiszolgáló neve, amelyhez jelenleg csatlakozik. A beállítások módosítása a BIM-beállításokban</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>BIM Server</source>
-      <translation type="unfinished">BIM Server</translation>
+      <translation>BIM szerver</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the BIM Server</source>
-      <translation type="unfinished">The list of projects present on the BIM Server</translation>
+      <translation>A Bim-kiszolgálón lévő tervek listája</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -429,7 +429,7 @@ Hagyja üresen a dokumentum összes objektumának használatát</translation>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by:</source>
-      <translation>Rendezés:</translation>
+      <translation>Rendezés ezzel:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="111"/>
@@ -590,10 +590,10 @@ Hagyja üresen a dokumentum összes objektumának használatát</translation>
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document, 
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>Ha bejelölte ezt a lehetőséget, akkor új FreeCAD-dokumentum létrehozásakor a rendszer nem kérdezi meg újra, 
+és a dokumentumot nem alakítja át automatikusan IFC-dokumentummá.
+A FreeCAD dokumentumot manuálisan is átalakíthatja IFC-dokumentummá, a következőkkel
+Segédprogramok -&gt; IFC projekt készítése</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -702,7 +702,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
       <source>This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</source>
-      <translation type="unfinished">This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</translation>
+      <translation>Meghatározza, hogy az IFC-adatok hogyan tárolódnak a FreeCAD dokumentumban. Az 'Egyetlen IFC dokumentum' azt jelenti, hogy a FreeCAD dokumentum az IFC dokumentum, minden, amit benne létrehoz, az IFC dokumentumhoz is tartozik. 'Az IFC dokumentum tárgy használata' azt jelenti, hogy a FreeCAD dokumentumon belül létrejön egy olyan tárgy, amely az IFC dokumentumot reprezentálja. A dokumentum mellé nem IFC tárgyakat is hozzáadhat.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
@@ -787,7 +787,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation type="unfinished">If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</translation>
+      <translation>Ha ez a jelölőnégyzet nincs bejelölve, akkor ezek a beállítások a következő alkalommal automatikusan alkalmazásra kerülnek. Ezt később a Szerkesztés -&gt; Beállítások -&gt; BIM -&gt; Natív IFC menüben módosíthatja</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
@@ -892,7 +892,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="20"/>
       <source>This screen allows you to configure a new BIM project in FreeCAD.</source>
-      <translation type="unfinished">This screen allows you to configure a new BIM project in FreeCAD.</translation>
+      <translation>Ez a képernyő lehetővé teszi egy új BIM-terv konfigurálását a FreeCAD-ben.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="31"/>
@@ -902,22 +902,22 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="41"/>
       <source>Saves the current document as a template, including all the current BIM settings</source>
-      <translation type="unfinished">Saves the current document as a template, including all the current BIM settings</translation>
+      <translation>Az aktuális dokumentum sablonként történő mentése, beleértve az összes aktuális BIM-beállítást is</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="44"/>
       <source>Save template...</source>
-      <translation type="unfinished">Save template...</translation>
+      <translation>Sablon mentése...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
       <source>Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</source>
-      <translation type="unfinished">Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</translation>
+      <translation>Betölti egy FCStd fájl tartalmát az aktív dokumentumba, alkalmazva az abban tárolt összes BIM-beállítást, ha van ilyen</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
       <source>Load template...</source>
-      <translation type="unfinished">Load template...</translation>
+      <translation>Sablon betöltése...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="88"/>
@@ -1067,37 +1067,37 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="424"/>
       <source>Axes line width</source>
-      <translation type="unfinished">Axes line width</translation>
+      <translation>Tengelyek vonalszélessége</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="442"/>
       <source>Axes color</source>
-      <translation type="unfinished">Axes color</translation>
+      <translation>Tengelyek színe</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
       <source>Levels</source>
-      <translation type="unfinished">Levels</translation>
+      <translation>Szintek</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="472"/>
       <source>Level height</source>
-      <translation type="unfinished">Level height</translation>
+      <translation>Szint magasság</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="489"/>
       <source>Number of levels</source>
-      <translation type="unfinished">Number of levels</translation>
+      <translation>Szintek száma</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="498"/>
       <source>Bind levels to vertical axes</source>
-      <translation type="unfinished">Bind levels to vertical axes</translation>
+      <translation>Szintek kötése függőleges tengelyekhez</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="505"/>
       <source>Define a working plane for each level</source>
-      <translation type="unfinished">Define a working plane for each level</translation>
+      <translation>Munkasík definiálása minden szinthez</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="512"/>
@@ -1117,7 +1117,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="567"/>
       <source>The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</source>
-      <translation type="unfinished">The above settings can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</translation>
+      <translation>A fenti beállítások előre beállított értékként menthetők. Az előbeállítások .txt fájlként tárolódnak a FreeCAD felhasználói mappájában</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="579"/>
@@ -1288,7 +1288,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A jelek szerint Ön most használja először a BIM munkafelületet. Ha megnyomja az OK gombot, a következő képernyőn néhány tipikus FreeCAD-beállítás beállítását javasolja, amelyek alkalmasak a BIM-munkához. A későbbiekben ezeket az beállításokat bármikor megváltoztathatja a &lt;span style=" font-weight:600;"&gt;Kezelés -&amp;gt; BIM beállítások...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; menüpont alatt</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="78"/>
@@ -1297,13 +1297,13 @@ Utils -&gt; Make IFC project</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="85"/>
-      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation>A FreeCAD egy összetett alkalmazás. Ha ez az első érintkezése a FreeCAD-del, vagy még soha nem dolgozott 3D-vel vagy BIM-mel, akkor érdemes először a &lt;a href="https://www.freecadweb.org/wiki/BIM_Start_Tutorial"&gt;BIM oktatóprogramunkat&lt;/a&gt; elvégezni (szintén elérhető a &lt;span style=" font-weight:600;"&gt;Súgó -&amp;gt; BIM oktatóprogram&lt;/span&gt; menüpont alatt).</translation>
+      <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
+      <translation>FreeCAD egy sokrétű alkalmazás. Ha ez az első érintkezése a FreeCAD-del, vagy még soha nem dolgozott 3D-vel vagy BIM-mel, akkor érdemes először a &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM oktatóprogramunkat&lt;/a&gt; elvégezni (szintén elérhető a &lt;span style=" font-weight:600;"&gt;Súgó -&amp;gt; BIM oktatóprogram&lt;/span&gt; menüpont alatt).</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="95"/>
-      <source>The BIM workbench also has a &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation>A BIM munkafelület &lt;a href="https://wiki.freecadweb.org/BIM_Workbench"&gt;teljes dokumentáció&lt;/a&gt; is elérhető a Súgó menüben. A "Mi ez?" gomb megnyithatja az eszköztárak bármelyik eszközének súgóoldalát is.</translation>
+      <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
+      <translation>A BIM munkafelület &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;teljes dokumentáció&lt;/a&gt; is elérhető a Súgó menüben. A "Mi ez?" gombbal az eszköztárak bármelyik eszközének súgóoldala is megnyitható.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="105"/>
@@ -1577,7 +1577,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="51"/>
       <source>The property will be hidden in the interface, and can only be modified via Python script</source>
-      <translation type="unfinished">The property will be hidden in the interface, and can only be modified via Python script</translation>
+      <translation>A tulajdonság el lesz rejtve a felületen, és csak Python szkript segítségével módosítható</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
@@ -1947,7 +1947,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A modell IFC-be történő exportálásakor minden olyan BIM-elem, amely egy téglalap alakú profil extrudálása, egy IfcRectangleProfileDef entitást használ extrudálási profilként. Ugyanakkor a Revit nem fogja ezeket helyesen importálni. Ha az IFC-fájlt a Revitben kívánja használni, javasoljuk, hogy tiltsa le ezt a viselkedést a &lt;span style=" font-weight:600;"&gt;Beállítások -&amp;gt; BIM -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; IfcRectangularProfileDef letiltása&lt;/span&gt; menüpontban található lehetőség bejelölésével.&lt;/p&gt;&lt;p&gt;Ha bejelölte a lehetőséget, akkor minden extrudálási profil általános IfcArbitraryProfileDef entitásként lesz exportálva, függetlenül attól, hogy téglalap alakúak-e vagy sem, amelyek valamivel kevesebb információt tartalmaznak, de helyesen nyílnak meg a Revitben.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;Az összes extrudálási profil általános IfcArbitraryProfileDef entitásként lesz exportálva, függetlenül attól, hogy téglalap alakúak-e vagy sem, amelyek valamivel kevesebb információt tartalmaznak, de helyesen nyílnak meg a Revitben</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="418"/>
@@ -2491,27 +2491,27 @@ a rejtett tárgyak kivetítéseihez.</translation>
       <location filename="../ui/preferences-arch.ui" line="486"/>
       <source>Scaling factor for patterns used by objects that have
 a Footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by objects that have
-a Footprint display mode</translation>
+      <translation>Méretezési tényező az olyan tárgyak által használt mintákhoz, amelyeknek
+Lábnyom megjelenítési mód</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
       <source>BIM server</source>
-      <translation type="unfinished">BIM server</translation>
+      <translation>BIM szerver</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="528"/>
       <source>The URL of a BIM server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a BIM server instance (www.bimserver.org) to connect to.</translation>
+      <translation>A BIM-kiszolgáló példányának URL-címe (www.bimserver.org), amelyhez csatlakozni kell.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="544"/>
       <source>If this is selected, the "Open BIM Server in browser"
 button will open the BIM Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BIM Server in browser"
-button will open the BIM Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>Ha ezt választja, akkor a "BIM-kiszolgáló megnyitása a böngészőben"
+gomb megnyílik a BIM Server felülete egy külső böngészőben.
+a FreeCAD webes munkafelület helyett</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="521"/>
@@ -2685,37 +2685,37 @@ instead of the FreeCAD web workbench</translation>
       <translation>IFC exportálás</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="41"/>
+      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Show this dialog when importing</source>
       <translation>A párbeszédpanel megjelenítése importáláskor</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="54"/>
+      <location filename="../ui/preferences-ifc.ui" line="45"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation>Részletes hibakeresési üzenetek megjelenítése importálás és exportálás közben
 IFC-fájlok megjelenítése a Jelentés nézet panelen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="58"/>
+      <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Show debug messages</source>
       <translation>Hibakeresési üzenetek megjelenítése</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="71"/>
+      <location filename="../ui/preferences-ifc.ui" line="62"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation>A klónok akkor használatosak, ha az objektumok megosztott geometriával rendelkeznek
 Az egyik objektum az alapobjektum, a többi klón.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="75"/>
+      <location filename="../ui/preferences-ifc.ui" line="66"/>
       <source>Create clones when objects have shared geometry</source>
       <translation>Klónok létrehozása, ha a tárgyak rendelkeznek megosztott geometriával</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="99"/>
-      <location filename="../ui/preferences-ifc.ui" line="119"/>
+      <location filename="../ui/preferences-ifc.ui" line="90"/>
+      <location filename="../ui/preferences-ifc.ui" line="110"/>
       <source>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
@@ -2734,192 +2734,192 @@ például 3, ha van egy 4-magos CPU.
 ha több mag beállításakor összeomlik.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="129"/>
+      <location filename="../ui/preferences-ifc.ui" line="120"/>
       <source>Number of cores to use (experimental)</source>
       <translation>A használandó magok száma (kísérleti)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="157"/>
+      <location filename="../ui/preferences-ifc.ui" line="148"/>
       <source>Import options</source>
       <translation>Importálási beállítások</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="165"/>
+      <location filename="../ui/preferences-ifc.ui" line="156"/>
       <source>Import arch IFC objects as</source>
       <translation>Építészeti IFC objektumok importálása</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="172"/>
-      <location filename="../ui/preferences-ifc.ui" line="221"/>
+      <location filename="../ui/preferences-ifc.ui" line="163"/>
+      <location filename="../ui/preferences-ifc.ui" line="212"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Itt adható meg, milyen típusú objektumok fog létrehozni a FreeCAD-ben</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="182"/>
+      <location filename="../ui/preferences-ifc.ui" line="173"/>
       <source>Parametric BIM objects</source>
-      <translation type="unfinished">Parametric BIM objects</translation>
+      <translation>Változós BIM tárgyak</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="187"/>
-      <location filename="../ui/preferences-ifc.ui" line="231"/>
+      <location filename="../ui/preferences-ifc.ui" line="178"/>
+      <location filename="../ui/preferences-ifc.ui" line="222"/>
       <source>Non-parametric BIM objects</source>
-      <translation type="unfinished">Non-parametric BIM objects</translation>
+      <translation>Nem változós BIM tárgyak</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="192"/>
-      <location filename="../ui/preferences-ifc.ui" line="236"/>
+      <location filename="../ui/preferences-ifc.ui" line="183"/>
+      <location filename="../ui/preferences-ifc.ui" line="227"/>
       <source>Simple Part shapes</source>
       <translation>Egyszerű alkatrész alakzatok</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="197"/>
+      <location filename="../ui/preferences-ifc.ui" line="188"/>
       <source>One compound per floor</source>
       <translation>Szintenként egy összetevő</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="202"/>
+      <location filename="../ui/preferences-ifc.ui" line="193"/>
       <source>Do not import Arch objects</source>
       <translation>Ne importálja az építészeti objektumok</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="214"/>
+      <location filename="../ui/preferences-ifc.ui" line="205"/>
       <source>Import struct IFC objects as</source>
       <translation>Struct IFC objektumok importálása mint</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="241"/>
+      <location filename="../ui/preferences-ifc.ui" line="232"/>
       <source>One compound for all</source>
       <translation>Egy összetétel mindenhez</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="246"/>
+      <location filename="../ui/preferences-ifc.ui" line="237"/>
       <source>Do not import structural objects</source>
       <translation>Ne importálja a szerkezeti tárgyakat</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="258"/>
+      <location filename="../ui/preferences-ifc.ui" line="249"/>
       <source>Root element:</source>
       <translation>Gyökér elem:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="265"/>
+      <location filename="../ui/preferences-ifc.ui" line="256"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
       <translation>A program csak a megadott elem altípusait importálja.
 Tartsa meg az IfcProduct elemet az összes építőelem importálásához.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="284"/>
+      <location filename="../ui/preferences-ifc.ui" line="275"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
       <translation>A nyílások kivonásként lesznek importálva, ellenkező esetben fali alakzatok
 már kivonják a nyílásaikat</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="288"/>
+      <location filename="../ui/preferences-ifc.ui" line="279"/>
       <source>Separate openings</source>
       <translation>Elkülönült nyílások</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="301"/>
+      <location filename="../ui/preferences-ifc.ui" line="292"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
       <translation>Az importőr megpróbálja észlelni a kihúzásokat.
 Ne feledje, hogy ez lelassíthatja a dolgokat.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="305"/>
+      <location filename="../ui/preferences-ifc.ui" line="296"/>
       <source>Detect extrusions</source>
       <translation>Kihúzások felismerése</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="318"/>
+      <location filename="../ui/preferences-ifc.ui" line="309"/>
       <source>Split walls made of multiple layers</source>
       <translation>Több rétegű falak felosztása</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="321"/>
+      <location filename="../ui/preferences-ifc.ui" line="312"/>
       <source>Split multilayer walls</source>
       <translation>Többrétegű falak felosztása</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="334"/>
+      <location filename="../ui/preferences-ifc.ui" line="325"/>
       <source>Object names will be prefixed with the IFC ID number</source>
       <translation>Az objektumnevek az IFC azonosítószámmal előrögzítettek</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="337"/>
+      <location filename="../ui/preferences-ifc.ui" line="328"/>
       <source>Prefix names with ID number</source>
       <translation>Előtag nevek, ID azonosító számmal</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="350"/>
+      <location filename="../ui/preferences-ifc.ui" line="341"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
       <translation>Ha az IFC-fájlban több azonos nevű és színű anyag található,
 egyként fogják kezelni őket.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="354"/>
+      <location filename="../ui/preferences-ifc.ui" line="345"/>
       <source>Merge materials with same name and same color</source>
       <translation>Azonos nevű és színű anyagok egyesítése</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="367"/>
+      <location filename="../ui/preferences-ifc.ui" line="358"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
       <translation>Minden objektum IFC-tulajdonságait táblázat objektumban tárolja</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="370"/>
+      <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>Import IFC properties in spreadsheet</source>
       <translation>Ifc tulajdonságok importálása egy táblázatba</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="383"/>
+      <location filename="../ui/preferences-ifc.ui" line="374"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
       <translation>Az IFC-fájlok tisztázatlan vagy nem szilárd geometriát tartalmazhatnak. Ha ez a beállítás be van jelölve, a program az összes geometriát importálja, függetlenül azok érvényességétől.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="386"/>
+      <location filename="../ui/preferences-ifc.ui" line="377"/>
       <source>Allow invalid shapes</source>
       <translation>Érvénytelen alakzatok engedélyezése</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="401"/>
+      <location filename="../ui/preferences-ifc.ui" line="392"/>
       <source>Exclude list:</source>
       <translation>Kizárási lista:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="408"/>
+      <location filename="../ui/preferences-ifc.ui" line="399"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
       <translation>Az importból kizárandó IFC szerkezet vesszővel tagolt listája</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="429"/>
+      <location filename="../ui/preferences-ifc.ui" line="420"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
       <translation>Nézet igazítása az importált objektumok importálása közben.
 Ez lelassítja az importálást, de meg lehet nézni az importálást.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="433"/>
+      <location filename="../ui/preferences-ifc.ui" line="424"/>
       <source>Fit view while importing</source>
       <translation>Nézetbe illesztés az importáláskor</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="446"/>
+      <location filename="../ui/preferences-ifc.ui" line="437"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
       <translation>Teljes parametrikus modellt hoz létre a tárolt
 FreeCAD objektum tulajdonságaival</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="450"/>
+      <location filename="../ui/preferences-ifc.ui" line="441"/>
       <source>Import full FreeCAD parametric definitions if available</source>
       <translation>Teljes FreeCAD paraméteres definíciók importálása, ha léteznek</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="463"/>
+      <location filename="../ui/preferences-ifc.ui" line="454"/>
       <source>If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
@@ -2930,7 +2930,7 @@ are placed in a 'Group' instead.
 Az 'Épületek' és az 'Emeletek' még mindig importálva vannak, ha egynél több van.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="469"/>
+      <location filename="../ui/preferences-ifc.ui" line="460"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
       <translation>A 'Terv', a 'Terület', a 'Épület' és a 'Emelet' kicserélése 'Csoport' -ra</translation>
     </message>
@@ -2940,7 +2940,7 @@ Az 'Épületek' és az 'Emeletek' még mindig importálva vannak, ha egynél tö
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="48"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <source>Export options</source>
       <translation>Exportálási beállítások</translation>
@@ -2985,7 +2985,7 @@ Netgen használata esetén győződjön meg arról, hogy az elérhető.</transla
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and Mefisto mesher options</source>
-      <translation type="unfinished">Builtin and Mefisto mesher options</translation>
+      <translation>Beépített és Mefisto hálózási lehetőségek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
@@ -3072,19 +3072,19 @@ A h(x) helyi háló méret esése közelít |Δh(x)| ≤ 1/érték.</translation
       <translation>IFC exportálás</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
-      <location filename="../ui/preferences-ifc.ui" line="35"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="26"/>
+      <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General options</source>
       <translation>Általános beállítások</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="41"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="32"/>
       <source>Show this dialog when exporting</source>
       <translation>A párbeszédpanel megjelenítése exportáláskor</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="65"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="78"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="56"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="69"/>
       <source>The type of objects that you wish to export:
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
@@ -3095,49 +3095,49 @@ A h(x) helyi háló méret esése közelít |Δh(x)| ≤ 1/érték.</translation
 - Alapértelmezett + szerkezeti: mindkét típusú modellek.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="71"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="62"/>
       <source>Export type</source>
       <translation>Exportálás típusa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="91"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="82"/>
       <source>Standard model</source>
       <translation>Szabványos modell</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="96"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="87"/>
       <source>Structural analysis</source>
       <translation>Szerkezeti elemzés</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="92"/>
       <source>Standard + structural</source>
       <translation>Alapértelmezett + szerkezeti</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="111"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="102"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
       <translation>Egyes IFC-megjelenítők nem szeretik a kihúzásként exportált objektumokat.
 Ezzel kényszerítheti az összes objektum BREP geometriaként történő exportálását.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="115"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="106"/>
       <source>Force export as Brep</source>
       <translation>Erőltetett Exportálás Brep-ként</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="128"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="119"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>DAE beállítások lapon található háromszögelés beállításokat használjon</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="131"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="122"/>
       <source>Use DAE triangulation options</source>
       <translation>DAE háromszögelés beállításokat használjon</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="144"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="135"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
@@ -3146,12 +3146,12 @@ lapos felületekre bontják.
 Ha ez be van jelölve, egy további számítás történik a sík felületek összekapcsolásához.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="149"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Csatlakozzon párhuzamos sík felületeket háromszögelésnél</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="153"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
@@ -3160,12 +3160,12 @@ a FreeCAD objektumon belül tárolt,, hogy legközelebb újra felhasználhassa a
 exportálásához. Ez kisebb különbségeket eredményez a fájlverziók között.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="158"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
       <translation>IFC egyedi azonosító tárolása FreeCAD-objektumokban</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="174"/>
       <source>IFCOpenShell is a library that allows to import IFC files.
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
@@ -3176,46 +3176,46 @@ megfelelő IFC geometriát eredményez: NURBS, sokoldalú, vagy bármi más.
 Megjegyzés: A szerializáló még mindig kísérleti funkció!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="189"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="180"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>IfcOpenShell szerializáló használata, ha elérhető</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="202"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="193"/>
       <source>2D objects will be exported as IfcAnnotation</source>
       <translation>A 2D objektumok exportálása ifcAnnotation néven</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="205"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="196"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>2D objektumok exportálása mint IfcAnnotations</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="221"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="212"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
       <translation>A FreeCAD objektum összes tulajdonsága az exportált objektumokon belül kerül letárolva,
 lehetővé teszi a teljes parametrikus modell újbóli létrehozását az újraimportáláskor.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="225"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="216"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>Teljes FreeCAD parametrikus modell export</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="238"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="229"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
       <translation>Ha lehetséges, a hasonló entitásokat csak egyszer használja a fájlban, ha lehetséges.
 Ez sokkal csökkentheti a fájlméretet, de kevésbé olvashatóvá teszi.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="233"/>
       <source>Reuse similar entities</source>
       <translation>Hasonló szerkezetek újra használása</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="258"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="249"/>
       <source>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
@@ -3226,61 +3226,61 @@ Előfordulhat azonban, hogy más alkalmazások importálása nem okoz problémá
 Ha ez az Ön esete, letilthatja ezt, majd az összes profil ifcArbitraryClosedProfileDef néven lesz exportálva.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="264"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="255"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>IfcRectangleProfileDef letiltása</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="277"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="268"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
       <translation>Néhány IFC-típusnak, mint például az IfcWall vagy az IfcBeam, vannak speciális szabványos változatai, mint például az IfcWallStandardCase vagy az IfcBeamStandardCase. Ha ez az opció be van kapcsolva, a FreeCAD automatikusan exportálja az ilyen tárgyakat szabványos esetként, ha a szükséges feltételek teljesülnek.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="396"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="387"/>
       <source>Add default building if one is not found in the document</source>
       <translation>Alapértelmezett épület hozzáadása, ha nem található a dokumentumban</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="412"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="403"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</source>
       <translation>A FreeCAD-ben lehetőség van épületek vagy emeletek belsejében csoportok egymásba fészkelésére. Ha ez az opció ki van kapcsolva, a FreeCAD csoportok IfcGroups néven kerülnek elmentésre, és az épületszerkezetbe aggregálva. Az IFC szabványok azonban nem javasolják a nem épületelemek, például IfcGroups-ok összevonását. Ezért lehetőség van arra is, hogy ezeket a csoportokat IfcElementAssemblies-ként exportáljuk, ami IFC-kompatibilis fájlt eredményez. A FreeCAD-nél azonban úgy gondoljuk, hogy a csoportok szerkezeteken belüli fészkelését is lehetővé kell tenni, és ez az opció azért van, hogy legyen lehetőségünk demonstrálni az álláspontunkat.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="415"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="406"/>
       <source>Export nested groups as assemblies</source>
       <translation>Beágyazott csoportok exportálása összeállításként</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="281"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="272"/>
       <source>Auto-detect and export as standard cases when applicable</source>
       <translation>Automatikus felismerés és exportálás szabványos esetként, ha szükséges</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="294"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="285"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
       <translation>Ha nem található hely a FreeCAD dokumentumban, a program egy alapértelmezettet ad hozzá.
 A hely nem kötelező, de általános gyakorlat, hogy legalább egy van a fájlban.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="298"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="289"/>
       <source>Add default site if one is not found in the document</source>
       <translation>Alapértelmezett hely hozzáadása, ha nem található meg a dokumentumban</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="375"/>
-      <location filename="../ui/preferences-ifc.ui" line="482"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="366"/>
+      <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</source>
       <translation>Ellenőrizze a NativeIFC-specifikus beállításokat is a BIM -&gt; NativeIFC alatt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="385"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="376"/>
       <source>IFC standard compliance</source>
       <translation>IFC szabványnak való megfelelés</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="391"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="382"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
@@ -3289,20 +3289,20 @@ Figyelmeztetés: Az IFC szabvány minden fájlban legalább egy épületet kér.
 Azonban a FreeCAD esetében, úgy véljük, miután az épület nem kötelező, és ez a lehetőség adott, hogy bemutassa az a nézőpontból.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="311"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="302"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
       <translation>Ha a FreeCAD dokumentumban nem található épületszint, a program egy alapértelmezett et ad hozzá.
 Az épületemelet nem kötelező, de bevett gyakorlat, hogy legalább egy van a fájlban.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="315"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="306"/>
       <source>Add default building storey if one is not found in the document</source>
       <translation>Alapértelmezett épületszint hozzáadása, ha nem található meg a dokumentumban</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="330"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="345"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="321"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="336"/>
       <source>The units you want your IFC file to be exported to.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
@@ -3317,17 +3317,17 @@ Egyes BIM alkalmazások azonban ezt a tényezőt arra használják, hogy
 kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="329"/>
       <source>IFC file units</source>
       <translation>IFC fájl mértékegységek</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="360"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="351"/>
       <source>Metric</source>
       <translation>Metrikus</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="365"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="356"/>
       <source>Imperial</source>
       <translation>Angolszász</translation>
     </message>
@@ -3405,14 +3405,14 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="456"/>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1335"/>
       <location filename="../../bimcommands/BimProfile.py" line="74"/>
       <source>Category</source>
       <translation>Kategória</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="463"/>
-      <location filename="../../bimcommands/BimWindow.py" line="306"/>
+      <location filename="../../bimcommands/BimWindow.py" line="307"/>
       <location filename="../../bimcommands/BimProfile.py" line="81"/>
       <location filename="../../bimcommands/BimPanel.py" line="138"/>
       <source>Preset</source>
@@ -3421,7 +3421,7 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="472"/>
       <location filename="../../ArchPrecast.py" line="1412"/>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <location filename="../../bimcommands/BimWall.py" line="293"/>
       <location filename="../../bimcommands/BimPanel.py" line="148"/>
       <source>Length</source>
@@ -3445,17 +3445,17 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
       <source>Parameters of the structure</source>
-      <translation type="unfinished">Parameters of the structure</translation>
+      <translation>A szerkezet paraméterei</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="499"/>
       <source>Switch Length/Height</source>
-      <translation type="unfinished">Switch Length/Height</translation>
+      <translation>Hossz/Magasság cseréje</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="501"/>
       <source>Switch Length/Width</source>
-      <translation type="unfinished">Switch Length/Width</translation>
+      <translation>Hosszúság és szélesség cseréje</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="505"/>
@@ -3677,7 +3677,7 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="842"/>
-      <location filename="../../ArchMaterial.py" line="95"/>
+      <location filename="../../ArchMaterial.py" line="93"/>
       <source>Reorder children alphabetically</source>
       <translation>Alárendeltek ábécé szerinti újrarendezése</translation>
     </message>
@@ -3980,52 +3980,52 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Keresztezési pont a szelvényben nem található.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="67"/>
+      <location filename="../../importers/importSHP.py" line="66"/>
       <source>Shapes elevation</source>
       <translation>Az alakzatok magassága</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="68"/>
+      <location filename="../../importers/importSHP.py" line="67"/>
       <source>Choose which field provides shapes elevations:</source>
       <translation>Válassza ki, hogy melyik mező adja meg az alakzatok magasságát:</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="109"/>
+      <location filename="../../importers/importSHP.py" line="108"/>
       <source>No shape found in this file</source>
       <translation>A fájlban nincsenek alakzatok</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="134"/>
+      <location filename="../../importers/importSHP.py" line="133"/>
       <source>Shapefile module not found</source>
       <translation>Alakzat modul nem található</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="135"/>
+      <location filename="../../importers/importSHP.py" line="134"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
       <translation>A formafájl Python könyvtárat nem találtuk a rendszerén. Szeretné most letölteni a %1-ről? A könyvtár a makrók mappájába kerül.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="141"/>
+      <location filename="../../importers/importSHP.py" line="140"/>
       <source>Error: Unable to download from %1</source>
       <translation>Hiba: Nem sikerült letölteni a %1-ről</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="151"/>
+      <location filename="../../importers/importSHP.py" line="150"/>
       <source>Could not download shapefile module. Aborting.</source>
       <translation>Alakzat modul nem letölthető. Megszakítja a folyamatot.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="154"/>
+      <location filename="../../importers/importSHP.py" line="153"/>
       <source>Shapefile module not downloaded. Aborting.</source>
       <translation>Alakzat modul nincs letöltve. Megszakítva.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="157"/>
+      <location filename="../../importers/importSHP.py" line="156"/>
       <source>Shapefile module not found. Aborting.</source>
       <translation>Alakzat modul nem található. Megszakítva.</translation>
     </message>
     <message>
-      <location filename="../../importers/importSHP.py" line="158"/>
+      <location filename="../../importers/importSHP.py" line="157"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
       <translation>Az alakzatfájltár a következő URL-címről tölthető le, és a makrók mappájába telepíthető:</translation>
     </message>
@@ -4037,7 +4037,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="100"/>
       <location filename="../../bimcommands/BimWindow.py" line="119"/>
-      <location filename="../../bimcommands/BimWindow.py" line="166"/>
+      <location filename="../../bimcommands/BimWindow.py" line="167"/>
       <source>Create Window</source>
       <translation>Ablak létrehozása</translation>
     </message>
@@ -4047,99 +4047,99 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Válasszon egy felületet a meglévő tárgyon vagy válasszon egy előre beállítottat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="190"/>
+      <location filename="../../bimcommands/BimWindow.py" line="191"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Az ablak nem a vázlaton alapul. Az ablak nincs igazítva vagy átméretezve.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="200"/>
+      <location filename="../../bimcommands/BimWindow.py" line="201"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>Nincs szélességi és/vagy magassági korlátozás az ablak vázlatában. Az ablak nincs átméretezve.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="203"/>
+      <location filename="../../bimcommands/BimWindow.py" line="204"/>
       <source>No window found. Cannot continue.</source>
       <translation>Nem található ablak. Nem folytatható.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="265"/>
+      <location filename="../../bimcommands/BimWindow.py" line="266"/>
       <source>Window options</source>
       <translation>Ablak beállítások</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="269"/>
+      <location filename="../../bimcommands/BimWindow.py" line="270"/>
       <source>Auto include in host object</source>
       <translation>Kiszolgáló tárgy automatikus hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="275"/>
+      <location filename="../../bimcommands/BimWindow.py" line="276"/>
       <source>Sill height</source>
       <translation>Könyöklő magassága</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="869"/>
+      <location filename="../../ArchWindow.py" line="896"/>
       <source>This window has no defined opening</source>
       <translation>Ennek az ablakban nincs meghatározva a nyitása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1146"/>
-      <location filename="../../ArchWindow.py" line="1195"/>
-      <location filename="../../ArchWindow.py" line="1356"/>
+      <location filename="../../ArchWindow.py" line="1173"/>
+      <location filename="../../ArchWindow.py" line="1222"/>
+      <location filename="../../ArchWindow.py" line="1383"/>
       <source>Get selected edge</source>
       <translation>Kiválasztott élt kapja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1295"/>
+      <location filename="../../ArchWindow.py" line="1322"/>
       <source>Unable to create component</source>
       <translation>Nem sikerült létrehozni egy összetevőt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1333"/>
+      <location filename="../../ArchWindow.py" line="1360"/>
       <source>Window elements</source>
       <translation>Ablak elemek</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1334"/>
+      <location filename="../../ArchWindow.py" line="1361"/>
       <source>Hole wire</source>
       <translation>Drótháló furat</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1335"/>
+      <location filename="../../ArchWindow.py" line="1362"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>A hordozó tárgyon lévő furat meghatározásához használt drótháló száma. A nulla értékkel automatikusan a legnagyobb dróthálót fogadja el</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1336"/>
+      <location filename="../../ArchWindow.py" line="1363"/>
       <source>Pick selected</source>
       <translation>Véletlenszerűen kiválasztott</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1337"/>
+      <location filename="../../ArchWindow.py" line="1364"/>
       <location filename="../../ArchAxisSystem.py" line="323"/>
       <location filename="../../ArchAxis.py" line="752"/>
       <location filename="../../ArchComponent.py" line="1949"/>
       <location filename="../../ArchSectionPlane.py" line="1324"/>
-      <location filename="../../ArchSpace.py" line="744"/>
+      <location filename="../../ArchSpace.py" line="738"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1338"/>
+      <location filename="../../ArchWindow.py" line="1365"/>
       <location filename="../../ArchAxisSystem.py" line="324"/>
       <location filename="../../ArchAxis.py" line="753"/>
       <location filename="../../ArchComponent.py" line="1950"/>
-      <location filename="../../ArchSpace.py" line="738"/>
+      <location filename="../../ArchSpace.py" line="732"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="856"/>
       <location filename="../../ArchReference.py" line="652"/>
-      <location filename="../../ArchWindow.py" line="1339"/>
+      <location filename="../../ArchWindow.py" line="1366"/>
       <location filename="../../ArchIFCView.py" line="56"/>
       <location filename="../../ArchAxisSystem.py" line="203"/>
-      <location filename="../../ArchMaterial.py" line="367"/>
-      <location filename="../../ArchMaterial.py" line="665"/>
+      <location filename="../../ArchMaterial.py" line="363"/>
+      <location filename="../../ArchMaterial.py" line="663"/>
       <location filename="../../ArchGrid.py" line="285"/>
       <location filename="../../ArchSchedule.py" line="432"/>
       <location filename="../../ArchAxis.py" line="581"/>
@@ -4149,101 +4149,101 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1340"/>
+      <location filename="../../ArchWindow.py" line="1367"/>
       <source>Create/update component</source>
       <translation>Létrehozni/frissíteni összetevőt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1341"/>
+      <location filename="../../ArchWindow.py" line="1368"/>
       <source>Base 2D object</source>
       <translation>Alap 2D tárgy</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1342"/>
-      <location filename="../../ArchWindow.py" line="1347"/>
+      <location filename="../../ArchWindow.py" line="1369"/>
+      <location filename="../../ArchWindow.py" line="1374"/>
       <source>Wires</source>
       <translation>Drótvázak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1343"/>
+      <location filename="../../ArchWindow.py" line="1370"/>
       <location filename="../../ArchComponent.py" line="1957"/>
       <source>Components</source>
       <translation>Összetevők</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1344"/>
+      <location filename="../../ArchWindow.py" line="1371"/>
       <source>Create new component</source>
       <translation>Új összetevő létrehozásához</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1345"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchWindow.py" line="1372"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <source>Name</source>
       <translation>Név</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1346"/>
+      <location filename="../../ArchWindow.py" line="1373"/>
       <location filename="../../ArchComponent.py" line="2012"/>
-      <location filename="../../ArchCommands.py" line="1338"/>
+      <location filename="../../ArchCommands.py" line="1337"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="461"/>
       <source>Type</source>
       <translation>Típus</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1348"/>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchWindow.py" line="1375"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <location filename="../../bimcommands/BimPanel.py" line="162"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1349"/>
+      <location filename="../../ArchWindow.py" line="1376"/>
       <location filename="../../ArchPrecast.py" line="1418"/>
       <source>Offset</source>
       <translation>Eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1350"/>
+      <location filename="../../ArchWindow.py" line="1377"/>
       <source>Hinge</source>
       <translation>Zsanér</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1351"/>
+      <location filename="../../ArchWindow.py" line="1378"/>
       <source>Opening mode</source>
       <translation>Nyitás módja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1352"/>
-      <location filename="../../ArchWindow.py" line="1354"/>
+      <location filename="../../ArchWindow.py" line="1379"/>
+      <location filename="../../ArchWindow.py" line="1381"/>
       <source>+ default</source>
       <translation>+ alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1353"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Ha ez be van jelölve, az ablak keret alapérték hozzáadódik az itt megadott értékhez</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1355"/>
+      <location filename="../../ArchWindow.py" line="1382"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Ha ez be van jelölve, az ablak eltolás alapérték hozzáadódik az itt megadott értékhez</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1357"/>
+      <location filename="../../ArchWindow.py" line="1384"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Nyomja meg a kiválasztott él lekéréséhez</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1358"/>
+      <location filename="../../ArchWindow.py" line="826"/>
+      <location filename="../../ArchWindow.py" line="1385"/>
       <source>Invert opening direction</source>
       <translation>Nyitásirány megfordítása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="808"/>
-      <location filename="../../ArchWindow.py" line="1359"/>
+      <location filename="../../ArchWindow.py" line="835"/>
+      <location filename="../../ArchWindow.py" line="1386"/>
       <source>Invert hinge position</source>
       <translation>Zsanér pozíció megfordítása</translation>
     </message>
@@ -4281,10 +4281,10 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Tengely rendszer összetevők</translation>
     </message>
     <message>
-      <location filename="../../importers/importJSON.py" line="61"/>
-      <location filename="../../importers/importWebGL.py" line="874"/>
-      <location filename="../../importers/importOBJ.py" line="261"/>
-      <location filename="../../importers/importOBJ.py" line="285"/>
+      <location filename="../../importers/importJSON.py" line="58"/>
+      <location filename="../../importers/importWebGL.py" line="873"/>
+      <location filename="../../importers/importOBJ.py" line="258"/>
+      <location filename="../../importers/importOBJ.py" line="282"/>
       <source>Successfully written</source>
       <translation>Sikeresen kiírva</translation>
     </message>
@@ -4305,27 +4305,27 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Kereszttartó létrehozás</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="112"/>
+      <location filename="../../importers/importIFClegacy.py" line="110"/>
       <source>Couldn't locate IfcOpenShell</source>
       <translation>IfcOpenShell nem található</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="389"/>
+      <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
       <translation>IfcOpenShell nem található vagy le van tiltva, a belső értelmező lesz használva helyette.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="395"/>
+      <location filename="../../importers/importIFClegacy.py" line="393"/>
       <source>IFC Schema not found, IFC import disabled.</source>
       <translation>IFC séma nem található, IFC importáló kikapcsolva.</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="930"/>
+      <location filename="../../importers/importIFClegacy.py" line="928"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation>Hiba: IfcOpenShell nincs telepítve</translation>
     </message>
     <message>
-      <location filename="../../importers/importIFClegacy.py" line="937"/>
+      <location filename="../../importers/importIFClegacy.py" line="935"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation>Hiba: a IfcOpenShell verziója túl régi</translation>
     </message>
@@ -4375,8 +4375,8 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Ismétlődők egyesítése</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="747"/>
-      <location filename="../../ArchMaterial.py" line="766"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
+      <location filename="../../ArchMaterial.py" line="762"/>
       <location filename="../../Arch.py" line="302"/>
       <source>Material</source>
       <translation>Anyag</translation>
@@ -4387,17 +4387,17 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Többféle anyagú</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="797"/>
+      <location filename="../../ArchMaterial.py" line="793"/>
       <source>New layer</source>
       <translation>Új réteg</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="834"/>
+      <location filename="../../ArchMaterial.py" line="830"/>
       <source>Total thickness</source>
       <translation>Teljes vastagság</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="848"/>
+      <location filename="../../ArchMaterial.py" line="844"/>
       <source>depends on the object</source>
       <translation>az tárgytól függ</translation>
     </message>
@@ -4481,7 +4481,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="../../ArchGrid.py" line="391"/>
       <source>Del column</source>
-      <translation type="unfinished">Del column</translation>
+      <translation>Oszlop törlés</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="392"/>
@@ -4829,50 +4829,50 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
       <translation>Számolótábla csatlakoztatása</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="568"/>
+      <location filename="../../ArchSchedule.py" line="569"/>
       <source>Import CSV file</source>
       <translation>CSV fájl importálása</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="601"/>
+      <location filename="../../ArchSchedule.py" line="602"/>
       <source>Export CSV file</source>
       <translation>CSV file exportálása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1099"/>
+      <location filename="../../ArchCommands.py" line="1098"/>
       <source>Export CSV File</source>
       <translation>CSV fájl exportálás</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="622"/>
+      <location filename="../../ArchSchedule.py" line="623"/>
       <source>Unable to recognize that file type</source>
       <translation>Ismeretlen file-típus</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Description</source>
       <translation>Leírás</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
       <location filename="../../ArchComponent.py" line="2013"/>
-      <location filename="../../ArchCommands.py" line="1339"/>
+      <location filename="../../ArchCommands.py" line="1338"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="462"/>
       <source>Value</source>
       <translation>Érték</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="644"/>
-      <location filename="../../ArchSchedule.py" line="662"/>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchSchedule.py" line="645"/>
+      <location filename="../../ArchSchedule.py" line="663"/>
+      <location filename="../../ArchCommands.py" line="1339"/>
       <source>Unit</source>
       <translation>Egység</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="723"/>
+      <location filename="../../ArchSchedule.py" line="724"/>
       <source>Schedule</source>
       <translation>Ütemezés</translation>
     </message>
@@ -4938,12 +4938,12 @@ Szint létrehozása megszakítva.</translation>
       <translation>Felirat</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="87"/>
+      <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Találtam egy görbét tartalmazó alakzatot, háromszögesítés</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="367"/>
+      <location filename="../../importers/importOBJ.py" line="364"/>
       <source>Successfully imported</source>
       <translation>Sikeresen importálva</translation>
     </message>
@@ -5234,12 +5234,12 @@ Building creation aborted.</source>
       <translation>Térköz létrehozás</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="727"/>
+      <location filename="../../ArchSpace.py" line="721"/>
       <source>Set text position</source>
       <translation>Szöveg helyzet beállítása</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="731"/>
+      <location filename="../../ArchSpace.py" line="725"/>
       <source>Space boundaries</source>
       <translation>Terület határvonalak</translation>
     </message>
@@ -5335,7 +5335,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCommands.py" line="408"/>
       <source>Invalid cut plane</source>
-      <translation type="unfinished">Invalid cut plane</translation>
+      <translation>Érvénytelen vágási sík</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="691"/>
@@ -5363,60 +5363,60 @@ Building creation aborted.</source>
       <translation>tartalmaz felületet, amelyek nem tartoznak semmilyen szilárd testhez</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1004"/>
+      <location filename="../../ArchCommands.py" line="1003"/>
       <source>Survey</source>
       <translation>Felmérés</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1005"/>
+      <location filename="../../ArchCommands.py" line="1004"/>
       <source>Set description</source>
       <translation>Leírás megadása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1006"/>
+      <location filename="../../ArchCommands.py" line="1005"/>
       <source>Clear</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1007"/>
+      <location filename="../../ArchCommands.py" line="1006"/>
       <source>Copy Length</source>
       <translation>Másolás hossza</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1007"/>
       <source>Copy Area</source>
       <translation>Másolási terület</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1008"/>
       <source>Export CSV</source>
       <translation>Exportálás CSVbe</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Area</source>
       <translation>Terület</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1057"/>
+      <location filename="../../ArchCommands.py" line="1056"/>
       <source>Total</source>
       <translation>Összesen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1137"/>
+      <location filename="../../ArchCommands.py" line="1136"/>
       <source>Object doesn't have settable IFC attributes</source>
-      <translation type="unfinished">Object doesn't have settable IFC attributes</translation>
+      <translation>A tárgy nem rendelkezik beállítható IFC-jellemzőkkel</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1143"/>
+      <location filename="../../ArchCommands.py" line="1142"/>
       <source>Disabling B-rep force flag of object</source>
-      <translation type="unfinished">Disabling B-rep force flag of object</translation>
+      <translation>A tárgy B-rep erőjelzőjének letiltása</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1146"/>
-      <location filename="../../ArchCommands.py" line="1149"/>
+      <location filename="../../ArchCommands.py" line="1145"/>
+      <location filename="../../ArchCommands.py" line="1148"/>
       <source>Enabling B-rep force flag of object</source>
-      <translation type="unfinished">Enabling B-rep force flag of object</translation>
+      <translation>A tárgy B-rep erőjelzőjének engedélyezése</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="54"/>
@@ -5460,12 +5460,12 @@ Building creation aborted.</source>
       <translation>Összetevő létrehozás</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1337"/>
+      <location filename="../../ArchCommands.py" line="1336"/>
       <source>Key</source>
       <translation>Kulcs</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1347"/>
+      <location filename="../../ArchCommands.py" line="1346"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>A tárgy nem rendelkezik Ifc tulajdonságattribútummal. Törölje a táblázat létrehozását a tárgyhoz:</translation>
     </message>
@@ -5480,7 +5480,7 @@ Building creation aborted.</source>
       <translation>Szint létrehozás</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimFence.py" line="51"/>
+      <location filename="../../bimcommands/BimFence.py" line="52"/>
       <source>Create Fence</source>
       <translation>Keret létrehozás</translation>
     </message>
@@ -5500,7 +5500,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
       <source>Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Több BIM szerkezet létrehozása egy kiválasztott alapból, minden egyes kiválasztott él kihúzás útvonalként történő felhasználásával</translation>
     </message>
   </context>
   <context>
@@ -5627,7 +5627,7 @@ Building creation aborted.</source>
       <location filename="../../ArchStructure.py" line="719"/>
       <location filename="../../ArchStructure.py" line="727"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Az alap Építészeti vázlat élei (vagy élcsoportja) vannak kiválasztva, amelyeket az adott  BIM alakjának létrehozásához használni kell (ahelyett, hogy alapértelmezés szerint az alapforma összes élét használná). Az értékek az él- vagy csoportindexszámokként vannak megadva.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1052"/>
@@ -5681,7 +5681,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="192"/>
-      <location filename="../../ArchMaterial.py" line="170"/>
+      <location filename="../../ArchMaterial.py" line="166"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>Egy szabványos kód (MasterFormat, OmniClass,...)</translation>
     </message>
@@ -5745,7 +5745,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="232"/>
       <source>This property stores an OpenInventor representation for this object</source>
-      <translation type="unfinished">This property stores an OpenInventor representation for this object</translation>
+      <translation>Ez a tulajdonság tárolja a tárgy OpenInventor-ábrázolását</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="235"/>
@@ -5836,12 +5836,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="492"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
-      <translation type="unfinished">If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
+      <translation>Ha engedélyezve van, akkor a tárgy OpenInventor-ábrázolása a FreeCAD-fájlban lesz elmentve, így más fájlokban is hivatkozhatunk rá egyszerű módban.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="494"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
-      <translation type="unfinished">A slot to save the OpenInventor representation of this object, if enabled</translation>
+      <translation>Ha engedélyezve van, e tárgy OpenInventor-ábrázolásának mentésére szolgáló tároló</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="499"/>
@@ -6341,7 +6341,7 @@ Building creation aborted.</source>
       <translation>Kijelzi a magassági nyitó szintek szimbólumait, ha rendelkezésre állnak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1085"/>
+      <location filename="../../ArchWindow.py" line="1112"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>A furatokat meghatározó dróthálók száma. A 0 érték azt jelenti, hogy automatikus</translation>
     </message>
@@ -6618,43 +6618,43 @@ Building creation aborted.</source>
       <translation>Ha igaz, a kerítés olyan színű lesz, mint az eredeti oszlop és a szakasz.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="168"/>
-      <location filename="../../ArchMaterial.py" line="620"/>
+      <location filename="../../ArchMaterial.py" line="164"/>
+      <location filename="../../ArchMaterial.py" line="618"/>
       <source>A description for this material</source>
       <translation>Egy leírás ehhez az anyaghoz</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="172"/>
+      <location filename="../../ArchMaterial.py" line="168"/>
       <source>A URL where to find information about this material</source>
       <translation>Egy URL ahol megtalálom az információt erről az anyagról</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="174"/>
+      <location filename="../../ArchMaterial.py" line="170"/>
       <source>The transparency value of this material</source>
       <translation>Az átlátszóság értéke ehhez az anyaghoz</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="176"/>
+      <location filename="../../ArchMaterial.py" line="172"/>
       <source>The color of this material</source>
       <translation>Ennek az anyagnak a színe</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="178"/>
+      <location filename="../../ArchMaterial.py" line="174"/>
       <source>The color of this material when cut</source>
       <translation>A színe ennek az anyagnak, ha vágott</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="621"/>
+      <location filename="../../ArchMaterial.py" line="619"/>
       <source>The list of layer names</source>
       <translation>A réteg neveknek a listája</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="622"/>
+      <location filename="../../ArchMaterial.py" line="620"/>
       <source>The list of layer materials</source>
       <translation>Réteg anyagok listája</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="623"/>
+      <location filename="../../ArchMaterial.py" line="621"/>
       <source>The list of layer thicknesses</source>
       <translation>A réteg vastagságok listája</translation>
     </message>
@@ -7174,7 +7174,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="130"/>
       <source>The BIM Schedule that uses this spreadsheet</source>
-      <translation type="unfinished">The BIM Schedule that uses this spreadsheet</translation>
+      <translation>A BIM ütemterv, amely ezt a táblázatot használja</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="116"/>
@@ -7470,13 +7470,13 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="918"/>
-      <location filename="../../ArchSpace.py" line="456"/>
+      <location filename="../../ArchSpace.py" line="454"/>
       <source>The name of the font</source>
       <translation>Betűtípus neve</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="921"/>
-      <location filename="../../ArchSpace.py" line="462"/>
+      <location filename="../../ArchSpace.py" line="460"/>
       <source>The size of the text font</source>
       <translation>A betűtípus mérete</translation>
     </message>
@@ -7556,42 +7556,42 @@ Building creation aborted.</source>
       <translation>Meghatározza a vízszintes terület és a kerület hosszának számítási típusát</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="453"/>
+      <location filename="../../ArchSpace.py" line="451"/>
       <source>The text to show. Use $area, $label, $tag, $longname, $description and for finishes $floor, $walls, $ceiling to insert the respective data</source>
       <translation>A megjelenítendő szöveg. Használja a $area, $label, $tag, $longname, $description és a befejezéseknél $floor, $walls, $ceiling adatokat a megfelelő adatok beillesztéséhez</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="459"/>
+      <location filename="../../ArchSpace.py" line="457"/>
       <source>The color of the area text</source>
       <translation>A terület szöveg színe</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="465"/>
+      <location filename="../../ArchSpace.py" line="463"/>
       <source>The size of the first line of text</source>
       <translation>A szöveg első sorának a mérete</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="468"/>
+      <location filename="../../ArchSpace.py" line="466"/>
       <source>The space between the lines of text</source>
       <translation>A szövegsorok közötti térköz</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="471"/>
+      <location filename="../../ArchSpace.py" line="469"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>A szöveg helyzete. Hagyja (0,0,0) értéken az automatikus pozicionáláshoz</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="473"/>
+      <location filename="../../ArchSpace.py" line="471"/>
       <source>The justification of the text</source>
       <translation>A szöveges indoklása</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="477"/>
+      <location filename="../../ArchSpace.py" line="475"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>A számításhoz használt szövegek tizedesjegyek száma</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="480"/>
+      <location filename="../../ArchSpace.py" line="478"/>
       <source>Show the unit suffix</source>
       <translation>Mértékegység utótag megjelenítése</translation>
     </message>
@@ -8052,8 +8052,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="67"/>
-      <source>The sizes for rows</source>
-      <translation>A sorok méretei</translation>
+      <source>The sizes of rows</source>
+      <translation>Sorok mérete</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="69"/>
@@ -8560,7 +8560,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     </message>
     <message>
       <location filename="../../InitGui.py" line="40"/>
-      <location filename="../../bimcommands/BimViews.py" line="138"/>
+      <location filename="../../bimcommands/BimViews.py" line="136"/>
       <source>BIM</source>
       <translation>BIM</translation>
     </message>
@@ -9078,7 +9078,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
       <translation>Nem használt törlése</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="89"/>
       <location filename="../../bimcommands/BimMaterial.py" line="169"/>
       <source>Rename</source>
       <translation>Átnevezés</translation>
@@ -9094,7 +9094,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
       <translation>Egyesítés ebbe...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="87"/>
+      <location filename="../../bimcommands/BimViews.py" line="85"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Delete</source>
       <translation>Törlés</translation>
@@ -9194,17 +9194,17 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="355"/>
       <source>The version of Ifcopenshell installed on your system could not be parsed</source>
-      <translation type="unfinished">The version of Ifcopenshell installed on your system could not be parsed</translation>
+      <translation>A rendszerére telepített Ifcopenshell verzióját nem lehetett elemezni</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="367"/>
       <source>The version of Ifcopenshell installed on your system will produce files with this schema version:</source>
-      <translation type="unfinished">The version of Ifcopenshell installed on your system will produce files with this schema version:</translation>
+      <translation>A rendszeren telepített Ifcopenshell verziója fogja létrehozni az adott séma verziójával rendelkező fájlokat:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="652"/>
       <source>You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</source>
-      <translation type="unfinished">You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</translation>
+      <translation>Ezeket a tárgyakat a Módosítás -&gt; Komponens hozzáadása eszközzel BIM-tárgyakká alakíthatja.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="687"/>
@@ -9397,12 +9397,12 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
       <translation>Mértékegységrendszer frissítve minden megnyitott dokumentumhoz</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="670"/>
+      <location filename="../../bimcommands/BimSetup.py" line="673"/>
       <source>IfcOpenShell not found</source>
       <translation>IfcOpenShell nem található</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSetup.py" line="674"/>
+      <location filename="../../bimcommands/BimSetup.py" line="677"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on your system. Would you like to download and install it now? It will be installed in FreeCAD's Macros directory.</source>
       <translation>Az IfcOpenShell szükséges az IFC fájlok importálásához és exportálásához. Úgy tűnik, hogy hiányzik az Ön rendszeréből. Szeretné letölteni és telepíteni most? A FreeCAD Makrók könyvtárába lesz telepítve.</translation>
     </message>
@@ -9462,72 +9462,72 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
       <translation>Kérjük, válasszon pontosan egy tárgyat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="85"/>
+      <location filename="../../bimcommands/BimViews.py" line="83"/>
       <source>Add level</source>
       <translation>Szint hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="86"/>
+      <location filename="../../bimcommands/BimViews.py" line="84"/>
       <source>Add proxy</source>
       <translation>Proxy hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="86"/>
       <source>Toggle on/off</source>
       <translation>Be/Ki kapcsolás</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
+      <location filename="../../bimcommands/BimViews.py" line="87"/>
       <source>Isolate</source>
       <translation>Elszigetel</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="88"/>
       <source>Save view position</source>
       <translation>Nézet helyzetének mentése</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="108"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Creates a new level</source>
       <translation>Új szintet hoz létre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="109"/>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Creates a new Working Plane Proxy</source>
       <translation>Új munkasík-helyettesítőt hoz létre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="110"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <source>Deletes the selected item</source>
       <translation>Törli a kiválasztott elemet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="111"/>
+      <location filename="../../bimcommands/BimViews.py" line="109"/>
       <source>Toggles selected items on/off</source>
       <translation>Kiválasztott elemek be/ki kapcsolása</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="112"/>
+      <location filename="../../bimcommands/BimViews.py" line="110"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Kikapcsolja az összes elemet, kivéve a kiválasztottakat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="113"/>
+      <location filename="../../bimcommands/BimViews.py" line="111"/>
       <source>Saves the current camera position to the selected items</source>
       <translation>Az aktuális kamera pozíciójának mentése a kiválasztott elemekhez</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="114"/>
+      <location filename="../../bimcommands/BimViews.py" line="112"/>
       <source>Renames the selected item</source>
       <translation>Kiválasztott elem átnevezése</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="260"/>
+      <location filename="../../bimcommands/BimViews.py" line="267"/>
       <source>2D Views</source>
       <translation>2D nézetek</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="274"/>
+      <location filename="../../bimcommands/BimViews.py" line="280"/>
       <source>Sheets</source>
       <translation>Burkoló lapok</translation>
     </message>
@@ -9584,7 +9584,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
-      <translation type="unfinished">IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</translation>
+      <translation>Az IfcOpenShell nincs telepítve, és a FreeCAD nem talált megfelelő verziót a telepítéshez. Az IfcOpenShellt még mindig telepítheti manuálisan, további utasításokat a https://wiki.freecad.org/IfcOpenShell oldalon talál.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="96"/>
@@ -9609,7 +9609,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="73"/>
       <source>No section view or Draft objects selected, or no page selected, or no page found in document</source>
-      <translation type="unfinished">No section view or Draft objects selected, or no page selected, or no page found in document</translation>
+      <translation>Nincs kiválasztott szakasznézet vagy vázlatelem, vagy nincs kiválasztott oldal, vagy nem találtak oldalt a dokumentumban</translation>
     </message>
   </context>
   <context>
@@ -10429,12 +10429,12 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="42"/>
+      <location filename="../../bimcommands/BimViews.py" line="40"/>
       <source>Views manager</source>
       <translation>Nézetek kezelője</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="43"/>
       <source>Shows or hides the views manager</source>
       <translation>Megjeleníti vagy elrejti a nézetkezelőt</translation>
     </message>
@@ -10585,12 +10585,12 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
   <context>
     <name>IFC_SaveAs</name>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="217"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="220"/>
       <source>Saves the current IFC document as another file</source>
       <translation>Az aktuális IFC-dokumentum mentése egy másik fájlként</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_commands.py" line="219"/>
+      <location filename="../../nativeifc/ifc_commands.py" line="222"/>
       <source>Save IFC file as...</source>
       <translation>IFC fájl mentése...</translation>
     </message>
@@ -10783,7 +10783,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The unit you prefer to work with, that will be used everywhere: in dialogs, measurements and dimensions. However, you can enter any other unit anytime. For example, if you configured FreeCAD to work in millimeters, you can still enter measures as &amp;quot;10m&amp;quot; or &amp;quot;5ft&amp;quot;. You can also change the default unit system anytime without causing any modification to your model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The unit you prefer to work with, that will be used everywhere: in dialogs, measurements and dimensions. However, you can enter any other unit anytime. For example, if you configured FreeCAD to work in millimeters, you can still enter measures as &amp;quot;10m&amp;quot; or &amp;quot;5ft&amp;quot;. You can also change the default unit system anytime without causing any modification to your model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A mértékegység, amellyel szívesebben dolgozol, és amelyet mindenhol használni fogsz: a párbeszédpanelekben, a mérésekben és a méretekben. Ugyanakkor bármikor megadhatsz bármilyen más mértékegységet is. Például, ha a FreeCAD-et úgy állította be, hogy milliméterben dolgozzon, akkor is megadhatja a mértékegységeket &amp;quot;10m&amp;quot; vagy &amp;quot;5ft&amp;quot; formában. Az alapértelmezett mértékegységrendszert is bármikor megváltoztathatja anélkül, hogy a modellben bármilyen módosítást okozna. Helye a beállításokban: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Alapértelmezett egységrendszer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="179"/>
@@ -10804,26 +10804,6 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
       <translation>Minden jog fenntartva (nincs meghatározott licenc)</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="515"/>
-      <source>CC-BY</source>
-      <translation>CC-BY</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="520"/>
-      <source>CC-BY-SA</source>
-      <translation>CC-BY-SA</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="525"/>
-      <source>CC-BY-NC</source>
-      <translation>CC-BY-NC</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="530"/>
-      <source>CC-BY-SA-NC</source>
-      <translation>CC-BY-SA-NC</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>
@@ -10868,12 +10848,12 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A szerkezeti geometria alapértelmezett színe. Helye a beállításokban: &lt;span style=" font-weight:600;"&gt;Vázlat &amp;gt; Általános &amp;gt; Építési geometria színe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="384"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helpers&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helpers&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A segédelemek, például a rácsok és a tengelyek alapértelmezett színe. Helye a beállításokban: &lt;span style=" font-weight:600;"&gt;BIM &amp;gt; Alapértelmezett &amp;gt; Segédeszközök&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="433"/>
@@ -10893,7 +10873,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../ui/dialogSetup.ui" line="626"/>
       <source>Missing Workbenches</source>
-      <translation type="unfinished">Missing Workbenches</translation>
+      <translation>Hiányzó munkafelületek</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="244"/>
@@ -10993,7 +10973,7 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../ui/dialogSetup.ui" line="570"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ahol a rács megjelenik a FreeCAD indításakor. Helyszín a beállításokban: &lt;span style=" font-weight:600;"&gt;Tervezet &amp;gt; Általános &amp;gt; Alapértelmezett munkasík&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="613"/>
@@ -11041,12 +11021,12 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="212"/>
       <source>Remove Shape from BIM</source>
-      <translation type="unfinished">Remove Shape from BIM</translation>
+      <translation>Alakzat elhagyása a BIM-ből</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="215"/>
       <source>Removes cubic shapes from BIM components</source>
-      <translation type="unfinished">Removes cubic shapes from BIM components</translation>
+      <translation>Eltávolítja a harmadfokú alakzatokat a BIM alkatrészekből</translation>
     </message>
   </context>
   <context>
@@ -11054,12 +11034,12 @@ CTRL+PgUp a nyújtás kiterjesztéséhezCTRL+PgDown a nyújtás zsugorításáho
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="290"/>
       <source>Toggle IFC B-rep flag</source>
-      <translation type="unfinished">Toggle IFC B-rep flag</translation>
+      <translation>IFC B-rep jelző kapcsolása</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="293"/>
       <source>Force an object to be exported as B-rep or not</source>
-      <translation type="unfinished">Force an object to be exported as B-rep or not</translation>
+      <translation>Kényszeríti egy tárgy exportálását B-rep-ként vagy sem</translation>
     </message>
   </context>
 </TS>

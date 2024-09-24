@@ -45,6 +45,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
@@ -681,7 +682,13 @@ std::tuple<bool, PartDesign::Body*> SketchWorkflow::shouldCreateBody()
 
     // We need either an active Body, or for there to be no Body
     // objects (in which case, just make one) to make a new sketch.
-    PartDesign::Body* pdBody = PartDesignGui::getBody(/* messageIfNot = */ false);
+    // If we are inside a link, we need to use its placement.
+    App::DocumentObject *topParent;
+    PartDesign::Body *pdBody = PartDesignGui::getBody(/* messageIfNot = */ false, true, true, &topParent);
+    if (pdBody && topParent->isLink()) {
+        auto *xLink = dynamic_cast<App::Link *>(topParent);
+        pdBody->Placement.setValue(xLink->Placement.getValue());
+    }
     if (!pdBody) {
         if (appdocument->countObjectsOfType(PartDesign::Body::getClassTypeId()) == 0) {
             shouldMakeBody = true;

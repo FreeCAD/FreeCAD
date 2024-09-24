@@ -89,6 +89,7 @@ private:
     bool hasSuffix(const QString&) const;
     static QList<QUrl> fetchSidebarUrls();
     static QString workingDirectory;
+    static void getSuffixesDescription(QStringList& suffixes, const QString* suffixDescriptions);
 };
 
 // ----------------------------------------------------------------------

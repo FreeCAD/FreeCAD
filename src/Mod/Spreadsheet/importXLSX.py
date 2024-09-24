@@ -225,7 +225,7 @@ class FormulaTranslator(object):
             else:
                 # print('There is a branch. look up: ', theExpr[1])
                 if (lenExpr > 1) and (theExpr[1] in treeDict[branch]):
-                    branch = treeDict[branch][theExpr[0]]
+                    branch = treeDict[branch][theExpr[1]]
                     if branch is None:
                         keyToken = True
                     else:
@@ -329,7 +329,7 @@ def handleCells(cellList, actCellSheet, sList):
         if refType:
             cellType = getText(refType.childNodes)
         else:
-            cellType = "n"  # FIXME: some cells don't have t and s attributes
+            cellType = "n"
 
         # print("reference: ", ref, ' Cell type: ', cellType)
 

@@ -240,9 +240,7 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertEqual("Fem::MeshGroup", type_of_obj(ObjectsFem.makeMeshGroup(doc, mesh)))
         self.assertEqual("Fem::MeshRegion", type_of_obj(ObjectsFem.makeMeshRegion(doc, mesh)))
-        self.assertEqual(
-            "Fem::FemMeshShapeNetgenObject", type_of_obj(ObjectsFem.makeMeshNetgen(doc))
-        )
+        self.assertEqual("Fem::FemMeshNetgen", type_of_obj(ObjectsFem.makeMeshNetgen(doc)))
         self.assertEqual("Fem::MeshResult", type_of_obj(ObjectsFem.makeMeshResult(doc)))
         self.assertEqual("Fem::ResultMechanical", type_of_obj(ObjectsFem.makeResultMechanical(doc)))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
@@ -409,7 +407,7 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(is_of_type(ObjectsFem.makeMeshGroup(doc, mesh), "Fem::MeshGroup"))
         self.assertTrue(is_of_type(ObjectsFem.makeMeshRegion(doc, mesh), "Fem::MeshRegion"))
-        self.assertTrue(is_of_type(ObjectsFem.makeMeshNetgen(doc), "Fem::FemMeshShapeNetgenObject"))
+        self.assertTrue(is_of_type(ObjectsFem.makeMeshNetgen(doc), "Fem::FemMeshNetgen"))
         self.assertTrue(is_of_type(ObjectsFem.makeMeshResult(doc), "Fem::MeshResult"))
         self.assertTrue(is_of_type(ObjectsFem.makeResultMechanical(doc), "Fem::ResultMechanical"))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
@@ -721,7 +719,7 @@ class TestObjectType(unittest.TestCase):
         # FemMeshGmsh
         mesh_gmsh = ObjectsFem.makeMeshGmsh(doc)
         self.assertTrue(is_derived_from(mesh_gmsh, "App::DocumentObject"))
-        self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshObjectPython"))
+        self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshShapeBaseObjectPython"))
         self.assertTrue(is_derived_from(mesh_gmsh, "Fem::FemMeshGmsh"))
 
         # MeshBoundaryLayer
@@ -745,7 +743,7 @@ class TestObjectType(unittest.TestCase):
         # FemMeshShapeNetgenObject
         mesh_netgen = ObjectsFem.makeMeshNetgen(doc)
         self.assertTrue(is_derived_from(mesh_netgen, "App::DocumentObject"))
-        self.assertTrue(is_derived_from(mesh_netgen, "Fem::FemMeshShapeNetgenObject"))
+        self.assertTrue(is_derived_from(mesh_netgen, "Fem::FemMeshShapeBaseObjectPython"))
 
         # MeshResult
         mesh_result = ObjectsFem.makeMeshResult(doc)
@@ -965,14 +963,14 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeMaterialReinforced(doc).isDerivedFrom("App::MaterialObjectPython")
         )
         mesh = ObjectsFem.makeMeshGmsh(doc)
-        self.assertTrue(mesh.isDerivedFrom("Fem::FemMeshObjectPython"))
+        self.assertTrue(mesh.isDerivedFrom("Fem::FemMeshShapeBaseObjectPython"))
         self.assertTrue(
             ObjectsFem.makeMeshBoundaryLayer(doc, mesh).isDerivedFrom("Fem::FeaturePython")
         )
         self.assertTrue(ObjectsFem.makeMeshGroup(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
         self.assertTrue(ObjectsFem.makeMeshRegion(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
         self.assertTrue(
-            ObjectsFem.makeMeshNetgen(doc).isDerivedFrom("Fem::FemMeshShapeNetgenObject")
+            ObjectsFem.makeMeshNetgen(doc).isDerivedFrom("Fem::FemMeshShapeBaseObjectPython")
         )
         self.assertTrue(ObjectsFem.makeMeshResult(doc).isDerivedFrom("Fem::FemMeshObjectPython"))
         self.assertTrue(

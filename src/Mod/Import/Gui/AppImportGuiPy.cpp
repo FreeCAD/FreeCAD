@@ -128,18 +128,21 @@ private:
         Base::FileInfo file(name8bit.c_str());
         if (file.hasExtension({"stp", "step"})) {
             PartGui::TaskImportStep dlg(Gui::getMainWindow());
-            if (!dlg.showDialog() || dlg.exec()) {
-                auto stepSettings = dlg.getSettings();
-                options.setItem("merge", Py::Boolean(stepSettings.merge));
-                options.setItem("useLinkGroup", Py::Boolean(stepSettings.useLinkGroup));
-                options.setItem("useBaseName", Py::Boolean(stepSettings.useBaseName));
-                options.setItem("importHidden", Py::Boolean(stepSettings.importHidden));
-                options.setItem("reduceObjects", Py::Boolean(stepSettings.reduceObjects));
-                options.setItem("showProgress", Py::Boolean(stepSettings.showProgress));
-                options.setItem("expandCompound", Py::Boolean(stepSettings.expandCompound));
-                options.setItem("mode", Py::Long(stepSettings.mode));
-                options.setItem("codePage", Py::Long(stepSettings.codePage));
+            if (dlg.showDialog()) {
+                if (!dlg.exec()) {
+                    throw Py::Exception(Base::PyExc_FC_AbortIOException, "User cancelled import");
+                }
             }
+            auto stepSettings = dlg.getSettings();
+            options.setItem("merge", Py::Boolean(stepSettings.merge));
+            options.setItem("useLinkGroup", Py::Boolean(stepSettings.useLinkGroup));
+            options.setItem("useBaseName", Py::Boolean(stepSettings.useBaseName));
+            options.setItem("importHidden", Py::Boolean(stepSettings.importHidden));
+            options.setItem("reduceObjects", Py::Boolean(stepSettings.reduceObjects));
+            options.setItem("showProgress", Py::Boolean(stepSettings.showProgress));
+            options.setItem("expandCompound", Py::Boolean(stepSettings.expandCompound));
+            options.setItem("mode", Py::Long(stepSettings.mode));
+            options.setItem("codePage", Py::Long(stepSettings.codePage));
         }
         return options;
     }

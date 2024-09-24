@@ -55,8 +55,13 @@ set(PartDesign_TestScripts
     PartDesignTests/TestThickness.py
     PartDesignTests/TestTopologicalNamingProblem.py
     PartDesignTests/TestInvoluteGear.py
-    PartDesignTests/TestHelix.py
 )
+
+if(BUILD_GUI)
+    list(APPEND PartDesign_TestScripts
+        PartDesignTests/TestMaterial.py
+    )
+endif(BUILD_GUI)
 
 set(PartDesign_TestFixtures
     PartDesignTests/Fixtures/InvoluteGear_v0-20.FCStd

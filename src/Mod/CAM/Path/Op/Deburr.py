@@ -166,7 +166,6 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
     @classmethod
     def propertyEnumerations(self, dataType="data"):
-
         """opPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
@@ -290,34 +289,15 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                                     break
 
                                 else:  # Arc
-                                    if (
-                                        edge.Vertexes[0].Point.z
-                                        == edge.Vertexes[1].Point.z
-                                    ):
+                                    if edge.Vertexes[0].Point.z == edge.Vertexes[1].Point.z:
                                         # Arc vertexes are on same layer
                                         l1 = math.sqrt(
-                                            (
-                                                edge.Vertexes[0].Point.x
-                                                - edge.Curve.Center.x
-                                            )
-                                            ** 2
-                                            + (
-                                                edge.Vertexes[0].Point.y
-                                                - edge.Curve.Center.y
-                                            )
-                                            ** 2
+                                            (edge.Vertexes[0].Point.x - edge.Curve.Center.x) ** 2
+                                            + (edge.Vertexes[0].Point.y - edge.Curve.Center.y) ** 2
                                         )
                                         l2 = math.sqrt(
-                                            (
-                                                edge.Vertexes[1].Point.x
-                                                - edge.Curve.Center.x
-                                            )
-                                            ** 2
-                                            + (
-                                                edge.Vertexes[1].Point.y
-                                                - edge.Curve.Center.y
-                                            )
-                                            ** 2
+                                            (edge.Vertexes[1].Point.x - edge.Curve.Center.x) ** 2
+                                            + (edge.Vertexes[1].Point.y - edge.Curve.Center.y) ** 2
                                         )
 
                                         # New center
@@ -329,30 +309,16 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
                                         # Calculate angles based on x-axis (0 - PI/2)
                                         start_angle = math.acos(
-                                            (
-                                                edge.Vertexes[0].Point.x
-                                                - edge.Curve.Center.x
-                                            )
-                                            / l1
+                                            (edge.Vertexes[0].Point.x - edge.Curve.Center.x) / l1
                                         )
                                         end_angle = math.acos(
-                                            (
-                                                edge.Vertexes[1].Point.x
-                                                - edge.Curve.Center.x
-                                            )
-                                            / l2
+                                            (edge.Vertexes[1].Point.x - edge.Curve.Center.x) / l2
                                         )
 
                                         # Angles are based on x-axis (Mirrored on x-axis) -> negative y value means negative angle
-                                        if (
-                                            edge.Vertexes[0].Point.y
-                                            < edge.Curve.Center.y
-                                        ):
+                                        if edge.Vertexes[0].Point.y < edge.Curve.Center.y:
                                             start_angle *= -1
-                                        if (
-                                            edge.Vertexes[1].Point.y
-                                            < edge.Curve.Center.y
-                                        ):
+                                        if edge.Vertexes[1].Point.y < edge.Curve.Center.y:
                                             end_angle *= -1
 
                                         # Create new arc

@@ -42,8 +42,9 @@
 #include "DrawUtil.h"
 #include "DrawViewClip.h"
 #include "DrawViewCollection.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupItem.h"
 #include "Preferences.h"
-
 
 using namespace TechDraw;
 using DU = DrawUtil;
@@ -199,7 +200,7 @@ void DrawView::onChanged(const App::Property* prop)
             Scale.setStatus(App::Property::ReadOnly, true);
             if (!checkFit(page)) {
                 double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
-                if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                if(std::abs(newScale - getScale()) > FLT_EPSILON) {
                     Scale.setValue(newScale);
                 }
             }
@@ -469,7 +470,6 @@ double DrawView::autoScale() const
 double DrawView::autoScale(double pw, double ph) const
 {
 //    Base::Console().Message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
-    double fudgeFactor = 1.0;  //make it a bit smaller just in case.
     QRectF viewBox = getRect();           //getRect is scaled (ie current actual size)
     if (!viewBox.isValid()) {
         return 1.0;
@@ -479,7 +479,7 @@ double DrawView::autoScale(double pw, double ph) const
     double vbh = viewBox.height()/getScale();
     double xScale = pw/vbw;           // > 1 page bigger than figure
     double yScale = ph/vbh;           // < 1 page is smaller than figure
-    double newScale = std::min(xScale, yScale) * fudgeFactor;
+    double newScale = std::min(xScale, yScale);
     double sensibleScale = DrawUtil::sensibleScale(newScale);
     return sensibleScale;
 }
@@ -496,7 +496,6 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
 //    Base::Console().Message("DV::checkFit(page) - %s\n", getNameInDocument());
     bool result = true;
-    double fudge = 1.1;
 
     double width = 0.0;
     double height = 0.0;
@@ -506,8 +505,6 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
     } else {
         width = viewBox.width();        //scaled rect w x h
         height = viewBox.height();
-        width *= fudge;
-        height *= fudge;
         if ( (width > p->getPageWidth()) ||
              (height > p->getPageHeight()) ) {
             result = false;
@@ -656,6 +653,22 @@ void DrawView::setScaleAttribute()
     }
 }
 
+//! due to changes made for the "intelligent" view creation tool, testing for a view being an
+//! instance of DrawProjGroupItem is no longer reliable, as views not in a group are sometimes
+//! created as DrawProjGroupItem without belonging to a group.  We now need to test for the existance
+//! of the parent DrawProjGroup
+bool DrawView::isProjGroupItem(DrawViewPart* item)
+{
+    auto dpgi = dynamic_cast<DrawProjGroupItem*>(item);
+    if (!dpgi) {
+        return false;
+    }
+    auto group = dpgi->getPGroup();
+    if (!group) {
+        return false;
+    }
+    return true;
+}
 int DrawView::prefScaleType()
 {
     return Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);

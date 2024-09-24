@@ -86,7 +86,7 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)
-            except:
+            except FreeCAD.Base.PropertyError:
                 prop.add_to_object(obj)
 
         # migrate old HeatSource property
@@ -96,5 +96,5 @@ class ConstraintBodyHeatSource(base_fempythonobject.BaseFemPythonObject):
             obj.Mode = "Dissipation Rate"
             obj.setPropertyStatus("HeatSource", "-LockDynamic")
             obj.removeProperty("HeatSource")
-        except:
+        except FreeCAD.Base.PropertyError:
             pass

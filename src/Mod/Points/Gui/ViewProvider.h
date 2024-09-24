@@ -27,7 +27,7 @@
 
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Points/PointsGlobal.h>
 
 
@@ -173,7 +173,7 @@ protected:
     SoIndexedPointSet* pcPoints;
 };
 
-using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderScattered>;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderScattered>;
 
 }  // namespace PointsGui
 

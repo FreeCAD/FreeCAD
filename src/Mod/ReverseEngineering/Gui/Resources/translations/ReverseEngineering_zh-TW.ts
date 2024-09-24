@@ -622,7 +622,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
       <source>Continuity</source>
-      <translation>Continuity</translation>
+      <translation>連續性</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>

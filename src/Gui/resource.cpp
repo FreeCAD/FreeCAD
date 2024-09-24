@@ -82,7 +82,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsReportView>       ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettings3DViewImp>        ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsLightSources>     ( QT_TRANSLATE_NOOP("QObject","Display") );
-    new PrefPageProducer<DlgSettingsUI>            ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsUI>               ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsAdvanced>         ( QT_TRANSLATE_NOOP("QObject","Display") );

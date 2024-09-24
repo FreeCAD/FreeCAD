@@ -612,6 +612,23 @@ PyObject* AttributeError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
+PropertyError::PropertyError() = default;
+
+PropertyError::PropertyError(const char* sMessage)
+    : AttributeError(sMessage)
+{}
+
+PropertyError::PropertyError(const std::string& sMessage)
+    : AttributeError(sMessage)
+{}
+
+PyObject* PropertyError::getPyExceptionType() const
+{
+    return PyExc_FC_PropertyError;
+}
+
+// ---------------------------------------------------------
+
 RuntimeError::RuntimeError() = default;
 
 RuntimeError::RuntimeError(const char* sMessage)

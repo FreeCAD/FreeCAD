@@ -528,7 +528,10 @@ class BIM_Setup:
             lic = FreeCAD.ParamGet(
                 "User parameter:BaseApp/Preferences/Document"
             ).GetInt("prefLicenseType", 0)
-            lic = [0, 1, 2, 1, 3, 4, 1, 0, 0, 0][
+            lic = [0,
+                   1, 2, 1, 3, 4, 1,
+                   1, 2, 1, 3, 4, 1,
+                   0, 0, 0, 0, 0, 0][
                 lic
             ]  # less choices in our simplified dialog
             newdoc = FreeCAD.ParamGet(

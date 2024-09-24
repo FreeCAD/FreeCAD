@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="961"/>
       <source>Cross-sections...</source>
-      <translation>断面...</translation>
+      <translation>横断面...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="962"/>
       <location filename="../../Command.cpp" line="963"/>
       <source>Cross-sections</source>
-      <translation>断面</translation>
+      <translation>横断面</translation>
     </message>
   </context>
   <context>
@@ -824,7 +824,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation>削減</translation>
+      <translation>縮小</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -1202,12 +1202,12 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Sphere</source>
-      <translation>球</translation>
+      <translation>球体</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="78"/>
       <source>Ellipsoid</source>
-      <translation>楕円</translation>
+      <translation>楕円体</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="87"/>
@@ -1229,7 +1229,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
       <source>Height:</source>
-      <translation>高さ:</translation>
+      <translation>高さ：</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
@@ -1363,7 +1363,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height:</source>
-      <translation>高さ:</translation>
+      <translation>高さ：</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
@@ -1402,12 +1402,12 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="142"/>
       <source>Default line color</source>
-      <translation>線の既定色</translation>
+      <translation>既定の線の色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="149"/>
       <source>Default line color for new meshes</source>
-      <translation>新しいメッシュのデフォルトの線色</translation>
+      <translation>新規メッシュの既定の線の色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="185"/>
@@ -2232,7 +2232,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="471"/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>ジオメトリーのメッシュ処理用のトレランスを入力:</translation>
+      <translation>ジオメトリのメッシュ処理用のトレランスを入力:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1280"/>

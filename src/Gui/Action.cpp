@@ -538,18 +538,12 @@ bool ActionGroup::doesRememberLast() const
 
 QAction* ActionGroup::addAction(QAction* action)
 {
-    int index = groupAction()->actions().size();
-    action = groupAction()->addAction(action);
-    action->setData(QVariant(index));
-    return action;
+    return groupAction()->addAction(action);
 }
 
 QAction* ActionGroup::addAction(const QString& text)
 {
-    int index = groupAction()->actions().size();
-    QAction* action = groupAction()->addAction(text);
-    action->setData(QVariant(index));
-    return action;
+    return groupAction()->addAction(text);
 }
 
 QList<QAction*> ActionGroup::actions() const
@@ -559,8 +553,9 @@ QList<QAction*> ActionGroup::actions() const
 
 int ActionGroup::checkedAction() const
 {
-    QAction* checked = groupAction()->checkedAction();
-    return checked ? checked->data().toInt() : -1;
+    auto checked = groupAction()->checkedAction();
+    
+    return actions().indexOf(checked);
 }
 
 void ActionGroup::setCheckedAction(int index)

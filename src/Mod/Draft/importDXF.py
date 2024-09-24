@@ -64,6 +64,7 @@ import WorkingPlane
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 from Draft import LinearDimension
+from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
 from builtins import open as pyopen
@@ -1926,11 +1927,24 @@ def addObject(shape, name="Shape", layer=None):
     if layer:
         lay = locateLayer(layer)
         # For old style layers, which are just groups
-        if hasattr(lay, "addObject"):
-            lay.addObject(newob)
+        if hasattr(lay, "Group"):
+            pass
         # For new Draft Layers
-        elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
-            lay.Proxy.addObject(lay, newob)
+        elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "Group"):
+            lay = lay.Proxy
+        else:
+            lay = None
+
+        if lay != None:
+            if lay not in layerObjects:
+                l = []
+                layerObjects[lay] = l
+            else:
+                l = layerObjects[lay]
+            l.append(newob)
+            
+
+
     formatObject(newob)
     return newob
 
@@ -2226,6 +2240,8 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     badobjects = []
     global layerBlocks
     layerBlocks = {}
+    global layerObjects
+    layerObjects = {}
     sketch = None
     shapes = []
 
@@ -2596,7 +2612,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         elif angle in [90, 270]:
                             p2 = vec([x2, y3, z2])
                     newob = doc.addObject("App::FeaturePython", "Dimension")
-                    lay.addObject(newob)
+                    if hasattr(lay, "addObject"):
+                        lay.addObject(newob)
+                    elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
+                        lay.Proxy.addObject(lay, newob)
                     _Dimension(newob)
                     if gui:
                         from Draft import _ViewProviderDimension
@@ -2720,6 +2739,10 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                         formatObject(newob, insert)
             num += 1
 
+    # Move layer contents to layers
+    for (l, contents) in layerObjects.items():
+        l.Group += contents
+
     # Make blocks, if any
     if dxfMakeBlocks:
         print("creating layerblocks...")
@@ -2809,10 +2832,11 @@ def open(filename):
         FreeCAD.setActiveDocument(doc.Name)
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2851,10 +2875,11 @@ def insert(filename, docname):
     else:
         try:
             import ImportGui
-            ImportGui.readDXF(filename)
         except Exception:
             import Import
             Import.readDXF(filename)
+        else:
+            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 

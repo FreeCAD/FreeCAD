@@ -163,23 +163,13 @@ void StartupProcess::registerEventType()
 
 void StartupProcess::setThemePaths()
 {
-    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
                             << QString::fromLatin1(":/icons/FreeCAD-default"));
-    QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-#else
-    // Option to opt-in into using a Linux desktop icon theme.
-    // https://forum.freecad.org/viewtopic.php?f=4&t=35624
-    bool themePaths = hTheme->GetBool("ThemeSearchPaths", false);
-    if (!themePaths) {
-        QStringList searchPaths;
-        searchPaths.prepend(QString::fromUtf8(":/icons"));
-        QIcon::setThemeSearchPaths(searchPaths);
-        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-    }
 #endif
+
+    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
 
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
@@ -222,6 +212,7 @@ void StartupPostProcess::setLoadFromPythonModule(bool value)
 
 void StartupPostProcess::execute()
 {
+    showSplashScreen();
     setWindowTitle();
     setProcessMessages();
     setAutoSaving();
@@ -247,8 +238,8 @@ void StartupPostProcess::setWindowTitle()
 void StartupPostProcess::setProcessMessages()
 {
     if (!loadFromPythonModule) {
-        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QByteArray> &)),
-                         mainWindow, SLOT(processMessages(const QList<QByteArray> &)));
+        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QString> &)),
+                         mainWindow, SLOT(processMessages(const QList<QString> &)));
     }
 }
 
@@ -309,7 +300,7 @@ void StartupPostProcess::setCursorFlashing()
 
 void StartupPostProcess::setQtStyle()
 {
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
     auto qtStyle = hGrp->GetASCII("QtStyle");
     QApplication::setStyle(QString::fromStdString(qtStyle));
 }
@@ -430,7 +421,7 @@ bool StartupPostProcess::hiddenMainWindow() const
     return hidden;
 }
 
-void StartupPostProcess::showMainWindow()
+void StartupPostProcess::showSplashScreen()
 {
     bool hidden = hiddenMainWindow();
 
@@ -438,7 +429,10 @@ void StartupPostProcess::showMainWindow()
     if (!hidden && !loadFromPythonModule) {
         mainWindow->startSplasher();
     }
+}
 
+void StartupPostProcess::showMainWindow()
+{
     // running the GUI init script
     try {
         Base::Console().Log("Run Gui init script\n");

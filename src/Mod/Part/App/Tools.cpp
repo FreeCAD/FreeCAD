@@ -28,6 +28,7 @@
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepIntCurveSurface_Inter.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <CSLib.hxx>
@@ -743,4 +744,38 @@ TopLoc_Location Part::Tools::fromPlacement(const Base::Placement& plm)
     gp_Trsf trf;
     trf.SetTransformation(gp_Quaternion(q1, q2, q3, q4), gp_Vec(t.x, t.y, t.z));
     return {trf};
+}
+
+bool Part::Tools::isConcave(const TopoDS_Face &face, const gp_Pnt &pointOfVue, const gp_Dir &direction){
+    bool result = false;
+
+    Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
+    GeomAdaptor_Surface adapt(surf);
+    if(adapt.GetType() == GeomAbs_Plane){
+        return false;
+    }
+
+            // create a line through the point of vue
+    gp_Lin line;
+    line.SetLocation(pointOfVue);
+    line.SetDirection(direction);
+
+            // Find intersection of line with the face
+    BRepIntCurveSurface_Inter mkSection;
+    mkSection.Init(face, line, Precision::Confusion());
+
+    result = mkSection.Transition() == IntCurveSurface_In;
+
+            // compute normals at the intersection
+    gp_Pnt iPnt;
+    gp_Vec dU, dV;
+    surf->D1(mkSection.U(), mkSection.V(), iPnt, dU, dV);
+
+            // check normals orientation
+    gp_Dir dirdU(dU);
+    result = (dirdU.Angle(direction) - M_PI_2) <= Precision::Confusion();
+    gp_Dir dirdV(dV);
+    result = result || ((dirdV.Angle(direction) - M_PI_2) <= Precision::Confusion());
+
+    return result;
 }

@@ -23,7 +23,7 @@
 #ifndef SketcherGui_VIEWPROVIDERPYTHON_H
 #define SketcherGui_VIEWPROVIDERPYTHON_H
 
-#include <Gui/ViewProviderPythonFeature.h>
+#include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Sketcher/Gui/ViewProviderSketch.h>
 
 
@@ -46,8 +46,8 @@ protected:
     std::map<const App::Property*, Gui::ViewProvider*> propView;
 };
 
-using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderSketch>;
-using ViewProviderCustomPython = Gui::ViewProviderPythonFeatureT<ViewProviderCustom>;
+using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderSketch>;
+using ViewProviderCustomPython = Gui::ViewProviderFeaturePythonT<ViewProviderCustom>;
 
 }  // namespace SketcherGui
 
