@@ -98,7 +98,9 @@ private:
 int main(int argc, char** argv)
 {
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-    setlocale(LC_ALL, "");  // use native environment settings
+    setlocale(LC_ALL, "");       // use native environment settings
+    setlocale(LC_NUMERIC, "C");  // except for numbers to not break XML import
+    // See https://github.com/FreeCAD/FreeCAD/issues/16724
 
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
