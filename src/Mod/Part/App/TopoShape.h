@@ -25,6 +25,7 @@
 
 #include <iosfwd>
 #include <list>
+#include <unordered_map>
 
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
