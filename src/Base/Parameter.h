@@ -65,7 +65,18 @@ using PyObject = struct _object;
 #pragma warning(disable : 4275)
 #endif
 
-
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+namespace XERCES_CPP_NAMESPACE
+{
+class DOMNode;
+class DOMElement;
+class DOMDocument;
+class XMLFormatTarget;
+class InputSource;
+}  // namespace XERCES_CPP_NAMESPACE
+#else
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMNode;
 class DOMElement;
@@ -73,6 +84,7 @@ class DOMDocument;
 class XMLFormatTarget;
 class InputSource;
 XERCES_CPP_NAMESPACE_END
+#endif
 
 class ParameterManager;
 
@@ -434,12 +446,15 @@ public:
     bool LoadOrCreateDocument();
     /// Saves an XML document by calling the serializer's save method.
     void SaveDocument() const;
+    void SetIgnoreSave(bool value);
+    bool IgnoreSave() const;
     //@}
 
 private:
     XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* _pDocument {nullptr};
     ParameterSerializer* paramSerializer {nullptr};
 
+    bool gIgnoreSave;
     bool gDoNamespaces;
     bool gDoSchema;
     bool gSchemaFullChecking;

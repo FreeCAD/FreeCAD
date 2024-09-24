@@ -62,19 +62,15 @@
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
-#include "QGITemplate.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
-#include "QGIViewBalloon.h"
 #include "QGIViewDimension.h"
 #include "QGMText.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
-#include "Rez.h"
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
 
@@ -204,6 +200,10 @@ bool MDIViewPage::onMsg(const char* pMsg, const char**)
         doc->saveAs();
         return true;
     }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
+        doc->saveCopy();
+        return true;
+    }
     else if (strcmp("Undo", pMsg) == 0) {
         doc->undo(1);
         Gui::Command::updateActive();
@@ -232,6 +232,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
     if (strcmp("ViewFit", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
     else if (strcmp("CanPan",pMsg) == 0) {
         return true;
     }
@@ -248,6 +251,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("SaveAs", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("SaveCopy", pMsg) == 0) {
         return true;
     }
     else if (strcmp("PrintPreview", pMsg) == 0) {
@@ -422,19 +428,6 @@ void MDIViewPage::print(QPrinter* printer)
             }
         }
     }
-
-    QPainter p(printer);
-    // why use a QPainter to determine if we can write to a file?
-    if (!p.isActive() && !printer->outputFileName().isEmpty()) {
-        qApp->setOverrideCursor(Qt::ArrowCursor);
-        QMessageBox::critical(
-            this, tr("Opening file failed"),
-            tr("Can not open file %1 for writing.").arg(printer->outputFileName()));
-        qApp->restoreOverrideCursor();
-        return;
-    }
-    // free the printer from the painter
-    p.end();
 
     if (m_pagePrinter) {
         m_pagePrinter->print(printer);
@@ -644,8 +637,7 @@ void MDIViewPage::blockSceneSelection(const bool isBlocked) { isSelectionBlocked
 //Set all QGIViews to unselected state
 void MDIViewPage::clearSceneSelection()
 {
-    //    Base::Console().Message("MDIVP::clearSceneSelection()\n");
-    m_qgSceneSelected.clear();
+    m_orderedSceneSelection.clear();
 
     std::vector<QGIView*> views = m_scene->getViews();
 
@@ -670,7 +662,8 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, bool isSelected,
     }
 }
 
-//! invoked by selection change made in Tree via father MDIView
+//! invoked by selection change made in Tree via father MDIView. Selects the
+//! scene item corresponding to the tree's SelectionChange
 //really "onTreeSelectionChanged"
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
@@ -700,53 +693,57 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
     blockSceneSelection(false);
 }
 
-//! maintain QGScene selected items in selection order
+//! maintain QGScene selected items in selection order.  m_orderedSceneSelection
+//! contains a list of selected items.  The list is ordered by "time" of selection.
 void MDIViewPage::sceneSelectionManager()
 {
-    //    Base::Console().Message("MDIVP::sceneSelectionManager()\n");
-    QList<QGraphicsItem*> sceneSel = m_scene->selectedItems();
+    QList<QGraphicsItem*> sceneSelectedItems = m_scene->selectedItems();
 
-    if (sceneSel.isEmpty()) {
-        m_qgSceneSelected.clear();//TODO: need to signal somebody?  Tree? handled elsewhere
-        //clearSelection
+    if (sceneSelectedItems.isEmpty()) {
+        //clear selected scene items
+        m_orderedSceneSelection.clear();//TODO: need to signal somebody?  Tree? handled elsewhere
         return;
     }
 
-    if (m_qgSceneSelected.isEmpty() && !sceneSel.isEmpty()) {
-        m_qgSceneSelected.push_back(sceneSel.front());
+    if (m_orderedSceneSelection.isEmpty() && !sceneSelectedItems.isEmpty()) {
+        // if the ordered list is empty, but we have selected items in the scene,
+        // add the first selected item to the ordered list? why only front?
+        m_orderedSceneSelection.push_back(sceneSelectedItems.front());
         return;
     }
 
-    //add to m_qgSceneSelected anything that is in q_sceneSel
-    for (auto qts : sceneSel) {
+    //add to m_orderedSceneSelection anything that is in our scene selection list
+    for (auto selectedItem : sceneSelectedItems) {
         bool found = false;
-        for (auto ms : std::as_const(m_qgSceneSelected)) {
-            if (qts == ms) {
+        for (auto listItem : std::as_const(m_orderedSceneSelection)) {
+            if (selectedItem == listItem) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            m_qgSceneSelected.push_back(qts);
+            m_orderedSceneSelection.push_back(selectedItem);
             break;
         }
     }
 
-    //remove items from m_qgSceneSelected that are not in q_sceneSel
+    //remove items from m_orderedSceneSelection that are not in our scene selection list
     QList<QGraphicsItem*> m_new;
-    for (auto m : std::as_const(m_qgSceneSelected)) {
-        for (auto q : sceneSel) {
-            if (m == q) {
-                m_new.push_back(m);
+    for (auto listItem : std::as_const(m_orderedSceneSelection)) {
+        for (auto selectedItem : sceneSelectedItems) {
+            if (listItem == selectedItem) {
+                m_new.push_back(listItem);
                 break;
             }
         }
     }
-    m_qgSceneSelected = m_new;
+    m_orderedSceneSelection = m_new;
 }
 
-//! update Tree Selection from QGraphicsScene selection
-//triggered by m_scene signal
+//! update Tree Selection from QGraphicsScene selection. on exit, the tree
+//! select and scene select should match.  Called every time an item is selected or
+//! deselected in the scene.
+// triggered by m_scene signal
 void MDIViewPage::sceneSelectionChanged()
 {
     sceneSelectionManager();
@@ -756,8 +753,9 @@ void MDIViewPage::sceneSelectionChanged()
     }
 
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
-    QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
-
+    // should this not be looking at m_scene->selectedItems(), ie the current state, rather than
+    // the stored state?
+    QList<QGraphicsItem*> sceneSel = m_orderedSceneSelection;
 
     bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
@@ -769,11 +767,12 @@ void MDIViewPage::sceneSelectionChanged()
     }
     else {
         for (auto& sel : treeSel) {
-            removeSelFromTreeSel(sceneSel, sel);
+            // unselect the stored items
+            removeUnselectedTreeSelection(sceneSel, sel);
         }
 
-        for (auto* scene : sceneSel) {
-            addSceneToTreeSel(scene, treeSel);
+        for (auto* item : sceneSel) {
+            addSceneItemToTreeSel(item, treeSel);
         }
     }
 
@@ -784,12 +783,11 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect()
 {
-    //    Base::Console().Message("MDIVP::setTreeToSceneSelect()\n");
     bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
     Gui::Selection().clearSelection();
 
-    for (auto* scene : m_qgSceneSelected) {
+    for (auto* scene : m_orderedSceneSelection) {
         auto* itemView = dynamic_cast<QGIView*>(scene);
         if (!itemView) {
             auto* parent = dynamic_cast<QGIView*>(scene->parentItem());
@@ -815,7 +813,6 @@ void MDIViewPage::setTreeToSceneSelect()
             }
             else if (dynamic_cast<QGIDatumLabel*>(scene) || dynamic_cast<QGMText*>(scene)) {
                 if (!obj_name) {//can happen during undo/redo if Dim is selected???
-                    //Base::Console().Log("INFO - MDIVP::sceneSelectionChanged - dimObj name is null!\n");
                     continue;
                 }
 
@@ -858,7 +855,7 @@ std::string MDIViewPage::getSceneSubName(QGraphicsItem* scene)
 }
 
 // adds scene to core selection if it's not in already.
-void MDIViewPage::addSceneToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
+void MDIViewPage::addSceneItemToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
 {
     auto* itemView = dynamic_cast<QGIView*>(sn);
     if (!itemView) {
@@ -907,19 +904,43 @@ void MDIViewPage::addSceneToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vect
     }
 }
 
-// remove core selection if scene is not selected anymore
-void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::SelectionObject& sel)
+// remove tree selection if it is no longer selected in the scene
+void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelectedItems,
+                                                Gui::SelectionObject& treeSelection)
 {
-    std::string selDocName = sel.getDocName();
-    App::DocumentObject* selObj = sel.getObject();
+    std::string selDocName = treeSelection.getDocName();
+    App::DocumentObject* selObj = treeSelection.getObject();
 
-    for (auto& sub : sel.getSubNames()) {
-        bool found = false;
-        for (auto& sn : sceneSel) {
-            auto* itemView = dynamic_cast<QGIView*>(sn);
+    // If the selected item is not a geometry item (vertex/edge/face) then the
+    // loop on subnames below will not handle the item and it will not be removed.
+    if (treeSelection.getSubNames().empty()) {
+        bool matchFound{false};
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
             if (!itemView) {
-                auto* parent = dynamic_cast<QGIView*>(sn->parentItem());
+                continue;
+            }
+            auto itemFeature = itemView->getViewObject();
+            auto itemDocName = itemFeature->getDocument()->getName();
+            if (selDocName == itemDocName && selObj == itemFeature) {
+                matchFound = true;
+                break;
+            }
+        }
+        if (!matchFound) {
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
+        }
+        return;
+    }
+
+    for (auto& sub : treeSelection.getSubNames()) {
+        bool found = false;
+        for (auto& sceneItem : sceneSelectedItems) {
+            auto* itemView = dynamic_cast<QGIView*>(sceneItem);
+            if (!itemView) {
+                auto* parent = dynamic_cast<QGIView*>(sceneItem->parentItem());
                 if (!parent) {
+                    // neither sceneItem or its parent are Views
                     continue;
                 }
                 TechDraw::DrawView* viewObj = parent->getViewObject();
@@ -931,11 +952,11 @@ void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::Sele
                 const char* obj_name = viewObj->getNameInDocument();
                 std::string sub_name;
 
-                if (dynamic_cast<QGIEdge*>(sn) || dynamic_cast<QGIVertex*>(sn) || dynamic_cast<QGIFace*>(sn)) {
-                    sub_name = getSceneSubName(sn);
+                if (dynamic_cast<QGIEdge*>(sceneItem) || dynamic_cast<QGIVertex*>(sceneItem) || dynamic_cast<QGIFace*>(sceneItem)) {
+                    sub_name = getSceneSubName(sceneItem);
                 }
 
-                else if (dynamic_cast<QGIDatumLabel*>(sn) || dynamic_cast<QGMText*>(sn)) {
+                else if (dynamic_cast<QGIDatumLabel*>(sceneItem) || dynamic_cast<QGMText*>(sceneItem)) {
                     if (!obj_name) {//can happen during undo/redo if Dim is selected???
                         continue;
                     }
@@ -962,7 +983,7 @@ void MDIViewPage::removeSelFromTreeSel(QList<QGraphicsItem*> sceneSel, Gui::Sele
             }
         }
         if (!found) {
-            Gui::Selection().rmvSelection(sel.getDocName(), sel.getObject()->getNameInDocument(), sub.c_str());
+            Gui::Selection().rmvSelection(treeSelection.getDocName(), treeSelection.getObject()->getNameInDocument());
         }
     }
 }

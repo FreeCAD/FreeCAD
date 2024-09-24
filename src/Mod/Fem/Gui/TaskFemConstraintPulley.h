@@ -64,7 +64,6 @@ public:
 
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
-    void open() override;
 };
 
 }  // namespace FemGui

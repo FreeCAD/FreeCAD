@@ -25,6 +25,7 @@
 from SketcherTests.TestSketcherSolver import TestSketcherSolver
 from SketcherTests.TestSketchFillet import TestSketchFillet
 from SketcherTests.TestSketchExpression import TestSketchExpression
+from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
 
 # Path and PartDesign tests use these functions that used to live here
 # but moved to SketcherTests/TestSketcherSolver.py

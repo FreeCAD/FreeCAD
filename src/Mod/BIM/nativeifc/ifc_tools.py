@@ -36,6 +36,7 @@ import ifcopenshell
 from ifcopenshell import geom
 from ifcopenshell import api
 from ifcopenshell import template
+from ifcopenshell.util import element
 from ifcopenshell.util import attribute
 from ifcopenshell.util import schema
 from ifcopenshell.util import placement
@@ -139,7 +140,7 @@ def convert_document(document, filename=None, shapemode=0, strategy=0, silent=Fa
 
 
 def setup_project(proj, filename, shapemode, silent):
-    """Setups a project (common operations between signle doc/not single doc modes)
+    """Sets up a project (common operations between single doc/not single doc modes)
     Returns the ifcfile object, the project ifc entity, and full (True/False)"""
 
     full = False
@@ -354,7 +355,7 @@ def assign_groups(children):
 
 
 def get_children(
-    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False
+    obj, ifcfile=None, only_structure=False, assemblies=True, expand=False, iftype=None
 ):
     """Returns the direct descendants of an object"""
 
@@ -372,9 +373,12 @@ def get_children(
             children.extend([rel.RelatedOpeningElement])
         for rel in getattr(ifcentity, "HasFillings", []):
             children.extend([rel.RelatedBuildingElement])
-    return filter_elements(
+    result = filter_elements(
         children, ifcfile, expand=expand, spaces=True, assemblies=assemblies
     )
+    if iftype:
+        result = [r for r in result if r.is_a(ifctype)]
+    return result
 
 
 def get_object(element, document=None):
@@ -666,7 +670,11 @@ def get_ifc_element(obj, ifcfile=None):
     if not ifcfile:
         ifcfile = get_ifcfile(obj)
     if ifcfile and hasattr(obj, "StepId"):
-        return ifcfile.by_id(obj.StepId)
+        try:
+            return ifcfile.by_id(obj.StepId)
+        except RuntimeError:
+            # entity not found
+            pass
     return None
 
 
@@ -700,7 +708,10 @@ def filter_elements(elements, ifcfile, expand=True, spaces=False, assemblies=Tru
                 elements = ifcfile.by_type("IfcElement")
                 elements.extend(ifcfile.by_type("IfcSite"))
             else:
-                elements = ifcopenshell.util.element.get_decomposition(elem)
+                decomp = ifcopenshell.util.element.get_decomposition(elem)
+                if decomp:
+                    # avoid replacing elements if decomp is empty
+                    elements = decomp
         else:
             if elem.Representation.Representations:
                 rep = elem.Representation.Representations[0]
@@ -780,27 +791,33 @@ def set_colors(obj, colors):
     """Sets the given colors to an object"""
 
     if FreeCAD.GuiUp and colors:
+        try:
+            vobj = obj.ViewObject
+        except ReferenceError:
+            # Object was probably deleted
+            return
         # ifcopenshell issues (-1,-1,-1) colors if not set
         if isinstance(colors[0], (tuple, list)):
             colors = [tuple([abs(d) for d in c]) for c in colors]
         else:
             colors = [abs(c) for c in colors]
-        if hasattr(obj.ViewObject, "ShapeColor"):
+        if hasattr(vobj, "ShapeColor"):
             if isinstance(colors[0], (tuple, list)):
-                obj.ViewObject.ShapeColor = colors[0][:3]
-                if len(colors[0]) > 3:
-                    obj.ViewObject.Transparency = int(colors[0][3] * 100)
+                vobj.ShapeColor = colors[0][:3]
+                # do not set transparency when the object has more than one color
+                #if len(colors[0]) > 3:
+                #    vobj.Transparency = int(colors[0][3] * 100)
             else:
-                obj.ViewObject.ShapeColor = colors[:3]
+                vobj.ShapeColor = colors[:3]
                 if len(colors) > 3:
-                    obj.ViewObject.Transparency = int(colors[3] * 100)
-        if hasattr(obj.ViewObject, "DiffuseColor"):
+                    vobj.Transparency = int(colors[3] * 100)
+        if hasattr(vobj, "DiffuseColor"):
             # strip out transparency value because it currently gives ugly
             # results in FreeCAD when combining transparent and non-transparent objects
             if all([len(c) > 3 and c[3] != 0 for c in colors]):
-                obj.ViewObject.DiffuseColor = colors
+                vobj.DiffuseColor = colors
             else:
-                obj.ViewObject.DiffuseColor = [c[:3] for c in colors]
+                vobj.DiffuseColor = [c[:3] for c in colors]
 
 
 def get_body_context_ids(ifcfile):
@@ -845,9 +862,15 @@ def get_freecad_matrix(ios_matrix):
 
     # https://github.com/IfcOpenShell/IfcOpenShell/issues/1440
     # https://pythoncvc.net/?cat=203
+    # https://github.com/IfcOpenShell/IfcOpenShell/issues/4832#issuecomment-2158583873
     m_l = list()
     for i in range(3):
-        line = list(ios_matrix[i::3])
+        if len(ios_matrix) == 16:
+            # IfcOpenShell 0.8
+            line = list(ios_matrix[i::4])
+        else:
+            # IfcOpenShell 0.7
+            line = list(ios_matrix[i::3])
         line[-1] *= SCALE
         m_l.extend(line)
     return FreeCAD.Matrix(*m_l)
@@ -981,6 +1004,13 @@ def aggregate(obj, parent):
             layer = FreeCAD.ActiveDocument.getObject(autogroup)
             if hasattr(layer, "StepId"):
                 ifc_layers.add_to_layer(newobj, layer)
+    # aggregate dependent objects
+    for child in obj.InList:
+        if hasattr(child,"Host") and child.Host == obj:
+            aggregate(child, newobj)
+        elif hasattr(child,"Hosts") and obj in child.Hosts:
+            #op = create_product(child, newobj, ifcfile, ifcclass="IfcOpeningElement")
+            aggregate(child, newobj)
     delete = not (PARAMS.GetBool("KeepAggregated", False))
     if new and delete and base:
         obj.Document.removeObject(base.Name)
@@ -999,7 +1029,11 @@ def deaggregate(obj, parent):
     element = get_ifc_element(obj)
     if not element:
         return
-    api_run("aggregate.unassign_object", ifcfile, product=element)
+    try:
+        api_run("aggregate.unassign_object", ifcfile, products=[element])
+    except:
+        # older version of ifcopenshell
+        api_run("aggregate.unassign_object", ifcfile, product=element)
     parent.Proxy.removeObject(parent, obj)
 
 
@@ -1039,13 +1073,7 @@ def create_representation(obj, ifcfile):
     exportIFC.surfstyles = {}
     exportIFC.shapedefs = {}
     exportIFC.ifcopenshell = ifcopenshell
-    try:
-        exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
-    except:
-        FreeCAD.Console.PrintError(
-            "ERROR: You need a more recent version of FreeCAD >= 0.20.3\n"
-        )
-        return
+    exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
     prefs, context = get_export_preferences(ifcfile)
     representation, placement, shapetype = exportIFC.getRepresentation(
         ifcfile, context, obj, preferences=prefs
@@ -1088,12 +1116,12 @@ def get_subvolume(obj):
 
     tempface = None
     tempobj = None
-    subvolume = None
+    tempshape = None
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "getSubVolume"):
         tempshape = obj.Proxy.getSubVolume(obj)
     elif hasattr(obj, "Subvolume") and obj.Subvolume:
         tempshape = obj.Subvolume
-    if subvolume:
+    if tempshape:
         if len(tempshape.Faces) == 6:
             # We assume the standard output of ArchWindows
             faces = sorted(tempshape.Faces, key=lambda f: f.CenterOfMass.z)
@@ -1109,6 +1137,8 @@ def get_subvolume(obj):
         else:
             tempobj = obj.Document.addObject("Part::Feature", "Opening")
             tempobj.Shape = tempshape
+    if tempobj:
+        tempobj.recompute()
     return tempface, tempobj
 
 
@@ -1122,7 +1152,11 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
         for old_par in old_obj.InList:
             if hasattr(old_par, "Group") and old_obj in old_par.Group:
                 old_par.Group = [o for o in old_par.Group if o != old_obj]
-        api_run("spatial.unassign_container", ifcfile, product=element)
+        try:
+            api_run("spatial.unassign_container", ifcfile, products=[element])
+        except:
+            # older version of IfcOpenShell
+            api_run("spatial.unassign_container", ifcfile, product=element)
         if element.is_a("IfcOpeningElement"):
             uprel = api_run(
                 "void.add_opening",
@@ -1131,12 +1165,21 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
                 element=parent_element,
             )
         else:
-            uprel = api_run(
-                "spatial.assign_container",
-                ifcfile,
-                product=element,
-                relating_structure=parent_element,
-            )
+            try:
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    products=[element],
+                    relating_structure=parent_element,
+                )
+            except:
+                # older version of ifcopenshell
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    product=element,
+                    relating_structure=parent_element,
+                )
     # case 2: dooe/window inside element
     # https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/annex/annex-e/wall-with-opening-and-window.htm
     elif parent_element.is_a("IfcElement") and element.is_a() in [
@@ -1154,32 +1197,67 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
             )
             api_run("void.add_filling", ifcfile, opening=opening, element=element)
         # windows must also be part of a spatial container
-        api_run("spatial.unassign_container", ifcfile, product=element)
+        try:
+            api_run("spatial.unassign_container", ifcfile, products=[element])
+        except:
+            # old version of IfcOpenShell
+            api_run("spatial.unassign_container", ifcfile, product=element)
         if parent_element.ContainedInStructure:
             container = parent_element.ContainedInStructure[0].RelatingStructure
-            uprel = api_run(
-                "spatial.assign_container",
-                ifcfile,
-                product=element,
-                relating_structure=container,
-            )
+            try:
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    products=[element],
+                    relating_structure=container,
+                )
+            except:
+                # old version of IfcOpenShell
+                uprel = api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    product=element,
+                    relating_structure=container,
+                )
         elif parent_element.Decomposes:
             container = parent_element.Decomposes[0].RelatingObject
+            try:
+                uprel = api_run(
+                    "aggregate.assign_object",
+                    ifcfile,
+                    products=[element],
+                    relating_object=container,
+                )
+            except:
+                # older version of ifcopenshell
+                uprel = api_run(
+                    "aggregate.assign_object",
+                    ifcfile,
+                    product=element,
+                    relating_object=container,
+                )
+    # case 3: element aggregated inside other element
+    else:
+        try:
+            api_run("aggregate.unassign_object", ifcfile, products=[element])
+        except:
+            # older version of ifcopenshell
+            api_run("aggregate.unassign_object", ifcfile, product=element)
+        try:
+            uprel = api_run(
+                "aggregate.assign_object",
+                ifcfile,
+                products=[element],
+                relating_object=parent_element,
+            )
+        except:
+            # older version of ifcopenshell
             uprel = api_run(
                 "aggregate.assign_object",
                 ifcfile,
                 product=element,
-                relating_object=container,
+                relating_object=parent_element,
             )
-    # case 3: element aggregated inside other element
-    else:
-        api_run("aggregate.unassign_object", ifcfile, product=element)
-        uprel = api_run(
-            "aggregate.assign_object",
-            ifcfile,
-            product=element,
-            relating_object=parent_element,
-        )
     if hasattr(parent.Proxy, "addObject"):
         parent.Proxy.addObject(parent, obj)
     return uprel
@@ -1189,7 +1267,7 @@ def get_elem_attribs(ifcentity):
     # This function can become pure IFC
 
     # usually info_ifcentity = ifcentity.get_info() would de the trick
-    # the above could raise an unhandled excption on corrupted ifc files
+    # the above could raise an unhandled exception on corrupted ifc files
     # in IfcOpenShell
     # see https://github.com/IfcOpenShell/IfcOpenShell/issues/2811
     # thus workaround

@@ -97,7 +97,7 @@ class GuiExport AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AboutDialog(bool showLic, QWidget* parent = nullptr);
+    explicit AboutDialog(QWidget* parent = nullptr);
     ~AboutDialog() override;
 
 protected:

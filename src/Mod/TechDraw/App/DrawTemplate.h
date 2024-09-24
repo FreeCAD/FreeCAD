@@ -74,6 +74,9 @@ public:
             static constexpr const char *Author       = "author";
             static constexpr const char *Date         = "date";
             static constexpr const char *Organization = "organization";
+            static constexpr const char *Organisation = "organisation";
+            static constexpr const char *Owner        = "owner";
+            static constexpr const char *Company      = "company";
             static constexpr const char *Scale        = "scale";
             static constexpr const char *Sheet        = "sheet";
             static constexpr const char *Title        = "title";

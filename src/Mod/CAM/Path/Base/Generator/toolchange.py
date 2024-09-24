@@ -43,9 +43,7 @@ class SpindleDirection(Enum):
     CCW = "M4"
 
 
-def generate(
-    toolnumber, toollabel, spindlespeed=0, spindledirection=SpindleDirection.OFF
-):
+def generate(toolnumber, toollabel, spindlespeed=0, spindledirection=SpindleDirection.OFF):
     """
     Generates Gcode for a simple toolchange.
 
@@ -91,9 +89,7 @@ def generateSubstitute(newTC, oldTC=None):
     if newTC.ToolNumber != oldTC.ToolNumber:  # Full toolchange
         return newTC.Path.Commands
 
-    if (newTC.SpindleSpeed != oldTC.SpindleSpeed) or (
-        newTC.SpindleDir != oldTC.SpindleDir
-    ):
+    if (newTC.SpindleSpeed != oldTC.SpindleSpeed) or (newTC.SpindleDir != oldTC.SpindleDir):
         if newTC.SpindleDir == "Forward":
             sd = SpindleDirection.CW
         elif newTC.SpindleDir == "Reverse":

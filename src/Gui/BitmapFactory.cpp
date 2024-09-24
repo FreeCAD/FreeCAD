@@ -54,6 +54,8 @@ class BitmapFactoryInstP
 public:
     QMap<std::string, const char**> xpmMap;
     QMap<std::string, QPixmap> xpmCache;
+
+    bool useIconTheme;
 };
 }
 
@@ -93,7 +95,9 @@ void BitmapFactoryInst::destruct ()
 BitmapFactoryInst::BitmapFactoryInst()
 {
     d = new BitmapFactoryInstP;
+
     restoreCustomPaths();
+    configureUseIconTheme();
 }
 
 BitmapFactoryInst::~BitmapFactoryInst()
@@ -109,6 +113,14 @@ void BitmapFactoryInst::restoreCustomPaths()
     for (auto & path : paths) {
         addPath(QString::fromUtf8(path.c_str()));
     }
+}
+
+void Gui::BitmapFactoryInst::configureUseIconTheme()
+{
+    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Bitmaps/Theme");
+
+    d->useIconTheme = group->GetBool("UseIconTheme", group->GetBool("ThemeSearchPaths", false));
 }
 
 void BitmapFactoryInst::addPath(const QString& path)
@@ -174,6 +186,10 @@ bool BitmapFactoryInst::findPixmapInCache(const char* name, QPixmap& px) const
 
 QIcon BitmapFactoryInst::iconFromTheme(const char* name, const QIcon& fallback)
 {
+    if (!d->useIconTheme) {
+        return iconFromDefaultTheme(name, fallback);
+    }
+
     QString iconName = QString::fromUtf8(name);
     QIcon icon = QIcon::fromTheme(iconName, fallback);
     if (icon.isNull()) {
@@ -204,6 +220,21 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
     }
 
     return !icon.isNull();
+}
+
+QIcon Gui::BitmapFactoryInst::iconFromDefaultTheme(const char* name, const QIcon& fallback)
+{
+    QIcon icon;
+    QPixmap px = pixmap(name);
+
+    if (!px.isNull()) {
+        icon.addPixmap(px);
+        return icon;
+    } else {
+        return fallback;
+    }
+
+    return icon;
 }
 
 QPixmap BitmapFactoryInst::pixmap(const char* name) const

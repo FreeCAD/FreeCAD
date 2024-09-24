@@ -84,13 +84,13 @@ PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderPython, PartGui::ViewProviderPart)
 /// @endcond
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderPythonFeatureT<PartGui::ViewProviderPart>;
+template class PartGuiExport ViewProviderFeaturePythonT<PartGui::ViewProviderPart>;
 
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PartGui::ViewProviderCustomPython, PartGui::ViewProviderCustom)
 /// @endcond
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderPythonFeatureT<PartGui::ViewProviderCustom>;
+template class PartGuiExport ViewProviderFeaturePythonT<PartGui::ViewProviderCustom>;
 }
 

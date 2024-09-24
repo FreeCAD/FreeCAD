@@ -34,7 +34,7 @@
      <item row="0" column="0">
       <widget class="QRadioButton" name="rbHoleBase">
        <property name="text">
-        <string>shaft fit</string>
+        <string>Shaft fit</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -44,7 +44,7 @@
      <item row="0" column="1">
       <widget class="QRadioButton" name="rbShaftBase">
        <property name="text">
-        <string>hole fit</string>
+        <string>Hole fit</string>
        </property>
       </widget>
      </item>

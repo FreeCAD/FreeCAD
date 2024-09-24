@@ -614,9 +614,9 @@ CmdDrawingSymbol::CmdDrawingSymbol()
     // setting the
     sGroup = QT_TR_NOOP("Drawing");
     sMenuText = QT_TR_NOOP("&Symbol");
-    sToolTipText = QT_TR_NOOP("Inserts a symbol from a svg file in the active drawing");
+    sToolTipText = QT_TR_NOOP("Inserts a symbol from a SVG file in the active drawing");
     sWhatsThis = "Drawing_Symbol";
-    sStatusTip = QT_TR_NOOP("Inserts a symbol from a svg file in the active drawing");
+    sStatusTip = QT_TR_NOOP("Inserts a symbol from a SVG file in the active drawing");
     sPixmap = "actions/drawing-symbol";
 }
 

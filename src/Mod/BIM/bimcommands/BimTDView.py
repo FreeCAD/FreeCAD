@@ -29,6 +29,7 @@ import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 
 
 class BIM_TDView:
@@ -43,10 +44,8 @@ class BIM_TDView:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         import Draft
@@ -69,7 +68,7 @@ class BIM_TDView:
             FreeCAD.Console.PrintError(
                 translate(
                     "BIM",
-                    "No section view or draft objects selected, or no page selected, or no page found in document",
+                    "No section view or Draft objects selected, or no page selected, or no page found in document",
                 )
                 + "\n"
             )

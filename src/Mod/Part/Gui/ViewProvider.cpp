@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QObject>
+#include <QObject>
 #endif
 
 #include <App/Document.h>
@@ -36,7 +36,7 @@
 
 using namespace PartGui;
 
-PROPERTY_SOURCE(PartGui::ViewProviderPart, PartGui::ViewProviderPartExt)
+PROPERTY_SOURCE(PartGui::ViewProviderPart, PartGui::ViewProviderPartExt)  // NOLINT
 
 
 ViewProviderPart::ViewProviderPart() = default;
@@ -61,36 +61,62 @@ void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
                                   const std::vector<App::Color>& colBase,
                                   std::vector<App::Color>& colBool)
 {
-    std::map<int, std::vector<int> >::const_iterator jt;
     // apply color from modified faces
-    for (jt = hist.shapeMap.begin(); jt != hist.shapeMap.end(); ++jt) {
-        std::vector<int>::const_iterator kt;
-        for (kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
-            colBool[*kt] = colBase[jt->first];
+    for (const auto& jt : hist.shapeMap) {
+        for (auto kt : jt.second) {
+            colBool.at(kt) = colBase.at(jt.first);
         }
     }
 }
 
-void ViewProviderPart::applyTransparency(const float& transparency,
-                                  std::vector<App::Color>& colors)
+void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
+                                     const std::vector<App::Material>& colBase,
+                                     std::vector<App::Material>& colBool)
+{
+    // apply color from modified faces
+    for (const auto& jt : hist.shapeMap) {
+        for (auto kt : jt.second) {
+            colBool.at(kt) = colBase.at(jt.first);
+        }
+    }
+}
+
+void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Color>& colors)
 {
     if (transparency != 0.0) {
         // transparency has been set object-wide
-        std::vector<App::Color>::iterator j;
-        for (j = colors.begin(); j != colors.end(); ++j) {
+        for (auto& j : colors) {
             // transparency hasn't been set for this face
-            if (j->a == 0.0)
-                j->a = transparency/100.0; // transparency comes in percent
+            if (j.a == 0.0) {
+                j.a = transparency/100.0F;  // transparency comes in percent
+            }
+        }
+    }
+}
+
+void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Material>& colors)
+{
+    if (transparency != 0.0) {
+        // transparency has been set object-wide
+        for (auto& j : colors) {
+            // transparency hasn't been set for this face
+            if (j.transparency == 0.0) {
+                j.transparency = transparency / 100.0F;  // transparency comes in percent
+            }
         }
     }
 }
 
 // ----------------------------------------------------------------------------
 
-void ViewProviderShapeBuilder::buildNodes(const App::Property* , std::vector<SoNode*>& ) const
+void ViewProviderShapeBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
+    Q_UNUSED(prop)
+    Q_UNUSED(nodes)
 }
 
-void ViewProviderShapeBuilder::createShape(const App::Property* , SoSeparator* ) const
+void ViewProviderShapeBuilder::createShape(const App::Property* prop, SoSeparator* node) const
 {
+    Q_UNUSED(prop)
+    Q_UNUSED(node)
 }

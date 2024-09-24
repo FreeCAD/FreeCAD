@@ -40,12 +40,14 @@ def get_information():
         "constraints": ["electrostatic potential", "temperature"],
         "solvers": ["elmer"],
         "material": "solid",
-        "equations": ["electrostatic", "flux", "heat"]
+        "equations": ["electrostatic", "flux", "heat"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.equation_flux_elmer import setup
@@ -54,6 +56,7 @@ setup()
 Potential flux and heat flux - Elmer solver
 
 """
+    )
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -80,6 +83,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
     if FreeCAD.GuiUp:
         import FemGui
+
         FemGui.setActiveAnalysis(analysis)
 
     # solver
@@ -149,21 +153,19 @@ def setup(doc=None, solvertype="elmer"):
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Part = cube
+    femmesh_obj.Shape = cube
     femmesh_obj.CharacteristicLengthMax = "1 mm"
     femmesh_obj.ViewObject.Visibility = False
 
     # generate the mesh
     from femmesh import gmshtools
+
     gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
     try:
         error = gmsh_mesh.create_mesh()
     except Exception:
         error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(
-            "Unexpected error when creating mesh: {}\n"
-            .format(error)
-        )
+        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
 
     doc.recompute()
     return doc

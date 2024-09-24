@@ -994,6 +994,8 @@ class Component(ArchIFC.IfcProduct):
 
         import Part
         import TechDraw
+        import DraftGeomUtils
+
         fmax = params.get_param_arch("MaxComputeAreas")
         if len(obj.Shape.Faces) > fmax:
             obj.VerticalArea = 0
@@ -1013,9 +1015,11 @@ class Component(ArchIFC.IfcProduct):
                 obj.PerimeterLength = 0
                 return
             else:
-                if (ang > 1.57) and (ang < 1.571):
+                if  ((ang > 1.57) and
+                    (ang < 1.571) and
+                    f.Surface.isPlanar()):
                     a += f.Area
-                if ang < 1.5707:
+                else:
                     fset.append(f)
 
         if a and hasattr(obj,"VerticalArea"):
@@ -1024,22 +1028,19 @@ class Component(ArchIFC.IfcProduct):
         if fset and hasattr(obj,"HorizontalArea"):
             pset = []
             for f in fset:
-                if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < 0.00001:
-                    # already horizontal
-                    pset.append(f)
+                try:
+                    pf = Part.Face(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                except Part.OCCError:
+                    # error in computing the areas. Better set them to zero than show a wrong value
+                    if obj.HorizontalArea.Value != 0:
+                        print("Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")")
+                        obj.HorizontalArea = 0
+                    if hasattr(obj,"PerimeterLength"):
+                        if obj.PerimeterLength.Value != 0:
+                            obj.PerimeterLength = 0
                 else:
-                    try:
-                        pf = Part.Face(Part.Wire(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
-                    except Part.OCCError:
-                        # error in computing the areas. Better set them to zero than show a wrong value
-                        if obj.HorizontalArea.Value != 0:
-                            print("Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")")
-                            obj.HorizontalArea = 0
-                        if hasattr(obj,"PerimeterLength"):
-                            if obj.PerimeterLength.Value != 0:
-                                obj.PerimeterLength = 0
-                    else:
-                        pset.append(pf)
+                    pset.append(pf)
+
 
             if pset:
                 self.flatarea = pset.pop()
@@ -1049,8 +1050,11 @@ class Component(ArchIFC.IfcProduct):
                 if obj.HorizontalArea.Value != self.flatarea.Area:
                     obj.HorizontalArea = self.flatarea.Area
                 if hasattr(obj,"PerimeterLength") and (len(self.flatarea.Faces) == 1):
-                    if obj.PerimeterLength.Value != self.flatarea.Faces[0].OuterWire.Length:
-                        obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
+                    edges_table = {}
+                    for e in self.flatarea.Edges:
+                        edges_table.setdefault(e.hashCode(),[]).append(e)
+                    border_edges = [pair[0] for pair in edges_table.values() if len(pair) == 1]
+                    obj.PerimeterLength = sum([e.Length for e in border_edges])
 
     def isStandardCase(self,obj):
         """Determine if the component is a standard case of its IFC type.
@@ -1133,7 +1137,7 @@ class Component(ArchIFC.IfcProduct):
         Returns
         -------
         list of <Arch._Structure>
-            The Arch Structures hosting this component.
+            The BIM Structures hosting this component.
         """
 
         hosts = []

@@ -40,6 +40,10 @@ class BIM_Extrude:
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Extrude", "Extrudes a selected 2D shape"),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
         import PartGui
         FreeCADGui.runCommand("Part_Extrude")

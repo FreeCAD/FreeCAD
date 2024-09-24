@@ -66,6 +66,8 @@ protected:
     void openFile(const QFile& file);
     void load(const QByteArray& svgCode);
     void createClickHandles(void);
+    static double getFontSizeFromStyle(QString style);
+    static double getFontSizeFromElement(QString element);
 
 protected:
     bool firstTime;

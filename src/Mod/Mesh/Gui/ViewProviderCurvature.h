@@ -114,7 +114,7 @@ protected:
 
 private:
     void init(const Mesh::PropertyCurvatureList* prop);
-
+    void deleteColorBar();
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
 
 private:

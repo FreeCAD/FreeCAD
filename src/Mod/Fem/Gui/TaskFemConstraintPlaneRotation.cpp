@@ -281,11 +281,6 @@ const std::string TaskFemConstraintPlaneRotation::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-bool TaskFemConstraintPlaneRotation::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintPlaneRotation::changeEvent(QEvent*)
 {}
 
@@ -305,41 +300,9 @@ TaskDlgFemConstraintPlaneRotation::TaskDlgFemConstraintPlaneRotation(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintPlaneRotation::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Plane multi-point constraint");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintPlaneRotation::accept()
 {
-    std::string name = ConstraintView->getObject()->getNameInDocument();
-    const TaskFemConstraintPlaneRotation* parameters =
-        static_cast<const TaskFemConstraintPlaneRotation*>(parameter);
-    std::string scale = parameters->getScale();  // OvG: determine modified scale
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.Scale = %s",
-                            name.c_str(),
-                            scale.c_str());  // OvG: implement modified scale
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintPlaneRotation::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintPlaneRotation.cpp"

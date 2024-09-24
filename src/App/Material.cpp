@@ -25,9 +25,25 @@
 
 #ifndef _PreComp_
 #include <cstring>
+#include <random>
 #endif
 
+#include "Application.h"
 #include "Material.h"
+
+// Helper functions to consistently convert between float and long
+namespace
+{
+float fromPercent(long value)
+{
+    return std::roundf(value) / 100.0F;
+}
+
+long toPercent(float value)
+{
+    return std::lround(100.0 * value);
+}
+}  // namespace
 
 using namespace App;
 
@@ -316,5 +332,48 @@ void Material::setType(MaterialType MatType)
             transparency = 0.0000F;
             break;
     }
+}
+
+App::Material Material::getDefaultAppearance()
+{
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    auto getColor = [hGrp](const char* parameter, App::Color& color) {
+        uint32_t packed = color.getPackedRGB();
+        packed = hGrp->GetUnsigned(parameter, packed);
+        color.setPackedRGB(packed);
+    };
+    auto intRandom = [](int min, int max) -> int {
+        static std::mt19937 generator;
+        std::uniform_int_distribution<int> distribution(min, max);
+        return distribution(generator);
+    };
+
+    App::Material mat(App::Material::DEFAULT);
+    mat.transparency = fromPercent(hGrp->GetInt("DefaultShapeTransparency", 0));
+    long shininess = toPercent(mat.shininess);
+    mat.shininess = fromPercent(hGrp->GetInt("DefaultShapeShininess", shininess));
+
+    // This is handled in the material code when using the object appearance
+    bool randomColor = hGrp->GetBool("RandomColor", false);
+
+    // diffuse color
+    if (randomColor) {
+        float red = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        float green = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        float blue = static_cast<float>(intRandom(0, 255)) / 255.0F;
+        mat.diffuseColor = App::Color(red, green, blue);
+    }
+    else {
+        // Color = (204, 204, 230) = 3435980543UL
+        getColor("DefaultShapeColor", mat.diffuseColor);
+    }
+
+    getColor("DefaultAmbientColor", mat.ambientColor);
+    getColor("DefaultEmissiveColor", mat.emissiveColor);
+    getColor("DefaultSpecularColor", mat.specularColor);
+
+    return mat;
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)

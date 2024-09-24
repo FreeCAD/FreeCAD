@@ -686,7 +686,7 @@ protected:
         float z = 0.0f;
         bool logged = false;
 
-        std::pair<std::string,std::string> elementName;
+        App::ElementNamePair elementName;
         App::DocumentObject* pResolvedObject = nullptr;
 
         void log(bool remove=false, bool clearPreselect=true);

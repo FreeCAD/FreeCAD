@@ -1,0 +1,62 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 sliptonic <shopinthewoods@gmail.com                *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Machinability'
+  UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+  URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds'
+  Description: >-
+    Model for calculating feeds and speeds on a milling machine or lathe
+  DOI: ""
+  SurfaceSpeedHSS:
+    Type: 'Quantity'
+    Units: 'm/min'
+    URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds#Cutting_speed'
+    Description: >-
+      Cutting speed (Surface Speed) for general-purpose milling
+      using High Speed Steel tools.
+  SurfaceSpeedCarbide:
+    Type: 'Quantity'
+    Units: 'm/min'
+    URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds#Cutting_speed'
+    Description: >-
+      Cutting speed (Surface Speed) for general-purpose milling
+      using Carbide tools.
+  UnitCuttingForce:
+    Type: 'Quantity'
+    Units: 'N/mm^2'
+    URL: 'https://www.machiningdoctor.com/glossary/specific-cutting-force-kc-kc1/'
+    Description: >-
+      Specific cutting force, normalized for a undeformed chip thickeness of 1 mm, a cutting
+      width of 1 mm and a rake angle of 0 degrees.
+      This material property, generally denoted with k_c1.1, is used together with a chip
+      thickness exponent, m_c, to calculate the actual specific cutting force for the actual
+      feed (i.e. undeformed chip thickness), the actual rake angle and other correction factors.
+  ChipThicknessExponent:
+    Type: 'Float'
+    Units: None
+    URL: 'https://www.machiningdoctor.com/glossary/specific-cutting-force-kc-kc1/'
+    Description: >-
+      This material property, also called "material constant" and generally denoted m_c,
+      determines the effect of the undeformed chip thickness on the actual specific cutting
+      force the further away it gets from the unit cutting force's normalization point.

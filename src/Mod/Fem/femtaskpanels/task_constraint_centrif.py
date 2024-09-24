@@ -36,16 +36,16 @@ import FreeCAD
 import FreeCADGui
 
 from femguiutils import selection_widgets
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of FemConstraintCentrif objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -54,24 +54,18 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.if_rotation_frequency,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.rotation_frequency_changed
+            self.rotation_frequency_changed,
         )
         self.init_parameter_widget()
 
         # axis of rotation selection widget
         self.AxisSelectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.RotationAxis,
-            ["Edge"],
-            False,
-            False
+            obj.RotationAxis, ["Edge"], False, False
         )
 
         # loaded body selection widget
         self.BodySelectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Solid"],
-            False,
-            False
+            obj.References, ["Solid"], False, False
         )
 
         # form made from param and selection widget
@@ -81,16 +75,16 @@ class _TaskPanel:
         # check values RotationAxis
         items = len(self.AxisSelectionWidget.references)
         FreeCAD.Console.PrintMessage(
-            "Task panel: found axis references: {}\n{}\n"
-            .format(items, self.AxisSelectionWidget.references)
+            "Task panel: found axis references: {}\n{}\n".format(
+                items, self.AxisSelectionWidget.references
+            )
         )
 
         if items != 1:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText(
-                "Constraint Centrif requires exactly one line\n\nfound references: {}"
-                .format(items)
+                f"Constraint Centrif requires exactly one line\n\nfound references: {items}"
             )
             msgBox.setWindowTitle("FreeCAD FEM Constraint Centrif - Axis selection")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
@@ -105,8 +99,9 @@ class _TaskPanel:
         # check values BodyReference
         items = len(self.BodySelectionWidget.references)
         FreeCAD.Console.PrintMessage(
-            "Task panel: found body references: {}\n{}\n"
-            .format(items, self.BodySelectionWidget.references)
+            "Task panel: found body references: {}\n{}\n".format(
+                items, self.BodySelectionWidget.references
+            )
         )
 
         # if no solid is added as reference all volume elements are used
@@ -144,26 +139,14 @@ class _TaskPanel:
         self.obj.RotationFrequency = self.rotation_frequency
         self.obj.RotationAxis = self.AxisSelectionWidget.references
         self.obj.References = self.BodySelectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
+        self.AxisSelectionWidget.finish_selection()
+        self.BodySelectionWidget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-
-        self.AxisSelectionWidget.setback_listobj_visibility()
-        if self.AxisSelectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.AxisSelectionWidget.sel_server)
-
-        self.BodySelectionWidget.setback_listobj_visibility()
-        if self.BodySelectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.BodySelectionWidget.sel_server)
-
-        doc.resetEdit()
+        self.AxisSelectionWidget.finish_selection()
+        self.BodySelectionWidget.finish_selection()
+        return super().reject()
 
     def init_parameter_widget(self):
         self.rotation_frequency = self.obj.RotationFrequency

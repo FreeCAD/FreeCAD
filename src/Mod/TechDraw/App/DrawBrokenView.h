@@ -60,6 +60,14 @@ class TechDrawExport DrawBrokenView: public TechDraw::DrawViewPart
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawBrokenView);
 
 public:
+    enum BreakType
+    {
+        NONE,
+        ZIGZAG,
+        SIMPLE
+    };
+    static const char* BreakTypeEnums[];
+
     DrawBrokenView();
     ~DrawBrokenView() override;
 

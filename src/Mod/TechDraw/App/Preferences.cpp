@@ -502,6 +502,11 @@ int Preferences::HiddenLineStyle()
     return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1) + 1;
 }
 
+int Preferences::BreakLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleBreak", 0) + 1;
+}
+
 int Preferences::LineSpacingISO()
 {
     return getPreferenceGroup("Dimensions")->GetInt("LineSpacingFactorISO", 2);
@@ -578,5 +583,32 @@ bool Preferences::useExactMatchOnDims()
     return getPreferenceGroup("Dimensions")->GetBool("UseMatcher", true);
 }
 
+int Preferences::BreakType()
+{
+    return getPreferenceGroup("Decorations")->GetInt("BreakType", 2);
+}
+
+
+bool Preferences::useCameraDirection()
+{
+    return getPreferenceGroup("General")->GetBool("UseCameraDirection", false);
+}
+
+
+bool Preferences::alwaysShowLabel()
+{
+    return getPreferenceGroup("General")->GetBool("AlwaysShowLabel", false);
+}
+
+bool Preferences::SnapViews()
+{
+    return getPreferenceGroup("General")->GetBool("SnapViews", true);
+}
+
+//! percentage of view size to use in deciding to snap view or not
+double Preferences::SnapLimitFactor()
+{
+    return getPreferenceGroup("General")->GetFloat("SnapLimitFactor", 0.05);
+}
 
 

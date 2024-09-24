@@ -37,8 +37,6 @@
   QuarterWidget.
 */
 
-#include "PreCompiled.h"
-
 #ifdef _MSC_VER
 #pragma warning(disable : 4267)
 #endif
@@ -60,7 +58,7 @@ namespace SIM { namespace Coin3D { namespace Quarter {
 
 class MouseP {
 public:
-  MouseP(Mouse * publ) {
+  explicit MouseP(Mouse * publ) {
     this->publ = publ;
     this->location2 = new SoLocation2Event;
     this->mousebutton = new SoMouseButtonEvent;
@@ -93,15 +91,10 @@ using namespace SIM::Coin3D::Quarter;
 #define PRIVATE(obj) obj->pimpl
 #define PUBLIC(obj) obj->publ
 
-Mouse::Mouse()
+Mouse::Mouse(QuarterWidget* quarter) :
+  InputDevice(quarter)
 {
   PRIVATE(this) = new MouseP(this);
-}
-
-Mouse::Mouse(QuarterWidget *quarter) :
-    InputDevice(quarter)
-{
-    PRIVATE(this) = new MouseP(this);
 }
 
 Mouse::~Mouse()

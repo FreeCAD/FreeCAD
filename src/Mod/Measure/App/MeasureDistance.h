@@ -38,9 +38,21 @@
 namespace Measure
 {
 
+class MeasureDistanceType: public Base::BaseClass
+{
+public:
+    static Base::Type getClassTypeId();
+    Base::Type getTypeId() const override;
+    static void init();
+    static void* create();
+
+private:
+    static Base::Type classTypeId;
+};
 
 
-class MeasureExport MeasureDistance : public Measure::MeasureBaseExtendable<Part::MeasureDistanceInfo>
+class MeasureExport MeasureDistance
+    : public Measure::MeasureBaseExtendable<Part::MeasureDistanceInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureDistance);
 
@@ -52,14 +64,18 @@ public:
     App::PropertyLinkSub Element1;
     App::PropertyLinkSub Element2;
     App::PropertyDistance Distance;
+    App::PropertyDistance DistanceX;
+    App::PropertyDistance DistanceY;
+    App::PropertyDistance DistanceZ;
 
     // Position properties for the viewprovider
     App::PropertyVector Position1;
     App::PropertyVector Position2;
 
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "MeasureGui::ViewProviderMeasureDistance";
     }
 
@@ -67,8 +83,14 @@ public:
     static bool isPrioritizedSelection(const App::MeasureSelection& selection);
     void parseSelection(const App::MeasureSelection& selection) override;
 
-    std::vector<std::string> getInputProps() override {return {"Element1", "Element2"};}
-    App::Property* getResultProp() override {return &this->Distance;}
+    std::vector<std::string> getInputProps() override
+    {
+        return {"Element1", "Element2"};
+    }
+    App::Property* getResultProp() override
+    {
+        return &this->Distance;
+    }
 
     bool getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape);
 
@@ -77,11 +99,60 @@ public:
 
 
 private:
-
     void onChanged(const App::Property* prop) override;
 };
 
-} //namespace Measure
+
+class MeasureExport MeasureDistanceDetached: public Measure::MeasureBase
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureDistanceDetached);
+
+public:
+    /// Constructor
+    MeasureDistanceDetached();
+    ~MeasureDistanceDetached() override;
+
+    App::PropertyDistance Distance;
+    App::PropertyDistance DistanceX;
+    App::PropertyDistance DistanceY;
+    App::PropertyDistance DistanceZ;
+
+    App::PropertyVector Position1;
+    App::PropertyVector Position2;
+
+    App::DocumentObjectExecReturn* execute() override;
+    void recalculateDistance();
+
+    const char* getViewProviderName() const override
+    {
+        return "MeasureGui::ViewProviderMeasureDistance";
+    }
+
+    static bool isValidSelection(const App::MeasureSelection& selection);
+    void parseSelection(const App::MeasureSelection& selection) override;
+
+    std::vector<std::string> getInputProps() override
+    {
+        return {"Position1", "Position2"};
+    }
+    App::Property* getResultProp() override
+    {
+        return &this->Distance;
+    }
+
+    // Return the object we are measuring
+    std::vector<App::DocumentObject*> getSubject() const override;
+
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
+
+private:
+    void onChanged(const App::Property* prop) override;
+};
 
 
-#endif // MEASUREAPP_MEASUREDISTANCE_H
+}  // namespace Measure
+
+
+#endif  // MEASUREAPP_MEASUREDISTANCE_H

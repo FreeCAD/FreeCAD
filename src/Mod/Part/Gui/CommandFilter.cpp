@@ -47,7 +47,7 @@ PartCmdSelectFilter::PartCmdSelectFilter()
     sToolTipText  = QT_TR_NOOP("Change the selection filter");
     sStatusTip    = QT_TR_NOOP("Change the selection filter");
     sWhatsThis    = "Part_SelectFilter";
-    sPixmap       = "selection-filter";
+    sPixmap       = "clear-selection";
     eType         = Alter3DView;
 }
 
@@ -101,7 +101,7 @@ Gui::Action * PartCmdSelectFilter::createAction()
     _pcAction = pcAction;
     languageChange();
 
-    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("selection-filter"));
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("clear-selection"));
     int defaultId = 3;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 

@@ -67,8 +67,9 @@ class CommandSolveAssembly:
         if not assembly:
             return
 
+        Gui.addModule("UtilsAssembly")
         App.setActiveTransaction("Solve assembly")
-        assembly.solve()
+        Gui.doCommand("UtilsAssembly.activeAssembly().solve()")
         App.closeActiveTransaction()
 
 

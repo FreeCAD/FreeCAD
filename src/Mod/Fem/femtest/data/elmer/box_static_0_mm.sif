@@ -23,7 +23,7 @@ Solver 1
   Variable DOFs = Integer 3
 End
 
-Simulation 
+Simulation
   Coordinate Mapping(3) = Integer 1 2 3
   Coordinate Scaling = Real 0.001
   Coordinate System = String "Cartesian"
@@ -33,7 +33,7 @@ Simulation
   Use Mesh Names = Logical True
 End
 
-Constants 
+Constants
 End
 
 Body 1
@@ -53,6 +53,7 @@ Equation 1
 End
 
 Solver 2
+  Ascii Output = Logical True
   Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
   Exec Solver = String "After simulation"
@@ -83,4 +84,3 @@ Boundary Condition 3
   Force 3 Normalize by Area = Logical True
   Name = String "Face6"
 End
-

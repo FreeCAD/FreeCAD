@@ -35,7 +35,9 @@ else:
 
 class TestPathDrillable(PathTestUtils.PathTestBase):
     def setUp(self):
+        App.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         self.doc = App.open(App.getHomePath() + "/Mod/CAM/Tests/Drilling_1.FCStd")
+        App.ConfigSet("SuppressRecomputeRequiredDialog", "")
         self.obj = self.doc.getObject("Pocket011")
 
     def tearDown(self):
@@ -64,9 +66,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
 
         # Invalid types
         candidate = self.obj.getSubObject("Vertex1")
-        self.assertRaises(
-            TypeError, lambda: Drillable.isDrillable(self.obj.Shape, candidate)
-        )
+        self.assertRaises(TypeError, lambda: Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Test cylinder faces
 
@@ -77,14 +77,10 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Drilling with smaller bit
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=20)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=20))
 
         # Drilling with bit too large
-        self.assertFalse(
-            Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=30)
-        )
+        self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=30))
 
         # off-axis hole
         candidate = self.obj.getSubObject("Face44")
@@ -97,9 +93,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
 
         # Passing explicit vector
         self.assertTrue(
-            Drillable.isDrillable(
-                self.obj.Shape, candidate, vector=App.Vector(0, -1, 0)
-            )
+            Drillable.isDrillable(self.obj.Shape, candidate, vector=App.Vector(0, -1, 0))
         )
 
         # Drilling with smaller bit
@@ -157,14 +151,10 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # Drilling with smaller bit
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=10)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=10))
 
         # Drilling with bit too large
-        self.assertFalse(
-            Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=30)
-        )
+        self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=30))
 
         # off-axis circular face hole
         candidate = self.obj.getSubObject("Face58")
@@ -177,9 +167,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
 
         # Passing explicit vector
         self.assertTrue(
-            Drillable.isDrillable(
-                self.obj.Shape, candidate, vector=App.Vector(0, -1, 0)
-            )
+            Drillable.isDrillable(self.obj.Shape, candidate, vector=App.Vector(0, -1, 0))
         )
 
         # raised face
@@ -222,15 +210,11 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         )
 
         # Drilling with smaller bit
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=10)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=10))
 
         # Drilling with bit too large
         self.assertFalse(
-            Drillable.isDrillable(
-                self.obj.Shape, candidate, tooldiameter=30, vector=None
-            )
+            Drillable.isDrillable(self.obj.Shape, candidate, tooldiameter=30, vector=None)
         )
 
         # off-axis circular edge

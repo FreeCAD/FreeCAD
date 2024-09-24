@@ -43,7 +43,6 @@ def ask_to_install_toolbar_button(repo: Addon) -> None:
         add_toolbar_button_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "add_toolbar_button_dialog.ui")
         )
-        add_toolbar_button_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         add_toolbar_button_dialog.buttonYes.clicked.connect(lambda: install_toolbar_button(repo))
         add_toolbar_button_dialog.buttonNever.clicked.connect(
             lambda: pref.SetBool("dontShowAddMacroButtonDialog", True)
@@ -79,7 +78,6 @@ def ask_for_toolbar(repo: Addon, custom_toolbars) -> object:
         select_toolbar_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "select_toolbar_dialog.ui")
         )
-        select_toolbar_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         select_toolbar_dialog.comboBox.clear()
 

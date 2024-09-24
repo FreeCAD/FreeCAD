@@ -32,11 +32,17 @@
 #include <string>
 #include <xercesc/util/XercesDefs.hpp>
 
+#ifndef XERCES_CPP_NAMESPACE_BEGIN
+#define XERCES_CPP_NAMESPACE_QUALIFIER
+using namespace XERCES_CPP_NAMESPACE;
+namespace XERCES_CPP_NAMESPACE { class DOMNode; class DOMElement; class DOMDocument; }
+#else
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMDocument;
 class DOMElement;
 class DOMNode;
 XERCES_CPP_NAMESPACE_END
+#endif
 
 namespace App
 {

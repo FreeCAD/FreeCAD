@@ -93,10 +93,7 @@ bool TaskDialog::canClose() const
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
     int ret = msgBox.exec();
-    if (ret == QMessageBox::Yes)
-        return true;
-    else
-        return false;
+    return (ret == QMessageBox::Yes);
 }
 
 //==== calls from the TaskView ===============================================================
@@ -112,6 +109,11 @@ void TaskDialog::closed()
 }
 
 void TaskDialog::autoClosedOnTransactionChange()
+{
+
+}
+
+void TaskDialog::autoClosedOnDeletedDocument()
 {
 
 }

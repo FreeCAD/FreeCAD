@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "Mod/Part/App/FeaturePartFuse.h"
 #include <src/App/InitApplication.h>
@@ -187,6 +187,12 @@ TEST_F(FeaturePartFuseTest, testRefine)
         ts.getSubTopoShapes(TopAbs_FACE);  // TopAbs_WIRE alternate approach
     // Assert two boxes, plus redundant faces at the joint.
     EXPECT_EQ(subs.size(), 14);
+    // 14 Faces
+    // 28 Edges
+    // 16 Vertices
+    // -----------
+    // 58 Elements
+    EXPECT_EQ(_fuse->Shape.getShape().getElementMapSize(), 58);
     // Act
     _fuse->Refine.setValue(true);
     _fuse->execute();
@@ -194,6 +200,12 @@ TEST_F(FeaturePartFuseTest, testRefine)
     subs = ts.getSubTopoShapes(TopAbs_FACE);
     // Assert we now just have one big box
     EXPECT_EQ(subs.size(), 6);
+    // 6 Faces
+    // 12 Edges
+    // 8 Vertices
+    // -----------
+    // 58 Elements
+    EXPECT_EQ(_fuse->Shape.getShape().getElementMapSize(), 26);
 }
 
 // See FeaturePartCommon.cpp for a history test.  It would be exactly the same and redundant here.

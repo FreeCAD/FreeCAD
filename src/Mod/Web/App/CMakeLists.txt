@@ -31,6 +31,9 @@ endif(FREECAD_USE_PCH)
 
 add_library(Web SHARED ${Web_SRCS})
 target_link_libraries(Web ${Web_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Web)
+endif()
 
 SET_BIN_DIR(Web Web /Mod/Web)
 SET_PYTHON_PREFIX_SUFFIX(Web)

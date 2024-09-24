@@ -201,6 +201,13 @@ trans : Base.Placement, Base.Matrix</UserDocu>
 Returns list of objects that are to be grouped in tree under this object.</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="claimChildrenRecursive" Const="true">
+            <Documentation>
+                <UserDocu>claimChildrenRecursive() -> list
+
+Returns list of objects that are to be grouped in tree under this object recursively.</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="partialRender">
             <Documentation>
                 <UserDocu>partialRender(sub=None, clear=False) -> int

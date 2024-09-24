@@ -122,11 +122,6 @@ class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
 
 public:
     explicit TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
-
-    ViewProvider* getRevolutionView() const
-    {
-        return vp;
-    }
 };
 
 } //namespace PartDesignGui

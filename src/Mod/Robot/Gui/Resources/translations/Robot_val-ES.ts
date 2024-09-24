@@ -356,17 +356,16 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="271"/>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="137"/>
       <location filename="../../CommandInsertRobot.cpp" line="260"/>
       <location filename="../../CommandTrajectory.cpp" line="106"/>
       <location filename="../../CommandTrajectory.cpp" line="173"/>
       <location filename="../../CommandTrajectory.cpp" line="192"/>
       <location filename="../../CommandTrajectory.cpp" line="464"/>
+      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="137"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -381,21 +380,20 @@
       <translation>Seleccioneu un robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="236"/>
       <location filename="../../CommandExport.cpp" line="63"/>
       <location filename="../../CommandExport.cpp" line="138"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Seleccioneu un robot i una trajectòria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Trajectory not valid</source>
       <translation>La trajectòria no és vàlida.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
       <translation>Necessiteu almenys dos punts de camí en una trajectòria per a la simulació.</translation>
     </message>

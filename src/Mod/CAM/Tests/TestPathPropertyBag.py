@@ -43,9 +43,7 @@ class TestPathPropertyBag(PathTestUtils.PathTestBase):
         """adding properties to a PropertyBag is tracked properly"""
         bag = PathPropertyBag.Create()
         proxy = bag.Proxy
-        proxy.addCustomProperty(
-            "App::PropertyString", "Title", "Address", "Some description"
-        )
+        proxy.addCustomProperty("App::PropertyString", "Title", "Address", "Some description")
         self.assertTrue(hasattr(bag, "Title"))
         bag.Title = "Madame"
         self.assertEqual(bag.Title, "Madame")
@@ -56,9 +54,7 @@ class TestPathPropertyBag(PathTestUtils.PathTestBase):
         """refreshCustomPropertyGroups deletes empty groups"""
         bag = PathPropertyBag.Create()
         proxy = bag.Proxy
-        proxy.addCustomProperty(
-            "App::PropertyString", "Title", "Address", "Some description"
-        )
+        proxy.addCustomProperty("App::PropertyString", "Title", "Address", "Some description")
         bag.Title = "Madame"
         bag.removeProperty("Title")
         proxy.refreshCustomPropertyGroups()
@@ -69,9 +65,7 @@ class TestPathPropertyBag(PathTestUtils.PathTestBase):
         """refreshCustomPropertyGroups does not delete non-empty groups"""
         bag = PathPropertyBag.Create()
         proxy = bag.Proxy
-        proxy.addCustomProperty(
-            "App::PropertyString", "Title", "Address", "Some description"
-        )
+        proxy.addCustomProperty("App::PropertyString", "Title", "Address", "Some description")
         proxy.addCustomProperty("App::PropertyString", "Gender", "Attributes")
         bag.Title = "Madame"
         bag.Gender = "Female"

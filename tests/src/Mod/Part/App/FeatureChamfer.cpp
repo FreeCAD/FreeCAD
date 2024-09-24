@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <src/App/InitApplication.h>
 
@@ -101,7 +101,7 @@ TEST_F(FeatureChamferTest, testMost)
     _chamfer->execute();
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(chamferVolume, 121.46667);  // This is calculable, but painful.
+    EXPECT_NEAR(chamferVolume, 121.46667, 1e-5);  // This is calculable, but painful.
 }
 
 // Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,

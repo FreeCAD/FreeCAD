@@ -1496,7 +1496,7 @@ void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& t
     float startangle = atan2f(vc1[1], vc1[0]);
     float endangle = atan2f(vc2[1], vc2[0]);
     if (endangle < startangle) {
-        endangle += 2. * M_PI;
+        endangle += 2. * (float)M_PI;
     }
 
     float radius = vc1.length();

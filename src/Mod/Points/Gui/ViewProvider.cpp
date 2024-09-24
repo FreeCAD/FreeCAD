@@ -670,7 +670,7 @@ PROPERTY_SOURCE_TEMPLATE(PointsGui::ViewProviderPython, PointsGui::ViewProviderS
 /// @endcond
 
 // explicit template instantiation
-template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProviderScattered>;
+template class PointsGuiExport ViewProviderFeaturePythonT<PointsGui::ViewProviderScattered>;
 }  // namespace Gui
 
 // -------------------------------------------------

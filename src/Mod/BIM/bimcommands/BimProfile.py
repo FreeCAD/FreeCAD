@@ -45,7 +45,8 @@ class Arch_Profile:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -115,7 +116,9 @@ class Arch_Profile:
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Profile"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
-        FreeCADGui.doCommand('p.Placement.move('+pt+')')
+        FreeCADGui.addModule('WorkingPlane')
+        FreeCADGui.doCommand('p.Placement = WorkingPlane.get_working_plane().get_placement()')
+        FreeCADGui.doCommand('p.Placement.Base = ' + pt)
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(p)")
         FreeCAD.ActiveDocument.commitTransaction()

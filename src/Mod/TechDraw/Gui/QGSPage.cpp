@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QDomDocument>
 #include <QFile>
+#include <QGraphicsSceneEvent>
 #include <QPainter>
 #include <QSvgGenerator>
 #include <QTemporaryFile>
@@ -33,6 +34,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
@@ -81,6 +83,7 @@
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
+#include "PreferencesGui.h"
 
 
 // used SVG namespaces
@@ -103,6 +106,53 @@ QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);//the default
     //    setItemIndexMethod(QGraphicsScene::NoIndex);    //sometimes faster
 }
+
+
+void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    constexpr int QGITemplateType{QGraphicsItem::UserType + 150};
+    constexpr int QGIDrawingTemplateType{QGraphicsItem::UserType + 151};
+    constexpr int QGISVGTemplateType{QGraphicsItem::UserType + 153};
+    // type 13 is the itemUnderMouse on a page outside of any views. It is not
+    // the template or background or foreground.  QGraphicsItem type = 13 is not
+    // documented and not found in QGraphicsItem.h.
+    constexpr int MysteryType{13};
+
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    auto itemUnderMouse = itemAt(event->scenePos().x(), event->scenePos().y(), QTransform());
+
+    if (!itemUnderMouse ||
+        itemUnderMouse->type() == QGITemplateType ||
+        itemUnderMouse->type() == QGIDrawingTemplateType ||
+        itemUnderMouse->type() == QGISVGTemplateType ||
+        itemUnderMouse->type() == MysteryType) {
+        // click without item clears selection
+        Gui::Selection().clearSelection();
+        QGraphicsScene::mousePressEvent(event);
+        return;
+    }
+
+    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
+        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    }
+
+    QGraphicsScene::mousePressEvent(event);
+}
+
+void QGSPage::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if ((event->button() == Qt::LeftButton) && PreferencesGui::multiSelection()) {
+        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    }
+
+    QGraphicsScene::mouseReleaseEvent(event);
+
+    // what does this do?  the event has already been propagated so this will have
+    // no effect?
+    event->setModifiers(originalModifiers);
+}
+
 
 void QGSPage::addChildrenToPage()
 {
@@ -484,7 +534,6 @@ QGIView* QGSPage::addDrawViewImage(TechDraw::DrawViewImage* imageFeat)
 
 QGIView* QGSPage::addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat)
 {
-    //    Base::Console().Message("QGSP::addViewBalloon(%s)\n", balloonFeat->getNameInDocument());
     auto vBalloon(new QGIViewBalloon);
 
     addItem(vBalloon);
@@ -503,7 +552,6 @@ QGIView* QGSPage::addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat)
 
 void QGSPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
 {
-    //    Base::Console().Message("QGSP::addBalloonToParent()\n");
     assert(balloon);
     assert(parent);//blow up if we don't have Dimension or Parent
     QPointF posRef(0., 0.);
@@ -513,10 +561,9 @@ void QGSPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
     balloon->setZValue(ZVALUE::DIMENSION);
 }
 
-//origin is in scene coordinates from QGViewPage
+// origin is in scene coordinates from QGVPage widget
 void QGSPage::createBalloon(QPointF origin, DrawView* parent)
 {
-    //    Base::Console().Message("QGSP::createBalloon(%s)\n", DrawUtil::formatVector(origin).c_str());
     std::string featName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
     std::string pageName = getDrawPage()->getNameInDocument();
 
@@ -535,18 +582,20 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc,
                        "App.activeDocument().%s.SourceView = (App.activeDocument().%s)",
                        featName.c_str(), parent->getNameInDocument());
+
+    // convert from scene coords to parent DrawView's coords, unscaled, unrotated
     QGIView* qgParent = getQGIVByName(parent->getNameInDocument());
-    //convert from scene coords to qgParent coords and unscale
-    QPointF parentOrigin = qgParent->mapFromScene(origin) / parent->getScale();
+    auto parentOrigin = DU::toVector3d(qgParent->mapFromScene(origin));     // from scene to view
+    parentOrigin = Rez::appX(parentOrigin) / parent->getScale();            // unrez & unscale
+    parentOrigin = DrawUtil::invertY(parentOrigin);                         // +Y up
+    auto parentRotationDeg = parent->Rotation.getValue();
+    parentOrigin.RotateZ(Base::toRadians(-parentRotationDeg));               // unrotated
+
     balloon->setOrigin(parentOrigin);
-    //convert origin to App side coords
-    QPointF appOrigin = Rez::appPt(parentOrigin);
-    appOrigin = DrawUtil::invertY(appOrigin);
-    balloon->OriginX.setValue(appOrigin.x());
-    balloon->OriginY.setValue(appOrigin.y());
+
     double textOffset = 20.0 / parent->getScale();
-    balloon->X.setValue(appOrigin.x() + textOffset);
-    balloon->Y.setValue(appOrigin.y() + textOffset);
+    balloon->setPosition(parentOrigin.x + textOffset,
+                         parentOrigin.y + textOffset);
 
     int idx = getDrawPage()->getNextBalloonIndex();
     balloon->Text.setValue(std::to_string(idx).c_str());

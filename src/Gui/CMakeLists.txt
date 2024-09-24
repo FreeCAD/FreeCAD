@@ -21,11 +21,11 @@ if (FREECAD_USE_3DCONNEXION)
 endif(FREECAD_USE_3DCONNEXION)
 
 if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
-	add_definitions(-DUSE_3DCONNEXION_NAVLIB)
-	if(APPLE)
-		add_definitions(-D__APPLE__)
-	endif(APPLE)
-	set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
+    add_definitions(-DUSE_3DCONNEXION_NAVLIB)
+    if(APPLE)
+        add_definitions(-D__APPLE__)
+    endif(APPLE)
+    set(3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
 if (BUILD_VR)
@@ -85,6 +85,14 @@ else(MSVC)
         ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
+
+if (WIN32)
+    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        list(APPEND FreeCADGui_LIBS
+            Qt6::GuiPrivate
+        )
+    endif()
+endif()
 
 include_directories(
     ${QtCore_INCLUDE_DIRS}
@@ -317,7 +325,6 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCreateNewPreferencePack.ui
-    DlgCustomizeSpNavSettings.ui
     DlgInputDialog.ui
     DlgKeyboard.ui
     DlgMacroExecute.ui
@@ -347,7 +354,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
     DlgCheckableMessageBox.ui
@@ -371,8 +378,13 @@ SET(Gui_UIC_SRCS
     TaskElementColors.ui
     DlgObjectSelection.ui
     DlgAddProperty.ui
+    DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Gui_UIC_SRCS DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
 
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
@@ -455,9 +467,9 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
-    TaskMeasure.cpp
     DlgObjectSelection.cpp
     DlgAddProperty.cpp
+    DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
 )
 
@@ -495,9 +507,9 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
-    TaskMeasure.h
     DlgObjectSelection.h
     DlgAddProperty.h
+    DlgAddPropertyVarSet.h
     VectorListEditor.h
 )
 
@@ -547,8 +559,6 @@ SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 SET(Dialog_Customize_CPP_SRCS
     DlgActionsImp.cpp
     DlgCustomizeImp.cpp
-    DlgCustomizeSpaceball.cpp
-    DlgCustomizeSpNavSettings.cpp
     DlgKeyboardImp.cpp
     DlgToolbarsImp.cpp
     ListWidgetDragBugFix.cpp
@@ -556,21 +566,29 @@ SET(Dialog_Customize_CPP_SRCS
 SET(Dialog_Customize_HPP_SRCS
     DlgActionsImp.h
     DlgCustomizeImp.h
-    DlgCustomizeSpaceball.h
-    DlgCustomizeSpNavSettings.h
     DlgKeyboardImp.h
     DlgToolbarsImp.h
     ListWidgetDragBugFix.h
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_CPP_SRCS DlgCustomizeSpaceball.cpp DlgCustomizeSpNavSettings.cpp)
+	list(APPEND Dialog_Customize_HPP_SRCS DlgCustomizeSpaceball.h DlgCustomizeSpNavSettings.h)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SET(Dialog_Customize_SRCS
     ${Dialog_Customize_CPP_SRCS}
     ${Dialog_Customize_HPP_SRCS}
     DlgActions.ui
     DlgChooseIcon.ui
-    DlgCustomizeSpNavSettings.ui
     DlgKeyboard.ui
     DlgToolbars.ui
 )
+
+if(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+	list(APPEND Dialog_Customize_SRCS  DlgCustomizeSpNavSettings.ui)
+endif(FREECAD_3DCONNEXION_SUPPORT STREQUAL "Raw input")
+
 SOURCE_GROUP("Dialog\\Customize" FILES ${Dialog_Customize_SRCS})
 
 # The settings dialog sources
@@ -591,10 +609,10 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.cpp
     PreferencePages/DlgSettingsReportView.cpp
     PreferencePages/DlgSettingsSelection.cpp
-    PreferencePages/DlgSettingsTheme.cpp
+    PreferencePages/DlgSettingsUI.cpp
     PreferencePages/DlgSettingsViewColor.cpp
     PreferencePages/DlgSettingsWorkbenchesImp.cpp
-    PreferencePages/DlgSettingsUI.cpp
+    PreferencePages/DlgSettingsAdvanced.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgOnlineHelpImp.h
@@ -613,10 +631,10 @@ SET(Dialog_Settings_HPP_SRCS
     PreferencePages/DlgSettingsPythonConsole.h
     PreferencePages/DlgSettingsReportView.h
     PreferencePages/DlgSettingsSelection.h
-    PreferencePages/DlgSettingsTheme.h
+    PreferencePages/DlgSettingsUI.h
     PreferencePages/DlgSettingsViewColor.h
     PreferencePages/DlgSettingsWorkbenchesImp.h
-    PreferencePages/DlgSettingsUI.h
+    PreferencePages/DlgSettingsAdvanced.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
@@ -637,7 +655,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsPythonConsole.ui
     PreferencePages/DlgSettingsReportView.ui
     PreferencePages/DlgSettingsSelection.ui
-    PreferencePages/DlgSettingsTheme.ui
+    PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
 )
@@ -831,6 +849,7 @@ SET(View3D_CPP_SRCS
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
+    Multisample.cpp
     MouseSelection.cpp
     NavigationStyle.cpp
     InventorNavigationStyle.cpp
@@ -863,6 +882,7 @@ SET(View3D_SRCS
     Flag.h
     GLBuffer.h
     GLPainter.h
+    Multisample.h
     MouseSelection.h
     NavigationStyle.h
     GestureNavigationStyle.h
@@ -926,9 +946,8 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderGeometryObject.cpp
     ViewProviderImagePlane.cpp
     ViewProviderInventorObject.cpp
-    ViewProviderMeasureDistance.cpp
     ViewProviderPyImp.cpp
-    ViewProviderPythonFeature.cpp
+    ViewProviderFeaturePython.cpp
     ViewProviderVRMLObject.cpp
     ViewProviderBuilder.cpp
     ViewProviderPlacement.cpp
@@ -941,6 +960,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderOrigin.cpp
     ViewProviderMaterialObject.cpp
     ViewProviderTextDocument.cpp
+    ViewProviderTextureExtension.cpp
     ViewProviderLink.cpp
     LinkViewPyImp.cpp
     ViewProviderLinkPyImp.cpp
@@ -964,8 +984,7 @@ SET(Viewprovider_SRCS
     ViewProviderGeometryObject.h
     ViewProviderImagePlane.h
     ViewProviderInventorObject.h
-    ViewProviderMeasureDistance.h
-    ViewProviderPythonFeature.h
+    ViewProviderFeaturePython.h
     ViewProviderVRMLObject.h
     ViewProviderBuilder.h
     ViewProviderPlacement.h
@@ -978,6 +997,7 @@ SET(Viewprovider_SRCS
     ViewProviderOrigin.h
     ViewProviderMaterialObject.h
     ViewProviderTextDocument.h
+    ViewProviderTextureExtension.h
     ViewProviderLink.h
     ViewProviderVarSet.h
     AxisOrigin.h
@@ -993,6 +1013,7 @@ SET(Inventor_CPP_SRCS
     SoFCBackgroundGradient.cpp
     SoFCBoundingBox.cpp
     SoFCColorBar.cpp
+    SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
     SoFCColorLegend.cpp
     SoFCDB.cpp
@@ -1005,6 +1026,7 @@ SET(Inventor_CPP_SRCS
     SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
+    So3DAnnotation.cpp
     SoAxisCrossKit.cpp
     SoTextLabel.cpp
     SoDatumLabel.cpp
@@ -1022,6 +1044,7 @@ SET(Inventor_SRCS
     SoFCBackgroundGradient.h
     SoFCBoundingBox.h
     SoFCColorBar.h
+    SoFCColorBarNotifier.h
     SoFCColorGradient.h
     SoFCColorLegend.h
     SoFCDB.h
@@ -1141,6 +1164,7 @@ SET(Workbench_CPP_SRCS
     OverlayWidgets.cpp
     MenuManager.cpp
     PythonWorkbenchPyImp.cpp
+    ToolBarAreaWidget.cpp
     ToolBarManager.cpp
     ToolBoxManager.cpp
     Workbench.cpp
@@ -1156,6 +1180,7 @@ SET(Workbench_SRCS
     OverlayManager.h
     OverlayWidgets.h
     MenuManager.h
+    ToolBarAreaWidget.h
     ToolBarManager.h
     ToolBoxManager.h
     Workbench.h
@@ -1344,6 +1369,9 @@ endif ()
 
 add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(FreeCADGui)
+endif()
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)
 

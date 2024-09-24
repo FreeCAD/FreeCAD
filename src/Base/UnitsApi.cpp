@@ -78,7 +78,7 @@ QString UnitsApi::getDescription(UnitSystem system)
         case UnitSystem::ImperialBuilding:
             return tr("Building US (ft-in, sqft, cft)");
         case UnitSystem::MmMin:
-            return tr("Metric small parts & CNC(mm, mm/min)");
+            return tr("Metric small parts & CNC (mm, mm/min)");
         case UnitSystem::ImperialCivil:
             return tr("Imperial for Civil Eng (ft, ft/s)");
         case UnitSystem::FemMilliMeterNewton:

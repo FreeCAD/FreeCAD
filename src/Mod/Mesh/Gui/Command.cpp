@@ -904,8 +904,10 @@ CmdMeshTrimByPlane::CmdMeshTrimByPlane()
 
 void CmdMeshTrimByPlane::activated(int)
 {
-    doCommand(Doc,
-              "import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_TrimByPlane')\n");
+    const char* cmd = "import MeshPartGui\n"
+                      "import FreeCADGui\n"
+                      "FreeCADGui.runCommand('MeshPart_TrimByPlane')\n";
+    runCommand(Doc, cmd);
 }
 
 bool CmdMeshTrimByPlane::isActive()
@@ -935,8 +937,10 @@ CmdMeshSectionByPlane::CmdMeshSectionByPlane()
 
 void CmdMeshSectionByPlane::activated(int)
 {
-    doCommand(Doc,
-              "import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_SectionByPlane')\n");
+    const char* cmd = "import MeshPartGui\n"
+                      "import FreeCADGui\n"
+                      "FreeCADGui.runCommand('MeshPart_SectionByPlane')\n";
+    runCommand(Doc, cmd);
 }
 
 bool CmdMeshSectionByPlane::isActive()
@@ -966,8 +970,10 @@ CmdMeshCrossSections::CmdMeshCrossSections()
 
 void CmdMeshCrossSections::activated(int)
 {
-    doCommand(Doc,
-              "import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_CrossSections')\n");
+    const char* cmd = "import MeshPartGui\n"
+                      "import FreeCADGui\n"
+                      "FreeCADGui.runCommand('MeshPart_CrossSections')\n";
+    runCommand(Doc, cmd);
 }
 
 bool CmdMeshCrossSections::isActive()

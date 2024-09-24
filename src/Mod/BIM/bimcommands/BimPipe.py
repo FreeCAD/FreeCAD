@@ -45,7 +45,8 @@ class Arch_Pipe:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -83,7 +84,8 @@ class Arch_PipeConnector:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -106,7 +108,7 @@ class Arch_PipeConnector:
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-    
+
 
 class Arch_PipeGroupCommand:
 
@@ -117,7 +119,8 @@ class Arch_PipeGroupCommand:
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools')
                }
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
 
 FreeCADGui.addCommand('Arch_Pipe',Arch_Pipe())

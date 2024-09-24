@@ -59,7 +59,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify bones are inserted for simple moves."""
         base = TestProfile(
             "Inside",
-            "CW",
+            "Climb",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -84,7 +84,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify bones are inserted if hole ends with rapid move out."""
         base = TestProfile(
             "Inside",
-            "CW",
+            "Climb",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -152,9 +152,7 @@ class TestDressupDogbone(PathTestBase):
         doc.recompute()
 
         dog = dogbone.Proxy
-        locs = sorted(
-            [bone[1] for bone in dog.bones], key=lambda xy: xy[0] * 1000 + xy[1]
-        )
+        locs = sorted([bone[1] for bone in dog.bones], key=lambda xy: xy[0] * 1000 + xy[1])
 
         def formatBoneLoc(pt):
             return "(%.2f, %.2f)" % (pt[0], pt[1])
@@ -177,7 +175,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify no bone is inserted for straight move interrupted by plunge."""
         base = TestProfile(
             "Inside",
-            "CW",
+            "Climb",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -199,7 +197,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify can handle comments between moves"""
         base = TestProfile(
             "Inside",
-            "CW",
+            "Climb",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -222,7 +220,7 @@ class TestDressupDogbone(PathTestBase):
 
         base = TestProfile(
             "Inside",
-            "CW",
+            "Climb",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -248,7 +246,7 @@ class TestDressupDogbone(PathTestBase):
         """Verify can handle noops between moves"""
         base = TestProfile(
             "Inside",
-            "CW",
+            "Climb",
             """
         G0 X10 Y10 Z10
         G1 Z0
@@ -271,7 +269,7 @@ class TestDressupDogbone(PathTestBase):
 
         base = TestProfile(
             "Inside",
-            "CW",
+            "Climb",
             """
         G0 X10 Y10 Z10
         G1 Z0

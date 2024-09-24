@@ -55,7 +55,7 @@ const char* BlenderNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button");
+        return QT_TR_NOOP("Scroll mouse wheel");
     default:
         return "No description";
     }

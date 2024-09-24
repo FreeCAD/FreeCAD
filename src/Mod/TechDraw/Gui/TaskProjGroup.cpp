@@ -55,6 +55,7 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "TaskProjGroup.h"
@@ -119,8 +120,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     connect(ui->butDownRotate,  &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butLeftRotate,  &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butCCWRotate,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
-    connect(ui->butFront,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
-    connect(ui->butCam,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
+    connect(ui->butFront,       &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
+    connect(ui->butCam,         &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
 
     connect(ui->lePrimary,   &QPushButton::clicked, this, &TaskProjGroup::customDirectionClicked);
 
@@ -155,6 +156,11 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     m_mdi = dvp->getMDIViewPage();
 
     setUiPrimary();
+    if (Preferences::useCameraDirection()) {
+        ui->butCam->setChecked(true);
+    } else {
+        ui->butFront->setChecked(true);
+    }
     saveGroupState();
 }
 
@@ -307,8 +313,8 @@ void TaskProjGroup::turnViewToProjGroup()
     viewPart->X.setValue(0.0);
     viewPart->Y.setValue(0.0);
     viewPart->ScaleType.setValue("Custom");
-    viewPart->Scale.setStatus(App::Property::Hidden, true);
     viewPart->ScaleType.setStatus(App::Property::Hidden, true);
+    viewPart->Scale.setStatus(App::Property::Hidden, true);
     viewPart->Label.setValue("Front");
 
     multiView->addView(viewPart);
@@ -319,7 +325,7 @@ void TaskProjGroup::turnViewToProjGroup()
     viewPart->LockPosition.setStatus(App::Property::ReadOnly, true); //Front should stay locked.
     viewPart->LockPosition.purgeTouched();
 
-    multiView->requestPaint();//make sure the group object is on the Gui page
+    m_page->requestPaint();
     view = multiView;
 
     updateUi();
@@ -330,14 +336,11 @@ void TaskProjGroup::turnProjGroupToView()
     TechDraw::DrawViewPart* viewPart = multiView->getAnchor();
     viewPart->Scale.setValue(multiView->Scale.getValue());
     viewPart->ScaleType.setValue(multiView->ScaleType.getValue());
-    viewPart->Scale.setStatus(App::Property::Hidden, true);
-    viewPart->ScaleType.setStatus(App::Property::Hidden, true);
-    viewPart->Scale.purgeTouched();
-    viewPart->ScaleType.purgeTouched();
+    viewPart->Scale.setStatus(App::Property::Hidden, false);
+    viewPart->ScaleType.setStatus(App::Property::Hidden, false);
     viewPart->Label.setValue("View");
     viewPart->LockPosition.setValue(false);
     viewPart->LockPosition.setStatus(App::Property::ReadOnly, false);
-    viewPart->LockPosition.purgeTouched();
     viewPart->X.setValue(multiView->X.getValue());
     viewPart->Y.setValue(multiView->Y.getValue());
     m_page->addView(viewPart);

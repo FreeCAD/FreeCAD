@@ -51,7 +51,6 @@ class FirstRunDialog:
             warning_dialog = FreeCADGui.PySideUic.loadUi(
                 os.path.join(os.path.dirname(__file__), "first_run.ui")
             )
-            warning_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
             autocheck = self.pref.GetBool("AutoCheck", False)
             download_macros = self.pref.GetBool("DownloadMacros", False)
             proxy_string = self.pref.GetString("ProxyUrl", "")

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Interface_Static.hxx>
+#include <Interface_Static.hxx>
 #endif
 
 #include "ImportExportSettings.h"
@@ -97,6 +97,31 @@ void ImportExportSettings::initIGES(Base::Reference<ParameterGrp> hGrp)
             Interface_Static::SetCVal("write.iges.unit","MM");
             break;
     }
+}
+
+void ImportExportSettings::setImportCodePage(int cpIndex)
+{
+    pGroup->SetInt("ImportCodePage", cpIndex);
+}
+
+Resource_FormatType ImportExportSettings::getImportCodePage() const
+{
+    Resource_FormatType result {};
+    long codePageIndex = pGroup->GetInt("ImportCodePage", 0L);
+    long i = 0L;
+    for (const auto& codePageIt : codePageList) {
+        if (i == codePageIndex) {
+            result = codePageIt.codePage;
+            break;
+        }
+        i++;
+    }
+    return result;
+}
+
+std::list<ImportExportSettings::CodePage> ImportExportSettings::getCodePageList() const
+{
+    return codePageList;
 }
 
 void ImportExportSettings::initSTEP(Base::Reference<ParameterGrp> hGrp)

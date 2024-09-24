@@ -71,6 +71,8 @@ class MaterialTreeWidgetPy;
 class MatGuiExport MaterialTreeWidget: public QWidget, public Base::BaseClass
 {
     Q_OBJECT
+    Q_PROPERTY(QSize treeSizeHint READ treeSizeHint WRITE
+                   setTreeSizeHint)  // clazy:exclude=qproperty-without-notify
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -94,7 +96,7 @@ public:
     void setFilter(const std::shared_ptr<Materials::MaterialFilter>& filter);
     void setFilter(
         const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList);
-    void setActiveFilter(const QString &name);
+    void setActiveFilter(const QString& name);
 
     void setExpanded(bool open);
     bool getExpanded()
@@ -158,10 +160,15 @@ public:
         _filterOptions.setIncludeLegacy(legacy);
     }
 
+    QSize sizeHint() const override;
+    QSize treeSizeHint() const;
+    void setTreeSizeHint(const QSize& hint);
+
 Q_SIGNALS:
     /** Emits this signal when a material has been selected */
     void materialSelected(const std::shared_ptr<Materials::Material>& material);
     void onMaterial(const QString& uuid);
+    void onExpanded(bool expanded);
 
 private Q_SLOTS:
     void expandClicked(bool checked);
@@ -171,6 +178,14 @@ private Q_SLOTS:
     void onFilter(const QString& text);
 
 private:
+    // UI minimum sizes
+    static const int minimumWidth = 250;
+    static const int minimumTreeWidth = 250;
+    static const int minimumTreeHeight = 500;
+
+    static const int defaultFavorites = 0;
+    static const int defaultRecents = 5;
+
     void setup();
 
     QLineEdit* m_material;
@@ -179,6 +194,7 @@ private:
     QPushButton* m_editor;
     QComboBox* m_filterCombo;
     bool m_expanded;
+    QSize m_treeSizeHint;
 
     QString m_materialDisplay;
     QString m_uuid;
@@ -246,7 +262,8 @@ protected:
         const Base::Reference<ParameterGrp>& param);
     void setFilterVisible(bool open);
     void fillFilterCombo();
-    bool hasMultipleFilters() const {
+    bool hasMultipleFilters() const
+    {
         return (_filterList && _filterList->size() > 1);
     }
 };

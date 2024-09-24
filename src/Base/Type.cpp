@@ -65,6 +65,11 @@ void* Type::createInstance()
     return method ? (*method)() : nullptr;
 }
 
+bool Type::canInstantiate() const
+{
+    instantiationMethod method = typedata[index]->instMethod;
+    return method != nullptr;
+}
 
 void* Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 {

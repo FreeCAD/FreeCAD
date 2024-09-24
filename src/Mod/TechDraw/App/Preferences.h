@@ -119,6 +119,7 @@ public:
     static int CenterLineStyle();
     static int HighlightLineStyle();
     static int HiddenLineStyle();
+    static int BreakLineStyle();
     static int LineCapStyle();
     static int LineCapIndex();
 
@@ -131,7 +132,15 @@ public:
     static bool showSectionLine();
     static bool includeCutLine();
 
+    static int BreakType();
+
     static bool useExactMatchOnDims();
+
+    static bool useCameraDirection();
+    static bool alwaysShowLabel();
+
+    static bool SnapViews();
+    static double SnapLimitFactor();
 };
 
 

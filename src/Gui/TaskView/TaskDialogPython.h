@@ -99,8 +99,11 @@ public:
     /// active transaction.
     Py::Object setAutoCloseOnTransactionChange(const Py::Tuple&);
     Py::Object isAutoCloseOnTransactionChange(const Py::Tuple&);
+    Py::Object setAutoCloseOnDeletedDocument(const Py::Tuple&);
+    Py::Object isAutoCloseOnDeletedDocument(const Py::Tuple&);
 
     Py::Object getDocumentName(const Py::Tuple&);
+    Py::Object setDocumentName(const Py::Tuple&);
 
     /*!
       Indicates whether this task dialog allows other commands to modify
@@ -159,6 +162,9 @@ public:
     */
     bool isAllowedAlterSelection() const override;
     bool needsFullSpace() const override;
+
+    void autoClosedOnTransactionChange() override;
+    void autoClosedOnDeletedDocument() override;
 
 public:
     /// is called by the framework when the dialog is opened

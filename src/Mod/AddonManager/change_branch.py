@@ -42,7 +42,6 @@ class ChangeBranchDialog(QtWidgets.QWidget):
         self.ui = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "change_branch.ui")
         )
-        self.ui.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         self.item_filter = ChangeBranchDialogFilter()
         self.ui.tableView.setModel(self.item_filter)

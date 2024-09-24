@@ -76,11 +76,6 @@ exported from FreeCAD.</string>
             <string>FreeCAD result object</string>
            </property>
           </item>
-          <item>
-           <property name="text">
-            <string/>
-           </property>
-          </item>
          </widget>
         </item>
        </layout>

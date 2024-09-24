@@ -32,6 +32,7 @@
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintRigidBody.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintRigidBody.h"
 #include "ui_TaskFemConstraintRigidBody.h"
@@ -91,6 +92,18 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
             qOverload<int>(&QComboBox::activated),
             this,
             &TaskFemConstraintRigidBody::onRotModeZChanged);
+    connect(ui->qsb_ref_node_x,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeXChanged);
+    connect(ui->qsb_ref_node_y,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeYChanged);
+    connect(ui->qsb_ref_node_z,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &TaskFemConstraintRigidBody::onRefNodeZChanged);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -306,8 +319,8 @@ void TaskFemConstraintRigidBody::addToSelection()
             }
             for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
                 if (SubElements[iStr].find(searchStr) == std::string::npos) {
-                    QString msg = tr(
-                        "Only one type of selection (vertex,face or edge) per constraint allowed!");
+                    QString msg = tr("Only one type of selection (vertex, face or edge) per "
+                                     "constraint allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
                     break;
@@ -506,6 +519,29 @@ void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
     }
 }
 
+void TaskFemConstraintRigidBody::onRefNodeXChanged(double value)
+{
+    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.x = value;
+    obj->ReferenceNode.setValue(refNode);
+}
+
+void TaskFemConstraintRigidBody::onRefNodeYChanged(double value)
+{
+    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.y = value;
+    obj->ReferenceNode.setValue(refNode);
+}
+
+void TaskFemConstraintRigidBody::onRefNodeZChanged(double value)
+{
+    auto obj = static_cast<Fem::ConstraintRigidBody*>(ConstraintView->getObject());
+    Base::Vector3d refNode = obj->ReferenceNode.getValue();
+    refNode.z = value;
+    obj->ReferenceNode.setValue(refNode);
+}
 
 const std::string TaskFemConstraintRigidBody::getReferences() const
 {
@@ -583,11 +619,6 @@ std::vector<std::string> TaskFemConstraintRigidBody::getRotationalMode() const
     return rotModes;
 }
 
-bool TaskFemConstraintRigidBody::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintRigidBody::changeEvent(QEvent*)
 {}
 
@@ -616,21 +647,6 @@ TaskDlgFemConstraintRigidBody::TaskDlgFemConstraintRigidBody(
 }
 
 //==== calls from the TaskView ===============================================================
-
-void TaskDlgFemConstraintRigidBody::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint RigidBody");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
 
 bool TaskDlgFemConstraintRigidBody::accept()
 {
@@ -722,26 +738,12 @@ bool TaskDlgFemConstraintRigidBody::accept()
                                 "App.ActiveDocument.%s.RotationalModeZ = \"%s\"",
                                 name.c_str(),
                                 rotModes[2].c_str());
-
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                parameters->getScale().c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintRigidBody::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintRigidBody.cpp"

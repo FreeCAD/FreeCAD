@@ -263,17 +263,17 @@ void ViewProviderFillet::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> colBase = vpBase->DiffuseColor.getValues();
-                std::vector<App::Color> colFill;
-                colFill.resize(fillMap.Extent(), vpBase->ShapeAppearance.getDiffuseColor());
-                applyTransparency(vpBase->Transparency.getValue(),colBase);
+                auto colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeAppearance.getValues();
+                std::vector<App::Material> colFill;
+                colFill.resize(fillMap.Extent(), colBase[0]);
+                applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(), colBase);
 
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[0], colBase, colFill);
+                    applyMaterial(hist[0], colBase, colFill);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance.getDiffuseColor()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[0], colBase, colFill);
+                    applyMaterial(hist[0], colBase, colFill);
                 }
 
                 // If the view provider has set a transparency then override the values
@@ -282,7 +282,7 @@ void ViewProviderFillet::updateData(const App::Property* prop)
                     applyTransparency(Transparency.getValue(), colFill);
                 }
 
-                this->DiffuseColor.setValues(colFill);
+                this->ShapeAppearance.setValues(colFill);
             }
         }
     }
@@ -373,17 +373,17 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
 
             auto vpBase = dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(objBase));
             if (vpBase) {
-                std::vector<App::Color> colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->DiffuseColor.getValues();
-                std::vector<App::Color> colCham;
-                colCham.resize(chamMap.Extent(), static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeAppearance.getDiffuseColor());
-                applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(),colBase);
+                auto colBase = static_cast<PartGui::ViewProviderPart*>(vpBase)->ShapeAppearance.getValues();
+                std::vector<App::Material> colCham;
+                colCham.resize(chamMap.Extent(), colBase[0]);
+                applyTransparency(static_cast<PartGui::ViewProviderPart*>(vpBase)->Transparency.getValue(), colBase);
 
                 if (static_cast<int>(colBase.size()) == baseMap.Extent()) {
-                    applyColor(hist[0], colBase, colCham);
+                    applyMaterial(hist[0], colBase, colCham);
                 }
-                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance.getDiffuseColor()) {
+                else if (!colBase.empty() && colBase[0] != this->ShapeAppearance[0]) {
                     colBase.resize(baseMap.Extent(), colBase[0]);
-                    applyColor(hist[0], colBase, colCham);
+                    applyMaterial(hist[0], colBase, colCham);
                 }
 
                 // If the view provider has set a transparency then override the values
@@ -392,7 +392,7 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
                     applyTransparency(Transparency.getValue(), colCham);
                 }
 
-                this->DiffuseColor.setValues(colCham);
+                this->ShapeAppearance.setValues(colCham);
             }
         }
     }

@@ -45,9 +45,10 @@ using namespace Gui;
  *********************************************************************/
 
 TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
-                                                     const std::string& pixmapname, const QString& parname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()),parname,true, parent),
-      vp(vp), blockUpdate(false)
+                                             const std::string& pixmapname, const QString& parname)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()), parname, true, parent)
+    , vp(vp)
+    , blockUpdate(false)
 {
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
@@ -55,8 +56,9 @@ TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QW
 
 void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
-    if (this->vp == &Obj)
+    if (this->vp == &Obj) {
         this->vp = nullptr;
+    }
 }
 
 void TaskFeatureParameters::onUpdateView(bool on)
@@ -68,9 +70,9 @@ void TaskFeatureParameters::onUpdateView(bool on)
 void TaskFeatureParameters::recomputeFeature()
 {
     if (!blockUpdate) {
-        App::DocumentObject* obj = vp->getObject ();
+        App::DocumentObject* obj = getObject();
         assert (obj);
-        obj->getDocument()->recomputeFeature ( obj );
+        obj->getDocument()->recomputeFeature (obj);
     }
 }
 
@@ -78,15 +80,16 @@ void TaskFeatureParameters::recomputeFeature()
  *                            Task Dialog                            *
  *********************************************************************/
 TaskDlgFeatureParameters::TaskDlgFeatureParameters(PartDesignGui::ViewProvider *vp)
-    : TaskDialog(),vp(vp)
+    : vp(vp)
 {
     assert(vp);
 }
 
 TaskDlgFeatureParameters::~TaskDlgFeatureParameters() = default;
 
-bool TaskDlgFeatureParameters::accept() {
-    App::DocumentObject* feature = vp->getObject();
+bool TaskDlgFeatureParameters::accept()
+{
+    App::DocumentObject* feature = getObject();
 
     try {
         // Iterate over parameter dialogs and apply all parameters from them
@@ -107,7 +110,7 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::cmdAppDocument(feature, "recompute()");
 
         if (!feature->isValid()) {
-            throw Base::RuntimeError(vp->getObject()->getStatusString());
+            throw Base::RuntimeError(getObject()->getStatusString());
         }
 
         App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
@@ -136,7 +139,7 @@ bool TaskDlgFeatureParameters::accept() {
 
 bool TaskDlgFeatureParameters::reject()
 {
-    PartDesign::Feature* feature = static_cast<PartDesign::Feature*>(vp->getObject());
+    auto feature = getObject<PartDesign::Feature>();
     App::DocumentObjectWeakPtrT weakptr(feature);
     App::Document* document = feature->getDocument();
 

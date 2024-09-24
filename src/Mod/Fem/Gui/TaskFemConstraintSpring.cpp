@@ -33,6 +33,7 @@
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintSpring.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintSpring.h"
 #include "ui_TaskFemConstraintSpring.h"
@@ -269,11 +270,6 @@ std::string TaskFemConstraintSpring::getElmerStiffness() const
     return Base::Tools::toStdString(ui->ElmerStiffnessCB->currentText());
 }
 
-bool TaskFemConstraintSpring::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintSpring::changeEvent(QEvent*)
 {}
 
@@ -303,21 +299,6 @@ TaskDlgFemConstraintSpring::TaskDlgFemConstraintSpring(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintSpring::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint spring");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintSpring::accept()
 {
     /* Note: */
@@ -340,11 +321,6 @@ bool TaskDlgFemConstraintSpring::accept()
                                 "App.ActiveDocument.%s.ElmerStiffness = '%s'",
                                 name.c_str(),
                                 parameterStiffness->getElmerStiffness().c_str());
-        std::string scale = parameterStiffness->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -352,15 +328,6 @@ bool TaskDlgFemConstraintSpring::accept()
     }
     /* */
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintSpring::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintSpring.cpp"

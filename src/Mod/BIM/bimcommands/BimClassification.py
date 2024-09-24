@@ -46,10 +46,8 @@ class BIM_Classification:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
         import Draft
@@ -631,10 +629,10 @@ class BIM_Classification:
 
     def getIcon(self,obj):
         """returns a QIcon for an object"""
-    
+
         from PySide import QtCore, QtGui
         import Arch_rc
-    
+
         if hasattr(obj.ViewObject, "Icon"):
             return obj.ViewObject.Icon
         elif hasattr(obj.ViewObject, "Proxy") and hasattr(obj.ViewObject.Proxy, "getIcon"):

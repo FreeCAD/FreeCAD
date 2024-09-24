@@ -127,7 +127,7 @@ class _ArchSchedule:
                 "App::PropertyLink",
                 "Schedule",
                 "Arch",
-                QT_TRANSLATE_NOOP("App::Property", "The Arch Schedule that uses this spreadsheet"))
+                QT_TRANSLATE_NOOP("App::Property", "The BIM Schedule that uses this spreadsheet"))
         sp.Schedule = obj
 
     def getSpreadSheet(self, obj, force=False):
@@ -529,8 +529,9 @@ class ArchScheduleTaskPanel:
                     item = QtGui.QTableWidgetItem([obj.Description,obj.Value,obj.Unit,obj.Objects,obj.Filter][i][j])
                     self.form.list.setItem(j,i,item)
             self.form.lineEditName.setText(self.obj.Label)
-            self.form.checkDetailed.setChecked(self.obj.DetailedResults)
             self.form.checkSpreadsheet.setChecked(self.obj.CreateSpreadsheet)
+            self.form.checkDetailed.setChecked(self.obj.DetailedResults)
+            self.form.checkAutoUpdate.setChecked(self.obj.AutoUpdate)
 
         # center over FreeCAD window
         mw = FreeCADGui.getMainWindow()

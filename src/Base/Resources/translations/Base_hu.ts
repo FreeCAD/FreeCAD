@@ -35,8 +35,8 @@
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="81"/>
-      <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Metrikus apró alkatrészeket &amp; CNC (mm, mm/perc)</translation>
+      <source>Metric small parts &amp; CNC (mm, mm/min)</source>
+      <translation>Metrikus kis alkatrészek és CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>

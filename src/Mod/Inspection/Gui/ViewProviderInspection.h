@@ -94,8 +94,9 @@ private:
     void setupNormals(const std::vector<Base::Vector3f>&);
     void setupLineIndexes(const std::vector<Data::ComplexGeoData::Line>&);
     void setupFaceIndexes(const std::vector<Data::ComplexGeoData::Facet>&);
+    void deleteColorBar();
 
-protected:
+private:
     SoMaterial* pcColorMat;
     SoMaterialBinding* pcMatBinding;
     SoGroup* pcLinkRoot;

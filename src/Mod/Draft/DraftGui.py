@@ -205,7 +205,7 @@ class DraftToolBar:
 
         # add only a dummy widget, since widgets are created on demand
         self.baseWidget = DraftBaseWidget()
-        self.tray = QtWidgets.QToolBar(None)
+        self.tray = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
         self.tray.setObjectName("Draft tray")
         self.tray.setWindowTitle("Draft tray")
         self.toptray = self.tray
@@ -1305,18 +1305,24 @@ class DraftToolBar:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
+            self.yValue.setText("0")
+            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus()
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(False)
+            self.xValue.setText("0")
+            self.zValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("y")
         elif (mask == "z") or (self.mask == "z"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(True)
+            self.xValue.setText("0")
+            self.yValue.setText("0")
             self.angleValue.setEnabled(False)
             self.setFocus("z")
         else:

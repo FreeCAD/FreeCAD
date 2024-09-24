@@ -101,9 +101,6 @@ private:
     void exitSelectionMode();
     void setVisibilityOfSpineAndProfile();
 
-    ViewProviderPipe* getPipeView() const
-    { return static_cast<ViewProviderPipe*>(vp); }
-
     bool spineShow = false;
     bool profileShow = false;
     bool auxSpineShow = false;

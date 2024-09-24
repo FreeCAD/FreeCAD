@@ -582,6 +582,9 @@ endif()
 
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Part)
+endif()
 
 SET_BIN_DIR(Part Part /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)

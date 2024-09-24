@@ -68,8 +68,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("CAM_Helix", "CW"), "CW"),
-                (translate("CAM_Helix", "CCW"), "CCW"),
+                (translate("CAM_Helix", "Climb"), "Climb"),
+                (translate("CAM_Helix", "Conventional"), "Conventional"),
             ],  # this is the direction that the profile runs
             "StartSide": [
                 (translate("PathProfile", "Outside"), "Outside"),
@@ -93,9 +93,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def circularHoleFeatures(self, obj):
         """circularHoleFeatures(obj) ... enable features supported by Helix."""
-        return (
-            PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
-        )
+        return PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... create helix specific properties."""
@@ -105,7 +103,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)",
+                "The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)",
             ),
         )
 
@@ -113,9 +111,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "App::PropertyEnumeration",
             "StartSide",
             "Helix Drill",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Start cutting from the inside or outside"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Start cutting from the inside or outside"),
         )
 
         obj.addProperty(
@@ -177,9 +173,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         holes = sort_locations(holes, ["x", "y"])
 
         tool = obj.ToolController.Tool
-        tooldiamter = (
-            tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter
-        )
+        tooldiamter = tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter
 
         args = {
             "edge": None,
@@ -199,9 +193,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             args["edge"] = Part.makeLine(startPoint, endPoint)
 
             # move to starting position
-            self.commandlist.append(
-                Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
-            )
+            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
             self.commandlist.append(
                 Path.Command(
                     "G0",
@@ -213,9 +205,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 )
             )
             self.commandlist.append(
-                Path.Command(
-                    "G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z}
-                )
+                Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z})
             )
 
             results = helix.generate(**args)

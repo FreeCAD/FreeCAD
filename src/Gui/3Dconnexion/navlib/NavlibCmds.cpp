@@ -115,7 +115,7 @@ void NavlibInterface::removeMarkups(std::string& text) const
 
         const char enclosingChar = *std::prev(markupEnd);
         textBegin = text.erase(markupBegin, ++markupEnd);
-        
+
         if(enclosingChar == 'p')
             textBegin = text.insert(textBegin, 2, '\n');
     }

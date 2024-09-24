@@ -64,42 +64,29 @@ class TestObjectOpen(unittest.TestCase):
     fcc_print("import TestObjectOpen")
 
     # ********************************************************************************************
-    def setUp(
-        self
-    ):
+    def setUp(self):
         # setUp is executed before every test
         doc_name = self.__class__.__name__
         self.document = FreeCAD.newDocument(doc_name)
 
-        self.test_file_dir = join(
-            testtools.get_fem_test_home_dir(),
-            "open"
-        )
+        self.test_file_dir = join(testtools.get_fem_test_home_dir(), "open")
 
     # ********************************************************************************************
-    def tearDown(
-        self
-    ):
+    def tearDown(self):
         # tearDown is executed after every test
         FreeCAD.closeDocument(self.document.Name)
 
     # ********************************************************************************************
-    def test_00print(
-        self
-    ):
+    def test_00print(self):
         # since method name starts with 00 this will be run first
         # this test just prints a line with stars
 
-        fcc_print("\n{0}\n{1} run FEM TestObjectOpen tests {2}\n{0}".format(
-            100 * "*",
-            10 * "*",
-            60 * "*"
-        ))
+        fcc_print(
+            "\n{0}\n{1} run FEM TestObjectOpen tests {2}\n{0}".format(100 * "*", 10 * "*", 60 * "*")
+        )
 
     # ********************************************************************************************
-    def test_femobjects_open_head(
-        self
-    ):
+    def test_femobjects_open_head(self):
         fcc_print("load master head document objects")
 
         # get a document with all FEM objects
@@ -116,15 +103,11 @@ class TestObjectOpen(unittest.TestCase):
 
         # standard name changed
         from femsolver.elmer.equations.flux import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            self.document.Flux.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, self.document.Flux.ViewObject.Proxy.__class__)
 
     # ********************************************************************************************
-    def test_femobjects_open_de9b3fb438(
-        self
-    ):
+    def test_femobjects_open_de9b3fb438(self):
         # the number in method name is the FreeCAD commit the document was created with
         # https://github.com/FreeCAD/FreeCAD/commit/de9b3fb438
         # the document was created by running the object create unit test
@@ -138,209 +121,164 @@ class TestObjectOpen(unittest.TestCase):
 
         # standard name changed
         from femsolver.elmer.equations.flux import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            self.document.Fluxsolver.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, self.document.Fluxsolver.ViewObject.Proxy.__class__)
 
     # ********************************************************************************************
-    def compare_feature_pythons_class_gui(
-        self,
-        doc
-    ):
+    def compare_feature_pythons_class_gui(self, doc):
         import ObjectsFem
         from femtools.femutils import type_of_obj
 
         # see comments at file end, the code was created by some python code
 
         from femviewprovider.view_constraint_bodyheatsource import VPConstraintBodyHeatSource
+
         self.assertEqual(
-            VPConstraintBodyHeatSource,
-            doc.ConstraintBodyHeatSource.ViewObject.Proxy.__class__
+            VPConstraintBodyHeatSource, doc.ConstraintBodyHeatSource.ViewObject.Proxy.__class__
         )
 
         self.assertEqual(
             "Fem::ConstraintCurrentDensity",
-            type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc))
+            type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc)),
         )
 
-        from femviewprovider.view_constraint_electrostaticpotential \
-            import VPConstraintElectroStaticPotential
+        from femviewprovider.view_constraint_electrostaticpotential import (
+            VPConstraintElectroStaticPotential,
+        )
+
         self.assertEqual(
             VPConstraintElectroStaticPotential,
-            doc.ConstraintElectrostaticPotential.ViewObject.Proxy.__class__
+            doc.ConstraintElectrostaticPotential.ViewObject.Proxy.__class__,
         )
 
         from femviewprovider.view_constraint_flowvelocity import VPConstraintFlowVelocity
+
         self.assertEqual(
-            VPConstraintFlowVelocity,
-            doc.ConstraintFlowVelocity.ViewObject.Proxy.__class__
+            VPConstraintFlowVelocity, doc.ConstraintFlowVelocity.ViewObject.Proxy.__class__
         )
 
-        from femviewprovider.view_constraint_initialflowvelocity \
-            import VPConstraintInitialFlowVelocity
+        from femviewprovider.view_constraint_initialflowvelocity import (
+            VPConstraintInitialFlowVelocity,
+        )
+
         self.assertEqual(
             VPConstraintInitialFlowVelocity,
-            doc.ConstraintInitialFlowVelocity.ViewObject.Proxy.__class__
+            doc.ConstraintInitialFlowVelocity.ViewObject.Proxy.__class__,
         )
 
         self.assertEqual(
-            "Fem::ConstraintMagnetization",
-            type_of_obj(ObjectsFem.makeConstraintMagnetization(doc))
+            "Fem::ConstraintMagnetization", type_of_obj(ObjectsFem.makeConstraintMagnetization(doc))
         )
 
         from femviewprovider.view_constraint_selfweight import VPConstraintSelfWeight
+
         self.assertEqual(
-            VPConstraintSelfWeight,
-            doc.ConstraintSelfWeight.ViewObject.Proxy.__class__
+            VPConstraintSelfWeight, doc.ConstraintSelfWeight.ViewObject.Proxy.__class__
         )
 
         from femviewprovider.view_constraint_tie import VPConstraintTie
-        self.assertEqual(
-            VPConstraintTie,
-            doc.ConstraintTie.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPConstraintTie, doc.ConstraintTie.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_element_fluid1D import VPElementFluid1D
-        self.assertEqual(
-            VPElementFluid1D,
-            doc.ElementFluid1D.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPElementFluid1D, doc.ElementFluid1D.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_element_geometry1D import VPElementGeometry1D
-        self.assertEqual(
-            VPElementGeometry1D,
-            doc.ElementGeometry1D.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPElementGeometry1D, doc.ElementGeometry1D.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_element_geometry2D import VPElementGeometry2D
-        self.assertEqual(
-            VPElementGeometry2D,
-            doc.ElementGeometry2D.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPElementGeometry2D, doc.ElementGeometry2D.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_element_rotation1D import VPElementRotation1D
-        self.assertEqual(
-            VPElementRotation1D,
-            doc.ElementRotation1D.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPElementRotation1D, doc.ElementRotation1D.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_material_common import VPMaterialCommon
-        self.assertEqual(
-            VPMaterialCommon,
-            doc.MaterialFluid.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPMaterialCommon, doc.MaterialFluid.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_material_common import VPMaterialCommon
-        self.assertEqual(
-            VPMaterialCommon,
-            doc.MaterialSolid.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPMaterialCommon, doc.MaterialSolid.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_material_mechanicalnonlinear import VPMaterialMechanicalNonlinear
+
         self.assertEqual(
             VPMaterialMechanicalNonlinear,
-            doc.MaterialMechanicalNonlinear.ViewObject.Proxy.__class__
+            doc.MaterialMechanicalNonlinear.ViewObject.Proxy.__class__,
         )
 
         from femviewprovider.view_material_reinforced import VPMaterialReinforced
-        self.assertEqual(
-            VPMaterialReinforced,
-            doc.MaterialReinforced.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPMaterialReinforced, doc.MaterialReinforced.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_mesh_gmsh import VPMeshGmsh
-        self.assertEqual(
-            VPMeshGmsh,
-            doc.MeshGmsh.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPMeshGmsh, doc.MeshGmsh.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_mesh_boundarylayer import VPMeshBoundaryLayer
-        self.assertEqual(
-            VPMeshBoundaryLayer,
-            doc.MeshBoundaryLayer.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPMeshBoundaryLayer, doc.MeshBoundaryLayer.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_mesh_group import VPMeshGroup
-        self.assertEqual(
-            VPMeshGroup,
-            doc.MeshGroup.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPMeshGroup, doc.MeshGroup.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_mesh_region import VPMeshRegion
-        self.assertEqual(
-            VPMeshRegion,
-            doc.MeshRegion.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPMeshRegion, doc.MeshRegion.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_mesh_result import VPFemMeshResult
-        self.assertEqual(
-            VPFemMeshResult,
-            doc.MeshResult.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPFemMeshResult, doc.MeshResult.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_result_mechanical import VPResultMechanical
-        self.assertEqual(
-            VPResultMechanical,
-            doc.ResultMechanical.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPResultMechanical, doc.ResultMechanical.ViewObject.Proxy.__class__)
 
         from femviewprovider.view_solver_ccxtools import VPSolverCcxTools
-        self.assertEqual(
-            VPSolverCcxTools,
-            doc.SolverCcxTools.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(VPSolverCcxTools, doc.SolverCcxTools.ViewObject.Proxy.__class__)
 
         from femsolver.calculix.solver import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.SolverCalculix.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, doc.SolverCalculix.ViewObject.Proxy.__class__)
 
         from femsolver.elmer.solver import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.SolverElmer.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, doc.SolverElmer.ViewObject.Proxy.__class__)
 
         from femsolver.z88.solver import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.SolverZ88.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, doc.SolverZ88.ViewObject.Proxy.__class__)
 
         from femsolver.elmer.equations.elasticity import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.Elasticity.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, doc.Elasticity.ViewObject.Proxy.__class__)
 
         from femsolver.elmer.equations.electrostatic import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.Electrostatic.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, doc.Electrostatic.ViewObject.Proxy.__class__)
 
         from femsolver.elmer.equations.flow import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.Flow.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, doc.Flow.ViewObject.Proxy.__class__)
 
         from femsolver.elmer.equations.heat import ViewProxy
-        self.assertEqual(
-            ViewProxy,
-            doc.Heat.ViewObject.Proxy.__class__
-        )
+
+        self.assertEqual(ViewProxy, doc.Heat.ViewObject.Proxy.__class__)
 
         self.assertEqual(
             "Fem::EquationElmerMagnetodynamic2D",
-            type_of_obj(ObjectsFem.makeEquationMagnetodynamic2D(doc))
+            type_of_obj(ObjectsFem.makeEquationMagnetodynamic2D(doc)),
         )
 
         self.assertEqual(
             "Fem::EquationElmerMagnetodynamic",
-            type_of_obj(ObjectsFem.makeEquationMagnetodynamic(doc))
+            type_of_obj(ObjectsFem.makeEquationMagnetodynamic(doc)),
         )
 
 

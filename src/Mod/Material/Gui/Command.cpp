@@ -30,6 +30,8 @@
 #include <Gui/Selection.h>
 
 #include "DlgDisplayPropertiesImp.h"
+#include "DlgInspectAppearance.h"
+#include "DlgInspectMaterial.h"
 #include "DlgMaterialImp.h"
 #include "MaterialSave.h"
 #include "MaterialsEditor.h"
@@ -39,7 +41,7 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //===========================================================================
-// Material_Edit
+// Materials_Edit
 //===========================================================================
 DEF_STD_CMD_A(CmdMaterialsEdit)
 
@@ -133,6 +135,60 @@ bool StdCmdSetMaterial::isActive()
     return (Gui::Control().activeDialog() == nullptr) && (Gui::Selection().size() != 0);
 }
 
+//===========================================================================
+// Materials_InspectAppearance
+//===========================================================================
+DEF_STD_CMD_A(CmdInspectAppearance)
+
+CmdInspectAppearance::CmdInspectAppearance()
+    : Command("Materials_InspectAppearance")
+{
+    sGroup = "Standard-View";
+    sMenuText = QT_TR_NOOP("Inspect Appearance...");
+    sToolTipText = QT_TR_NOOP("Inspect the appearance properties of the selected object");
+    sWhatsThis = "Materials_InspectAppearance";
+    sStatusTip = QT_TR_NOOP("Inspect the appearance properties of the selected object");
+    // sPixmap = "Materials_Edit";
+}
+
+void CmdInspectAppearance::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Control().showDialog(new MatGui::TaskInspectAppearance());
+}
+
+bool CmdInspectAppearance::isActive()
+{
+    return (Gui::Control().activeDialog() == nullptr);
+}
+
+//===========================================================================
+// Materials_InspectMaterial
+//===========================================================================
+DEF_STD_CMD_A(CmdInspectMaterial)
+
+CmdInspectMaterial::CmdInspectMaterial()
+    : Command("Materials_InspectMaterial")
+{
+    sGroup = "Standard-View";
+    sMenuText = QT_TR_NOOP("Inspect Material...");
+    sToolTipText = QT_TR_NOOP("Inspect the material properties of the selected object");
+    sWhatsThis = "Materials_InspectMaterial";
+    sStatusTip = QT_TR_NOOP("Inspect the material properties of the selected object");
+    // sPixmap = "Materials_Edit";
+}
+
+void CmdInspectMaterial::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Control().showDialog(new MatGui::TaskInspectMaterial());
+}
+
+bool CmdInspectMaterial::isActive()
+{
+    return (Gui::Control().activeDialog() == nullptr);
+}
+
 //---------------------------------------------------------------
 
 void CreateMaterialCommands()
@@ -142,4 +198,6 @@ void CreateMaterialCommands()
     rcCmdMgr.addCommand(new CmdMaterialsEdit());
     rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdSetMaterial());
+    rcCmdMgr.addCommand(new CmdInspectAppearance());
+    rcCmdMgr.addCommand(new CmdInspectMaterial());
 }

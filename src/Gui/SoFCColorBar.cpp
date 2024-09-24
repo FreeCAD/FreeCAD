@@ -83,6 +83,22 @@ void SoFCColorBarBase::setModified()
     _boxWidth = -1.0f;
 }
 
+void SoFCColorBarBase::setFormat(const SoLabelTextFormat& fmt)
+{
+    format = fmt;
+    applyFormat(fmt);
+}
+
+SoLabelTextFormat SoFCColorBarBase::getFormat() const
+{
+    return format;
+}
+
+void SoFCColorBarBase::applyFormat(const SoLabelTextFormat& fmt)
+{
+    boost::ignore_unused(fmt);
+}
+
 float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
 {
     float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
@@ -220,6 +236,12 @@ SoFCColorBarBase* SoFCColorBar::getActiveBar() const
 {
     int child = pColorMode->whichChild.getValue();
     return _colorBars[child];
+}
+
+void SoFCColorBar::setFormat(const SoLabelTextFormat& fmt)
+{
+    for (auto it : _colorBars)
+        it->setFormat(fmt);
 }
 
 void SoFCColorBar::setViewportSize( const SbVec2s& size )

@@ -233,9 +233,9 @@
       <translation>Ubicación</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="139"/>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>
-      <source>Fit B-Spline</source>
+      <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <source>Fit B-spline</source>
       <translation>Ajustar B-Spline</translation>
     </message>
     <message>
@@ -617,7 +617,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <translation>Iso-Paramétrico</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>

@@ -81,7 +81,7 @@ class CAMoticsUI:
             self.form,
             translate("Path", "Save Project As"),
             "",
-            translate("Path", "Camotics Project (*.camotics)"),
+            translate("Path", "CAMotics Project (*.camotics)"),
         )[0]
         if filename:
             if not filename.endswith(".camotics"):
@@ -185,9 +185,7 @@ class CamoticsSimulation(QtCore.QObject):
         self.SIM.set_resolution("high")
 
         bb = self.job.Stock.Shape.BoundBox
-        self.SIM.set_workpiece(
-            min=(bb.XMin, bb.YMin, bb.ZMin), max=(bb.XMax, bb.YMax, bb.ZMax)
-        )
+        self.SIM.set_workpiece(min=(bb.XMin, bb.YMin, bb.ZMin), max=(bb.XMax, bb.YMax, bb.ZMax))
 
         for t in self.job.Tools.Group:
             self.SIM.set_tool(
@@ -272,9 +270,7 @@ class CamoticsSimulation(QtCore.QObject):
             "files": [],
         }
 
-        unitstring = (
-            "imperial" if FreeCAD.Units.getSchema() in [2, 3, 5, 7] else "metric"
-        )
+        unitstring = "imperial" if FreeCAD.Units.getSchema() in [2, 3, 5, 7] else "metric"
 
         camoticstemplate["units"] = unitstring
         camoticstemplate["resolution-mode"] = "medium"
@@ -311,9 +307,9 @@ class CommandCamoticsSimulate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Camotics",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Camotics", "Camotics"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Camotics", "CAMotics"),
             "Accel": "P, C",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulate using Camotics"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Camotics", "Simulate using CAMotics"),
             "CmdType": "ForEdit",
         }
 

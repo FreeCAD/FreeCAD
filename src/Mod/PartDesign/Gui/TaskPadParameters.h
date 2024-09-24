@@ -55,15 +55,21 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgPadParameters : public TaskDlgSketchBasedParameters
+class TaskDlgPadParameters : public TaskDlgExtrudeParameters
 {
     Q_OBJECT
 
 public:
     explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
 
-    ViewProviderPad* getPadView() const
-    { return static_cast<ViewProviderPad*>(vp); }
+protected:
+    TaskExtrudeParameters* getTaskParameters() override
+    {
+        return parameters;
+    }
+
+private:
+    TaskPadParameters* parameters;
 };
 
 } //namespace PartDesignGui

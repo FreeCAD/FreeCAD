@@ -52,6 +52,26 @@ void ViewProviderAssemblyPy::setEnableMovement(Py::Boolean arg)
     getViewProviderAssemblyPtr()->setEnableMovement(arg);
 }
 
+Py::Boolean ViewProviderAssemblyPy::getMoveOnlyPreselected() const
+{
+    return {getViewProviderAssemblyPtr()->getMoveOnlyPreselected()};
+}
+
+void ViewProviderAssemblyPy::setMoveOnlyPreselected(Py::Boolean arg)
+{
+    getViewProviderAssemblyPtr()->setMoveOnlyPreselected(arg);
+}
+
+Py::Boolean ViewProviderAssemblyPy::getMoveInCommand() const
+{
+    return {getViewProviderAssemblyPtr()->getMoveInCommand()};
+}
+
+void ViewProviderAssemblyPy::setMoveInCommand(Py::Boolean arg)
+{
+    getViewProviderAssemblyPtr()->setMoveInCommand(arg);
+}
+
 Py::Boolean ViewProviderAssemblyPy::getDraggerVisibility() const
 {
     return {getViewProviderAssemblyPtr()->getDraggerVisibility()};

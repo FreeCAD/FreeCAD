@@ -32,7 +32,7 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "FemConstraintBearing.h"
-
+#include "FemTools.h"
 
 using namespace Fem;
 
@@ -74,9 +74,17 @@ void ConstraintBearing::onChanged(const App::Property* prop)
 
     if (prop == &References) {
         // Find data of cylinder
+        std::vector<App::DocumentObject*> ref = References.getValues();
+        std::vector<std::string> subRef = References.getSubValues();
+        if (ref.empty()) {
+            return;
+        }
+
+        Part::Feature* feat = static_cast<Part::Feature*>(ref.front());
+        TopoDS_Shape sh = Tools::getFeatureSubShape(feat, subRef.front().c_str(), true);
         double radius, height;
         Base::Vector3d base, axis;
-        if (!getCylinder(radius, height, base, axis)) {
+        if (sh.IsNull() || !Tools::getCylinderParams(sh, base, axis, height, radius)) {
             return;
         }
         Radius.setValue(radius);
@@ -113,12 +121,19 @@ void ConstraintBearing::onChanged(const App::Property* prop)
             }
         }
 
-        double radius, height;
-        Base::Vector3d base, axis;
-        if (!getCylinder(radius, height, base, axis)) {
+        std::vector<App::DocumentObject*> ref = References.getValues();
+        std::vector<std::string> subRef = References.getSubValues();
+        if (ref.empty()) {
             return;
         }
-        base = getBasePoint(base + axis * height / 2, axis, Location, Dist.getValue());
+
+        feat = static_cast<Part::Feature*>(ref.front());
+        sh = Tools::getFeatureSubShape(feat, subRef.front().c_str(), true);
+        double radius, height;
+        Base::Vector3d base, axis;
+        if (!Tools::getCylinderParams(sh, base, axis, height, radius)) {
+            return;
+        }
         BasePoint.setValue(base);
         BasePoint.touch();
     }

@@ -131,6 +131,7 @@ public:
   void resetNavigationModeFile();
   void setNavigationModeFile(const QUrl & url = QUrl(QString::fromLatin1(DEFAULT_NAVIGATIONFILE)));
   const QUrl & navigationModeFile() const;
+  void setupDefaultCursors();
 
   void setContextMenuEnabled(bool yes);
   bool contextMenuEnabled() const;
@@ -193,7 +194,6 @@ Q_SIGNALS:
 
 private Q_SLOTS:
   void replaceViewport();
-  virtual void aboutToDestroyGLContext();
 
 protected:
   void paintEvent(QPaintEvent*) override;

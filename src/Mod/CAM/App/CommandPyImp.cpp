@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>
 #endif
 
 #include <Base/Exception.h>
@@ -44,7 +44,9 @@ std::string CommandPy::representation() const
     str << "Command ";
     str << getCommandPtr()->Name;
     str << " [";
-    for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
+    for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
+         i != getCommandPtr()->Parameters.end();
+         ++i) {
         std::string k = i->first;
         double v = i->second;
         str << " " << k << ":" << v;
@@ -54,12 +56,13 @@ std::string CommandPy::representation() const
 }
 
 //
-// Py::Dict parameters_copy_dict is now a class member to avoid delete/create/copy on every read access from python code
-// Now the pre-filled Py::Dict is returned which is more consistent with normal python behaviour.
-// It should be cleared whenever the c++ Parameters object is changed eg setParameters() or other objects invalidate its content, eg setPlacement()
+// Py::Dict parameters_copy_dict is now a class member to avoid delete/create/copy on every read
+// access from python code Now the pre-filled Py::Dict is returned which is more consistent with
+// normal python behaviour. It should be cleared whenever the c++ Parameters object is changed eg
+// setParameters() or other objects invalidate its content, eg setPlacement()
 // https://forum.freecad.org/viewtopic.php?f=15&t=50583
 
-PyObject *CommandPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* CommandPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of CommandPy and the Twin object
     return new CommandPy(new Command);
@@ -68,15 +71,22 @@ PyObject *CommandPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 // constructor method
 int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 {
-    PyObject *parameters = nullptr;
-    const char *name = "";
-    static const std::array<const char *, 3> kwlist {"name", "parameters", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters)) {
+    PyObject* parameters = nullptr;
+    const char* name = "";
+    static const std::array<const char*, 3> kwlist {"name", "parameters", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                            kwd,
+                                            "|sO!",
+                                            kwlist,
+                                            &name,
+                                            &PyDict_Type,
+                                            &parameters)) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
-            if (!sname.empty())
+            if (!sname.empty()) {
                 getCommandPtr()->setFromGCode(name);
+            }
         }
         catch (const Base::Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
@@ -97,7 +107,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 
             boost::to_upper(ckey);
             double cvalue;
-            if (PyObject_TypeCheck(value,&(PyLong_Type))) {
+            if (PyObject_TypeCheck(value, &(PyLong_Type))) {
                 cvalue = (double)PyLong_AsLong(value);
             }
             else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
@@ -107,27 +117,33 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
                 PyErr_SetString(PyExc_TypeError, "The dictionary can only contain number values");
                 return -1;
             }
-            getCommandPtr()->Parameters[ckey]=cvalue;
+            getCommandPtr()->Parameters[ckey] = cvalue;
         }
-          parameters_copy_dict.clear();
+        parameters_copy_dict.clear();
         return 0;
     }
-    PyErr_Clear(); // set by PyArg_ParseTuple()
+    PyErr_Clear();  // set by PyArg_ParseTuple()
 
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &(Base::PlacementPy::Type),
+    if (Base::Wrapped_ParseTupleAndKeywords(args,
+                                            kwd,
+                                            "|sO!",
+                                            kwlist,
+                                            &name,
+                                            &(Base::PlacementPy::Type),
                                             &parameters)) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
-            if (!sname.empty())
+            if (!sname.empty()) {
                 getCommandPtr()->setFromGCode(name);
+            }
         }
         catch (const Base::Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }
-        Base::PlacementPy *p = static_cast<Base::PlacementPy*>(parameters);
-        getCommandPtr()->setFromPlacement( *p->getPlacementPtr() );
+        Base::PlacementPy* p = static_cast<Base::PlacementPy*>(parameters);
+        getCommandPtr()->setFromPlacement(*p->getPlacementPtr());
         return 0;
     }
     return -1;
@@ -152,10 +168,12 @@ void CommandPy::setName(Py::String arg)
 Py::Dict CommandPy::getParameters() const
 {
     // dict now a class member , https://forum.freecad.org/viewtopic.php?f=15&t=50583
-    if (parameters_copy_dict.length()==0) {
-      for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
-          parameters_copy_dict.setItem(i->first, Py::Float(i->second));
-      }
+    if (parameters_copy_dict.length() == 0) {
+        for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
+             i != getCommandPtr()->Parameters.end();
+             ++i) {
+            parameters_copy_dict.setItem(i->first, Py::Float(i->second));
+        }
     }
     return parameters_copy_dict;
 }
@@ -176,7 +194,7 @@ void CommandPy::setParameters(Py::Dict arg)
 
         boost::to_upper(ckey);
         double cvalue;
-        if (PyObject_TypeCheck(value,&(PyLong_Type))) {
+        if (PyObject_TypeCheck(value, &(PyLong_Type))) {
             cvalue = (double)PyLong_AsLong(value);
         }
         else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
@@ -185,14 +203,14 @@ void CommandPy::setParameters(Py::Dict arg)
         else {
             throw Py::TypeError("The dictionary can only contain number values");
         }
-        getCommandPtr()->Parameters[ckey]=cvalue;
+        getCommandPtr()->Parameters[ckey] = cvalue;
         parameters_copy_dict.clear();
     }
 }
 
 // GCode methods
 
-PyObject* CommandPy::toGCode(PyObject *args)
+PyObject* CommandPy::toGCode(PyObject* args)
 {
     if (PyArg_ParseTuple(args, "")) {
         return PyUnicode_FromString(getCommandPtr()->toGCode().c_str());
@@ -200,9 +218,9 @@ PyObject* CommandPy::toGCode(PyObject *args)
     throw Py::TypeError("This method accepts no argument");
 }
 
-PyObject* CommandPy::setFromGCode(PyObject *args)
+PyObject* CommandPy::setFromGCode(PyObject* args)
 {
-    char *pstr=nullptr;
+    char* pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         try {
@@ -224,34 +242,40 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
 
 Py::Object CommandPy::getPlacement() const
 {
-    return Py::asObject(new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
+    return Py::asObject(
+        new Base::PlacementPy(new Base::Placement(getCommandPtr()->getPlacement())));
 }
 
 void CommandPy::setPlacement(Py::Object arg)
 {
     Py::Type PlacementType(Base::getTypeAsObject(&(Base::PlacementPy::Type)));
-    if(arg.isType(PlacementType)) {
-        getCommandPtr()->setFromPlacement( *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr() );
+    if (arg.isType(PlacementType)) {
+        getCommandPtr()->setFromPlacement(
+            *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr());
         parameters_copy_dict.clear();
-    } else
-    throw Py::TypeError("Argument must be a placement");
+    }
+    else {
+        throw Py::TypeError("Argument must be a placement");
+    }
 }
 
-PyObject* CommandPy::transform(PyObject *args)
+PyObject* CommandPy::transform(PyObject* args)
 {
-    PyObject *placement;
-    if ( PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &placement) ) {
-        Base::PlacementPy *p = static_cast<Base::PlacementPy*>(placement);
-        Path::Command trCmd = getCommandPtr()->transform( *p->getPlacementPtr() );
+    PyObject* placement;
+    if (PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &placement)) {
+        Base::PlacementPy* p = static_cast<Base::PlacementPy*>(placement);
+        Path::Command trCmd = getCommandPtr()->transform(*p->getPlacementPtr());
         parameters_copy_dict.clear();
         return new CommandPy(new Path::Command(trCmd));
-    } else
-    throw Py::TypeError("Argument must be a placement");
+    }
+    else {
+        throw Py::TypeError("Argument must be a placement");
+    }
 }
 
 // custom attributes get/set
 
-PyObject *CommandPy::getCustomAttributes(const char* attr) const
+PyObject* CommandPy::getCustomAttributes(const char* attr) const
 {
     std::string satt(attr);
     if (satt.length() == 1) {
@@ -274,21 +298,19 @@ int CommandPy::setCustomAttributes(const char* attr, PyObject* obj)
         if (isalpha(satt[0])) {
             boost::to_upper(satt);
             double cvalue;
-            if (PyObject_TypeCheck(obj,&(PyLong_Type))) {
+            if (PyObject_TypeCheck(obj, &(PyLong_Type))) {
                 cvalue = (double)PyLong_AsLong(obj);
-            } else if (PyObject_TypeCheck(obj,&(PyFloat_Type))) {
+            }
+            else if (PyObject_TypeCheck(obj, &(PyFloat_Type))) {
                 cvalue = PyFloat_AsDouble(obj);
-            } else {
+            }
+            else {
                 return 0;
             }
-            getCommandPtr()->Parameters[satt]=cvalue;
+            getCommandPtr()->Parameters[satt] = cvalue;
             parameters_copy_dict.clear();
             return 1;
         }
     }
     return 0;
 }
-
-
-
-

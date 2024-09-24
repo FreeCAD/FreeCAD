@@ -207,7 +207,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         """Set icon, menu and tooltip."""
         return {'Pixmap': 'Draft_AutoGroup',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Autogroup"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to add all Draft and Arch objects to.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to add all Draft and BIM objects to.")}
 
     def Activated(self):
         """Execute when the command is called.

@@ -54,10 +54,12 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
         } break;
         case ARCOFCIRCLE: {
             TechDraw::AOCPtr geom = std::static_pointer_cast<TechDraw::AOC>(baseGeom);
-            if (baseGeom->getReversed()) {
+            if (baseGeom->getReversed()) {      // OCC reversed flag
                 path.moveTo(Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
-                pathArc(path, Rez::guiX(geom->radius), Rez::guiX(geom->radius), 0., geom->largeArc,
-                        !geom->cw, Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y),
+                pathArc(path, Rez::guiX(geom->radius), Rez::guiX(geom->radius), 0.,
+                        geom->largeArc,         // >180?
+                        !geom->cw,              // calculated from start and end angle not occ edge
+                        Rez::guiX(geom->startPnt.x), Rez::guiX(geom->startPnt.y),
                         Rez::guiX(geom->endPnt.x), Rez::guiX(geom->endPnt.y));
             }
             else {

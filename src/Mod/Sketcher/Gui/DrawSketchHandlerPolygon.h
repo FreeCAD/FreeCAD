@@ -83,10 +83,9 @@ private:
 
                 centerPoint = onSketchPos;
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
@@ -95,10 +94,9 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             default:
                 break;
@@ -303,15 +301,15 @@ void DSHPolygonController::configureToolWidget()
 {
 
     toolWidget->setParameterLabel(
-        OnViewParameter::First,
+        WParameter::First,
         QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')"));
-    toolWidget->setParameter(OnViewParameter::First,
+    toolWidget->setParameter(WParameter::First,
                              handler->numberOfCorners);  // unconditionally set
-    toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
-    toolWidget->configureParameterMin(OnViewParameter::First, 3.0);  // NOLINT
+    toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
+    toolWidget->configureParameterMin(WParameter::First, 3.0);  // NOLINT
     // We set a reasonable max to avoid the spinbox from being very large
-    toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);  // NOLINT
-    toolWidget->configureParameterDecimals(OnViewParameter::First, 0);
+    toolWidget->configureParameterMax(WParameter::First, 9999.0);  // NOLINT
+    toolWidget->configureParameterDecimals(WParameter::First, 0);
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);

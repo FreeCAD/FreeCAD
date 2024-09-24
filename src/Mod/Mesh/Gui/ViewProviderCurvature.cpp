@@ -53,6 +53,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCColorBarNotifier.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
@@ -83,6 +84,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
     // simple color bar
     pcColorBar = new Gui::SoFCColorBar;
     pcColorBar->Attach(this);
+    Gui::SoFCColorBarNotifier::instance().attach(pcColorBar);
     pcColorBar->ref();
     pcColorBar->setRange(-0.5f, 0.5f, 3);
     pcLinkRoot = new SoGroup;
@@ -124,8 +126,7 @@ ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
 {
     pcColorRoot->unref();
     pcColorMat->unref();
-    pcColorBar->Detach(this);
-    pcColorBar->unref();
+    deleteColorBar();
     pcLinkRoot->unref();
 }
 
@@ -234,10 +235,17 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
             const Mesh::MeshObject& kernel = mesh.getValue();
             pcColorMat->diffuseColor.setNum((int)kernel.countPoints());
             pcColorMat->transparency.setNum((int)kernel.countPoints());
-            static_cast<Mesh::Curvature*>(pcObject)
-                ->Source.touch();  // make sure to recompute the feature
+            // make sure to recompute the feature
+            static_cast<Mesh::Curvature*>(pcObject)->Source.touch();
         }
     }
+}
+
+void ViewProviderMeshCurvature::deleteColorBar()
+{
+    Gui::SoFCColorBarNotifier::instance().detach(pcColorBar);
+    pcColorBar->Detach(this);
+    pcColorBar->unref();
 }
 
 void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
@@ -278,8 +286,7 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
         pcBar->ref();
         pcBar->setRange(fMin, fMax, 3);
         pcBar->Notify(0);
-        pcColorBar->Detach(this);
-        pcColorBar->unref();
+        deleteColorBar();
         pcColorBar = pcBar;
     }
 

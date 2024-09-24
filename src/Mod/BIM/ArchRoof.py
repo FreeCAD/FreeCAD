@@ -744,10 +744,10 @@ class _Roof(ArchComponent.Component):
             # Not only the solid of the base object itself be subtracted from
             # a Wall, but all portion of the wall above the roof solid would be
             # subtracted as well.
-            # 
+            #
             # FC forum discussion : Sketch based Arch_Roof and wall substraction
             # - https://forum.freecad.org/viewtopic.php?t=84389
-            # 
+            #
             faces = []
             solids = []
             for f in obj.Base.Shape.Faces:  # obj.Base.Shape.Solids.Faces

@@ -35,7 +35,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Select an Svg or Bitmap file</string>
+      <string>Select an SVG or Bitmap file</string>
      </property>
      <property name="title">
       <string>Pattern Parameters</string>
@@ -52,7 +52,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Choose an Svg or Bitmap file as a pattern</string>
+           <string>Choose an SVG or Bitmap file as a pattern</string>
           </property>
          </widget>
         </item>
@@ -82,7 +82,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Enlarges/shrinks the pattern (Svg Only)</string>
+           <string>Enlarges/shrinks the pattern (SVG Only)</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -130,7 +130,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Color of pattern lines (Svg Only)</string>
+           <string>Color of pattern lines (SVG Only)</string>
           </property>
          </widget>
         </item>
@@ -156,7 +156,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Svg Pattern Scale</string>
+           <string>SVG Pattern Scale</string>
           </property>
          </widget>
         </item>

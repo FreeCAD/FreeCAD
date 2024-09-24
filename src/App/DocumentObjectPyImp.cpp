@@ -805,13 +805,13 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
         return nullptr;
 
     PY_TRY {
-        std::pair<std::string,std::string> elementName;
+        ElementNamePair elementName;
         auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
                 Base::asBoolean(append), static_cast<GeoFeature::ElementNameType>(type));
         Py::Tuple ret(3);
         ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
-        ret.setItem(1,Py::String(elementName.first));
-        ret.setItem(2,Py::String(elementName.second));
+        ret.setItem(1,Py::String(elementName.newName));
+        ret.setItem(2,Py::String(elementName.oldName));
         return Py::new_reference_to(ret);
     } PY_CATCH;
 

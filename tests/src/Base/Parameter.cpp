@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <boost/core/ignore_unused.hpp>
 #include <QLockFile>
 #include <Base/FileInfo.h>

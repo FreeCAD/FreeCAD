@@ -36,16 +36,16 @@ import FreeCADGui
 
 from femguiutils import selection_widgets
 from femobjects import element_geometry1D
+from . import base_femtaskpanel
 
 
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The TaskPanel for editing References property of ElementGeometry1D objects
     """
 
     def __init__(self, obj):
-
-        self.obj = obj
+        super().__init__(obj)
 
         # parameter widget
         self.parameterWidget = FreeCADGui.PySideUic.loadUi(
@@ -54,32 +54,32 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.cb_crosssectiontype,
             QtCore.SIGNAL("activated(int)"),
-            self.sectiontype_changed
+            self.sectiontype_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_rec_height,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.rec_height_changed
+            self.rec_height_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_rec_width,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.rec_width_changed
+            self.rec_width_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_circ_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.circ_diameter_changed
+            self.circ_diameter_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_pipe_diameter,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.pipe_diameter_changed
+            self.pipe_diameter_changed,
         )
         QtCore.QObject.connect(
             self.parameterWidget.if_pipe_thickness,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
-            self.pipe_thickness_changed
+            self.pipe_thickness_changed,
         )
 
         self.parameterWidget.cb_crosssectiontype.addItems(
@@ -90,10 +90,7 @@ class _TaskPanel:
 
         # geometry selection widget
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References,
-            ["Edge"],
-            False,
-            True
+            obj.References, ["Edge"], False, True
         )
 
         # form made from param and selection widget
@@ -102,20 +99,12 @@ class _TaskPanel:
     def accept(self):
         self.set_beamsection_props()
         self.obj.References = self.selectionWidget.references
-        self.recompute_and_set_back_all()
-        return True
+        self.selectionWidget.finish_selection()
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        doc = FreeCADGui.getDocument(self.obj.Document)
-        doc.Document.recompute()
-        self.selectionWidget.setback_listobj_visibility()
-        if self.selectionWidget.sel_server:
-            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
-        doc.resetEdit()
+        self.selectionWidget.finish_selection()
+        return super().reject()
 
     def get_beamsection_props(self):
         self.SectionType = self.obj.SectionType
@@ -135,9 +124,7 @@ class _TaskPanel:
 
     def updateParameterWidget(self):
         "fills the widgets"
-        index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(
-            self.SectionType
-        )
+        index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(self.SectionType)
         self.parameterWidget.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
         self.parameterWidget.if_rec_height.setText(self.RectHeight.UserString)
         self.parameterWidget.if_rec_width.setText(self.RectWidth.UserString)

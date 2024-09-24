@@ -23,13 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QPixmap>
-# include <QMenu>
-# include <Inventor/SbBox.h>
-# include <Inventor/events/SoEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
+#include <QPixmap>
+#include <QMenu>
+#include <Inventor/SbBox.h>
+#include <Inventor/events/SoEvent.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
 #include "MouseSelection.h"
@@ -70,38 +70,39 @@ void AbstractMouseSelection::releaseMouseModel(bool abort)
 
 int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewportRegion& vp)
 {
-    int ret=Continue;
+    int ret = Continue;
 
     const SbVec2s& sz = vp.getWindowSize();
-    short w,h;
-    sz.getValue(w,h);
+    short w, h;
+    sz.getValue(w, h);
 
     SbVec2s loc = ev->getPosition();
-    short x,y;
-    loc.getValue(x,y);
-    y = h-y; // the origin is at the left bottom corner (instead of left top corner)
+    short x, y;
+    loc.getValue(x, y);
+    y = h - y;  // the origin is at the left bottom corner (instead of left top corner)
 
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const auto event = (const SoMouseButtonEvent*) ev;
+        const auto event = (const SoMouseButtonEvent*)ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
 
         if (press) {
             _clPoly.push_back(ev->getPosition());
-            ret = mouseButtonEvent(static_cast<const SoMouseButtonEvent*>(ev), QPoint(x,y));
+            ret = mouseButtonEvent(static_cast<const SoMouseButtonEvent*>(ev), QPoint(x, y));
         }
         else {
-            ret = mouseButtonEvent(static_cast<const SoMouseButtonEvent*>(ev), QPoint(x,y));
+            ret = mouseButtonEvent(static_cast<const SoMouseButtonEvent*>(ev), QPoint(x, y));
         }
     }
     else if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
-        ret = locationEvent(static_cast<const SoLocation2Event*>(ev), QPoint(x,y));
+        ret = locationEvent(static_cast<const SoLocation2Event*>(ev), QPoint(x, y));
     }
     else if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
         ret = keyboardEvent(static_cast<const SoKeyboardEvent*>(ev));
     }
 
-    if (ret == Restart)
+    if (ret == Restart) {
         _clPoly.clear();
+    }
 
     return ret;
 }
@@ -110,9 +111,9 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
 
 BaseMouseSelection::BaseMouseSelection()
     : AbstractMouseSelection()
-{
-}
+{}
 
+// clang-format off
 static const char* cursor_cut_scissors[]= {
     "32 32 6 1",
     "a c #800000",
@@ -154,6 +155,7 @@ static const char* cursor_cut_scissors[]= {
     "................................",
     "................................"
 };
+// clang-format on
 
 PolyPickerSelection::PolyPickerSelection()
 {
@@ -162,7 +164,7 @@ PolyPickerSelection::PolyPickerSelection()
 
 void PolyPickerSelection::setColor(float r, float g, float b, float a)
 {
-    polyline.setColor(r,g,b,a);
+    polyline.setColor(r, g, b, a);
 }
 
 void PolyPickerSelection::setLineWidth(float l)
@@ -179,7 +181,7 @@ void PolyPickerSelection::initialize()
     polyline.setViewer(_pcView3D);
 
     _pcView3D->addGraphicsItem(&polyline);
-    _pcView3D->redraw(); // needed to get an up-to-date image
+    _pcView3D->redraw();  // needed to get an up-to-date image
     _pcView3D->setRenderType(View3DInventorViewer::Image);
     _pcView3D->redraw();
 
@@ -209,17 +211,21 @@ int PolyPickerSelection::popupMenu()
     menu.addAction(QObject::tr("Clear"));
     QAction* ca = menu.addAction(QObject::tr("Cancel"));
 
-    if(getPositions().size() < 3)
+    if (getPositions().size() < 3) {
         fi->setEnabled(false);
+    }
 
     QAction* id = menu.exec(QCursor::pos());
 
-    if (id == fi)
+    if (id == fi) {
         return Finish;
-    else if (id == ca)
+    }
+    else if (id == ca) {
         return Cancel;
-    else
+    }
+    else {
         return Restart;
+    }
 }
 
 int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
@@ -228,63 +234,57 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
 
     if (press) {
-        switch(button)
-        {
-        case SoMouseButtonEvent::BUTTON1:
-        {
-            if (!polyline.isWorking()) {
-                polyline.setWorking(true);
-                polyline.clear();
-            };
-            polyline.addNode(pos);
-            lastConfirmed = true;
-            m_iXnew = pos.x();  m_iYnew = pos.y();
-            m_iXold = pos.x();  m_iYold = pos.y();
-        }
-        break;
+        switch (button) {
+            case SoMouseButtonEvent::BUTTON1: {
+                if (!polyline.isWorking()) {
+                    polyline.setWorking(true);
+                    polyline.clear();
+                };
+                polyline.addNode(pos);
+                lastConfirmed = true;
+                m_iXnew = pos.x();
+                m_iYnew = pos.y();
+                m_iXold = pos.x();
+                m_iYold = pos.y();
+            } break;
 
-        case SoMouseButtonEvent::BUTTON2:
-        {
-             polyline.addNode(pos);
-             m_iXnew = pos.x();  m_iYnew = pos.y();
-             m_iXold = pos.x();  m_iYold = pos.y();
-        }
-        break;
+            case SoMouseButtonEvent::BUTTON2: {
+                polyline.addNode(pos);
+                m_iXnew = pos.x();
+                m_iYnew = pos.y();
+                m_iXold = pos.x();
+                m_iYold = pos.y();
+            } break;
 
-        default:
-        {
-        }   break;
+            default: {
+            } break;
         }
     }
     // release
     else {
-        switch(button)
-        {
-        case SoMouseButtonEvent::BUTTON2:
-        {
-            QCursor cur = _pcView3D->getWidget()->cursor();
-            _pcView3D->getWidget()->setCursor(m_cPrevCursor);
+        switch (button) {
+            case SoMouseButtonEvent::BUTTON2: {
+                QCursor cur = _pcView3D->getWidget()->cursor();
+                _pcView3D->getWidget()->setCursor(m_cPrevCursor);
 
-            // The pop-up menu should be shown when releasing mouse button because
-            // otherwise the navigation style doesn't get the UP event and gets into
-            // an inconsistent state.
-            int id = popupMenu();
+                // The pop-up menu should be shown when releasing mouse button because
+                // otherwise the navigation style doesn't get the UP event and gets into
+                // an inconsistent state.
+                int id = popupMenu();
 
-            if (id == Finish || id == Cancel) {
-                releaseMouseModel();
-            }
-            else if (id == Restart) {
-                _pcView3D->getWidget()->setCursor(cur);
-            }
+                if (id == Finish || id == Cancel) {
+                    releaseMouseModel();
+                }
+                else if (id == Restart) {
+                    _pcView3D->getWidget()->setCursor(cur);
+                }
 
-            polyline.setWorking(false);
-            return id;
-        }
-        break;
+                polyline.setWorking(false);
+                return id;
+            } break;
 
-        default:
-        {
-        }   break;
+            default: {
+            } break;
         }
     }
 
@@ -301,22 +301,26 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoi
         qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
         QRect r = _pcView3D->getGLWidget()->rect();
         if (dpr != 1.0) {
-            r.setHeight(r.height()*dpr);
-            r.setWidth(r.width()*dpr);
+            r.setHeight(r.height() * dpr);
+            r.setWidth(r.width() * dpr);
         }
 
         if (!r.contains(clPoint)) {
-            if (clPoint.x() < r.left())
+            if (clPoint.x() < r.left()) {
                 clPoint.setX(r.left());
+            }
 
-            if (clPoint.x() > r.right())
+            if (clPoint.x() > r.right()) {
                 clPoint.setX(r.right());
+            }
 
-            if (clPoint.y() < r.top())
+            if (clPoint.y() < r.top()) {
                 clPoint.setY(r.top());
+            }
 
-            if (clPoint.y() > r.bottom())
+            if (clPoint.y() > r.bottom()) {
                 clPoint.setY(r.bottom());
+            }
 
 #ifdef FC_OS_WINDOWS
             QPoint newPos = _pcView3D->getGLWidget()->mapToGlobal(clPoint);
@@ -324,8 +328,9 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoi
 #endif
         }
 
-        if (!lastConfirmed)
+        if (!lastConfirmed) {
             polyline.popNode();
+        }
         polyline.addNode(clPoint);
         lastConfirmed = false;
 
@@ -413,16 +418,20 @@ int FreehandSelection::popupMenu()
     menu.addAction(QObject::tr("Clear"));
     QAction* ca = menu.addAction(QObject::tr("Cancel"));
 
-    if (getPositions().size() < 3)
+    if (getPositions().size() < 3) {
         fi->setEnabled(false);
+    }
 
     QAction* id = menu.exec(QCursor::pos());
-    if (id == fi)
+    if (id == fi) {
         return Finish;
-    else if (id == ca)
+    }
+    else if (id == ca) {
         return Cancel;
-    else
+    }
+    else {
         return Restart;
+    }
 }
 
 int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
@@ -431,9 +440,8 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
     const SbBool press = e->getState() == SoButtonEvent::DOWN ? true : false;
 
     if (press) {
-        switch(button) {
-        case SoMouseButtonEvent::BUTTON1:
-            {
+        switch (button) {
+            case SoMouseButtonEvent::BUTTON1: {
                 if (!polyline.isWorking()) {
                     polyline.setWorking(true);
                     polyline.clear();
@@ -441,35 +449,34 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
 
                 polyline.addNode(pos);
                 polyline.setCoords(pos.x(), pos.y());
-                m_iXnew = pos.x();  m_iYnew = pos.y();
-                m_iXold = pos.x();  m_iYold = pos.y();
-            }
-            break;
+                m_iXnew = pos.x();
+                m_iYnew = pos.y();
+                m_iXold = pos.x();
+                m_iYold = pos.y();
+            } break;
 
-        case SoMouseButtonEvent::BUTTON2:
-            {
-                 polyline.addNode(pos);
-                 m_iXnew = pos.x();  m_iYnew = pos.y();
-                 m_iXold = pos.x();  m_iYold = pos.y();
-            }
-            break;
+            case SoMouseButtonEvent::BUTTON2: {
+                polyline.addNode(pos);
+                m_iXnew = pos.x();
+                m_iYnew = pos.y();
+                m_iXold = pos.x();
+                m_iYold = pos.y();
+            } break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
     // release
     else {
-        switch(button)
-        {
-        case SoMouseButtonEvent::BUTTON1:
-            if (polyline.isWorking()) {
-                releaseMouseModel();
-                return Finish;
-            }
-            break;
-        case SoMouseButtonEvent::BUTTON2:
-            {
+        switch (button) {
+            case SoMouseButtonEvent::BUTTON1:
+                if (polyline.isWorking()) {
+                    releaseMouseModel();
+                    return Finish;
+                }
+                break;
+            case SoMouseButtonEvent::BUTTON2: {
                 QCursor cur = _pcView3D->getWidget()->cursor();
                 _pcView3D->getWidget()->setCursor(m_cPrevCursor);
 
@@ -487,11 +494,10 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
 
                 polyline.setWorking(false);
                 return id;
-            }
-            break;
+            } break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -508,29 +514,34 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
         qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
         QRect r = _pcView3D->getGLWidget()->rect();
         if (dpr != 1.0) {
-            r.setHeight(r.height()*dpr);
-            r.setWidth(r.width()*dpr);
+            r.setHeight(r.height() * dpr);
+            r.setWidth(r.width() * dpr);
         }
 
         if (!r.contains(clPoint)) {
-            if (clPoint.x() < r.left())
+            if (clPoint.x() < r.left()) {
                 clPoint.setX(r.left());
+            }
 
-            if (clPoint.x() > r.right())
+            if (clPoint.x() > r.right()) {
                 clPoint.setX(r.right());
+            }
 
-            if (clPoint.y() < r.top())
+            if (clPoint.y() < r.top()) {
                 clPoint.setY(r.top());
+            }
 
-            if (clPoint.y() > r.bottom())
+            if (clPoint.y() > r.bottom()) {
                 clPoint.setY(r.bottom());
+            }
         }
 
         SbVec2s last = _clPoly.back();
         SbVec2s curr = e->getPosition();
 
-        if (abs(last[0]-curr[0]) > 20 || abs(last[1]-curr[1]) > 20)
+        if (abs(last[0] - curr[0]) > 20 || abs(last[1] - curr[1]) > 20) {
             _clPoly.push_back(curr);
+        }
 
         polyline.addNode(clPoint);
         polyline.setCoords(clPoint.x(), clPoint.y());
@@ -556,7 +567,7 @@ RubberbandSelection::~RubberbandSelection() = default;
 
 void RubberbandSelection::setColor(float r, float g, float b, float a)
 {
-    rubberband.setColor(r,g,b,a);
+    rubberband.setColor(r, g, b, a);
 }
 
 void RubberbandSelection::initialize()
@@ -594,35 +605,28 @@ int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     int ret = Continue;
 
     if (press) {
-        switch(button)
-        {
-        case SoMouseButtonEvent::BUTTON1:
-        {
-            rubberband.setWorking(true);
-            m_iXold = m_iXnew = pos.x();
-            m_iYold = m_iYnew = pos.y();
-        }
-        break;
+        switch (button) {
+            case SoMouseButtonEvent::BUTTON1: {
+                rubberband.setWorking(true);
+                m_iXold = m_iXnew = pos.x();
+                m_iYold = m_iYnew = pos.y();
+            } break;
 
-        default:
-        {
-        }   break;
+            default: {
+            } break;
         }
     }
     else {
-        switch(button) {
-        case SoMouseButtonEvent::BUTTON1:
-        {
-            rubberband.setWorking(false);
-            releaseMouseModel();
-            _clPoly.push_back(e->getPosition());
-            ret = Finish;
-        }
-        break;
+        switch (button) {
+            case SoMouseButtonEvent::BUTTON1: {
+                rubberband.setWorking(false);
+                releaseMouseModel();
+                _clPoly.push_back(e->getPosition());
+                ret = Finish;
+            } break;
 
-        default:
-        {
-        }   break;
+            default: {
+            } break;
         }
     }
 
@@ -645,9 +649,10 @@ int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const)
 
 // -----------------------------------------------------------------------------------
 
-RectangleSelection::RectangleSelection() : RubberbandSelection()
+RectangleSelection::RectangleSelection()
+    : RubberbandSelection()
 {
-    rubberband.setColor(0.0,0.0,1.0,1.0);
+    rubberband.setColor(0.0, 0.0, 1.0, 1.0);
 }
 
 RectangleSelection::~RectangleSelection() = default;

@@ -1,4 +1,4 @@
-# FreeCAD Privacy Policy 
+# FreeCAD Privacy Policy
 
 The FreeCAD application does not collect, transmit, share or use any Personal Data.
 
@@ -27,6 +27,6 @@ When reading the online version of the User Manual within FreeCAD, manual conten
 
 FreeCAD is Free Software and therefore may be packaged by other people, who may include additional software or modify the source code. We do not vouch for these third-party packages and cannot tell you what they contain and what they do regarding your privacy. The official packages are explicitly listed in our download page.
 
-   
+
  - [based on the GIMP privacy policy](https://www.gimp.org/about/privacy.html)
 

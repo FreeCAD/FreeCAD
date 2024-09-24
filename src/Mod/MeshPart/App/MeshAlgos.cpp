@@ -102,8 +102,6 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
             }
         }
 
-        // if there are no flipped triangles -> stop
-        // int f =fliped.size();
         if (fliped.empty()) {
             break;
         }
@@ -192,10 +190,6 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
     s1 = MeshAlgos::createGTSSurface(pMesh1);
     s2 = MeshAlgos::createGTSSurface(pMesh2);
 
-    // clear the mesh (memory)
-    // Mesh1.clear();
-    // Mesh2.clear();
-
     /* check that the surfaces are orientable manifolds */
     if (!gts_surface_is_orientable(s1)) {
         gts_object_destroy(GTS_OBJECT(s1));
@@ -214,9 +208,6 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
 
         self_intersects = gts_surface_is_self_intersecting(s1);
         if (self_intersects != NULL) {
-            //      if (verbose)
-            //        gts_surface_print_stats (self_intersects, stderr);
-            //      gts_surface_write (self_intersects, stdout);
             gts_object_destroy(GTS_OBJECT(self_intersects));
             gts_object_destroy(GTS_OBJECT(s1));
             gts_object_destroy(GTS_OBJECT(s2));
@@ -224,9 +215,6 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
         }
         self_intersects = gts_surface_is_self_intersecting(s2);
         if (self_intersects != NULL) {
-            //      if (verbose)
-            //        gts_surface_print_stats (self_intersects, stderr);
-            //      gts_surface_write (self_intersects, stdout);
             gts_object_destroy(GTS_OBJECT(self_intersects));
             gts_object_destroy(GTS_OBJECT(s1));
             gts_object_destroy(GTS_OBJECT(s2));
@@ -283,9 +271,6 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
 
         self_intersects = gts_surface_is_self_intersecting(s3);
         if (self_intersects != NULL) {
-            //      if (verbose)
-            //        gts_surface_print_stats (self_intersects, stderr);
-            //     gts_surface_write (self_intersects, stdout);
             gts_object_destroy(GTS_OBJECT(self_intersects));
             gts_object_destroy(GTS_OBJECT(s1));
             gts_object_destroy(GTS_OBJECT(s2));
@@ -308,12 +293,6 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
     // destroy surfaces
     gts_object_destroy(GTS_OBJECT(s1));
     gts_object_destroy(GTS_OBJECT(s2));
-    //  gts_object_destroy (GTS_OBJECT (s3));
-    //  gts_object_destroy (GTS_OBJECT (si));
-
-    // destroy bounding box trees (including bounding boxes)
-    //  gts_bb_tree_destroy (tree1, true);
-    //  gts_bb_tree_destroy (tree2, true);
 
 #endif
     return pMesh1;
@@ -390,11 +369,6 @@ static void onFaces(GtsTriangle* t, std::vector<MeshGeomFacet>* VAry)
                                   Base::Vector3f(mv2->p.x, mv2->p.y, mv2->p.z)));
 }
 
-/*
-static void onVertices(GtsVertex *v, MeshKernel *pKernel )
-{
-  Base::Vector3f Point(GTS_POINT(v)->x,GTS_POINT(v)->y,GTS_POINT(v)->z);
-}*/
 
 void MeshAlgos::fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* pSurface)
 {
@@ -403,7 +377,6 @@ void MeshAlgos::fillMeshFromGTSSurface(MeshCore::MeshKernel* pMesh, GtsSurface* 
     // remove old mesh
     pMesh->Clear();
 
-    //  gts_surface_foreach_vertex(pSurface,(GtsFunc) onVertices,&MeshK);
     gts_surface_foreach_face(pSurface, (GtsFunc)onFaces, &VAry);
 
     // destroy surfaces
@@ -431,27 +404,9 @@ void MeshAlgos::cutByShape(const TopoDS_Shape& aShape,
                            const MeshCore::MeshKernel* pMesh,
                            MeshCore::MeshKernel* pToolMesh)
 {
-
-    // calculate the projection for each Edge
-    //  CurveProjectorShape Project(aShape,*pMesh);
     CurveProjectorWithToolMesh Project(aShape, *pMesh, *pToolMesh);
-
-    // IntersectionLine Lines;
-    //  MeshWithProperty *ResultMesh = new MeshWithProperty();
-
-
-    // boolean(pMesh,ToolMesh,ResultMesh,1);
 }
 
-/*
-void MeshAlgos::doIntersection(const MeshWithProperty &pMesh,const MeshWithProperty
-ToolMesh,IntersectionLine &Lines)
-  {
-
-
-  }
-
-*/
 
 void MeshAlgos::cutByCurve(MeshCore::MeshKernel* pMesh,
                            const std::vector<CurveProjector::FaceSplitEdge>& vSplitEdges)
@@ -545,8 +500,6 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel& ResultMesh,
             Tng.Normalize();
             Up.Normalize();
             Base::Vector3f Third(Tng % Up);
-
-            //      Base::Console().Log("Pos: %f %f %f \n",Ptn.x,Ptn.y,Ptn.z);
 
             unsigned int l = 0;
             std::vector<Base::Vector3f>::const_iterator It;

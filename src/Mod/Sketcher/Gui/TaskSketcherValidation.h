@@ -29,7 +29,6 @@
 #include <App/DocumentObserver.h>
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Sketcher/App/SketchAnalysis.h>
 
 
 class SoGroup;
@@ -75,7 +74,6 @@ private:
 private:
     std::unique_ptr<Ui_TaskSketcherValidation> ui;
     App::WeakPtrT<Sketcher::SketchObject> sketch;
-    Sketcher::SketchAnalysis sketchAnalyser;
     SoGroup* coincidenceRoot;
 };
 

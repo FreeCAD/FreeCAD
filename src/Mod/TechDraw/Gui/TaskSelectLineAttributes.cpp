@@ -52,10 +52,7 @@ enum class EdgeColor {
     yellow = 8
 };
 
-//===========================================================================
-// managing global line attributes
-//===========================================================================
-
+// line attributes are now in App/LineFormat
 
 //===========================================================================
 // managing global dimension attributes
@@ -83,8 +80,7 @@ dimAttributes activeDimAttributes; // container holding dimension attributes
 // TaskSelectLineAttributes
 //===========================================================================
 
-TaskSelectLineAttributes::TaskSelectLineAttributes(LineFormat *ptActiveAttributes) :
-    activeAttributes(ptActiveAttributes),
+TaskSelectLineAttributes::TaskSelectLineAttributes() :
     ui(new Ui_TaskSelectLineAttributes)
 {
     m_lineGenerator = new TechDraw::LineGenerator;
@@ -117,7 +113,7 @@ void TaskSelectLineAttributes::changeEvent(QEvent *e)
 void TaskSelectLineAttributes::setUiEdit()
 {
     setWindowTitle(tr("Select line attributes"));
-    int lineStyle = activeAttributes->getStyle();
+    int lineStyle = LineFormat::getCurrentLineFormat().getStyle();
     // line numbering starts at 1, not 0
     DrawGuiUtil::loadLineStyleChoices(ui->cbLineStyle, m_lineGenerator);
     if (ui->cbLineStyle->count() >= lineStyle ) {
@@ -129,7 +125,7 @@ void TaskSelectLineAttributes::setUiEdit()
     ui->rbMiddle->setText(QString::fromUtf8("Middle %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Graphic"))));
     ui->rbThick->setText(QString::fromUtf8("Thick %1").arg(QString::number(TechDraw::LineGroup::getDefaultWidth("Thick"))));
 
-    double lineWidth = activeAttributes->getWidth();
+    double lineWidth = LineFormat::getCurrentLineFormat().getWidth();
     if (lineWidth <= TechDraw::LineGroup::getDefaultWidth("Thin")) {
         ui->rbThin->setChecked(true);
     } else if (lineWidth <= TechDraw::LineGroup::getDefaultWidth("Graphic")) {
@@ -140,7 +136,7 @@ void TaskSelectLineAttributes::setUiEdit()
         ui->rbMiddle->setChecked(true);
     }
 
-    QColor lineColor = activeAttributes->getQColor();
+    QColor lineColor = LineFormat::getCurrentLineFormat().getQColor();
     ui->cbColor->setColor(lineColor);
 
     double cascadeSpacing = activeDimAttributes.getCascadeSpacing();
@@ -152,26 +148,26 @@ void TaskSelectLineAttributes::setUiEdit()
 
 bool TaskSelectLineAttributes::accept()
 {
-    activeAttributes->setStyle(ui->cbLineStyle->currentIndex() + 1);
-    activeAttributes->setLineNumber(ui->cbLineStyle->currentIndex() + 1);
+    LineFormat::getCurrentLineFormat().setStyle(ui->cbLineStyle->currentIndex() + 1);
+    LineFormat::getCurrentLineFormat().setLineNumber(ui->cbLineStyle->currentIndex() + 1);
 
     if (ui->rbThin->isChecked()){
-        activeAttributes->setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
+        LineFormat::getCurrentLineFormat().setWidth(TechDraw::LineGroup::getDefaultWidth("Thin"));
     }
     else if (ui->rbMiddle->isChecked()){
-        activeAttributes->setWidth(TechDraw::LineGroup::getDefaultWidth("Graphic"));
+        LineFormat::getCurrentLineFormat().setWidth(TechDraw::LineGroup::getDefaultWidth("Graphic"));
     }
     else if (ui->rbThick->isChecked()){
-        activeAttributes->setWidth(TechDraw::LineGroup::getDefaultWidth("Thick"));
+        LineFormat::getCurrentLineFormat().setWidth(TechDraw::LineGroup::getDefaultWidth("Thick"));
     }
     else {
-        activeAttributes->setWidth(TechDraw::LineGroup::getDefaultWidth("Graphic"));
+        LineFormat::getCurrentLineFormat().setWidth(TechDraw::LineGroup::getDefaultWidth("Graphic"));
     }
 
     QColor qTemp = ui->cbColor->color();
     App::Color temp;
     temp.set(qTemp.redF(), qTemp.greenF(), qTemp.blueF(), 1.0 - qTemp.alphaF());
-    activeAttributes->setColor(temp);
+    LineFormat::getCurrentLineFormat().setColor(temp);
 
     double cascadeSpacing = ui->sbSpacing->value();
     activeDimAttributes.setCascadeSpacing(cascadeSpacing);
@@ -190,10 +186,10 @@ bool TaskSelectLineAttributes::reject()
 // TaskDlgSelectLineAttributes
 //===========================================================================
 
-TaskDlgSelectLineAttributes::TaskDlgSelectLineAttributes(LineFormat *ptActiveAttributes)
+TaskDlgSelectLineAttributes::TaskDlgSelectLineAttributes()
     : TaskDialog()
 {
-    widget  = new TaskSelectLineAttributes(ptActiveAttributes);
+    widget  = new TaskSelectLineAttributes();
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_ExtensionSelectLineAttributes"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

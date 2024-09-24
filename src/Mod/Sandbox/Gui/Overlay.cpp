@@ -65,22 +65,7 @@ public:
 
         fbo = new QtGLFramebufferObject(v->getGLWidget()->size());
         fbo->bind();
-        //glClear(GL_COLOR_BUFFER_BIT);
         fbo->release();
-        {
-            //img = fbo->toImage();
-            //img = QtGLWidget::convertToGLFormat(img);
-        }
-        //fbo->bind();
-        //glEnable(GL_DEPTH_TEST);
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //glDepthRange(0.1,1.0);
-        //glEnable(GL_LINE_SMOOTH);
-        //SoGLRenderAction a(SbViewportRegion(128,128));
-        //a.apply(v->getSceneManager()->getSceneGraph());
-        //fbo->release();
-        //img = fbo->toImage();
-        //img = QtGLWidget::convertToGLFormat(img);
 
         view->getSoRenderManager()->scheduleRedraw();
     }
@@ -103,34 +88,6 @@ public:
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4d(0.0,0.0,1.0,0.0f);
     glRasterPos2d(0,0);
-
-    //http://wiki.delphigl.com/index.php/Multisampling
-    //glDrawPixels(img.width(),img.height(),GL_RGBA,GL_UNSIGNED_BYTE,img.bits());
-/*
-    fbo->bind();
-    GLuint* buf = new GLuint[size[0]*size[1]];
-    glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE, buf);
-    fbo->release();
-    glDrawPixels(size[0],size[1],GL_RGBA,GL_UNSIGNED_BYTE,buf);
-    delete [] buf;
-*/
-/*
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, fbo->texture());
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.0,0.0);
-        glVertex2f(-1.0,-1.0);
-        glTexCoord2f(0.0,1.0);
-        glVertex2f(-1.0,1.0);
-        glTexCoord2f(1.0,1.0);
-        glVertex2f(1.0,1.0);
-        glTexCoord2f(1.0,0.0);
-        glVertex2f(1.0,-1.0);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-*/
-
-
     glPopAttrib();
     glPopMatrix();
     }
@@ -152,11 +109,8 @@ Teapots(Gui::View3DInventorViewer* v) :view(v)
     SbVec2s size = vp.getViewportSizePixels();
 
     rubberBandIsShown = false;
-
-//    makeCurrent();
     fbObject = new QtGLFramebufferObject(size[0],size[1],
                                          QtGLFramebufferObject::Depth);
-    //initializeGL();
     resizeGL(size[0],size[1]);
 
     rubberBandIsShown = true;
@@ -199,28 +153,6 @@ void initializeGL()
 
 void resizeGL(int width, int height)
 {
-#if 0
-    fbObject->bind();
-
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    if (width <= height) {
-        glOrtho(0.0, 20.0, 0.0, 20.0 * GLfloat(height) / GLfloat(width),
-                -10.0, 10.0);
-    } else {
-        glOrtho(0.0, 20.0 * GLfloat(width) / GLfloat(height), 0.0, 20.0,
-                -10.0, 10.0);
-    }
-    glMatrixMode(GL_MODELVIEW);
-    drawTeapots();
-
-    fbObject->release();
-#else
     (void)width;
     (void)height;
     fbObject->bind();
@@ -234,14 +166,12 @@ void resizeGL(int width, int height)
     SoGLRenderAction gl(SbViewportRegion(fbObject->size().width(),fbObject->size().height()));
     gl.apply(view->getSoRenderManager()->getSceneGraph());
     fbObject->release();
-#endif
 }
 
 void paintGL()
 {
     const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
-
 
     glDisable(GL_LIGHTING);
     glViewport(0, 0, size[0], size[1]);
@@ -311,7 +241,6 @@ void mouseMoveEvent(QMouseEvent *event)
 {
     if (rubberBandIsShown) {
         rubberBandCorner2 = event->pos();
-//        updateGL();
     }
 }
 
@@ -319,7 +248,6 @@ void mouseReleaseEvent(QMouseEvent * /* event */)
 {
     if (rubberBandIsShown) {
         rubberBandIsShown = false;
-//        updateGL();
     }
 }
 
@@ -351,17 +279,6 @@ void paintGL()
     const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
-
-    //glDisable(GL_LIGHTING);
-    //glViewport(0, 0, size[0], size[1]);
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadIdentity();
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity();
-    //glDisable(GL_DEPTH_TEST);
-
-    //glClear(GL_COLOR_BUFFER_BIT);
-
         glMatrixMode(GL_PROJECTION);
         glOrtho(0, size[0], size[1], 0, 0, 100);
         glMatrixMode(GL_MODELVIEW);
@@ -386,9 +303,6 @@ void paintGL()
         glLineWidth(1.0);
         glDisable(GL_LINE_STIPPLE);
         glDisable(GL_BLEND);
-
-    //glEnable(GL_LIGHTING);
-    //glEnable(GL_DEPTH_TEST);
 }
 
 };
@@ -396,83 +310,21 @@ void paintGL()
 
 void paintSelection()
 {
-#if 0
-    SoAnnotation* hudRoot = new SoAnnotation;
-    hudRoot->ref();
-
-    SoOrthographicCamera* hudCam = new SoOrthographicCamera();
-    hudCam->viewportMapping = SoCamera::LEAVE_ALONE;
-    // Set the position in the window.
-    // [0, 0] is in the center of the screen.
-    //
-    SoTranslation* hudTrans = new SoTranslation;
-    hudTrans->translation.setValue(-1.0f, -1.0f, 0.0f);
-
-    QImage image(100,100,QImage::Format_ARGB32_Premultiplied);
-    image.fill(0x00000000);
-    SoSFImage sfimage;
-    Gui::BitmapFactory().convert(image, sfimage);
-    SoImage* hudImage = new SoImage();
-    hudImage->image = sfimage;
-
-    // Assemble the parts...
-    //
-    hudRoot->addChild(hudCam);
-    hudRoot->addChild(hudTrans);
-    hudRoot->addChild(hudImage);
-
-    Gui::View3DInventorViewer* viewer = this->getViewer();
-    static_cast<SoGroup*>(viewer->getSceneGraph())->addChild(hudRoot);
-
-    QWidget* gl = viewer->getGLWidget();
-    DrawingPlane pln(hudImage->image, viewer, gl);
-    gl->installEventFilter(&pln);
-    QEventLoop loop;
-    QObject::connect(&pln, SIGNAL(emitSelection()), &loop, SLOT(quit()));
-    loop.exec();
-    static_cast<SoGroup*>(viewer->getSceneGraph())->removeChild(hudRoot);
-#endif
 }
 
 // ---------------------------------------
 #include <Gui/NavigationStyle.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#if 0
-void MeshSelection::prepareFreehandSelection(bool add)
-{
-    // a rubberband to select a rectangle area of the meshes
-    Gui::View3DInventorViewer* viewer = this->getViewer();
-    if (viewer) {
-        stopInteractiveCallback(viewer);
-        startInteractiveCallback(viewer, selectGLCallback);
-        // set cross cursor
-        DrawingPlane* brush = new DrawingPlane();
-        //brush->setColor(1.0f,0.0f,0.0f);
-        //brush->setLineWidth(3.0f);
-        viewer->navigationStyle()->startSelection(brush);
-        SoQtCursor::CustomCursor custom;
-        custom.dim.setValue(16, 16);
-        custom.hotspot.setValue(7, 7);
-        custom.bitmap = cross_bitmap;
-        custom.mask = cross_mask_bitmap;
-        viewer->setComponentCursor(SoQtCursor(&custom));
-        this->addToSelection = add;
-    }
-}
-#endif
+
 DrawingPlane::DrawingPlane()
 {
-    //image.fill(qRgba(255, 255, 255, 0));
-
     myPenWidth = 50;
 
     QRgb p = qRgba(255,255,0,0);
-    int q = p;//((p << 16) & 0xff0000) | ((p >> 16) & 0xff) | (p & 0xff00ff00);
+    int q = p;
     int r = qRed(q);
     int g = qGreen(q);
     int b = qBlue(q);
-    myPenColor = qRgb(r,g,b);//Qt::yellow;
+    myPenColor = qRgb(r,g,b);
     myRadius = 5.0f;
 }
 
@@ -532,9 +384,6 @@ void DrawingPlane::draw ()
     glEnable(GL_COLOR_LOGIC_OP);
     glLogicOp(GL_XOR);
     glDrawBuffer(GL_FRONT);
-
-
-    //fbo->drawTexture(QPointF(), fbo->texture());
 
     glFlush();
     glLogicOp(GL_COPY);
@@ -604,7 +453,6 @@ int DrawingPlane::locationEvent(const SoLocation2Event * const, const QPoint& po
 
         draw();
     }
-
     return Continue;
 }
 
@@ -618,12 +466,3 @@ void DrawingPlane::drawLineTo(const QPoint &endPoint)
     Q_UNUSED(endPoint);
     return;
 }
-    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventor*>(doc->getActiveView())->getViewer();
-    ////view->addGraphicsItem(new MyPaintable(view));
-    ////view->addGraphicsItem(new Teapots(view));
-    //view->addGraphicsItem(new Rubberband(view));
-    //....
-    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventor*>(doc->getActiveView())->getViewer();
-    //view->clearGraphicsItems();

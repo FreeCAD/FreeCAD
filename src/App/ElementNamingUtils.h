@@ -2,9 +2,41 @@
 #define ELEMENT_NAMING_UTILS_H
 
 #include <string>
+#include <utility>
 #include "FCGlobal.h"
 
+namespace App
+{
 
+/** Return type for lookups of new and old style sub-element names
+ *
+ */
+struct ElementNamePair
+{
+    std::string newName;
+    std::string oldName;
+
+    ElementNamePair() = default;
+
+    ElementNamePair(std::string newNameStr, std::string oldNameStr) :
+        newName(std::move(newNameStr)), oldName(std::move(oldNameStr))
+    {
+    }
+
+    bool operator==(const ElementNamePair& other) const
+    {
+        return this->newName == other.newName && this->oldName == other.oldName;
+    };
+
+    void swap(ElementNamePair& other) noexcept
+    {
+        std::swap(*this, other);
+    }
+};
+
+}
+
+// clang-format off
 namespace Data
 {
 
@@ -37,6 +69,7 @@ constexpr const char* POSTFIX_GEN                       = ";:G";
 constexpr const char* POSTFIX_MODGEN                    = ";:MG";
 constexpr const char* POSTFIX_DUPLICATE                 = ";D";
 
+constexpr const char* ELEMENT_MAP_INDEX                 = "_";
 
 /// Check if a subname contains missing element
 AppExport bool hasMissingElement(const char *subname);
@@ -63,7 +96,9 @@ AppExport const char *findElementName(const char *subname);
 
 AppExport const char *hasMappedElementName(const char *subname);
 
+AppExport const std::string indexSuffix(int index, const char *label=ELEMENT_MAP_INDEX);
 
-}// namespace Data
+}  // namespace Data
+// clang-format on
 
 #endif // ELEMENT_NAMING_UTILS_H

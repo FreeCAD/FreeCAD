@@ -53,6 +53,7 @@
 #include "GestureNavigationStyle.h"
 #include "NavigationStyle.h"
 #include "SelectionObject.h"
+#include "So3DAnnotation.h"
 #include "SoAxisCrossKit.h"
 #include "SoFCBackgroundGradient.h"
 #include "SoFCBoundingBox.h"
@@ -141,6 +142,7 @@ void Gui::SoFCDB::init()
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();
     SoMouseWheelEvent               ::initClass();
+    So3DAnnotation                  ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();

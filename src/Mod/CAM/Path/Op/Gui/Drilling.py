@@ -48,15 +48,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the drilling operation's page"""
 
     def initPage(self, obj):
-        self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(
-            self.form.peckDepth, obj, "PeckDepth"
-        )
+        self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(self.form.peckDepth, obj, "PeckDepth")
         self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.peckRetractHeight, obj, "RetractHeight"
         )
-        self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(
-            self.form.dwellTime, obj, "DwellTime"
-        )
+        self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(self.form.dwellTime, obj, "DwellTime")
         self.form.chipBreakEnabled.setEnabled(False)
 
     def registerSignalHandlers(self, obj):
@@ -143,9 +139,16 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
         self.updateQuantitySpinBoxes()
 
-        if not hasattr(obj,"KeepToolDown"):
-            obj.addProperty("App::PropertyBool", "KeepToolDown", "Drill",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Apply G99 retraction: only retract to RetractHeight between holes in this operation"))
+        if not hasattr(obj, "KeepToolDown"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "KeepToolDown",
+                "Drill",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                ),
+            )
 
         if obj.KeepToolDown:
             self.form.KeepToolDownEnabled.setCheckState(QtCore.Qt.Checked)

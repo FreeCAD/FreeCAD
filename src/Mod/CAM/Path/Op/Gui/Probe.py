@@ -27,6 +27,7 @@ import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Probe as PathProbe
 import PathGui
+import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtCore, QtGui
@@ -55,12 +56,22 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
-        self.updateToolController(obj, self.form.toolController)
         PathGuiUtil.updateInputField(obj, "Xoffset", self.form.Xoffset)
         PathGuiUtil.updateInputField(obj, "Yoffset", self.form.Yoffset)
         obj.PointCountX = self.form.PointCountX.value()
         obj.PointCountY = self.form.PointCountY.value()
         obj.OutputFileName = str(self.form.OutputFileName.text())
+
+        try:
+            self.updateToolController(obj, self.form.toolController)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a probe tool",
+            )
+
+            self.show_error_message(title, message)
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""

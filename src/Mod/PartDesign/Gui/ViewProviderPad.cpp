@@ -32,7 +32,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPad,PartDesignGui::ViewProviderSketchBased)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPad, PartDesignGui::ViewProviderExtrude)
 
 ViewProviderPad::ViewProviderPad()
 {

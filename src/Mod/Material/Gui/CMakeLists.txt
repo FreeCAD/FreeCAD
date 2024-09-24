@@ -40,7 +40,7 @@ generate_from_xml(MaterialTreeWidgetPy)
 
 SET(Python_SRCS
     MaterialTreeWidgetPy.xml
-    MaterialTreeWidgetPyImpl.cpp
+    MaterialTreeWidgetPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -48,6 +48,8 @@ set(MatGui_UIC_SRCS
     Array2D.ui
     Array3D.ui
     DlgDisplayProperties.ui
+    DlgInspectAppearance.ui
+    DlgInspectMaterial.ui
     DlgMaterial.ui
     DlgSettingsDefaultMaterial.ui
     DlgSettingsMaterial.ui
@@ -82,9 +84,12 @@ SET(MatGui_SRCS
     DlgDisplayPropertiesImp.cpp
     DlgDisplayPropertiesImp.h
     DlgDisplayProperties.ui
-    DlgMaterialImp.cpp
-    DlgMaterialImp.h
-    DlgDisplayProperties.ui
+    DlgInspectAppearance.cpp
+    DlgInspectAppearance.h
+    DlgInspectAppearance.ui
+    DlgInspectMaterial.cpp
+    DlgInspectMaterial.h
+    DlgInspectMaterial.ui
     DlgMaterialImp.cpp
     DlgMaterialImp.h
     DlgMaterial.ui
@@ -149,15 +154,24 @@ SET(MatGuiImages
     Resources/images/default_image.png
 )
 
-add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages})
+SET(Material_Ui_Files
+    Resources/ui/materials-editor.ui
+)
+
+add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG} ${MatGuiImages} ${Material_Ui_Files})
 target_link_libraries(MatGui ${MatGui_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(MatGui)
+endif()
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)
 
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiIcon_SVG})
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiImages})
+fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${Material_Ui_Files})
 
 INSTALL(TARGETS MatGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/icons")
 INSTALL(FILES ${MatGuiImages} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/images")
+INSTALL(FILES ${Material_Ui_Files} DESTINATION "Mod/Material/Resources/ui")

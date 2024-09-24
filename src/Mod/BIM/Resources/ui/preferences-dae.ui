@@ -105,7 +105,7 @@ If using Netgen, make sure that it is available.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Builtin and mefisto mesher options</string>
+      <string>Builtin and Mefisto mesher options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>

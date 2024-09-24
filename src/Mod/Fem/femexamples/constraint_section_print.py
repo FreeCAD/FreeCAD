@@ -50,12 +50,14 @@ def get_information():
         "constraints": ["section_print", "fixed", "pressure"],
         "solvers": ["ccxtools"],
         "material": "solid",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.constraint_section_print import setup
@@ -68,6 +70,7 @@ https://forum.freecad.org/viewtopic.php?t=43044
 constraint section print with volume elements
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -83,27 +86,20 @@ def setup(doc=None, solvertype="ccxtools"):
     # geometric objects
     # the part sketch
     arc_sketch = doc.addObject("Sketcher::SketchObject", "Arc_Sketch")
-    arc_sketch.Placement = FreeCAD.Placement(
-        Vector(0, 0, 0),
-        Rotation(0, 0, 0, 1)
-    )
+    arc_sketch.Placement = FreeCAD.Placement(Vector(0, 0, 0), Rotation(0, 0, 0, 1))
     arc_sketch.MapMode = "Deactivated"
     # not the exact geometry which makes a closed wire
     # exact geometry will be made by the constraints
     # the order is important for the constraints definition
     geoList = [
-        Part.ArcOfCircle(
-            Part.Circle(Vector(0, 0, 0), Vector(0, 0, 1), 47),
-            0,
-            math.pi
-        ),
+        Part.ArcOfCircle(Part.Circle(Vector(0, 0, 0), Vector(0, 0, 1), 47), 0, math.pi),
         Part.ArcOfCircle(
             Part.Circle(Vector(-19, -22, 0), Vector(0, 0, 1), 89),
             math.pi / 12,
-            math.pi / 1.1
+            math.pi / 1.1,
         ),
         Part.LineSegment(Vector(-105, 0, 0), Vector(-47, 0, 0)),
-        Part.LineSegment(Vector(47, 0, 0), Vector(67, 0, 0))
+        Part.LineSegment(Vector(47, 0, 0), Vector(67, 0, 0)),
     ]
     arc_sketch.addGeometry(geoList, False)
     # https://wiki.freecad.org/Sketcher_ConstrainCoincident
@@ -122,7 +118,7 @@ def setup(doc=None, solvertype="ccxtools"):
         Sketcher.Constraint("DistanceX", 2, 2, 2, 1, 58),
         Sketcher.Constraint("DistanceX", 3, 2, 3, 1, 20),
         Sketcher.Constraint("Radius", 0, 47),
-        Sketcher.Constraint("Radius", 1, 89)
+        Sketcher.Constraint("Radius", 1, 89),
     ]
     arc_sketch.addConstraint(conList)
 
@@ -144,12 +140,12 @@ def setup(doc=None, solvertype="ccxtools"):
     section_sketch = doc.addObject("Sketcher::SketchObject", "Section_Sketch")
     section_sketch.Placement = FreeCAD.Placement(
         Vector(0.000000, 0.000000, 0.000000),
-        Rotation(0.000000, 0.000000, 0.000000, 1.000000)
+        Rotation(0.000000, 0.000000, 0.000000, 1.000000),
     )
     section_sketch.MapMode = "Deactivated"
     section_sketch.addGeometry(
         Part.LineSegment(Vector(-6.691961, -16.840161, 0), Vector(75.156087, 79.421394, 0)),
-        False
+        False,
     )
     # section_sketch.ExternalGeometry = extrude_part
 
@@ -223,7 +219,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -266,6 +262,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_section_print_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -275,7 +272,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

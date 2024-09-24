@@ -112,9 +112,7 @@ class ObjectJob:
             "App::PropertyFile",
             "PostProcessorOutputFile",
             "Output",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The G-code output file for this project"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The G-code output file for this project"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -197,25 +195,19 @@ class ObjectJob:
             "App::PropertyBool",
             "SplitOutput",
             "Output",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Split output into multiple G-code files"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Split output into multiple G-code files"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "OrderOutputBy",
             "WCS",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "If multiple WCS, order the output this way"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "If multiple WCS, order the output this way"),
         )
         obj.addProperty(
             "App::PropertyStringList",
             "Fixtures",
             "WCS",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The Work Coordinate Systems for the Job"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The Work Coordinate Systems for the Job"),
         )
 
         obj.Fixtures = ["G54"]
@@ -309,9 +301,7 @@ class ObjectJob:
             if obj.SetupSheet.ViewObject:
                 import Path.Base.Gui.IconViewProvider
 
-                Path.Base.Gui.IconViewProvider.Attach(
-                    obj.SetupSheet.ViewObject, "SetupSheet"
-                )
+                Path.Base.Gui.IconViewProvider.Attach(obj.SetupSheet.ViewObject, "SetupSheet")
             obj.SetupSheet.Label = "SetupSheet"
         self.setupSheet = obj.SetupSheet.Proxy
 
@@ -324,31 +314,23 @@ class ObjectJob:
                 "App::PropertyLink",
                 "Model",
                 "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "The base objects for all operations"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "The base objects for all operations"),
             )
             addModels = True
         elif obj.Model is None:
             addModels = True
 
         if addModels:
-            model = FreeCAD.ActiveDocument.addObject(
-                "App::DocumentObjectGroup", "Model"
-            )
+            model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
             if model.ViewObject:
                 model.ViewObject.Visibility = False
             if models:
-                model.addObjects(
-                    [createModelResourceClone(obj, base) for base in models]
-                )
+                model.addObjects([createModelResourceClone(obj, base) for base in models])
             obj.Model = model
             obj.Model.Label = "Model"
 
         if hasattr(obj, "Base"):
-            Path.Log.info(
-                "Converting Job.Base to new Job.Model for {}".format(obj.Label)
-            )
+            Path.Log.info("Converting Job.Base to new Job.Model for {}".format(obj.Label))
             obj.Model.addObject(obj.Base)
             obj.Base = None
             obj.removeProperty("Base")
@@ -369,9 +351,7 @@ class ObjectJob:
             addTable = True
 
         if addTable:
-            toolTable = FreeCAD.ActiveDocument.addObject(
-                "App::DocumentObjectGroup", "Tools"
-            )
+            toolTable = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Tools")
             toolTable.Label = "Tools"
             if toolTable.ViewObject:
                 toolTable.ViewObject.Visibility = False
@@ -408,9 +388,7 @@ class ObjectJob:
 
         if getattr(obj, "Operations", None):
             # the first to tear down are the ops, they depend on other resources
-            Path.Log.debug(
-                "taking down ops: %s" % [o.Name for o in self.allOperations()]
-            )
+            Path.Log.debug("taking down ops: %s" % [o.Name for o in self.allOperations()])
             while obj.Operations.Group:
                 op = obj.Operations.Group[0]
                 if (
@@ -469,9 +447,7 @@ class ObjectJob:
             except Exception:
                 name = obj.Operations.Name
                 label = obj.Operations.Label
-                ops = FreeCAD.ActiveDocument.addObject(
-                    "Path::FeatureCompoundPython", "Operations"
-                )
+                ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
                 ops.ViewObject.Proxy = 0
                 ops.Group = obj.Operations.Group
                 obj.Operations.Group = []
@@ -509,9 +485,7 @@ class ObjectJob:
                 "App::PropertyStringList",
                 "Fixtures",
                 "WCS",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "The Work Coordinate Systems for the Job"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "The Work Coordinate Systems for the Job"),
             )
             obj.Fixtures = ["G54"]
 
@@ -520,9 +494,7 @@ class ObjectJob:
                 "App::PropertyEnumeration",
                 "OrderOutputBy",
                 "WCS",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "If multiple WCS, order the output this way"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "If multiple WCS, order the output this way"),
             )
             obj.OrderOutputBy = ["Fixture", "Tool", "Operation"]
 
@@ -531,9 +503,7 @@ class ObjectJob:
                 "App::PropertyBool",
                 "SplitOutput",
                 "Output",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Split output into multiple G-code files"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "Split output into multiple G-code files"),
             )
             obj.SplitOutput = False
 
@@ -588,9 +558,7 @@ class ObjectJob:
                     self.setupSheet.setFromTemplate(attrs[JobTemplate.SetupSheet])
 
                 if attrs.get(JobTemplate.GeometryTolerance):
-                    obj.GeometryTolerance = float(
-                        attrs.get(JobTemplate.GeometryTolerance)
-                    )
+                    obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
                 if attrs.get(JobTemplate.PostProcessor):
                     obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
                     if attrs.get(JobTemplate.PostProcessorArgs):
@@ -598,9 +566,7 @@ class ObjectJob:
                     else:
                         obj.PostProcessorArgs = ""
                 if attrs.get(JobTemplate.PostProcessorOutputFile):
-                    obj.PostProcessorOutputFile = attrs.get(
-                        JobTemplate.PostProcessorOutputFile
-                    )
+                    obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
                 if attrs.get(JobTemplate.Description):
                     obj.Description = attrs.get(JobTemplate.Description)
 
@@ -612,14 +578,10 @@ class ObjectJob:
                         else:
                             Path.Log.debug(f"skipping TC {tc['name']}")
                 if attrs.get(JobTemplate.Stock):
-                    obj.Stock = PathStock.CreateFromTemplate(
-                        obj, attrs.get(JobTemplate.Stock)
-                    )
+                    obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
 
                 if attrs.get(JobTemplate.Fixtures):
-                    obj.Fixtures = [
-                        x for y in attrs.get(JobTemplate.Fixtures) for x in y
-                    ]
+                    obj.Fixtures = [x for y in attrs.get(JobTemplate.Fixtures) for x in y]
 
                 if attrs.get(JobTemplate.OrderOutputBy):
                     obj.OrderOutputBy = attrs.get(JobTemplate.OrderOutputBy)
@@ -632,9 +594,7 @@ class ObjectJob:
                     obj.Tools.Group = tcs
             else:
                 Path.Log.error(
-                    "Unsupported PathJob template version {}".format(
-                        attrs.get(JobTemplate.Version)
-                    )
+                    "Unsupported PathJob template version {}".format(attrs.get(JobTemplate.Version))
                 )
 
         if not tcs:
@@ -694,9 +654,7 @@ class ObjectJob:
                     # Convert the formatted time from HH:MM:SS to just seconds
                     opCycleTime = sum(
                         x * int(t)
-                        for x, t in zip(
-                            [1, 60, 3600], reversed(formattedCycleTime.split(":"))
-                        )
+                        for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":")))
                     )
                 except Exception:
                     continue
@@ -733,9 +691,7 @@ class ObjectJob:
 
     def addToolController(self, tc):
         group = self.obj.Tools.Group
-        Path.Log.debug(
-            "addToolController(%s): %s" % (tc.Label, [t.Label for t in group])
-        )
+        Path.Log.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
             tc.setExpression(
                 "VertRapid",
@@ -770,9 +726,7 @@ class ObjectJob:
                     for sub in op.Group:
                         collectBaseOps(sub)
 
-        if getattr(self.obj, "Operations", None) and getattr(
-            self.obj.Operations, "Group", None
-        ):
+        if getattr(self.obj, "Operations", None) and getattr(self.obj.Operations, "Group", None):
             for op in self.obj.Operations.Group:
                 collectBaseOps(op)
 

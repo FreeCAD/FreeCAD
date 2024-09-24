@@ -63,25 +63,30 @@ _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
-_COORDS_NON_MAGNETO_2D = ["Polar 2D", "Polar 3D", "Cartesian 3D",
-                          "Cylindric", "Cylindric Symmetric"]
+_COORDS_NON_MAGNETO_2D = [
+    "Polar 2D",
+    "Polar 3D",
+    "Cartesian 3D",
+    "Cylindric",
+    "Cylindric Symmetric",
+]
 
 
 def _getAllSubObjects(obj):
     s = ["Solid" + str(i + 1) for i in range(len(obj.Shape.Solids))]
-    s.extend(("Face" + str(i + 1) for i in range(len(obj.Shape.Faces))))
-    s.extend(("Edge" + str(i + 1) for i in range(len(obj.Shape.Edges))))
-    s.extend(("Vertex" + str(i + 1) for i in range(len(obj.Shape.Vertexes))))
+    s.extend("Face" + str(i + 1) for i in range(len(obj.Shape.Faces)))
+    s.extend("Edge" + str(i + 1) for i in range(len(obj.Shape.Edges)))
+    s.extend("Vertex" + str(i + 1) for i in range(len(obj.Shape.Vertexes)))
     return s
 
 
-class Writer(object):
+class Writer:
 
     def __init__(self, solver, directory, testmode=False):
         self.analysis = solver.getParentGroup()
         self.solver = solver
         self.directory = directory
-        Console.PrintMessage("Write elmer input files to: {}\n".format(self.directory))
+        Console.PrintMessage(f"Write elmer input files to: {self.directory}\n")
         self.testmode = testmode
         self._usedVarNames = set()
         self._builder = sifio.Builder()
@@ -184,8 +189,9 @@ class Writer(object):
             Console.PrintMessage(
                 "Unit schema: {} not supported by Elmer writer. "
                 "The FreeCAD standard unit schema mm/kg/s is used. "
-                "Elmer sif-file writing is done in Standard FreeCAD units.\n"
-                .format(Units.listSchemas(self.unit_schema))
+                "Elmer sif-file writing is done in Standard FreeCAD units.\n".format(
+                    Units.listSchemas(self.unit_schema)
+                )
             )
 
     def getFromUi(self, value, unit, outputDim):
@@ -216,8 +222,7 @@ class Writer(object):
         self._exportToUnv(groups, mesh, unvPath)
         if self.testmode:
             Console.PrintMessage(
-                "Solver Elmer testmode, ElmerGrid will not be used. "
-                "It might not be installed.\n"
+                "Solver Elmer testmode, ElmerGrid will not be used. It might not be installed.\n"
             )
         else:
             binary = settings.get_binary("ElmerGrid")
@@ -226,29 +231,23 @@ class Writer(object):
                 raise WriteError("Could not find ElmerGrid binary.")
             # for multithreading we first need a normal mesh creation run
             # then a second to split the mesh into the number of used cores
-            argsBasic = [binary,
-                         _ELMERGRID_IFORMAT,
-                         _ELMERGRID_OFORMAT,
-                         unvPath]
+            argsBasic = [binary, _ELMERGRID_IFORMAT, _ELMERGRID_OFORMAT, unvPath]
             args = argsBasic
             args.extend(["-out", self.directory])
             if system() == "Windows":
                 subprocess.call(
-                    args,
-                    stdout=subprocess.DEVNULL,
-                    startupinfo=femutils.startProgramInfo("hide")
+                    args, stdout=subprocess.DEVNULL, startupinfo=femutils.startProgramInfo("hide")
                 )
             else:
                 subprocess.call(args, stdout=subprocess.DEVNULL)
             if num_cores > 1:
                 args = argsBasic
-                args.extend(["-partdual", "-metiskway", str(num_cores),
-                             "-out", self.directory])
+                args.extend(["-partdual", "-metiskway", str(num_cores), "-out", self.directory])
                 if system() == "Windows":
                     subprocess.call(
                         args,
                         stdout=subprocess.DEVNULL,
-                        startupinfo=femutils.startProgramInfo("hide")
+                        startupinfo=femutils.startProgramInfo("hide"),
                     )
                 else:
                     subprocess.call(args, stdout=subprocess.DEVNULL)
@@ -256,7 +255,7 @@ class Writer(object):
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
         with open(path, "w") as f:
-            f.write(_SIF_NAME)
+            f.write(f"{_SIF_NAME}\n")
 
     def _exportToUnv(self, groups, mesh, meshPath):
         unvGmshFd, unvGmshPath = tempfile.mkstemp(suffix=".unv")
@@ -281,10 +280,10 @@ class Writer(object):
         tools.write_geo()
         if self.testmode:
             Console.PrintMessage(
-                "Solver Elmer testmode, Gmsh will not be used. "
-                "It might not be installed.\n"
+                "Solver Elmer testmode, Gmsh will not be used. It might not be installed.\n"
             )
             import shutil
+
             shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
         else:
             tools.get_gmsh_command()
@@ -307,14 +306,13 @@ class Writer(object):
             permittivity = float(objs[0].VacuumPermittivity.getValueAs("F/m"))
             # since the base unit of FC is in mm, we must scale it to get plain SI
             permittivity = permittivity * 1e-9
-            Console.PrintLog("Overwriting vacuum permittivity with: {}\n".format(permittivity))
+            Console.PrintLog(f"Overwriting vacuum permittivity with: {permittivity}\n")
             self.constsdef["PermittivityOfVacuum"] = "{} {}".format(permittivity, "F/m")
             self.handled(objs[0])
         elif len(objs) > 1:
             Console.PrintError(
                 "More than one permittivity constant overwriting objects ({} objs). "
-                "The permittivity constant overwriting is ignored.\n"
-                .format(len(objs))
+                "The permittivity constant overwriting is ignored.\n".format(len(objs))
             )
 
     def _handleSimulation(self):
@@ -336,18 +334,9 @@ class Writer(object):
         self._simulation("Coordinate Scaling", 0.001)
         self._simulation("Simulation Type", self.solver.SimulationType)
         if self.solver.SimulationType == "Steady State":
-            self._simulation(
-                "Steady State Max Iterations",
-                self.solver.SteadyStateMaxIterations
-            )
-            self._simulation(
-                "Steady State Min Iterations",
-                self.solver.SteadyStateMinIterations
-            )
-        if (
-            self.solver.SimulationType == "Scanning"
-            or self.solver.SimulationType == "Transient"
-        ):
+            self._simulation("Steady State Max Iterations", self.solver.SteadyStateMaxIterations)
+            self._simulation("Steady State Min Iterations", self.solver.SteadyStateMinIterations)
+        if self.solver.SimulationType == "Scanning" or self.solver.SimulationType == "Transient":
             self._simulation("BDF Order", self.solver.BDFOrder)
             self._simulation("Output Intervals", self.solver.OutputIntervals)
             self._simulation("Timestep Intervals", self.solver.TimestepIntervals)
@@ -359,10 +348,7 @@ class Writer(object):
         # updates older simulations
         if not hasattr(self.solver, "CoordinateSystem"):
             solver.addProperty(
-                "App::PropertyEnumeration",
-                "CoordinateSystem",
-                "Coordinate System",
-                ""
+                "App::PropertyEnumeration", "CoordinateSystem", "Coordinate System", ""
             )
             solver.CoordinateSystem = solverClass.COORDINATE_SYSTEM
             solver.CoordinateSystem = "Cartesian"
@@ -371,32 +357,21 @@ class Writer(object):
                 "App::PropertyIntegerConstraint",
                 "BDFOrder",
                 "Timestepping",
-                "Order of time stepping method 'BDF'"
+                "Order of time stepping method 'BDF'",
             )
             solver.BDFOrder = (2, 1, 5, 1)
         if not hasattr(self.solver, "ElmerTimeResults"):
-            solver.addProperty(
-                "App::PropertyLinkList",
-                "ElmerTimeResults",
-                "Base",
-                "",
-                4 | 8
-            )
+            solver.addProperty("App::PropertyLinkList", "ElmerTimeResults", "Base", "", 4 | 8)
         if not hasattr(self.solver, "OutputIntervals"):
             solver.addProperty(
                 "App::PropertyIntegerList",
                 "OutputIntervals",
                 "Timestepping",
-                "After how many time steps a result file is output"
+                "After how many time steps a result file is output",
             )
             solver.OutputIntervals = [1]
         if not hasattr(self.solver, "SimulationType"):
-            solver.addProperty(
-                "App::PropertyEnumeration",
-                "SimulationType",
-                "Type",
-                ""
-            )
+            solver.addProperty("App::PropertyEnumeration", "SimulationType", "Type", "")
             solver.SimulationType = solverClass.SIMULATION_TYPE
             solver.SimulationType = "Steady State"
         if not hasattr(self.solver, "TimestepIntervals"):
@@ -407,7 +382,7 @@ class Writer(object):
                 (
                     "List of maximum optimization rounds if 'Simulation Type'\n"
                     "is either 'Scanning' or 'Transient'"
-                )
+                ),
             )
             solver.TimestepIntervals = [100]
         if not hasattr(self.solver, "TimestepSizes"):
@@ -418,7 +393,7 @@ class Writer(object):
                 (
                     "List of time steps of optimization if 'Simulation Type'\n"
                     "is either 'Scanning' or 'Transient'"
-                )
+                ),
             )
             solver.TimestepSizes = [0.1]
 
@@ -622,8 +597,9 @@ class Writer(object):
                     raise WriteError(
                         "The coordinate setting '{}'\n is not "
                         "supported by the equation 'Magnetodynamic2D'.\n\n"
-                        "Possible is:\n'Cartesian 2D' or 'Axi Symmetric'"
-                        .format(self.solver.CoordinateSystem)
+                        "Possible is:\n'Cartesian 2D' or 'Axi Symmetric'".format(
+                            self.solver.CoordinateSystem
+                        )
                     )
 
                 solverSection = MgDyn2D.getMagnetodynamic2DSolver(equation)
@@ -661,14 +637,14 @@ class Writer(object):
                     "Disable the linear system.\n"
                     "Only use for special cases\n"
                     "and consult the Elmer docs."
-                )
+                ),
             )
         if not hasattr(equation, "IdrsParameter"):
             equation.addProperty(
                 "App::PropertyIntegerConstraint",
                 "IdrsParameter",
                 "Linear System",
-                "Parameter for iterative method 'Idrs'"
+                "Parameter for iterative method 'Idrs'",
             )
             equation.IdrsParameter = (2, 1, 10, 1)
 
@@ -682,25 +658,17 @@ class Writer(object):
         if equation.LinearSystemSolverDisabled is True:
             s["Linear System Solver Disabled"] = equation.LinearSystemSolverDisabled
         if equation.LinearSolverType == "Direct":
-            s["Linear System Direct Method"] = \
-                equation.LinearDirectMethod
+            s["Linear System Direct Method"] = equation.LinearDirectMethod
         elif equation.LinearSolverType == "Iterative":
-            s["Linear System Iterative Method"] = \
-                equation.LinearIterativeMethod
+            s["Linear System Iterative Method"] = equation.LinearIterativeMethod
             if equation.LinearIterativeMethod == "BiCGStabl":
-                s["BiCGstabl polynomial degree"] = \
-                    equation.BiCGstablDegree
+                s["BiCGstabl polynomial degree"] = equation.BiCGstablDegree
             if equation.LinearIterativeMethod == "Idrs":
-                s["Idrs Parameter"] = \
-                    equation.IdrsParameter
-            s["Linear System Max Iterations"] = \
-                equation.LinearIterations
-            s["Linear System Convergence Tolerance"] = \
-                equation.LinearTolerance
-            s["Linear System Preconditioning"] = \
-                equation.LinearPreconditioning
-        s["Steady State Convergence Tolerance"] = \
-            equation.SteadyStateTolerance
+                s["Idrs Parameter"] = equation.IdrsParameter
+            s["Linear System Max Iterations"] = equation.LinearIterations
+            s["Linear System Convergence Tolerance"] = equation.LinearTolerance
+            s["Linear System Preconditioning"] = equation.LinearPreconditioning
+        s["Steady State Convergence Tolerance"] = equation.SteadyStateTolerance
         s["Linear System Abort Not Converged"] = False
         s["Linear System Residual Output"] = 1
         s["Linear System Precondition Recompute"] = 1
@@ -711,8 +679,7 @@ class Writer(object):
             equation.setExpression("NonlinearTolerance", str(equation.NonlinearTolerance))
         if self._hasExpression(equation) != equation.NonlinearNewtonAfterTolerance:
             equation.setExpression(
-                "NonlinearNewtonAfterTolerance",
-                str(equation.NonlinearNewtonAfterTolerance)
+                "NonlinearNewtonAfterTolerance", str(equation.NonlinearNewtonAfterTolerance)
             )
 
     def createNonlinearSolver(self, equation):
@@ -721,16 +688,11 @@ class Writer(object):
         # write the linear solver
         s = self.createLinearSolver(equation)
         # write the nonlinear solver
-        s["Nonlinear System Max Iterations"] = \
-            equation.NonlinearIterations
-        s["Nonlinear System Convergence Tolerance"] = \
-            equation.NonlinearTolerance
-        s["Nonlinear System Relaxation Factor"] = \
-            equation.RelaxationFactor
-        s["Nonlinear System Newton After Iterations"] = \
-            equation.NonlinearNewtonAfterIterations
-        s["Nonlinear System Newton After Tolerance"] = \
-            equation.NonlinearNewtonAfterTolerance
+        s["Nonlinear System Max Iterations"] = equation.NonlinearIterations
+        s["Nonlinear System Convergence Tolerance"] = equation.NonlinearTolerance
+        s["Nonlinear System Relaxation Factor"] = equation.RelaxationFactor
+        s["Nonlinear System Newton After Iterations"] = equation.NonlinearNewtonAfterIterations
+        s["Nonlinear System Newton After Tolerance"] = equation.NonlinearNewtonAfterTolerance
         return s
 
     # -------------------------------------------------------------------------------------------
@@ -777,7 +739,7 @@ class Writer(object):
         return density
 
     def _hasExpression(self, equation):
-        for (obj, exp) in equation.ExpressionEngine:
+        for obj, exp in equation.ExpressionEngine:
             if obj == equation:
                 return exp
         return None
@@ -796,24 +758,24 @@ class Writer(object):
         obj = self.getSingleMember("Fem::FemMeshObject")
         bodyCount = 0
         prefix = ""
-        if obj.Part.Shape.Solids:
+        if obj.Shape.Shape.Solids:
             prefix = "Solid"
-            bodyCount = len(obj.Part.Shape.Solids)
-        elif obj.Part.Shape.Faces:
+            bodyCount = len(obj.Shape.Shape.Solids)
+        elif obj.Shape.Shape.Faces:
             prefix = "Face"
-            bodyCount = len(obj.Part.Shape.Faces)
-        elif obj.Part.Shape.Edges:
+            bodyCount = len(obj.Shape.Shape.Faces)
+        elif obj.Shape.Shape.Edges:
             prefix = "Edge"
-            bodyCount = len(obj.Part.Shape.Edges)
+            bodyCount = len(obj.Shape.Shape.Edges)
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def getMeshDimension(self):
         obj = self.getSingleMember("Fem::FemMeshObject")
-        if obj.Part.Shape.Solids:
+        if obj.Shape.Shape.Solids:
             return 3
-        if obj.Part.Shape.Faces:
+        if obj.Shape.Shape.Faces:
             return 2
-        if obj.Part.Shape.Edges:
+        if obj.Shape.Shape.Edges:
             return 1
         return None
 
@@ -824,10 +786,7 @@ class Writer(object):
         # To get it back in the original size we let Elmer scale it back
         s["Coordinate Scaling Revert"] = True
         s["Equation"] = "ResultOutput"
-        if (
-            self.solver.SimulationType == "Scanning"
-            or self.solver.SimulationType == "Transient"
-        ):
+        if self.solver.SimulationType == "Scanning" or self.solver.SimulationType == "Transient":
             # we must execute the post solver every time we output a result
             # therefore we must use the same as self.solver.OutputIntervals
             s["Exec Intervals"] = self.solver.OutputIntervals
@@ -836,6 +795,7 @@ class Writer(object):
         s["Procedure"] = sifio.FileAttr("ResultOutputSolve/ResultOutputSolver")
         s["Output File Name"] = sifio.FileAttr("FreeCAD")
         s["Vtu Format"] = True
+        s["Ascii Output"] = True
         s["Vtu Time Collection"] = True
         if self.unit_schema == Units.Scheme.SI2:
             s["Coordinate Scaling Revert"] = True
@@ -891,5 +851,6 @@ class Writer(object):
 
 class WriteError(Exception):
     pass
+
 
 ##  @}

@@ -41,7 +41,7 @@ std::string QuickMeasurePy::representation() const
     return "<MeasureGui::QuickMeasure>";
 }
 
-PyObject *QuickMeasurePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* QuickMeasurePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of BoundBoxPy and the Twin object
     return new QuickMeasurePy(new QuickMeasure);
@@ -50,10 +50,10 @@ PyObject *QuickMeasurePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 // constructor method
 int QuickMeasurePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
-   return 0;
+    return 0;
 }
 
-PyObject *QuickMeasurePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* QuickMeasurePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

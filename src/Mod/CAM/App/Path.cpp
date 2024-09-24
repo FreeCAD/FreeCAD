@@ -35,11 +35,10 @@
 using namespace Path;
 using namespace Base;
 
-TYPESYSTEM_SOURCE(Path::Toolpath , Base::Persistence)
+TYPESYSTEM_SOURCE(Path::Toolpath, Base::Persistence)
 
 Toolpath::Toolpath()
-{
-}
+{}
 
 Toolpath::Toolpath(const Toolpath& otherPath)
     : vpcCommands(otherPath.vpcCommands.size())
@@ -54,15 +53,18 @@ Toolpath::~Toolpath()
     clear();
 }
 
-Toolpath &Toolpath::operator=(const Toolpath& otherPath)
+Toolpath& Toolpath::operator=(const Toolpath& otherPath)
 {
-    if (this == &otherPath)
+    if (this == &otherPath) {
         return *this;
+    }
 
     clear();
     vpcCommands.resize(otherPath.vpcCommands.size());
     int i = 0;
-    for (std::vector<Command*>::const_iterator it=otherPath.vpcCommands.begin();it!=otherPath.vpcCommands.end();++it,i++) {
+    for (std::vector<Command*>::const_iterator it = otherPath.vpcCommands.begin();
+         it != otherPath.vpcCommands.end();
+         ++it, i++) {
         vpcCommands[i] = new Command(**it);
     }
     center = otherPath.center;
@@ -72,27 +74,30 @@ Toolpath &Toolpath::operator=(const Toolpath& otherPath)
 
 void Toolpath::clear()
 {
-    for(std::vector<Command*>::iterator it = vpcCommands.begin();it!=vpcCommands.end();++it)
-        delete ( *it );
+    for (std::vector<Command*>::iterator it = vpcCommands.begin(); it != vpcCommands.end(); ++it) {
+        delete (*it);
+    }
     vpcCommands.clear();
     recalculate();
 }
 
-void Toolpath::addCommand(const Command &Cmd)
+void Toolpath::addCommand(const Command& Cmd)
 {
-    Command *tmp = new Command(Cmd);
+    Command* tmp = new Command(Cmd);
     vpcCommands.push_back(tmp);
     recalculate();
 }
 
-void Toolpath::insertCommand(const Command &Cmd, int pos)
+void Toolpath::insertCommand(const Command& Cmd, int pos)
 {
     if (pos == -1) {
         addCommand(Cmd);
-    } else if (pos <= static_cast<int>(vpcCommands.size())) {
-        Command *tmp = new Command(Cmd);
-        vpcCommands.insert(vpcCommands.begin()+pos,tmp);
-    } else {
+    }
+    else if (pos <= static_cast<int>(vpcCommands.size())) {
+        Command* tmp = new Command(Cmd);
+        vpcCommands.insert(vpcCommands.begin() + pos, tmp);
+    }
+    else {
         throw Base::IndexError("Index not in range");
     }
     recalculate();
@@ -101,11 +106,13 @@ void Toolpath::insertCommand(const Command &Cmd, int pos)
 void Toolpath::deleteCommand(int pos)
 {
     if (pos == -1) {
-        //delete(*vpcCommands.rbegin()); // causes crash
+        // delete(*vpcCommands.rbegin()); // causes crash
         vpcCommands.pop_back();
-    } else if (pos <= static_cast<int>(vpcCommands.size())) {
-        vpcCommands.erase (vpcCommands.begin()+pos);
-    } else {
+    }
+    else if (pos <= static_cast<int>(vpcCommands.size())) {
+        vpcCommands.erase(vpcCommands.begin() + pos);
+    }
+    else {
         throw Base::IndexError("Index not in range");
     }
     recalculate();
@@ -113,19 +120,22 @@ void Toolpath::deleteCommand(int pos)
 
 double Toolpath::getLength()
 {
-    if(vpcCommands.empty())
+    if (vpcCommands.empty()) {
         return 0;
+    }
     double l = 0;
-    Vector3d last(0,0,0);
+    Vector3d last(0, 0, 0);
     Vector3d next;
-    for(std::vector<Command*>::const_iterator it = vpcCommands.begin();it!=vpcCommands.end();++it) {
+    for (std::vector<Command*>::const_iterator it = vpcCommands.begin(); it != vpcCommands.end();
+         ++it) {
         std::string name = (*it)->Name;
         next = (*it)->getPlacement(last).getPosition();
-        if ( (name == "G0") || (name == "G00") || (name == "G1") || (name == "G01") ) {
+        if ((name == "G0") || (name == "G00") || (name == "G1") || (name == "G01")) {
             // straight line
             l += (next - last).Length();
             last = next;
-        } else if ( (name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
+        }
+        else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03")) {
             // arc
             Vector3d center = (*it)->getCenter();
             double radius = (last - center).Length();
@@ -141,7 +151,8 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
 {
     // check the feedrates are set
     if ((hFeed == 0) || (vFeed == 0)) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/CAM");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/CAM");
         if (!hGrp->GetBool("WarningsSuppressAllSpeeds", true)) {
             Base::Console().Warning("Feed Rate Error: Check Tool Controllers have Feed Rates");
         }
@@ -162,9 +173,10 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
     double l = 0;
     double time = 0;
     bool verticalMove = false;
-    Vector3d last(0,0,0);
+    Vector3d last(0, 0, 0);
     Vector3d next;
-    for (std::vector<Command*>::const_iterator it = vpcCommands.begin();it!=vpcCommands.end();++it) {
+    for (std::vector<Command*>::const_iterator it = vpcCommands.begin(); it != vpcCommands.end();
+         ++it) {
         std::string name = (*it)->Name;
         float feedrate = (*it)->getParam("F");
 
@@ -173,22 +185,24 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         feedrate = hFeed;
         next = (*it)->getPlacement(last).getPosition();
 
-        if (last.z != next.z){
+        if (last.z != next.z) {
             verticalMove = true;
             feedrate = vFeed;
         }
 
-        if ((name == "G0") || (name == "G00")){
+        if ((name == "G0") || (name == "G00")) {
             // Rapid Move
             l += (next - last).Length();
             feedrate = hRapid;
-            if(verticalMove){
+            if (verticalMove) {
                 feedrate = vRapid;
             }
-        }else if ((name == "G1") || (name == "G01")) {
+        }
+        else if ((name == "G1") || (name == "G01")) {
             // Feed Move
             l += (next - last).Length();
-        }else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03") ) {
+        }
+        else if ((name == "G2") || (name == "G02") || (name == "G3") || (name == "G03")) {
             // Arc Move
             Vector3d center = (*it)->getCenter();
             double radius = (last - center).Length();
@@ -202,60 +216,76 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
     return time;
 }
 
-class BoundBoxSegmentVisitor : public PathSegmentVisitor
+class BoundBoxSegmentVisitor: public PathSegmentVisitor
 {
 public:
     BoundBoxSegmentVisitor()
-    { }
+    {}
 
-    void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
+    void g0(int id,
+            const Base::Vector3d& last,
+            const Base::Vector3d& next,
+            const std::deque<Base::Vector3d>& pts) override
     {
-      (void)id;
-      processPt(last);
-      processPts(pts);
-      processPt(next);
+        (void)id;
+        processPt(last);
+        processPts(pts);
+        processPt(next);
     }
-    void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
+    void g1(int id,
+            const Base::Vector3d& last,
+            const Base::Vector3d& next,
+            const std::deque<Base::Vector3d>& pts) override
     {
-      (void)id;
-      processPt(last);
-      processPts(pts);
-      processPt(next);
+        (void)id;
+        processPt(last);
+        processPts(pts);
+        processPt(next);
     }
-    void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center) override
+    void g23(int id,
+             const Base::Vector3d& last,
+             const Base::Vector3d& next,
+             const std::deque<Base::Vector3d>& pts,
+             const Base::Vector3d& center) override
     {
-      (void)id;
-      (void)center;
-      processPt(last);
-      processPts(pts);
-      processPt(next);
+        (void)id;
+        (void)center;
+        processPt(last);
+        processPts(pts);
+        processPt(next);
     }
-    void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
-                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q) override
+    void g8x(int id,
+             const Base::Vector3d& last,
+             const Base::Vector3d& next,
+             const std::deque<Base::Vector3d>& pts,
+             const std::deque<Base::Vector3d>& p,
+             const std::deque<Base::Vector3d>& q) override
     {
-      (void)id;
-      (void)q; // always within the bounds of p
-      processPt(last);
-      processPts(pts);
-      processPts(p);
-      processPt(next);
+        (void)id;
+        (void)q;  // always within the bounds of p
+        processPt(last);
+        processPts(pts);
+        processPts(p);
+        processPt(next);
     }
-    void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next) override
+    void g38(int id, const Base::Vector3d& last, const Base::Vector3d& next) override
     {
-      (void)id;
-      processPt(last);
-      processPt(next);
+        (void)id;
+        processPt(last);
+        processPt(next);
     }
 
     Base::BoundBox3d bb;
 
 private:
-    void processPts(const std::deque<Base::Vector3d> &pts) {
-        for (std::deque<Base::Vector3d>::const_iterator it=pts.begin(); pts.end() != it; ++it) {
+    void processPts(const std::deque<Base::Vector3d>& pts)
+    {
+        for (std::deque<Base::Vector3d>::const_iterator it = pts.begin(); pts.end() != it; ++it) {
             processPt(*it);
         }
     }
-    void processPt(const Base::Vector3d &pt) {
+    void processPt(const Base::Vector3d& pt)
+    {
         bb.MaxX = std::max(bb.MaxX, pt.x);
         bb.MinX = std::min(bb.MinX, pt.x);
         bb.MaxY = std::max(bb.MaxY, pt.y);
@@ -274,17 +304,20 @@ Base::BoundBox3d Toolpath::getBoundBox() const
     return visitor.bb;
 }
 
-static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &commands, bool &inches)
+static void
+bulkAddCommand(const std::string& gcodestr, std::vector<Command*>& commands, bool& inches)
 {
-    Command *cmd = new Command();
+    Command* cmd = new Command();
     cmd->setFromGCode(gcodestr);
     if ("G20" == cmd->Name) {
         inches = true;
         delete cmd;
-    } else if ("G21" == cmd->Name) {
+    }
+    else if ("G21" == cmd->Name) {
         inches = false;
         delete cmd;
-    } else {
+    }
+    else {
         if (inches) {
             cmd->scaleBy(25.4);
         }
@@ -297,8 +330,8 @@ void Toolpath::setFromGCode(const std::string instr)
     clear();
 
     // remove comments
-    //boost::regex e("\\(.*?\\)");
-    //std::string str = boost::regex_replace(instr, e, "");
+    // boost::regex e("\\(.*?\\)");
+    // std::string str = boost::regex_replace(instr, e, "");
     std::string str(instr);
 
     // split input string by () or G or M commands
@@ -306,39 +339,40 @@ void Toolpath::setFromGCode(const std::string instr)
     std::size_t found = str.find_first_of("(gGmM");
     int last = -1;
     bool inches = false;
-    while (found != std::string::npos)
-    {
+    while (found != std::string::npos) {
         if (str[found] == '(') {
             // start of comment
-            if ( (last > -1) && (mode == "command") ) {
+            if ((last > -1) && (mode == "command")) {
                 // before opening a comment, add the last found command
-                std::string gcodestr = str.substr(last, found-last);
+                std::string gcodestr = str.substr(last, found - last);
                 bulkAddCommand(gcodestr, vpcCommands, inches);
             }
             mode = "comment";
             last = found;
-            found = str.find_first_of(')', found+1);
-        } else if (str[found] == ')') {
+            found = str.find_first_of(')', found + 1);
+        }
+        else if (str[found] == ')') {
             // end of comment
-            std::string gcodestr = str.substr(last, found-last+1);
+            std::string gcodestr = str.substr(last, found - last + 1);
             bulkAddCommand(gcodestr, vpcCommands, inches);
             last = -1;
-            found = str.find_first_of("(gGmM", found+1);
+            found = str.find_first_of("(gGmM", found + 1);
             mode = "command";
-        } else if (mode == "command") {
+        }
+        else if (mode == "command") {
             // command
             if (last > -1) {
-                std::string gcodestr = str.substr(last, found-last);
+                std::string gcodestr = str.substr(last, found - last);
                 bulkAddCommand(gcodestr, vpcCommands, inches);
             }
             last = found;
-            found = str.find_first_of("(gGmM", found+1);
+            found = str.find_first_of("(gGmM", found + 1);
         }
     }
     // add the last command found, if any
     if (last > -1) {
         if (mode == "command") {
-            std::string gcodestr = str.substr(last,std::string::npos);
+            std::string gcodestr = str.substr(last, std::string::npos);
             bulkAddCommand(gcodestr, vpcCommands, inches);
         }
     }
@@ -348,18 +382,20 @@ void Toolpath::setFromGCode(const std::string instr)
 std::string Toolpath::toGCode() const
 {
     std::string result;
-    for (std::vector<Command*>::const_iterator it=vpcCommands.begin();it!=vpcCommands.end();++it) {
+    for (std::vector<Command*>::const_iterator it = vpcCommands.begin(); it != vpcCommands.end();
+         ++it) {
         result += (*it)->toGCode();
         result += "\n";
     }
     return result;
 }
 
-void Toolpath::recalculate() // recalculates the path cache
+void Toolpath::recalculate()  // recalculates the path cache
 {
 
-    if(vpcCommands.empty())
+    if (vpcCommands.empty()) {
         return;
+    }
 
     // TODO recalculate the KDL stuff. At the moment, this is unused.
 
@@ -420,35 +456,39 @@ void Toolpath::recalculate() // recalculates the path cache
 
 // reimplemented from base class
 
-unsigned int Toolpath::getMemSize () const
+unsigned int Toolpath::getMemSize() const
 {
     return toGCode().size();
 }
 
-void Toolpath::setCenter(const Base::Vector3d &c)
+void Toolpath::setCenter(const Base::Vector3d& c)
 {
     center = c;
     recalculate();
 }
 
-static void saveCenter(Writer &writer, const Base::Vector3d &center)
+static void saveCenter(Writer& writer, const Base::Vector3d& center)
 {
-    writer.Stream() << writer.ind() << "<Center x=\"" << center.x << "\" y=\"" << center.y << "\" z=\"" << center.z << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Center x=\"" << center.x << "\" y=\"" << center.y
+                    << "\" z=\"" << center.z << "\"/>" << std::endl;
 }
 
-void Toolpath::Save (Writer &writer) const
+void Toolpath::Save(Writer& writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<Path count=\"" <<  getSize() << "\" version=\"" << SchemaVersion << "\">" << std::endl;
+        writer.Stream() << writer.ind() << "<Path count=\"" << getSize() << "\" version=\""
+                        << SchemaVersion << "\">" << std::endl;
         writer.incInd();
         saveCenter(writer, center);
-        for(unsigned int i = 0; i < getSize(); i++) {
+        for (unsigned int i = 0; i < getSize(); i++) {
             vpcCommands[i]->Save(writer);
         }
         writer.decInd();
-    } else {
-        writer.Stream() << writer.ind()
-            << "<Path file=\"" << writer.addFile((writer.ObjectName+".nc").c_str(), this) << "\" version=\"" << SchemaVersion << "\">" << std::endl;
+    }
+    else {
+        writer.Stream() << writer.ind() << "<Path file=\""
+                        << writer.addFile((writer.ObjectName + ".nc").c_str(), this)
+                        << "\" version=\"" << SchemaVersion << "\">" << std::endl;
         writer.incInd();
         saveCenter(writer, center);
         writer.decInd();
@@ -456,25 +496,26 @@ void Toolpath::Save (Writer &writer) const
     writer.Stream() << writer.ind() << "</Path>" << std::endl;
 }
 
-void Toolpath::SaveDocFile (Base::Writer &writer) const
+void Toolpath::SaveDocFile(Base::Writer& writer) const
 {
-    if (toGCode().empty())
+    if (toGCode().empty()) {
         return;
+    }
     writer.Stream() << toGCode();
 }
 
-void Toolpath::Restore(XMLReader &reader)
+void Toolpath::Restore(XMLReader& reader)
 {
     reader.readElement("Path");
-    std::string file (reader.getAttribute("file") );
+    std::string file(reader.getAttribute("file"));
 
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(),this);
+        reader.addFile(file.c_str(), this);
     }
 }
 
-void Toolpath::RestoreDocFile(Base::Reader &reader)
+void Toolpath::RestoreDocFile(Base::Reader& reader)
 {
     std::string gcode;
     std::string line;
@@ -483,10 +524,4 @@ void Toolpath::RestoreDocFile(Base::Reader &reader)
         gcode += " ";
     }
     setFromGCode(gcode);
-
 }
-
-
-
-
-

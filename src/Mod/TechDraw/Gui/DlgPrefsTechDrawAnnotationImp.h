@@ -54,6 +54,8 @@ protected:
     void changeEvent(QEvent *e) override;
 
     int prefBalloonArrow() const;
+    int prefBalloonShape() const;
+    int prefMattingStyle() const;
     void loadLineStyleBoxes();
 
 private:

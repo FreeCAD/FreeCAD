@@ -582,15 +582,14 @@ bool SheetTableView::event(QEvent* event)
             case Qt::Key_Backtab:
                 finishEditWithMove(kevent->key(), kevent->modifiers(), true);
                 return true;
-            // Also handle the delete key here:
-            case Qt::Key_Delete:
-                deleteSelection();
-                return true;
             case Qt::Key_Escape:
                 sheet->setCopyOrCutRanges({});
                 return true;
             default:
                 break;
+        }
+        if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
+            deleteSelection();
         }
         if (kevent->matches(QKeySequence::Cut)) {
             cutSelection();
@@ -613,8 +612,6 @@ bool SheetTableView::event(QEvent* event)
                 case Qt::Key_Return:
                     [[fallthrough]];
                 case Qt::Key_Enter:
-                    [[fallthrough]];
-                case Qt::Key_Delete:
                     [[fallthrough]];
                 case Qt::Key_Home:
                     [[fallthrough]];
@@ -642,6 +639,9 @@ bool SheetTableView::event(QEvent* event)
             }
         }
 
+        if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
+            kevent->accept();
+        }
         if (kevent->matches(QKeySequence::Cut)) {
             kevent->accept();
         }
@@ -1159,8 +1159,7 @@ QString SheetTableView::toHtml() const
     boldFont.setBold(true);
     boldFormat.setFont(boldFont);
 
-    QColor bgColor;
-    bgColor.setNamedColor(QLatin1String("#f0f0f0"));
+    QColor bgColor(QLatin1String("#f0f0f0"));
     QTextCharFormat bgFormat;
     bgFormat.setBackground(QBrush(bgColor));
 

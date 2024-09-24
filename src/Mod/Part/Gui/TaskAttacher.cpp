@@ -123,6 +123,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    // clang-format off
     connect(ui->attachmentOffsetX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskAttacher::onAttachmentOffsetXChanged);
     connect(ui->attachmentOffsetY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
@@ -155,6 +156,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
             this, &TaskAttacher::onRefName4);
     connect(ui->listOfModes, &QListWidget::itemSelectionChanged,
             this, &TaskAttacher::onModeSelect);
+    // clang-format on
 
     this->groupLayout()->addWidget(proxy);
 

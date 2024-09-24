@@ -20,5 +20,27 @@
           <UserDocu>Get access to the sheet view</UserDocu>
         </Documentation>
       </Methode>
+      <Methode Name="showSheetMdi">
+        <Documentation>
+          <UserDocu>
+            Create (if necessary) and switch to the Spreadsheet MDI.
+
+            showSheetMdi()
+
+            Returns: None
+          </UserDocu>
+        </Documentation>
+      </Methode>
+      <Methode Name="exportAsFile">
+        <Documentation>
+          <UserDocu>
+            Export the sheet as a file.
+
+            exportAsFile()
+
+            Returns: None
+          </UserDocu>
+        </Documentation>
+      </Methode>
     </PythonExport>
 </GenerateModel>

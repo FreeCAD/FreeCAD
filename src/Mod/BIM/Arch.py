@@ -442,6 +442,8 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name=None):
         obj.Diameter = diameter
     else:
         obj.Diameter = params.get_param_arch("PipeDiameter")
+    obj.Width = obj.Diameter
+    obj.Height = obj.Diameter
     if placement:
         obj.Placement = placement
     return obj
@@ -475,8 +477,8 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",profile[2])
-    obj.Label = profile[2]
+    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython", "Profile")
+    obj.Label = profile[2] + "_"
     if profile[3]=="C":
         ArchProfile._ProfileC(obj, profile)
     elif profile[3]=="H":
@@ -872,7 +874,7 @@ def makeRailing(stairs):
                 outlineLRAll = stair.OutlineRightAll
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
-                lrRail = Arch.makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
+                lrRail = makePipe(baseobj=None,diameter=0,length=0,placement=None,name=translate("Arch","Railing"))
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break

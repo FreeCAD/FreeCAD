@@ -90,10 +90,10 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             ["CenterOfMass", App.Vector(1, 0.5, 1)],
             ["CompSolids", []],
             ["Compounds", []],
-            ["Content", ""],
+            ["Content", "<ElementMap/>\n"], # Our element map is empty, or there would be more here.
             ["ElementMap", {}],
             ["ElementReverseMap", {}],
-            # ['Hasher', {}],    # Todo:  Should this exist?  Different implementation?
+            ['Hasher', None],
             [
                 "MatrixOfInertia",
                 App.Matrix(
@@ -279,6 +279,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
     def testPartFuse(self):
         # Arrange
         self.doc.addObject("Part::Fuse", "Fuse")
+        self.doc.Fuse.Refine = False
         self.doc.Fuse.Base = self.doc.Box1
         self.doc.Fuse.Tool = self.doc.Box2
         # Act

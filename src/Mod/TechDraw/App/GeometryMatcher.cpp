@@ -44,6 +44,7 @@
 #include <Base/Tools.h>
 
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/TechDraw/App/ShapeUtils.h>
 
 #include "GeometryMatcher.h"
 #include "DrawUtil.h"
@@ -51,23 +52,21 @@
 
 using namespace TechDraw;
 using DU = DrawUtil;
+using SU = ShapeUtils;
 
 // a set of routines for comparing geometry for equality.
 
 bool GeometryMatcher::compareGeometry(const Part::TopoShape &shape1, const Part::TopoShape &shape2)
 {
-    // Base::Console().Message("GM::compareGeometry()\n");
     if (!Preferences::useExactMatchOnDims()) {
         return false;
     }
     if (shape1.isNull() || shape2.isNull()) {
-        Base::Console().Message("GM::compareGeometry - at least 1 input shape is null (1)\n");
         return false;
     }
     const TopoDS_Shape& geom1 = shape1.getShape();
     const TopoDS_Shape& geom2 = shape2.getShape();
     if (geom1.IsNull() || geom2.IsNull()) {
-        Base::Console().Message("GM::compareGeometry - at least 1 input shape is null (2)\n");
         return false;
     }
 
@@ -86,7 +85,6 @@ bool GeometryMatcher::compareGeometry(const Part::TopoShape &shape1, const Part:
 
 bool GeometryMatcher::comparePoints(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
 {
-    //    Base::Console().Message("GM::comparePoints()\n");
     if (shape1.ShapeType() != TopAbs_VERTEX || shape2.ShapeType() != TopAbs_VERTEX) {
         // can not compare these shapes
         return false;
@@ -100,8 +98,6 @@ bool GeometryMatcher::comparePoints(const TopoDS_Shape& shape1, const TopoDS_Sha
 
 bool GeometryMatcher::compareFaces(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
 {
-    //    Base::Console().Message("GM::compareFaces()\n");
-
     if (shape1.ShapeType() != TopAbs_FACE || shape2.ShapeType() != TopAbs_FACE) {
         // can not compare these shapes
         return false;
@@ -121,7 +117,6 @@ bool GeometryMatcher::compareFaces(const TopoDS_Shape& shape1, const TopoDS_Shap
 
 bool GeometryMatcher::compareEdges(const TopoDS_Shape& shape1, const TopoDS_Shape& shape2)
 {
-    // Base::Console().Message("GM::compareEdges()\n");
     if (shape1.ShapeType() != TopAbs_EDGE || shape2.ShapeType() != TopAbs_EDGE) {
        return false;
     }
@@ -162,23 +157,17 @@ bool GeometryMatcher::compareEdges(const TopoDS_Shape& shape1, const TopoDS_Shap
 
 bool GeometryMatcher::compareLines(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2)
 {
-    // Base::Console().Message("GM::compareLines()\n");
     // how does the edge that was NOT null in compareEdges become null here?
     // should not happen, but does!
     if (edge1.IsNull() || edge2.IsNull()) {
         //        Base::Console().Message("GM::compareLine - an input edge is null\n");
         return false;
     }
-    auto start1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edge1)));
-    auto end1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edge1)));
-    auto start2 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edge2)));
-    auto end2 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(edge2)));
-    return start1.IsEqual(start2, EWTOLERANCE) && end1.IsEqual(end2, EWTOLERANCE);
+    return compareEndPoints(edge1, edge2);
 }
 
 bool GeometryMatcher::compareCircles(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2)
 {
-    //    Base::Console().Message("GM::compareCircles()\n");
     // how does the edge that was NOT null in compareEdges become null here?
     if (edge1.IsNull() || edge2.IsNull()) {
         return false;
@@ -220,7 +209,6 @@ bool GeometryMatcher::compareEllipses(const TopoDS_Edge& edge1, const TopoDS_Edg
 // for our purposes, only lines or circles masquerading as bsplines are of interest
 bool GeometryMatcher::compareBSplines(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2)
 {
-    //    Base::Console().Message("GM::compareBSplines()\n");
     // how does the edge that was NOT null in compareEdges become null here?
     if (edge1.IsNull() || edge2.IsNull()) {
         return false;
@@ -260,7 +248,7 @@ bool GeometryMatcher::compareBSplines(const TopoDS_Edge& edge1, const TopoDS_Edg
 // this is a weak comparison.  we should also check center & radius?
 bool GeometryMatcher::compareCircleArcs(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2)
 {
-    return compareEndPoints(edge1, edge2);
+    return compareCircles(edge1, edge2) && compareEndPoints(edge1, edge2);
 }
 
 bool GeometryMatcher::compareEllipseArcs(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2)
@@ -272,7 +260,6 @@ bool GeometryMatcher::compareEllipseArcs(const TopoDS_Edge& edge1, const TopoDS_
 // not sure how successful this would be.  For now, we just say it doesn't match
 bool GeometryMatcher::compareDifferent(const TopoDS_Edge& edge1, const TopoDS_Edge& edge2)
 {
-    //    Base::Console().Message("GM::compareDifferent()\n");
     BRepAdaptor_Curve adapt1(edge1);
     BRepAdaptor_Curve adapt2(edge2);
     return false;
@@ -285,22 +272,9 @@ bool GeometryMatcher::compareEndPoints(const TopoDS_Edge& edge1, const TopoDS_Ed
         return false;
     }
 
-    BRepAdaptor_Curve adapt1(edge1);
-    BRepAdaptor_Curve adapt2(edge2);
-    double pFirst1 = adapt1.FirstParameter();
-    double pLast1 = adapt1.LastParameter();
-    BRepLProp_CLProps props1(adapt1, pFirst1, 0, Precision::Confusion());
-    auto begin1 = DU::toVector3d(props1.Value());
-    props1.SetParameter(pLast1);
-    auto end1 = DU::toVector3d(props1.Value());
-    double pFirst2 = adapt2.FirstParameter();
-    double pLast2 = adapt2.LastParameter();
-    BRepLProp_CLProps props2(adapt2, pFirst2, 0, Precision::Confusion());
-    auto begin2 = DU::toVector3d(props2.Value());
-    props2.SetParameter(pLast2);
-    auto end2 = DU::toVector3d(props2.Value());
-
-    return (begin1.IsEqual(begin2, EWTOLERANCE) &&
-            end1.IsEqual(end2, EWTOLERANCE));
+    auto ends1 = SU::getEdgeEnds(edge1);
+    auto ends2 = SU::getEdgeEnds(edge2);
+    return (ends1.first.IsEqual(ends2.first, EWTOLERANCE) &&
+            ends1.second.IsEqual(ends2.second, EWTOLERANCE));
 }
 

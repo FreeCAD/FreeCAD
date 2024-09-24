@@ -28,12 +28,13 @@ import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
 import Path.Op.ThreadMilling as PathThreadMilling
 import PathGui
+import PathScripts.PathUtils as PathUtils
 import csv
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+from PySide import QtCore, QtGui
 
-from PySide import QtCore
 
 __title__ = "CAM Thread Milling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
@@ -54,9 +55,7 @@ def fillThreads(form, dataFile, defaultSelect):
     select = form.threadName.currentText()
     Path.Log.debug("select = '{}'".format(select))
     form.threadName.clear()
-    with open(
-        "{}Mod/CAM/Data/Threads/{}".format(FreeCAD.getHomePath(), dataFile)
-    ) as fp:
+    with open("{}Mod/CAM/Data/Threads/{}".format(FreeCAD.getHomePath(), dataFile)) as fp:
         reader = csv.DictReader(fp)
         for row in reader:
             form.threadName.addItem(row["name"], row)
@@ -72,12 +71,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the thread milling operation's page"""
 
     def initPage(self, obj):
-        self.majorDia = PathGuiUtil.QuantitySpinBox(
-            self.form.threadMajor, obj, "MajorDiameter"
-        )
-        self.minorDia = PathGuiUtil.QuantitySpinBox(
-            self.form.threadMinor, obj, "MinorDiameter"
-        )
+        self.majorDia = PathGuiUtil.QuantitySpinBox(self.form.threadMajor, obj, "MajorDiameter")
+        self.minorDia = PathGuiUtil.QuantitySpinBox(self.form.threadMinor, obj, "MinorDiameter")
         self.pitch = PathGuiUtil.QuantitySpinBox(self.form.threadPitch, obj, "Pitch")
 
     def getForm(self):
@@ -88,9 +83,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             ("threadType", "ThreadType"),
             ("opDirection", "Direction"),
         ]
-        enumTups = PathThreadMilling.ObjectThreadMilling.propertyEnumerations(
-            dataType="raw"
-        )
+        enumTups = PathThreadMilling.ObjectThreadMilling.propertyEnumerations(dataType="raw")
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
         return form
@@ -112,7 +105,16 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
         obj.TPI = self.form.threadTPI.value()
 
-        self.updateToolController(obj, self.form.toolController)
+        try:
+            self.updateToolController(obj, self.form.toolController)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a threadmilling tool",
+            )
+
+            self.show_error_message(title, message)
 
     def setFields(self, obj):
         """setFields(obj) ... update UI with obj properties' values"""
@@ -147,22 +149,16 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         ]
 
     def _isThreadImperial(self):
-        return (
-            self.form.threadType.currentData() in PathThreadMilling.ThreadTypesImperial
-        )
+        return self.form.threadType.currentData() in PathThreadMilling.ThreadTypesImperial
 
     def _isThreadMetric(self):
         return self.form.threadType.currentData() in PathThreadMilling.ThreadTypesMetric
 
     def _isThreadInternal(self):
-        return (
-            self.form.threadType.currentData() in PathThreadMilling.ThreadTypesInternal
-        )
+        return self.form.threadType.currentData() in PathThreadMilling.ThreadTypesInternal
 
     def _isThreadExternal(self):
-        return (
-            self.form.threadType.currentData() in PathThreadMilling.ThreadTypesExternal
-        )
+        return self.form.threadType.currentData() in PathThreadMilling.ThreadTypesExternal
 
     def _updateFromThreadType(self):
 

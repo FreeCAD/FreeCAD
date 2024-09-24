@@ -29,13 +29,18 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <Gui/Selection.h>
-namespace Measure {
-    class Measurement;
+
+class QTimer;
+
+namespace Measure
+{
+class Measurement;
 }
 
-namespace MeasureGui {
+namespace MeasureGui
+{
 
-class QuickMeasure : public QObject, Gui::SelectionObserver
+class QuickMeasure: public QObject, Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -45,17 +50,21 @@ public:
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void tryMeasureSelection(const Gui::SelectionChanges& msg);
+    void tryMeasureSelection();
 
     bool canMeasureSelection(const Gui::SelectionChanges& msg) const;
     void addSelectionToMeasurement();
     void printResult();
     void print(const QString& message);
 
+    void processSelection();
+
     Measure::Measurement* measurement;
 
+    QTimer* selectionTimer;
+    bool pendingProcessing;
 };
 
-} //namespace MeasureGui
+}  // namespace MeasureGui
 
-#endif // MEASUREGUI_QUICKMEASURE_H
+#endif  // MEASUREGUI_QUICKMEASURE_H

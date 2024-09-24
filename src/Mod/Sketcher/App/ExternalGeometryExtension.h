@@ -27,6 +27,7 @@
 #include <bitset>
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
 
 
@@ -40,18 +41,29 @@ public:
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
     // <realthunder.dev@gmail.com>
     virtual bool testFlag(int flag) const = 0;
+
     virtual void setFlag(int flag, bool v = true) = 0;
+
+    virtual unsigned long getFlags() const = 0;
+
+    virtual void setFlags(unsigned long flags) = 0;
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
     // <realthunder.dev@gmail.com>
 
     virtual bool isClear() const = 0;
+
     virtual size_t flagSize() const = 0;
 
     virtual const std::string& getRef() const = 0;
+
     virtual void setRef(const std::string& ref) = 0;
+
+    virtual int getRefIndex() const = 0;
+
+    virtual void setRefIndex(int index) = 0;
 };
 
-class SketcherExport ExternalGeometryExtension: public Part::GeometryPersistenceExtension,
+class SketcherExport ExternalGeometryExtension: public Part::GeometryMigrationPersistenceExtension,
                                                 private ISketchExternalGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -76,6 +88,7 @@ public:
 
 public:
     ExternalGeometryExtension() = default;
+
     ~ExternalGeometryExtension() override = default;
 
     std::unique_ptr<Part::GeometryExtension> copy() const override;
@@ -88,9 +101,20 @@ public:
     {
         return Flags.test((size_t)(flag));
     }
+
     void setFlag(int flag, bool v = true) override
     {
         Flags.set((size_t)(flag), v);
+    }
+
+    unsigned long getFlags() const override
+    {
+        return Flags.to_ulong();
+    }
+
+    void setFlags(unsigned long flags) override
+    {
+        Flags = flags;
     }
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
     // <realthunder.dev@gmail.com>
@@ -99,6 +123,7 @@ public:
     {
         return Flags.none();
     }
+
     size_t flagSize() const override
     {
         return Flags.size();
@@ -108,17 +133,32 @@ public:
     {
         return Ref;
     }
+
     void setRef(const std::string& ref) override
     {
         Ref = ref;
+    }
+
+    int getRefIndex() const override
+    {
+        return RefIndex;
+    }
+
+    void setRefIndex(int index) override
+    {
+        RefIndex = index;
     }
 
     static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag& flag);
 
 protected:
     void copyAttributes(Part::GeometryExtension* cpy) const override;
+
     void restoreAttributes(Base::XMLReader& reader) override;
+
     void saveAttributes(Base::Writer& writer) const override;
+
+    void preSave(Base::Writer& writer) const override;
 
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;
@@ -128,6 +168,7 @@ private:
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
     // <realthunder.dev@gmail.com>
     std::string Ref;
+    int RefIndex = -1;
     FlagType Flags;
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
     // <realthunder.dev@gmail.com>

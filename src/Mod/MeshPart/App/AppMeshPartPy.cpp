@@ -183,7 +183,6 @@ private:
         float x=0.0f,y=0.0f,z=1.0f,size = 0.1f;
 
         if (!PyArg_ParseTuple(args.ptr(), "O!O(fff)f", &(Part::TopoShapePy::Type), &pcTopoObj,&pcListObj,&x,&y,&z,&size))
-//      if (!PyArg_ParseTuple(args, "O!O!", &(App::TopoShapePy::Type), &pcTopoObj,&PyList_Type,&pcListObj,x,y,z,size))
             throw Py::Exception();
 
         pcObject = static_cast<Part::TopoShapePy*>(pcTopoObj);

@@ -57,6 +57,7 @@ class Split(gui_base_original.Modifier):
         if not self.ui:
             return
         _toolmsg(translate("draft", "Click anywhere on a line to split it."))
+        self.view.graphicsView().setFocus()  # Make sure using Esc works.
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def action(self, arg):

@@ -66,7 +66,7 @@ bool MaterialDelegate::newRow(const QAbstractItemModel* model, const QModelIndex
 {
     Q_UNUSED(model)
     Q_UNUSED(index)
-    
+
     // New rows are for lists and arrays
     return false;
 }

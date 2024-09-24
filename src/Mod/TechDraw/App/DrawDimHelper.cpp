@@ -336,7 +336,11 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
     for (auto& ref : references) {
-        builder.Add(comp, ref.getGeometry());
+        auto tempGeom = ref.getGeometry();
+        if (tempGeom.IsNull()) {
+            continue;
+        }
+        builder.Add(comp, tempGeom);
     }
     Base::Vector3d centroid = dvp->getOriginalCentroid();
     TopoDS_Shape centeredShape =//this result is a throw away. We will work with comp.

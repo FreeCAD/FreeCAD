@@ -296,3 +296,11 @@ QColor PreferencesGui::templateClickBoxColor()
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("TemplateUnderlineColor", 0x0000FFFF));  //#0000FF blue
     return fcColor.asValue<QColor>();
 }
+
+int PreferencesGui::get3dMarkerSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                                ("User parameter:BaseApp/Preferences/View");
+    return hGrp->GetInt("MarkerSize", 9L);
+}
+

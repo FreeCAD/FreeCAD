@@ -149,5 +149,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawWeldSymbolPython::init();
     TechDraw::DrawBrokenViewPython::init();
 
+    TechDraw::LineFormat::initCurrentLineFormat();
+
     PyMOD_Return(mod);
 }

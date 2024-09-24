@@ -109,7 +109,7 @@ make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalc
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_material_nonlinear
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_square_pipe_end_twisted_edgeforces
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_square_pipe_end_twisted_nodeforces
-make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetall
+make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetal
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_box_static_0_mm
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload_0_mm
 make -j 4 && ./bin/FreeCADCmd -t femtest.app.test_solver_elmer.TestSolverElmer.test_ccxcantilever_faceload_1_si
@@ -441,7 +441,7 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(
-    'femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetall'
+    'femtest.app.test_solver_calculix.TestSolverCalculix.test_thermomech_bimetal'
 ))
 
 import unittest

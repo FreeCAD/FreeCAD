@@ -458,30 +458,30 @@ bool SubObjectT::hasSubElement() const
 }
 
 std::string SubObjectT::getNewElementName() const {
-    std::pair<std::string, std::string> element;
+    ElementNamePair element;
     auto obj = getObject();
     if(!obj)
         return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
-    return std::move(element.first);
+    return std::move(element.newName);
 }
 
 std::string SubObjectT::getOldElementName(int *index) const {
-    std::pair<std::string, std::string> element;
+    ElementNamePair element;
     auto obj = getObject();
     if(!obj)
         return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
     if(!index)
-        return std::move(element.second);
-    std::size_t pos = element.second.find_first_of("0123456789");
+        return std::move(element.oldName);
+    std::size_t pos = element.oldName.find_first_of("0123456789");
     if(pos == std::string::npos)
         *index = -1;
     else {
-        *index = std::atoi(element.second.c_str()+pos);
-        element.second.resize(pos);
+        *index = std::atoi(element.oldName.c_str()+pos);
+        element.oldName.resize(pos);
     }
-    return std::move(element.second);
+    return std::move(element.oldName);
 }
 
 App::DocumentObject *SubObjectT::getSubObject() const {

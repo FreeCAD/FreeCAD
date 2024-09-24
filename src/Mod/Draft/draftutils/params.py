@@ -76,7 +76,9 @@ class ParamObserverView:
         if entry in ("DefaultShapeColor", "DefaultShapeLineColor", "DefaultShapeLineWidth"):
             _param_observer_callback_tray()
             return
-
+        if entry == "MarkerSize":
+            _param_observer_callback_snaptextsize()
+            return
 
 def _param_observer_callback_tray():
     if not hasattr(Gui, "draftToolBar"):
@@ -144,8 +146,18 @@ def _param_observer_callback_snapstyle():
 
 def _param_observer_callback_snapcolor():
     if hasattr(Gui, "Snapper"):
-        for snap_track in Gui.Snapper.trackers[2]:
-            snap_track.setColor()
+        tracker_list = [2, 5, 6]
+        for each_tracker in tracker_list:
+            for snap_track in Gui.Snapper.trackers[each_tracker]:
+                snap_track.setColor()
+
+
+def _param_observer_callback_snaptextsize():
+    if hasattr(Gui, "Snapper"):
+        tracker_list = [5, 6]
+        for each_tracker in tracker_list:
+            for snap_track in Gui.Snapper.trackers[each_tracker]:
+                snap_track.setSize()
 
 
 def _param_observer_callback_svg_pattern():

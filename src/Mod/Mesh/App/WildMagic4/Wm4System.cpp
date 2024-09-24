@@ -927,7 +927,7 @@ char* System::Strcpy (char* acDst, size_t uiDstSize, const char* acSrc)
         // copy failed.
         return nullptr;
     }
-    strncpy(acDst,acSrc,uiSrcLen);
+    strncpy(acDst,acSrc,uiSrcLen + 1);
     acDst[uiSrcLen] = 0;
     return acDst;
 #endif
@@ -962,7 +962,7 @@ char* System::Strcat (char* acDst, size_t uiDstSize, const char* acSrc)
         // the concatenation failed.
         return nullptr;
     }
-    strncat(acDst,acSrc,uiSrcLen);
+    strncat(acDst,acSrc,uiSrcLen + 1);
     acDst[uiSumLen] = 0;
     return acDst;
 #endif

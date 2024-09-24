@@ -80,6 +80,7 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -932,27 +933,29 @@ std::vector<TechDraw::FacePtr> DrawViewSection::makeTDSectionFaces(TopoDS_Compou
 std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
-    Base::Vector3d stdZ(0.0, 0.0, 1.0);
-    double baseRotation = getBaseDVP()->Rotation.getValue();// Qt degrees are clockwise
-    Base::Rotation rotator(stdZ, baseRotation * M_PI / 180.0);
-    Base::Rotation unrotator(stdZ, -baseRotation * M_PI / 180.0);
 
+    Base::Vector3d dir = getSectionDirectionOnBaseView();
+
+    Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
+    sectionOrg = getBaseDVP()->projectPoint(sectionOrg);// convert to base view CS
+    double halfSize = (getBaseDVP()->getSizeAlongVector(dir) / 2.0) * SectionLineStretch.getValue();
+    result.first = sectionOrg + dir * halfSize;
+    result.second = sectionOrg - dir * halfSize;
+
+    return result;
+}
+
+// calculate the direction of the section in 2d on the base view.
+Base::Vector3d DrawViewSection::getSectionDirectionOnBaseView()
+{
     auto sNorm = SectionNormal.getValue();
     auto axis = getBaseDVP()->Direction.getValue();
-    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     Base::Vector3d sectionLineDir = -axis.Cross(sNorm);
     sectionLineDir.Normalize();
     sectionLineDir = getBaseDVP()->projectPoint(sectionLineDir);// convert to base view CS
     sectionLineDir.Normalize();
 
-    Base::Vector3d sectionOrg = SectionOrigin.getValue() - getBaseDVP()->getOriginalCentroid();
-    sectionOrg = getBaseDVP()->projectPoint(sectionOrg);// convert to base view
-                                                        // CS
-    double halfSize = (getBaseDVP()->getSizeAlongVector(sectionLineDir) / 2.0) * SectionLineStretch.getValue();
-    result.first = sectionOrg + sectionLineDir * halfSize;
-    result.second = sectionOrg - sectionLineDir * halfSize;
-
-    return result;
+    return sectionLineDir;
 }
 
 // find the points and directions to make the change point marks.
@@ -1150,20 +1153,14 @@ gp_Ax2 DrawViewSection::getSectionCS() const
     return sectionCS;
 }
 
-gp_Ax2 DrawViewSection::getProjectionCS(const Base::Vector3d pt) const
+
+//! return the center of the shape resulting from the cut operation
+Base::Vector3d DrawViewSection::getCutCentroid() const
 {
-    Base::Vector3d vNormal = SectionNormal.getValue();
-    gp_Dir gNormal(vNormal.x, vNormal.y, vNormal.z);
-    Base::Vector3d vXDir = getXDirection();
-    gp_Dir gXDir(vXDir.x, vXDir.y, vXDir.z);
-    if (DrawUtil::fpCompare(fabs(gNormal.Dot(gXDir)), 1.0)) {
-        // can not build a gp_Ax2 from these values
-        throw Base::RuntimeError(
-            "DVS::getProjectionCS - SectionNormal and XDirection are parallel");
-    }
-    gp_Pnt gOrigin(pt.x, pt.y, pt.z);
-    return {gOrigin, gNormal, gXDir};
+    gp_Pnt inputCenter = ShapeUtils::findCentroid(m_cutPieces, getProjectionCS());
+    return Base::Vector3d(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
 }
+
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {

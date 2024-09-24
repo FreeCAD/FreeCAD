@@ -24,12 +24,12 @@
 #ifndef PARTGUI_ViewProviderPocket_H
 #define PARTGUI_ViewProviderPocket_H
 
-#include "ViewProviderSketchBased.h"
+#include "ViewProviderExtrude.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPocket : public ViewProviderSketchBased
+class PartDesignGuiExport ViewProviderPocket : public ViewProviderExtrude
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderPocket);
 

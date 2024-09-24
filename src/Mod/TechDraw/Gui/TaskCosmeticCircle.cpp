@@ -22,14 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 #endif
 
+#include <QMessageBox>
+
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -66,18 +69,22 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
     ui->setupUi(this);
 
     setUiEdit();
+
+    connect(ui->qsbRadius, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskCosmeticCircle::radiusChanged);
+
 }
 
 //ctor for creation
 TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
-                                   Base::Vector3d center, bool is3d) :
+                                   std::vector<Base::Vector3d> points, bool is3d) :
     ui(new Ui_TaskCosmeticCircle),
     m_partFeat(partFeat),
     m_ce(nullptr),
     m_saveCE(nullptr),
-    m_center(center),
     m_createMode(true),
-    m_is3d(is3d)
+    m_is3d(is3d),
+    m_points(points)
 {
     //existence of partFeat is checked in calling command
 
@@ -110,35 +117,45 @@ void TaskCosmeticCircle::changeEvent(QEvent *e)
 void TaskCosmeticCircle::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Cosmetic Circle"));
-//    Base::Console().Message("TCC::setUiPrimary() - m_center: %s is3d: %d\n",
-//        DU::formatVector(m_center).c_str(), m_is3d);
-    double rotDeg = m_partFeat->Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
-    Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
-    Base::Vector3d p1;
+    std::vector<Base::Vector3d> displayPoints;
+    std::vector<Base::Vector3d> mathPoints;
+    for (auto& point : m_points) {
+        // use conventional coordinates for calculations
+        mathPoints.push_back(DU::invertY(point));
+    }
+
+    if (!m_points.empty()) {
+        m_center = m_points.front();
+    }
+
+    Base::Vector3d displayCenter;
     if (m_is3d) {
-        // center, project and invert the 3d point
-        p1 = DrawUtil::invertY(m_partFeat->projectPoint(m_center - centroid));
         ui->rb2d1->setChecked(false);
         ui->rb3d1->setChecked(true);
+        // center, project and invert the 3d point
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        displayCenter = m_partFeat->projectPoint(mathPoints[0] - centroid, false);
     } else {
-        // invert, unscale and unrotate the selected 2d point
-        // shift by centroid?
-        p1 = DU::invertY(m_center) / m_partFeat->getScale();
-        if (rotDeg != 0.0) {
-            // we always rotate around the origin.
-            p1.RotateZ(-rotRad);
-        }
         ui->rb2d1->setChecked(true);
         ui->rb3d1->setChecked(false);
+        // if the points are selected from 2d, they are already inverted
+        // unscale and unrotate the selected 2d point
+        displayCenter = CosmeticVertex::makeCanonicalPointInverted(m_partFeat, m_center);
+        displayCenter = DU::invertY(displayCenter);
     }
 
     ui->qsbCenterX->setUnit(Base::Unit::Length);
-    ui->qsbCenterX->setValue(p1.x);
+    ui->qsbCenterX->setValue(displayCenter.x);
     ui->qsbCenterY->setUnit(Base::Unit::Length);
-    ui->qsbCenterY->setValue(p1.y);
+    ui->qsbCenterY->setValue(displayCenter.y);
     ui->qsbCenterY->setUnit(Base::Unit::Length);
-    ui->qsbCenterZ->setValue(p1.z);
+    ui->qsbCenterZ->setValue(displayCenter.z);
+
+    double radius = (mathPoints[1] - mathPoints[0]).Length() / m_partFeat->getScale();
+    ui->qsbRadius->setValue(radius);
+
+    ui->qsbStartAngle->setValue(Base::toDegrees(DU::angleWithX(mathPoints[1] - mathPoints[0])));
+    ui->qsbEndAngle->setValue(Base::toDegrees(DU::angleWithX(mathPoints[2] - mathPoints[0])));
 }
 
 void TaskCosmeticCircle::setUiEdit()
@@ -155,44 +172,59 @@ void TaskCosmeticCircle::setUiEdit()
 
     ui->qsbRadius->setValue(m_ce->permaRadius);
 
-    double angleDeg = m_ce->m_geometry->getStartAngle() * 180.0 / M_PI;
-    ui->qsbStartAngle->setValue(angleDeg);
-    angleDeg = m_ce->m_geometry->getEndAngle() * 180.0 / M_PI;
-    ui->qsbEndAngle->setValue(angleDeg);
+    ui->qsbStartAngle->setValue(Base::toDegrees(m_ce->m_geometry->getStartAngle()));
+    ui->qsbEndAngle->setValue(Base::toDegrees(m_ce->m_geometry->getEndAngle()));
 }
+
+void TaskCosmeticCircle::radiusChanged()
+{
+    if (ui->qsbRadius->value().getValue() <= 0.0) {
+        QString msg = tr("Radius must be non-zero positive number");
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Parameter Error"), msg);
+    }
+}
+
 
 //******************************************************************************
 void TaskCosmeticCircle::createCosmeticCircle(void)
 {
 //    Base::Console().Message("TCL::createCosmeticCircle()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
 
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Circle"));
+
+    // point from Page/View is conventional coordinates (Y+ up), unscaled, unrotated, but centered (Csriz)
+    // this is Canonical form with out inversion.
+    // point from 3d is OXYZ and needs to be projected.
     double x = ui->qsbCenterX->value().getValue();
     double y = ui->qsbCenterY->value().getValue();
     double z = ui->qsbCenterZ->value().getValue();
-    Base::Vector3d p0(x, y, z);
+    Base::Vector3d center(x, y, z);
+    if (ui->rb3d1->isChecked()) {
+        Base::Vector3d centroid = m_partFeat->getCurrentCentroid();
+        center = m_partFeat->projectPoint(center - centroid);
+    }
 
     TechDraw::BaseGeomPtr bg;
     if (ui->qsbStartAngle->value().getValue() == 0.0 &&
         ui->qsbEndAngle->value().getValue() == 0.0)  {
-        bg = std::make_shared<TechDraw::Circle> (p0, ui->qsbRadius->value().getValue());
+        bg = std::make_shared<TechDraw::Circle> (center, ui->qsbRadius->value().getValue());
     } else {
-        bg = std::make_shared<TechDraw::AOC>(p0, ui->qsbRadius->value().getValue(),
-                                     ui->qsbStartAngle->value().getValue(),
-                                     ui->qsbEndAngle->value().getValue());
+        bg = std::make_shared<TechDraw::AOC>(center, ui->qsbRadius->value().getValue(),
+                                            ui->qsbStartAngle->value().getValue(),
+                                            ui->qsbEndAngle->value().getValue());
     }
 
-    // note cEdges are inverted when added to the dvp geometry, so we need to
-    // invert them here
+    // after all the calculations are done, we invert the geometry
     m_tag = m_partFeat->addCosmeticEdge(bg->inverted());
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
+    m_ce->setFormat(LineFormat::getCurrentLineFormat());
 
     Gui::Command::commitCommand();
 }
 
 void TaskCosmeticCircle::updateCosmeticCircle(void)
 {
-//    Base::Console().Message("TCL::updateCosmeticCircle()\n");
+    // Base::Console().Message("TCL::updateCosmeticCircle()\n");
     double x = ui->qsbCenterX->value().getValue();
     double y = ui->qsbCenterY->value().getValue();
     double z = ui->qsbCenterZ->value().getValue();
@@ -211,7 +243,6 @@ void TaskCosmeticCircle::updateCosmeticCircle(void)
                                              ui->qsbEndAngle->value().getValue());
     }
     m_ce->m_geometry = bg->inverted();
-    p0 = DU::invertY(p0);
     m_ce->permaStart = p0;
     m_ce->permaEnd = p0;
 }
@@ -220,6 +251,12 @@ void TaskCosmeticCircle::updateCosmeticCircle(void)
 
 bool TaskCosmeticCircle::accept()
 {
+    if (ui->qsbRadius->value().getValue() <= 0.0) {
+        // this won't work!
+        Base::Console().Error("TaskCosmeticCircle - can not create a circle with radius: %.3f\n",
+                                ui->qsbRadius->value().getValue());
+        return false;
+    }
     if (m_createMode) {
         createCosmeticCircle();
         m_partFeat->add1CEToGE(m_tag);
@@ -248,11 +285,11 @@ bool TaskCosmeticCircle::reject()
 }
 ////////////////////////////////////////////////////////////////////////////////
 TaskDlgCosmeticCircle::TaskDlgCosmeticCircle(TechDraw::DrawViewPart* partFeat,
-                                     Base::Vector3d point,
+                                     std::vector<Base::Vector3d> points,
                                      bool is3d)
     : TaskDialog()
 {
-    widget  = new TaskCosmeticCircle(partFeat, point, is3d);
+    widget  = new TaskCosmeticCircle(partFeat, points, is3d);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_CosmeticCircle"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

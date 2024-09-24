@@ -516,6 +516,11 @@ App::Range Sheet::getRange(const char* name, bool silent) const
     return cells.getRange(name, silent);
 }
 
+std::tuple<App::CellAddress, App::CellAddress> Sheet::getUsedRange() const
+{
+    return cells.getUsedRange();
+}
+
 /**
  * @brief Get a map with column indices and widths.
  * @return Map with results.
@@ -1780,7 +1785,7 @@ PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
 template<>
 const char* Spreadsheet::SheetPython::getViewProviderName() const
 {
-    return "SpreadsheetGui::ViewProviderSheet";
+    return "SpreadsheetGui::ViewProviderSheetPython";
 }
 template<>
 PyObject* Spreadsheet::SheetPython::getPyObject()

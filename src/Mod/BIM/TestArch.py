@@ -436,9 +436,9 @@ class ArchTest(unittest.TestCase):
                                 "Arch Wall with MultiMaterial and 3 alignments failed")
 
     def testStructure(self):
-        App.Console.PrintLog ('Checking Arch Structure...\n')
+        App.Console.PrintLog ('Checking BIM Structure...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
-        self.assertTrue(s,"Arch Structure failed")
+        self.assertTrue(s,"BIM Structure failed")
 
     def testRebar(self):
         App.Console.PrintLog ('Checking Arch Rebar...\n')

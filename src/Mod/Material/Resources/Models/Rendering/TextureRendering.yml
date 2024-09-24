@@ -35,8 +35,9 @@ AppearanceModel:
     Type: 'File'
     Units: ''
     URL: ''
-    Description: "Path to file containing a texture image. Only used if TextureImage is unpopulated"
+    Description: "Path to file containing a texture image. Only used if Texture Image is unpopulated"
   TextureImage:
+    DisplayName: "Texture Image"
     Type: 'Image'
     Units: ''
     URL: ''

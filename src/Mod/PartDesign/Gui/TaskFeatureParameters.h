@@ -24,6 +24,7 @@
 #define TASKFEATUREPARAMETERS_H_NAHKE2YZ
 
 
+#include <type_traits>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/DocumentObserver.h>
@@ -59,8 +60,51 @@ private:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 protected:
+    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    {
+        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
+                "Wrong template argument");
+        return dynamic_cast<T*>(vp);
+    }
+
+    template<typename T = App::DocumentObject> T* getObject() const
+    {
+        static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+        if (vp) {
+            return dynamic_cast<T*>(vp->getObject());
+        }
+
+        return nullptr;
+    }
+
+    Gui::Document* getGuiDocument() const
+    {
+        return vp ? vp->getDocument() : nullptr;
+    }
+
+    App::Document* getAppDocument() const
+    {
+        auto obj = getObject();
+        return obj ? obj->getDocument() : nullptr;
+    }
+
+    bool isUpdateBlocked() const
+    {
+        return blockUpdate;
+    }
+
+    bool& getUpdateBlockRef()
+    {
+        return blockUpdate;
+    }
+
+    void setUpdateBlocked(bool value)
+    {
+        blockUpdate = value;
+    }
+
+private:
     PartDesignGui::ViewProvider *vp;
-    /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate;
 };
 
@@ -79,11 +123,25 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
 
-    /// Returns the view provider dialog is runed for
-     PartDesignGui::ViewProvider *viewProvider() const { return vp; }
+    template<typename T = PartDesignGui::ViewProvider> T* getViewObject() const
+    {
+        static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
+                "Wrong template argument");
+        return dynamic_cast<T*>(vp);
+    }
 
-protected:
-    PartDesignGui::ViewProvider *vp;
+    template<typename T = App::DocumentObject> T* getObject() const
+    {
+        static_assert(std::is_base_of<App::DocumentObject, T>::value, "Wrong template argument");
+        if (vp) {
+            return dynamic_cast<T*>(vp->getObject());
+        }
+
+        return nullptr;
+    }
+
+private:
+    PartDesignGui::ViewProvider* vp;
 };
 
 } //namespace PartDesignGui

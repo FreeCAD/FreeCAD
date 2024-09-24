@@ -590,7 +590,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
                   << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
                   << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle"
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection" << "Std_DrawStyle"
               << StdViews << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
@@ -654,12 +654,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Standard views
     auto stdviews = new MenuItem;
     stdviews->setCommand("Standard views");
-    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << axoviews
+    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection" << axoviews
               << "Separator" << "Std_ViewHome" << "Std_ViewFront" << "Std_ViewTop"
-              << "Std_ViewRight" << "Std_ViewRear"
-              << "Std_ViewBottom" << "Std_ViewLeft"
-              << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight"
-              << "Separator" << "Std_StoreWorkingView" << "Std_RecallWorkingView";
+              << "Std_ViewRight" << "Std_ViewRear" << "Std_ViewBottom" << "Std_ViewLeft"
+              << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight" << "Separator"
+              << "Std_StoreWorkingView" << "Std_RecallWorkingView";
 
     // stereo
     auto view3d = new MenuItem;
@@ -719,9 +718,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_DependencyGraph"
           << "Std_ExportDependencyGraph"
           << "Std_ProjectUtil"
-          << "Separator"
-          << "Std_MeasureDistance"
-          << "Std_Measure"
           << "Separator"
           << "Std_TextDocument"
           << "Separator"
@@ -805,8 +801,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
-          << "Separator" << "Std_MeasureDistance" << "Std_Measure";
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
@@ -822,7 +817,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Structure
     auto structure = new ToolBarItem( root );
     structure->setCommand("Structure");
-    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions";
+    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet";
 
     // Help
     auto help = new ToolBarItem( root );
@@ -855,15 +850,13 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
 DockWindowItems* StdWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_ToolBox", Qt::RightDockWidgetArea, false, false);
-    //root->addDockWidget("Std_HelpView", Qt::RightDockWidgetArea, true, false);
     root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, true, false);
     root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, true, false);
     root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, true, true);
     root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);
-    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, true, true);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, false, true);
+    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, false, true);
 
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().

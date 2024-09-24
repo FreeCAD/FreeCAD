@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <Quarter/Basic.h>
 
 class QEvent;
@@ -46,7 +46,7 @@ class QuarterWidget;
 class QUARTER_DLL_API DragDropHandler : public QObject {
   Q_OBJECT
 public:
-  DragDropHandler(QuarterWidget * parent);
+  explicit DragDropHandler(QuarterWidget * parent);
   ~DragDropHandler() override;
 
 protected:

@@ -125,18 +125,12 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         """Test G0 command Generation."""
         self.compare_third_line(
             "G0 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            (
-                "G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
-                "U70.000 V80.000 W90.000"
-            ),
+            ("G0 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
             "",
         )
         self.compare_third_line(
             "G00 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            (
-                "G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
-                "U70.000 V80.000 W90.000"
-            ),
+            ("G00 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
             "",
         )
 
@@ -279,9 +273,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
             "G10 L2 X1.235 Y2.346 Z3.457 P3",
             "",
         )
-        self.compare_third_line(
-            "G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", ""
-        )
+        self.compare_third_line("G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", "")
         self.compare_third_line(
             "G10 L10 P1 X1.23456 Y2.34567 Z3.456789",
             "G10 L10 X1.235 Y2.346 Z3.457 P1",
@@ -363,10 +355,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.compare_third_line("G28", "G28", "")
         self.compare_third_line(
             "G28 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            (
-                "G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
-                "U70.000 V80.000 W90.000"
-            ),
+            ("G28 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
             "",
         )
 
@@ -383,10 +372,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
         self.compare_third_line("G30", "G30", "")
         self.compare_third_line(
             "G30 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            (
-                "G30 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
-                "U70.000 V80.000 W90.000"
-            ),
+            ("G30 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
             "",
         )
 
@@ -511,10 +497,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
                 "G43.1 X1.234567 Y2.345678 Z3.456789 A4.567891 B5.678912 C6.789123 "
                 "U7.891234 V8.912345 W9.123456"
             ),
-            (
-                "G43.1 X0.0486 Y0.0923 Z0.1361 A0.1798 B0.2236 C0.2673 "
-                "U0.3107 V0.3509 W0.3592"
-            ),
+            ("G43.1 X0.0486 Y0.0923 Z0.1361 A0.1798 B0.2236 C0.2673 " "U0.3107 V0.3509 W0.3592"),
             "--inches",
         )
 
@@ -542,9 +525,7 @@ class TestRefactoredTestPostGCodes(PathTestUtils.PathTestBase):
                         "C6.789123 U7.891234 V8.912345 W9.123456"
                     )
                 ),
-                Path.Command(
-                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
-                ),
+                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
             ],
             """G90
 G21
@@ -561,9 +542,7 @@ G52 X0.000 Y0.000 Z0.000 A0.000 B0.000 C0.000 U0.000 V0.000 W0.000
                         "C6.789123 U7.891234 V8.912345 W9.123456"
                     )
                 ),
-                Path.Command(
-                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
-                ),
+                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
             ],
             """G90
 G20
@@ -726,9 +705,7 @@ G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
         self.compare_third_line("G64", "G64", "")
         self.compare_third_line("G64 P3.456789", "G64 P3.457", "")
         self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P3.457 Q4.568", "")
-        self.compare_third_line(
-            "G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches"
-        )
+        self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches")
 
     #############################################################################
 
@@ -1380,10 +1357,7 @@ G90
         """Test G92 command Generation."""
         self.compare_third_line(
             "G92 X10 Y20 Z30 A40 B50 C60 U70 V80 W90",
-            (
-                "G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 "
-                "U70.000 V80.000 W90.000"
-            ),
+            ("G92 X10.000 Y20.000 Z30.000 A40.000 B50.000 C60.000 " "U70.000 V80.000 W90.000"),
             "",
         )
 

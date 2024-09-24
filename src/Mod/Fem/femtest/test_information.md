@@ -157,11 +157,7 @@ doc = ut.spine_thermomech()
 
 ```python
 app_home = FreeCAD.ConfigGet("AppHomePath")
-doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever2D.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D_newSolver.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/Fem.FCStd")
-doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
+doc = FreeCAD.open(app_home + "data/examples/FEMExample.FCStd")
 ```
 
 ### Load all documents files
@@ -170,4 +166,3 @@ doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
 app_home = FreeCAD.ConfigGet("AppHomePath")
 doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/open/all_objects_de9b3fb438.FCStd')
 ```
-

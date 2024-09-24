@@ -56,6 +56,7 @@ public:
 
     static void cleanup();
     static void refresh();
+    static std::shared_ptr<App::Material> defaultAppearance();
     static std::shared_ptr<Material> defaultMaterial();
     static QString defaultMaterialUUID();
 

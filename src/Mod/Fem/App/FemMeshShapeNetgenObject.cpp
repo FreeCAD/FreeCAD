@@ -45,7 +45,7 @@
 using namespace Fem;
 using namespace App;
 
-PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeObject)
+PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeBaseObject)
 
 const char* FinenessEnums[] =
     {"VeryCoarse", "Coarse", "Moderate", "Fine", "VeryFine", "UserDefined", nullptr};
@@ -93,7 +93,7 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
 #if SMESH_VERSION_MAJOR >= 9
     NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, newMesh.getGenerator());
 #else
-    NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, 1, newMesh.getGenerator());
+    NETGENPlugin_Hypothesis* tet = new NETGENPlugin_Hypothesis(0, 0, newMesh.getGenerator());
 #endif
     tet->SetMaxSize(MaxSize.getValue());
     tet->SetMinSize(MinSize.getValue());

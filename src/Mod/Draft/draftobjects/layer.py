@@ -30,6 +30,7 @@
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
 from draftutils.messages import _wrn
 from draftutils.translate import translate
 
@@ -52,33 +53,50 @@ class Layer:
         if "Group" not in obj.PropertiesList:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The objects that are part of this layer")
-            obj.addProperty("App::PropertyLinkList",
+            # "App::PropertyLinkListHidden" instead of "App::PropertyLinkList" has 2 advantages:
+            # 1. No 'might break' warning when deleting an object nested in a layer.
+            # 2. No 'out of scope' warning for objects also nested in f.e. a Std_Part.
+            obj.addProperty("App::PropertyLinkListHidden",
                             "Group",
                             "Layer",
                             _tip)
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored."""
-        self.set_properties(obj)
-
-        if self.Type != "VisGroup":
+        # Group property type was changed last in the v1.0 dev cycle:
+        if obj.getTypeIdOfProperty("Group") == "App::PropertyLinkListHidden":
             return
+
+        grp = obj.Group  # Type: "App::PropertyLinkList".
+        group_removed = obj.removeProperty("Group")  # Not possible for VisGroups (< v0.19)
+        self.set_properties(obj)
+        if group_removed:
+            obj.Group = grp
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "changed 'Group' property type"))
+
         if not hasattr(obj, "ViewObject"):
             return
         vobj = obj.ViewObject
         if not vobj:
             return
-        self.add_missing_properties_0v19(obj, vobj)
-        self.Type = "Layer"
 
-    def add_missing_properties_0v19(self, obj, vobj):
-        """Update view properties."""
-        # It is not possible to change the property group of obj.Group.
-        for prop in ("DrawStyle", "LineColor", "LineWidth", "ShapeColor", "Transparency"):
-            vobj.setGroupOfProperty(prop, "Layer")
-        vobj.Proxy.set_properties(vobj)
-        _wrn("v0.19, " + obj.Label + ", "
-             + translate("draft", "added missing view properties"))
+        if self.Type == "VisGroup":  # Type prior to v0.19.
+            self.Type = "Layer"
+            # It is not possible to change the property group of vobj.Group.
+            for prop in ("DrawStyle", "LineColor", "LineWidth", "ShapeColor", "Transparency"):
+                vobj.setGroupOfProperty(prop, "Layer")
+
+        if not hasattr(vobj, "ShapeAppearance"):
+            vobj.Proxy.set_properties(vobj)
+            material = App.Material()  #  Material with default v0.21 properties.
+            material.DiffuseColor = vobj.ShapeColor
+            material.Transparency = vobj.Transparency / 100
+            vobj.ShapeAppearance = (material, )
+            vobj.setPropertyStatus("ShapeColor", "Hidden")
+            if hasattr(vobj, "OverrideShapeColorChildren"):  # v0.19 - v0.21
+                vobj.OverrideShapeAppearanceChildren = vobj.OverrideShapeColorChildren
+                vobj.removeProperty("OverrideShapeColorChildren")
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "updated view properties"))
 
     def dumps(self):
         """Return a tuple of objects to save or None."""

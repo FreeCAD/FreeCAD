@@ -88,6 +88,9 @@ static QColor       lightenColor(QColor orig);
 
 static double       templateClickBoxSize();
 static QColor       templateClickBoxColor();
+
+static int          get3dMarkerSize();
+
 };
 
 } //end namespace TechDrawGui

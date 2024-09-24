@@ -312,7 +312,7 @@ private:
     void populateToolBarMenu(QMenu *);
     void populateDockWindowMenu(QMenu *);
 
-    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
+    static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize, QColor color);
 
 private Q_SLOTS:
     /**
@@ -350,7 +350,7 @@ private Q_SLOTS:
     /**
      * \internal
      */
-    void processMessages(const QList<QByteArray> &);
+    void processMessages(const QList<QString> &);
     /**
      * \internal
      */

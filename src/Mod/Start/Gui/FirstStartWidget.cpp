@@ -58,6 +58,7 @@ FirstStartWidget::FirstStartWidget(QWidget* parent)
 void FirstStartWidget::setupUi()
 {
     auto outerLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(this));
+    outerLayout->addStretch();
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _welcomeLabel = gsl::owner<QLabel*>(new QLabel);
     outerLayout->addWidget(_welcomeLabel);
@@ -71,21 +72,14 @@ void FirstStartWidget::setupUi()
     outerLayout->addWidget(_themeSelectorWidget);
 
     _doneButton = gsl::owner<QPushButton*>(new QPushButton);
+    connect(_doneButton, &QPushButton::clicked, this, &FirstStartWidget::dismissed);
     auto buttonBar = gsl::owner<QHBoxLayout*>(new QHBoxLayout);
     buttonBar->addStretch();
     buttonBar->addWidget(_doneButton);
     outerLayout->addLayout(buttonBar);
+    outerLayout->addStretch();
 
-    connect(_doneButton, &QPushButton::clicked, this, &FirstStartWidget::doneClicked);
     retranslateUi();
-}
-
-void FirstStartWidget::doneClicked()
-{
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start");
-    hGrp->SetBool("FirstStart2024", false);
-    this->hide();
 }
 
 bool FirstStartWidget::eventFilter(QObject* object, QEvent* event)

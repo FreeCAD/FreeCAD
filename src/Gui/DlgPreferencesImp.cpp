@@ -287,9 +287,19 @@ PreferencePage* DlgPreferencesImp::createPreferencePage(const std::string& pageN
         return nullptr;
     }
 
+    auto resetMargins = [](QWidget* widget) {
+        widget->setContentsMargins(0, 0, 0, 0);
+        widget->layout()->setContentsMargins(0, 0, 0, 0);
+    };
+
     // settings layout already takes care for margins, we need to reset everything to 0
-    page->setContentsMargins(0, 0, 0, 0);
-    page->layout()->setContentsMargins(0, 0, 0, 0);
+    resetMargins(page);
+
+    // special handling for PreferenceUiForm to reset margins for forms too
+    if (auto uiFormPage = qobject_cast<PreferenceUiForm*>(page)) {
+        resetMargins(uiFormPage->form());
+    }
+
     page->setProperty(GroupNameProperty, QString::fromStdString(groupName));
     page->setProperty(PageNameProperty, QString::fromStdString(pageName));
 
@@ -352,15 +362,20 @@ int DlgPreferencesImp::minimumPageWidth() const
 
 int DlgPreferencesImp::minimumDialogWidth(int pageWidth) const
 {
+    // this is additional safety spacing to ensure that everything fits with scrollbar etc.
+    const auto additionalMargin = style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 8;
+    
     QSize size = ui->groupWidgetStack->sizeHint();
+
     int diff = pageWidth - size.width();
     int dw = width();
+
     if (diff > 0) {
         const int offset = 2;
         dw += diff + offset;
     }
 
-    return dw;
+    return dw + additionalMargin;
 }
 
 void DlgPreferencesImp::updatePageDependentWidgets()
@@ -746,10 +761,10 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
     auto screen = windowHandle()->screen();
     auto availableSize = screen->availableSize();
 
-    // leave at least 100 px of height so preferences window does not take
+    // leave some portion of height so preferences window does not take
     // entire screen height. User will still be able to resize the window,
     // but it should never start too tall.
-    auto maxStartHeight = availableSize.height() - 100;
+    auto maxStartHeight = availableSize.height() - minVerticalEmptySpace;
 
     if (height() > maxStartHeight) {
         auto heightDifference = availableSize.height() - maxStartHeight;
@@ -767,11 +782,9 @@ void DlgPreferencesImp::expandToMinimumDialogWidth()
     auto screen = windowHandle()->screen();
     auto availableSize = screen->availableSize();
 
-    // if the expanded dialog occupies less than 50% of the screen
     int mw = minimumDialogWidth(minimumPageWidth());
-    if (availableSize.width() > 2 * mw) {
-        resize(mw, height());
-    }
+    // expand dialog to minimum size required but do not use more than specified width portion
+    resize(std::min(int(maxScreenWidthCoveragePercent * availableSize.width()), mw), height());
 }
 
 void DlgPreferencesImp::onPageSelected(const QModelIndex& index)

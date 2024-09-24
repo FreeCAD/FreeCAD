@@ -93,6 +93,8 @@ public:
     static void addMeasureHandler(const char* module, MeasureTypeMethod typeCb);
     static bool hasMeasureHandler(const char* module);
     static MeasureHandler getMeasureHandler(const char* module);
+    static MeasureHandler getMeasureHandler(const App::MeasureSelectionItem& selectionItem);
+    static MeasureElementType getMeasureElementType(const App::MeasureSelectionItem& selectionItem);
     static void addMeasureType(MeasureType* measureType);
     static void addMeasureType(std::string id, std::string label, std::string measureObj, MeasureValidateMethod validatorCb, MeasurePrioritizeMethod prioritizeCb);
     static void addMeasureType(const char* id, const char* label, const char* measureObj, MeasureValidateMethod validatorCb, MeasurePrioritizeMethod prioritizeCb);

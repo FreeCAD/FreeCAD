@@ -52,6 +52,8 @@
 #define M_2PI ((M_PI)*2.0)
 #endif
 
+constexpr double DegreesHalfCircle{180.0};
+
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 #define VECTORTOLERANCE (Precision::Confusion())
 
@@ -272,6 +274,11 @@ public:
 
     static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const Base::Vector3d& inPoint);
     static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const QPointF& inPoint);
+
+    static bool isWithinRange(double actualAngleIn, double targetAngleIn, double allowableError);
+
+    static std::string cleanFilespecBackslash(const std::string& filespec);
+
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);

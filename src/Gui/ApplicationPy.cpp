@@ -316,6 +316,19 @@ PyMethodDef Application::Methods[] = {
    "but doesn't record it in macros.\n"
    "\n"
    "cmd : str"},
+  {"doCommandEval",               (PyCFunction) Application::sDoCommandEval, METH_VARARGS,
+          "doCommandEval(cmd) -> PyObject\n"
+          "\n"
+          "Runs the given string without showing in the python console or recording in\n"
+          "macros, and returns the result.\n"
+          "\n"
+          "cmd : str"},
+  {"doCommandSkip",               (PyCFunction) Application::sDoCommandSkip, METH_VARARGS,
+          "doCommandSkip(cmd) -> None\n"
+          "\n"
+          "Record the given string in the Macro but comment it out in the console\n"
+          "\n"
+          "cmd : str"},
   {"addModule",               (PyCFunction) Application::sAddModule, METH_VARARGS,
    "addModule(mod) -> None\n"
    "\n"
@@ -1350,6 +1363,43 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     return PyRun_String(sCmd, Py_file_input, dict, dict);
+}
+
+PyObject* Application::sDoCommandEval(PyObject * /*self*/, PyObject *args)
+{
+    char *sCmd = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &sCmd))
+        return nullptr;
+
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
+    PyObject *module, *dict;
+
+    Base::PyGILStateLocker locker;
+    module = PyImport_AddModule("__main__");
+    if (!module)
+        return nullptr;
+
+    dict = PyModule_GetDict(module);
+    if (!dict)
+        return nullptr;
+
+    return PyRun_String(sCmd, Py_eval_input, dict, dict);
+}
+
+PyObject* Application::sDoCommandSkip(PyObject * /*self*/, PyObject *args)
+{
+    char *sCmd = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &sCmd))
+        return nullptr;
+
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
+    Gui::Command::printPyCaller();
+    Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
+    return Py::None().ptr();
 }
 
 PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args)

@@ -67,10 +67,7 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
         else if (Mode == STATUS_SEEK_Second) {
             EditCurve[1] = onSketchPos;
@@ -85,13 +82,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2,
-                                   onSketchPos,
-                                   Base::Vector2d(0.f, 0.f),
-                                   AutoConstraint::CURVE)) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr2,
+                                        onSketchPos,
+                                        Base::Vector2d(0.f, 0.f),
+                                        AutoConstraint::CURVE);
         }
         else if (Mode == STATUS_SEEK_Third) {
             // angle between the major axis of the hyperbola and the X axis
@@ -126,10 +120,7 @@ public:
                 }
 
                 drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstr3);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
             }
         }
         else if (Mode == STATUS_SEEK_Fourth) {
@@ -190,13 +181,8 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr4);
-                return;
-            }
+            seekAndRenderAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
-
-        applyCursor();
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override

@@ -4,15 +4,10 @@ SET(PreferencePacks_Files
 )
 
 SET(PreferencePacks_Directories
-"Classic"
-"Dark"
-"Darker"
-"Dark modern"
+"FreeCAD Classic"
 "Dark behave"
-"Dark contrast"
-"ProDark"
-"Light"
-"Light modern"
+"FreeCAD Light"
+"FreeCAD Dark"
 )
 
 ADD_CUSTOM_TARGET(PreferencePacks_data ALL

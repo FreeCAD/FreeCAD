@@ -59,7 +59,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>G Gode</string>
+      <string>G-Code</string>
      </property>
     </widget>
    </item>

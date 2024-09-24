@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>512</width>
-    <height>573</height>
+    <width>722</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,20 @@
    <property name="fieldGrowthPolicy">
     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
    </property>
-   <item row="0" column="0">
+   <item row="2" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>217</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBoxDefaultColors">
      <property name="title">
       <string>Default Path colors</string>
@@ -76,7 +89,7 @@
         <property name="toolTip">
          <string>The default line color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>255</red>
           <green>255</green>
@@ -109,7 +122,7 @@
         <property name="toolTip">
          <string>The default color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>0</red>
           <green>170</green>
@@ -129,7 +142,7 @@
         <property name="toolTip">
          <string>The default line color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>170</red>
           <green>0</green>
@@ -175,7 +188,7 @@
         <property name="toolTip">
          <string>The default line color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>255</red>
           <green>125</green>
@@ -221,7 +234,7 @@
         <property name="toolTip">
          <string>The default line color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>85</red>
           <green>255</green>
@@ -254,7 +267,7 @@
         <property name="toolTip">
          <string>The default line color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>255</red>
           <green>255</green>
@@ -274,7 +287,7 @@
         <property name="toolTip">
          <string>The default line color for new shapes</string>
         </property>
-        <property name="color" stdset="0">
+        <property name="color">
          <color>
           <red>200</red>
           <green>255</green>
@@ -292,7 +305,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -387,32 +400,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item row="2" column="0" colspan="2">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>217</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="1">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>7</width>
-       <height>220</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

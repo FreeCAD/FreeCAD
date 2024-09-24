@@ -70,9 +70,7 @@ class ObjectDressup:
             "App::PropertyFloat",
             "offset",
             "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Distance the point trails behind the spindle"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Distance the point trails behind the spindle"),
         )
         obj.addProperty(
             "App::PropertyFloat",
@@ -137,9 +135,7 @@ class ObjectDressup:
                     currCommand.Placement.Base
                 )  # Calculate vector at start of arc
             else:
-                radvector = arcLoc.sub(
-                    prevCommand.Placement.Base
-                )  # Calculate vector at end of arc
+                radvector = arcLoc.sub(prevCommand.Placement.Base)  # Calculate vector at end of arc
 
             v1 = radvector.cross(FreeCAD.Vector(0, 0, 1))
             if currCommand.Name in ["G2", "G02"]:
@@ -149,9 +145,7 @@ class ObjectDressup:
                 prevCommand.Placement.Base
             )  # Straight segments are easy
 
-        myAngle = D.angle(
-            v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1)
-        )
+        myAngle = D.angle(v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1))
         return myAngle
 
     def getIncidentAngle(self, queue):
@@ -175,9 +169,7 @@ class ObjectDressup:
 
         offset = obj.offset
         # Find the center of the old arc
-        C = FreeCAD.Base.Vector(
-            queue[2].x + queue[1].I, queue[2].y + queue[1].J, currLocation["Z"]
-        )
+        C = FreeCAD.Base.Vector(queue[2].x + queue[1].I, queue[2].y + queue[1].J, currLocation["Z"])
 
         # Find radius of old arc
         R = math.hypot(queue[1].I, queue[1].J)
@@ -241,9 +233,7 @@ class ObjectDressup:
 
         # find angle of original center to startpoint
         v1 = queue[1].Placement.Base.sub(arccenter)
-        segAngle = D.angle(
-            v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1)
-        )
+        segAngle = D.angle(v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1))
 
         # Find angle subtended by the offset
         theta = offset / R
@@ -299,9 +289,7 @@ class ObjectDressup:
         v1 = queue[1].Placement.Base.sub(queue[2].Placement.Base)
 
         # extend the current segment to comp for offset
-        segAngle = D.angle(
-            v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1)
-        )
+        segAngle = D.angle(v1, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1))
         xoffset = math.cos(segAngle) * offset
         yoffset = math.sin(segAngle) * offset
 
@@ -343,9 +331,7 @@ class ObjectDressup:
         v2 = queue[0].Placement.Base.sub(queue[1].Placement.Base)
 
         # calc arc endpoints to twist to
-        segAngle = D.angle(
-            v2, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1)
-        )
+        segAngle = D.angle(v2, FreeCAD.Base.Vector(1, 0, 0), FreeCAD.Base.Vector(0, 0, -1))
         xoffset = math.cos(segAngle) * offset
         yoffset = math.sin(segAngle) * offset
         newX = queue[1].x + xoffset
@@ -356,9 +342,7 @@ class ObjectDressup:
         J = offsetvector.y
 
         # add the arc move
-        arcmove = Path.Command(
-            arcdir, {"X": newX, "Y": newY, "I": I, "J": J}
-        )  # add G2/G3 move
+        arcmove = Path.Command(arcdir, {"X": newX, "Y": newY, "I": I, "J": J})  # add G2/G3 move
         results.append(arcmove)
 
         currLocation.update(arcmove.Parameters)
@@ -497,15 +481,9 @@ class TaskPanel:
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DragKnifeEdit.ui")
-        self.filterAngle = PathGuiUtil.QuantitySpinBox(
-            self.form.filterAngle, obj, "filterAngle"
-        )
-        self.offsetDistance = PathGuiUtil.QuantitySpinBox(
-            self.form.offsetDistance, obj, "offset"
-        )
-        self.pivotHeight = PathGuiUtil.QuantitySpinBox(
-            self.form.pivotHeight, obj, "pivotheight"
-        )
+        self.filterAngle = PathGuiUtil.QuantitySpinBox(self.form.filterAngle, obj, "filterAngle")
+        self.offsetDistance = PathGuiUtil.QuantitySpinBox(self.form.offsetDistance, obj, "offset")
+        self.pivotHeight = PathGuiUtil.QuantitySpinBox(self.form.pivotHeight, obj, "pivotheight")
 
         FreeCAD.ActiveDocument.openTransaction("Edit Dragknife Dress-up")
 
@@ -618,14 +596,12 @@ class CommandDressupDragknife:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "Please select one toolpath object")
-                + "\n"
+                translate("CAM_DressupDragKnife", "Please select one toolpath object") + "\n"
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("CAM_DressupDragKnife", "The selected object is not a toolpath")
-                + "\n"
+                translate("CAM_DressupDragKnife", "The selected object is not a toolpath") + "\n"
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
@@ -649,9 +625,7 @@ class CommandDressupDragknife:
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Dressup.Gui.Dragknife.ViewProviderDressup(obj.ViewObject)"
         )
-        FreeCADGui.doCommand(
-            "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
-        )
+        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
         FreeCADGui.doCommand("obj.filterAngle = 20")
         FreeCADGui.doCommand("obj.offset = 2")
         FreeCADGui.doCommand("obj.pivotheight = 4")

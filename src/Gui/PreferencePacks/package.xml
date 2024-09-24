@@ -3,13 +3,13 @@
   <name>Built-In Preference Packs</name>
   <description>Preference Packs included with the FreeCAD distribution</description>
   <version>1.0.0</version>
-  <maintainer email="email@freecad.org">MisterMaker</maintainer>
+  <maintainer email="email@FreeCAD.org">MisterMaker</maintainer>
   <license file="../../LICENSE">LGPL2</license>
   <url type="repository">https://github.com/FreeCAD/FreeCAD</url>
 
   <content>
     <preferencepack>
-      <name>Classic</name>
+      <name>FreeCAD Classic</name>
       <type>Theme</type>
       <description>Removes stylesheets, and applies the classic purple/gray background. Resets all colors to default</description>
       <version>1.0.0</version>
@@ -18,93 +18,23 @@
       <tag>no stylesheet</tag>
       <tag>classic theme</tag>
     </preferencepack>
-    <preferencepack>
-      <name>Dark</name>
+	<preferencepack>
+	  <name>FreeCAD Light</name>
       <type>Theme</type>
-      <description>Applies a dark background and a darker stylesheet.</description>
-      <version>0.5.0</version>
+      <description>Applies a basic light theme.</description>
+      <version>1.0.0</version>
       <tag>built-in</tag>
-      <tag>dark</tag>
       <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
+	    <tag>light</tag>
     </preferencepack>
-    <preferencepack>
-      <name>Darker</name>
+	<preferencepack>
+	  <name>FreeCAD Dark</name>
       <type>Theme</type>
-      <description>Applies a dark background and a darker stylesheet.</description>
-      <version>0.5.0</version>
+      <description>Applies a basic dark theme.</description>
+      <version>1.0.0</version>
       <tag>built-in</tag>
-      <tag>dark</tag>
       <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
-    </preferencepack>
-    <preferencepack>
-      <name>Dark modern</name>
-      <type>Theme</type>
-      <description>Applies a dark background and a darker stylesheet.</description>
-      <version>0.5.0</version>
-      <tag>built-in</tag>
-      <tag>dark</tag>
-      <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
-    </preferencepack>
-    <preferencepack>
-      <name>ProDark</name>
-      <type>Theme</type>
-      <description>Applies a dark background and a darker stylesheet.</description>
-      <version>0.5.0</version>
-      <tag>built-in</tag>
-      <tag>dark</tag>
-      <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
-    </preferencepack>
-    <preferencepack>
-      <name>Dark behave</name>
-      <type>Theme</type>
-      <description>Applies a dark background and a darker stylesheet.</description>
-      <version>0.5.0</version>
-      <tag>built-in</tag>
-      <tag>dark</tag>
-      <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
-    </preferencepack>
-    <preferencepack>
-      <name>Dark contrast</name>
-      <type>Theme</type>
-      <description>Dark theme with high contrasts.</description>
-      <version>0.5.0</version>
-      <tag>built-in</tag>
-      <tag>dark</tag>
-      <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
-    </preferencepack>
-    <preferencepack>
-      <name>Light</name>
-      <type>Theme</type>
-      <description>Applies a light background and a light stylesheet.</description>
-      <version>0.5.0</version>
-      <tag>built-in</tag>
-      <tag>light</tag>
-      <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
-    </preferencepack>
-    <preferencepack>
-      <name>Light modern</name>
-      <type>Theme</type>
-      <description>Applies a light background and a light stylesheet.</description>
-      <version>0.5.0</version>
-      <tag>built-in</tag>
-      <tag>light</tag>
-      <tag>background</tag>
-      <tag>stylesheet</tag>
-      <tag>theme</tag>
+	    <tag>dark</tag>
     </preferencepack>
   </content>
 

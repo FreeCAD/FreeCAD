@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include "Mod/Part/App/FeaturePartCommon.h"
@@ -49,11 +49,7 @@ TEST_F(PropertyTopoShapeTest, testPropertyPartShapeTopoShape)
     EXPECT_TRUE(topoShapeOut.isSame(topoShapeIn));
     EXPECT_TRUE(topoDsShapeOut.IsSame(topoDsShapeIn));
     EXPECT_EQ(getVolume(topoDsShapeOut), 3);
-#ifdef FC_USE_TNP_FIX
     EXPECT_EQ(topoShapeOut.getElementMapSize(), 26);
-#else
-    EXPECT_EQ(topoShapeOut.getElementMapSize(), 0);
-#endif
 }
 
 TEST_F(PropertyTopoShapeTest, testPropertyPartShapeTopoDSShape)
@@ -147,7 +143,7 @@ TEST_F(PropertyTopoShapeTest, testPropertyShapeCache)
     PropertyShapeCache propertyShapeCache;
     TopoShape topoShapeIn {_boxes[0]->Shape.getShape()};  // Any TopoShape to test with
     TopoShape topoShapeOut;
-    char* subName = "Face1";  // Cache key
+    const char* subName = "Face1";  // Cache key
     // Act
     auto gotShapeNotYet = propertyShapeCache.getShape(_boxes[0], topoShapeOut, subName);
     propertyShapeCache.setShape(_boxes[0], topoShapeIn, subName);

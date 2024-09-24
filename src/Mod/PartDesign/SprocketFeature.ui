@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Sprocket parameter</string>
+   <string>Sprocket parameters</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -307,7 +307,7 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Tooth Width</string>
+      <string>Tooth Width:</string>
      </property>
     </widget>
    </item>

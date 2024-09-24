@@ -138,6 +138,8 @@ protected:
 
     void checkPropertyStatus();
 
+    void collapseGeoChildren();
+
     void slotRecomputedObject(const App::DocumentObject& Obj);
 
     using Connection = boost::signals2::scoped_connection;

@@ -208,6 +208,24 @@ void DlgPrefsTechDrawDimensionsImp::changeEvent(QEvent *e)
     }
 }
 
+void DlgPrefsTechDrawDimensionsImp::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
+    // reset "Dimension tools" parameters
+    hGrp->RemoveBool("SingleDimensioningTool");
+    hGrp->RemoveBool("SeparatedDimensioningTools");
+
+    // reset "radius/diameter mode for dimensioning" parameter
+    hGrp->RemoveBool("DimensioningDiameter");
+    hGrp->RemoveBool("DimensioningRadius");
+
+    // finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 int DlgPrefsTechDrawDimensionsImp::prefArrowStyle() const
 {
     return PreferencesGui::dimArrowStyle();

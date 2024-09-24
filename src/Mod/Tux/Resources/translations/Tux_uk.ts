@@ -6,12 +6,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Select</source>
-      <translation>Вибрати</translation>
+      <translation>Обрати</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="94"/>
       <source>Zoom</source>
-      <translation>Масштаб</translation>
+      <translation>Збільшення</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="582"/>
       <source>Free Turntable</source>
-      <translation type="unfinished">Free Turntable</translation>
+      <translation>Поворотний перегляд</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="583"/>

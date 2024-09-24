@@ -1,4 +1,4 @@
-<a href="https://freecad.org"><img src="https://www.freecad.org/svg/icon-freecad.svg" height="100px" width="100px"></a>
+<a href="https://freecad.org"><img src="/src/Gui/Icons/freecad.svg" height="100px" width="100px"></a>
 
 ### Your own 3D parametric modeler
 
@@ -78,18 +78,19 @@ Reporting Issues
 
 To report an issue please:
 
-- First post to forum to verify the issue; 
-- Link forum thread to bug tracker ticket and vice-a-versa; 
-- Use the most updated stable or development versions of FreeCAD; 
-- Post version info from eg. `Help > About FreeCAD > Copy to clipboard`; 
+- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/F4hdxzYZfc) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
+- Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
+- Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) of FreeCAD; 
+- Post version info from e.g. `Help > About FreeCAD > Copy to clipboard`; 
+- Start recording a macro `Macro > Macro recording...` and repeat all steps. Stop recording after the issue occurs and upload the saved macro or copy the macro code in the issue; 
 - Post a Step-By-Step explanation on how to recreate the issue; 
-- Upload an example file to demonstrate problem. 
+- Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
 
 For more detail see:
 
 - [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
 - [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
-- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md)
+- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
 - [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
 

@@ -4,4 +4,5 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/Core/KDTree.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Exporter.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/Mesh.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/MeshFeature.cpp
 )

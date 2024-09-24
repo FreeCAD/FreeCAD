@@ -27,6 +27,7 @@ import FreeCAD
 from nativeifc import ifc_tools
 import ifcopenshell
 from ifcopenshell import util
+from ifcopenshell.util import element
 
 
 def create_material(element, parent, recursive=False):
@@ -88,7 +89,7 @@ def load_materials(obj):
 
 
 def get_material(obj):
-    """Returns a material attched to this object"""
+    """Returns a material attached to this object"""
 
     element = ifc_tools.get_ifc_element(obj)
     if not element:
@@ -134,12 +135,23 @@ def set_material(material, obj):
             if not container.OutList:
                 doc.removeObject(container.Name)
     if material_element:
-        ifc_tools.api_run(
-            "material.assign_material",
-            ifcfile,
-            product=element,
-            type=material_element.is_a(),
-            material=material_element,
-        )
+        try:
+            # IfcOpenShell 0.8
+            ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                products=[element],
+                type=material_element.is_a(),
+                material=material_element,
+            )
+        except:
+            # IfcOpenShell 0.7
+            ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                product=element,
+                type=material_element.is_a(),
+                material=material_element,
+            )
         if new:
             show_material(obj)

@@ -66,6 +66,9 @@ add_library(Points SHARED ${Points_SRCS} ${Points_Scripts})
 link_directories(${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
 
 target_link_libraries(Points E57Format ${Points_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Points)
+endif()
 
 
 fc_target_copy_resource_flat(Points

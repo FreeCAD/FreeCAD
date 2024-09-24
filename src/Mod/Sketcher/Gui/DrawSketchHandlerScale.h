@@ -473,8 +473,7 @@ void DSHScaleController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekThird: {
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                onViewParameters[OnViewParameter::Third]->setSpinboxValue(handler->scaleFactor,
-                                                                          Base::Unit());
+                setOnViewParameterValue(OnViewParameter::Third, handler->scaleFactor, Base::Unit());
             }
 
             Base::Vector3d start = toVector3d(handler->referencePoint);

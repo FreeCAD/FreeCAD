@@ -265,7 +265,7 @@ but slower response to any scene changes.</string>
          </widget>
         </item>
         <item row="1" column="4">
-         <widget class="Gui::PrefComboBox" name="comboAliasing">
+         <widget class="QComboBox" name="comboAliasing">
           <property name="minimumSize">
            <size>
             <width>120</width>
@@ -274,12 +274,6 @@ but slower response to any scene changes.</string>
           </property>
           <property name="toolTip">
            <string>What kind of multisample anti-aliasing is used</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AntiAliasing</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
           </property>
          </widget>
         </item>

@@ -97,10 +97,9 @@ private:
                     firstPoint = onSketchPos;
                 }
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 if (constructionMethod() == ConstructionMethod::Center) {
@@ -123,10 +122,9 @@ private:
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
                 }
 
-                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekThird: {
                 double startAngleBackup = startAngle;
@@ -197,22 +195,16 @@ private:
 
                 if (constructionMethod() == ConstructionMethod::Center) {
                     toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
-                    if (seekAutoConstraint(sugConstraints[2],
-                                           onSketchPos,
-                                           Base::Vector2d(0.0, 0.0))) {
-                        renderSuggestConstraintsCursor(sugConstraints[2]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[2],
+                                                onSketchPos,
+                                                Base::Vector2d(0.0, 0.0));
                 }
                 else {
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
-                    if (seekAutoConstraint(sugConstraints[2],
-                                           onSketchPos,
-                                           Base::Vector2d(0.f, 0.f),
-                                           AutoConstraint::CURVE)) {
-                        renderSuggestConstraintsCursor(sugConstraints[2]);
-                        return;
-                    }
+                    seekAndRenderAutoConstraint(sugConstraints[2],
+                                                onSketchPos,
+                                                Base::Vector2d(0.f, 0.f),
+                                                AutoConstraint::CURVE);
                 }
 
             } break;

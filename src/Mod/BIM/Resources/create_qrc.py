@@ -13,4 +13,4 @@ for subdir in ["icons", "ui", "translations"]:
 txt += "    </qresource>\n</RCC>\n"
 with open(os.path.join(cdir, "Arch.qrc"), "w") as resfile:
     resfile.write(txt)
-    
+

@@ -46,7 +46,8 @@ class Arch_Equipment:
 
     def IsActive(self):
 
-        return not FreeCAD.ActiveDocument is None
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
 
     def Activated(self):
 
@@ -90,7 +91,7 @@ class Arch_Equipment:
 
 
 class Arch_3Views:
-    
+
     # OBSOLETE
 
     "the Arch 3Views command definition"

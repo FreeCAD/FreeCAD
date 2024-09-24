@@ -53,44 +53,18 @@ ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
 
 ViewProviderFemConstraintDisplacement::~ViewProviderFemConstraintDisplacement() = default;
 
-// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintDisplacement::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        // When double-clicking on the item for this constraint the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintDisplacement* constrDlg =
-            qobject_cast<TaskDlgFemConstraintDisplacement*>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this) {
-            constrDlg = nullptr;  // another constraint left open its task panel
-        }
-        if (dlg && !constrDlg) {
-            if (constraintDialog) {
-                // Ignore the request to open another dialog
-                return false;
-            }
-            else {
-                constraintDialog = new TaskFemConstraintDisplacement(this);
-                return true;
-            }
-        }
-
+        Gui::Control().closeDialog();
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgFemConstraintDisplacement(this));
 
-        // start the edit dialog
-        if (constrDlg) {
-            Gui::Control().showDialog(constrDlg);
-        }
-        else {
-            Gui::Control().showDialog(new TaskDlgFemConstraintDisplacement(this));
-        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
+        return ViewProviderFemConstraintOnBoundary::setEdit(ModNum);
     }
 }
 

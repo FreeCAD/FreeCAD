@@ -32,6 +32,7 @@
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Fem/App/FemConstraintPressure.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "TaskFemConstraintPressure.h"
 #include "ui_TaskFemConstraintPressure.h"
@@ -261,11 +262,6 @@ bool TaskFemConstraintPressure::getReverse() const
     return ui->checkBoxReverse->isChecked();
 }
 
-bool TaskFemConstraintPressure::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintPressure::changeEvent(QEvent*)
 {}
 
@@ -295,21 +291,6 @@ TaskDlgFemConstraintPressure::TaskDlgFemConstraintPressure(
 
 //==== calls from the TaskView ===============================================================
 
-void TaskDlgFemConstraintPressure::open()
-{
-    // a transaction is already open at creation time of the panel
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Pressure load");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-        ConstraintView->setVisible(true);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
-                .c_str());  // OvG: Hide meshes and show parts
-    }
-}
-
 bool TaskDlgFemConstraintPressure::accept()
 {
     /* Note: */
@@ -326,11 +307,6 @@ bool TaskDlgFemConstraintPressure::accept()
                                 "App.ActiveDocument.%s.Reversed = %s",
                                 name.c_str(),
                                 parameterPressure->getReverse() ? "True" : "False");
-        std::string scale = parameterPressure->getScale();  // OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Scale = %s",
-                                name.c_str(),
-                                scale.c_str());  // OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -338,15 +314,6 @@ bool TaskDlgFemConstraintPressure::accept()
     }
     /* */
     return TaskDlgFemConstraint::accept();
-}
-
-bool TaskDlgFemConstraintPressure::reject()
-{
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::updateActive();
-
-    return true;
 }
 
 #include "moc_TaskFemConstraintPressure.cpp"

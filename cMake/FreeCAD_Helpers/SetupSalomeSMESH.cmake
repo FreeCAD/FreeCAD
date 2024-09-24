@@ -26,7 +26,13 @@ macro(SetupSalomeSMESH)
 
         # check which modules are available
         if(UNIX OR WIN32)
-            find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
+            # Module names changed between 8 and 9, so do a QUIET find for 9 and its module name first, and fall back
+            # to v7 minimum with the old component name if it is not found.
+            find_package(VTK 9 COMPONENTS CommonCore QUIET NO_MODULE)
+            if(NOT VTK_FOUND)
+                message(STATUS "Did not find VTK 9, trying for an older version")
+                find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
+            endif()
             if(${VTK_MAJOR_VERSION} LESS 9)
                 list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5 vtkFiltersParallelDIY2 vtkRenderingCore vtkInteractionStyle vtkRenderingFreeType vtkRenderingOpenGL2)
                 foreach(_module ${VTK_COMPONENTS})

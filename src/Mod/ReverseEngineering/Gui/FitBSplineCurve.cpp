@@ -136,7 +136,7 @@ void FitBSplineCurveWidget::exeCommand(const QString& cmd)
 {
     Gui::WaitCursor wc;
     Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-Spline"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
     Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
     Gui::Command::commitCommand();
     Gui::Command::updateActive();

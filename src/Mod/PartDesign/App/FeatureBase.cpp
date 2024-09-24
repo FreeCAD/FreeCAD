@@ -52,21 +52,31 @@ short int FeatureBase::mustExecute() const {
     if(BaseFeature.isTouched())
         return 1;
 
-    return Part::Feature::mustExecute();
+    return PartDesign::Feature::mustExecute();
 }
 
 
-App::DocumentObjectExecReturn* FeatureBase::execute() {
+App::DocumentObjectExecReturn* FeatureBase::execute()
+{
 
-    if(!BaseFeature.getValue())
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "BaseFeature link is not set"));
+    if (!BaseFeature.getValue()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "BaseFeature link is not set"));
+    }
 
-    if(!BaseFeature.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "BaseFeature must be a Part::Feature"));
+    if (!BaseFeature.getValue()->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "BaseFeature must be a Part::Feature"));
+    }
 
-    auto shape = static_cast<Part::Feature*>(BaseFeature.getValue())->Shape.getValue();
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape"));
+    auto shape = Part::Feature::getTopoShape(BaseFeature.getValue());
+    if (!shape.countSubShapes(TopAbs_SOLID)) {
+        shape = shape.makeElementSolid();
+    }
+    if (shape.isNull()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape"));
+    }
 
     Shape.setValue(shape);
 
@@ -91,7 +101,7 @@ void FeatureBase::onChanged(const App::Property* prop) {
         trySetBaseFeatureOfBody();
     }
 
-    Part::Feature::onChanged(prop);
+    PartDesign::Feature::onChanged(prop);
 }
 
 void FeatureBase::onDocumentRestored()
@@ -100,6 +110,7 @@ void FeatureBase::onDocumentRestored()
     auto body = getFeatureBody();
     if (!body)
         Placement.setStatus(App::Property::Hidden, false);
+    PartDesign::Feature::onDocumentRestored();
 }
 
 }//namespace PartDesign

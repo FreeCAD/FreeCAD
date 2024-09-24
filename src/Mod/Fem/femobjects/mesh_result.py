@@ -40,4 +40,4 @@ class MeshResult(base_fempythonobject.BaseFemPythonObject):
     Type = "Fem::MeshResult"
 
     def __init__(self, obj):
-        super(MeshResult, self).__init__(obj)
+        super().__init__(obj)

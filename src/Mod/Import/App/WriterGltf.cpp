@@ -24,6 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/core/ignore_unused.hpp>
 #include <Standard_Version.hxx>
 #include <TColStd_IndexedDataMapOfStringString.hxx>
 #if OCC_VERSION_HEX >= 0x070500
@@ -62,6 +63,7 @@ void WriterGltf::write(Handle(TDocStd_Document) hDoc) const  // NOLINT
         throw Base::FileException("Cannot save to file: ", file);
     }
 #else
+    boost::ignore_unused(hDoc);
     throw Base::RuntimeError("gITF support requires OCCT 7.5.0 or later");
 #endif
 }

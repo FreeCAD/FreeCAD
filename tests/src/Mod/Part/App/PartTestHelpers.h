@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <boost/format.hpp>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -47,7 +47,7 @@ const double minimalDistance = Base::Precision::Confusion() * 1000;
 
 void executePython(const std::vector<std::string>& python);
 
-void rectangle(double height, double width, char* name);
+void rectangle(double height, double width, const char* name);
 
 std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge>
 CreateRectFace(float len = 2.0, float wid = 3.0);

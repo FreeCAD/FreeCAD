@@ -41,6 +41,10 @@ class BIM_Windows:
             ),
         }
 
+    def IsActive(self):
+        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+        return v
+
     def Activated(self):
         FreeCADGui.Control.showDialog(BIM_Windows_TaskPanel())
 
@@ -67,7 +71,7 @@ class BIM_Windows_TaskPanel:
     def getStandardButtons(self):
         from PySide import QtGui
 
-        return int(QtGui.QDialogButtonBox.Close)
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
         FreeCADGui.Control.closeDialog()

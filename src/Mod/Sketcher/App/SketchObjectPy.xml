@@ -619,17 +619,17 @@ setLabelDistance(constraintIndex:int, value:float)
     </Methode>
     <Methode Name="convertToNURBS">
         <Documentation>
-            <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
+            <UserDocu>Approximates the given geometry with a B-spline</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="increaseBSplineDegree">
         <Documentation>
-            <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
+            <UserDocu>Increases the given B-spline Degree by a number of degrees</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="decreaseBSplineDegree">
         <Documentation>
-            <UserDocu>Decreases the given BSpline Degree by a number of degrees by approximating this curve</UserDocu>
+            <UserDocu>Decreases the given B-spline Degree by a number of degrees by approximating this curve</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="modifyBSplineKnotMultiplicity">

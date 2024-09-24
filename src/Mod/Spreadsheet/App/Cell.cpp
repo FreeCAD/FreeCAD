@@ -46,6 +46,9 @@ FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__
+#ifdef PropertySheet
+#undef PropertySheet  // Microsoft's #define conflicts with the use below
+#endif
 #endif
 
 using namespace App;

@@ -370,6 +370,9 @@ bool ImageView::onHasMsg(const char* pMsg) const
     if (strcmp("PrintPdf", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
 
     return false;
 }

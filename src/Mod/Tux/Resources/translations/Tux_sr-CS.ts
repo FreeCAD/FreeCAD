@@ -16,7 +16,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Rotate</source>
-      <translation>Rotiraj</translation>
+      <translation>Okreni</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="96"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="581"/>
       <source>Turntable</source>
-      <translation>Gramofon</translation>
+      <translation>Obrtni sto</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="582"/>
       <source>Free Turntable</source>
-      <translation>Obični gramofon</translation>
+      <translation>Slobodni obrtni sto</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="583"/>

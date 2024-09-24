@@ -111,3 +111,37 @@ class TestPathVcarve(PathTestBase):
         self.assertRoughly(geom.start, Scale45)
         self.assertRoughly(geom.stop, -3)
         self.assertRoughly(geom.scale, Scale45)
+
+    def test14(self):
+        """Verify if max dept is calculated properly when step-down is disabled"""
+
+        tool = VbitTool(10, 45, 2)
+        geom = PathVcarve._Geometry.FromTool(tool, zStart=0, zFinal=-3, zStepDown=0)
+
+        self.assertEqual(geom.maximumDepth, -3)
+        self.assertEqual(geom.maximumDepth, geom.stop)
+
+    def test15(self):
+        """Verify if step-down sections match final max depth"""
+
+        tool = VbitTool(10, 45, 2)
+        geom = PathVcarve._Geometry.FromTool(tool, zStart=0, zFinal=-3, zStepDown=0.13)
+
+        while geom.incrementStepDownDepth(maximumUsableDepth=-3):
+            pass
+
+        self.assertEqual(geom.maximumDepth, -3)
+
+    def test16(self):
+        """Verify 90 deg with tip dia depth calculation with step-down enabled"""
+        tool = VbitTool(10, 90, 2)
+        geom = PathVcarve._Geometry.FromTool(tool, zStart=0, zFinal=-10, zStepDown=0.13)
+
+        while geom.incrementStepDownDepth(maximumUsableDepth=-10):
+            pass
+
+        # in order for the width to be correct the height needs to be shifted
+        self.assertRoughly(geom.start, 1)
+        self.assertRoughly(geom.stop, -4)
+        self.assertRoughly(geom.scale, 1)
+        self.assertRoughly(geom.maximumDepth, -4)

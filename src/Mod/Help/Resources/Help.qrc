@@ -35,5 +35,6 @@
         <file>translations/Help_id.qm</file>
         <file>translations/Help_gl.qm</file>
         <file>translations/Help_da.qm</file>
+        <file>translations/Help_lt.qm</file>
     </qresource>
 </RCC>

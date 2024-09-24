@@ -24,25 +24,25 @@
 #include <FCConfig.h>
 
 #ifdef _PreComp_
-# undef _PreComp_
+#undef _PreComp_
 #endif
 
 #if defined(FC_OS_WIN32)
-# include <windows.h>
+#include <windows.h>
 #endif
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #ifdef FC_OS_MACOSX
-# include <mach-o/dyld.h>
-# include <string>
+#include <mach-o/dyld.h>
+#include <string>
 #endif
 
 #if HAVE_CONFIG_H
-# include <config.h>
-#endif // HAVE_CONFIG_H
+#include <config.h>
+#endif  // HAVE_CONFIG_H
 
 #include <cstdio>
 #include <sstream>
@@ -60,30 +60,29 @@
 
 /** DllMain is called when DLL is loaded
  */
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD  ul_reason_for_call, LPVOID /*lpReserved*/)
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID /*lpReserved*/)
 {
     switch (ul_reason_for_call) {
-    case DLL_PROCESS_ATTACH: {
-        // This name is preliminary, we pass it to Application::init() in initFreeCAD()
-        // which does the rest.
-        char  szFileName [MAX_PATH];
-        GetModuleFileNameA((HMODULE)hModule, szFileName, MAX_PATH-1);
-        App::Application::Config()["AppHomePath"] = szFileName;
-    }
-    break;
-    default:
-        break;
+        case DLL_PROCESS_ATTACH: {
+            // This name is preliminary, we pass it to Application::init() in initFreeCAD()
+            // which does the rest.
+            char szFileName[MAX_PATH];
+            GetModuleFileNameA((HMODULE)hModule, szFileName, MAX_PATH - 1);
+            App::Application::Config()["AppHomePath"] = szFileName;
+        } break;
+        default:
+            break;
     }
 
     return true;
 }
 #elif defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-# ifndef GNU_SOURCE
-#   define GNU_SOURCE
-# endif
-# include <dlfcn.h>
+#ifndef GNU_SOURCE
+#define GNU_SOURCE
+#endif
+#include <dlfcn.h>
 #elif defined(FC_OS_CYGWIN)
-# include <windows.h>
+#include <windows.h>
 #endif
 
 PyMOD_INIT_FUNC(FreeCAD)
@@ -99,8 +98,8 @@ PyMOD_INIT_FUNC(FreeCAD)
     path = App::Application::Config()["AppHomePath"].c_str();
 #elif defined(FC_OS_CYGWIN)
     HMODULE hModule = GetModuleHandle("FreeCAD.dll");
-    char szFileName [MAX_PATH];
-    GetModuleFileNameA(hModule, szFileName, MAX_PATH-1);
+    char szFileName[MAX_PATH];
+    GetModuleFileNameA(hModule, szFileName, MAX_PATH - 1);
     path = szFileName;
 #elif defined(FC_OS_LINUX) || defined(FC_OS_BSD)
     putenv("LANG=C");
@@ -123,18 +122,18 @@ PyMOD_INIT_FUNC(FreeCAD)
     const static char libName[] = "/FreeCAD.so";
     const static char upDir[] = "/../";
 
-    PyObject *pySysPath = PySys_GetObject("path");
-    if ( PyList_Check(pySysPath) ) {
+    PyObject* pySysPath = PySys_GetObject("path");
+    if (PyList_Check(pySysPath)) {
         int i;
         // pySysPath should be a *PyList of strings - iterate through it
         // backwards since the FreeCAD path was likely appended just before
         // we were imported.
-        for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
-            const char *basePath;
-            PyObject *pyPath = PyList_GetItem(pySysPath, i);
+        for (i = PyList_Size(pySysPath) - 1; i >= 0; --i) {
+            const char* basePath;
+            PyObject* pyPath = PyList_GetItem(pySysPath, i);
             long sz = 0;
 
-            if ( PyUnicode_Check(pyPath) ) {
+            if (PyUnicode_Check(pyPath)) {
                 // Python 3 string
                 basePath = PyUnicode_AsUTF8AndSize(pyPath, &sz);
             }
@@ -156,8 +155,8 @@ PyMOD_INIT_FUNC(FreeCAD)
                 path += upDir;
                 break;
             }
-        } // end for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
-    } // end if ( PyList_Check(pySysPath) ) {
+        }
+    }
 
     if (path.isEmpty()) {
         PyErr_SetString(PyExc_ImportError, "Cannot get path of the FreeCAD module!");
@@ -165,7 +164,7 @@ PyMOD_INIT_FUNC(FreeCAD)
     }
 
 #else
-# error "Implement: Retrieve the path of the module for your platform."
+#error "Implement: Retrieve the path of the module for your platform."
 #endif
     int argc = 1;
     std::vector<char*> argv;
@@ -187,13 +186,12 @@ PyMOD_INIT_FUNC(FreeCAD)
     Base::EmptySequencer* seq = new Base::EmptySequencer();
     (void)seq;
     static Base::RedirectStdOutput stdcout;
-    static Base::RedirectStdLog    stdclog;
-    static Base::RedirectStdError  stdcerr;
+    static Base::RedirectStdLog stdclog;
+    static Base::RedirectStdError stdcerr;
     std::cout.rdbuf(&stdcout);
     std::clog.rdbuf(&stdclog);
     std::cerr.rdbuf(&stdcerr);
 
-    //PyObject* module = _PyImport_FindBuiltin("FreeCAD");
     PyObject* modules = PyImport_GetModuleDict();
     PyObject* module = PyDict_GetItemString(modules, "FreeCAD");
     if (!module) {
@@ -201,4 +199,3 @@ PyMOD_INIT_FUNC(FreeCAD)
     }
     return module;
 }
-

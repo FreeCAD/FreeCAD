@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <array>
 # include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
 #endif
@@ -472,10 +473,10 @@ App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel, Base::Typ
     const char *subname = sel.SubName.c_str();
     if (resolve != ResolveMode::NoResolve) {
         obj = sel.pResolvedObject;
-        if (resolve == ResolveMode::NewStyleElement && !sel.elementName.first.empty())
-            subname = sel.elementName.first.c_str();
+        if (resolve == ResolveMode::NewStyleElement && !sel.elementName.newName.empty())
+            subname = sel.elementName.newName.c_str();
         else
-            subname = sel.elementName.second.c_str();
+            subname = sel.elementName.oldName.c_str();
     }
 
     if (!obj)
@@ -561,9 +562,9 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
         auto pParent = msg.Object.getObject();
         if(!pParent)
             return;
-        std::pair<std::string,std::string> elementName;
-        auto &newElementName = elementName.first;
-        auto &oldElementName = elementName.second;
+        App::ElementNamePair elementName;
+        auto &newElementName = elementName.newName;
+        auto &oldElementName = elementName.oldName;
         auto pObject = App::GeoFeature::resolveElement(pParent,msg.pSubName,elementName);
         if (!pObject)
             return;
@@ -616,15 +617,15 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
         App::Document* pDoc = getDocument(pDocName);
         if (!pDoc || !pObjectName)
             return 0;
-        std::pair<std::string,std::string> elementName;
+        App::ElementNamePair elementName;
         auto pObject = pDoc->getObject(pObjectName);
         if(!pObject)
             return 0;
 
         const char *subelement = pSubName;
         if (gateResolve != ResolveMode::NoResolve) {
-            auto &newElementName = elementName.first;
-            auto &oldElementName = elementName.second;
+            auto &newElementName = elementName.newName;
+            auto &oldElementName = elementName.oldName;
             pObject = App::GeoFeature::resolveElement(pObject,pSubName,elementName);
             if (!pObject)
                 return 0;
@@ -876,9 +877,9 @@ void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect) {
     ss << "Gui.Selection." << (remove?"removeSelection":"addSelection")
         << "('" << DocName  << "','" << FeatName << "'";
     if(!SubName.empty()) {
-        if(!elementName.second.empty() && !elementName.first.empty())
-            ss << ",'" << SubName.substr(0,SubName.size()-elementName.first.size())
-                << elementName.second << "'";
+        if(!elementName.oldName.empty() && !elementName.newName.empty())
+            ss << ",'" << SubName.substr(0,SubName.size()-elementName.newName.size())
+                << elementName.oldName << "'";
         else
             ss << ",'" << SubName << "'";
     }
@@ -1527,9 +1528,9 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     std::string prefix;
     if(pSubName && element) {
         prefix = std::string(pSubName, element-pSubName);
-        if(!sel.elementName.first.empty()) {
+        if(!sel.elementName.newName.empty()) {
             // make sure the selected sub name is a new style if available
-            subname = prefix + sel.elementName.first;
+            subname = prefix + sel.elementName.newName;
             pSubName = subname.c_str();
             sel.SubName = subname;
         }
@@ -1554,11 +1555,11 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
                 continue;
             if(!pSubName[0])
                 return 1;
-            if (!s.elementName.first.empty()) {
-                if (s.elementName.first == sel.elementName.first)
+            if (!s.elementName.newName.empty()) {
+                if (s.elementName.newName == sel.elementName.newName)
                     return 1;
             }
-            else if(s.SubName == sel.elementName.second)
+            else if(s.SubName == sel.elementName.oldName)
                 return 1;
         }
     }

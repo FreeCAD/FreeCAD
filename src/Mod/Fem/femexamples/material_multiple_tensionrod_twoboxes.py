@@ -43,12 +43,14 @@ def get_information():
         "constraints": ["fixed", "pressure"],
         "solvers": ["ccxtools"],
         "material": "multimaterial",
-        "equations": ["mechanical"]
+        "equations": ["mechanical"],
     }
 
 
 def get_explanation(header=""):
-    return header + """
+    return (
+        header
+        + """
 
 To run the example from Python console use:
 from femexamples.material_multiple_tensionrod_twoboxes import setup
@@ -59,6 +61,7 @@ See forum topic post:
 ...
 
 """
+    )
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -109,7 +112,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # solver
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
-        solver_obj.WorkingDir = u""
+        solver_obj.WorkingDir = ""
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -157,6 +160,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_boxes_2_vertikal_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -166,7 +170,7 @@ def setup(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()

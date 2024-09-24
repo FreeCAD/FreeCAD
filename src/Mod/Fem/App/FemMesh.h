@@ -95,6 +95,9 @@ public:
     static SMESH_Gen* getGenerator();
     void addHypothesis(const TopoDS_Shape& aSubShape, SMESH_HypothesisPtr hyp);
     void setStandardHypotheses();
+    template<typename T>
+    SMESH_HypothesisPtr createHypothesis(int hypId);
+
     void compute();
 
     // from base class
@@ -220,10 +223,25 @@ private:
     /// positioning matrix
     Base::Matrix4D _Mtrx;
     SMESH_Mesh* myMesh;
+    const int myStudyId;
 
     std::list<SMESH_HypothesisPtr> hypoth;
     static SMESH_Gen* _mesh_gen;
 };
+
+
+template<typename T>
+inline SMESH_HypothesisPtr FemMesh::createHypothesis(int hypId)
+{
+    SMESH_Gen* myGen = getGenerator();
+#if SMESH_VERSION_MAJOR >= 9
+    SMESH_HypothesisPtr hypo(new T(hypId, myGen));
+#else
+    // use own StudyContextStruct
+    SMESH_HypothesisPtr hypo(new T(hypId, myStudyId, myGen));
+#endif
+    return hypo;
+}
 
 }  // namespace Fem
 

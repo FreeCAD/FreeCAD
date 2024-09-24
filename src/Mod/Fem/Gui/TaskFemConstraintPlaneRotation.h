@@ -53,7 +53,6 @@ private Q_SLOTS:
     void removeFromSelection();
 
 protected:
-    bool event(QEvent* e) override;
     void changeEvent(QEvent* e) override;
 
 private:
@@ -68,9 +67,7 @@ class TaskDlgFemConstraintPlaneRotation: public TaskDlgFemConstraint
 public:
     explicit TaskDlgFemConstraintPlaneRotation(
         ViewProviderFemConstraintPlaneRotation* ConstraintView);
-    void open() override;
     bool accept() override;
-    bool reject() override;
 };
 
 }  // namespace FemGui

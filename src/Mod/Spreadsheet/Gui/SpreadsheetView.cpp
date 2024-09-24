@@ -244,6 +244,9 @@ bool SheetView::onHasMsg(const char* pMsg) const
     if (strcmp(pMsg, "PrintPdf") == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
+        return true;
+    }
 
     return false;
 }

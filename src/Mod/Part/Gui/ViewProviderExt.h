@@ -27,6 +27,7 @@
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/ViewProviderTextureExtension.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/PartGlobal.h>
@@ -85,8 +86,6 @@ public:
     App::PropertyColor LineColor;
     App::PropertyMaterial LineMaterial;
     App::PropertyColorList LineColorArray;
-    // Faces (Gui::ViewProviderGeometryObject::ShapeColor and Gui::ViewProviderGeometryObject::ShapeMaterial apply)
-    App::PropertyColorList DiffuseColor;
 
     void attach(App::DocumentObject *) override;
     void setDisplayMode(const char* ModeName) override;
@@ -95,7 +94,7 @@ public:
     /// Update the view representation
     void reload();
     /// If no other task is pending it opens a dialog to allow to change face colors
-    bool changeFaceColors();
+    bool changeFaceAppearances();
 
     void updateData(const App::Property*) override;
 
@@ -125,8 +124,8 @@ public:
     * This group of methods do the highlighting of elements.
     */
     //@{
-    void setHighlightedFaces(const std::vector<App::Color>& colors);
-    void setHighlightedFaces(const std::vector<App::Material>& colors);
+    void setHighlightedFaces(const std::vector<App::Material>& materials);
+    void setHighlightedFaces(const App::PropertyMaterialList& appearance);
     void unsetHighlightedFaces();
     void setHighlightedEdges(const std::vector<App::Color>& colors);
     void unsetHighlightedEdges();
@@ -151,6 +150,9 @@ public:
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
+    /// Get the python wrapper for that ViewProvider
+    PyObject* getPyObject() override;
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -161,6 +163,9 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
     void updateVisual();
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   const char* PropName) override;
 
     // nodes for the data representation
     SoMaterialBinding * pcFaceBind;
@@ -183,6 +188,7 @@ protected:
     bool NormalsFromUV;
 
 private:
+    Gui::ViewProviderFaceTexture texture;
     // settings stuff
     int forceUpdateCount;
     static App::PropertyFloatConstraint::Constraints sizeRange;
@@ -190,6 +196,10 @@ private:
     static App::PropertyQuantityConstraint::Constraints angDeflectionRange;
     static const char* LightingEnums[];
     static const char* DrawStyleEnums[];
+
+    // This is needed to restore old DiffuseColor values since the restore
+    // function is asynchronous
+    App::PropertyColorList _diffuseColor;
 };
 
 }

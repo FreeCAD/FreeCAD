@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #include <cmath>
 #include <vector>
+#include <QTimer>
 #endif
 
 #include <App/Document.h>
@@ -35,6 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -48,46 +50,61 @@ using namespace MeasureGui;
 
 QuickMeasure::QuickMeasure(QObject* parent)
     : QObject(parent)
-    , measurement{new Measure::Measurement()}
+    , measurement {new Measure::Measurement()}
 {
+    selectionTimer = new QTimer(this);
+    pendingProcessing = false;
+    connect(selectionTimer, &QTimer::timeout, this, &QuickMeasure::processSelection);
 }
 
 QuickMeasure::~QuickMeasure()
 {
+    delete selectionTimer;
     delete measurement;
 }
 
 void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    try {
-        tryMeasureSelection(msg);
-    }
-    catch (const Base::IndexError&) {
-        // ignore this exception because it can be caused by trying to access a non-existing
-        // sub-element e.g. when selecting a construction geometry in sketcher
-    }
-    catch (const Base::ValueError&) {
-        // ignore this exception because it can be caused by trying to access a non-existing
-        // sub-element e.g. when selecting a constraint in sketcher
-    }
-    catch (const Base::Exception& e) {
-        e.ReportException();
+    if (canMeasureSelection(msg)) {
+        if (!pendingProcessing) {
+            selectionTimer->start(100);
+        }
+        pendingProcessing = true;
     }
 }
 
-void QuickMeasure::tryMeasureSelection(const Gui::SelectionChanges& msg)
+void QuickMeasure::processSelection()
 {
-    if (canMeasureSelection(msg)) {
-        measurement->clear();
-        addSelectionToMeasurement();
-        printResult();
+    if (pendingProcessing) {
+        pendingProcessing = false;
+        try {
+            tryMeasureSelection();
+        }
+        catch (const Base::IndexError&) {
+            // ignore this exception because it can be caused by trying to access a non-existing
+            // sub-element e.g. when selecting a construction geometry in sketcher
+        }
+        catch (const Base::ValueError&) {
+            // ignore this exception because it can be caused by trying to access a non-existing
+            // sub-element e.g. when selecting a constraint in sketcher
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
     }
+}
+
+void QuickMeasure::tryMeasureSelection()
+{
+    measurement->clear();
+    addSelectionToMeasurement();
+    printResult();
 }
 
 bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
 {
-    if (msg.Type == Gui::SelectionChanges::SetPreselect ||
-        msg.Type == Gui::SelectionChanges::RmvPreselect) {
+    if (msg.Type == Gui::SelectionChanges::SetPreselect
+        || msg.Type == Gui::SelectionChanges::RmvPreselect) {
         return false;
     }
 
@@ -97,16 +114,49 @@ bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
 
 void QuickMeasure::addSelectionToMeasurement()
 {
-    for (auto& selObj : Gui::Selection().getSelectionEx()) {
-        App::DocumentObject* obj = selObj.getObject();
+    int count = 0;
+    int limit = 100;
+
+    // Lambda function to check whether to continue
+    auto shouldSkip = [](App::DocumentObject* obj) {
+        std::string vpType = obj->getViewProviderName();
+        auto* vp = Gui::Application::Instance->getViewProvider(obj);
+        return (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing())
+            || vpType.find("Gui::ViewProviderOrigin") != std::string::npos
+            || vpType.find("Gui::ViewProviderPart") != std::string::npos
+            || vpType.find("SpreadsheetGui") != std::string::npos
+            || vpType.find("TechDrawGui") != std::string::npos;
+    };
+
+    auto selObjs = Gui::Selection().getSelectionEx(nullptr,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   Gui::ResolveMode::NoResolve);
+
+    for (auto& selObj : selObjs) {
+        App::DocumentObject* rootObj = selObj.getObject();
         const std::vector<std::string> subNames = selObj.getSubNames();
-        if (subNames.empty()) {
-            measurement->addReference3D(obj, "");
+
+        // Check that there's not too many selection
+        count += subNames.empty() ? 1 : subNames.size();
+        if (count > limit) {
+            measurement->clear();
+            return;
         }
-        else {
-            for (auto& subName : subNames) {
-                measurement->addReference3D(obj, subName);
+
+        if (subNames.empty()) {
+            if (!shouldSkip(rootObj)) {
+                measurement->addReference3D(rootObj, "");
             }
+            continue;
+        }
+
+        for (auto& subName : subNames) {
+            App::DocumentObject* obj = rootObj->getSubObject(subName.c_str());
+
+            if (shouldSkip(obj)) {
+                continue;
+            }
+            measurement->addReference3D(rootObj, subName);
         }
     }
 }
@@ -123,7 +173,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Volumes) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity vol(measurement->volume(), Base::Unit::Volume);
-        print(tr("Volume: %1, Area: %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
+        print(tr("Volume: %1, Area:
+    %2").arg(vol.getSafeUserString()).arg(area.getSafeUserString()));
     }*/
     else if (mtype == MeasureType::TwoPlanes) {
         Base::Quantity dist(measurement->planePlaneDistance(), Base::Unit::Length);
@@ -133,7 +184,8 @@ void QuickMeasure::printResult()
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         print(tr("Area: %1").arg(area.getUserString()));
     }
-    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere || mtype == MeasureType::Torus) {
+    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere
+             || mtype == MeasureType::Torus) {
         Base::Quantity area(measurement->area(), Base::Unit::Area);
         Base::Quantity rad(measurement->radius(), Base::Unit::Length);
         print(tr("Area: %1, Radius: %2").arg(area.getSafeUserString(), rad.getSafeUserString()));
@@ -149,7 +201,8 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::TwoLines) {
         Base::Quantity angle(measurement->angle(), Base::Unit::Length);
         Base::Quantity dist(measurement->length(), Base::Unit::Length);
-        print(tr("Angle: %1, Total length: %2").arg(angle.getSafeUserString(), dist.getSafeUserString()));
+        print(tr("Angle: %1, Total length: %2")
+                  .arg(angle.getSafeUserString(), dist.getSafeUserString()));
     }
     else if (mtype == MeasureType::Line) {
         Base::Quantity dist(measurement->length(), Base::Unit::Length);

@@ -28,6 +28,7 @@ import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -58,9 +59,7 @@ class BIM_Tutorial:
 
         if not self.dock:
             # set the tutorial dialog up
-            self.form = FreeCADGui.PySideUic.loadUi(
-                os.path.join(os.path.dirname(__file__), "dialogTutorial.ui")
-            )
+            self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogTutorial.ui")
             self.form.setObjectName("BIMTutorial")
             self.form.progressBar.setValue(0)
             self.form.labelGoal1.setText("")

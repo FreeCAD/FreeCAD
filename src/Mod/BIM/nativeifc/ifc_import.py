@@ -111,9 +111,7 @@ def insert(
     fsize = round(os.path.getsize(filename) / 1048576, 2)
     print("Imported", os.path.basename(filename), "(", fsize, "Mb ) in", endtime)
     if FreeCAD.GuiUp and switchwb:
-        from StartPage import StartPage
-
-        StartPage.postStart()
+        FreeCADGui.activateWorkbench("BIMWorkbench")
     return document
 
 

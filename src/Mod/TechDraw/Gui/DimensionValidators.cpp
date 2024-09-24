@@ -59,6 +59,7 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
                 //subName to a null string to avoid later misunderstandings.
                 ReferenceEntry ref(dvp, std::string());
                 references2d.push_back(ref);
+                continue;
             }
             for (auto& sub : selItem.getSubNames()) {
                 ReferenceEntry ref(dvp, sub);
@@ -191,7 +192,6 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
             subNames.push_back(ref.getSubName());
         }
     }
-
 
     //check for invalid geometry descriptors in the subNames
     std::unordered_set<std::string> acceptableGeometrySet(acceptableGeometry.begin(),

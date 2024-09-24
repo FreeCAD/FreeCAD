@@ -62,7 +62,7 @@
       <item row="1" column="0" colspan="3">
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
-         <string>Write solids and shells as</string>
+         <string>Export solids and shells as</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">

@@ -309,11 +309,6 @@ bool TaskFemConstraintBearing::getAxial() const
 
 TaskFemConstraintBearing::~TaskFemConstraintBearing() = default;
 
-bool TaskFemConstraintBearing::event(QEvent* e)
-{
-    return TaskFemConstraint::KeyEvent(e);
-}
-
 void TaskFemConstraintBearing::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);

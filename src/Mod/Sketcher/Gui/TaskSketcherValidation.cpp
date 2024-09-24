@@ -59,7 +59,6 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     : QWidget(parent)
     , ui(new Ui_TaskSketcherValidation())
     , sketch(Obj)
-    , sketchAnalyser(Obj)
     , coincidenceRoot(nullptr)
 {
     ui->setupUi(this);
@@ -160,12 +159,11 @@ void SketcherValidation::onFindButtonClicked()
         }
     }
 
-    sketchAnalyser.detectMissingPointOnPointConstraints(
-        prec,
-        !ui->checkBoxIgnoreConstruction->isChecked());
+    sketch->detectMissingPointOnPointConstraints(prec,
+                                                 !ui->checkBoxIgnoreConstruction->isChecked());
 
     std::vector<Sketcher::ConstraintIds>& vertexConstraints =
-        sketchAnalyser.getMissingPointOnPointConstraints();
+        sketch->getMissingPointOnPointConstraints();
 
     std::vector<Base::Vector3d> points;
     points.reserve(vertexConstraints.size());
@@ -222,7 +220,7 @@ void SketcherValidation::onHighlightButtonClicked()
 
     std::vector<Base::Vector3d> points;
 
-    points = sketchAnalyser.getOpenVertices();
+    points = sketch->getOpenVertices();
 
     hidePoints();
     if (!points.empty()) {
@@ -475,7 +473,7 @@ void SketcherValidation::onFindDegeneratedClicked()
     }
 
     double prec = Precision::Confusion();
-    int count = sketchAnalyser.detectDegeneratedGeometries(prec);
+    int count = sketch->detectDegeneratedGeometries(prec);
 
     if (count == 0) {
         Gui::TranslatedNotification(*sketch,

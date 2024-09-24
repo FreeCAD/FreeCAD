@@ -78,7 +78,7 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
                 "Object dependencies",
                 bodyMessage,
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                QtGui.QMessageBox.No
+                QtGui.QMessageBox.No,
             )
             if reply == QtGui.QMessageBox.Yes:
                 return True

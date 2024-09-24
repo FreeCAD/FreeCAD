@@ -98,6 +98,11 @@ using SU = ShapeUtils;
 // DrawBrokenView
 //===========================================================================
 
+const char *DrawBrokenView::BreakTypeEnums[] = {
+    QT_TRANSLATE_NOOP("DrawBrokenView", "None"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "ZigZag"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "Simple"),
+    nullptr};
 PROPERTY_SOURCE(TechDraw::DrawBrokenView, TechDraw::DrawViewPart)
 
 DrawBrokenView::DrawBrokenView()
@@ -407,7 +412,6 @@ bool DrawBrokenView::isBreakObject(const App::DocumentObject& breakObj)
 //! horizontal or vertical
 bool DrawBrokenView::isBreakObjectSketch(const App::DocumentObject& breakObj)
 {
-    // Base::Console().Message("DBV::isBreakObjectSketch()\n");
     TopoDS_Shape locShape = ShapeExtractor::getLocatedShape(&breakObj);
     if (locShape.IsNull()) {
         return false;

@@ -66,6 +66,7 @@ public:
     FC_VIEW_PARAM(AxisXColor,unsigned long,Unsigned,0xCC333300) \
     FC_VIEW_PARAM(AxisYColor,unsigned long,Unsigned,0x33CC3300) \
     FC_VIEW_PARAM(AxisZColor,unsigned long,Unsigned,0x3333CC00) \
+    FC_VIEW_PARAM(DraggerScale,double,Float,0.03) \
 
 
 #undef FC_VIEW_PARAM

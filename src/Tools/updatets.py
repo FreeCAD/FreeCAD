@@ -64,7 +64,7 @@ directories = [
     },
     {
         "tsname": "Arch",
-        "workingdir": "./src/Mod/Arch/",
+        "workingdir": "./src/Mod/BIM/",
         "tsdir": "Resources/translations",
     },
     {
@@ -94,7 +94,7 @@ directories = [
     },
     {
         "tsname": "Material",
-        "workingdir": "./src/Mod/Material/",
+        "workingdir": "./src/Mod/Material/Gui",
         "tsdir": "Resources/translations",
     },
     {

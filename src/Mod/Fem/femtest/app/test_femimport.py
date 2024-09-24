@@ -39,42 +39,36 @@ class TestFemImport(unittest.TestCase):
     # no is document needed to test import Fem and import FemGui
     # thus neither setUp nor tearDown methods are needed
 
-    def test_00print(
-        self
-    ):
-        fcc_print("\n{0}\n{1} run FEM TestFemImport tests {2}\n{0}".format(
-            100 * "*",
-            10 * "*",
-            61 * "*"
-        ))
+    def test_00print(self):
+        fcc_print(
+            "\n{0}\n{1} run FEM TestFemImport tests {2}\n{0}".format(100 * "*", 10 * "*", 61 * "*")
+        )
 
     # ********************************************************************************************
-    def test_import_fem(
-        self
-    ):
+    def test_import_fem(self):
 
         mod = "Fem"
-        fcc_print("\n  Try importing {0} ...".format(mod))
+        fcc_print(f"\n  Try importing {mod} ...")
         try:
-            im = __import__("{0}".format(mod))
+            im = __import__(f"{mod}")
         except ImportError:
             im = False
         if not im:
             # to get an error message what was going wrong
-            __import__("{0}".format(mod))
-        self.assertTrue(im, "Problem importing {0}".format(mod))
+            __import__(f"{mod}")
+        self.assertTrue(im, f"Problem importing {mod}")
 
         if FreeCAD.GuiUp:
             mod = "FemGui"
-            fcc_print("  Try importing {0} ...".format(mod))
+            fcc_print(f"  Try importing {mod} ...")
             try:
-                im = __import__("{0}".format(mod))
+                im = __import__(f"{mod}")
             except ImportError:
                 im = False
             if not im:
                 # to get an error message what was going wrong
-                __import__("{0}".format(mod))
-            self.assertTrue(im, "Problem importing {0}".format(mod))
+                __import__(f"{mod}")
+            self.assertTrue(im, f"Problem importing {mod}")
 
 
 # ************************************************************************************************
@@ -84,37 +78,29 @@ class TestObjectExistance(unittest.TestCase):
     fcc_print("import TestObjectExistance")
 
     # ********************************************************************************************
-    def setUp(
-        self
-    ):
+    def setUp(self):
         # setUp is executed before every test
 
         # new document
         self.document = FreeCAD.newDocument(self.__class__.__name__)
 
     # ********************************************************************************************
-    def tearDown(
-        self
-    ):
+    def tearDown(self):
         # tearDown is executed after every test
         FreeCAD.closeDocument(self.document.Name)
 
     # ********************************************************************************************
-    def test_00print(
-        self
-    ):
+    def test_00print(self):
         # since method name starts with 00 this will be run first
         # this test just prints a line with stars
-        fcc_print("\n{0}\n{1} run FEM TestObjectExistance tests {2}\n{0}".format(
-            100 * "*",
-            10 * "*",
-            55 * "*"
-        ))
+        fcc_print(
+            "\n{0}\n{1} run FEM TestObjectExistance tests {2}\n{0}".format(
+                100 * "*", 10 * "*", 55 * "*"
+            )
+        )
 
     # ********************************************************************************************
-    def test_objects_existance(
-        self
-    ):
+    def test_objects_existance(self):
 
         expected_obj_types = [
             "Fem::Constraint",
@@ -139,6 +125,7 @@ class TestObjectExistance(unittest.TestCase):
             "Fem::FemAnalysisPython",
             "Fem::FemMeshObject",
             "Fem::FemMeshObjectPython",
+            "Fem::FemMeshShapeBaseObjectPython",
             "Fem::FemMeshShapeNetgenObject",
             "Fem::FemMeshShapeObject",
             "Fem::FemResultObject",
@@ -193,12 +180,6 @@ class TestObjectExistance(unittest.TestCase):
         obj_types = sorted(obj_types)
 
         # test
-        self.assertEqual(
-            expected_len,
-            len(obj_types)
-        )
+        self.assertEqual(expected_len, len(obj_types))
 
-        self.assertEqual(
-            expected_obj_types,
-            obj_types
-        )
+        self.assertEqual(expected_obj_types, obj_types)

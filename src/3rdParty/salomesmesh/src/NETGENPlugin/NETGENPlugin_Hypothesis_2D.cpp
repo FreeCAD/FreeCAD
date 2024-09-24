@@ -27,6 +27,13 @@
 // Project   : SALOME
 //=============================================================================
 //
+#ifdef _WIN32
+// Include this before any possible calls to "using namespace std" to avoid conflicts
+// with std::byte in the Windows API header files - as of MSVC 2022 17.10.1, June 2024
+#define NOMINMAX 1
+#include <windows.h>
+#undef NOMINMAX
+#endif
 #include "NETGENPlugin_Hypothesis_2D.hxx"
 #include <utilities.h>
 

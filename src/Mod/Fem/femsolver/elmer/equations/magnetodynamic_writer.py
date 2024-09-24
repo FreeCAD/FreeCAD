@@ -73,8 +73,9 @@ class MgDynwriter:
         if equation.UseLagrangeGauge is True:
             s["Use Lagrange Gauge"] = True
         if equation.LagrangeGaugePenalizationCoefficient != 0.0:
-            s["Lagrange Gauge Penalization Coefficient"] = \
+            s["Lagrange Gauge Penalization Coefficient"] = (
                 equation.LagrangeGaugePenalizationCoefficient
+            )
         if equation.UseTreeGauge is True:
             s["Use Tree Gauge"] = True
         return s
@@ -117,15 +118,13 @@ class MgDynwriter:
 
     def handleMagnetodynamicConstants(self):
         permeability = self.write.convert(
-            self.write.constsdef["PermeabilityOfVacuum"],
-            "M*L/(T^2*I^2)"
+            self.write.constsdef["PermeabilityOfVacuum"], "M*L/(T^2*I^2)"
         )
         # we round in the following to get rid of numerical artifacts
         self.write.constant("Permeability Of Vacuum", round(permeability, 20))
 
         permittivity = self.write.convert(
-            self.write.constsdef["PermittivityOfVacuum"],
-            "T^4*I^2/(L^3*M)"
+            self.write.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)"
         )
         self.write.constant("Permittivity Of Vacuum", round(permittivity, 20))
 
@@ -134,22 +133,19 @@ class MgDynwriter:
         for name in bodies:
             if self.write.getBodyMaterial(name) is None:
                 raise general_writer.WriteError(
-                    "The body {} is not referenced in any material.\n\n".format(name)
+                    f"The body {name} is not referenced in any material.\n\n"
                 )
         for obj in self.write.getMember("App::MaterialObject"):
             m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self.write.getAllBodies())
+            refs = obj.References[0][1] if obj.References else self.write.getAllBodies()
             for name in (n for n in refs if n in bodies):
                 if "ElectricalConductivity" not in m:
-                    Console.PrintMessage("m: {}\n".format(m))
+                    Console.PrintMessage(f"m: {m}\n")
                     raise general_writer.WriteError(
                         "The electrical conductivity must be specified for all materials.\n\n"
                     )
                 if "RelativePermeability" not in m:
-                    Console.PrintMessage("m: {}\n".format(m))
+                    Console.PrintMessage(f"m: {m}\n")
                     raise general_writer.WriteError(
                         "The relative permeability must be specified for all materials.\n\n"
                     )
@@ -157,15 +153,11 @@ class MgDynwriter:
                 conductivity = self.write.convert(m["ElectricalConductivity"], "T^3*I^2/(L^3*M)")
                 conductivity = round(conductivity, 10)  # to get rid of numerical artifacts
                 self.write.material(name, "Electric Conductivity", conductivity)
-                self.write.material(
-                    name, "Relative Permeability",
-                    float(m["RelativePermeability"])
-                )
+                self.write.material(name, "Relative Permeability", float(m["RelativePermeability"]))
                 # permittivity might be necessary for the post processor
                 if "RelativePermittivity" in m:
                     self.write.material(
-                        name, "Relative Permittivity",
-                        float(m["RelativePermittivity"])
+                        name, "Relative Permittivity", float(m["RelativePermittivity"])
                     )
 
     def _outputMagnetodynamicBodyForce(self, obj, name, equation):
@@ -235,7 +227,7 @@ class MgDynwriter:
         for obj in currentDensities:
             if obj.References:
                 firstName = obj.References[0][1][0]
-                firstName = firstName.rstrip('0123456789')
+                firstName = firstName.rstrip("0123456789")
                 if firstName == "Solid":
                     for name in obj.References[0][1]:
                         self._outputMagnetodynamicBodyForce(obj, name, equation)
@@ -278,7 +270,7 @@ class MgDynwriter:
         for obj in potentials:
             if obj.References:
                 firstName = obj.References[0][1][0]
-                firstName = firstName.rstrip('0123456789')
+                firstName = firstName.rstrip("0123456789")
                 if firstName == "Solid":
                     for name in obj.References[0][1]:
                         # output only if potentiual is enabled and needed
@@ -346,7 +338,7 @@ class MgDynwriter:
         for obj in currentDensities:
             if obj.References:
                 firstName = obj.References[0][1][0]
-                firstName = firstName.rstrip('0123456789')
+                firstName = firstName.rstrip("0123456789")
                 if firstName == "Face":
                     for name in obj.References[0][1]:
                         self._outputMagnetodynamicBndConditions(obj, name, equation)
@@ -363,7 +355,7 @@ class MgDynwriter:
         for obj in potentials:
             if obj.References:
                 firstName = obj.References[0][1][0]
-                firstName = firstName.rstrip('0123456789')
+                firstName = firstName.rstrip("0123456789")
                 if firstName == "Face":
                     for name in obj.References[0][1]:
                         # output the FreeCAD label as comment
@@ -372,5 +364,6 @@ class MgDynwriter:
                         # output only if potentiual is enabled and needed
                         self._outputMagnetodynamicBndConditions(obj, name, equation)
                     self.write.handled(obj)
+
 
 ##  @}

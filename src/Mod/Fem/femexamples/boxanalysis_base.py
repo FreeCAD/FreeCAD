@@ -63,6 +63,7 @@ def setup_boxanalysisbase(doc=None, solvertype="ccxtools"):
 
     # mesh
     from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
+
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -72,9 +73,10 @@ def setup_boxanalysisbase(doc=None, solvertype="ccxtools"):
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
-    femmesh_obj.Part = geom_obj
+    femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMin = "8.0 mm"
+    femmesh_obj.ElementOrder = "2nd"
 
     doc.recompute()
     return doc

@@ -58,6 +58,12 @@
       </Documentation>
       <Parameter Name="LinearElastic" Type="String"/>
     </Attribute>
+    <Attribute Name="Machinability" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Machining/Machinability</UserDocu>
+      </Documentation>
+      <Parameter Name="Machinability" Type="String"/>
+    </Attribute>
     <Attribute Name="MooneyRivlin" ReadOnly="true">
       <Documentation>
         <UserDocu>UUID for model System:Mechanical/MooneyRivlin</UserDocu>

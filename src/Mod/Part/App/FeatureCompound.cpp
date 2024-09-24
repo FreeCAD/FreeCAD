@@ -58,45 +58,6 @@ App::DocumentObjectExecReturn *Compound::execute()
         // See also ViewProviderCompound::updateData
         std::set<DocumentObject*> tempLinks;
 
-#ifndef FC_USE_TNP_FIX
-        std::vector<ShapeHistory> history;
-        int countFaces = 0;
-
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-
-        const std::vector<DocumentObject*>& links = Links.getValues();
-        for (auto link : links) {
-            if (link) {
-                auto pos = tempLinks.insert(link);
-                if (pos.second) {
-                    const TopoDS_Shape& sh = Feature::getShape(link);
-                    if (!sh.IsNull()) {
-                        builder.Add(comp, sh);
-                        TopTools_IndexedMapOfShape faceMap;
-                        TopExp::MapShapes(sh, TopAbs_FACE, faceMap);
-                        ShapeHistory hist;
-                        hist.type = TopAbs_FACE;
-                        for (int i=1; i<=faceMap.Extent(); i++) {
-                            hist.shapeMap[i-1].push_back(countFaces++);
-                        }
-                        history.push_back(hist);
-                    }
-                }
-            }
-        }
-
-        this->Shape.setValue(comp);
-
-        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
-        PropertyShapeHistory prop;
-        prop.setValues(history);
-        prop.setContainer(this);
-        prop.touch();
-
-        return App::DocumentObject::StdReturn;
-#else
         std::vector<TopoShape> shapes;
         for (auto obj : Links.getValues()) {
             if (!tempLinks.insert(obj).second) {
@@ -109,7 +70,6 @@ App::DocumentObjectExecReturn *Compound::execute()
         }
         this->Shape.setValue(TopoShape().makeElementCompound(shapes));
         return Part::Feature::execute();
-#endif
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

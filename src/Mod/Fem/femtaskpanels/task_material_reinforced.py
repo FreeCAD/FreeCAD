@@ -34,22 +34,16 @@ from PySide import QtGui
 
 import FreeCAD
 import FreeCADGui
+from . import base_femtaskpanel
 
 
-unicode = str
-
-
-class _TaskPanel:
+class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
     The editmode TaskPanel for MaterialReinforced objects
     """
 
-    unicode = str
-
     def __init__(self, obj):
-
-        FreeCAD.Console.PrintMessage("\n")  # empty line on start task panel
-        self.obj = obj
+        super().__init__(obj)
 
         # init matrix and reinforcement material
         self.material_m = self.obj.Material
@@ -79,26 +73,23 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.parameterWidget.cb_materials_m,
             QtCore.SIGNAL("activated(int)"),
-            self.choose_material_m
+            self.choose_material_m,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.pb_edit_m,
-            QtCore.SIGNAL("clicked()"),
-            self.edit_material_m
+            self.parameterWidget.pb_edit_m, QtCore.SIGNAL("clicked()"), self.edit_material_m
         )
         QtCore.QObject.connect(
             self.parameterWidget.cb_materials_r,
             QtCore.SIGNAL("activated(int)"),
-            self.choose_material_r
+            self.choose_material_r,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.pb_edit_r,
-            QtCore.SIGNAL("clicked()"),
-            self.edit_material_r
+            self.parameterWidget.pb_edit_r, QtCore.SIGNAL("clicked()"), self.edit_material_r
         )
 
         # get all available materials (fill self.materials, self.cards and self.icons)
         from materialtools.cardutils import import_materials as getmats
+
         self.materials, self.cards, self.icons = getmats()
         # fill the material comboboxes with material cards
         self.add_cards_to_combo_boxes()
@@ -106,7 +97,7 @@ class _TaskPanel:
         # search for exact the mat_card_m and mat_card_r in all known cards
         # choose the current matrix material
         self.card_path_m = self.get_material_card(self.material_m)
-        FreeCAD.Console.PrintLog("card_path: {}\n".format(self.card_path_m))
+        FreeCAD.Console.PrintLog(f"card_path: {self.card_path_m}\n")
         if not self.card_path_m:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material
@@ -117,9 +108,7 @@ class _TaskPanel:
             self.card_path_m = "_Document_Matrix_Material"
             self.materials[self.card_path_m] = self.material_m
             self.parameterWidget.cb_materials_m.addItem(
-                QtGui.QIcon(":/icons/help-browser.svg"),
-                self.card_path_m,
-                self.card_path_m
+                QtGui.QIcon(":/icons/help-browser.svg"), self.card_path_m, self.card_path_m
             )
             index = self.parameterWidget.cb_materials_m.findData(self.card_path_m)
             # fill input fields and set the current material in the cb widget
@@ -136,7 +125,7 @@ class _TaskPanel:
 
         # choose the current reinforcement material
         self.card_path_r = self.get_material_card(self.material_r)
-        FreeCAD.Console.PrintLog("card_path: {}\n".format(self.card_path_r))
+        FreeCAD.Console.PrintLog(f"card_path: {self.card_path_r}\n")
         if not self.card_path_r:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material
@@ -147,9 +136,7 @@ class _TaskPanel:
             self.card_path_r = "_Document_Reinforcement_Material"
             self.materials[self.card_path_r] = self.material_r
             self.parameterWidget.cb_materials_r.addItem(
-                QtGui.QIcon(":/icons/help-browser.svg"),
-                self.card_path_r,
-                self.card_path_r
+                QtGui.QIcon(":/icons/help-browser.svg"), self.card_path_r, self.card_path_r
             )
             index = self.parameterWidget.cb_materials_r.findData(self.card_path_r)
             # set the current material in the cb widget
@@ -170,6 +157,7 @@ class _TaskPanel:
     # leave task panel ***************************************************************************
     def accept(self):
         from materialtools.cardutils import check_mat_units as checkunits
+
         if checkunits(self.material_m) is True and checkunits(self.material_r) is True:
             self.obj.Material = self.material_m
             self.obj.Reinforcement = self.material_r
@@ -180,31 +168,10 @@ class _TaskPanel:
             )
             FreeCAD.Console.PrintError(error_message)
             QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
-        self.recompute_and_set_back_all()
-        return True
+        return super().accept()
 
     def reject(self):
-        self.recompute_and_set_back_all()
-        return True
-
-    def recompute_and_set_back_all(self):
-        guidoc = FreeCADGui.getDocument(self.obj.Document)
-        guidoc.Document.recompute()
-        guidoc.resetEdit()
-        self.output_obj_mat_param()
-
-    def output_obj_mat_param(self):
-        self.print_mat_dict(self.obj.Material)
-        self.print_mat_dict(self.obj.Reinforcement)
-        print("\n")
-
-    def print_mat_dict(self, mat_dict):
-        if "Name" in mat_dict:
-            print("Material: {}".format(mat_dict["Name"]))
-        else:
-            print("Matrix material: no Name")
-        for key in mat_dict:
-            print("    {}: {}".format(key, mat_dict[key]))
+        return super().reject()
 
     # choose material card ***********************************************************************
     def get_material_card(self, material):
@@ -212,7 +179,7 @@ class _TaskPanel:
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
             # print(a_mat + "  -->  unmatched_items = " + str(len(unmatched_items)))
             if len(unmatched_items) < 4:
-                FreeCAD.Console.PrintLog("{}\n".format(unmatched_items))
+                FreeCAD.Console.PrintLog(f"{unmatched_items}\n")
             if len(unmatched_items) == 0:
                 return a_mat
         return ""
@@ -223,8 +190,7 @@ class _TaskPanel:
         # get the whole card path
         self.card_path_m = self.parameterWidget.cb_materials_m.itemData(index)
         FreeCAD.Console.PrintMessage(
-            "choose_material in FEM material task panel:\n"
-            "    {}\n".format(self.card_path_m)
+            f"choose_material in FEM material task panel:\n    {self.card_path_m}\n"
         )
         self.material_m = self.materials[self.card_path_m]
         self.parameterWidget.cb_materials_m.setCurrentIndex(index)
@@ -243,8 +209,7 @@ class _TaskPanel:
         # get the whole card path
         self.card_path_r = self.parameterWidget.cb_materials_r.itemData(index)
         FreeCAD.Console.PrintMessage(
-            "choose_material in FEM material task panel:\n"
-            "    {}\n".format(self.card_path_r)
+            f"choose_material in FEM material task panel:\n    {self.card_path_r}\n"
         )
         self.material_r = self.materials[self.card_path_r]
         self.parameterWidget.cb_materials_r.setCurrentIndex(index)
@@ -268,9 +233,7 @@ class _TaskPanel:
         self.has_transient_mat_m = True
         self.card_path_m = "_Transient_Matrix_Material"
         self.parameterWidget.cb_materials_m.addItem(
-            QtGui.QIcon(":/icons/help-browser.svg"),
-            self.card_path_m,
-            self.card_path_m
+            QtGui.QIcon(":/icons/help-browser.svg"), self.card_path_m, self.card_path_m
         )
         self.set_transient_material_m()
 
@@ -284,9 +247,7 @@ class _TaskPanel:
         self.has_transient_mat_r = True
         self.card_path_r = "_Transient_Reinforcement_Material"
         self.parameterWidget.cb_materials_r.addItem(
-            QtGui.QIcon(":/icons/help-browser.svg"),
-            self.card_path_r,
-            self.card_path_r
+            QtGui.QIcon(":/icons/help-browser.svg"), self.card_path_r, self.card_path_r
         )
         self.set_transient_material_r()
 
@@ -297,6 +258,7 @@ class _TaskPanel:
     def edit_material_m(self):
         # opens the material editor to choose a material or edit material params
         import MaterialEditor
+
         if self.card_path_m not in self.cards:
             FreeCAD.Console.PrintLog(
                 "Card path not in cards, material dict will be used to open Material Editor.\n"
@@ -311,10 +273,11 @@ class _TaskPanel:
         if new_material_params:
             # check material quantity units
             from materialtools.cardutils import check_mat_units as checkunits
+
             if checkunits(new_material_params) is True:
                 self.material_m = new_material_params
                 self.card_path_m = self.get_material_card(self.material_m)
-                FreeCAD.Console.PrintMessage("card_path: {}\n".format(self.card_path_m))
+                FreeCAD.Console.PrintMessage(f"card_path: {self.card_path_m}\n")
                 if not self.card_path_m:
                     FreeCAD.Console.PrintMessage(
                         "Material card chosen by the material editor "
@@ -349,6 +312,7 @@ class _TaskPanel:
     def edit_material_r(self):
         # opens the material editor to choose a material or edit material params
         import MaterialEditor
+
         if self.card_path_r not in self.cards:
             FreeCAD.Console.PrintLog(
                 "Card path not in cards, material dict will be used to open Material Editor.\n"
@@ -363,10 +327,11 @@ class _TaskPanel:
         if new_material_params:
             # check material quantity units
             from materialtools.cardutils import check_mat_units as checkunits
+
             if checkunits(new_material_params) is True:
                 self.material_r = new_material_params
                 self.card_path_r = self.get_material_card(self.material_r)
-                FreeCAD.Console.PrintMessage("card_path: {}\n".format(self.card_path_r))
+                FreeCAD.Console.PrintMessage(f"card_path: {self.card_path_r}\n")
                 if not self.card_path_r:
                     FreeCAD.Console.PrintMessage(
                         "Material card chosen by the material editor "

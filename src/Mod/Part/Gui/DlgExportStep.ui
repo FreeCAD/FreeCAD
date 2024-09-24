@@ -11,36 +11,33 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>STEP</string>
+   <string notr="true">STEP</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Export</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Scheme</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Units for export of STEP</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="2">
+      <item row="5" column="1">
        <widget class="QComboBox" name="comboBoxUnits">
         <item>
          <property name="text">
@@ -59,34 +56,53 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
-       <widget class="QCheckBox" name="checkBoxPcurves">
-        <property name="text">
-         <string>Write out curves in parametric space of surface</string>
-        </property>
+      <item row="6" column="1">
+       <widget class="QComboBox" name="comboBoxSchema">
+        <item>
+         <property name="text">
+          <string notr="true">AP203</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP214 Committee Draft</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP214 Draft International Standard</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP214 International Standard</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP242 Draft International Standard</string>
+         </property>
+        </item>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
-        <property name="toolTip">
-         <string>Uncheck this to skip invisible object when exporting, which is useful for CADs that do not support invisibility STEP styling.</string>
-        </property>
+      <item row="4" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxExportLegacy">
         <property name="text">
-         <string>Export invisible objects</string>
+         <string>Use legacy export function</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ExportHiddenObject</cstring>
+         <cstring>ExportLegacy</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxKeepPlacement">
         <property name="toolTip">
          <string>Check this option to keep the placement information when exporting
-a single object. Please note that when import back the STEP file, the
+a single object. Please note that when importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the Placement property.</string>
         </property>
@@ -101,55 +117,27 @@ it inside the Placement property.</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxExportLegacy">
+      <item row="2" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
+        <property name="toolTip">
+         <string>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</string>
+        </property>
         <property name="text">
-         <string>Use legacy export function</string>
+         <string>Export invisible objects</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ExportLegacy</cstring>
+         <cstring>ExportHiddenObject</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="3">
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>Scheme</string>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBoxPcurves">
+        <property name="text">
+         <string>Write out curves in parametric space of surface</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QComboBox" name="comboBoxSchema">
-           <item>
-            <property name="text">
-             <string notr="true">AP203</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true">AP214 Committee Draft</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true">AP214 Draft International Standard</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true">AP214 International Standard</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string notr="true">AP242 Draft International Standard</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
      </layout>
@@ -165,7 +153,6 @@ it inside the Placement property.</string>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>comboBoxUnits</tabstop>
   <tabstop>checkBoxPcurves</tabstop>
   <tabstop>checkBoxExportHiddenObj</tabstop>
  </tabstops>

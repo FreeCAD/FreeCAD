@@ -74,13 +74,14 @@ bool isSketcherVirtualSpaceActive(Gui::Document* doc, bool actsOnSelection)
 
 void ActivateVirtualSpaceHandler(Gui::Document* doc, DrawSketchHandler* handler)
 {
+    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
         if (doc->getInEdit()
             && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp =
                 static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(handler);
+            vp->activateHandler(std::move(ptr));
         }
     }
 }

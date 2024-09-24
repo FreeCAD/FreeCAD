@@ -7,8 +7,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${QT_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -56,6 +55,9 @@ SOURCE_GROUP("Module" FILES ${JtReader_SRCS})
 
 add_library(JtReader SHARED ${JtReader_SRCS} ${JRJT_SRCS} ${JtReader_Scripts})
 target_link_libraries(JtReader ${JtReader_LIBS})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(JtReader)
+endif()
 
 fc_target_copy_resource_flat(JtReader
     ${CMAKE_CURRENT_SOURCE_DIR}

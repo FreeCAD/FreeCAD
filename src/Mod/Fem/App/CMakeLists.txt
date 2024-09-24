@@ -133,6 +133,8 @@ SET(FemSet_SRCS
     FemSetObject.h
     FemSetNodesObject.cpp
     FemSetNodesObject.h
+    FemSetElementNodesObject.cpp
+    FemSetElementNodesObject.h
     FemSetElementsObject.cpp
     FemSetElementsObject.h
     FemSetFacesObject.cpp
@@ -197,8 +199,11 @@ endif(FREECAD_USE_PCH)
 
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
+if (FREECAD_WARN_ERROR)
+    target_compile_warn_error(Fem)
+endif()
 
-find_package(OpenMP)
+find_package(OpenMP 4.0)
 if(OpenMP_CXX_FOUND)
 	target_link_libraries(Fem OpenMP::OpenMP_CXX)
 endif()

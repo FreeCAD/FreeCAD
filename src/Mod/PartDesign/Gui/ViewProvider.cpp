@@ -88,7 +88,7 @@ bool ViewProvider::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFeatureParameters *featureDlg = qobject_cast<TaskDlgFeatureParameters *>(dlg);
         // NOTE: if the dialog is not partDesigan dialog the featureDlg will be NULL
-        if (featureDlg && featureDlg->viewProvider() != this) {
+        if (featureDlg && featureDlg->getViewObject() != this) {
             featureDlg = nullptr; // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
@@ -314,6 +314,6 @@ PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewP
 /// @endcond
 
 // explicit template instantiation
-template class PartDesignGuiExport ViewProviderPythonFeatureT<PartDesignGui::ViewProvider>;
+template class PartDesignGuiExport ViewProviderFeaturePythonT<PartDesignGui::ViewProvider>;
 }
 

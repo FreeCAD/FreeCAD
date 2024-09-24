@@ -42,6 +42,7 @@ class PropertyContainer;
 class DocumentObject;
 class Extension;
 
+// clang-format off
 enum PropertyType
 {
   Prop_None        = 0, /*!< No special property type */
@@ -52,6 +53,7 @@ enum PropertyType
   Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
   Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
 };
+// clang-format on
 
 struct AppExport PropertyData
 {

@@ -79,6 +79,7 @@ SET(Draft_utilities
     draftutils/translate.py
     draftutils/messages.py
     draftutils/README.md
+    draftutils/grid_observer.py
 )
 
 SET(Draft_functions

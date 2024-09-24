@@ -20,7 +20,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <Mod/Material/App/PreCompiled.h>
 #ifndef _PreComp_

@@ -40,6 +40,7 @@ class QGIVertex;
 class QGIView;
 class QGILeaderLine;
 
+//! QGMarker provides movable symbols
 class TechDrawGuiExport QGMarker : public QObject, public QGIVertex
 {
     Q_OBJECT
@@ -73,12 +74,14 @@ private:
 
 //******************************************************************************
 
+
+
 class TechDrawGuiExport QGEPath : public QObject, public QGIPrimPath
 {
     Q_OBJECT
 
 public:
-    explicit QGEPath(QGILeaderLine* leader);
+    explicit QGEPath();
     ~QGEPath() override = default;
 
     enum {Type = QGraphicsItem::UserType + 301};
@@ -88,17 +91,13 @@ public:
 
     void inEdit(bool isInEdit) { m_inEdit = isInEdit; }
     bool inEdit() const { return m_inEdit; }
-    void startPathEdit(std::vector<QPointF> pathPoints);
+    void startPathEdit(const std::vector<QPointF>& pathPoints);
 
-    void showMarkers(std::vector<QPointF> points);
+    void showMarkers(const std::vector<QPointF>& points);
     void clearMarkers();
-
-    std::vector<QPointF> getDeltasFromLeader();
 
     void setScale(double scale) { m_scale = scale; }
     double getScale() const { return m_scale; }
-
-    void setPoints(std::vector<QPointF>& pts) { m_ghostPoints = pts; }
 
     void updateParent();
     void drawGhost();
@@ -133,7 +132,6 @@ private:
     double m_scale;
     bool m_inEdit;
 
-    QGILeaderLine* m_parentLeader;
     QGIPrimPath* m_ghost;
 
     double m_startAdj;

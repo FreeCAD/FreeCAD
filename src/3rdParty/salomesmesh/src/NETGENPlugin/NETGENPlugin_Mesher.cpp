@@ -27,6 +27,14 @@
 // Project   : SALOME
 //=============================================================================
 
+#ifdef _WIN32
+// Include this before any possible calls to "using namespace std" to avoid conflicts
+// with std::byte in the Windows API header files - as of MSVC 2022 17.10.1, June 2024
+#define NOMINMAX 1
+#include <windows.h>
+#undef NOMINMAX
+#endif
+
 #include "NETGENPlugin_Mesher.hxx"
 #include "NETGENPlugin_Hypothesis_2D.hxx"
 #include "NETGENPlugin_SimpleHypothesis_3D.hxx"
@@ -367,11 +375,27 @@ struct Link
   {
     return (( Contains( other.n1 ) || Contains( other.n2 )) && ( this != &other ));
   }
+  bool operator==(const Link& rhs) const {
+      return rhs.n1 == n1 && rhs.n2 == n2;
+  }
+};
+
+template<>
+struct std::hash<Link>
+{
+    std::size_t operator()(const Link& aLink) const noexcept
+    {
+        return std::hash<int> {}(aLink.n1 + aLink.n2);
+    }
 };
 
 int HashCode(const Link& aLink, int aLimit)
 {
+#if OCC_VERSION_HEX >= 0x070800
+    return std::hash<Link> {}(aLink);
+#else
   return HashCode(aLink.n1 + aLink.n2, aLimit);
+#endif
 }
 
 Standard_Boolean IsEqual(const Link& aLink1, const Link& aLink2)

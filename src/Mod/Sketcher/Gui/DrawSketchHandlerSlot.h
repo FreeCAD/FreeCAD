@@ -88,10 +88,9 @@ private:
 
                 startPoint = onSketchPos;
 
-                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                    renderSuggestConstraintsCursor(sugConstraints[0]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[0],
+                                            onSketchPos,
+                                            Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
@@ -105,13 +104,10 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
-                if (seekAutoConstraint(sugConstraints[1],
-                                       onSketchPos,
-                                       secondPoint - startPoint,
-                                       AutoConstraint::VERTEX_NO_TANGENCY)) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
+                seekAndRenderAutoConstraint(sugConstraints[1],
+                                            onSketchPos,
+                                            secondPoint - startPoint,
+                                            AutoConstraint::VERTEX_NO_TANGENCY);
             } break;
             case SelectMode::SeekThird: {
                 /*To follow the cursor, r should adapt depending on the position of the cursor. If

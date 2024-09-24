@@ -57,7 +57,7 @@ target_compile_options(FreeCAD_widgets PRIVATE ${COMPILE_OPTIONS})
 
 # Get the install location of a plugin to determine the path to designer plguins
 get_target_property(QMAKE_EXECUTABLE Qt${FREECAD_QT_MAJOR_VERSION}::qmake LOCATION)
-exec_program(${QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_PLUGINS" RETURN_VALUE return_code OUTPUT_VARIABLE DEFAULT_QT_PLUGINS_DIR )
+execute_process(COMMAND ${QMAKE_EXECUTABLE} "-query" "QT_INSTALL_PLUGINS" RESULT_VARIABLE return_code OUTPUT_VARIABLE DEFAULT_QT_PLUGINS_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
 set(DESIGNER_PLUGIN_LOCATION ${DEFAULT_QT_PLUGINS_DIR}/designer CACHE PATH "Path where the plugin will be installed to")
 
 if (NOT IS_SUB_PROJECT)

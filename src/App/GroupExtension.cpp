@@ -381,7 +381,7 @@ bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *sub
     if(!dot)
         return false;
     if(subname[0]!='$')
-        ret = Group.find(std::string(subname,dot));
+        ret = Group.findUsingMap(std::string(subname,dot));
     else{
         std::string name = std::string(subname+1,dot);
         for(auto child : Group.getValues()) {
