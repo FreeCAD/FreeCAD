@@ -633,7 +633,9 @@ void Application::open(const char* FileName, const char* Module)
                     Command::doCommand(Command::App,
                                        "FreeCAD.openDocument('%s')",
                                        unicodepath.c_str());
-                    Gui::Application::checkForRecomputes();
+                    // Intentionally case sensitive so we don't try to recompute "internal" files like toolbits
+                    if ( te == "FCStd")
+                        Gui::Application::checkForRecomputes();
                 }
             }
             else {
