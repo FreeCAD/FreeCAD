@@ -625,7 +625,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
 
             if (faceCount == 1) {
-                getUpToFace(upToShape, base, supportface, sketchshape, method, dir);
+                getUpToFace(upToShape, base, sketchshape, method, dir);
                 addOffsetToFace(upToShape, dir, Offset.getValue());
             }
             else{
