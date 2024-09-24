@@ -117,6 +117,7 @@ PROPERTY_SOURCE(Assembly::AssemblyObject, App::Part)
 
 AssemblyObject::AssemblyObject()
     : mbdAssembly(std::make_shared<ASMTAssembly>())
+    , bundleFixed(false)
 {}
 
 AssemblyObject::~AssemblyObject() = default;
@@ -182,11 +183,16 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 
 void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 {
+    bundleFixed = true;
     solve();
+    bundleFixed = false;
 
     dragMbdParts.clear();
     for (auto part : dragParts) {
-        dragMbdParts.push_back(getMbDPart(part));
+        auto mbdPart = getMbDPart(part);
+        if (std::find(dragMbdParts.begin(), dragMbdParts.end(), mbdPart) == dragMbdParts.end()) {
+            dragMbdParts.push_back(mbdPart);
+        }
     }
 
     mbdAssembly->runPreDrag();
@@ -197,21 +203,26 @@ void AssemblyObject::doDragStep()
     try {
         for (auto& mbdPart : dragMbdParts) {
             App::DocumentObject* part = nullptr;
+
+            // Find the corresponding DocumentObject for the mbdPart
             for (auto& pair : objectPartMap) {
-                if (pair.second == mbdPart) {
+                if (pair.second.part == mbdPart) {
                     part = pair.first;
                     break;
                 }
             }
+
             if (!part) {
                 continue;
             }
 
+            // Update the MBD part's position
             Base::Placement plc = getPlacementFromProp(part, "Placement");
             Base::Vector3d pos = plc.getPosition();
             mbdPart->updateMbDFromPosition3D(
                 std::make_shared<FullColumn<double>>(ListD {pos.x, pos.y, pos.z}));
 
+            // Update the MBD part's rotation
             Base::Rotation rot = plc.getRotation();
             Base::Matrix4D mat;
             rot.getValue(mat);
@@ -222,11 +233,21 @@ void AssemblyObject::doDragStep()
                 ->updateMbDFromRotationMatrix(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z);
         }
 
+        // Timing mbdAssembly->runDragStep()
         auto dragPartsVec = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>(dragMbdParts);
         mbdAssembly->runDragStep(dragPartsVec);
+
+        // Timing the validation and placement setting
         if (validateNewPlacements()) {
             setNewPlacements();
-            redrawJointPlacements(getJoints());
+
+            auto joints = getJoints(false);
+            for (auto* joint : joints) {
+                if (joint->Visibility.getValue()) {
+                    // redraw only the moving joint as its quite slow as its python code.
+                    redrawJointPlacement(joint);
+                }
+            }
         }
     }
     catch (...) {
@@ -258,8 +279,12 @@ bool AssemblyObject::validateNewPlacements()
 
             auto it = objectPartMap.find(obj);
             if (it != objectPartMap.end()) {
-                std::shared_ptr<MbD::ASMTPart> mbdPart = it->second;
+                std::shared_ptr<MbD::ASMTPart> mbdPart = it->second.part;
                 Base::Placement newPlacement = getMbdPlacement(mbdPart);
+                if (!it->second.offsetPlc.isIdentity()) {
+                    newPlacement = newPlacement * it->second.offsetPlc;
+                }
+
                 if (!oldPlc.isSame(newPlacement)) {
                     Base::Console().Warning(
                         "Assembly : Ignoring bad solve, a grounded object moved.\n");
@@ -353,7 +378,7 @@ void AssemblyObject::setNewPlacements()
 {
     for (auto& pair : objectPartMap) {
         App::DocumentObject* obj = pair.first;
-        std::shared_ptr<ASMTPart> mbdPart = pair.second;
+        std::shared_ptr<ASMTPart> mbdPart = pair.second.part;
 
         if (!obj || !mbdPart) {
             continue;
@@ -366,8 +391,15 @@ void AssemblyObject::setNewPlacements()
             continue;
         }
 
-        propPlacement->setValue(getMbdPlacement(mbdPart));
-        obj->purgeTouched();
+
+        Base::Placement newPlacement = getMbdPlacement(mbdPart);
+        if (!pair.second.offsetPlc.isIdentity()) {
+            newPlacement = newPlacement * pair.second.offsetPlc;
+        }
+        if (!propPlacement->getValue().isSame(newPlacement)) {
+            propPlacement->setValue(newPlacement);
+            obj->purgeTouched();
+        }
     }
 }
 
@@ -375,18 +407,22 @@ void AssemblyObject::redrawJointPlacements(std::vector<App::DocumentObject*> joi
 {
     // Notify the joint objects that the transform of the coin object changed.
     for (auto* joint : joints) {
-        auto* propPlacement =
-            dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
-        if (propPlacement) {
-            propPlacement->setValue(propPlacement->getValue());
-        }
-        propPlacement =
-            dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement2"));
-        if (propPlacement) {
-            propPlacement->setValue(propPlacement->getValue());
-        }
-        joint->purgeTouched();
+        redrawJointPlacement(joint);
     }
+}
+
+void AssemblyObject::redrawJointPlacement(App::DocumentObject* joint)
+{
+    // Notify the joint object that the transform of the coin object changed.
+    auto* pPlc = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
+    if (pPlc) {
+        pPlc->setValue(pPlc->getValue());
+    }
+    pPlc = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement2"));
+    if (pPlc) {
+        pPlc->setValue(pPlc->getValue());
+    }
+    joint->purgeTouched();
 }
 
 void AssemblyObject::recomputeJointPlacements(std::vector<App::DocumentObject*> joints)
@@ -884,6 +920,9 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
                                                               JointType type)
 {
     if (type == JointType::Fixed) {
+        if (bundleFixed) {
+            return nullptr;
+        }
         return CREATE<ASMTFixedJoint>::With();
     }
     else if (type == JointType::Revolute) {
@@ -1288,7 +1327,8 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
         return "";
     }
 
-    std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part);
+    MbDPartData data = getMbDData(part);
+    std::shared_ptr<ASMTPart> mbdPart = data.part;
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
     // Now we have plc which is the JCS placement, but its relative to the Object, not to the
     // containing Part.
@@ -1307,6 +1347,10 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
 
         Base::Placement part_global_plc = getGlobalPlacement(part, ref);
         plc = part_global_plc.inverse() * plc;
+    }
+    // check if we need to add an offset in case of bundled parts.
+    if (!data.offsetPlc.isIdentity()) {
+        plc = data.offsetPlc * plc;
     }
 
     std::string markerName = joint->getFullName();
@@ -1387,17 +1431,21 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
     plc1.setRotation(adjustedRotation);
 
     // Then end of processing similar to handleOneSideOfJoint :
-
+    MbDPartData data1 = getMbDData(part1);
+    std::shared_ptr<ASMTPart> mbdPart = data1.part;
     if (obj1->getNameInDocument() != part1->getNameInDocument()) {
         plc1 = rack_global_plc * plc1;
 
         Base::Placement part_global_plc = getGlobalPlacement(part1, ref1);
         plc1 = part_global_plc.inverse() * plc1;
     }
+    // check if we need to add an offset in case of bundled parts.
+    if (!data1.offsetPlc.isIdentity()) {
+        plc1 = data1.offsetPlc * plc1;
+    }
 
     std::string markerName = joint->getFullName();
     auto mbdMarker = makeMbdMarker(markerName, plc1);
-    std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part1);
     mbdPart->addMarker(mbdMarker);
 
     markerNameI = "/OndselAssembly/" + mbdPart->name + "/" + markerName;
@@ -1449,26 +1497,57 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
     return slidingFound;
 }
 
-std::shared_ptr<ASMTPart> AssemblyObject::getMbDPart(App::DocumentObject* obj)
+AssemblyObject::MbDPartData AssemblyObject::getMbDData(App::DocumentObject* part)
 {
-    std::shared_ptr<ASMTPart> mbdPart;
-
-    Base::Placement plc = getPlacementFromProp(obj, "Placement");
-
-    auto it = objectPartMap.find(obj);
+    auto it = objectPartMap.find(part);
     if (it != objectPartMap.end()) {
-        // obj has been associated with an ASMTPart before
-        mbdPart = it->second;
-    }
-    else {
-        // obj has not been associated with an ASMTPart before
-        std::string str = obj->getFullName();
-        mbdPart = makeMbdPart(str, plc);
-        mbdAssembly->addPart(mbdPart);
-        objectPartMap[obj] = mbdPart;  // Store the association
+        // part has been associated with an ASMTPart before
+        return it->second;
     }
 
-    return mbdPart;
+    // part has not been associated with an ASMTPart before
+    std::string str = part->getFullName();
+    Base::Placement plc = getPlacementFromProp(part, "Placement");
+    std::shared_ptr<ASMTPart> mbdPart = makeMbdPart(str, plc);
+    mbdAssembly->addPart(mbdPart);
+    MbDPartData data = {mbdPart, Base::Placement()};
+    objectPartMap[part] = data;  // Store the association
+
+    // Associate other objects conneted with fixed joints
+    if (bundleFixed) {
+        auto addConnectedFixedParts = [&](App::DocumentObject* currentPart, auto& self) -> void {
+            std::vector<App::DocumentObject*> joints = getJointsOfPart(currentPart);
+            for (auto* joint : joints) {
+                JointType jointType = getJointType(joint);
+                if (jointType == JointType::Fixed) {
+                    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+                    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
+                    App::DocumentObject* partToAdd = currentPart == part1 ? part2 : part1;
+
+                    if (objectPartMap.find(partToAdd) != objectPartMap.end()) {
+                        // already added
+                        continue;
+                    }
+
+                    Base::Placement plci = getPlacementFromProp(partToAdd, "Placement");
+                    MbDPartData partData = {mbdPart, plc.inverse() * plci};
+                    objectPartMap[partToAdd] = partData;  // Store the association
+
+                    // Recursively call for partToAdd
+                    self(partToAdd, self);
+                }
+            }
+        };
+
+        addConnectedFixedParts(part, addConnectedFixedParts);
+    }
+
+    return data;
+}
+
+std::shared_ptr<ASMTPart> AssemblyObject::getMbDPart(App::DocumentObject* part)
+{
+    return getMbDData(part).part;
 }
 
 std::shared_ptr<ASMTPart>

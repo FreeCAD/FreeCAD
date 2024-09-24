@@ -203,7 +203,6 @@ public:
     bool enableMovement;
     bool moveOnlyPreselected;
     bool moveInCommand;
-    bool jointVisibilityBackup;
     bool ctrlPressed;
 
     long lastClickTime;  // Store last click time as milliseconds
@@ -218,6 +217,7 @@ public:
 
     App::DocumentObject* movingJoint;
 
+    std::vector<std::pair<App::DocumentObject*, bool>> jointVisibilitiesBackup;
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
     std::vector<MovingObject> docsToMove;
 

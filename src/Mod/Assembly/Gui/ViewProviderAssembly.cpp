@@ -99,9 +99,9 @@ ViewProviderAssembly::ViewProviderAssembly()
     , enableMovement(true)
     , moveOnlyPreselected(false)
     , moveInCommand(true)
-    , jointVisibilityBackup(false)
     , ctrlPressed(false)
     , lastClickTime(0)
+    , jointVisibilitiesBackup({})
     , docsToMove({})
 {}
 
@@ -783,11 +783,6 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             assemblyPart->getDownstreamParts(docsToMove[0].obj, movingJoint);
         addPartsToMove(downstreamParts);
 
-        jointVisibilityBackup = movingJoint->Visibility.getValue();
-        if (!jointVisibilityBackup) {
-            movingJoint->Visibility.setValue(true);
-        }
-
         if (jointType == JointType::Revolute) {
             return DragMode::RotationOnPlane;
         }
@@ -816,6 +811,26 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
     dragMode = findDragMode();
     if (dragMode == DragMode::None) {
         return;
+    }
+
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    // When the user drag parts, we switch off all joints visibility and only show the movingjoint
+    jointVisibilitiesBackup.clear();
+    auto joints = assemblyPart->getJoints();
+    for (auto* joint : joints) {
+        if (!joint) {
+            continue;
+        }
+        bool visible = joint->Visibility.getValue();
+        jointVisibilitiesBackup.push_back({joint, visible});
+        if (movingJoint == joint) {
+            if (!visible) {
+                joint->Visibility.setValue(true);
+            }
+        }
+        else if (visible) {
+            joint->Visibility.setValue(false);
+        }
     }
 
     SbVec3f vec;
@@ -860,7 +875,6 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
     // prevent selection while moving
     viewer->setSelectionEnabled(false);
 
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Assembly");
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
@@ -888,8 +902,13 @@ void ViewProviderAssembly::endMove()
     partMoving = false;
     canStartDragging = false;
 
-    if (movingJoint && !jointVisibilityBackup) {
-        movingJoint->Visibility.setValue(false);
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    auto joints = assemblyPart->getJoints();
+    for (auto pair : jointVisibilitiesBackup) {
+        bool visible = pair.first->Visibility.getValue();
+        if (visible != pair.second) {
+            pair.first->Visibility.setValue(pair.second);
+        }
     }
 
     movingJoint = nullptr;
@@ -904,7 +923,6 @@ void ViewProviderAssembly::endMove()
         "User parameter:BaseApp/Preferences/Mod/Assembly");
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
     if (solveOnMove) {
-        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         assemblyPart->postDrag();
         assemblyPart->setObjMasses({});
     }
