@@ -6,45 +6,112 @@ authors = ["looooo <sppedflyer@gmail.com>"]
 channels = ["conda-forge/label/pivy_rc", "conda-forge"]
 platforms = ["osx-arm64", "linux-64", "linux-aarch64", "win-64", "osx-64"]
 
-
 [environments]
 build = ["build"]
 
 [feature.build.dependencies]
-ninja = "*"
+ccache = "*"
 cmake = "*"
-swig = "*"
-python = "*"
-libboost-devel = "*"
-qt6-main = "*"
-occt = "*"
-xerces-c = "*"
-zlib = "*"
-vtk = "*"
-eigen = "*"
-pybind11 = "*"
 coin3d = "*"
-pyside6 = "*"
-smesh = "*"
+compilers = "*"
+conda = "*"
+conda-devenv = "*"
+debugpy = "*"
 doxygen = "*"
-hdf5 = "*"
+eigen = "*"
+fmt = "*"
 freetype = "*"
-pcl = "*"
-six = "*"
-ply = "*"
-matplotlib-base = "*"
-yaml-cpp = "*"
-pivy = "*"
-numpy = "*"
-pyyaml = "*"
+git = "*"
+gmsh = "*"
 graphviz = "*"
-clangxx = "*"
+hdf5 = "*"
+libboost-devel = "*"
+libcxx = "*"
+mamba = "*"
+matplotlib = "*"
+ninja = "*"
+numpy = "*"
+occt = "*"
+openssl = "*"
+pcl = "*"
+pip = "*"
+pivy = "*"
+pkg-config = "*"
+ply = "*"
+pre-commit = "*"
+pybind11 = "*"
+pyside2 = "*"
+python = "3.11.*"
+pyyaml = "*"
+qt-main = "*"
+six = "*"
+smesh = "*"
+swig = "*"
+vtk = "9.2.6"
+xerces-c = "*"
+yaml-cpp = "*"
+zlib = "*"
+zstd = "1.5.6"
 # gmsh  needs to be build for occt7.8.1
 
 [feature.build.target.linux-64.dependencies]
+libspnav = "*"
+kernel-headers_linux-64 = "*"
+libdrm-cos6-x86_64 = "*"
+libselinux-cos6-x86_64 = "*"
+libsepol-cos6-x86_64 = "*"
+libx11-common-cos6-x86_64 = "*"
+libx11-cos6-x86_64 = "*"
+libxau-cos6-x86_64 = "*"
+libxcb-cos6-x86_64 = "*"
+libxdamage-cos6-x86_64 = "*"
+libxext-cos6-x86_64 = "*"
+libxfixes-cos6-x86_64 = "*"
+libxi-cos6-x86_64 = "*"
+libxi-devel-cos6-x86_64 = "*"
+libxxf86vm-cos6-x86_64 = "*"
+mesa-dri-drivers-cos6-x86_64 = "*"
+mesa-dri1-drivers-cos6-x86_64 = "*"
+mesa-libegl-cos6-x86_64 = "*"
+mesa-libegl-devel-cos6-x86_64 = "*"
+mesa-libgl-cos6-x86_64 = "*"
+mesa-libgl-devel-cos6-x86_64 = "*"
+pixman-cos6-x86_64 = "*"
+sysroot_linux-64 = "*"
+xorg-x11-server-common-cos6-x86_64 = "*"
+xorg-x11-server-xvfb-cos6-x86_64 = "*"
 sed = "*"
 
 [feature.build.target.linux-aarch64.dependencies]
+libspnav = "*"
+kernel-headers_linux-aarch64 = "*"
+libdrm-cos7-aarch64 = "*"
+libglvnd-cos7-aarch64 = "*"
+libglvnd-glx-cos7-aarch64 = "*"
+libselinux-cos7-aarch64 = "*"
+libsepol-cos7-aarch64 = "*"
+libx11-common-cos7-aarch64 = "*"
+libx11-cos7-aarch64 = "*"
+libxau-cos7-aarch64 = "*"
+libxcb-cos7-aarch64 = "*"
+libxdamage-cos7-aarch64 = "*"
+libxext-cos7-aarch64 = "*"
+libxfixes-cos7-aarch64 = "*"
+libxi-cos7-aarch64 = "*"
+libxi-devel-cos7-aarch64 = "*"
+libxxf86vm-cos7-aarch64 = "*"
+mesa-dri-drivers-cos7-aarch64 = "*"
+mesa-khr-devel-cos7-aarch64 = "*"
+mesa-libegl-cos7-aarch64 = "*"
+mesa-libegl-devel-cos7-aarch64 = "*"
+mesa-libgbm-cos7-aarch64 = "*"
+mesa-libgl-cos7-aarch64 = "*"
+mesa-libgl-devel-cos7-aarch64 = "*"
+mesa-libglapi-cos7-aarch64 = "*"
+pixman-cos7-aarch64 = "*"
+sysroot_linux-aarch64 = "*"
+xorg-x11-server-common-cos7-aarch64 = "*"
+xorg-x11-server-xvfb-cos7-aarch64 = "*"
 sed = "*"
 
 [feature.build.target.osx-64.dependencies]
@@ -55,28 +122,29 @@ sed = "*"
 
 [feature.build.target.win-64.dependencies]
 
+[feature.build.target.linux-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
+
+[feature.build.target.linux-aarch64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
+
+[feature.build.target.osx-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
+
+[feature.build.target.osx-arm64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
+
+[feature.build.target.win-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug" ], depends-on = ["initialize"]} }
+
 [feature.build.tasks]
 
 initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
 
 # this line is needed for shiboken to not propagate the Py_LIMITED_API definition (as freecad is not yet able to be compiled
 # with Py_LIMITED_API)
-patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cmake/Shiboken6/Shiboken6Targets.cmake"
-configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
-                     "-D", "CMAKE_INSTALL_PREFIX:STRING=$CONDA_PREFIX",
-                     "-D", "CMAKE_INSTALL_RPATH=$CONDA_PREFIX/lib",
-                     "-D", "CMAKE_BUILD_TYPE:STRING=Release",
-                     "-D", "QT_HOST_PATH=$CONDA_PREFIX",
-                     "-D", "Boost_NO_BOOST_CMAKE:BOOL=ON",
-                     "-D", "BUILD_WITH_CONDA:BOOL=ON",
-                     "-D", "BUILD_FLAT_MESH:BOOL=ON",
-                     "-D", "BUILD_FEM_NETGEN:BOOL=ON",
-                     "-D", "FREECAD_USE_PYBIND11:BOOL=ON",
-                     "-D", "FREECAD_USE_PCL:BOOL=ON",
-                     "-D", "FREECAD_USE_EXTERNAL_SMESH=ON",
-                     "-D", "FREECAD_USE_EXTERNAL_FMT:BOOL=OFF",
-                     "-D", "DFREECAD_USE_3DCONNEXION:BOOL=OFF"
-                     ], depends-on = ["initialize", "patch_shiboken"]}
-build = { cmd = ["ninja", "-C", "build", "-j", "3", "install"], depends-on = ["configure"]}
-build_only = { cmd = ["ninja", "-C", "build", "-j", "3", "install"]}
+# patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cmake/Shiboken6/Shiboken6Targets.cmake"
+build = { cmd = [ "cmake", "--build", "build" ], depends-on = ["configure"]}
+build_only = { cmd = [ "cmake", "--build", "build" ]}
+install = { cmd = [ "cmake", "--install", "build" ]}
 freecad = "FreeCAD"
