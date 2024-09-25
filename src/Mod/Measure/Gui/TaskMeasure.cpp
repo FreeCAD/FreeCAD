@@ -204,6 +204,10 @@ App::DocumentObject* TaskMeasure::createObject(const App::MeasureType* measureTy
         Py_XDECREF(result);
     }
 
+    // Store the document in the document object
+    _mDocument = App::GetApplication().getActiveDocument();
+    _mMeasureObject->setTemporaryDocument(_mDocument);
+
     return static_cast<App::DocumentObject*>(_mMeasureObject);
 }
 
@@ -249,7 +253,6 @@ void TaskMeasure::saveObject()
         _mViewObject = nullptr;
     }
 
-    _mDocument = App::GetApplication().getActiveDocument();
     _mDocument->addObject(_mMeasureObject,
                           modeSwitch->currentIndex() != 0 ? modeSwitch->currentText().toLatin1()
                                                           : QString().toLatin1());
