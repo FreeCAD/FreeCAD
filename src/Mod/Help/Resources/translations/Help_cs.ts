@@ -150,27 +150,27 @@ To vyžaduje komponentu PySide QtWebengineWidgets.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="72"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Obsah této stránky nelze načíst. Zkontrolujte prosím nastavení v menu Upravit -&gt; Nastavení -&gt; Obecné -&gt; Nápověda</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="76"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>Umístění souborů nápovědy nelze určit. Zkontrolujte prosím nastavení v menu Upravit -&gt; Nastavení -&gt; Obecné -&gt; Nápověda</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="80"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Modul PySide QtWebEngineWidgets není k dispozici. Vykreslování nápovědy je provedeno systémovým prohlížečem.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="84"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>Na vašem systému není nainstalován žádný vykreslovač Markdownu, takže tato stránka nápovědy je vykreslena tak, jak je. Nainstalujte prosím moduly Markdown nebo Pandoc pro Python pro vylepšení vykreslování této stránky.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="113"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Nápověda</translation>
     </message>
@@ -178,7 +178,7 @@ To vyžaduje komponentu PySide QtWebengineWidgets.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="389"/>
+      <location filename="../../Help.py" line="425"/>
       <source>General</source>
       <translation>Obecné</translation>
     </message>

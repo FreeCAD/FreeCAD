@@ -73,31 +73,7 @@ std::vector<std::string> ViewProviderSheet::getDisplayModes() const
 
 QIcon ViewProviderSheet::getIcon() const
 {
-    // clang-format off
-    static const char* const Points_Feature_xpm[] = {
-        "16 16 3 1",
-        "       c None",
-        ".      c #000000",
-        "+      c #FFFFFF",
-        "                ",
-        "                ",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        ".++++.++++.++++.",
-        ".++++.++++.++++.",
-        "................",
-        "                "};
-    QPixmap px(Points_Feature_xpm);
-    return px;
-    // clang-format on
+    return QIcon(QLatin1String(":icons/Spreadsheet.svg"));
 }
 
 bool ViewProviderSheet::setEdit(int ModNum)

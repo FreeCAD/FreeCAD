@@ -614,7 +614,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../PropertiesDialog.ui" line="102"/>
       <location filename="../../PropertiesDialog.ui" line="155"/>
       <source>Center</source>
-      <translation>센터</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>

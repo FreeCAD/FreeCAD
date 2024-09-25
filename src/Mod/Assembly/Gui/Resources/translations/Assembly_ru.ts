@@ -397,7 +397,7 @@
       <location filename="../../../JointObject.py" line="244"/>
       <location filename="../../../JointObject.py" line="518"/>
       <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+      <translation>Это смещение крепления первого соединителя соединения.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="253"/>
@@ -414,7 +414,7 @@
       <location filename="../../../JointObject.py" line="286"/>
       <location filename="../../../JointObject.py" line="528"/>
       <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+      <translation>Это смещение крепления второго соединителя соединения.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="431"/>
@@ -640,12 +640,13 @@
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful if you want to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
-      <translation/>
+      <translation>Записывайте шаги перетаскивания решателя. Полезно, если вы хотите сообщить об ошибке.
+Файлы называются "runPreDrag.asmt" и "dragging.log" и находятся в каталоге по умолчанию std::ofstream (в Windows это рабочий стол)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
       <source>Log dragging steps</source>
-      <translation type="unfinished">Log dragging steps</translation>
+      <translation>Шаги перетаскивания (Log)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>

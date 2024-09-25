@@ -123,6 +123,7 @@ MeasureType Measurement::findType()
     int torus = 0;
     int spheres = 0;
     int vols = 0;
+    int other = 0;
 
     for (; obj != objects.end(); ++obj, ++subEl) {
 
@@ -184,12 +185,16 @@ MeasureType Measurement::findType()
                     }
                 } break;
                 default:
+                    other++;
                     break;
             }
         }
     }
 
-    if (vols > 0) {
+    if (other > 0) {
+        mode = MeasureType::Invalid;
+    }
+    else if (vols > 0) {
         if (verts > 0 || edges > 0 || faces > 0) {
             mode = MeasureType::Invalid;
         }

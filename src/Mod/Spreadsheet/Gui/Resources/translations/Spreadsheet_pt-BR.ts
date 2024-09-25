@@ -1036,25 +1036,25 @@ Padrão para: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="160"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Inserir %n coluna(s) à direita</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insere %n coluna(s) à direita</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Inserir %n colunas não contíguas</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insere %n colunas não sequenciais</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Remover coluna(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove coluna(s)</numerusform>
       </translation>
     </message>
     <message>

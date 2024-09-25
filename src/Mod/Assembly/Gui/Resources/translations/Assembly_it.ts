@@ -397,7 +397,7 @@
       <location filename="../../../JointObject.py" line="244"/>
       <location filename="../../../JointObject.py" line="518"/>
       <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint.</translation>
+      <translation>Questo è lo spostamento del collegamento del primo connettore del giunto.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="253"/>
@@ -414,7 +414,7 @@
       <location filename="../../../JointObject.py" line="286"/>
       <location filename="../../../JointObject.py" line="528"/>
       <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint.</translation>
+      <translation>Questo è lo spostamento del collegamento del secondo connettore del giunto.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="431"/>
