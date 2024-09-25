@@ -313,9 +313,19 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                 auto names =
                     shape.decodeElementComboName(idxName, mapped.name, idxName.getType(), &postfix);
                 std::vector<int> ancestors;
-                // TODO:  if names.empty() then the existing heuristic has failed to find anything
-                //   and we're going to flag this element as missing.  This is the place to add
-                //   heuristics as we develop them.
+                if ( names.empty() ) {
+                    // Naming based heuristic has failed to find the element.  Let's see if we can
+                    // find it by matching planes
+                    auto searchShape = this->Shape.getShape();
+                    // If we're still out at a Shell, Solid, CompSolid, or Compound drill in
+                    while (searchShape.getShape().ShapeType() < TopAbs_FACE ) {
+                        auto shapes = searchShape.getSubTopoShapes();
+                        if ( shapes.empty() )
+                            break;
+                        searchShape = shapes.front();
+                    }
+                    mapped = TopoShape::chooseMatchingSubShapeByPlane(shape, searchShape);
+                }
                 for (auto& name : names) {
                     auto index = shape.getIndexedName(name);
                     if (!index) {
