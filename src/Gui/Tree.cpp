@@ -5441,6 +5441,11 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         icon = object()->mergeColorfulOverlayIcons(icon);
 
         if (isVisibilityIconEnabled()) {
+            // TODO: Find a better way to identify if objects should have a visibility icon
+            bool has_visibility_state = true;
+            has_visibility_state &= std::string(pObject->getTypeId().getName()) != "App::VarSet";
+            has_visibility_state &= std::string(pObject->getTypeId().getName()) != "Spreadsheet::Sheet";
+
             static QPixmap pxVisible, pxInvisible;
             if (pxVisible.isNull()) {
                 pxVisible = BitmapFactory().pixmap("TreeItemVisible");
@@ -5462,7 +5467,9 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 QPainter pt;
                 pt.begin(&px);
                 pt.setPen(Qt::NoPen);
-                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
+                if (has_visibility_state) {
+                    pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
+                }
                 pt.drawPixmap(px_org.width() + spacing, 0, px_org.width(), px_org.height(), px_org);
                 pt.end();
 
