@@ -345,7 +345,7 @@ void DlgAddPropertyVarSet::checkName() {
     if(name.empty() || name != Base::Tools::getIdentifier(name)) {
         QMessageBox::critical(getMainWindow(),
                               QObject::tr("Invalid name"),
-                              QObject::tr("The property name must only contain alpha numericals,\n"
+                              QObject::tr("The property name must only contain alpha numericals, "
                                           "underscore, and must not start with a digit."));
         clearEditors(!CLEAR_NAME);
         throw CreatePropertyException("Invalid name");
