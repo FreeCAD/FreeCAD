@@ -278,6 +278,7 @@ class _InvoluteGearTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
 
-
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('PartDesign_InvoluteGear',_CommandInvoluteGear())
+# 09/25/2024 This causes a warning when running tests, does not appear to affect access
+# to involute gears in the UI, and is a construction not found elsewhere.  Maybe left over?
+# if FreeCAD.GuiUp:
+#     FreeCADGui.addCommand('PartDesign_InvoluteGear',_CommandInvoluteGear())
