@@ -315,16 +315,18 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                 std::vector<int> ancestors;
                 if ( names.empty() ) {
                     // Naming based heuristic has failed to find the element.  Let's see if we can
-                    // find it by matching planes
+                    // find it by matching either planes for faces or lines for edges.
                     auto searchShape = this->Shape.getShape();
                     // If we're still out at a Shell, Solid, CompSolid, or Compound drill in
                     while (searchShape.getShape().ShapeType() < TopAbs_FACE ) {
                         auto shapes = searchShape.getSubTopoShapes();
-                        if ( shapes.empty() )
+                        if ( shapes.empty() ) // No more subshapes, so don't continue
                             break;
-                        searchShape = shapes.front();
+                        searchShape = shapes.front();   // After the break, so we stopped at innermost container
                     }
-                    mapped = TopoShape::chooseMatchingSubShapeByPlane(shape, searchShape);
+                    auto newMapped = TopoShape::chooseMatchingSubShapeByPlaneOrLine(shape, searchShape);
+                    if ( ! newMapped.name.empty() )
+                        mapped = newMapped;
                 }
                 for (auto& name : names) {
                     auto index = shape.getIndexedName(name);
