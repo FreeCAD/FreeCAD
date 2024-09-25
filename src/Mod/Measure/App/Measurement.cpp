@@ -292,7 +292,11 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject* rootObj, const char* sub
     std::vector<std::string> names = Base::Tools::splitSubName(subName);
 
     if (names.empty() || names.back() == "") {
-        return Part::Feature::getShape(rootObj);
+        TopoDS_Shape shape = Part::Feature::getShape(rootObj);
+        if (shape.IsNull()) {
+            throw Part::NullShapeException("null shape in measurement");
+        }
+        return shape;
     }
 
     try {
