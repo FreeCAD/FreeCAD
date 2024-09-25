@@ -10,48 +10,59 @@ platforms = ["osx-arm64", "linux-64", "linux-aarch64", "win-64", "osx-64"]
 build = ["build"]
 
 [feature.build.dependencies]
+# compilation and wrappers
 ccache = "*"
 cmake = "*"
-coin3d = "*"
+ninja = "*"
 compilers = "*"
-conda = "*"
+swig = "*"
+pybind11 = "*"
+
+# cpp
+libboost-devel = "*"
+
+# debug
 conda-devenv = "*"
 debugpy = "*"
-doxygen = "*"
+git = "*"
+
+# graphics
+coin3d = "*"
+pivy = "*"
+matplotlib = "*"
+qt6-main = "*"
+pyside6 = "*"
+vtk = "*"
+graphviz = "*"
+
+# geometry and numerics
+occt = "*"
+pcl = "*"
 eigen = "*"
+numpy = "*"
+smesh = "*"
+
+# python
+python = "3.12"
+six = "*"
+
+# documentation
+doxygen = "*"
+
+# other
 fmt = "*"
 freetype = "*"
-git = "*"
-gmsh = "*"
-graphviz = "*"
 hdf5 = "*"
-libboost-devel = "*"
-libcxx = "*"
-mamba = "*"
-matplotlib = "*"
-ninja = "*"
-numpy = "*"
-occt = "*"
 openssl = "*"
-pcl = "*"
 pip = "*"
-pivy = "*"
-pkg-config = "*"
 ply = "*"
 pre-commit = "*"
-pybind11 = "*"
-pyside2 = "*"
-python = "3.11.*"
 pyyaml = "*"
-qt-main = "*"
-six = "*"
-smesh = "*"
-swig = "*"
-vtk = "9.2.6"
 xerces-c = "*"
 yaml-cpp = "*"
 zlib = "*"
-zstd = "1.5.6"
+zstd = "*"
+
 # gmsh  needs to be build for occt7.8.1
 
 [feature.build.target.linux-64.dependencies]
@@ -132,7 +143,8 @@ tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux
 tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
 
 [feature.build.target.osx-arm64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
+tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug",
+								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on = ["initialize"]} }
 
 [feature.build.target.win-64]
 tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug" ], depends-on = ["initialize"]} }
@@ -143,8 +155,8 @@ initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
 
 # this line is needed for shiboken to not propagate the Py_LIMITED_API definition (as freecad is not yet able to be compiled
 # with Py_LIMITED_API)
-# patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cmake/Shiboken6/Shiboken6Targets.cmake"
-build = { cmd = [ "cmake", "--build", "build" ], depends-on = ["configure"]}
+patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cmake/Shiboken6/Shiboken6Targets.cmake"
+build = { cmd = [ "cmake", "--build", "build" ], depends-on = ["configure", "patch_shiboken"]}
 build_only = { cmd = [ "cmake", "--build", "build" ]}
 install = { cmd = [ "cmake", "--install", "build" ]}
 freecad = "FreeCAD"
