@@ -127,8 +127,7 @@ class ShapeString(DraftObject):
             return
 
         if obj.String and obj.FontFile:
-            if obj.Placement:
-                plm = obj.Placement
+            plm = obj.Placement
 
             fill = obj.MakeFace
             if fill is True:
@@ -190,8 +189,7 @@ class ShapeString(DraftObject):
             else:
                 App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires") + "\n")
 
-            if plm:
-                obj.Placement = plm
+            obj.Placement = plm
 
         obj.positionBySupport()
         self.props_changed_clear()
