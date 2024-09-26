@@ -26,6 +26,7 @@ import ifcopenshell
 
 from importers import exportIFC
 from importers import exportIFCHelper
+from importers import importIFCHelper
 
 from nativeifc import ifc_tools
 
@@ -116,6 +117,17 @@ def is_annotation(obj):
     return False
 
 
+def get_text(annotation):
+    """Determines if an IfcAnnotation contains an IfcTextLiteral.
+    Returns the IfcTextLiteral or None"""
+
+    for rep in annotation.Representation.Representations:
+        for item in rep.Items:
+            if item.is_a("IfcTextLiteral"):
+                return item
+    return None
+
+
 def create_annotation(obj, ifcfile):
     """Adds an IfcAnnotation from the given object to the given IFC file"""
 
@@ -144,3 +156,10 @@ def get_history(ifcfile):
         # IFC4 allows to not write any history
         history = None
     return history
+
+
+def get_placement(ifcelement, ifcfile):
+    """Returns a FreeCAD placement from an IFC placement"""
+
+    s = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
+    return importIFCHelper.getPlacement(ifcelement, scaling=s)
