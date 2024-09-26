@@ -59,6 +59,8 @@ class ifc_object:
                 self.edit_attribute(obj, prop)
         elif prop == "Label":
             self.edit_attribute(obj, "Name", obj.Label)
+        elif prop == "Text":
+            self.edit_annotation(obj, "Text", "\n".join(obj.Text))
         elif prop == "Placement":
             if getattr(self, "virgin_placement", False):
                 self.virgin_placement = False
@@ -163,6 +165,22 @@ class ifc_object:
             if result:
                 if hasattr(result, "id") and (result.id() != obj.StepId):
                     obj.StepId = result.id()
+
+    def edit_annotation(self, obj, attribute, value=None):
+        """Edits an attribute of an underlying IFC annotation"""
+
+        from nativeifc import ifc_tools  # lazy import
+        from nativeifc import ifc_export
+
+        if not value:
+            value = obj.getPropertyByName(attribute)
+        ifcfile = ifc_tools.get_ifcfile(obj)
+        elt = ifc_tools.get_ifc_element(obj, ifcfile)
+        if elt:
+            if attribute == "Text":
+                text = ifc_export.get_text(elt)
+                if text:
+                    result = ifc_tools.set_attribute(ifcfile, text, "Literal", value)
 
     def edit_geometry(self, obj, prop):
         """Edits a geometry property of an object"""
