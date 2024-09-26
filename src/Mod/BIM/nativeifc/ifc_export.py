@@ -28,7 +28,6 @@ import ifcopenshell
 
 from importers import exportIFC
 from importers import exportIFCHelper
-
 from importers import importIFCHelper
 
 from nativeifc import ifc_tools
