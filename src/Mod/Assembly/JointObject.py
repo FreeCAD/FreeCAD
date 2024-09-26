@@ -1816,12 +1816,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # If the sub_name that comes in has extra sections in it, remove them.
-        doc_obj, new_name, old_name = rootObj.resolveSubElement(sub_name)
-        element_name, *path_detail = sub_name.split(".")
-        target_link = ".".join((element_name, old_name))
+        # If the sub_name that comes in has extra features in it, remove them.  For example a
+        # Part.Body.Pad.Sketch becomes Part.Body.Sketch and a
+        # Body.Pad.Sketch becomes Body.sketch
+        base_name, *path_detail, old_name = sub_name.split(".")
+        target_link = ".".join((base_name, *path_detail[:-2], old_name))
         ref = [rootObj, [target_link]]
-
         moving_part = self.getMovingPart(ref)
 
         # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)
