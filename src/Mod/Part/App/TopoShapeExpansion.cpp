@@ -4157,7 +4157,15 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
                   "Need at least two vertices, edges or wires to create loft face");
     }
 
+    int i=0;
+    Base::Vector3d center1,center2;
     for (auto& sh : profiles) {
+        if (i>0) {
+            if (sh.getCenterOfGravity(center1) && profiles[i-1].getCenterOfGravity(center2) && center1.IsEqual(center2,Precision::Confusion())) {
+                FC_THROWM(Base::CADKernelError,
+                          "Segments of a Loft/Pad do not have sufficient separation");
+            }
+        }
         const auto& shape = sh.getShape();
         if (shape.ShapeType() == TopAbs_VERTEX) {
             aGenerator.AddVertex(TopoDS::Vertex(shape));
@@ -4165,6 +4173,7 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
         else {
             aGenerator.AddWire(TopoDS::Wire(shape));
         }
+        i++;
     }
     // close loft by duplicating initial profile as last profile.  not perfect.
     if (isClosed == IsClosed::closed) {
