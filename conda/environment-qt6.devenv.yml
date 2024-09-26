@@ -3,6 +3,7 @@ channels:
 - conda-forge
 - conda-forge/label/pivy_rc
 dependencies:
+- conda-forge/noarch::conda-libmamba-solver==24.7.0
 - libspnav                             # [linux]
 - kernel-headers_linux-64              # [linux and x86_64]
 - libdrm-cos7-x86_64                   # [linux and x86_64]
