@@ -201,6 +201,7 @@ class Joint:
         self.migrationScript(joint)
         self.migrationScript2(joint)
         self.migrationScript3(joint)
+        self.migrationScript4(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -529,6 +530,20 @@ class Joint:
             )
 
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
+
+    def migrationScript4(self, joint):
+        if hasattr(joint, "Reference1"):
+            base_name, *sub_names, feature_name = joint.Reference1[1][0].split(".")
+            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
+            base_name, *sub_names, feature_name = joint.Reference1[1][1].split(".")
+            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
+            joint.Reference1 = (joint.Reference1[0], [ref1, ref2])
+        if hasattr(joint, "Reference2"):
+            base_name, *sub_names, feature_name = joint.Reference2[1][0].split(".")
+            ref1 = ".".join((base_name, *sub_names[:-1], feature_name))
+            base_name, *sub_names, feature_name = joint.Reference2[1][1].split(".")
+            ref2 = ".".join((base_name, *sub_names[:-1], feature_name))
+            joint.Reference2 = (joint.Reference2[0], [ref1, ref2])
 
     def dumps(self):
         return None
@@ -1800,25 +1815,11 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
-        target_link = sub_name
 
-        # There was extra code here to try to deal with TNP at a python layer.  That is to be avoided at all costs,
-        # and corrections have been made to the underlying c++ code in the PR that includes this comment.
-        #
-        # The original python code was flawed, but two possible correct implementation in python follow.  However the
-        # c++ approach is better, as the python layer should not know about TNP mitigation implementation.
-        #
-        # doc_obj, new_name, old_name = rootObj.resolveSubElement(sub_name)
-        # doc_obj, cont_obj, sub_sub_element_name, new_name = rootObj.resolve(sub_name)
-        # # The subname identified by selectionObserver has extra components in it.  To get the minimal reference to
-        # # the element we need, we must identify the extra piece sub_sub_element name and remove it, and then
-        # # identify the new_name ( TNP path ) and remove it, and put the old_name ( short name ) on.
-        # # Alternatively we could take just the element and build back up using the sub_sub_element name to get a
-        # # different legit path, but the first approach is preferable.
-        # #   element_name, *path_detail = sub_name.split(".")
-        # #   target_link = ".".join((element_name,sub_sub_element_name,old_name))
-        # element_name = sub_name.replace(sub_sub_element_name, "").replace(new_name, "")
-        # target_link = element_name[:-1] + old_name
+        # If the sub_name that comes in has extra sections in it, remove them.
+        doc_obj, new_name, old_name = rootObj.resolveSubElement(sub_name)
+        element_name, *path_detail = sub_name.split(".")
+        target_link = ".".join((element_name, old_name))
         ref = [rootObj, [target_link]]
 
         moving_part = self.getMovingPart(ref)

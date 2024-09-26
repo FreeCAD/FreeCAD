@@ -580,24 +580,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     const char *docname = vpd->getObject()->getDocument()->getName();
 
     auto getFullSubElementName = [vpd](std::string &subName) {
-        // First, remove and clean up any unnecessary elements in the subName.  We are essentially
-        // identifying places where there is an unneeded extra level of element in the name and
-        // removing it.  If any of the lookups fail while we do that, we just use the subname unchanged.
-        const char *element = Data::findElementName(subName.c_str());
-        std::string::difference_type dotCount = std::count(subName.begin(), subName.end(), '.');
-        if ( element != nullptr && dotCount > 1) {
-            auto basename = subName;
-            basename.resize(basename.size() - strlen(element) - 1); // chop off the end and the '.', see if still okay
-            const char *temp_element = Data::findElementName(basename.c_str());
-            if ( element != nullptr ) {
-                basename.resize(basename.size() - strlen(temp_element)); // chop off the extra element
-                basename.append(element);   // and place the end back on.
-                temp_element = Data::findElementName(basename.c_str());
-                if ( temp_element != nullptr ) {    // if this is still a legit link, then use ut.
-                    subName = basename;
-                }
-            }
-        }
         App::ElementNamePair elementName;
         App::GeoFeature::resolveElement(vpd->getObject(), subName.c_str(), elementName);
         if (!elementName.newName.empty()) {      // If we have a mapped name use it
