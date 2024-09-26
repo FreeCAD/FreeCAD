@@ -119,6 +119,9 @@ void QuickMeasure::addSelectionToMeasurement()
 
     // Lambda function to check whether to continue
     auto shouldSkip = [](App::DocumentObject* obj) {
+        if (!obj){
+            return true;
+        }
         std::string vpType = obj->getViewProviderName();
         auto* vp = Gui::Application::Instance->getViewProvider(obj);
         return (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing())
