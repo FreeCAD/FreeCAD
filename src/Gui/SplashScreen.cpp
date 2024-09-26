@@ -312,14 +312,10 @@ QPixmap SplashScreen::splashImage()
         App::Application::Config().find("SplashWarningColor");
     if (tc != App::Application::Config().end() && wc != App::Application::Config().end()) {
         QString title = qApp->applicationName();
-        QString major =
-            QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
-        QString minor =
-            QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
-        QString point =
-            QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
-        QString suffix =
-            QString::fromLatin1(App::Application::Config()["BuildVersionSuffix"].c_str());
+        QString major = QString::fromStdString(App::Application::Config()["BuildVersionMajor"]);
+        QString minor = QString::fromStdString(App::Application::Config()["BuildVersionMinor"]);
+        QString point = QString::fromStdString(App::Application::Config()["BuildVersionPoint"]);
+        QString suffix = QString::fromStdString(App::Application::Config()["BuildVersionSuffix"]);
         QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
@@ -332,16 +328,16 @@ QPixmap SplashScreen::splashImage()
         std::map<std::string, std::string>::const_iterator tf =
             App::Application::Config().find("SplashInfoFont");
         if (te != App::Application::Config().end()) {
-            title = QString::fromUtf8(te->second.c_str());
+            title = QString::fromStdString(te->second);
         }
         if (tv != App::Application::Config().end()) {
-            version = QString::fromUtf8(tv->second.c_str());
+            version = QString::fromStdString(tv->second);
         }
         if (tp != App::Application::Config().end()) {
-            position = QString::fromUtf8(tp->second.c_str());
+            position = QString::fromStdString(tp->second);
         }
         if (tf != App::Application::Config().end()) {
-            fontFamily = QString::fromUtf8(tf->second.c_str());
+            fontFamily = QString::fromStdString(tf->second);
         }
 
         QPainter painter;
