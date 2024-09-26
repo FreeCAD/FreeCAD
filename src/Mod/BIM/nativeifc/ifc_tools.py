@@ -47,6 +47,8 @@ from nativeifc import ifc_layers
 from nativeifc import ifc_status
 from nativeifc import ifc_export
 
+from draftviewproviders import view_layer
+
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
 SHORT = False  # If True, only Step ID attribute is created
 ROUND = 8  # rounding value for placements
@@ -243,7 +245,7 @@ def api_run(*args, **kwargs):
     return result
 
 
-def create_object(ifcentity, document, ifcfile, shapemode=0):
+def create_object(ifcentity, document, ifcfile, shapemode=0, objecttype=None):
     """Creates a FreeCAD object from an IFC entity"""
 
     exobj = get_object(ifcentity, document)
@@ -253,7 +255,7 @@ def create_object(ifcentity, document, ifcfile, shapemode=0):
         ifcentity.id(), ifcentity.is_a(), ifcentity.Name
     )
     FreeCAD.Console.PrintLog(s)
-    obj = add_object(document)
+    obj = add_object(document, otype=objecttype)
     add_properties(obj, ifcfile, ifcentity, shapemode=shapemode)
     ifc_layers.add_layers(obj, ifcentity, ifcfile)
     if FreeCAD.GuiUp:
@@ -458,37 +460,41 @@ def can_expand(obj, ifcfile=None):
 
 def add_object(document, otype=None, oname="IfcObject"):
     """adds a new object to a FreeCAD document.
-    otype can be 'project', 'group', 'material', 'layer' or None (normal object)"""
+    otype can be:
+    'project',
+    'group',
+    'material',
+    'layer',
+    'text',
+    or anything else for a standard IFC object"""
 
     if not document:
         return None
-    proxy = ifc_objects.ifc_object(otype)
-    if otype == "group":
-        proxy = None
-        ftype = "App::DocumentObjectGroupPython"
-    elif otype == "material":
-        ftype = "App::MaterialObjectPython"
+    if otype == "text":
+        obj = Draft.make_text("")
+        obj.Proxy = ifc_objects.ifc_object(otype)
     elif otype == "layer":
-        ftype = "App::FeaturePython"
-    else:
-        ftype = "Part::FeaturePython"
-    if otype == "project":
-        vp = ifc_viewproviders.ifc_vp_document()
+        proxy = ifc_objects.ifc_object(otype)
+        obj = document.addObject("App::FeaturePython", oname, proxy, None, False)
+        if obj.ViewObject:
+            view_layer.ViewProviderLayer(obj.ViewObject)
+            obj.ViewObject.addProperty("App::PropertyBool", "HideChildren", "Layer")
+            obj.ViewObject.HideChildren = True
     elif otype == "group":
-        vp = ifc_viewproviders.ifc_vp_group()
+        vproxy = ifc_viewproviders.ifc_vp_group()
+        obj = document.addObject("App::DocumentObjectGroupPython", oname, None, vproxy, False)
     elif otype == "material":
-        vp = ifc_viewproviders.ifc_vp_material()
-    elif otype == "layer":
-        vp = None
-    else:
-        vp = ifc_viewproviders.ifc_vp_object()
-    obj = document.addObject(ftype, oname, proxy, vp, False)
-    if obj.ViewObject and otype == "layer":
-        from draftviewproviders import view_layer  # lazy import
-
-        view_layer.ViewProviderLayer(obj.ViewObject)
-        obj.ViewObject.addProperty("App::PropertyBool", "HideChildren", "Layer")
-        obj.ViewObject.HideChildren = True
+        proxy = ifc_objects.ifc_object(otype)
+        vproxy = ifc_viewproviders.ifc_vp_material()
+        obj = document.addObject("App::MaterialObjectPython", oname, proxy, vproxy, False)
+    elif otype == "project":
+        proxy = ifc_objects.ifc_object(otype)
+        vproxy = ifc_viewproviders.ifc_vp_document()
+        obj = document.addObject("Part::FeaturePython", oname, proxy, vproxy, False)
+    else:  # default case, standard IFC object
+        proxy = ifc_objects.ifc_object(otype)
+        vproxy = ifc_viewproviders.ifc_vp_object()
+        obj = document.addObject("Part::FeaturePython", oname, proxy, vproxy, False)
     return obj
 
 
@@ -617,6 +623,17 @@ def add_properties(
                 obj.addProperty("App::PropertyString", attr, "IFC")
             if value is not None:
                 setattr(obj, attr, str(value))
+    # annotation properties
+    if ifcentity.is_a("IfcAnnotation"):
+        text = ifc_export.get_text(ifcentity)
+        if text:
+            # the two props below are already taken care of, normally
+            if "Placement" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyPlacement", "Placement", "Base")
+            if "Text" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyStringList", "Text", "Base")
+            obj.Text = [text.Literal]
+            obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
         obj.setExpression("Label2", "Description")
@@ -980,12 +997,15 @@ def aggregate(obj, parent):
         newobj = obj
         new = False
     else:
+        objecttype = None
         if ifc_export.is_annotation(obj):
             product = ifc_export.create_annotation(obj, ifcfile)
+            if Draft.get_type(obj) in ["DraftText","Text"]:
+                objecttype = "text"
         else:
             product = ifc_export.create_product(obj, parent, ifcfile)
         shapemode = getattr(parent, "ShapeMode", DEFAULT_SHAPEMODE)
-        newobj = create_object(product, obj.Document, ifcfile, shapemode)
+        newobj = create_object(product, obj.Document, ifcfile, shapemode, objecttype)
         new = True
     create_relationship(obj, newobj, parent, product, ifcfile)
     base = getattr(obj, "Base", None)
@@ -1274,7 +1294,7 @@ def remove_ifc_element(obj):
 def get_orphan_elements(ifcfile):
     """returns a list of orphan products in an ifcfile"""
 
-    products = ifcfile.by_type("IfcElement")
+    products = ifcfile.by_type("IfcProduct")
     products = [p for p in products if not p.Decomposes]
     products = [p for p in products if not p.ContainedInStructure]
     products = [
