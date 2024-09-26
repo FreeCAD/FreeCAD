@@ -216,7 +216,7 @@ QPixmap AboutDialog::aboutImage() const
 
     std::string about_path = App::Application::Config()["AboutImage"];
     if (!about_path.empty() && about_image.isNull()) {
-        QString path = QString::fromUtf8(about_path.c_str());
+        QString path = QString::fromStdString(about_path);
         if (QDir(path).isRelative()) {
             QString home = QString::fromStdString(App::Application::getHomePath());
             path = QFileInfo(QDir(home), path).absoluteFilePath();
@@ -256,15 +256,15 @@ void AboutDialog::setupLabels()
     QString exeName = qApp->applicationName();
     std::map<std::string, std::string>& config = App::Application::Config();
     std::map<std::string, std::string>::iterator it;
-    QString banner = QString::fromUtf8(config["CopyrightInfo"].c_str());
+    QString banner = QString::fromStdString(config["CopyrightInfo"]);
     banner = banner.left(banner.indexOf(QLatin1Char('\n')));
-    QString major = QString::fromLatin1(config["BuildVersionMajor"].c_str());
-    QString minor = QString::fromLatin1(config["BuildVersionMinor"].c_str());
-    QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
-    QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
-    QString build = QString::fromLatin1(config["BuildRevision"].c_str());
-    QString disda = QString::fromLatin1(config["BuildRevisionDate"].c_str());
-    QString mturl = QString::fromLatin1(config["MaintainerUrl"].c_str());
+    QString major = QString::fromStdString(config["BuildVersionMajor"]);
+    QString minor = QString::fromStdString(config["BuildVersionMinor"]);
+    QString point = QString::fromStdString(config["BuildVersionPoint"]);
+    QString suffix = QString::fromStdString(config["BuildVersionSuffix"]);
+    QString build = QString::fromStdString(config["BuildRevision"]);
+    QString disda = QString::fromStdString(config["BuildRevisionDate"]);
+    QString mturl = QString::fromStdString(config["MaintainerUrl"]);
 
     // we use replace() to keep label formatting, so a label with text "<b>Unknown</b>"
     // gets replaced to "<b>FreeCAD</b>", for example
@@ -313,7 +313,7 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
         QString branch = ui->labelBuildBranch->text();
-        branch.replace(QString::fromLatin1("Unknown"), QString::fromUtf8(it->second.c_str()));
+        branch.replace(QString::fromLatin1("Unknown"), QString::fromStdString(it->second));
         ui->labelBuildBranch->setText(branch);
     }
     else {
@@ -327,7 +327,7 @@ void AboutDialog::setupLabels()
         QString hash = ui->labelBuildHash->text();
         hash.replace(
             QString::fromLatin1("Unknown"),
-            QString::fromLatin1(it->second.c_str()).left(7));  // Use the 7-char abbreviated hash
+            QString::fromStdString(it->second).left(7));  // Use the 7-char abbreviated hash
         ui->labelBuildHash->setText(hash);
         if (auto url_itr = config.find("BuildRepositoryURL"); url_itr != config.end()) {
             auto url = QString::fromStdString(url_itr->second);
@@ -410,7 +410,7 @@ void AboutDialog::showCredits()
 void AboutDialog::showLicenseInformation()
 {
     QString licenseFileURL = QString::fromLatin1("%1/LICENSE.html")
-                                 .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+                                 .arg(QString::fromStdString(App::Application::getHelpDir()));
     QFile licenseFile(licenseFileURL);
 
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -469,14 +469,14 @@ void AboutDialog::showLibraryInformation()
     hlayout->addWidget(textField);
 
     QString baseurl = QString::fromLatin1("file:///%1/ThirdPartyLibraries.html")
-                          .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+                          .arg(QString::fromStdString(App::Application::getHelpDir()));
 
     textField->setSource(QUrl(baseurl));
 }
 
 void AboutDialog::showCollectionInformation()
 {
-    QString doc = QString::fromUtf8(App::Application::getHelpDir().c_str());
+    QString doc = QString::fromStdString(App::Application::getHelpDir());
     QString path = doc + QLatin1String("Collection.html");
     if (!QFile::exists(path)) {
         return;
@@ -541,11 +541,11 @@ void AboutDialog::copyToClipboard()
     std::map<std::string, std::string>::iterator it;
     QString exe = QString::fromStdString(App::Application::getExecutableName());
 
-    QString major = QString::fromLatin1(config["BuildVersionMajor"].c_str());
-    QString minor = QString::fromLatin1(config["BuildVersionMinor"].c_str());
-    QString point = QString::fromLatin1(config["BuildVersionPoint"].c_str());
-    QString suffix = QString::fromLatin1(config["BuildVersionSuffix"].c_str());
-    QString build = QString::fromLatin1(config["BuildRevision"].c_str());
+    QString major = QString::fromStdString(config["BuildVersionMajor"]);
+    QString minor = QString::fromStdString(config["BuildVersionMinor"]);
+    QString point = QString::fromStdString(config["BuildVersionPoint"]);
+    QString suffix = QString::fromStdString(config["BuildVersionSuffix"]);
+    QString build = QString::fromStdString(config["BuildRevision"]);
 
     QString deskEnv =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
@@ -606,11 +606,11 @@ void AboutDialog::copyToClipboard()
 #endif
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
-        str << "Branch: " << QString::fromUtf8(it->second.c_str()) << '\n';
+        str << "Branch: " << QString::fromStdString(it->second) << '\n';
     }
     it = config.find("BuildRevisionHash");
     if (it != config.end()) {
-        str << "Hash: " << it->second.c_str() << '\n';
+        str << "Hash: " << QString::fromStdString(it->second) << '\n';
     }
     // report also the version numbers of the most important libraries in FreeCAD
     str << "Python " << PY_VERSION << ", ";
