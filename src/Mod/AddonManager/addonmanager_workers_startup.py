@@ -399,7 +399,7 @@ class CreateAddonListWorker(QtCore.QThread):
             )
             return
         p = p.data().decode("utf8")
-        macros = re.findall('title="(Macro.*?)"', p)
+        macros = re.findall(r'title="(Macro.*?)"', p)
         macros = [mac for mac in macros if "translated" not in mac]
         macro_names = []
         for _, mac in enumerate(macros):

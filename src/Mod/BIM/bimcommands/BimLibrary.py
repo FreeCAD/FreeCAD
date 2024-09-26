@@ -779,8 +779,8 @@ class BIM_Library_TaskPanel:
             p = u.read()
             if sys.version_info.major >= 3:
                 p = str(p)
-            dirs = re.findall("<.*?octicon-file-directory.*?href.*?>(.*?)</a>", p)
-            files = re.findall('<.*?octicon-file".*?href.*?>(.*?)</a>', p)
+            dirs = re.findall(r"<.*?octicon-file-directory.*?href.*?>(.*?)</a>", p)
+            files = re.findall(r'<.*?octicon-file".*?href.*?>(.*?)</a>', p)
             nfiles = []
             for f in files:
                 for ft in self.getFilters():
@@ -791,8 +791,8 @@ class BIM_Library_TaskPanel:
             for d in dirs:
                 # <spans>
                 if "</span" in d:
-                    d1 = re.findall("<span.*?>(.*?)<", d)
-                    d2 = re.findall("</span>(.*?)$", d)
+                    d1 = re.findall(r"<span.*?>(.*?)<", d)
+                    d2 = re.findall(r"</span>(.*?)$", d)
                     if d1 and d2:
                         d = d1[0] + "/" + d2[0]
                 r = self.getOnlineContentsWEB(url + "/" + d.replace(" ", "%20"))
