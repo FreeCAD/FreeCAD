@@ -151,6 +151,8 @@ public:
     const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
     App::Document *getDocument() const;
+    /// sets the temporary document for detached objects which will be used as a fallback
+    void setTemporaryDocument(App::Document* doc);
 
     /** Set the property touched -> changed, cause recomputation in Update()
      */
@@ -670,6 +672,9 @@ protected: // attributes
     Py::SmartPtr PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc{nullptr};
+
+    /// pointer to the temporary document for detached objects
+    App::Document* _pTempDoc{nullptr};
 
     /// Old label; used for renaming expressions
     std::string oldLabel;

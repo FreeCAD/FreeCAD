@@ -687,13 +687,21 @@ void DocumentObject::onLostLinkToObject(DocumentObject*)
 
 App::Document *DocumentObject::getDocument() const
 {
+    if (!_pDoc)
+        return _pTempDoc;
     return _pDoc;
 }
 
 void DocumentObject::setDocument(App::Document* doc)
 {
+    _pTempDoc = nullptr;
     _pDoc=doc;
     onSettingDocument();
+}
+
+void DocumentObject::setTemporaryDocument(App::Document* doc)
+{
+    _pTempDoc = doc;
 }
 
 bool DocumentObject::removeDynamicProperty(const char* name)

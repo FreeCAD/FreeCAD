@@ -3388,7 +3388,7 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
 
 void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 {
-    if (pcObject->getDocument()) {
+    if (pcObject->isAttachedToDocument()) {
         throw Base::RuntimeError("Document object is already added to a document");
     }
 
