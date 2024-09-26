@@ -48,6 +48,18 @@ void setupEllipse(Part::GeomEllipse& ellipse)
     ellipse.setMinorRadius(minorRadius);
 }
 
+void setupArcOfHyperbola(Part::GeomArcOfHyperbola& arcOfHyperbola)
+{
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double majorRadius = 4.0;
+    double minorRadius = 3.0;
+    double startParam = M_PI / 3, endParam = M_PI * 1.5;
+    arcOfHyperbola.setCenter(coordsCenter);
+    arcOfHyperbola.setMajorRadius(majorRadius);
+    arcOfHyperbola.setMinorRadius(minorRadius);
+    arcOfHyperbola.setRange(startParam, endParam, true);
+}
+
 void setupArcOfParabola(Part::GeomArcOfParabola& aop)
 {
     Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
@@ -629,6 +641,195 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     // Assert
     EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::None);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfEllipse)
+{
+    // Arrange
+    Part::GeomEllipse ellipse;
+    setupEllipse(ellipse);
+    int geoId = getObject()->addGeometry(&ellipse);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::EllipseMajorDiameter,
+                               Sketcher::InternalAlignmentType::EllipseMinorDiameter,
+                               Sketcher::InternalAlignmentType::EllipseFocus1,
+                               Sketcher::InternalAlignmentType::EllipseFocus2}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfHyperbola)
+{
+    // Arrange
+    Part::GeomArcOfHyperbola aoh;
+    setupArcOfHyperbola(aoh);
+    int geoId = getObject()->addGeometry(&aoh);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::HyperbolaMajor,
+                               Sketcher::InternalAlignmentType::HyperbolaMinor,
+                               Sketcher::InternalAlignmentType::HyperbolaFocus}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfParabola)
+{
+    // Arrange
+    Part::GeomArcOfParabola aoh;
+    setupArcOfParabola(aoh);
+    int geoId = getObject()->addGeometry(&aoh);
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::ParabolaFocalAxis,
+                               Sketcher::InternalAlignmentType::ParabolaFocus}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        int numConstraintsOfThisType =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+        EXPECT_EQ(numConstraintsOfThisType, 1);
+    }
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+}
+
+TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfBSpline)
+{
+    // NOTE: We test only non-periodic B-spline here. Periodic B-spline should behave exactly the
+    // same.
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+
+    // Act
+    // "Expose" internal geometry
+    getObject()->exposeInternalGeometry(geoId);
+
+    // Assert
+    // Ensure all internal geometry is satisfied
+    // TODO: Also try to ensure types of geometries that have this type
+    const auto constraints = getObject()->Constraints.getValues();
+    std::map<Sketcher::InternalAlignmentType, int> numConstraintsOfThisType;
+    for (auto alignmentType : {Sketcher::InternalAlignmentType::BSplineControlPoint,
+                               Sketcher::InternalAlignmentType::BSplineKnotPoint}) {
+        // TODO: Ensure there exists one and only one curve with this type
+        numConstraintsOfThisType[alignmentType] =
+            std::count_if(constraints.begin(),
+                          constraints.end(),
+                          [&geoId, &alignmentType](const auto* constr) {
+                              return constr->Type == Sketcher::ConstraintType::InternalAlignment
+                                  && constr->AlignmentType == alignmentType
+                                  && constr->Second == geoId;
+                          });
+    }
+    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineControlPoint],
+              nonPeriodicBSpline->countPoles());
+    EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineKnotPoint],
+              nonPeriodicBSpline->countKnots());
+
+    // Act
+    // Delete internal geometry (again)
+    getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(geoId);
+
+    // Assert
+    // Ensure there's only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
 }
 
 TEST_F(SketchObjectTest, testSplitLineSegment)
