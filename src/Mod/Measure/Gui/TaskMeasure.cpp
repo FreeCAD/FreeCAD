@@ -409,7 +409,6 @@ bool TaskMeasure::reject()
 void TaskMeasure::reset()
 {
     // Reset tool state
-    _mMeasureObject = nullptr;
     this->clearSelection();
 
     // Should the explicit mode also be reset?
