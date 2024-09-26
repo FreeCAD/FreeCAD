@@ -188,7 +188,7 @@ def _identifygcodeByToolNumberList(filename):
     gfile.close()
 
     # Regular expression to match tool changes in the format 'M6 Tn'
-    p = re.compile("[mM]+?\s?0?6\s?T\d*\s")
+    p = re.compile(r"[mM]+?\s?0?6\s?T\d*\s")
 
     # split the gcode on tool changes
     paths = re.split("([mM]+?\s?0?6\s?T\d*\s)", gcode)

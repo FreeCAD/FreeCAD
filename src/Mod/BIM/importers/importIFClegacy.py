@@ -41,7 +41,7 @@ SCHEMA = "http://www.steptools.com/support/stdev_docs/ifcbim/ifc4.exp" # only fo
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
 DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
 SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
-IFCLINE_RE = re.compile("#(\d+)[ ]?=[ ]?(.*?)\((.*)\);[\\r]?$")
+IFCLINE_RE = re.compile(r"#(\d+)[ ]?=[ ]?(.*?)\((.*)\);[\\r]?$")
 APPLYFIX = True # if true, the ifcopenshell bug-fixing function is applied when saving files
 # end config
 

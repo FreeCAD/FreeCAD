@@ -108,7 +108,7 @@ class ToolBitEditor(object):
         # which aren't being needed anymore.
 
         def labelText(name):
-            return re.sub("([A-Z][a-z]+)", r" \1", re.sub("([A-Z]+)", r" \1", name))
+            return re.sub(r"([A-Z][a-z]+)", r" \1", re.sub(r"([A-Z]+)", r" \1", name))
 
         layout = self.form.bitParams.layout()
         ui = FreeCADGui.UiLoader()
