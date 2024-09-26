@@ -7,49 +7,29 @@ channels = ["conda-forge/label/pivy_rc", "conda-forge"]
 platforms = ["osx-arm64", "linux-64", "linux-aarch64", "win-64", "osx-64"]
 
 [environments]
-build = ["build"]
+qt6 = ["qt6"]
+qt5 = ["qt5"]
 
-[feature.build.dependencies]
-# compilation and wrappers
+[feature.qt6.dependencies]
 ccache = "*"
 cmake = "*"
 ninja = "*"
 compilers = "*"
 swig = "*"
 pybind11 = "*"
-
-# cpp
 libboost-devel = "*"
-
-# debug
 conda-devenv = "*"
 debugpy = "*"
 git = "*"
-
-# graphics
 coin3d = "*"
-pivy = "*"
 matplotlib = "*"
-qt6-main = "*"
-pyside6 = "*"
-vtk = "*"
 graphviz = "*"
-
-# geometry and numerics
 occt = "*"
-pcl = "*"
 eigen = "*"
 numpy = "*"
 smesh = "*"
-
-# python
-python = "3.12"
 six = "*"
-
-# documentation
 doxygen = "*"
-
-# other
 fmt = "*"
 freetype = "*"
 hdf5 = "*"
@@ -62,10 +42,53 @@ xerces-c = "*"
 yaml-cpp = "*"
 zlib = "*"
 zstd = "*"
+qt6-main = "*"
+pyside6 = "*"
+python = "3.12"
+vtk = "*"
+pivy = "*"
+pcl = "*"
 
-# gmsh  needs to be build for occt7.8.1
+[feature.qt5.dependencies]
+ccache = "*"
+cmake = "*"
+ninja = "*"
+compilers = "*"
+swig = "*"
+pybind11 = "*"
+libboost-devel = "*"
+conda-devenv = "*"
+debugpy = "*"
+git = "*"
+coin3d = "*"
+matplotlib = "*"
+graphviz = "*"
+occt = "*"
+eigen = "*"
+numpy = "*"
+smesh = "*"
+six = "*"
+doxygen = "*"
+fmt = "*"
+freetype = "*"
+hdf5 = "*"
+openssl = "*"
+pip = "*"
+ply = "*"
+pre-commit = "*"
+pyyaml = "*"
+xerces-c = "*"
+yaml-cpp = "*"
+zlib = "*"
+zstd = "*"
+qt-main = "*"
+pyside2 = "*"
+python = "3.11"
+vtk = "9.2.6"
+pivy = "*"
+pcl = "*"
 
-[feature.build.target.linux-64.dependencies]
+[target.linux-64.dependencies]
 libspnav = "*"
 kernel-headers_linux-64 = "*"
 libdrm-cos6-x86_64 = "*"
@@ -91,9 +114,8 @@ pixman-cos6-x86_64 = "*"
 sysroot_linux-64 = "*"
 xorg-x11-server-common-cos6-x86_64 = "*"
 xorg-x11-server-xvfb-cos6-x86_64 = "*"
-sed = "*"
 
-[feature.build.target.linux-aarch64.dependencies]
+[target.linux-aarch64.dependencies]
 libspnav = "*"
 kernel-headers_linux-aarch64 = "*"
 libdrm-cos7-aarch64 = "*"
@@ -123,40 +145,66 @@ pixman-cos7-aarch64 = "*"
 sysroot_linux-aarch64 = "*"
 xorg-x11-server-common-cos7-aarch64 = "*"
 xorg-x11-server-xvfb-cos7-aarch64 = "*"
+
+[target.osx-64.dependencies]
+[target.osx-arm64.dependencies]
+[target.win-64.dependencies]
+
+[feature.qt6.target.osx-arm64.dependencies]
 sed = "*"
 
-[feature.build.target.osx-64.dependencies]
+[feature.qt6.target.osx-64.dependencies]
 sed = "*"
 
-[feature.build.target.osx-arm64.dependencies]
+[feature.qt6.target.linux-64.dependencies]
 sed = "*"
 
-[feature.build.target.win-64.dependencies]
+[feature.qt6.target.linux-aarch64.dependencies]
+sed = "*"
 
-[feature.build.target.linux-64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
+[feature.qt6.target.linux-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
 
-[feature.build.target.linux-aarch64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
+[feature.qt6.target.linux-aarch64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-linux-debug",
+								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on= ["initialize"]} }
 
-[feature.build.target.osx-64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
+[feature.qt6.target.osx-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
 
-[feature.build.target.osx-arm64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug",
+[feature.qt6.target.osx-arm64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-macos-debug",
 								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on = ["initialize"]} }
 
-[feature.build.target.win-64]
-tasks = { configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug" ], depends-on = ["initialize"]} }
+[feature.qt6.target.win-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt6", "--preset", "conda-windows-debug" ], depends-on = ["initialize"]} }
 
-[feature.build.tasks]
 
+[feature.qt5.target.linux-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-linux-debug" ], depends-on = ["initialize"]} }
+
+[feature.qt5.target.linux-aarch64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-linux-debug",
+								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on= ["initialize"]} }
+
+[feature.qt5.target.osx-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-macos-debug" ], depends-on = ["initialize"]} }
+
+[feature.qt5.target.osx-arm64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-macos-debug",
+								"-D", "QT_HOST_PATH=$CONDA_PREFIX"], depends-on = ["initialize"]} }
+
+[feature.qt5.target.win-64]
+tasks = { configure = { cmd = [ "cmake", "-B", "build_qt5", "--preset", "conda-windows-debug" ], depends-on = ["initialize"]} }
+
+[feature.qt6.tasks]
+build = { cmd = [ "cmake", "--build", "build_qt6" ], depends-on = ["configure"]}
+install = { cmd = [ "cmake", "--install", "build_qt6" ], depends-on = ["build"]}
+
+[feature.qt5.tasks]
+build = { cmd = [ "cmake", "--build", "build_qt5" ], depends-on = ["configure"]}
+install = { cmd = [ "cmake", "--install", "build_qt5" ], depends-on = ["build"]}
+
+[tasks]
 initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
-
-# this line is needed for shiboken to not propagate the Py_LIMITED_API definition (as freecad is not yet able to be compiled
-# with Py_LIMITED_API)
-patch_shiboken = "sed -i 's/Py_LIMITED_API=0x03060000;//g' $CONDA_PREFIX/lib/cmake/Shiboken6/Shiboken6Targets.cmake"
-build = { cmd = [ "cmake", "--build", "build" ], depends-on = ["configure", "patch_shiboken"]}
-build_only = { cmd = [ "cmake", "--build", "build" ]}
-install = { cmd = [ "cmake", "--install", "build" ]}
 freecad = "FreeCAD"
