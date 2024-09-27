@@ -489,23 +489,20 @@ void Document::exportGraphviz(std::ostream& out) const
             // Add edges between document objects
             for (const auto & It : d->objectMap) {
 
-                if(omitGeoFeatureGroups) {
-                    //coordinate systems are represented by subgraphs
-                    if(It.second->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
-                        continue;
-
-                    //as well as origins
-                    if(It.second->isDerivedFrom(Origin::getClassTypeId()))
-                        continue;
+                if(omitGeoFeatureGroups && It.second->isDerivedFrom(Origin::getClassTypeId())) {
+                    continue;
                 }
 
                 std::map<DocumentObject*, int> dups;
                 std::vector<DocumentObject*> OutList = It.second->getOutList();
                 const DocumentObject * docObj = It.second;
+                const bool docObj_is_group = docObj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
 
                 for (auto obj : OutList) {
                     if (obj) {
-
+                        if(omitGeoFeatureGroups && docObj_is_group && GeoFeatureGroupExtension::getGroupOfObject(obj) == docObj) {
+                            continue;
+                        }
                         // Count duplicate edges
                         bool inserted = edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(obj)], DepList).second;
                         if (inserted) {
