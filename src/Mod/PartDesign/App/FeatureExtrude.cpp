@@ -684,7 +684,11 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 return App::DocumentObject::StdReturn;
             }
             try {
-                prism.makeElementPrismUntil(base,
+                TopoShape _base;
+                if (addSubType!=FeatureAddSub::Subtractive) {
+                    _base=base; // avoid issue #16690
+                }
+                prism.makeElementPrismUntil(_base,
                                             sketchshape,
                                             supportface,
                                             upToShape,
