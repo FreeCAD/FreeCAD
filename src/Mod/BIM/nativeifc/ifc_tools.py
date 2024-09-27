@@ -48,6 +48,7 @@ from nativeifc import ifc_status
 from nativeifc import ifc_export
 
 from draftviewproviders import view_layer
+from PySide import QtCore
 
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
 SHORT = False  # If True, only Step ID attribute is created
@@ -334,6 +335,8 @@ def create_children(
     for child in children:
         result.extend(create_child(obj, child))
     assign_groups(children)
+    # TEST: mark new objects to recompute
+    QtCore.QTimer.singleShot(0, lambda: recompute([get_object(c) for c in children]))
     return result
 
 
@@ -1376,6 +1379,9 @@ def load_orphans(obj):
             for o in rest:
                 project.Proxy.addObject(project, o)
 
+    # TEST: Try recomputing
+    QtCore.QTimer.singleShot(0, lambda: recompute(objs))
+
 
 def remove_tree(objs):
     """Removes all given objects and their children, if not used by others"""
@@ -1399,3 +1405,13 @@ def remove_tree(objs):
         doc.removeObject(n)
 
 
+def recompute(children):
+    """Temporary function to recompute objects. Some objects don't get their
+    shape correctly at creation"""
+    import time
+    stime = time.time()
+    for c in children:
+        c.touch()
+    FreeCAD.ActiveDocument.recompute()
+    endtime = "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
+    print("DEBUG: Extra recomputing of",len(children),"objects took",endtime)
