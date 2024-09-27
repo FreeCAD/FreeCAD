@@ -1,0 +1,23 @@
+name: run_pixi
+
+on: [workflow_dispatch, push, pull_request]
+
+jobs:
+  build_with_pixi:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 6
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        qt: [qt5, qt6]
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout
+
+    - uses: prefix-dev/setup-pixi@v0.8.1
+      with:
+        pixi-version: v0.30.0
+        cache: true
+    - run: pixi run -e ${{ matrix.qt }} install
