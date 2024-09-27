@@ -739,7 +739,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Hücreye alias'lı bir isim atayın, örneğin Spreadsheet.B1 yerine Spreadsheet.my_alias_name</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="125"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="152"/>
       <source>Spreadsheet</source>
       <translation>Hesap Tablosu</translation>
     </message>
@@ -1163,7 +1163,7 @@ Defaults to: %V = %A
   <context>
     <name>Py</name>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="80"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="81"/>
       <source>Unnamed</source>
       <translation>İsimsiz</translation>
     </message>

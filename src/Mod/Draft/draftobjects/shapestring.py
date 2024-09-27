@@ -127,8 +127,7 @@ class ShapeString(DraftObject):
             return
 
         if obj.String and obj.FontFile:
-            if obj.Placement:
-                plm = obj.Placement
+            plm = obj.Placement
 
             fill = obj.MakeFace
             if fill is True:
@@ -159,6 +158,10 @@ class ShapeString(DraftObject):
                 if fill and obj.Fuse:
                     ss_shape = shapes[0].fuse(shapes[1:])
                     ss_shape = faces.concatenate(ss_shape)
+                    # Concatenate returns a Face or a Compound. We always
+                    # need a Compound as we use ss_shape.SubShapes later.
+                    if ss_shape.ShapeType == "Face":
+                        ss_shape = Part.Compound([ss_shape])
                 else:
                     ss_shape = Part.Compound(shapes)
                 cap_char = Part.makeWireString("M", obj.FontFile, obj.Size, obj.Tracking)[0]
@@ -186,8 +189,7 @@ class ShapeString(DraftObject):
             else:
                 App.Console.PrintWarning(translate("draft", "ShapeString: string has no wires") + "\n")
 
-            if plm:
-                obj.Placement = plm
+            obj.Placement = plm
 
         obj.positionBySupport()
         self.props_changed_clear()

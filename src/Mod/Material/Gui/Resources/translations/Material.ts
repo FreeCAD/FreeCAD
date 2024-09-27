@@ -55,12 +55,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Array2D.cpp" line="76"/>
+        <location filename="../../Array2D.cpp" line="78"/>
         <source>Delete row</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Array2D.cpp" line="134"/>
+        <location filename="../../Array2D.cpp" line="140"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -693,8 +693,8 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
         <location filename="../../MaterialSave.ui" line="59"/>
-        <location filename="../../MaterialSave.cpp" line="476"/>
-        <location filename="../../MaterialSave.cpp" line="486"/>
+        <location filename="../../MaterialSave.cpp" line="482"/>
+        <location filename="../../MaterialSave.cpp" line="492"/>
         <source>New Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -709,62 +709,62 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="89"/>
+        <location filename="../../MaterialSave.cpp" line="91"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="184"/>
+        <location filename="../../MaterialSave.cpp" line="190"/>
         <source>Are you sure you want to save over &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="187"/>
+        <location filename="../../MaterialSave.cpp" line="193"/>
         <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="209"/>
+        <location filename="../../MaterialSave.cpp" line="215"/>
         <source>Confirm Save As New Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="211"/>
+        <location filename="../../MaterialSave.cpp" line="217"/>
         <source>Save as new material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="214"/>
+        <location filename="../../MaterialSave.cpp" line="220"/>
         <source>This material already exists in this library. Would you like to save as a new material?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="236"/>
+        <location filename="../../MaterialSave.cpp" line="242"/>
         <source>Confirm Save As Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="238"/>
+        <location filename="../../MaterialSave.cpp" line="244"/>
         <source>Save as Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="241"/>
+        <location filename="../../MaterialSave.cpp" line="247"/>
         <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="244"/>
+        <location filename="../../MaterialSave.cpp" line="250"/>
         <source>Save Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="245"/>
+        <location filename="../../MaterialSave.cpp" line="251"/>
         <source>Save As New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="526"/>
+        <location filename="../../MaterialSave.cpp" line="532"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1136,23 +1136,23 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="181"/>
+        <location filename="../../MaterialSave.cpp" line="187"/>
         <source>Confirm Overwrite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="370"/>
-        <location filename="../../MaterialSave.cpp" line="371"/>
+        <location filename="../../MaterialSave.cpp" line="376"/>
+        <location filename="../../MaterialSave.cpp" line="377"/>
         <source>No writeable library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="558"/>
+        <location filename="../../MaterialSave.cpp" line="564"/>
         <source>Are you sure you want to delete &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../MaterialSave.cpp" line="562"/>
+        <location filename="../../MaterialSave.cpp" line="568"/>
         <source>Removing this will also remove all contents.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1177,14 +1177,14 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Array2D.cpp" line="166"/>
+        <location filename="../../Array2D.cpp" line="172"/>
         <location filename="../../ListEdit.cpp" line="142"/>
-        <location filename="../../MaterialSave.cpp" line="555"/>
+        <location filename="../../MaterialSave.cpp" line="561"/>
         <source>Confirm Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Array2D.cpp" line="168"/>
+        <location filename="../../Array2D.cpp" line="174"/>
         <location filename="../../ListEdit.cpp" line="144"/>
         <source>Are you sure you want to delete the row?</source>
         <translation type="unfinished"></translation>

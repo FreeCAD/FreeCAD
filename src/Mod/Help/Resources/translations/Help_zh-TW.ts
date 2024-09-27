@@ -149,27 +149,27 @@ Markdown version above.</source>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="72"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>無法檢索該頁面的內容. 請檢查 編輯 -&gt; 偏好設定 -&gt; 一般 -&gt; 說明 選單之下的設定</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="76"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
       <translation>無法確定說明檔案位置. 請檢查 編輯 -&gt; 偏好設定 -&gt; 一般 -&gt; 說明 選單之下的設定</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="80"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>PySide QtWebEngineWidgets 模組不可用. 說明渲染是透過系統瀏覽器完成的</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="84"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="113"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>説明</translation>
     </message>
@@ -177,7 +177,7 @@ Markdown version above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="389"/>
+      <location filename="../../Help.py" line="425"/>
       <source>General</source>
       <translation>一般</translation>
     </message>

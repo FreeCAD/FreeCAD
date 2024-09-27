@@ -2282,6 +2282,16 @@ bool Link::canLinkProperties() const {
     return true;
 }
 
+bool Link::isLink() const
+{
+    return ElementCount.getValue() == 0;
+}
+
+bool Link::isLinkGroup() const
+{
+    return ElementCount.getValue() > 0;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 namespace App {
@@ -2307,6 +2317,11 @@ bool LinkElement::canDelete() const {
 
     auto owner = getContainer();
     return !owner || !owner->getDocument()->getObjectByID(_LinkOwner.getValue());
+}
+
+bool LinkElement::isLink() const
+{
+    return true;
 }
 
 App::Link* LinkElement::getLinkGroup() const

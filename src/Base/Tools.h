@@ -325,6 +325,8 @@ struct BaseExport Tools
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
     static std::string currentDateTimeString();
+
+    static std::vector<std::string> splitSubName(const std::string& subname);
 };
 
 

@@ -55,6 +55,8 @@ __title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
 __url__    = "https://www.freecad.org"
 
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+
 # Templates and other definitions ****
 # Specific FreeCAD <-> IFC slang translations
 translationtable = {
@@ -172,12 +174,9 @@ def getPreferences():
     # set schema
     if hasattr(ifcopenshell, "schema_identifier"):
         schema = ifcopenshell.schema_identifier
-    elif ifcos_version >= 0.6:
-        # v0.6 onwards allows to set our own schema
-        schema = ["IFC4", "IFC2X3"][params.get_param_arch("IfcVersion")]
     else:
-        schema = "IFC2X3"
-
+        # v0.6 onwards allows to set our own schema
+        schema = PARAMS.GetString("DefaultIfcExportVersion", "IFC4")
     preferences["SCHEMA"] = schema
 
     return preferences
@@ -308,9 +307,9 @@ def export(exportList, filename, colors=None, preferences=None):
         project = contextCreator.project
         objectslist = [obj for obj in objectslist if obj != contextCreator.project_object]
 
-    if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
-        decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
-        contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
+        if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
+            decl = Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)
+            contextCreator.model_context.TrueNorth.DirectionRatios = (math.cos(decl+math.pi/2), math.sin(decl+math.pi/2))
 
     # reusable entity system
 

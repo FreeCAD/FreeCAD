@@ -6,13 +6,13 @@
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Inspect Appearance...</source>
-      <translation type="unfinished">Inspect Appearance...</translation>
+      <translation>Изучить внешний вид...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <location filename="../../Command.cpp" line="150"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspect the appearance properties of the selected object</translation>
+      <translation>Проверьте свойства внешнего вида выбранного объекта</translation>
     </message>
   </context>
   <context>
@@ -20,13 +20,13 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspect Material...</source>
-      <translation type="unfinished">Inspect Material...</translation>
+      <translation>Проверить материал...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <location filename="../../Command.cpp" line="177"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation type="unfinished">Inspect the material properties of the selected object</translation>
+      <translation>Проверка свойств материала выбранного объекта</translation>
     </message>
   </context>
   <context>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Edit material properties</source>
-      <translation type="unfinished">Edit material properties</translation>
+      <translation>Редактировать свойства материала</translation>
     </message>
   </context>
   <context>
@@ -55,12 +55,12 @@
       <translation>2D Массив</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="76"/>
+      <location filename="../../Array2D.cpp" line="78"/>
       <source>Delete row</source>
       <translation>Удалить строку</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="134"/>
+      <location filename="../../Array2D.cpp" line="140"/>
       <source>Context menu</source>
       <translation>Контекстное меню</translation>
     </message>
@@ -133,7 +133,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <translation>Свойства отображения</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
       <source>Line transparency:</source>
-      <translation type="unfinished">Line transparency:</translation>
+      <translation>Прозрачность линии:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
@@ -183,17 +183,17 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot:</source>
-      <translation type="unfinished">Color plot:</translation>
+      <translation>Цветной график:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance:</source>
-      <translation type="unfinished">Custom appearance:</translation>
+      <translation>Пользовательский вид:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
       <source>Point color:</source>
-      <translation type="unfinished">Point color:</translation>
+      <translation>Цвет точки:</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
@@ -206,17 +206,17 @@
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="214"/>
       <source>Basic Appearance</source>
-      <translation type="unfinished">Basic Appearance</translation>
+      <translation>Основной внешний вид</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="219"/>
       <source>Texture Appearance</source>
-      <translation type="unfinished">Texture Appearance</translation>
+      <translation>Внешний вид текстур</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="224"/>
       <source>All Materials</source>
-      <translation type="unfinished">All Materials</translation>
+      <translation>Все материалы</translation>
     </message>
   </context>
   <context>
@@ -239,22 +239,22 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
+      <translation>Название активного документа</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / Internal Name</source>
-      <translation type="unfinished">Label / Internal Name</translation>
+      <translation>Метка / Внутреннее Имя</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>Подформа / Тип</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>Форма.ИдентификаторТипа / ИдентификаторТипа</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -274,27 +274,27 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse Color</source>
-      <translation type="unfinished">Diffuse Color</translation>
+      <translation>Рассеиваемый цвет</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient Color</source>
-      <translation type="unfinished">Ambient Color</translation>
+      <translation>Окружающий цвет</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive Color</source>
-      <translation type="unfinished">Emissive Color</translation>
+      <translation>Излучаемый цвет</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular Color</source>
-      <translation type="unfinished">Specular Color</translation>
+      <translation>Цвет отражения</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
-      <translation type="unfinished">Shininess</translation>
+      <translation>Яркость</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="248"/>
@@ -322,22 +322,22 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
+      <translation>Название активного документа</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / Internal Name</source>
-      <translation type="unfinished">Label / Internal Name</translation>
+      <translation>Метка / Внутреннее Имя</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>Подформа / Тип</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>Форма.ИдентификаторТипа / ИдентификаторТипа</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -352,28 +352,28 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
       <source>Document: </source>
-      <translation type="unfinished">Document: </translation>
+      <translation>Документ: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="166"/>
       <source>Label: </source>
-      <translation type="unfinished">Label: </translation>
+      <translation>Метка: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal Name: </source>
-      <translation type="unfinished">Internal Name: </translation>
+      <translation>Внутреннее имя: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
       <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Type: </source>
-      <translation type="unfinished">Type: </translation>
+      <translation>Тип: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
-      <translation type="unfinished">TypeID: </translation>
+      <translation>TypeID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="221"/>
@@ -382,7 +382,7 @@
       <location filename="../../DlgInspectMaterial.cpp" line="292"/>
       <location filename="../../DlgInspectMaterial.cpp" line="314"/>
       <source>Name: </source>
-      <translation type="unfinished">Name: </translation>
+      <translation>Имя: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="246"/>
@@ -396,41 +396,41 @@
       <location filename="../../DlgInspectMaterial.cpp" line="266"/>
       <location filename="../../DlgInspectMaterial.cpp" line="341"/>
       <source>UUID: </source>
-      <translation type="unfinished">UUID: </translation>
+      <translation>UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="269"/>
       <location filename="../../DlgInspectMaterial.cpp" line="343"/>
       <source>Library: </source>
-      <translation type="unfinished">Library: </translation>
+      <translation>Директория библиотеки: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library Directory: </source>
-      <translation type="unfinished">Library Directory: </translation>
+      <translation>Директория библиотеки: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub Directory: </source>
-      <translation type="unfinished">Sub Directory: </translation>
+      <translation>Поддиректория: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
       <location filename="../../DlgInspectMaterial.cpp" line="350"/>
       <source>Inherits:</source>
-      <translation type="unfinished">Inherits:</translation>
+      <translation>Наследование:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation type="unfinished">Model UUID: </translation>
+      <translation>Модель UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
-      <translation type="unfinished">Has value: </translation>
+      <translation>Имеет значение: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -445,22 +445,22 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance Models:</source>
-      <translation type="unfinished">Appearance Models:</translation>
+      <translation>Внешний вид модели:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical Models:</source>
-      <translation type="unfinished">Physical Models:</translation>
+      <translation>Физические модели:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance Properties:</source>
-      <translation type="unfinished">Appearance Properties:</translation>
+      <translation>Свойства внешнего вида:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
       <source>Physical Properties:</source>
-      <translation type="unfinished">Physical Properties:</translation>
+      <translation>Физические свойства:</translation>
     </message>
   </context>
   <context>
@@ -477,12 +477,12 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation type="unfinished">Default Material</translation>
+      <translation>Материал по умолчанию</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>Физический</translation>
     </message>
   </context>
   <context>
@@ -495,7 +495,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card resources</source>
-      <translation type="unfinished">Card resources</translation>
+      <translation>Ресурсы карты</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
@@ -531,28 +531,28 @@
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Also material cards also from the specified directory
 will be listed as available.</source>
-      <translation type="unfinished">Also material cards also from the specified directory
-will be listed as available.</translation>
+      <translation>Также карточки материалов также из указанного каталога
+будет указан как доступный.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="92"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="119"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
+      <translation>Каталог пользователя</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="155"/>
       <source>Card sorting and duplicates</source>
-      <translation type="unfinished">Card sorting and duplicates</translation>
+      <translation>Сортировка карт и дубликаты</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="161"/>
       <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list.</translation>
+      <translation>Дубликаты карточек будут удалены из отображаемого списка карточек материалов.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="164"/>
@@ -563,8 +563,8 @@ will be listed as available.</translation>
       <location filename="../../DlgSettingsMaterial.ui" line="180"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation type="unfinished">Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</translation>
+      <translation>Карты материалов отображаются отсортированными по их ресурсам (местоположениям).
+Если флажок снят, они будут отсортированы по имени.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="184"/>
@@ -574,7 +574,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="203"/>
       <source>Material Selector</source>
-      <translation type="unfinished">Material Selector</translation>
+      <translation>Селектор материала</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="209"/>
@@ -622,12 +622,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="30"/>
       <source>Thumbnail</source>
-      <translation type="unfinished">Thumbnail</translation>
+      <translation>Миниатюра</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
       <source>File...</source>
-      <translation type="unfinished">File...</translation>
+      <translation>Файл...</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="104"/>
@@ -652,7 +652,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.cpp" line="218"/>
       <source>Image files (*.svg);;All files (*)</source>
-      <translation type="unfinished">Image files (*.svg);;All files (*)</translation>
+      <translation>Файлы изображений (*.svg);;Все файлы (*)</translation>
     </message>
   </context>
   <context>
@@ -660,12 +660,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ListEdit.ui" line="14"/>
       <source>List Edit</source>
-      <translation type="unfinished">List Edit</translation>
+      <translation>Редактировать список</translation>
     </message>
     <message>
       <location filename="../../ListEdit.ui" line="41"/>
       <source>Delete Row</source>
-      <translation type="unfinished">Delete Row</translation>
+      <translation>Удалить строку</translation>
     </message>
   </context>
   <context>
@@ -695,8 +695,8 @@ If unchecked, they will be sorted by their name.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="476"/>
-      <location filename="../../MaterialSave.cpp" line="486"/>
+      <location filename="../../MaterialSave.cpp" line="482"/>
+      <location filename="../../MaterialSave.cpp" line="492"/>
       <source>New Folder</source>
       <translation>Новая папка</translation>
     </message>
@@ -711,62 +711,62 @@ If unchecked, they will be sorted by their name.</translation>
       <translation>Сохранить как унаследованное</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="89"/>
+      <location filename="../../MaterialSave.cpp" line="91"/>
       <source>Delete</source>
       <translation>Удалить</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="184"/>
+      <location filename="../../MaterialSave.cpp" line="190"/>
       <source>Are you sure you want to save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Are you sure you want to save over &apos;%1&apos;?</translation>
+      <translation>Вы уверены, что хотите сохранить более «%1»?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="187"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation type="unfinished">Saving over the original file may cause other documents to break. This is not recommended.</translation>
+      <translation>Сохранение поверх исходного файла может привести к повреждению других документов. Это не рекомендуется.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="209"/>
+      <location filename="../../MaterialSave.cpp" line="215"/>
       <source>Confirm Save As New Material</source>
-      <translation type="unfinished">Confirm Save As New Material</translation>
+      <translation>Подтвердить сохранение как новый материал</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="211"/>
+      <location filename="../../MaterialSave.cpp" line="217"/>
       <source>Save as new material</source>
-      <translation type="unfinished">Save as new material</translation>
+      <translation>Сохранить как новый материал</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="214"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Would you like to save as a new material?</translation>
+      <translation>Этот материал уже существует в этой библиотеке. Хотите сохранить как новый материал?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="236"/>
+      <location filename="../../MaterialSave.cpp" line="242"/>
       <source>Confirm Save As Copy</source>
-      <translation type="unfinished">Confirm Save As Copy</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="238"/>
-      <source>Save as Copy</source>
-      <translation type="unfinished">Save as Copy</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="241"/>
-      <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</translation>
+      <translation>Подтвердить сохранение как копии</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="244"/>
+      <source>Save as Copy</source>
+      <translation>Сохранить как копию</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="247"/>
+      <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
+      <translation>Сохранять копию не рекомендуется, так как это может повредить другие документы. Рекомендуем сохранить как новый материал.</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save Copy</source>
-      <translation type="unfinished">Save Copy</translation>
+      <translation>Сохранить копию</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="251"/>
       <source>Save As New</source>
-      <translation type="unfinished">Save As New</translation>
+      <translation>Сохранить как</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="526"/>
+      <location filename="../../MaterialSave.cpp" line="532"/>
       <source>Context menu</source>
       <translation>Контекстное меню</translation>
     </message>
@@ -776,19 +776,19 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="142"/>
       <source>Launch editor</source>
-      <translation type="unfinished">Launch editor</translation>
+      <translation>Запустить редактор</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
       <location filename="../../MaterialTreeWidget.cpp" line="546"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Избранное</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="315"/>
       <location filename="../../MaterialTreeWidget.cpp" line="553"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Недавние</translation>
     </message>
   </context>
   <context>
@@ -816,7 +816,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
       <source>Source URL</source>
-      <translation type="unfinished">Source URL</translation>
+      <translation>URL-адрес источника</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
@@ -836,7 +836,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source Reference</source>
-      <translation type="unfinished">Source Reference</translation>
+      <translation>Ссылка на источник</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -851,27 +851,27 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
-      <translation type="unfinished">Inherit New</translation>
+      <translation>Наследовать новое</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
+      <translation>Добавить в избранное</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>Физический</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="236"/>
       <source>Add physical model</source>
-      <translation type="unfinished">Add physical model</translation>
+      <translation>Добавить физическую модель</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="246"/>
       <source>Delete physical model</source>
-      <translation type="unfinished">Delete physical model</translation>
+      <translation>Удалить физическую модель</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
@@ -881,12 +881,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="286"/>
       <source>Add appearance model</source>
-      <translation type="unfinished">Add appearance model</translation>
+      <translation>Добавить модель внешнего вида</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="296"/>
       <source>Delete appearance model</source>
-      <translation type="unfinished">Delete appearance model</translation>
+      <translation>Удалить модель внешнего вида</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="481"/>
@@ -896,17 +896,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="603"/>
       <source>Old Format Material</source>
-      <translation type="unfinished">Old Format Material</translation>
+      <translation>Материал старого формата</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="605"/>
       <source>This file is in the old material card format.</source>
-      <translation type="unfinished">This file is in the old material card format.</translation>
+      <translation>Этот файл находится в старом формате карты материала.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="687"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation type="unfinished">This card uses the old format and must be saved before use</translation>
+      <translation>Эта карта использует старый формат и должна быть сохранена перед использованием</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="745"/>
@@ -935,12 +935,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="843"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Избранное</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="850"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Недавние</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1116"/>
@@ -955,12 +955,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1285"/>
       <source>Inherit from</source>
-      <translation type="unfinished">Inherit from</translation>
+      <translation>Наследовать от</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1289"/>
       <source>Inherit new material</source>
-      <translation type="unfinished">Inherit new material</translation>
+      <translation>Наследовать новый материал</translation>
     </message>
   </context>
   <context>
@@ -968,7 +968,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="14"/>
       <source>Material Models</source>
-      <translation type="unfinished">Material Models</translation>
+      <translation>Модели материалов</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="41"/>
@@ -990,7 +990,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
       <source>DOI</source>
-      <translation type="unfinished">DOI</translation>
+      <translation>Цифровой идентификатор (DOI)</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="87"/>
@@ -1000,7 +1000,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Add to favorites</source>
-      <translation type="unfinished">Add to favorites</translation>
+      <translation>Добавить в избранное</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1012,17 +1012,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="332"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>Избранное</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>Недавние</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="356"/>
       <source>Inherited</source>
-      <translation type="unfinished">Inherited</translation>
+      <translation>Унаследованный</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="357"/>
@@ -1045,7 +1045,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../TextEdit.ui" line="14"/>
       <source>Text Edit</source>
-      <translation type="unfinished">Text Edit</translation>
+      <translation>Редактирование текста</translation>
     </message>
   </context>
   <context>
@@ -1116,7 +1116,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="54"/>
       <source>Display properties</source>
-      <translation type="unfinished">Display properties</translation>
+      <translation>Свойства экрана</translation>
     </message>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="57"/>
@@ -1129,7 +1129,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../AppMatGui.cpp" line="106"/>
       <source>Material workbench</source>
-      <translation type="unfinished">Material workbench</translation>
+      <translation>Верстак материалов</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="108"/>
@@ -1138,55 +1138,55 @@ If unchecked, they will be sorted by their name.</translation>
       <translation>Материал</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="181"/>
+      <location filename="../../MaterialSave.cpp" line="187"/>
       <source>Confirm Overwrite</source>
-      <translation type="unfinished">Confirm Overwrite</translation>
+      <translation>Подтвердите перезапись</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="370"/>
-      <location filename="../../MaterialSave.cpp" line="371"/>
+      <location filename="../../MaterialSave.cpp" line="376"/>
+      <location filename="../../MaterialSave.cpp" line="377"/>
       <source>No writeable library</source>
-      <translation type="unfinished">No writeable library</translation>
+      <translation>Нет библиотеки для записи</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="558"/>
+      <location filename="../../MaterialSave.cpp" line="564"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Are you sure you want to delete &apos;%1&apos;?</translation>
+      <translation>Вы уверены, что хотите удалить &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="562"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Removing this will also remove all contents.</source>
-      <translation type="unfinished">Removing this will also remove all contents.</translation>
+      <translation>Это также удалит все содержимое.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>You must save the material before using it.</source>
-      <translation type="unfinished">You must save the material before using it.</translation>
+      <translation>Вы должны сохранить материал перед его использованием.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1310"/>
       <source>Unsaved Material</source>
-      <translation type="unfinished">Unsaved Material</translation>
+      <translation>Несохраненный материал</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1311"/>
       <source>Do you want to save your changes to the material before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to the material before closing?</translation>
+      <translation>Вы хотите сохранить изменения в материале перед закрытием?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1313"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
-      <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
+      <translation>Если вы не сохранитесь, все изменения будут безвозвратно утеряны.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="166"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="555"/>
+      <location filename="../../MaterialSave.cpp" line="561"/>
       <source>Confirm Delete</source>
       <translation>Подтвердите удаление</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="168"/>
+      <location filename="../../Array2D.cpp" line="174"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Are you sure you want to delete the row?</source>
       <translation>Вы уверены, что хотите удалить эту строку?</translation>
@@ -1197,13 +1197,13 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Appearance...</source>
-      <translation type="unfinished">Appearance...</translation>
+      <translation>Внешний вид...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <location filename="../../Command.cpp" line="92"/>
       <source>Sets the display properties of the selected object</source>
-      <translation type="unfinished">Sets the display properties of the selected object</translation>
+      <translation>Устанавливает свойства отображения выбранного объекта</translation>
     </message>
   </context>
   <context>
@@ -1211,13 +1211,13 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>Material...</source>
-      <translation type="unfinished">Material...</translation>
+      <translation>Материал...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="119"/>
       <location filename="../../Command.cpp" line="121"/>
       <source>Sets the material of the selected object</source>
-      <translation type="unfinished">Sets the material of the selected object</translation>
+      <translation>Настроить материал выбранного объекта</translation>
     </message>
   </context>
   <context>

@@ -178,13 +178,8 @@ void StartupProcess::setThemePaths()
         QIcon::setThemeSearchPaths(searchPaths);
     }
 
-    // KDE file dialog needs icons from the desktop theme
-    QIcon::setFallbackThemeName(QIcon::themeName());
-
     std::string name = hTheme->GetASCII("Name");
-    if (name.empty()) {
-        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
-    } else {
+    if (!name.empty()) {
         QIcon::setThemeName(QString::fromLatin1(name.c_str()));
     }
 }
@@ -217,6 +212,7 @@ void StartupPostProcess::setLoadFromPythonModule(bool value)
 
 void StartupPostProcess::execute()
 {
+    showSplashScreen();
     setWindowTitle();
     setProcessMessages();
     setAutoSaving();
@@ -425,7 +421,7 @@ bool StartupPostProcess::hiddenMainWindow() const
     return hidden;
 }
 
-void StartupPostProcess::showMainWindow()
+void StartupPostProcess::showSplashScreen()
 {
     bool hidden = hiddenMainWindow();
 
@@ -433,7 +429,10 @@ void StartupPostProcess::showMainWindow()
     if (!hidden && !loadFromPythonModule) {
         mainWindow->startSplasher();
     }
+}
 
+void StartupPostProcess::showMainWindow()
+{
     // running the GUI init script
     try {
         Base::Console().Log("Run Gui init script\n");

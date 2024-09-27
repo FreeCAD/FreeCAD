@@ -3319,23 +3319,28 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         if (sketchHandler)
             deactivateHandler();
 
-        // Resets the override draw style mode when leaving the sketch edit mode.
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-        auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
-        if (disableShadedView) {
-            Gui::Document* doc = Gui::Application::Instance->activeDocument();
-            Gui::MDIView* mdi = doc->getActiveView();
-            Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
+        Gui::MDIView* mdi = getInventorView();
 
+        // handle the override draw style mode only if there's a 3D view, otherwise SIGSEGV may
+        // occur as described in https://github.com/FreeCAD/FreeCAD/issues/15918
+        if (mdi) {
+
+            // Resets the override draw style mode when leaving the sketch edit mode.
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-            auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+            auto disableShadedView = hGrp->GetBool("DisableShadedView", true);
+            if (disableShadedView) {
+                Gui::View3DInventorViewer* viewer =
+                    static_cast<Gui::View3DInventor*>(mdi)->getViewer();
 
-            if (viewer)
-            {
-                viewer->updateOverrideMode(OverrideMode);
-                viewer->setOverrideMode(OverrideMode);
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                auto OverrideMode = hGrp->GetASCII("OverrideMode", "As Is");
+
+                if (viewer) {
+                    viewer->updateOverrideMode(OverrideMode);
+                    viewer->setOverrideMode(OverrideMode);
+                }
             }
         }
 
@@ -3875,7 +3880,12 @@ bool ViewProviderSketch::addSelection(const std::string& subNameSuffix, float x,
 bool ViewProviderSketch::addSelection2(const std::string& subNameSuffix, float x, float y, float z)
 {
     return Gui::Selection().addSelection2(
-        editDocName.c_str(), editObjName.c_str(), (editSubName + subNameSuffix).c_str(), x, y, z);
+        editDocName.c_str(),
+        editObjName.c_str(),
+        (editSubName + getSketchObject()->convertSubName(subNameSuffix)).c_str(),
+        x,
+        y,
+        z);
 }
 
 bool ViewProviderSketch::setPreselect(const std::string& subNameSuffix, float x, float y, float z)

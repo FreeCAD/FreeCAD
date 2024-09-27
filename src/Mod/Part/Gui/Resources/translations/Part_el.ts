@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="301"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Κορυφή</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="302"/>
@@ -570,13 +570,13 @@
       <location filename="../../AttacherTexts.cpp" line="145"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY παράλληλο προς το επίπεδο</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</translation>
+      <translation>Το επίπεδο X' Y' είναι παράλληλο προς το επίπεδο (XY του αντικειμένου) και διέρχεται από την κορυφή</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="148"/>
@@ -779,13 +779,13 @@
       <location filename="../../AttacherTexts.cpp" line="67"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY παράλληλο προς το επίπεδο</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</translation>
+      <translation>Το επίπεδο X' Y' είναι παράλληλο προς το επίπεδο (XY του αντικειμένου) και διέρχεται από την κορυφή.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="70"/>
@@ -1219,7 +1219,7 @@
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>Ορίστε ξεχωριστά το χρώμα της κάθε έδρας του επιλεγμένου αντικειμένου.</translation>
     </message>
   </context>
   <context>
@@ -1360,7 +1360,7 @@
     <message>
       <location filename="../../Command.cpp" line="735"/>
       <source>Compound tools</source>
-      <translation type="unfinished">Compound tools</translation>
+      <translation>Σύνθετα εργαλεία</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="736"/>
@@ -1396,7 +1396,7 @@
     <message>
       <location filename="../../Command.cpp" line="1737"/>
       <source>Offset:</source>
-      <translation type="unfinished">Offset:</translation>
+      <translation>Μετατόπιση:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1738"/>
@@ -1544,12 +1544,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="325"/>
       <source>Create shape element copy</source>
-      <translation type="unfinished">Create shape element copy</translation>
+      <translation>Δημιουργία αντιγράφου στοιχείου σχήματος</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="326"/>
       <source>Create a non-parametric copy of the selected shape element</source>
-      <translation type="unfinished">Create a non-parametric copy of the selected shape element</translation>
+      <translation>Δημιουργία ενός μη παραμετρικού αντιγράφου του επιλεγμένου στοιχείου σχήματος</translation>
     </message>
   </context>
   <context>
@@ -1562,7 +1562,7 @@
     <message>
       <location filename="../../Command.cpp" line="1010"/>
       <source>Export CAD file...</source>
-      <translation type="unfinished">Export CAD file...</translation>
+      <translation>Εξαγωγή αρχείου CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1011"/>
@@ -1634,7 +1634,7 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>Import CAD file...</source>
-      <translation type="unfinished">Import CAD file...</translation>
+      <translation>Εισαγωγή αρχείου CAD...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
@@ -2128,7 +2128,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Fusion</source>
-      <translation type="unfinished">Fusion</translation>
+      <translation>Συγχώνευση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="876"/>
@@ -2216,7 +2216,7 @@ of projection.</translation>
       <translation type="unfinished">Change face colors</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>Παρεμβολή ορθογώνιων διατομών</translation>
     </message>
@@ -2247,7 +2247,7 @@ of projection.</translation>
       <translation>Στερεό</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="367"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>Σάρωση</translation>
     </message>
@@ -4362,27 +4362,27 @@ the sketch plane's normal vector will be used</translation>
       <translation>Επιλεγμένα προφίλ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>Πολύ λίγα στοιχεία</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
       <translation>Απαιτούνται τουλάχιστον δύο κορυφές, ακμές, σύρματα ή όψεις.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="213"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Κορυφή/Ακμή/Σύρμα/Όψη</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>Παρεμβολή ορθογώνιων διατομών</translation>
     </message>
@@ -4739,69 +4739,69 @@ only created cuts will be visible</translation>
       <translation>Επιλεγμένα προφίλ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>Πολύ λίγα στοιχεία</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation>Απαιτείται τουλάχιστον μία ακμή ή ένα σύρμα.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>Μη έγκυρη επιλογή</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation type="unfinished">Select one or more edges from a single object.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>Το '%1' δεν μπορεί να χρησιμοποιηθεί ως προφίλ και διαδρομή.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="379"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>Σφάλμα εισαγωγής</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>Έγινε</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation>Επιλέξτε μια ή περισσότερες συνδεδεμένες ακμές στην τρισδιάστατη προβολή και πιέστε την επιλογή 'Έγινε'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>Διαδρομή σάρωσης</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Η επιλεγμένη διαδρομή σάρωσης είναι μη έγκυρη.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="456"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>Σάρωση</translation>
     </message>
@@ -5444,7 +5444,7 @@ Individual boolean operation checks:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="482"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Επιλέξτε ένα ή περισσότερα προφίλ και στη συνέχεια επιλέξτε μια ακμή ή ένα σύρμα στην Τρισδιάστατη προβολή ως διαδρομή σάρωσης.</translation>
@@ -5949,7 +5949,7 @@ Do you want to continue?</source>
       <translation type="unfinished">Edit projection</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="887"/>
       <source>Set appearance per face...</source>
       <translation type="unfinished">Set appearance per face...</translation>
     </message>

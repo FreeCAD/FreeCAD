@@ -1644,19 +1644,24 @@ TopoDS_Edge GeometryUtils::asCircle(TopoDS_Edge splineEdge, bool& arc)
     gp_Pnt endPoint = curveAdapt.Value(lastParam);
 
     arc = true;
-    if (startPoint.IsEqual(endPoint, 0.001)) {    //more reliable than IsClosed flag
-        arc = false;
-    }
     double midRange = (lastParam + firstParam) / 2;
     gp_Pnt midPoint = curveAdapt.Value(midRange);
-    Handle(Geom_Circle) circle3Points = GC_MakeCircle(startPoint, midPoint, endPoint);
+    if (startPoint.IsEqual(endPoint, 0.001)) {    //more reliable than IsClosed flag
+        arc = false;
+        // can not use the start and end points since they are the same and that will give us only
+        // 2 of the 3 points we need.  Q: why did this work sometimes?
+        // Q: do we need to account for reversed parameter range?  we don't use reversed edges much.
+        auto parmRange = lastParam - firstParam;
+        auto lowParm = parmRange * 0.25;
+        auto lowPoint = curveAdapt.Value(lowParm);
+        auto highParm = parmRange* 0.75;
+        auto highPoint = curveAdapt.Value(highParm);
+        Handle(Geom_Circle) circle3Points = GC_MakeCircle(lowPoint, midPoint, highPoint);
 
-    if (circle3Points.IsNull()) {
-        return {};
-    }
+        if (circle3Points.IsNull()) {
+            return {};
+        }
 
-    if (!arc) {
-        // whole circle
         return BRepBuilderAPI_MakeEdge(circle3Points);
     }
 

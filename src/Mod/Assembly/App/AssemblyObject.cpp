@@ -111,39 +111,6 @@ static void printPlacement(Base::Placement plc, const char* name)
         angle);
 }*/
 
-static bool isLink(App::DocumentObject* obj)
-{
-    if (!obj) {
-        return false;
-    }
-
-    auto* link = dynamic_cast<App::Link*>(obj);
-    if (link) {
-        return link->ElementCount.getValue() == 0;
-    }
-
-    auto* linkEl = dynamic_cast<App::LinkElement*>(obj);
-    if (linkEl) {
-        return true;
-    }
-
-    return false;
-}
-
-static bool isLinkGroup(App::DocumentObject* obj)
-{
-    if (!obj) {
-        return false;
-    }
-
-    auto* link = dynamic_cast<App::Link*>(obj);
-    if (link) {
-        return link->ElementCount.getValue() > 0;
-    }
-
-    return false;
-}
-
 // ================================ Assembly Object ============================
 
 PROPERTY_SOURCE(Assembly::AssemblyObject, App::Part)
@@ -1733,7 +1700,7 @@ void AssemblyObject::ensureIdentityPlacements()
     std::vector<App::DocumentObject*> group = Group.getValues();
     for (auto* obj : group) {
         // When used in assembly, link groups must have identity placements.
-        if (isLinkGroup(obj)) {
+        if (obj->isLinkGroup()) {
             auto* link = dynamic_cast<App::Link*>(obj);
             auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
             if (!pPlc || !link) {
@@ -2078,6 +2045,7 @@ void AssemblyObject::setJointActivated(App::DocumentObject* joint, bool val)
         propActivated->setValue(val);
     }
 }
+
 bool AssemblyObject::getJointActivated(App::DocumentObject* joint)
 {
     auto* propActivated = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
@@ -2085,65 +2053,6 @@ bool AssemblyObject::getJointActivated(App::DocumentObject* joint)
         return propActivated->getValue();
     }
     return false;
-}
-
-Base::Placement AssemblyObject::getPlacementFromProp(App::DocumentObject* obj, const char* propName)
-{
-    Base::Placement plc = Base::Placement();
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName(propName));
-    if (propPlacement) {
-        plc = propPlacement->getValue();
-    }
-    return plc;
-}
-
-
-Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetObj,
-                                                   App::DocumentObject* rootObj,
-                                                   const std::string& sub)
-{
-    if (!targetObj || !rootObj || sub == "") {
-        return Base::Placement();
-    }
-    std::vector<std::string> names = splitSubName(sub);
-
-    App::Document* doc = rootObj->getDocument();
-    Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
-
-    for (auto& name : names) {
-        App::DocumentObject* obj = doc->getObject(name.c_str());
-        if (!obj) {
-            return Base::Placement();
-        }
-
-        plc = plc * getPlacementFromProp(obj, "Placement");
-
-        if (obj == targetObj) {
-            return plc;
-        }
-        if (isLink(obj)) {
-            // Update doc in case its an external link.
-            doc = obj->getLinkedObject()->getDocument();
-        }
-    }
-
-    // If targetObj has not been found there's a problem
-    return Base::Placement();
-}
-
-Base::Placement AssemblyObject::getGlobalPlacement(App::DocumentObject* targetObj,
-                                                   App::PropertyXLinkSub* prop)
-{
-    if (!targetObj || !prop) {
-        return Base::Placement();
-    }
-
-    std::vector<std::string> subs = prop->getSubValues();
-    if (subs.empty()) {
-        return Base::Placement();
-    }
-
-    return getGlobalPlacement(targetObj, prop->getValue(), subs[0]);
 }
 
 double AssemblyObject::getJointDistance(App::DocumentObject* joint)
@@ -2193,7 +2102,7 @@ std::vector<std::string> AssemblyObject::getSubAsList(App::PropertyXLinkSub* pro
         return {};
     }
 
-    return splitSubName(subs[0]);
+    return Base::Tools::splitSubName(subs[0]);
 }
 
 std::vector<std::string> AssemblyObject::getSubAsList(App::DocumentObject* obj, const char* pName)
@@ -2201,27 +2110,6 @@ std::vector<std::string> AssemblyObject::getSubAsList(App::DocumentObject* obj, 
     auto* prop = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(pName));
 
     return getSubAsList(prop);
-}
-
-std::vector<std::string> AssemblyObject::splitSubName(const std::string& sub)
-{
-    // Turns 'Part.Part001.Body.Pad.Edge1'
-    // Into ['Part', 'Part001','Body','Pad','Edge1']
-    std::vector<std::string> subNames;
-    std::string subName;
-    std::istringstream subNameStream(sub);
-    while (std::getline(subNameStream, subName, '.')) {
-        subNames.push_back(subName);
-    }
-
-    // Check if the last character of the input string is the delimiter.
-    // If so, add an empty string to the subNames vector.
-    // Because the last subname is the element name and can be empty.
-    if (!sub.empty() && sub.back() == '.') {
-        subNames.push_back("");  // Append empty string for trailing dot.
-    }
-
-    return subNames;
 }
 
 std::string AssemblyObject::getElementFromProp(App::DocumentObject* obj, const char* pName)
@@ -2264,7 +2152,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
 
     App::Document* doc = obj->getDocument();
 
-    std::vector<std::string> names = splitSubName(sub);
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
 
     // Lambda function to check if the typeId is a BodySubObject
     auto isBodySubObject = [](App::DocumentObject* obj) -> bool {
@@ -2306,7 +2194,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             return obj;
         }
 
-        if (obj->isDerivedFrom<App::Part>() || isLinkGroup(obj)) {
+        if (obj->isDerivedFrom<App::Part>() || obj->isLinkGroup()) {
             continue;
         }
         else if (obj->isDerivedFrom<PartDesign::Body>()) {
@@ -2316,7 +2204,7 @@ App::DocumentObject* AssemblyObject::getObjFromRef(App::DocumentObject* obj, std
             // Primitive, fastener, gear, etc.
             return obj;
         }
-        else if (isLink(obj)) {
+        else if (obj->isLink()) {
             App::DocumentObject* linked_obj = obj->getLinkedObject();
             if (linked_obj->isDerivedFrom<PartDesign::Body>()) {
                 auto* retObj = handlePartDesignBody(linked_obj, it);
@@ -2370,7 +2258,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
 
     App::Document* doc = obj->getDocument();
 
-    std::vector<std::string> names = splitSubName(sub);
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
     names.insert(names.begin(), obj->getNameInDocument());
 
     bool assemblyPassed = false;
@@ -2381,7 +2269,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;
         }
 
-        if (isLink(obj)) {  // update the document if necessary for next object
+        if (obj->isLink()) {  // update the document if necessary for next object
             doc = obj->getLinkedObject()->getDocument();
         }
 
@@ -2398,7 +2286,7 @@ App::DocumentObject* AssemblyObject::getMovingPartFromRef(App::DocumentObject* o
             continue;  // we ignore groups.
         }
 
-        if (isLinkGroup(obj)) {
+        if (obj->isLinkGroup()) {
             continue;
         }
 

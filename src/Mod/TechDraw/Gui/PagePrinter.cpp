@@ -49,6 +49,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "PagePrinter.h"
@@ -58,6 +59,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 constexpr double A4Heightmm = 297.0;
 constexpr double A4Widthmm = 210.0;
@@ -148,7 +150,9 @@ void PagePrinter::printPdf(std::string file)
     }
 
     // set up the pdfwriter
-    QString outputFile = QString::fromUtf8(file.data(), file.size());
+    auto filespec = Base::Tools::escapeEncodeFilename(file);
+    filespec = DU::cleanFilespecBackslash(file);
+    QString outputFile = Base::Tools::fromStdString(filespec);
     QPdfWriter pdfWriter(outputFile);
     QPageLayout pageLayout = pdfWriter.pageLayout();
     auto marginsdb = pageLayout.margins(QPageLayout::Millimeter);
@@ -375,22 +379,25 @@ void PagePrinter::saveSVG(std::string file)
         Base::Console().Warning("PagePrinter - no file specified\n");
         return;
     }
-    QString filename = QString::fromUtf8(file.data(), file.size());
+    auto filespec = Base::Tools::escapeEncodeFilename(file);
+    filespec = DU::cleanFilespecBackslash(file);
+    QString filename = Base::Tools::fromStdString(filespec);
     if (m_scene) {
         m_scene->saveSvg(filename);
     }
 }
 
-void PagePrinter::saveDXF(std::string fileName)
+void PagePrinter::saveDXF(std::string inFileName)
 {
     TechDraw::DrawPage* page = m_vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
+    auto filespec = Base::Tools::escapeEncodeFilename(inFileName);
+    filespec = DU::cleanFilespecBackslash(filespec);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
     Gui::Command::doCommand(Gui::Command::Doc, "import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,
                             "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")",
-                            PageName.c_str(), (const char*)fileName.c_str());
+                            PageName.c_str(), filespec.c_str());
     Gui::Command::commitCommand();
 }
 

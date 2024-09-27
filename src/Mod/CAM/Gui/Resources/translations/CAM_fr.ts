@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Area workplane</source>
-      <translation>Plan de travail de la zone</translation>
+      <translation>Zone du plan de travail</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="144"/>
@@ -1379,7 +1379,7 @@ Réinitialiser supprime tous les éléments en cours de la liste et remplit la l
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations</source>
-      <translation>Spécifier si le surfaçage doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée) ou si la boîte englobante doit être surfaçée.
+      <translation>Spécifier si le surfaçage doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée) ou si la boîte englobante doit être surfacée.
 
 Cette dernière option peut être utilisée pour le surfaçage de l'ensemble de la zone du brut afin de garantir des hauteurs uniformes pour les opérations suivantes.</translation>
     </message>
@@ -3127,7 +3127,9 @@ Si le rayon est trop grand pour la forme de l'attache, il est réduit au rayon m
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
-      <translation>Liste des attaches actuelles. Pour modifier des coordonnées, double-cliquer ou par le bouton Éditer. Les attaches sont automatiquement désactivées si elles se chevauchent avec l'attache précédente ou si elles ne se trouvent pas sur la polyligne de base.</translation>
+      <translation>Liste des attaches actuelles.
+Les coordonnées peuvent être modifiées en double-cliquant ou en utilisant le bouton Éditer.
+Les attaches sont automatiquement désactivées si elles se chevauchent avec l'attache précédente ou si elles ne se trouvent pas sur la polyligne de base.</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
@@ -3326,13 +3328,13 @@ Si le rayon est trop grand pour la forme de l'attache, il est réduit au rayon m
       <translation>Arrêter</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation>Activer/reprendre la simulation</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>Exécuter</translation>
@@ -4093,60 +4095,60 @@ Par défaut : 3 mm</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="189"/>
+      <location filename="../../../InitGui.py" line="195"/>
       <source>Project Setup</source>
       <translation>Configuration du projet</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="190"/>
+      <location filename="../../../InitGui.py" line="196"/>
       <source>Tool Commands</source>
       <translation>Commandes de l’outil</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>New Operations</source>
       <translation>Nouvelles opérations</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="195"/>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="201"/>
+      <location filename="../../../InitGui.py" line="235"/>
       <source>Path Modification</source>
       <translation>Modifications du parcours</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="197"/>
+      <location filename="../../../InitGui.py" line="203"/>
       <source>Helpful Tools</source>
       <translation>Outils utiles</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="200"/>
-      <location filename="../../../InitGui.py" line="214"/>
-      <location filename="../../../InitGui.py" line="221"/>
-      <location filename="../../../InitGui.py" line="228"/>
-      <location filename="../../../InitGui.py" line="236"/>
+      <location filename="../../../InitGui.py" line="206"/>
+      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="227"/>
+      <location filename="../../../InitGui.py" line="234"/>
       <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="244"/>
-      <location filename="../../../InitGui.py" line="247"/>
+      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="253"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="215"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Path Dressup</source>
       <translation>Finitions du parcours</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="222"/>
+      <location filename="../../../InitGui.py" line="228"/>
       <source>Supplemental Commands</source>
       <translation>Autres commandes</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="237"/>
+      <location filename="../../../InitGui.py" line="243"/>
       <source>Specialty Operations</source>
       <translation>Opérations spécialisées</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="254"/>
       <source>Utils</source>
       <translation>Utilitaires</translation>
     </message>
@@ -4222,7 +4224,7 @@ Par défaut : 3 mm</translation>
       <translation>L'angle du bord coupant (%.2f) entraîne une longueur négative de la pointe de l'outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation>Sauvegarder le rapport de contrôle de l'outil Rechercher des erreurs</translation>
     </message>
@@ -5613,7 +5615,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="51"/>
       <source>Pattern method</source>
-      <translation>Méthode de motif</translation>
+      <translation>Méthode par gabarit</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="60"/>
@@ -6355,7 +6357,7 @@ Annulation de la création de l'opération</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="92"/>
-      <location filename="../../../InitGui.py" line="265"/>
+      <location filename="../../../InitGui.py" line="271"/>
       <location filename="../../AppPathGui.cpp" line="91"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -6372,7 +6374,7 @@ Annulation de la création de l'opération</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="182"/>
+      <location filename="../../../InitGui.py" line="188"/>
       <source>3D Operations</source>
       <translation>Opérations 3D</translation>
     </message>
@@ -6382,7 +6384,7 @@ Annulation de la création de l'opération</translation>
     <message>
       <location filename="../../../PathCommands.py" line="59"/>
       <source>Finish Selecting Loop</source>
-      <translation>Terminer la boucle de sélection</translation>
+      <translation>Sélectionner une boucle</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="63"/>
@@ -8509,34 +8511,34 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <translation>Copier les fichiers des exemples dans le nouveau répertoire {} ?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Table d'outils en JSON (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation>Enregistrer la bibliothèque d'outils coupants</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Outil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Forme</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>Table d'outils LinuxCNC (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation>Table d'outils CAMotics (*.json)</translation>
     </message>

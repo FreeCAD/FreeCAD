@@ -1219,7 +1219,7 @@
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>선택한 객체의 각각의 면의 색상을 설정합니다.</translation>
     </message>
   </context>
   <context>
@@ -1252,7 +1252,7 @@
       <location filename="../../CommandParametric.cpp" line="118"/>
       <location filename="../../CommandParametric.cpp" line="123"/>
       <source>Cube</source>
-      <translation type="unfinished">Cube</translation>
+      <translation>입방체</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
@@ -1688,7 +1688,7 @@
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from wires</source>
-      <translation type="unfinished">Make face from wires</translation>
+      <translation>철사로부터 면을 만듦</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
@@ -1913,7 +1913,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1960"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>두 모서리 혹은 두 와이어(로프)를 이용하여 선직면 생성</translation>
+      <translation>두 모서리 혹은 두 철사를 이용하여 선직면 생성</translation>
     </message>
   </context>
   <context>
@@ -2211,10 +2211,10 @@ of projection.</source>
     <message>
       <location filename="../../TaskFaceAppearances.cpp" line="454"/>
       <source>Change face colors</source>
-      <translation type="unfinished">Change face colors</translation>
+      <translation>면의 색상 변경</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="201"/>
+      <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
@@ -2245,7 +2245,7 @@ of projection.</source>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="367"/>
+      <location filename="../../TaskSweep.cpp" line="368"/>
       <source>Sweep</source>
       <translation>스윕</translation>
     </message>
@@ -2493,7 +2493,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="392"/>
       <source>Select a shape on the right side, first</source>
-      <translation>오른쪽 면의 셰이프를 먼저 선택</translation>
+      <translation>오른쪽의 형상을 먼저 선택</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="397"/>
@@ -2885,7 +2885,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="280"/>
       <source>Fillet Parameter</source>
-      <translation>필렛 파라메터</translation>
+      <translation>모깎기 매개변수</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
@@ -3028,8 +3028,8 @@ If both lengths are zero, magnitude of direction is used.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="963"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>유효한 셰이프가 선택되지 않았습니다.
-드롭다운 상자에서 유효한 셰이프를 선택하세요.</translation>
+      <translation>유효한 형상이 선택되지 않았습니다.
+드롭다운 상자에서 유효한 형상 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1014"/>
@@ -4003,7 +4003,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="46"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>실제 표면과 공간 분할의 편차를 정의</translation>
+      <translation>실제 표면에 대한 쪽매붙임의 편차를 정의합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
@@ -4056,7 +4056,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>스케치 기반 작업 후 자동으로 모델을 수정</translation>
+      <translation>스케치 기반 작업 후 자동으로 모형의 선 정리</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="83"/>
@@ -4089,7 +4089,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape appearance</source>
-      <translation type="unfinished">Shape appearance</translation>
+      <translation>형상의 외관</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
@@ -4099,12 +4099,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Shape color</source>
-      <translation>모양 색상</translation>
+      <translation>형상의 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
       <source>The default color for new shapes</source>
-      <translation>새 셰이프에 대한 기본 색상</translation>
+      <translation>새 형상의 기본 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="61"/>
@@ -4149,22 +4149,22 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>형상 투명도</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="189"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>새 형상의 기본 투명도</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>형상의 광택</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>새 형상의 기본 광택</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4174,7 +4174,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>The default line color for new shapes</source>
-      <translation>새 셰이프의 기본 선 색</translation>
+      <translation>새 형상의 기본 선 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="288"/>
@@ -4184,7 +4184,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="295"/>
       <source>The default line thickness for new shapes</source>
-      <translation>새 셰이프의 기본 선 두께</translation>
+      <translation>새 형상의 기본 선 두께</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="298"/>
@@ -4195,17 +4195,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="323"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>꼭지점 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="330"/>
       <source>The default color for new vertices</source>
-      <translation type="unfinished">The default color for new vertices</translation>
+      <translation>새 꼭지점의 기본 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="356"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>꼭지점 크기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="363"/>
@@ -4220,7 +4220,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="398"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>3D 뷰에서 테두리 상자 색상</translation>
+      <translation>3D보기에서 경계 상자 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="424"/>
@@ -4251,12 +4251,12 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
       <source>Default Annotation color</source>
-      <translation type="unfinished">Default Annotation color</translation>
+      <translation>기본 주석의 색상</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
       <source>Text color</source>
-      <translation>텍스트 색</translation>
+      <translation>문자 색</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="526"/>
@@ -4356,27 +4356,27 @@ the sketch plane's normal vector will be used</source>
       <translation>선택된 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>Too few elements</source>
       <translation>너무 적은 요소들</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="179"/>
+      <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>적어도 두 개의 꼭지점과 모서리, 선이나 면이 필요 합니다.</translation>
+      <translation>적어도 두 개의 꼭지점과 모서리, 철사나 면이 필요 합니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="213"/>
+      <location filename="../../TaskLoft.cpp" line="214"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="242"/>
+      <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>꼭지점/가장자리/선/면</translation>
+      <translation>꼭지점/모서리/철사/면</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="243"/>
+      <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
       <translation>로프트</translation>
     </message>
@@ -4536,7 +4536,7 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../SectionCutting.ui" line="254"/>
       <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of cut face</source>
-      <translation type="unfinished">Color of cut face</translation>
+      <translation>단면의 색상</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -4591,7 +4591,7 @@ will get the same color</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
       <source>Color for all objects</source>
-      <translation type="unfinished">Color for all objects</translation>
+      <translation>모든 객체들의 색상</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="511"/>
@@ -4733,69 +4733,69 @@ only created cuts will be visible</translation>
       <translation>선택된 윤곽</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>Too few elements</source>
       <translation>너무 적은 요소들</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="330"/>
+      <location filename="../../TaskSweep.cpp" line="331"/>
       <source>At least one edge or wire is required.</source>
       <translation type="unfinished">At least one edge or wire is required.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Invalid selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="334"/>
+      <location filename="../../TaskSweep.cpp" line="335"/>
       <source>Select one or more edges from a single object.</source>
       <translation type="unfinished">Select one or more edges from a single object.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>Wrong selection</source>
       <translation>잘못 된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="341"/>
+      <location filename="../../TaskSweep.cpp" line="342"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%'은 윤곽과 경로로써 사용할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="379"/>
+      <location filename="../../TaskSweep.cpp" line="380"/>
       <source>Input error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="412"/>
+      <location filename="../../TaskSweep.cpp" line="413"/>
       <source>Done</source>
       <translation>완료</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="414"/>
+      <location filename="../../TaskSweep.cpp" line="415"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
       <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>Sweep path</source>
       <translation>스윕 경로</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="436"/>
-      <location filename="../../TaskSweep.cpp" line="444"/>
+      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="445"/>
       <source>The selected sweep path is invalid.</source>
       <translation type="unfinished">The selected sweep path is invalid.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="456"/>
+      <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="458"/>
       <source>Sweep</source>
       <translation>스윕</translation>
     </message>
@@ -5434,7 +5434,7 @@ Individual boolean operation checks:</translation>
       <translation>프레네</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="482"/>
+      <location filename="../../TaskSweep.cpp" line="483"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>쓸기경로를 설정하기 위해 하나 이상의 윤곽을 선택하고 3D 보기에서 모서리나 철사를 선택</translation>
@@ -5719,7 +5719,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Empty Wire</source>
-      <translation>빈 와이어</translation>
+      <translation>빈 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
@@ -5729,7 +5729,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Self Intersecting Wire</source>
-      <translation>스스로 교차하는 와이어</translation>
+      <translation>자기 교차하는 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
@@ -5739,22 +5739,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid Wire</source>
-      <translation>잘못 된 와이어</translation>
+      <translation>잘못 된 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Redundant Wire</source>
-      <translation>중복 와이어</translation>
+      <translation>중복된 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Intersecting Wires</source>
-      <translation>교차 와이어</translation>
+      <translation>교차하는 철사</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation>와이어의 잘못 된 Imbrication</translation>
+      <translation>철사의 잘못된 중첩</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
@@ -5937,7 +5937,7 @@ Do you want to continue?</source>
       <translation>투상 편집</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="878"/>
+      <location filename="../../ViewProviderExt.cpp" line="887"/>
       <source>Set appearance per face...</source>
       <translation type="unfinished">Set appearance per face...</translation>
     </message>
@@ -6344,7 +6344,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Wires</source>
-      <translation>와이어</translation>
+      <translation>철사</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
@@ -6739,7 +6739,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Wire is not closed.</source>
-      <translation type="unfinished">Wire is not closed.</translation>
+      <translation>철사가 닫히지 않았습니다.</translation>
     </message>
   </context>
   <context>

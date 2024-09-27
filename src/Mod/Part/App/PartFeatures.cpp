@@ -126,9 +126,15 @@ App::DocumentObjectExecReturn* RuledSurface::execute()
         std::vector<TopoShape> shapes;
         std::array<App::PropertyLinkSub*, 2> links = {&Curve1, &Curve2};
         for (auto link : links) {
+            App::DocumentObject* obj = link->getValue();
+            const Part::TopoShape part = Part::Feature::getTopoShape(obj);
+            if (part.isNull()) {
+                return new App::DocumentObjectExecReturn("No shape linked.");
+            }
+            // if no explicit sub-shape is selected use the whole part
             const auto& subs = link->getSubValues();
             if (subs.empty()) {
-                shapes.push_back(getTopoShape(link->getValue()));
+                shapes.push_back(part);
             }
             else if (subs.size() != 1) {
                 return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");

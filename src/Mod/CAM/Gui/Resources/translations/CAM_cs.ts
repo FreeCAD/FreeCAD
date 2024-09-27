@@ -647,7 +647,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</source>
-      <translation type="unfinished">If checked the path is constrained by the solid. Otherwise the volume of the solid describes a &apos;keep out&apos; zone</translation>
+      <translation>Je-li zaškrtnuto, cesta je zavazbena tělesem. V opačném případě popisuje objem tělesa zónu &apos;nevstupovat&apos;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -2297,9 +2297,9 @@ Pokud je zadaná výška 0, dressup použije polovinu výšky dílu. Pokud je v�
       <source>Radius of the fillet on the tag&apos;s top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
-      <translation type="unfinished">Radius of the fillet on the tag&apos;s top edge.
+      <translation>Poloměr zaoblení na horním hraně štítku.
 
-If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</translation>
+Pokud je poloměr větší než ten, který podporuje samotný tvar štítku, výsledným tvarem bude kopule.</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="109"/>
@@ -3311,13 +3311,13 @@ Pokud existuje více nástrojů nebo tvarů nástrojů se stejným názvem v rů
       <translation>Stop</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation>Aktivovat / pokračovat v simulaci</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>Spustit</translation>
@@ -4080,60 +4080,60 @@ Výchozí: 3 mm</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="189"/>
+      <location filename="../../../InitGui.py" line="195"/>
       <source>Project Setup</source>
       <translation>Nastavení projektu</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="190"/>
+      <location filename="../../../InitGui.py" line="196"/>
       <source>Tool Commands</source>
       <translation>Příkazy nástroje</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>New Operations</source>
       <translation>Nová operace</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="195"/>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="201"/>
+      <location filename="../../../InitGui.py" line="235"/>
       <source>Path Modification</source>
       <translation>Úprava dráhy</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="197"/>
+      <location filename="../../../InitGui.py" line="203"/>
       <source>Helpful Tools</source>
       <translation>Užitečné nástroje</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="200"/>
-      <location filename="../../../InitGui.py" line="214"/>
-      <location filename="../../../InitGui.py" line="221"/>
-      <location filename="../../../InitGui.py" line="228"/>
-      <location filename="../../../InitGui.py" line="236"/>
+      <location filename="../../../InitGui.py" line="206"/>
+      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="227"/>
+      <location filename="../../../InitGui.py" line="234"/>
       <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="244"/>
-      <location filename="../../../InitGui.py" line="247"/>
+      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="253"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="215"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Path Dressup</source>
       <translation>Path Dressup</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="222"/>
+      <location filename="../../../InitGui.py" line="228"/>
       <source>Supplemental Commands</source>
       <translation>Doplňkové příkazy</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="237"/>
+      <location filename="../../../InitGui.py" line="243"/>
       <source>Specialty Operations</source>
       <translation>Speciální operace</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="254"/>
       <source>Utils</source>
       <translation>Nástroje</translation>
     </message>
@@ -4209,7 +4209,7 @@ Výchozí: 3 mm</translation>
       <translation>Úhel řezné hrany (%.2f) má za následek zápornou délku hrotu nástroje</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
@@ -6343,7 +6343,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="92"/>
-      <location filename="../../../InitGui.py" line="265"/>
+      <location filename="../../../InitGui.py" line="271"/>
       <location filename="../../AppPathGui.cpp" line="91"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -6360,7 +6360,7 @@ Aborting op creation</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="182"/>
+      <location filename="../../../InitGui.py" line="188"/>
       <source>3D Operations</source>
       <translation>3D Operace</translation>
     </message>
@@ -8503,34 +8503,34 @@ For example:
       <translation>Kopírovat ukázkové soubory do nového adresáře {}?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Tooltable JSON (*.fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation>Save toolbit library</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Nástroj</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Útvar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>LinuxCNC tooltable (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>

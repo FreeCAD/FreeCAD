@@ -515,6 +515,7 @@ class _ArchMaterialTaskPanel:
 
     def chooseMat(self, card):
         "sets self.material from a card"
+        card = self.form.comboBox_MaterialsInDir.currentText()
         if card in self.cards:
             import importFCMat
             self.material = importFCMat.read(self.cards[card])

@@ -3323,13 +3323,13 @@ Ako u različitim direktorijima postoje više alata ili oblika alata s istim ime
       <translation>Stop</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="96"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
       <translation>Aktivirajte / nastavite simulaciju</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="99"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>Pokreni</translation>
@@ -4092,60 +4092,60 @@ Zadano: "3mm"</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="189"/>
+      <location filename="../../../InitGui.py" line="195"/>
       <source>Project Setup</source>
       <translation>Projekt - Podešavanje</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="190"/>
+      <location filename="../../../InitGui.py" line="196"/>
       <source>Tool Commands</source>
       <translation>Naredbe Alata</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>New Operations</source>
       <translation>Nove Operacije</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="195"/>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="201"/>
+      <location filename="../../../InitGui.py" line="235"/>
       <source>Path Modification</source>
       <translation>Izmjene Puta</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="197"/>
+      <location filename="../../../InitGui.py" line="203"/>
       <source>Helpful Tools</source>
       <translation>Korisni Alati</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="200"/>
-      <location filename="../../../InitGui.py" line="214"/>
-      <location filename="../../../InitGui.py" line="221"/>
-      <location filename="../../../InitGui.py" line="228"/>
-      <location filename="../../../InitGui.py" line="236"/>
+      <location filename="../../../InitGui.py" line="206"/>
+      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="227"/>
+      <location filename="../../../InitGui.py" line="234"/>
       <location filename="../../../InitGui.py" line="242"/>
-      <location filename="../../../InitGui.py" line="244"/>
-      <location filename="../../../InitGui.py" line="247"/>
+      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="253"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="215"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Path Dressup</source>
       <translation>Priprema Staze</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="222"/>
+      <location filename="../../../InitGui.py" line="228"/>
       <source>Supplemental Commands</source>
       <translation>Dopunske Naredbe</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="237"/>
+      <location filename="../../../InitGui.py" line="243"/>
       <source>Specialty Operations</source>
       <translation>Posebne operacije</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="248"/>
+      <location filename="../../../InitGui.py" line="254"/>
       <source>Utils</source>
       <translation>UslužniProgrami</translation>
     </message>
@@ -4221,7 +4221,7 @@ Zadano: "3mm"</translation>
       <translation>Kut rezanja ruba (%.2f) rezultira negativnom duljinom vrha alata</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="70"/>
+      <location filename="../../../Path/Main/Gui/SanityCmd.py" line="75"/>
       <source>Save Sanity Check Report</source>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
@@ -6379,7 +6379,7 @@ Prekidam OP-stvaranje.</translation>
     <message>
       <location filename="../../../InitGui.py" line="88"/>
       <location filename="../../../InitGui.py" line="92"/>
-      <location filename="../../../InitGui.py" line="265"/>
+      <location filename="../../../InitGui.py" line="271"/>
       <location filename="../../AppPathGui.cpp" line="91"/>
       <source>CAM</source>
       <translation>CAM</translation>
@@ -6396,7 +6396,7 @@ Prekidam OP-stvaranje.</translation>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="182"/>
+      <location filename="../../../InitGui.py" line="188"/>
       <source>3D Operations</source>
       <translation>3D Operacije</translation>
     </message>
@@ -8544,34 +8544,34 @@ Razmotrite specificiranje Materijala obrade</translation>
       <translation>Kopiraj primjerke datoteka u novi direktorij {}?</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="723"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="848"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="726"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
       <source>Tooltable JSON (*.fctl)</source>
       <translation>Tabela Alata JSON  (* .fctl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="725"/>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="853"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="728"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="856"/>
       <source>Save toolbit library</source>
       <translation>Spremi biblioteku nastavaka alata</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="780"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="783"/>
       <source>Tool</source>
       <translation>Alat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="781"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="784"/>
       <source>Shape</source>
       <translation>Oblik</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="849"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="852"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>LinuxCNC Tabela alata (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="851"/>
+      <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="854"/>
       <source>CAMotics tooltable (*.json)</source>
       <translation type="unfinished">CAMotics tooltable (*.json)</translation>
     </message>

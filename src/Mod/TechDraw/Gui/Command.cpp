@@ -88,10 +88,13 @@ void getSelectedShapes(Gui::Command* cmd,
                       App::DocumentObject* faceObj,
                       std::string& faceName);
 
+std::pair<App::DocumentObject*, std::string> faceFromSelection();
+std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
 
 class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // TechDraw_PageDefault
@@ -135,7 +138,8 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
 
         page->Template.setValue(svgTemplate);
-        svgTemplate->Template.setValue(templateFileName.toStdString());
+        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(templateFileName));
+        svgTemplate->Template.setValue(filespec);
 
         updateActive();
         commitCommand();
@@ -205,7 +209,8 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         svgTemplate->translateLabel("DrawSVGTemplate", "Template", svgTemplate->getNameInDocument());
 
         page->Template.setValue(svgTemplate);
-        svgTemplate->Template.setValue(templateFileName.toStdString());
+        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(templateFileName));
+        svgTemplate->Template.setValue(filespec);
 
         updateActive();
         commitCommand();
@@ -446,8 +451,9 @@ void CmdTechDrawView::activated(int iMsg)
                     || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
                     filename = Base::Tools::escapeEncodeFilename(filename);
+                    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-                    doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filename.toUtf8());
+                    doCommand(Doc, "f = open(\"%s\", 'r')", filespec.c_str());
                     doCommand(Doc, "svg = f.read()");
                     doCommand(Doc, "f.close()");
                     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
@@ -461,11 +467,12 @@ void CmdTechDrawView::activated(int iMsg)
                 else {
                     std::string FeatName = getUniqueObjectName("Image");
                     filename = Base::Tools::escapeEncodeFilename(filename);
+                    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
                     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
                     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
                     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
                         FeatName.c_str(), FeatName.c_str());
-                    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filename.toUtf8().constData());
+                    doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), filespec.c_str());
                     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
                     updateActive();
                     commitCommand();
@@ -497,12 +504,17 @@ void CmdTechDrawView::activated(int iMsg)
     dvp->XSource.setValues(xShapes);
 
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
-    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(0.0, -1.0, 0.0)",
-        FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.RotationVector = FreeCAD.Vector(1.0, 0.0, 0.0)",
-        FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(1.0, 0.0, 0.0)",
-        FeatName.c_str());
+    auto dirs = viewDirection();
+    doCommand(Doc,
+              "App.activeDocument().%s.Direction = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.first.x, dirs.first.y, dirs.first.z);
+    doCommand(Doc,
+              "App.activeDocument().%s.RotationVector = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+    doCommand(Doc,
+              "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.12f, %.12f, %.12f)",
+              FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
+
     getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     doCommand(Doc, "App.activeDocument().%s.recompute()", FeatName.c_str());
     commitCommand();
@@ -552,6 +564,10 @@ void CmdTechDrawBrokenView::activated(int iMsg)
         xShapesFromBase = dvp->XSource.getValues();
     }
 
+    auto doc = getDocument();
+    if (dvp) {
+        doc = dvp->getDocument();
+    }
 
     // get the shape objects from the selection
     std::vector<App::DocumentObject*> shapes;
@@ -559,16 +575,17 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     App::DocumentObject* faceObj = nullptr;
     std::string faceName;
     getSelectedShapes(this, shapes, xShapes, faceObj, faceName);
-    shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
-    shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
 
-    if (!dvp || (shapes.empty() && xShapes.empty())) {
+    // we need either a base view (dvp) or some shape objects in the selection
+    if (!dvp && (shapes.empty() && xShapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
             QObject::tr("Please select objects to break or a base view and break definition objects."));
         return;
     }
 
-    auto doc = dvp->getDocument();
+    shapes.insert(shapes.end(), shapesFromBase.begin(), shapesFromBase.end());
+    shapes.insert(xShapes.end(), xShapesFromBase.begin(), xShapesFromBase.end());
+
 
     // pick the Break objects out of the selected pile
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
@@ -641,9 +658,9 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     }
 
     Base::Vector3d projDir = dirs.first;
-    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+    doCommand(Doc, "App.activeDocument().%s.Direction = FreeCAD.Vector(%.6f,%.6f,%.6f)",
               FeatName.c_str(), projDir.x, projDir.y, projDir.z);
-    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+    doCommand(Doc, "App.activeDocument().%s.XDirection = FreeCAD.Vector(%.6f,%.6f,%.6f)",
                   FeatName.c_str(), dirs.second.x, dirs.second.y, dirs.second.z);
     getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
 
@@ -1529,8 +1546,9 @@ void CmdTechDrawSymbol::activated(int iMsg)
     if (!filename.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Symbol");
         filename = Base::Tools::escapeEncodeFilename(filename);
+        auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(filename));
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-        doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filename.toUtf8());
+        doCommand(Doc, "f = open(\"%s\", 'r')", (const char*)filespec.c_str());
         doCommand(Doc, "svg = f.read()");
         doCommand(Doc, "f.close()");
         doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSymbol', '%s')",
@@ -1841,8 +1859,9 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
+    auto filespec = DU::cleanFilespecBackslash(Base::Tools::toStdString(fileName));
     doCommand(Doc, "TechDraw.writeDXFPage(App.activeDocument().%s, u\"%s\")", PageName.c_str(),
-              (const char*)fileName.toUtf8());
+              filespec.c_str());
     commitCommand();
 }
 
@@ -1972,3 +1991,39 @@ void getSelectedShapes(Gui::Command* cmd,
         }
     }
 }
+
+std::pair<Base::Vector3d, Base::Vector3d> viewDirection()
+{
+    if (!Preferences::useCameraDirection()) {
+        return { Base::Vector3d(0, -1, 0), Base::Vector3d(1, 0, 0) };
+    }
+
+    auto faceInfo = faceFromSelection();
+    if (faceInfo.first) {
+        return DrawGuiUtil::getProjDirFromFace(faceInfo.first, faceInfo.second);
+    }
+
+    return DrawGuiUtil::get3DDirAndRot();
+}
+
+std::pair<App::DocumentObject*, std::string> faceFromSelection()
+{
+    auto selection = Gui::Selection().getSelectionEx(
+        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
+
+    if (selection.empty()) {
+        return { nullptr, "" };
+    }
+
+    for (auto& sel : selection) {
+        for (auto& sub : sel.getSubNames()) {
+            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
+                return { sel.getObject(), sub };
+            }
+        }
+    }
+
+    return { nullptr, "" };
+}
+
+

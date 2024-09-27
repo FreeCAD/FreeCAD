@@ -198,7 +198,7 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz "Zig
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation>Wskazówka: ponieważ jest to wyświetlane w programie FreeCAD, w Menedżerze Dodatków, nie jest konieczne zajmowanie miejsca informacjami takimi jak &quot;To jest dodatek do programu FreeCAD...&quot; -- po prostu napisz, co on robi.</translation>
+      <translation>Wskazówka: ponieważ jest to wyświetlane w programie FreeCAD, w Menedżerze Dodatków, nie jest konieczne zajmowanie miejsca informacjami takimi jak "To jest dodatek do programu FreeCAD..." -- po prostu powiedz, co on robi.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
@@ -817,7 +817,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji</tra
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation>Klasa, która definiuje element danych &quot;Ikona&quot;</translation>
+      <translation>Klasa, która definiuje element danych "Ikona"</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
@@ -1128,7 +1128,7 @@ zainstalowane dodatki będą sprawdzane pod kątem dostępnych aktualizacji</tra
     <message>
       <location filename="../../AddonManager.py" line="358"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation>Zatrzymanie działającego procesu {} zajmuje dużo czasu...</translation>
+      <translation>Zatrzymanie działającego procesu {} zajmuje dużo czasu ...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="95"/>
@@ -2104,32 +2104,32 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
       <translation>Instalacja dodatku {} nie powiodła się</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="195"/>
+      <location filename="../../addonmanager_workers_installation.py" line="201"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Pobrano plik package.xml dla {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="233"/>
+      <location filename="../../addonmanager_workers_installation.py" line="239"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Nie udało się dekodować pliku {} dla dodatku "{}"</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="242"/>
+      <location filename="../../addonmanager_workers_installation.py" line="248"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Wszelkie informacje o zależności w tym pliku zostaną zignorowane</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="249"/>
+      <location filename="../../addonmanager_workers_installation.py" line="255"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Pobrano plik metadata.txt dla {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="292"/>
+      <location filename="../../addonmanager_workers_installation.py" line="298"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Pobrano plik requirements.txt dla {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="310"/>
+      <location filename="../../addonmanager_workers_installation.py" line="316"/>
       <source>Downloaded icon for {}</source>
       <translation>Pobrano plik ikonki dla {}</translation>
     </message>
@@ -2164,23 +2164,23 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
       <translation>Nie można zlokalizować określonego przez makrodefinicję pliku {} (oczekiwany w {})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="442"/>
+      <location filename="../../Addon.py" line="457"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
       <translation>{}: Nierozpoznane wewnętrzne środowisko pracy "{}"</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="475"/>
+      <location filename="../../Addon.py" line="490"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
       <translation>Ostrzeżenie dla twórców dodatku: Adres URL repozytorium ustawiony w pliku package.xml dla dodatku {} ({}) nie pasuje do adresu URL pobranego z ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="483"/>
+      <location filename="../../Addon.py" line="498"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
       <translation>Ostrzeżenie dla twórców dodatku: Gałąź repozytorium ustawiona w pliku package.xml dla dodatku {} ({}) nie pasuje do gałęzi, z której został on pobrany ({})</translation>
     </message>
     <message>
-      <location filename="../../Addon.py" line="859"/>
-      <location filename="../../Addon.py" line="875"/>
+      <location filename="../../Addon.py" line="874"/>
+      <location filename="../../Addon.py" line="890"/>
       <source>Got an error when trying to import {}</source>
       <translation>Wystąpił błąd podczas próby zaimportowania {}</translation>
     </message>
@@ -2215,140 +2215,140 @@ i spróbuj ponownie. Polecenie, którego wykonanie się nie powiodło, to:</tran
       <translation>Błąd podczas próby usunięcia pliku makrodefinicji {}:</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="121"/>
+      <location filename="../../addonmanager_workers_startup.py" line="123"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Niepowodzenie nie udało się połączyć z GitHub. Sprawdź swoje połączenie i ustawienia serwera pośredniczącego.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="179"/>
+      <location filename="../../addonmanager_workers_startup.py" line="181"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>OSTRZEŻENIE: Duplikat dodatku {} pominięto</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="252"/>
+      <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Workbenches list was updated.</source>
       <translation>Lista środowisk pracy została zaktualizowana.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="268"/>
+      <location filename="../../addonmanager_workers_startup.py" line="284"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git jest wyłączony, pominięto repozytorium Git makrodefinicji</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="316"/>
+      <location filename="../../addonmanager_workers_startup.py" line="332"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Próba zmiany konfiguracji makrodefinicji niebędącej typu Git na używanie Git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="333"/>
+      <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Wystąpił błąd podczas aktualizacji makrodefinicji z GitHub, próba czyszczenia ...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="337"/>
+      <location filename="../../addonmanager_workers_startup.py" line="353"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Próbuje wykonać czyszczenie ...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="349"/>
+      <location filename="../../addonmanager_workers_startup.py" line="365"/>
       <source>Clean checkout succeeded</source>
       <translation>Czyszczenie zakończone pomyślnie</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="359"/>
+      <location filename="../../addonmanager_workers_startup.py" line="375"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Nie udało się zaktualizować makrodefinicji z repozytorium GitHub — próba oczyszczenia pamięci podręcznej Menedżera dodatków.
 
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="382"/>
+      <location filename="../../addonmanager_workers_startup.py" line="398"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Błąd połączenia z Wiki, FreeCAD nie może w tej chwili pobrać listy makrodefinicji Wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="591"/>
+      <location filename="../../addonmanager_workers_startup.py" line="607"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Nie można pobrać aktualizacji Git dla środowiska pracy {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="604"/>
+      <location filename="../../addonmanager_workers_startup.py" line="620"/>
       <source>git status failed for {}</source>
       <translation>Git status brak powodzenia dla {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="672"/>
+      <location filename="../../addonmanager_workers_startup.py" line="688"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Niepowodzenie nie udało się odczytać metadanych z {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="695"/>
+      <location filename="../../addonmanager_workers_startup.py" line="711"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Niepowodzenie nie udało się pobrać kodu dla makrodefinicji "{name}"</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="748"/>
+      <location filename="../../addonmanager_workers_startup.py" line="764"/>
       <source>Caching macro code...</source>
       <translation>Buforowanie kodu makrodefinicji ...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="771"/>
+      <location filename="../../addonmanager_workers_startup.py" line="787"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Menedżer dodatków: nie udało się ukończyć procesu przetwarzania podczas pobierania {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="786"/>
+      <location filename="../../addonmanager_workers_startup.py" line="802"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Dla {num_macros} makrodefinicji przekroczono limit czasu {num_failed} podczas przetwarzania</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="809"/>
+      <location filename="../../addonmanager_workers_startup.py" line="825"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Menadżer dodatków: nie udało się zatrzymać uruchomionego procesu ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="848"/>
+      <location filename="../../addonmanager_workers_startup.py" line="864"/>
       <source>Getting metadata from macro {}</source>
       <translation>Pobieranie metadanych z makrodefinicji {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="862"/>
+      <location filename="../../addonmanager_workers_startup.py" line="878"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Upłynął limit czasu pobierania metadanych dla makrodefinicji {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="873"/>
+      <location filename="../../addonmanager_workers_startup.py" line="889"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Nie udało się przerwać procesu makrodefinicji {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="894"/>
+      <location filename="../../addonmanager_workers_startup.py" line="910"/>
       <source>Retrieving macro description...</source>
       <translation>Pobieranie opisu makrodefinicji ...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="896"/>
+      <location filename="../../addonmanager_workers_startup.py" line="912"/>
       <source>Retrieving info from git</source>
       <translation>Pobieranie informacji z Git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="899"/>
+      <location filename="../../addonmanager_workers_startup.py" line="915"/>
       <source>Retrieving info from wiki</source>
       <translation>Pobieranie informacji z Wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="941"/>
+      <location filename="../../addonmanager_workers_startup.py" line="957"/>
       <source>Failed to get Addon statistics from {} -- only sorting alphabetically will be accurate
 </source>
       <translation>Nie udało się pobrać statystyk dodatku z {} - tylko sortowanie alfabetyczne będzie dokładne.
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="973"/>
+      <location filename="../../addonmanager_workers_startup.py" line="989"/>
       <source>Failed to get Addon score from &apos;{}&apos; -- sorting by score will fail
 </source>
       <translation>Nie udało się pobrać wyniku dodatku z "{}" -- sortowanie według wyniku nie powiedzie się.

@@ -117,6 +117,7 @@ struct DocumentP
     Connection connectStartLoadDocument;
     Connection connectFinishLoadDocument;
     Connection connectShowHidden;
+    Connection connectFinishRestoreDocument;
     Connection connectFinishRestoreObject;
     Connection connectExportObjects;
     Connection connectImportObjects;

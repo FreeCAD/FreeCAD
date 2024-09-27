@@ -42,6 +42,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -122,6 +123,7 @@ MeasureType Measurement::findType()
     int torus = 0;
     int spheres = 0;
     int vols = 0;
+    int other = 0;
 
     for (; obj != objects.end(); ++obj, ++subEl) {
 
@@ -183,12 +185,16 @@ MeasureType Measurement::findType()
                     }
                 } break;
                 default:
+                    other++;
                     break;
             }
         }
     }
 
-    if (vols > 0) {
+    if (other > 0) {
+        mode = MeasureType::Invalid;
+    }
+    else if (vols > 0) {
         if (verts > 0 || edges > 0 || faces > 0) {
             mode = MeasureType::Invalid;
         }
@@ -281,27 +287,26 @@ MeasureType Measurement::getType()
     return measureType;
 }
 
-TopoDS_Shape Measurement::getShape(App::DocumentObject* obj, const char* subName) const
+TopoDS_Shape Measurement::getShape(App::DocumentObject* rootObj, const char* subName) const
 {
-    // temporary fix to get "Vertex7" from "Body003.Pocket020.Vertex7"
-    // when selected, Body features are provided as featureName and subNameAndIndex
-    // other sources provide the full extended name with index
-    if (strcmp(subName, "") == 0) {
-        return Part::Feature::getShape(obj);
-    }
-    std::string workingSubName(subName);
-    size_t lastDot = workingSubName.rfind('.');
-    if (lastDot != std::string::npos) {
-        workingSubName = workingSubName.substr(lastDot + 1);
+    std::vector<std::string> names = Base::Tools::splitSubName(subName);
+
+    if (names.empty() || names.back() == "") {
+        TopoDS_Shape shape = Part::Feature::getShape(rootObj);
+        if (shape.IsNull()) {
+            throw Part::NullShapeException("null shape in measurement");
+        }
+        return shape;
     }
 
     try {
+        App::DocumentObject* obj = rootObj->getSubObject(subName);
+
         Part::TopoShape partShape = Part::Feature::getTopoShape(obj);
-        App::GeoFeature* geoFeat = dynamic_cast<App::GeoFeature*>(obj);
-        if (geoFeat) {
-            partShape.setPlacement(geoFeat->globalPlacement());
-        }
-        TopoDS_Shape shape = partShape.getSubShape(workingSubName.c_str());
+
+        partShape.setPlacement(App::GeoFeature::getGlobalPlacement(obj, rootObj, subName));
+
+        TopoDS_Shape shape = partShape.getSubShape(names.back().c_str());
         if (shape.IsNull()) {
             throw Part::NullShapeException("null shape in measurement");
         }

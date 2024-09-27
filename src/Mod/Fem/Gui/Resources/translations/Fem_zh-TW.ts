@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>Initial temperature</source>
-      <translation type="unfinished">Initial temperature</translation>
+      <translation>初始溫度</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="727"/>
@@ -497,7 +497,7 @@
       <location filename="../../Command.cpp" line="1928"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
-      <translation type="unfinished">Total</translation>
+      <translation>總計</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2213"/>
@@ -631,7 +631,7 @@
     <message>
       <location filename="../../Command.cpp" line="634"/>
       <source>Make gear constraint</source>
-      <translation type="unfinished">Make gear constraint</translation>
+      <translation>建立齒輪拘束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="683"/>
@@ -737,12 +737,12 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
       <source>Id</source>
-      <translation type="unfinished">Id</translation>
+      <translation>Id</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="67"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>標籤</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="72"/>
@@ -752,12 +752,12 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="77"/>
       <source>Not Marked</source>
-      <translation type="unfinished">Not Marked</translation>
+      <translation>未標記</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="82"/>
       <source>Marked</source>
-      <translation type="unfinished">Marked</translation>
+      <translation>已標記</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
@@ -768,7 +768,7 @@
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
       <source>Temperature:</source>
-      <translation type="unfinished">Temperature:</translation>
+      <translation>溫度:</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
@@ -828,7 +828,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="40"/>
       <source>CalculiX binary</source>
-      <translation type="unfinished">CalculiX binary</translation>
+      <translation>CalculiX 二進位</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
@@ -848,7 +848,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
       <source>Input file Editor</source>
-      <translation type="unfinished">Input file Editor</translation>
+      <translation>輸入檔案編輯器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="126"/>
@@ -903,7 +903,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="260"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>檢查網格</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="269"/>
@@ -976,12 +976,12 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="596"/>
       <location filename="../../DlgSettingsFemCcx.ui" line="651"/>
       <source>s</source>
-      <translation type="unfinished">s</translation>
+      <translation>秒</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="509"/>
       <source>Time End</source>
-      <translation type="unfinished">Time End</translation>
+      <translation>結束時間</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="665"/>
@@ -1706,13 +1706,13 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="211"/>
-      <location filename="../../TaskFemConstraint.cpp" line="229"/>
+      <location filename="../../TaskFemConstraint.cpp" line="215"/>
+      <location filename="../../TaskFemConstraint.cpp" line="233"/>
       <source>Input error</source>
       <translation>輸入錯誤</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="212"/>
+      <location filename="../../TaskFemConstraint.cpp" line="216"/>
       <source>You must specify at least one reference</source>
       <translation>您必須至少指定一個參考</translation>
     </message>
@@ -3350,7 +3350,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/MeshGroup.ui" line="47"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>標籤</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
@@ -3498,33 +3498,27 @@ Note: for 2D only setting for x is possible,
       <translation>Max element size (0.0 = Auto):</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="66"/>
-      <location filename="../ui/MeshGmsh.ui" line="110"/>
-      <source>0 mm</source>
-      <translation>0 mm</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshGmsh.ui" line="91"/>
+      <location filename="../ui/MeshGmsh.ui" line="88"/>
       <source>Min element size (0.0 = Auto):</source>
       <translation>Min element size (0.0 = Auto):</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="138"/>
+      <location filename="../ui/MeshGmsh.ui" line="132"/>
       <source>Element order:</source>
       <translation type="unfinished">Element order:</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="156"/>
+      <location filename="../ui/MeshGmsh.ui" line="150"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="181"/>
+      <location filename="../ui/MeshGmsh.ui" line="175"/>
       <source>Time:</source>
       <translation>時間：</translation>
     </message>
     <message>
-      <location filename="../ui/MeshGmsh.ui" line="207"/>
+      <location filename="../ui/MeshGmsh.ui" line="201"/>
       <source>Gmsh version</source>
       <translation type="unfinished">Gmsh version</translation>
     </message>
@@ -3930,7 +3924,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="91"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>檢查網格</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="98"/>
@@ -5687,12 +5681,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="866"/>
+      <location filename="../../../femcommands/commands.py" line="867"/>
       <source>Show result</source>
       <translation>顯示結果</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="870"/>
+      <location filename="../../../femcommands/commands.py" line="871"/>
       <source>Shows and visualizes selected result data</source>
       <translation type="unfinished">Shows and visualizes selected result data</translation>
     </message>
@@ -5700,12 +5694,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="882"/>
+      <location filename="../../../femcommands/commands.py" line="883"/>
       <source>Purge results</source>
       <translation type="unfinished">Purge results</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="886"/>
+      <location filename="../../../femcommands/commands.py" line="887"/>
       <source>Purges all results from active analysis</source>
       <translation type="unfinished">Purges all results from active analysis</translation>
     </message>
@@ -5713,12 +5707,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="996"/>
+      <location filename="../../../femcommands/commands.py" line="997"/>
       <source>Solver CalculiX Standard</source>
       <translation type="unfinished">Solver CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1001"/>
+      <location filename="../../../femcommands/commands.py" line="1002"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
     </message>
@@ -5726,12 +5720,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1049"/>
+      <location filename="../../../femcommands/commands.py" line="1050"/>
       <source>Solver job control</source>
       <translation type="unfinished">Solver job control</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1054"/>
+      <location filename="../../../femcommands/commands.py" line="1055"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
     </message>
@@ -5739,12 +5733,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1066"/>
+      <location filename="../../../femcommands/commands.py" line="1067"/>
       <source>Solver Elmer</source>
       <translation type="unfinished">Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1068"/>
+      <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Creates a FEM solver Elmer</source>
       <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
@@ -5752,12 +5746,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1079"/>
+      <location filename="../../../femcommands/commands.py" line="1080"/>
       <source>Solver Mystran</source>
       <translation type="unfinished">Solver Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1081"/>
+      <location filename="../../../femcommands/commands.py" line="1082"/>
       <source>Creates a FEM solver Mystran</source>
       <translation type="unfinished">Creates a FEM solver Mystran</translation>
     </message>
@@ -5765,12 +5759,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1091"/>
+      <location filename="../../../femcommands/commands.py" line="1092"/>
       <source>Run solver calculations</source>
       <translation type="unfinished">Run solver calculations</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1095"/>
+      <location filename="../../../femcommands/commands.py" line="1096"/>
       <source>Runs the calculations for the selected solver</source>
       <translation type="unfinished">Runs the calculations for the selected solver</translation>
     </message>
@@ -5778,12 +5772,12 @@ used for the Elmer solver</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1111"/>
+      <location filename="../../../femcommands/commands.py" line="1112"/>
       <source>Solver Z88</source>
       <translation type="unfinished">Solver Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1113"/>
+      <location filename="../../../femcommands/commands.py" line="1114"/>
       <source>Creates a FEM solver Z88</source>
       <translation type="unfinished">Creates a FEM solver Z88</translation>
     </message>
@@ -6225,12 +6219,12 @@ Please select a result type first.</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1024"/>
+      <location filename="../../../femcommands/commands.py" line="1025"/>
       <source>Solver CalculiX (new framework)</source>
       <translation type="unfinished">Solver CalculiX (new framework)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1029"/>
+      <location filename="../../../femcommands/commands.py" line="1030"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
     </message>
@@ -6381,12 +6375,12 @@ Please select a result type first.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="855"/>
+      <location filename="../../../femcommands/commands.py" line="856"/>
       <source>FEM mesh refinement</source>
       <translation type="unfinished">FEM mesh refinement</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="856"/>
+      <location filename="../../../femcommands/commands.py" line="857"/>
       <source>Creates a FEM mesh refinement</source>
       <translation type="unfinished">Creates a FEM mesh refinement</translation>
     </message>
@@ -6659,6 +6653,69 @@ Please select a result type first.</translation>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Create Element set by Poly</source>
       <translation type="unfinished">Create Element set by Poly</translation>
+    </message>
+  </context>
+  <context>
+    <name>NetgenMesh</name>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="14"/>
+      <source>FEM Mesh by Netgen</source>
+      <translation type="unfinished">FEM Mesh by Netgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="26"/>
+      <source>Mesh Parameters</source>
+      <translation type="unfinished">Mesh Parameters</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="37"/>
+      <source>Fineness:</source>
+      <translation>精細度：</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="47"/>
+      <source>Maximal Size:</source>
+      <translation type="unfinished">Maximal Size:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="88"/>
+      <source>Minimal Size:</source>
+      <translation type="unfinished">Minimal Size:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="129"/>
+      <source>Second Order</source>
+      <translation type="unfinished">Second Order</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="136"/>
+      <source>Growth Rate:</source>
+      <translation>成長率：</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="159"/>
+      <source>Curvature Safety:</source>
+      <translation type="unfinished">Curvature Safety:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="176"/>
+      <source>Segments Per Edge:</source>
+      <translation type="unfinished">Segments Per Edge:</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="204"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="229"/>
+      <source>Time:</source>
+      <translation>時間：</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshNetgen.ui" line="255"/>
+      <source>Netgen version</source>
+      <translation type="unfinished">Netgen version</translation>
     </message>
   </context>
 </TS>

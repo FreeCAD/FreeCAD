@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>288</width>
+    <width>577</width>
     <height>335</height>
    </rect>
   </property>
@@ -76,11 +76,11 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
-       <property name="maximumSize">
-        <size>
-         <width>24</width>
-         <height>16777215</height>
-        </size>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="text">
         <string>Job:</string>
@@ -88,7 +88,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboJobs"/>
+      <widget class="QComboBox" name="comboJobs">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="toolButtonPlay">
