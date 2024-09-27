@@ -121,10 +121,33 @@ def get_text(annotation):
     """Determines if an IfcAnnotation contains an IfcTextLiteral.
     Returns the IfcTextLiteral or None"""
 
-    for rep in annotation.Representation.Representations:
-        for item in rep.Items:
-            if item.is_a("IfcTextLiteral"):
-                return item
+    if annotation.is_a("IfcAnnotation"):
+        for rep in annotation.Representation.Representations:
+            for item in rep.Items:
+                if item.is_a("IfcTextLiteral"):
+                    return item
+    return None
+
+
+def get_dimension(annotation):
+    """Determines if an IfcAnnotation is representing a dimension.
+    Returns a list containing the representation, two points indicating
+    the mesured points, and optionally a third point indicating where
+    the dimension line is located, if available"""
+
+    if annotation.is_a("IfcAnnotation"):
+        if annotation.ObjectType == "DIMENSION":
+            s = ifcopenshell.util.unit.calculate_unit_scale(annotation.file) * 1000
+            for rep in annotation.Representation.Representations:
+                shape = importIFCHelper.get2DShape(rep, s)
+                if shape and len(shape) == 1:
+                    if len(shape[0].Vertexes) >= 2:
+                        # two-point polyline (BBIM)
+                        res = [rep, shape[0].Vertexes[0].Point, shape[0].Vertexes[-1].Point]
+                        if len(shape[0].Vertexes) > 2:
+                            # 4-point polyline (FreeCAD)
+                            res.append(shape[0].Vertexes[0].Point)
+                        return res
     return None
 
 
@@ -163,3 +186,15 @@ def get_placement(ifcelement, ifcfile):
 
     s = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
     return importIFCHelper.getPlacement(ifcelement, scaling=s)
+
+
+def get_scaled_point(point, ifcfile, is2d=False):
+    """Returns a scaled 2d or 3d point tuple form a FreeCAD point"""
+
+    s = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
+    v = FreeCAD.Vector(point)
+    v.multiply(s)
+    v = tuple(v)
+    if is2d:
+        v = v[:2]
+    return v
