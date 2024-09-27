@@ -774,8 +774,9 @@ def getVector(entity,scaling=1000):
     return v
 
 
-def get2DShape(representation,scaling=1000):
-    """Returns a shape from a 2D IfcShapeRepresentation"""
+def get2DShape(representation,scaling=1000,notext=False):
+    """Returns a shape from a 2D IfcShapeRepresentation
+    if notext is True, no Draft text is created"""
 
     import Part
     import DraftVecUtils
@@ -885,9 +886,9 @@ def get2DShape(representation,scaling=1000):
                             [p1, p2, p3] = index2points(s)
                             result.append(Part.Arc(p1, p2, p3))
                         else:
-                            raise RuntimeError("Illegal IfcIndexedPolyCurve segment")
+                            raise RuntimeError("Illegal IfcIndexedPolyCurve segment: "+s.is_a())
             else:
-                print("getCurveSet: unhandled element: ", el)
+                print("importIFCHelper.getCurveSet: unhandled element: ", el)
 
         return result
 
@@ -909,6 +910,8 @@ def get2DShape(representation,scaling=1000):
                 else:
                     result = preresult
             elif item.is_a("IfcTextLiteral"):
+                if notext:
+                    continue
                 pl = getPlacement(item.Placement, scaling)
                 if pl:
                     t = Draft.make_text(item.Literal.split(";"), pl)
