@@ -72,17 +72,21 @@ def generate_geometry(obj, cached=False):
                 obj.Shape = shape
                 if placement:
                     obj.Placement = placement
+                    return
         elif obj.ViewObject and obj.ShapeMode == "Coin":
+            done = False
             node, placement = get_annotation_shape(element, ifcfile, coin=True)
             if node:
                 set_representation(obj.ViewObject, node)
                 colors = node[0]
+                done = True
             else:
                 set_representation(obj.ViewObject, None)
                 print_debug(obj)
             if placement:
                 obj.Placement = placement
-        return
+            if done:
+                return
 
     # generate the shape or coin node
     elements = get_decomposition(obj)

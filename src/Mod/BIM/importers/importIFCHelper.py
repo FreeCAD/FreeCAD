@@ -872,14 +872,20 @@ def get2DShape(representation,scaling=1000):
                         pts.append(c)
                     return pts
 
-                for s in el.Segments:
-                    if s.is_a("IfcLineIndex"):
-                        result.append(Part.makePolygon(index2points(s)))
-                    elif s.is_a("IfcArcIndex"):
-                        [p1, p2, p3] = index2points(s)
-                        result.append(Part.Arc(p1, p2, p3))
-                    else:
-                        raise RuntimeError("Illegal IfcIndexedPolyCurve segment")
+                if not el.Segments:
+                    # use all points
+                    verts = [FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0) for c in coords]
+                    verts = [v.multiply(scaling) for v in verts]
+                    result.append(Part.makePolygon(verts))
+                else:
+                    for s in el.Segments:
+                        if s.is_a("IfcLineIndex"):
+                            result.append(Part.makePolygon(index2points(s)))
+                        elif s.is_a("IfcArcIndex"):
+                            [p1, p2, p3] = index2points(s)
+                            result.append(Part.Arc(p1, p2, p3))
+                        else:
+                            raise RuntimeError("Illegal IfcIndexedPolyCurve segment")
             else:
                 print("getCurveSet: unhandled element: ", el)
 
