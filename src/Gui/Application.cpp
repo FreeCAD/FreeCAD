@@ -680,7 +680,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
-    string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    string unicodepath = File.filePath().c_str();
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module) {
