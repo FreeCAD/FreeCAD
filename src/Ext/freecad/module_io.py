@@ -1,10 +1,12 @@
 from FreeCAD import Base
+import importlib
 
-
-def OpenInsertObject(importerModule, objectPath, importMethod, docName = ""):
+def OpenInsertObject(importerName, objectPath, importMethod, docName = ""):
     try:
         importArgs = []
         importKwargs = {}
+
+        importerModule = importlib.import_module(importerName)
 
         if docName:
             importArgs.append(docName)
