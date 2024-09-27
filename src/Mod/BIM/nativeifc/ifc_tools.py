@@ -254,13 +254,22 @@ def create_object(ifcentity, document, ifcfile, shapemode=0, objecttype=None):
     s = "IFC: Created #{}: {}, '{}'\n".format(
         ifcentity.id(), ifcentity.is_a(), ifcentity.Name
     )
+    if not objecttype:
+        if ifcentity.is_a("IfcAnnotation"):
+            if ifc_export.get_text(ifcentity):
+                objecttype = "text"
     FreeCAD.Console.PrintLog(s)
     obj = add_object(document, otype=objecttype)
     add_properties(obj, ifcfile, ifcentity, shapemode=shapemode)
     ifc_layers.add_layers(obj, ifcentity, ifcfile)
     if FreeCAD.GuiUp:
-        if ifcentity.is_a("IfcSpace") or ifcentity.is_a("IfcOpeningElement"):
-            obj.ViewObject.DisplayMode = "Wireframe"
+        if ifcentity.is_a("IfcSpace") or\
+           ifcentity.is_a("IfcOpeningElement") or\
+           ifcentity.is_a("IfcAnnotation"):
+            try:
+                obj.ViewObject.DisplayMode = "Wireframe"
+            except:
+                pass
     elements = [ifcentity]
     return obj
 
@@ -328,9 +337,10 @@ def create_children(
     return result
 
 
-def assign_groups(children):
-    """Fill the groups inthis list"""
+def assign_groups(children, ifcfile=None):
+    """Fill the groups in this list. Returns a list of processed FreeCAD objects"""
 
+    result = []
     for child in children:
         if child.is_a("IfcGroup"):
             mode = "IsGroupedBy"
@@ -339,10 +349,10 @@ def assign_groups(children):
         else:
             mode = None
         if mode:
-            grobj = get_object(child)
+            grobj = get_object(child, None, ifcfile)
             for rel in getattr(child, mode):
                 for elem in rel.RelatedObjects:
-                    elobj = get_object(elem)
+                    elobj = get_object(elem, None, ifcfile)
                     if elobj:
                         if len(elobj.InList) == 1:
                             p = elobj.InList[0]
@@ -353,6 +363,8 @@ def assign_groups(children):
                         g = grobj.Group
                         g.append(elobj)
                         grobj.Group = g
+                        result.append(elobj)
+    return result
 
 
 def get_children(
@@ -382,7 +394,7 @@ def get_children(
     return result
 
 
-def get_object(element, document=None):
+def get_object(element, document=None, ifcfile=None):
     """Returns the object that references this element, if any"""
 
     if document:
@@ -393,7 +405,7 @@ def get_object(element, document=None):
         for obj in d.Objects:
             if hasattr(obj, "StepId"):
                 if obj.StepId == element.id():
-                    if get_ifc_element(obj) == element:
+                    if get_ifc_element(obj, ifcfile) == element:
                         return obj
     return None
 
@@ -1300,6 +1312,14 @@ def get_orphan_elements(ifcfile):
     products = [
         p for p in products if not hasattr(p, "VoidsElements") or not p.VoidsElements
     ]
+    groups = []
+    for o in products:
+        for rel in getattr(o, "HasAssignments", []):
+            if rel.is_a("IfcRelAssignsToGroup"):
+                g = rel.RelatingGroup
+                if (g not in products) and (g not in groups):
+                    groups.append(g)
+    products.extend(groups)
     return products
 
 
@@ -1341,8 +1361,20 @@ def load_orphans(obj):
     ifcfile = get_ifcfile(obj)
     shapemode = obj.ShapeMode
     elements = get_orphan_elements(ifcfile)
+    objs = []
     for element in elements:
-        create_object(element, doc, ifcfile, shapemode)
+        nobj = create_object(element, doc, ifcfile, shapemode)
+        objs.append(nobj)
+    processed = assign_groups(elements, ifcfile)
+
+    # put things under project. This is important so orphan elements still can find
+    # their IFC file
+    rest = [o for o in objs if o not in processed]
+    if rest:
+        project = get_project(ifcfile)
+        if isinstance(project, FreeCAD.DocumentObject):
+            for o in rest:
+                project.Proxy.addObject(project, o)
 
 
 def remove_tree(objs):
