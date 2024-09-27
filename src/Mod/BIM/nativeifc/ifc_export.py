@@ -139,15 +139,17 @@ def get_dimension(annotation):
         if annotation.ObjectType == "DIMENSION":
             s = ifcopenshell.util.unit.calculate_unit_scale(annotation.file) * 1000
             for rep in annotation.Representation.Representations:
-                shape = importIFCHelper.get2DShape(rep, s)
+                shape = importIFCHelper.get2DShape(rep, s, notext=True)
                 if shape and len(shape) == 1:
                     if len(shape[0].Vertexes) >= 2:
                         # two-point polyline (BBIM)
                         res = [rep, shape[0].Vertexes[0].Point, shape[0].Vertexes[-1].Point]
                         if len(shape[0].Vertexes) > 2:
                             # 4-point polyline (FreeCAD)
-                            res.append(shape[0].Vertexes[0].Point)
+                            res.append(shape[0].Vertexes[1].Point)
                         return res
+                else:
+                    print(annotation,"NOT A DIMENSION")
     return None
 
 
