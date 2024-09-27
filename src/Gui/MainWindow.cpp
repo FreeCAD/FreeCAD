@@ -397,7 +397,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // after opening project and prevent issues with double initialization of the window
     //
     // https://stackoverflow.com/questions/76026196/how-to-force-qt-to-use-the-opengl-window-type
-    new QOpenGLWidget(this);
+    auto _OpenGLWidget = new QOpenGLWidget(this);
+    _OpenGLWidget->move(QPoint(-100,-100));
 #endif
 
     // global access
