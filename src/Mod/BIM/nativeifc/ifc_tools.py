@@ -717,6 +717,10 @@ def add_properties(
                 obj.setExpression("CustomText", "AxisTag")
             if "Length" not in obj.PropertiesList:
                 obj.addProperty("App::PropertyLength","Length","Axis")
+            if "Text" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyStringList", "Text", "Base")
+            obj.Text = [text.Literal]
+            obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
             obj.Length = axisdata[1]
     elif ifcentity.is_a("IfcAnnotation"):
         sectionplane = ifc_export.get_sectionplane(ifcentity)
