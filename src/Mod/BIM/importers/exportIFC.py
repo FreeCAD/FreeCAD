@@ -1676,13 +1676,31 @@ def buildAddress(obj,ifcfile):
     return addr
 
 
-def createCurve(ifcfile,wire,scaling=1.0):
+def createCurve(ifcfile, wire, scaling=1.0):
+    """creates an IfcIndexdPolyCurve from a wire
+    if possible, or defects to createCurveWithArcs"""
+
+    if wire.ShapeType != "Wire":
+        return createCurveWithArcs(ifcfile, wire, scaling)
+    for e in wire.Edges:
+        if isinstance(e.Curve,Part.Circle):
+            return createCurveWithArcs(ifcfile, wire, scaling)
+    verts = [v.Point for v in wire.Vertexes]
+    if scaling != 1:
+        verts = [v.multiply(scaling) for v in verts]
+    verts = tuple([tuple(v) for v in verts])
+    pts = ifcfile.createIfcCartesianPointList3D(verts)
+    idc = ifcfile.createIfcIndexedPolyCurve(pts, None, None)
+    return idc
+
+
+def createCurveWithArcs(ifcfile,wire,scaling=1.0):
     "creates an IfcCompositeCurve from a shape"
 
     segments = []
     pol = None
     last = None
-    if wire.ShapeType == "edge":
+    if wire.ShapeType == "Edge":
         edges = [wire]
     else:
         edges = Part.__sortEdges__(wire.Edges)
@@ -2512,11 +2530,13 @@ def create_annotation(anno, ifcfile, context, history, preferences):
             if curves:
                 reps.append(ifcfile.createIfcGeometricCurveSet(curves))
             curves = []
+            # leftover edges
             for e in sh.Edges:
-                if e.hashCode not in ehc:
+                if e.hashCode() not in ehc:
                     curves.append(createCurve(ifcfile,e))
             if curves:
                 reps.append(ifcfile.createIfcGeometricCurveSet(curves))
+            # Append text
             l = FreeCAD.Vector(vp.tbase).multiply(preferences['SCALE_FACTOR'])
             zdir = None
             xdir = None
