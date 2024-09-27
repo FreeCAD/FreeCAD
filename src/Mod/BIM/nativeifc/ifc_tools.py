@@ -259,6 +259,8 @@ def create_object(ifcentity, document, ifcfile, shapemode=0, objecttype=None):
         if ifcentity.is_a("IfcAnnotation"):
             if ifc_export.get_text(ifcentity):
                 objecttype = "text"
+            elif ifc_export.get_dimension(ifcentity):
+                objecttype = "dimension"
     FreeCAD.Console.PrintLog(s)
     obj = add_object(document, otype=objecttype)
     add_properties(obj, ifcfile, ifcentity, shapemode=shapemode)
@@ -481,11 +483,21 @@ def add_object(document, otype=None, oname="IfcObject"):
     'material',
     'layer',
     'text',
+    'dimension',
     or anything else for a standard IFC object"""
 
     if not document:
         return None
-    if otype == "text":
+    if otype == "dimension":
+        obj = Draft.make_dimension(FreeCAD.Vector(), FreeCAD.Vector(1,0,0))
+        obj.Proxy = ifc_objects.ifc_object(otype)
+        obj.removeProperty("Diameter")
+        obj.removeProperty("Distance")
+        obj.setPropertyStatus("LinkedGeometry", "Hidden")
+        obj.setGroupOfProperty("Start", "Dimension")
+        obj.setGroupOfProperty("End", "Dimension")
+        obj.setGroupOfProperty("Direction", "Dimension")
+    elif otype == "text":
         obj = Draft.make_text("")
         obj.Proxy = ifc_objects.ifc_object(otype)
     elif otype == "layer":
@@ -649,6 +661,24 @@ def add_properties(
                 obj.addProperty("App::PropertyStringList", "Text", "Base")
             obj.Text = [text.Literal]
             obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
+        else:
+            dim = ifc_export.get_dimension(ifcentity)
+            if dim and len(dim) >= 3:
+                # the two props below are already taken care of, normally
+                if "Start" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyVectorDistance", "Start", "Base")
+                if "End" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyVectorDistance", "End", "Base")
+                if "Dimline" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyVectorDistance", "Dimline", "Base")
+                obj.Start = dim[1]
+                obj.End = dim[2]
+                if len(dim) > 3:
+                    obj.Dimline = dim[3]
+                else:
+                    mid = obj.End.sub(obj.Start)
+                    mid.multiply(0.5)
+                    obj.Dimline = obj.Start.add(mid)
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
         obj.setExpression("Label2", "Description")

@@ -22,6 +22,8 @@
 
 """This module contains IFC object definitions"""
 
+# the property groups below should not be treated as psets
+NON_PSETS = ["Base", "IFC", "", "Geometry", "Dimension", "Linear/radial dimension"]
 
 class ifc_object:
     """Base class for all IFC-based objects"""
@@ -61,6 +63,8 @@ class ifc_object:
             self.edit_attribute(obj, "Name", obj.Label)
         elif prop == "Text":
             self.edit_annotation(obj, "Text", "\n".join(obj.Text))
+        elif prop in ["Start", "End"]:
+            self.edit_annotation(obj, prop)
         elif prop == "Placement":
             if getattr(self, "virgin_placement", False):
                 self.virgin_placement = False
@@ -72,7 +76,7 @@ class ifc_object:
                 obj.ViewObject.signalChangeIcon()
         elif obj.getGroupOfProperty(prop) == "Geometry":
             self.edit_geometry(obj, prop)
-        elif obj.getGroupOfProperty(prop) not in ["Base", "IFC", "", "Geometry"]:
+        elif obj.getGroupOfProperty(prop) not in NON_PSETS:
             # Treat all property groups outside the default ones as Psets
             # print("DEBUG: editinog pset prop",prop)
             self.edit_pset(obj, prop)
@@ -181,6 +185,23 @@ class ifc_object:
                 text = ifc_export.get_text(elt)
                 if text:
                     result = ifc_tools.set_attribute(ifcfile, text, "Literal", value)
+            elif attribute in ["Start", "End"]:
+                dim = ifc_export.get_dimension(elt)
+                if dim:
+                    rep = dim[0]
+                    for curve in rep.Items:
+                        for sub in curve.Elements:
+                            if sub.is_a("IfcIndexedPolyCurve"):
+                                points = sub.Points
+                                value = list(points.CoordList)
+                                is2d = "2D" in points.is_a()
+                                if attribute == "Start":
+                                    value[0] = ifc_export.get_scaled_point(obj.Start, ifcfile, is2d)
+                                else:
+                                    value[-1] = ifc_export.get_scaled_point(obj.End, ifcfile, is2d)
+                                result = ifc_tools.set_attribute(ifcfile, points, "CoordList", value)
+                            else:
+                                print("DEBUG: unknown dimension curve type:",sub)
 
     def edit_geometry(self, obj, prop):
         """Edits a geometry property of an object"""
