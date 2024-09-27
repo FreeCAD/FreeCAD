@@ -119,7 +119,7 @@ void QuickMeasure::addSelectionToMeasurement()
 
     // Lambda function to check whether to continue
     auto shouldSkip = [](App::DocumentObject* obj) {
-        if (!obj){
+        if (!obj) {
             return true;
         }
         std::string vpType = obj->getViewProviderName();
