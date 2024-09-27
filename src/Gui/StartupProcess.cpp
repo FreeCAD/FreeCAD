@@ -212,7 +212,6 @@ void StartupPostProcess::setLoadFromPythonModule(bool value)
 
 void StartupPostProcess::execute()
 {
-    showSplashScreen();
     setWindowTitle();
     setProcessMessages();
     setAutoSaving();
@@ -421,7 +420,7 @@ bool StartupPostProcess::hiddenMainWindow() const
     return hidden;
 }
 
-void StartupPostProcess::showSplashScreen()
+void StartupPostProcess::showMainWindow()
 {
     bool hidden = hiddenMainWindow();
 
@@ -429,10 +428,7 @@ void StartupPostProcess::showSplashScreen()
     if (!hidden && !loadFromPythonModule) {
         mainWindow->startSplasher();
     }
-}
 
-void StartupPostProcess::showMainWindow()
-{
     // running the GUI init script
     try {
         Base::Console().Log("Run Gui init script\n");
