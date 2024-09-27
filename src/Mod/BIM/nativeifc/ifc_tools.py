@@ -1356,10 +1356,10 @@ def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
                 if hasattr(old_par, "Group") and old_obj in old_par.Group:
                     old_par.Group = [o for o in old_par.Group if o != old_obj]
             try:
-                api_run("spatial.unassign_container", ifcfile, products=[element])
+                uprel = api_run("spatial.unassign_container", ifcfile, products=[element])
             except:
                 # older version of IfcOpenShell
-                api_run("spatial.unassign_container", ifcfile, product=element)
+                uprel = api_run("spatial.unassign_container", ifcfile, product=element)
         if element.is_a("IfcOpeningElement"):
             uprel = api_run(
                 "void.add_opening",
