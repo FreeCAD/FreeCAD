@@ -564,7 +564,7 @@ def get_annotation_shape(annotation, ifcfile, coin=False):
     shapes2d = []
     for rep in annotation.Representation.Representations:
         if rep.RepresentationIdentifier in ["Annotation", "FootPrint", "Axis"]:
-            sh = importIFCHelper.get2DShape(rep, ifcscale)
+            sh = importIFCHelper.get2DShape(rep, ifcscale, notext=True)
             if sh:
                 shapes2d.extend(sh)
     if shapes2d:

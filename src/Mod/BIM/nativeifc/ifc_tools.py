@@ -257,10 +257,10 @@ def create_object(ifcentity, document, ifcfile, shapemode=0, objecttype=None):
     )
     if not objecttype:
         if ifcentity.is_a("IfcAnnotation"):
-            if ifc_export.get_text(ifcentity):
-                objecttype = "text"
-            elif ifc_export.get_dimension(ifcentity):
+            if ifc_export.get_dimension(ifcentity):
                 objecttype = "dimension"
+            elif ifc_export.get_text(ifcentity):
+                objecttype = "text"
     FreeCAD.Console.PrintLog(s)
     obj = add_object(document, otype=objecttype)
     add_properties(obj, ifcfile, ifcentity, shapemode=shapemode)
@@ -652,33 +652,32 @@ def add_properties(
                 setattr(obj, attr, str(value))
     # annotation properties
     if ifcentity.is_a("IfcAnnotation"):
-        text = ifc_export.get_text(ifcentity)
-        if text:
-            # the two props below are already taken care of, normally
-            if "Placement" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyPlacement", "Placement", "Base")
-            if "Text" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyStringList", "Text", "Base")
-            obj.Text = [text.Literal]
-            obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
+        dim = ifc_export.get_dimension(ifcentity)
+        if dim and len(dim) >= 3:
+            if "Start" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyVectorDistance", "Start", "Base")
+            if "End" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyVectorDistance", "End", "Base")
+            if "Dimline" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyVectorDistance", "Dimline", "Base")
+            obj.Start = dim[1]
+            obj.End = dim[2]
+            if len(dim) > 3:
+                obj.Dimline = dim[3]
+            else:
+                mid = obj.End.sub(obj.Start)
+                mid.multiply(0.5)
+                obj.Dimline = obj.Start.add(mid)
         else:
-            dim = ifc_export.get_dimension(ifcentity)
-            if dim and len(dim) >= 3:
-                # the two props below are already taken care of, normally
-                if "Start" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyVectorDistance", "Start", "Base")
-                if "End" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyVectorDistance", "End", "Base")
-                if "Dimline" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyVectorDistance", "Dimline", "Base")
-                obj.Start = dim[1]
-                obj.End = dim[2]
-                if len(dim) > 3:
-                    obj.Dimline = dim[3]
-                else:
-                    mid = obj.End.sub(obj.Start)
-                    mid.multiply(0.5)
-                    obj.Dimline = obj.Start.add(mid)
+            text = ifc_export.get_text(ifcentity)
+            if text:
+                if "Placement" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyPlacement", "Placement", "Base")
+                if "Text" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyStringList", "Text", "Base")
+                obj.Text = [text.Literal]
+                obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
+
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
         obj.setExpression("Label2", "Description")
@@ -1153,8 +1152,35 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
     """Creates a relationship between an IFC object and a parent IFC object"""
 
     parent_element = get_ifc_element(parent)
+    # case 4: anything inside group
+    if parent_element.is_a("IfcGroup"):
+        # IFC objects can be part of multiple groups but we do the FreeCAD way here
+        for assignment in getattr(element,"HasAssignments",[]):
+            if assignment.is_a("IfcRelAssignsToGroup"):
+                if element in assignment.RelatedObjects:
+                    oldgroup = assignment.RelatingGr
+                    try:
+                        api_run(
+                            "group.unassign_group",
+                            ifcfile,
+                            products=[element],
+                            group=oldgroup
+                        )
+                    except:
+                        # older version of IfcOpenShell
+                        api_run(
+                            "group.unassign_group",
+                            ifcfile,
+                            product=element,
+                            group=oldgroup
+                        )
+        try:
+            uprel = api_run("group.assign_group", ifcfile, products=[element], group=parent_element)
+        except:
+            # older version of IfcOpenShell
+            uprel = api_run("group.assign_group", ifcfile, product=element, group=parent_element)
     # case 1: element inside spatiual structure
-    if parent_element.is_a("IfcSpatialStructureElement") and element.is_a("IfcElement"):
+    elif parent_element.is_a("IfcSpatialStructureElement") and element.is_a("IfcElement"):
         # first remove the FreeCAD object from any parent
         for old_par in old_obj.InList:
             if hasattr(old_par, "Group") and old_obj in old_par.Group:
