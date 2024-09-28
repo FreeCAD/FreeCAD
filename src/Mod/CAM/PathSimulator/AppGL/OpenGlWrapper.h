@@ -86,4 +86,7 @@ extern QOpenGLContext* gOpenGlContext;
 #define glVertexAttribIPointer gSimWindow->glVertexAttribIPointer
 #define glUniform4fv gSimWindow->glUniform4fv
 #define glLineWidth gSimWindow->glLineWidth
+#define glGetShaderiv gSimWindow->glGetShaderiv
+#define glGetShaderInfoLog gSimWindow->glGetShaderInfoLog
+
 #endif  // !__openglwrapper_h__
