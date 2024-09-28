@@ -34,6 +34,7 @@ __url__    = "https://www.freecad.org"
 
 import os
 from typing import Optional
+from xml.sax.saxutils import escape as sax_escape
 
 import numpy as np
 
@@ -54,6 +55,17 @@ else:
     # \endcond
 
 DEBUG = True
+
+
+def xml_escape(text: str, entities: dict[str, str] = None) -> str:
+    """Escape text for XML.
+
+    This is a wrapper around xml.sax.saxutils.escape that replaces also
+    `"` with `&quot;` by default.
+    """
+    if entities is None:
+        entities = {'"': "&quot;"}
+    return sax_escape(text, entities=entities)
 
 
 def check_collada_import() -> bool:
@@ -207,12 +219,13 @@ def export(
         author = FreeCAD.ActiveDocument.CreatedBy
     except UnicodeEncodeError:
         author = FreeCAD.ActiveDocument.CreatedBy.encode("utf8")
-    author = author.replace("<", "")
-    author = author.replace(">", "")
+    author = xml_escape(author)
     col_contributor.author = author
     ver = FreeCAD.Version()
     appli = f"FreeCAD v{ver[0]}.{ver[1]} build {ver[2]}"
     col_contributor.authoring_tool = appli
+    # Bug in collada from 0.4 to 0.9, contributors are not written to file.
+    # Set it anyway for future versions.
     col_mesh.assetInfo.contributors.append(col_contributor)
     col_mesh.assetInfo.unitname = "meter"
     col_mesh.assetInfo.unitmeter = 1.0
@@ -269,7 +282,7 @@ def export(
         geom = collada.geometry.Geometry(
                 collada=col_mesh,
                 id=f"geometry{obj_ind}",
-                name=obj.Name,
+                name=xml_escape(obj.Label),
                 sourcebyid=[vert_src, normal_src],
         )
         input_list = collada.source.InputList()
