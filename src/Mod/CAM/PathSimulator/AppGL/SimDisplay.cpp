@@ -99,7 +99,11 @@ void SimDisplay::CreateFboQuad()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 }
 
-void SimDisplay::CreateGBufTex(GLenum texUnit, GLint intFormat, GLenum format, GLenum type, GLuint& texid)
+void SimDisplay::CreateGBufTex(GLenum texUnit,
+                               GLint intFormat,
+                               GLenum format,
+                               GLenum type,
+                               GLuint& texid)
 {
     glActiveTexture(texUnit);
     glGenTextures(1, &texid);
@@ -192,7 +196,11 @@ void SimDisplay::CreateSsaoFbos()
     glGenFramebuffers(1, &mSsaoBlurFbo);
     glBindFramebuffer(GL_FRAMEBUFFER, mSsaoBlurFbo);
     CreateGBufTex(GL_TEXTURE0, GL_R16F, GL_RED, GL_FLOAT, mFboSsaoBlurTexture);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mFboSsaoBlurTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER,
+                           GL_COLOR_ATTACHMENT0,
+                           GL_TEXTURE_2D,
+                           mFboSsaoBlurTexture,
+                           0);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         mSsaoValid = false;
         return;
@@ -201,7 +209,7 @@ void SimDisplay::CreateSsaoFbos()
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // generate sample kernel
-	int kernSize = 64;
+    int kernSize = 64;
     for (int i = 0; i < kernSize; i++) {
         vec3 sample;
         UniformHemisphere(sample);

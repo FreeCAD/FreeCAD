@@ -176,7 +176,7 @@ void Shader::UpdateCurSegment(int curSeg)
 }
 
 
-bool CheckCompileResult(int shaderId, const char *shaderName, bool isVertex)
+bool CheckCompileResult(int shaderId, const char* shaderName, bool isVertex)
 {
     char log[1024];
     int res = 0;
@@ -200,7 +200,8 @@ bool CheckCompileResult(int shaderId, const char *shaderName, bool isVertex)
     return true;
 }
 
-unsigned int Shader::CompileShader(const char *name, const char* _vertShader, const char* _fragShader)
+unsigned int
+Shader::CompileShader(const char* name, const char* _vertShader, const char* _fragShader)
 {
     vertShader = _vertShader;
     fragShader = _fragShader;
@@ -520,7 +521,7 @@ const char* FragShaderSSAO = R"(
             // Access camera space z-coordinate at that point
             float surfaceZ = texture(PositionTex, p.xy).z;
             float zDist = surfaceZ - camPos.z;
-        
+
             // Count points that ARE occluded
             if( zDist >= 0.0 && zDist <= Radius && surfaceZ > samplePos.z ) occlusionSum += 1.0;
         }
