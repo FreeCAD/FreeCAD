@@ -155,6 +155,21 @@ int Preferences::projectionAngle()
     return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First Angle
 }
 
+bool Preferences::groupAutoDistribute()
+{
+    return getPreferenceGroup("General")->GetBool("AutoDist", true);
+}
+
+double Preferences::groupSpaceX()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceX", 15.0);
+}
+
+double Preferences::groupSpaceY()
+{
+    return getPreferenceGroup("General")->GetFloat("GroupSpaceY", 15.0);
+}
+
 int Preferences::lineGroup()
 {
     return getPreferenceGroup("Decorations")->GetInt("LineGroup", 3);  // FC 0.70mm

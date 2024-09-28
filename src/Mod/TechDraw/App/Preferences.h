@@ -65,6 +65,9 @@ public:
     static bool keepPagesUpToDate();
 
     static int projectionAngle();
+    static bool groupAutoDistribute();
+    static double groupSpaceX();
+    static double groupSpaceY();
 
     static int balloonArrow();
     static double balloonKinkLength();
