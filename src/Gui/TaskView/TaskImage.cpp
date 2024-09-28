@@ -416,6 +416,10 @@ void TaskImage::updatePlacement()
     else if (ui->YZ_radioButton->isChecked()) {
         rot.setYawPitchRoll(90. - dir, -angle, 90.);
     }
+    else if (!feature.expired()) {
+        Base::Placement plm = feature->Placement.getValue();
+        rot = plm.getRotation();
+    }
     // NOLINTEND
 
     Base::Vector3d offset = Base::Vector3d(ui->spinBoxX->value().getValue(),
