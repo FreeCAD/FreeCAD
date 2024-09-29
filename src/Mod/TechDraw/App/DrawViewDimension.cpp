@@ -464,8 +464,7 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
         m_referencesCorrect = autocorrectReferences();
     }
     if (!m_referencesCorrect) {
-        m_referencesCorrect = true;
-        new App::DocumentObjectExecReturn("Autocorrect failed to fix broken references", this);
+        return new App::DocumentObjectExecReturn("Autocorrect failed to fix broken references", this);
     }
 
     // references are good, we can proceed
