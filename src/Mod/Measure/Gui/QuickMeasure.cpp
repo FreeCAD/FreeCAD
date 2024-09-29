@@ -48,6 +48,8 @@
 using namespace Measure;
 using namespace MeasureGui;
 
+FC_LOG_LEVEL_INIT("QuickMeasure", true, true)
+
 QuickMeasure::QuickMeasure(QObject* parent)
     : QObject(parent)
     , measurement {new Measure::Measurement()}
@@ -90,6 +92,12 @@ void QuickMeasure::processSelection()
         }
         catch (const Base::Exception& e) {
             e.ReportException();
+        }
+        catch (const Standard_Failure& e) {
+            FC_ERR(e);
+        }
+        catch (...) {
+            FC_ERR("Unhandled unknown exception");
         }
     }
 }
