@@ -75,6 +75,16 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
             (int)event->type());
         return false;
     }
+
+    // https://github.com/FreeCAD/FreeCAD/issues/16905
+    std::string exceptionWarning =
+#if FC_DEBUG
+        "Exceptions must be caught before they go through Qt."
+        " Ignoring this will cause crashes on some systems.\n";
+#else
+        "";
+#endif
+
     try {
         if (event->type() == Spaceball::ButtonEvent::ButtonEventType ||
             event->type() == Spaceball::MotionEvent::MotionEventType)
@@ -89,14 +99,15 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (const std::exception& e) {
         Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+                              "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (...) {
-        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n");
+        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n%s",
+                              exceptionWarning);
     }
 
     // Print some more information to the log file (if active) to ease bug fixing
