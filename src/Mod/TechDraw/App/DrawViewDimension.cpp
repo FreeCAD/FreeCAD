@@ -206,6 +206,9 @@ DrawViewDimension::DrawViewDimension()
         (App::Prop_None),
         "Feature bounding box corners as of last reference update.  Used by autocorrect");
 
+    // changing the references in the property editor will only cause problems
+    References2D.setStatus(App::Property::ReadOnly, true);
+    References3D.setStatus(App::Property::ReadOnly, true);
 
     // hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly, true);
