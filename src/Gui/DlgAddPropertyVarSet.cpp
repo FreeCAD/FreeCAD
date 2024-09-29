@@ -352,7 +352,7 @@ void DlgAddPropertyVarSet::checkName() {
         throw CreatePropertyException("Invalid name");
     }
 
-    if(App::ExpressionParser::isTokenAUnit(name)) {
+    if(App::ExpressionParser::isTokenAUnit(name) || App::ExpressionParser::isTokenAConstant(name)) {
         QMessageBox::critical(getMainWindow(),
                               QObject::tr("Invalid name"),
                               QObject::tr("The property name is a reserved word."));

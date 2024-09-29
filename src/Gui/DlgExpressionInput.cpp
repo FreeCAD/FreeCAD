@@ -428,7 +428,7 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
         return false;
     }
 
-    if (ExpressionParser::isTokenAUnit(name)) {
+    if (ExpressionParser::isTokenAUnit(name) || ExpressionParser::isTokenAConstant(name)) {
         message << name << " is a reserved word";
         return false;
     }
