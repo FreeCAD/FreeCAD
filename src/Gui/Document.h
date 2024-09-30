@@ -169,6 +169,9 @@ public:
     void setModified(bool);
     bool isModified() const;
 
+    /// Returns true if the document is about to be closed, false otherwise
+    bool isAboutToClose() const;
+
     /// Getter for the App Document
     App::Document*  getDocument() const;
 
