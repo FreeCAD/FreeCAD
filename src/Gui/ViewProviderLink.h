@@ -265,7 +265,9 @@ public:
 
     App::Property *getPropertyByName(const char* name) const override;
     void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
-    void getPropertyList(std::vector<App::Property*> &List) const override;
+    /// See PropertyContainer::visitProperties for semantics
+    void visitProperties(std::function<void(App::Property*)> visitor) const override;
+    void getPropertyList(std::vector<App::Property*>& List) const override;
 
     ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=nullptr, bool recursive=false) const override;

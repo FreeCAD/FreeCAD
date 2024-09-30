@@ -645,8 +645,10 @@ void Document::clearDocument()
     setStatus(Document::PartialDoc, false);
 
     d->clearRecomputeLog();
+    d->objectLabelManager.clear();
     d->objectArray.clear();
     d->objectMap.clear();
+    d->objectNameManager.clear();
     d->objectIdMap.clear();
     d->lastObjectId = 0;
 }
@@ -2250,6 +2252,34 @@ bool Document::saveToFile(const char* filename) const
     return true;
 }
 
+void Document::registerLabel(const std::string& newLabel)
+{
+    if (!newLabel.empty()) {
+        d->objectLabelManager.addExactName(newLabel);
+    }
+}
+
+void Document::unregisterLabel(const std::string& oldLabel)
+{
+    if (!oldLabel.empty()) {
+        d->objectLabelManager.removeExactName(oldLabel);
+    }
+}
+
+bool Document::containsLabel(const std::string& label)
+{
+    return d->objectLabelManager.containsName(label);
+}
+
+std::string Document::makeUniqueLabel(const std::string& modelLabel)
+{
+    if (modelLabel.empty()) {
+        return std::string();
+    }
+
+    return d->objectLabelManager.makeUniqueName(modelLabel, 3);
+}
+
 bool Document::isAnyRestoring()
 {
     return globalIsRestoring;
@@ -2276,7 +2306,9 @@ void Document::restore(const char* filename,
     setStatus(Document::PartialDoc, false);
 
     d->clearRecomputeLog();
+    d->objectLabelManager.clear();
     d->objectArray.clear();
+    d->objectNameManager.clear();
     d->objectMap.clear();
     d->objectIdMap.clear();
     d->lastObjectId = 0;
@@ -3585,6 +3617,7 @@ DocumentObject* Document::addObject(const char* sType,
 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
+    d->objectNameManager.addExactName(ObjectName);
     // generate object id and add to id map;
     pcObject->_Id = ++d->lastObjectId;
     d->objectIdMap[pcObject->_Id] = pcObject;
@@ -3593,6 +3626,8 @@ DocumentObject* Document::addObject(const char* sType,
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
     d->objectArray.push_back(pcObject);
+    // Register the current Label even though it is (probably) about to change
+    registerLabel(pcObject->Label.getStrValue());
 
     // If we are restoring, don't set the Label object now; it will be restored later. This is to
     // avoid potential duplicate label conflicts later.
@@ -3653,13 +3688,6 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
         return objects;
     }
 
-    // get all existing object names
-    std::vector<std::string> reservedNames;
-    reservedNames.reserve(d->objectMap.size());
-    for (const auto& pos : d->objectMap) {
-        reservedNames.push_back(pos.first);
-    }
-
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         auto index = std::distance(objects.begin(), it);
         App::DocumentObject* pcObject = *it;
@@ -3674,29 +3702,19 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
             }
         }
 
-        // get unique name
+        // get unique name. We don't use getUniqueObjectName because it takes a char* not a std::string
         std::string ObjectName = objectNames[index];
         if (ObjectName.empty()) {
             ObjectName = sType;
         }
         ObjectName = Base::Tools::getIdentifier(ObjectName);
-        if (d->objectMap.find(ObjectName) != d->objectMap.end()) {
-            // remove also trailing digits from clean name which is to avoid to create lengthy names
-            // like 'Box001001'
-            if (!testStatus(KeepTrailingDigits)) {
-                std::string::size_type index = ObjectName.find_last_not_of("0123456789");
-                if (index + 1 < ObjectName.size()) {
-                    ObjectName = ObjectName.substr(0, index + 1);
-                }
-            }
-
-            ObjectName = Base::Tools::getUniqueName(ObjectName, reservedNames, 3);
+        if (d->objectNameManager.containsName(ObjectName)) {
+            ObjectName = d->objectNameManager.makeUniqueName(ObjectName, 3);
         }
-
-        reservedNames.push_back(ObjectName);
 
         // insert in the name map
         d->objectMap[ObjectName] = pcObject;
+        d->objectNameManager.addExactName(ObjectName);
         // generate object id and add to id map;
         pcObject->_Id = ++d->lastObjectId;
         d->objectIdMap[pcObject->_Id] = pcObject;
@@ -3705,6 +3723,8 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
         pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
         // insert in the vector
         d->objectArray.push_back(pcObject);
+        // Register the current Label even though it is about to change
+        registerLabel(pcObject->Label.getStrValue());
 
         pcObject->Label.setValue(ObjectName);
 
@@ -3765,6 +3785,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
+    d->objectNameManager.addExactName(ObjectName);
     // generate object id and add to id map;
     if (!pcObject->_Id) {
         pcObject->_Id = ++d->lastObjectId;
@@ -3775,6 +3796,8 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
     // insert in the vector
     d->objectArray.push_back(pcObject);
+    // Register the current Label even though it is about to change
+    registerLabel(pcObject->Label.getStrValue());
 
     pcObject->Label.setValue(ObjectName);
 
@@ -3798,12 +3821,14 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 {
     std::string ObjectName = getUniqueObjectName(pObjectName);
     d->objectMap[ObjectName] = pcObject;
+    d->objectNameManager.addExactName(ObjectName);
     // generate object id and add to id map;
     if (!pcObject->_Id) {
         pcObject->_Id = ++d->lastObjectId;
     }
     d->objectIdMap[pcObject->_Id] = pcObject;
     d->objectArray.push_back(pcObject);
+    registerLabel(pcObject->Label.getStrValue());
     // cache the pointer to the name string in the Object (for performance of
     // DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
@@ -3830,6 +3855,15 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 
     d->activeObject = pcObject;
     signalActivatedObject(*pcObject);
+}
+
+bool Document::containsObject(const DocumentObject* pcObject) const
+{
+    // We could look for the object in objectMap (keyed by object name),
+    // or search in objectArray (a O(n) vector search) but looking by Id
+    // in objectIdMap would be fastest.
+    auto found = d->objectIdMap.find(pcObject->getID());
+    return found != d->objectIdMap.end() && found->second == pcObject;
 }
 
 /// Remove an object out of the document
@@ -3919,6 +3953,7 @@ void Document::removeObject(const char* sName)
         }
     }
 
+    unregisterLabel(pos->second->Label.getStrValue());
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin();
          obj != d->objectArray.end();
          ++obj) {
@@ -3932,6 +3967,7 @@ void Document::removeObject(const char* sName)
     if (tobedestroyed) {
         tobedestroyed->pcNameInDocument = nullptr;
     }
+    d->objectNameManager.removeExactName(pos->first);
     d->objectMap.erase(pos);
 }
 
@@ -4001,6 +4037,8 @@ void Document::_removeObject(DocumentObject* pcObject)
     // remove from map
     pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side
     d->objectIdMap.erase(pcObject->_Id);
+    d->objectNameManager.removeExactName(pos->first);
+    unregisterLabel(pos->second->Label.getStrValue());
     d->objectMap.erase(pos);
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin();
@@ -4277,50 +4315,32 @@ const char* Document::getObjectName(DocumentObject* pFeat) const
     return nullptr;
 }
 
-std::string Document::getUniqueObjectName(const char* Name) const
+std::string Document::getUniqueObjectName(const char* proposedName) const
 {
-    if (!Name || *Name == '\0') {
+    if (!proposedName || *proposedName == '\0') {
         return {};
     }
-    std::string CleanName = Base::Tools::getIdentifier(Name);
+    std::string cleanName = Base::Tools::getIdentifier(proposedName);
 
-    // name in use?
-    auto pos = d->objectMap.find(CleanName);
-
-    if (pos == d->objectMap.end()) {
-        // if not, name is OK
-        return CleanName;
+    if (!d->objectNameManager.containsName(cleanName)) {
+        // Not in use yet, name is OK
+        return cleanName;
     }
-    else {
-        // remove also trailing digits from clean name which is to avoid to create lengthy names
-        // like 'Box001001'
-        if (!testStatus(KeepTrailingDigits)) {
-            std::string::size_type index = CleanName.find_last_not_of("0123456789");
-            if (index + 1 < CleanName.size()) {
-                CleanName = CleanName.substr(0, index + 1);
-            }
-        }
-
-        std::vector<std::string> names;
-        names.reserve(d->objectMap.size());
-        for (pos = d->objectMap.begin(); pos != d->objectMap.end(); ++pos) {
-            names.push_back(pos->first);
-        }
-        return Base::Tools::getUniqueName(CleanName, names, 3);
-    }
+    return d->objectNameManager.makeUniqueName(cleanName, 3);
 }
 
-std::string Document::getStandardObjectName(const char* Name, int d) const
+    bool
+Document::sameBaseName(const std::string& name, const std::string& label)
 {
-    std::vector<App::DocumentObject*> mm = getObjects();
-    std::vector<std::string> labels;
-    labels.reserve(mm.size());
+    // Both Labels and Names use the same decomposition rules for names,
+    // i.e. the default one supplied by UniqueNameManager, so we can use either
+    // of the name managers to do this test.
+    return d->objectNameManager.sameBaseName(name, label);
+}
 
-    for (auto it : mm) {
-        std::string label = it->Label.getValue();
-        labels.push_back(label);
-    }
-    return Base::Tools::getUniqueName(Name, labels, d);
+std::string Document::getStandardObjectLabel(const char* modelName, int digitCount) const
+{
+    return d->objectLabelManager.makeUniqueName(modelName, digitCount);
 }
 
 std::vector<DocumentObject*> Document::getDependingObjects() const
