@@ -288,6 +288,9 @@ void TaskImage::onPreview()
 // NOLINTNEXTLINE
 void TaskImage::restoreAngles(const Base::Rotation& rot)
 {
+    Base::Vector3d vec(0, 0, 1);
+    rot.multVec(vec, vec);
+
     double yaw {};
     double pitch {};
     double roll {};
@@ -300,30 +303,47 @@ void TaskImage::restoreAngles(const Base::Rotation& rot)
     const double angle2 = 180.0;
 
     auto isTopOrBottom = [=](bool& reverse) {
-        if (fabs(pitch) < tol && (fabs(roll) < tol || fabs(roll - angle2) < tol)) {
-            if (fabs(roll - angle2) < tol) {
-                reverse = true;
-            }
+        if (std::fabs(vec.z - 1.0) < tol) {
+            return true;
+        }
+        if (std::fabs(vec.z + 1.0) < tol) {
+            reverse = true;
             return true;
         }
 
         return false;
     };
-    auto isFrontOrRear = [=](bool& reverse) {
-        if (fabs(roll - angle1) < tol && (fabs(yaw) < tol || fabs(yaw - angle2) < tol)) {
-            if (fabs(yaw - angle2) < tol) {
-                reverse = true;
+
+    auto isFrontOrRear = [&](bool& reverse) {
+        if (std::fabs(vec.y + 1.0) < tol) {
+            if (std::fabs(yaw - angle2) < tol) {
+                pitch = -angle2 - pitch;
             }
+            return true;
+        }
+        if (std::fabs(vec.y - 1.0) < tol) {
+            if (std::fabs(yaw) < tol) {
+                pitch = -angle2 - pitch;
+            }
+            reverse = true;
             return true;
         }
 
         return false;
     };
-    auto isRightOrLeft = [=](bool& reverse) {
-        if (fabs(roll - angle1) < tol && (fabs(yaw - angle1) < tol || fabs(yaw + angle1) < tol)) {
-            if (fabs(yaw + angle1) < tol) {
-                reverse = true;
+
+    auto isRightOrLeft = [&](bool& reverse) {
+        if (std::fabs(vec.x - 1.0) < tol) {
+            if (std::fabs(yaw + angle1) < tol) {
+                pitch = -angle2 - pitch;
             }
+            return true;
+        }
+        if (std::fabs(vec.x + 1.0) < tol) {
+            if (std::fabs(yaw - angle1) < tol) {
+                pitch = -angle2 - pitch;
+            }
+            reverse = true;
             return true;
         }
 
@@ -395,6 +415,10 @@ void TaskImage::updatePlacement()
     }
     else if (ui->YZ_radioButton->isChecked()) {
         rot.setYawPitchRoll(90. - dir, -angle, 90.);
+    }
+    else if (!feature.expired()) {
+        Base::Placement plm = feature->Placement.getValue();
+        rot = plm.getRotation();
     }
     // NOLINTEND
 
