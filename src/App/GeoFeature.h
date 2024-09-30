@@ -108,8 +108,9 @@ public:
             const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
 
     /**
-     * @brief Calculates the placement in the global reference coordinate system
+     * @brief Deprecated. Calculates the placement in the global reference coordinate system
      * 
+     * Deprecated: This does not handle App::Links correctly. Use getGlobalPlacement() instead.
      * In FreeCAD the GeoFeature placement describes the local placement of the object in its parent
      * coordinate system. This is however not always the same as the global reference system. If the
      * object is in a GeoFeatureGroup, hence in another local coordinate system, the Placement
