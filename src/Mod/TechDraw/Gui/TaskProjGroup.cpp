@@ -23,14 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
 # include <QMessageBox>
 # include <QGroupBox>
-# include <QVBoxLayout>
-# include <QHBoxLayout>
 # include <QLabel>
-# include <QPushButton>
-# include <QDialog>
 # include <QScreen>
 #endif // #ifndef _PreComp_
 
@@ -73,47 +68,30 @@ using namespace TechDrawGui;
 TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     ui(new Ui_TaskProjGroup),
     view(featView),
-    multiView(nullptr),
-    m_createMode(mode),
+    multiView(dynamic_cast<TechDraw::DrawProjGroup*>(view)),
     blockCheckboxes(false)
 {
     ui->setupUi(this);
 
-    blockUpdate = true;
-    multiView = dynamic_cast<TechDraw::DrawProjGroup*>(view);
+    m_page = view->findParentPage();
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
+    Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
+    auto* dvp = static_cast<ViewProviderPage*>(vp);
+    m_mdi = dvp->getMDIViewPage();
+
+    connectWidgets();
+    initializeUi();
+    setUiPrimary();
     updateUi();
 
-    if (multiView) {
-        ui->projection->setCurrentIndex(multiView->ProjectionType.getValue());
-        ui->cbAutoDistribute->setChecked(multiView->AutoDistribute.getValue());
-        // disable if no AutoDistribute
-        ui->sbXSpacing->setEnabled(multiView->AutoDistribute.getValue());
-        ui->sbYSpacing->setEnabled(multiView->AutoDistribute.getValue());
-        ui->sbXSpacing->setValue(multiView->spacingX.getValue());
-        ui->sbYSpacing->setValue(multiView->spacingY.getValue());
-    }
-
-    setFractionalScale(view->getScale());
-    ui->cmbScaleType->setCurrentIndex(view->ScaleType.getValue());
-
-    //Allow or prevent scale changing initially
-    if (view->ScaleType.isValue("Custom"))	{
-        ui->sbScaleNum->setEnabled(true);
-        ui->sbScaleDen->setEnabled(true);
-    }
-    else {
-        ui->sbScaleNum->setEnabled(false);
-        ui->sbScaleDen->setEnabled(false);
-    }
-
-
-    // Initially toggle view checkboxes if needed
-    setupViewCheckboxes(true);
+    saveGroupState();
 
     blockUpdate = false;
+}
 
+void TaskProjGroup::connectWidgets()
+{
     // Rotation buttons
-    // Note we don't do the custom one here, as it is handled by [a different function that's held up in customs]
     connect(ui->butTopRotate,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butCWRotate,    &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butRightRotate, &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
@@ -124,9 +102,6 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     connect(ui->butCam,         &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
 
     connect(ui->lePrimary,   &QPushButton::clicked, this, &TaskProjGroup::customDirectionClicked);
-
-//    //Reset button
-//    connect(ui->butReset,   SIGNAL(clicked()), this, SLOT(onResetClicked()));
 
     // Slot for Scale Type
     connect(ui->cmbScaleType, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskProjGroup::scaleTypeChanged);
@@ -146,24 +121,59 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     connect(ui->cbAutoDistribute, &QPushButton::clicked, this, &TaskProjGroup::AutoDistributeClicked);
     connect(ui->sbXSpacing, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskProjGroup::spacingChanged);
     connect(ui->sbYSpacing, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskProjGroup::spacingChanged);
+}
+
+void TaskProjGroup::initializeUi()
+{
+    if (!view) {
+        return;
+    }
+
+    if (multiView) {
+        // we have a projection group as input
+        ui->projection->setCurrentIndex(multiView->ProjectionType.getValue());
+        ui->cbAutoDistribute->setChecked(multiView->AutoDistribute.getValue());
+        // disable if no AutoDistribute
+        ui->sbXSpacing->setEnabled(multiView->AutoDistribute.getValue());
+        ui->sbYSpacing->setEnabled(multiView->AutoDistribute.getValue());
+        ui->sbXSpacing->setValue(multiView->spacingX.getValue());
+        ui->sbYSpacing->setValue(multiView->spacingY.getValue());
+    } else {
+        ui->projection->setCurrentIndex(Preferences::projectionAngle());
+        ui->cbAutoDistribute->setChecked(Preferences::groupAutoDistribute());
+        ui->sbXSpacing->setValue(Preferences::groupSpaceX());
+        ui->sbYSpacing->setValue(Preferences::groupSpaceY());
+    }
+
+    setFractionalScale(view->getScale());
+    ui->cmbScaleType->setCurrentIndex(view->ScaleType.getValue());
+
+    //Allow or prevent scale changing initially
+    if (view->ScaleType.isValue("Custom"))	{
+        ui->sbScaleNum->setEnabled(true);
+        ui->sbScaleDen->setEnabled(true);
+    }
+    else {
+        ui->sbScaleNum->setEnabled(false);
+        ui->sbScaleDen->setEnabled(false);
+    }
+
+    // Initially toggle view checkboxes if needed
+    setupViewCheckboxes(true);
+
     ui->sbXSpacing->setUnit(Base::Unit::Length);
     ui->sbYSpacing->setUnit(Base::Unit::Length);
 
-    m_page = view->findParentPage();
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
-    Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
-    auto* dvp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = dvp->getMDIViewPage();
-
-    setUiPrimary();
     if (Preferences::useCameraDirection()) {
         ui->butCam->setChecked(true);
     } else {
         ui->butFront->setChecked(true);
     }
-    saveGroupState();
+
 }
 
+
+//! enable/disable the appropriate widgets
 void TaskProjGroup::updateUi()
 {
     if (multiView) {
@@ -196,9 +206,9 @@ void TaskProjGroup::updateUi()
 
 void TaskProjGroup::saveGroupState()
 {
-//    Base::Console().Message("TPG::saveGroupState()\n");
-    if (!view)
+    if (!view) {
         return;
+    }
 
     m_saveScaleType = view->ScaleType.getValueAsString();
     m_saveScale = view->Scale.getValue();
@@ -224,9 +234,9 @@ void TaskProjGroup::saveGroupState()
 //never used?
 void TaskProjGroup::restoreGroupState()
 {
-    Base::Console().Message("TPG::restoreGroupState()\n");
-    if (!view)
+    if (!view) {
         return;
+    }
 
     view->ScaleType.setValue(m_saveScaleType.c_str());
     view->Scale.setValue(m_saveScale);
@@ -310,6 +320,7 @@ void TaskProjGroup::turnViewToProjGroup()
     multiView->Y.setValue(viewPart->Y.getValue());
     multiView->Scale.setValue(viewPart->Scale.getValue());
     multiView->ScaleType.setValue(viewPart->ScaleType.getValue());
+    multiView->ProjectionType.setValue(Preferences::projectionAngle());
     viewPart->X.setValue(0.0);
     viewPart->Y.setValue(0.0);
     viewPart->ScaleType.setValue("Custom");
@@ -503,13 +514,15 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
     ui->chkView8->setToolTip(getToolTipForBox(8));
     ui->chkView9->setToolTip(getToolTipForBox(9));
 
-    view->recomputeFeature();
+    // R/L and T/B view need to be repositioned and just recomputing a single view will not do this
+    multiView->recomputeChildren();
 }
 
 void TaskProjGroup::scaleTypeChanged(int index)
 {
-    if (blockUpdate)
+    if (blockUpdate) {
         return;
+    }
 
     //defaults to prevent scale changing
     ui->sbScaleNum->setEnabled(false);
@@ -535,9 +548,9 @@ void TaskProjGroup::scaleTypeChanged(int index)
         ui->sbScaleNum->setEnabled(true);
         ui->sbScaleDen->setEnabled(true);
 
-        int a = ui->sbScaleNum->value();
-        int b = ui->sbScaleDen->value();
-        double scale = (double) a / (double) b;
+        int numerator = ui->sbScaleNum->value();
+        int denominator = ui->sbScaleDen->value();
+        double scale = (double) numerator / (double) denominator;
         view->Scale.setValue(scale);
         //unblock recompute
     }
@@ -589,16 +602,17 @@ void TaskProjGroup::setFractionalScale(double newScale)
 void TaskProjGroup::scaleManuallyChanged(int unused)
 {
     Q_UNUSED(unused);
-    if(blockUpdate)
+    if(blockUpdate) {
         return;
+    }
     if (!view->ScaleType.isValue("Custom")) {  //ignore if not custom!
         return;
     }
 
-    int a = ui->sbScaleNum->value();
-    int b = ui->sbScaleDen->value();
+    int numerator = ui->sbScaleNum->value();
+    int denominator = ui->sbScaleDen->value();
 
-    double scale = (double) a / (double) b;
+    double scale = (double) numerator / (double) denominator;
 
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", view->getNameInDocument()
                                                                                      , scale);
@@ -622,15 +636,15 @@ const char * TaskProjGroup::viewChkIndexToCStr(int index)
     //                  Right   F   L  Rear
     //                 FTRight  T  FTL
 
-    bool thirdAngle = multiView ? multiView->usedProjectionType().isValue("Third Angle") : false;
+    bool thirdAngle = useThirdAngle();
     switch(index) {
         case 0: return (thirdAngle ? "FrontTopLeft" : "FrontBottomRight");
         case 1: return (thirdAngle ? "Top" : "Bottom");
         case 2: return (thirdAngle ? "FrontTopRight" : "FrontBottomLeft");
         case 3: return (thirdAngle ? "Left" : "Right");
-        case 4: return (thirdAngle ? "Front" : "Front");
+        case 4: return "Front";
         case 5: return (thirdAngle ? "Right" : "Left");
-        case 6: return (thirdAngle ? "Rear" : "Rear");
+        case 6: return "Rear";
         case 7: return (thirdAngle ? "FrontBottomLeft" : "FrontTopRight");
         case 8: return (thirdAngle ? "Bottom" : "Top");
         case 9: return (thirdAngle ? "FrontBottomRight" : "FrontTopLeft");
@@ -640,15 +654,15 @@ const char * TaskProjGroup::viewChkIndexToCStr(int index)
 
 QString TaskProjGroup::getToolTipForBox(int boxNumber)
 {
-    bool thirdAngle = multiView ? multiView->usedProjectionType().isValue("Third Angle") : false;
+    bool thirdAngle = useThirdAngle();
     switch(boxNumber) {
         case 0: {return (thirdAngle ? tr("FrontTopLeft") : tr("FrontBottomRight")); break;}
         case 1: {return (thirdAngle ? tr("Top") : tr("Bottom")); break;}
         case 2: {return (thirdAngle ? tr("FrontTopRight") : tr("FrontBottomLeft")); break;}
         case 3: {return (thirdAngle ? tr("Left" ): tr("Right")); break;}
-        case 4: {return (thirdAngle ? tr("Front") : tr("Front")); break;}
+        case 4: {return tr("Front"); break; }
         case 5: {return (thirdAngle ? tr("Right") : tr("Left")); break;}
-        case 6: {return (thirdAngle ? tr("Rear") : tr("Rear")); break;}
+        case 6: {return tr("Rear"); break; }
         case 7: {return (thirdAngle ? tr("FrontBottomLeft") : tr("FrontTopRight")); break;}
         case 8: {return (thirdAngle ? tr("Bottom") : tr("Top")); break;}
         case 9: {return (thirdAngle ? tr("FrontBottomRight") : tr("FrontTopLeft")); break;}
@@ -656,10 +670,37 @@ QString TaskProjGroup::getToolTipForBox(int boxNumber)
     }
 }
 
+bool TaskProjGroup::useThirdAngle()
+{
+    if (!view) {
+        // something is wrong if this happens
+        throw Base::RuntimeError("TaskProjGroup - no view!");
+    }
+
+    auto page = view->findParentPage();
+    if (!page) {
+        return false;
+    }
+
+    bool thirdAngle = (bool) Preferences::projectionAngle();
+    if (!multiView) {
+        return thirdAngle;
+    }
+
+    if (multiView->usedProjectionType().isValue("Third Angle")) {
+        thirdAngle = true;
+    } else if (multiView->usedProjectionType().isValue("Default") &&
+        page->ProjectionType.isValue("Third Angle")) {
+        thirdAngle = true;
+    }
+    return thirdAngle;
+}
+
 void TaskProjGroup::setupViewCheckboxes(bool addConnections)
 {
-    if (!view)
+    if (!view) {
         return;
+    }
 
     // There must be a better way to construct this list...
     QCheckBox * viewCheckboxes[] = { ui->chkView0,
@@ -700,6 +741,9 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
     }
 }
 
+
+//! sets the main direction of the view
+// Note: does not set any of the other values that one would expect to be initialized
 void TaskProjGroup::setUiPrimary()
 {
     Base::Vector3d frontDir;
@@ -736,7 +780,6 @@ void TaskProjGroup::saveButtons(QPushButton* btnOK,
 
 bool TaskProjGroup::apply()
 {
-//    Base::Console().Message("TPG::apply()\n");
     if (multiView) {
         multiView->recomputeChildren();
     }
@@ -747,10 +790,10 @@ bool TaskProjGroup::apply()
 
 bool TaskProjGroup::accept()
 {
-//    Base::Console().Message("TPG::accept()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
-    if (!doc)
+    if (!doc) {
         return false;
+    }
 
     if (multiView) {
         multiView->recomputeChildren();
@@ -765,8 +808,9 @@ bool TaskProjGroup::accept()
 bool TaskProjGroup::reject()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(view->getDocument());
-    if (!doc)
+    if (!doc) {
         return false;
+    }
 
     if (getCreateMode()) {
         //remove the object completely from the document
@@ -786,10 +830,6 @@ bool TaskProjGroup::reject()
         //set the DPG and its views back to entry state.
         if (Gui::Command::hasPendingCommand()) {
             Gui::Command::abortCommand();
-//            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
-//            Gui::Application::Instance->activeDocument()->undo(1);
-//            view->rebuildViewList();
-//            apply();
         }
     }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
@@ -799,8 +839,7 @@ bool TaskProjGroup::reject()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO: Do we really need to hang on to the TaskDlgProjGroup in this class? IR
 TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawView* featView, bool mode)
-    : TaskDialog()
-    , viewProvider(nullptr)
+    : viewProvider(nullptr)
     , view(featView)
 {
     //viewProvider = dynamic_cast<const ViewProviderDrawingView *>(featView);
@@ -809,10 +848,6 @@ TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawView* featView, bool mode)
                                          widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
-}
-
-TaskDlgProjGroup::~TaskDlgProjGroup()
-{
 }
 
 void TaskDlgProjGroup::update()
@@ -849,7 +884,6 @@ void TaskDlgProjGroup::open()
 void TaskDlgProjGroup::clicked(int i)
 {
 //    Q_UNUSED(i);
-//    Base::Console().Message("TDPG::clicked(%X)\n", i);
     if (i == QMessageBox::Apply) {
         widget->apply();
     }
