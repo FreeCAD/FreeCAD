@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS_H
-#define BASE_TOOLS_H
+#ifndef SRC_BASE_TOOLS_H_
+#define SRC_BASE_TOOLS_H_
 
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
@@ -273,9 +273,6 @@ public:
 
 struct BaseExport Tools
 {
-    static std::string
-    getUniqueName(const std::string&, const std::vector<std::string>&, int d = 0);
-    static std::string addNumber(const std::string&, unsigned int, int d = 0);
     static std::string getIdentifier(const std::string&);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
@@ -331,4 +328,4 @@ struct BaseExport ZipTools
 
 }  // namespace Base
 
-#endif  // BASE_TOOLS_H
+#endif  // SRC_BASE_TOOLS_H_
