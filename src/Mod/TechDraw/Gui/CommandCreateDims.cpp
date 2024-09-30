@@ -2397,7 +2397,6 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
     //what 2d geometry configuration did we receive?
     DimensionGeometryType geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-
     if (geometryRefs2d == TechDraw::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
             QObject::tr("Incorrect Selection"),
@@ -2406,7 +2405,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
     }
 
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
+    DimensionGeometryType geometryRefs3d{TechDraw::isInvalid};
     if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(partFeat,
             references3d,
