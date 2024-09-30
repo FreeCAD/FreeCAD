@@ -18,11 +18,20 @@
  *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
+ *                                                                         *
+ *   Portions of this code are taken from:                                 *
+ *   "OpenGL 4 Shading Language cookbook" Third edition                    *
+ *   Written by: David Wolff                                               *
+ *   Published by: <packt> www.packt.com                                   *
+ *   License: MIT License                                                  *
+ *                                                                         *
+ *                                                                         *
  ***************************************************************************/
 
 #include "GlUtils.h"
 #include "Shader.h"
 #include <iostream>
+#include <Base/Console.h>
 
 namespace MillSim
 {
@@ -74,6 +83,16 @@ void Shader::UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float 
     }
 }
 
+void Shader::UpdateScreenDimension(int width, int height)
+{
+    if (mScreenWidthPos >= 0) {
+        glUniform1f(mScreenWidthPos, (float)width);
+    }
+    if (mScreenHeightPos >= 0) {
+        glUniform1f(mScreenHeightPos, (float)height);
+    }
+}
+
 void Shader::UpdateObjColor(vec3 objColor)
 {
     if (mObjectColorPos >= 0) {
@@ -95,6 +114,13 @@ void Shader::UpdateNormalState(bool isInverted)
     }
 }
 
+void Shader::UpdateSsaoActive(bool isActive)
+{
+    if (mSsaoActivePos >= 0) {
+        glUniform1i(mSsaoActivePos, isActive);
+    }
+}
+
 void Shader::UpdateTextureSlot(int slot)
 {
     if (mTexSlotPos >= 0) {
@@ -102,7 +128,7 @@ void Shader::UpdateTextureSlot(int slot)
     }
 }
 
-void Shader::UpdateAlbedoTexSlot(int albedoSlot)
+void Shader::UpdateColorTexSlot(int albedoSlot)
 {
     if (mAlbedoPos >= 0) {
         glUniform1i(mAlbedoPos, albedoSlot);
@@ -123,10 +149,10 @@ void Shader::UpdateNormalTexSlot(int normalSlot)
     }
 }
 
-void Shader::UpdateNoiseTexSlot(int noiseSlot)
+void Shader::UpdateRandomTexSlot(int randSlot)
 {
-    if (mNoisePos >= 0) {
-        glUniform1i(mNoisePos, noiseSlot);
+    if (mRandTexPos >= 0) {
+        glUniform1i(mRandTexPos, randSlot);
     }
 }
 
@@ -150,31 +176,32 @@ void Shader::UpdateCurSegment(int curSeg)
 }
 
 
-#ifdef QT_OPENGL_LIB
-bool CheckCompileResult(int /* shader */)
-{
-    return false;
-#else
-bool CheckCompileResult(int shader)
+bool CheckCompileResult(int shaderId, const char* shaderName, bool isVertex)
 {
     char log[1024];
     int res = 0;
     GLsizei len;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &res);
+    glGetShaderiv(shaderId, GL_COMPILE_STATUS, &res);
     if (res != 0) {
         return false;
     }
-    glGetShaderInfoLog(shader, 1020, &len, log);
+    int headerLen = snprintf(log,
+                             48,
+                             "Error compiling %s %s shader: ",
+                             shaderName,
+                             isVertex ? "vertex" : "fragment");
+    glGetShaderInfoLog(shaderId, 1020 - headerLen, &len, log + headerLen);
+    len += headerLen;
     if (len > 1020) {
         len = 1020;
     }
     log[len] = 0;
-    std::cout << log << std::endl;
+    Base::Console().Error(log);
     return true;
-#endif
 }
 
-unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragShader)
+unsigned int
+Shader::CompileShader(const char* name, const char* _vertShader, const char* _fragShader)
 {
     vertShader = _vertShader;
     fragShader = _fragShader;
@@ -182,7 +209,7 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
     GLint res = 0;
     glShaderSource(vertex_shader, 1, &vertShader, NULL);
     glCompileShader(vertex_shader);
-    if (CheckCompileResult(vertex_shader)) {
+    if (CheckCompileResult(vertex_shader, name, true)) {
         glDeleteShader(vertex_shader);
         return 0xdeadbeef;
     }
@@ -190,7 +217,7 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
     const GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment_shader, 1, &fragShader, NULL);
     glCompileShader(fragment_shader);
-    if (CheckCompileResult(fragment_shader)) {
+    if (CheckCompileResult(fragment_shader, name, false)) {
         glDeleteShader(fragment_shader);
         glDeleteShader(vertex_shader);
         return 0xdeadbeef;
@@ -220,14 +247,16 @@ unsigned int Shader::CompileShader(const char* _vertShader, const char* _fragSha
     mObjectColorAlphaPos = glGetUniformLocation(shaderId, "objectColorAlpha");
     mTexSlotPos = glGetUniformLocation(shaderId, "texSlot");
     mInvertedNormalsPos = glGetUniformLocation(shaderId, "invertedNormals");
-    mSsaoSamplesPos = glGetUniformLocation(shaderId, "ssaoSamples");
-    mAlbedoPos = glGetUniformLocation(shaderId, "texAlbedo");
-    mPositionPos = glGetUniformLocation(shaderId, "texPosition");
-    mNormalPos = glGetUniformLocation(shaderId, "texNormal");
-    mSsaoPos = glGetUniformLocation(shaderId, "texSsao");
-    mNoisePos = glGetUniformLocation(shaderId, "texNoise");
-    mSamplesPos = glGetUniformLocation(shaderId, "ssaoSamples");
+    mSsaoActivePos = glGetUniformLocation(shaderId, "ssaoActive");
+    mAlbedoPos = glGetUniformLocation(shaderId, "ColorTex");
+    mPositionPos = glGetUniformLocation(shaderId, "PositionTex");
+    mNormalPos = glGetUniformLocation(shaderId, "NormalTex");
+    mSsaoPos = glGetUniformLocation(shaderId, "AoTex");
+    mRandTexPos = glGetUniformLocation(shaderId, "RandTex");
+    mSamplesPos = glGetUniformLocation(shaderId, "SampleKernel");
     mCurSegmentPos = glGetUniformLocation(shaderId, "curSegment");
+    mScreenWidthPos = glGetUniformLocation(shaderId, "screenWidth");
+    mScreenHeightPos = glGetUniformLocation(shaderId, "screenHeight");
 
     Activate();
     return shaderId;
@@ -258,7 +287,7 @@ const char* VertShader3DNorm = R"(
     layout(location = 1) in vec3 aNormal;
 
     out vec3 Normal;
-    out vec3 FragPos;
+    out vec3 Position;
 
     uniform mat4 model;
     uniform mat4 view;
@@ -268,7 +297,7 @@ const char* VertShader3DNorm = R"(
     void main(void)
     {
         vec4 viewPos = view * model * vec4(aPosition, 1.0);
-        FragPos = vec3(model * vec4(aPosition, 1.0));
+        Position = vec3(model * vec4(aPosition, 1.0));
         Normal = vec3(normalRot * vec4(aNormal, 1.0));
         gl_Position = projection * viewPos;
     }
@@ -281,7 +310,7 @@ const char* VertShader3DInvNorm = R"(
     layout(location = 1) in vec3 aNormal;
 
     out vec3 Normal;
-    out vec3 FragPos;
+    out vec3 Position;
 
     uniform mat4 model;
     uniform mat4 view;
@@ -291,7 +320,7 @@ const char* VertShader3DInvNorm = R"(
     void main(void)
     {
         gl_Position = projection * view * model * vec4(aPosition, 1.0);
-        FragPos = vec3(model * vec4(aPosition, 1.0));
+        Position = vec3(model * vec4(aPosition, 1.0));
         Normal = -vec3(normalRot * vec4(aNormal, 1.0));
     }
 )";
@@ -338,7 +367,7 @@ const char* FragShaderNorm = R"(
     out vec4 FragColor;
 
     in vec3 Normal;
-    in vec3 FragPos;
+    in vec3 Position;
 
     uniform vec3 lightPos;
     uniform vec3 lightColor;
@@ -348,7 +377,7 @@ const char* FragShaderNorm = R"(
     void main()
     {
         vec3 norm = normalize(Normal);
-        vec3 lightDir = normalize(lightPos - FragPos);
+        vec3 lightDir = normalize(lightPos - Position);
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
         vec3 result = (lightAmbient + diffuse) * objectColor;
@@ -362,7 +391,7 @@ const char* FragShaderFlat = R"(
     out vec4 FragColor;
 
     in vec3 Normal;
-    in vec3 FragPos;
+    in vec3 Position;
     uniform vec3 objectColor;
 
     void main()
@@ -407,7 +436,7 @@ const char* VertShaderGeom = R"(
     layout (location = 0) in vec3 aPos;
     layout (location = 1) in vec3 aNormal;
 
-    out vec3 FragPos;
+    out vec3 Position;
     out vec3 Normal;
 
     uniform bool invertedNormals;
@@ -419,7 +448,7 @@ const char* VertShaderGeom = R"(
     void main()
     {
         vec4 viewPos = view * model * vec4(aPos, 1.0);
-        FragPos = viewPos.xyz;
+        Position = viewPos.xyz;
 
         mat3 normalMatrix = transpose(inverse(mat3(view * model)));
         Normal = normalMatrix * (invertedNormals ? -aNormal : aNormal);
@@ -430,82 +459,99 @@ const char* VertShaderGeom = R"(
 
 const char* FragShaderGeom = R"(
     #version 330 core
-    layout (location = 0) out vec4 texAlbedo;
-    layout (location = 1) out vec3 texPosition;
-    layout (location = 2) out vec3 texNormal;
+    layout (location = 0) out vec4 ColorTex;
+    layout (location = 1) out vec3 PositionTex;
+    layout (location = 2) out vec3 NormalTex;
 
-    in vec3 FragPos;
+    in vec3 Position;
     in vec3 Normal;
 
     uniform vec3 objectColor;
 
     void main()
     {
-        // store the fragment position vector in the first gbuffer texture
-        texPosition = FragPos;
-        // also store the per-fragment normals into the gbuffer
-        texNormal = normalize(Normal);
-        // and the diffuse per-fragment color
-        texAlbedo = vec4(objectColor, 1.0f);
+        // Store position, normal, and diffuse color in textures
+        PositionTex = Position;
+        NormalTex = normalize(Normal);
+        ColorTex = vec4(objectColor, 1.0f);
     }
 )";
 
 const char* FragShaderSSAO = R"(
     #version 330 core
-    out vec4 FragColor;
+    layout (location = 0) out float AoData;
 
     in vec2 texCoord;
 
-    uniform sampler2D texNoise;
-    uniform sampler2D texPosition;
-    uniform sampler2D texNormal;
+    uniform sampler2D RandTex;
+    uniform sampler2D PositionTex;
+    uniform sampler2D NormalTex;
 
-    uniform vec3 ssaoSamples[64];
-
-    // parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
-    int kernelSize = 64;
-    float radius = 30f;
-    float bias = 0.01;
-
-    // tile noise texture over screen based on screen dimensions divided by noise size
-    const vec2 noiseScale = vec2(800.0/4.0, 600.0/4.0);
+    const int kernelSize = 64;
+    uniform vec3 SampleKernel[kernelSize];
+    uniform float Radius = 20.0f;
+    uniform float screenWidth = 800.0;
+    uniform float screenHeight = 600.0;
 
     uniform mat4 projection;
 
     void main()
     {
-        // get input for SSAO algorithm
-        vec3 fragPos = texture(texPosition, texCoord).xyz;
-        vec3 normal = normalize(texture(texNormal, texCoord).rgb);
-        vec3 randomVec = normalize(texture(texNoise, texCoord * noiseScale).xyz);
-        // create TBN change-of-basis matrix: from tangent-space to view-space
-        vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
-        vec3 bitangent = cross(normal, tangent);
-        mat3 TBN = mat3(tangent, bitangent, normal);
-        // iterate over the sample kernel and calculate occlusion factor
-        float occlusion = 0.0;
-        for(int i = 0; i < kernelSize; ++i)
-        {
-            // get sample position
-            vec3 samplePos = TBN * ssaoSamples[i];  // from tangent to view-space
-            samplePos = fragPos + samplePos * radius;
+        // Create the random tangent space matrix
+        vec2 randScale = vec2( screenWidth / 4.0, screenHeight / 4.0 );
+        vec3 randDir = normalize( texture(RandTex, texCoord.xy * randScale).xyz );
+        vec3 n = normalize( texture(NormalTex, texCoord).xyz );
+        vec3 biTang = cross( n, randDir );
+        if( length(biTang) < 0.0001 )  // If n and randDir are parallel, n is in x-y plane
+            biTang = cross( n, vec3(0,0,1));
+        biTang = normalize(biTang);
+        vec3 tang = cross(biTang, n);
+        mat3 toCamSpace = mat3(tang, biTang, n);
 
-            // project sample position (to sample texture) (to get position on screen/texture)
-            vec4 offset = vec4(samplePos, 1.0);
-            offset = projection * offset;         // from view to clip-space
-            offset.xyz /= offset.w;               // perspective divide
-            offset.xyz = offset.xyz * 0.5 + 0.5;  // transform to range 0.0 - 1.0
+        float occlusionSum = 0.0;
+        vec3 camPos = texture(PositionTex, texCoord).xyz;
+        for( int i = 0; i < kernelSize; i++ ) {
+            vec3 samplePos = camPos + Radius * (toCamSpace * SampleKernel[i]);
 
-            // get sample depth
-            float sampleDepth = texture(texPosition, offset.xy).z;  // get depth value of kernel
-                                                                        // sample
+            // Project point
+            vec4 p = projection * vec4(samplePos,1);
+            p *= 1.0 / p.w;
+            p.xyz = p.xyz * 0.5 + 0.5;
 
-            // range check & accumulate
-            float rangeCheck = smoothstep(0.0, 1.0, radius * 0.1f / abs(sampleDepth - fragPos.z));
-            occlusion += (sampleDepth >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;
+            // Access camera space z-coordinate at that point
+            float surfaceZ = texture(PositionTex, p.xy).z;
+            float zDist = surfaceZ - camPos.z;
+
+            // Count points that ARE occluded
+            if( zDist >= 0.0 && zDist <= Radius && surfaceZ > samplePos.z ) occlusionSum += 1.0;
         }
-        occlusion = 1.0 - (occlusion / kernelSize);
-        FragColor = vec4(occlusion, 0, 0, 1);
+
+        float occ = occlusionSum / kernelSize;
+        AoData = 1.0 - occ;
+    }
+)";
+
+
+const char* FragShaderSSAOBlur = R"(
+    #version 330 core
+    layout (location = 0) out float AoData;
+
+    in vec2 texCoord;
+
+    uniform sampler2D AoTex;
+
+    void main()
+    {
+        ivec2 pix = ivec2( gl_FragCoord.xy );
+        float sum = 0.0;
+        for( int x = -1; x <= 2; ++x ) {
+            for( int y = -1; y <= 2; y++ ) {
+                sum += texelFetchOffset( AoTex, pix, 0, ivec2(x,y) ).r;
+            }
+        }
+
+        float ao = sum * (1.0 / 16.0);
+        AoData = ao;
     }
 )";
 
@@ -515,111 +561,39 @@ const char* FragShaderSSAOLighting = R"(
 
     in vec2 texCoord;
 
-    uniform sampler2D texSsao;
-    uniform sampler2D texAlbedo;
-    uniform sampler2D texPosition;
-    uniform sampler2D texNormal;
-
     uniform vec3 lightPos;
     uniform vec3 lightColor;
     uniform vec3 lightAmbient;
 
-    uniform float lightLinear;
+    uniform bool ssaoActive;
+
+    uniform sampler2D ColorTex;
+    uniform sampler2D PositionTex;
+    uniform sampler2D NormalTex;
+    uniform sampler2D AoTex;
+
+    vec3 ambAndDiffuse( vec3 pos, vec3 norm, vec3 diff, float ao ) {
+        ao = pow(ao, 4);
+        vec3 ambient = lightAmbient * diff * ao;
+        vec3 s = normalize( lightPos - pos);
+        float sDotN = max( dot(s,norm), 0.0 );
+        return ambient + lightColor * diff * sDotN;
+    }
 
     void main()
     {
-        // retrieve data from gbuffer
-        vec4 DiffuseA = texture(texAlbedo, texCoord);
-        vec3 Diffuse = DiffuseA.rgb;
-        vec3 FragPos = texture(texPosition, texCoord).rgb;
-        vec3 Normal = texture(texNormal, texCoord).rgb;
-        float AmbientOcclusion = texture(texSsao, texCoord).r;
+        vec3 pos = texture( PositionTex, texCoord ).xyz;
+        vec3 norm = texture( NormalTex, texCoord ).xyz;
+        vec4 DiffColorA = texture(ColorTex, texCoord);
+        vec3 diffColor = DiffColorA.rgb;
+        float aoVal = ssaoActive ? texture( AoTex, texCoord).r : 1.0;
 
-        // then calculate lighting as usual
-        vec3 lighting = lightAmbient * Diffuse * AmbientOcclusion;
-        vec3 viewDir  = normalize(-FragPos);  // viewpos is (0.0.0)
-        // diffuse
-        vec3 lightDir = normalize(lightPos - FragPos);
-        vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lightColor;
-        // specular
-        vec3 halfwayDir = normalize(lightDir + viewDir);
-        float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
-        vec3 specular = lightColor * spec;
-        // attenuation
-        float distance = length(lightPos - FragPos);
-        float attenuation = 1.0 / (1.0 + lightLinear * distance);
-        lighting += (diffuse + specular * 0.3) * attenuation;
+        vec3 col = ambAndDiffuse(pos, norm, diffColor, aoVal);
+        col = pow(col, vec3(1.0/2.2));
 
-        FragColor = vec4(lighting, DiffuseA.a);
+        FragColor = vec4( col, DiffColorA.a );
     }
 )";
-
-const char* FragShaderStdLighting = R"(
-    #version 330 core
-    out vec4 FragColor;
-
-    in vec2 texCoord;
-
-    uniform sampler2D texAlbedo;
-    uniform sampler2D texPosition;
-    uniform sampler2D texNormal;
-
-    uniform vec3 lightPos;
-    uniform vec3 lightColor;
-    uniform float lightLinear;
-    uniform vec3 lightAmbient;
-
-    void main()
-    {
-        // retrieve data from gbuffer
-        vec4 DiffuseA = texture(texAlbedo, texCoord);
-        vec3 Diffuse = DiffuseA.rgb;
-        vec3 FragPos = texture(texPosition, texCoord).rgb;
-        vec3 Normal = texture(texNormal, texCoord).rgb;
-
-        // then calculate lighting as usual
-        vec3 lighting  = lightAmbient * Diffuse;
-        vec3 viewDir  = normalize(-FragPos); // viewpos is (0.0.0)
-        // diffuse
-        vec3 lightDir = normalize(lightPos - FragPos);
-        vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Diffuse * lightColor;
-        // specular
-        vec3 halfwayDir = normalize(lightDir + viewDir);
-        float spec = pow(max(dot(Normal, halfwayDir), 0.0), 16.0);
-        vec3 specular = lightColor * spec;
-        // attenuation
-        float distance = length(lightPos - FragPos);
-        float attenuation = 1.0 / (1.0 + lightLinear * distance);
-        lighting += (diffuse + specular * 0.3) * attenuation;
-
-        FragColor = vec4(lighting, DiffuseA.a);
-    }
-)";
-
-const char* FragShaderSSAOBlur = R"(
-    #version 330 core
-    out vec4 FragColor;
-
-    in vec2 texCoord;
-
-    uniform sampler2D texSsao;
-
-    void main()
-    {
-        vec2 texelSize = 1.0 / vec2(textureSize(texSsao, 0));
-        float result = 0.0;
-        for (int x = -2; x <= 1; ++x)
-        {
-            for (int y = -2; y <= 1; ++y)
-            {
-                vec2 offset = vec2(float(x), float(y)) * texelSize;
-                result += texture(texSsao, texCoord + offset).r;
-            }
-        }
-        FragColor = vec4(result / (4.0 * 4.0), 0, 0, 1);
-    }
-)";
-
 
 const char* VertShader3DLine = R"(
     #version 330 core
