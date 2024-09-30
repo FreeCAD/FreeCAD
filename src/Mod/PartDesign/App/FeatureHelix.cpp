@@ -272,7 +272,7 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
         else if (getAddSubType() == FeatureAddSub::Subtractive) {
@@ -301,7 +301,7 @@ App::DocumentObjectExecReturn* Helix::execute()
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
             }
 
-            boolOp = refineShapeIfActive(boolOp);
+            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
             Shape.setValue(getSolid(boolOp));
         }
 

@@ -64,13 +64,21 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-
-TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
+TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError) const
 {
     if (this->Refine.getValue()) {
         TopoShape shape(oldShape);
         //        this->fixShape(shape);        // Todo:  Not clear that this is required
-        return shape.makeElementRefine();
+        try{
+            return shape.makeElementRefine();
+        }
+        catch (Standard_Failure& err) {
+            if(onError == RefineErrorPolicy::Warn){
+                Base::Console().Warning((std::string("Refine failed: ") + err.GetMessageString()).c_str());
+            } else {
+                throw;
+            }
+        }
     }
     return oldShape;
 }
