@@ -514,6 +514,8 @@ public:
         return false;
     }
 
+    std::vector<std::pair<Property*, std::unique_ptr<Property>>>
+    onProposedLabelChange(std::string& newLabel);
     /*** Called to let object itself control relabeling
      *
      * @param newLabel: input as the new label, which can be modified by object itself
@@ -765,10 +767,10 @@ protected:  // attributes
     /// Old label; used for renaming expressions
     std::string oldLabel;
 
+private:
     // pointer to the document name string (for performance)
     const std::string* pcNameInDocument {nullptr};
 
-private:
     // accessed by App::Document to record and restore the correct view provider type
     std::string _pcViewProviderName;
 

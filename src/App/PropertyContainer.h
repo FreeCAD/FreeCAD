@@ -134,6 +134,7 @@ struct AppExport PropertyData
   void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
   void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
+  bool visitProperties(OffsetBase offsetBase, std::function<bool(Property*)> visitor) const;
 
   void merge(PropertyData *other=nullptr) const;
   void split(PropertyData *other);
@@ -172,6 +173,9 @@ public:
   virtual void getPropertyMap(std::map<std::string,Property*> &Map) const;
   /// get all properties of the class (including properties of the parent)
   virtual void getPropertyList(std::vector<Property*> &List) const;
+  // Call the given visitor for each property, stopping and returning false if the visitor returns false
+  // This is undefined if the collection of Properties is changed
+  virtual bool visitProperties(std::function<bool(Property*)> visitor) const;
   /// get all properties with their names, may contain duplicates and aliases
   virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once

@@ -254,6 +254,7 @@ public:
     virtual const char* extensionGetPropertyName(const Property* prop) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyMap(std::map<std::string,Property*> &Map) const;
+    virtual bool extensionVisitProperties(std::function<bool(Property*)> visitor) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyList(std::vector<Property*> &List) const;
 

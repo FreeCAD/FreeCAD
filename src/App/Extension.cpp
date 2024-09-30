@@ -181,6 +181,10 @@ void Extension::extensionGetPropertyMap(std::map<std::string, Property*>& Map) c
     extensionGetPropertyData().getPropertyMap(this, Map);
 }
 
+bool Extension::extensionVisitProperties(std::function<bool(Property*)> visitor) const
+{
+    return extensionGetPropertyData().visitProperties(this, visitor);
+}
 void Extension::initExtensionSubclass(Base::Type& toInit,
                                       const char* ClassName,
                                       const char* ParentName,

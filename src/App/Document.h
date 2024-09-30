@@ -287,6 +287,10 @@ public:
      */
     void addObject(DocumentObject*, const char* pObjectName = nullptr);
 
+    /// returns whether this is actually contains the DocumentObject.
+    /// Testing the DocumentObject's pDoc pointer is not sufficient because the object
+    /// removeObject and _removeObject leave _pDoc unchanged
+    bool containsObject(const DocumentObject*) const;
 
     /** Copy objects from another document to this document
      *
@@ -318,11 +322,14 @@ public:
     /// Returns true if the DocumentObject is contained in this document
     bool isIn(const DocumentObject* pFeat) const;
     /// Returns a Name of an Object or 0
-    const char* getObjectName(DocumentObject* pFeat) const;
-    /// Returns a Name of an Object or 0
-    std::string getUniqueObjectName(const char* Name) const;
-    /// Returns a name of the form prefix_number. d specifies the number of digits.
-    std::string getStandardObjectName(const char* Name, int d) const;
+    const char *getObjectName(DocumentObject* pFeat) const;
+    /// Returns a Name for a new Object or empty if proposedName is null or empty.
+    std::string getUniqueObjectName(const char* proposedName) const;
+    /// Returns a name different from any of the Labels of any objects in this document, based on the given modelName.
+    std::string getStandardObjectLabel(const char* modelName, int d) const;
+    /// Break an object Name or Label into its base parts, returning tuple(digitCount, digitsValue)
+    std::tuple<uint, uint>
+    decomposeName(const std::string& name, std::string& baseName, std::string& nameExtension);
     /// Returns a list of document's objects including the dependencies
     std::vector<DocumentObject*> getDependingObjects() const;
     /// Returns a list of all Objects
@@ -566,6 +573,11 @@ public:
 
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
+
+    void registerLabel(const std ::string& newLabel);
+    void unregisterLabel(const std::string& oldLabel);
+    bool containsLabel(const std::string& label);
+    std::string makeUniqueLabel(const std::string& modelLabel);
 
     friend class Application;
     /// because of transaction handling
