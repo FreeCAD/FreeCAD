@@ -2464,6 +2464,8 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     ovc = None
     zvc = None
     xvc = None
+    repid = "Annotation"
+    reptype = "Annotation2D"
     if anno.isDerivedFrom("Part::Feature"):
         if Draft.getType(anno) == "Hatch":
             objectType = "HATCH"
@@ -2548,6 +2550,30 @@ def create_annotation(anno, ifcfile, context, history, preferences):
             tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
             txt = ifcfile.createIfcTextLiteral(vp.string,tpl,"LEFT")
             reps.append(txt)
+    elif Draft.getType(anno) == "SectionPlane":
+        p = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
+        ovc = ifcbin.createIfcCartesianPoint((p.x,p.y,p.z))
+        zvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+        xvc = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+        objectType = "DRAWING"
+        l = w = h = 1000
+        if anno.ViewObject:
+            if anno.ViewObject.DisplayLength.Value:
+                l = anno.ViewObject.DisplayLength.Value
+            if anno.ViewObject.DisplayHeight.Value:
+                w = anno.ViewObject.DisplayHeight.Value
+        if anno.Depth.Value:
+            h = anno.Depth.Value
+        l = FreeCAD.Vector(l, w, h).multiply(preferences['SCALE_FACTOR'])
+        zdir = ifcbin.createIfcDirection((0.0,0.0,1.0))
+        xdir = ifcbin.createIfcDirection((1.0,0.0,0.0))
+        pos = ifcbin.createIfcCartesianPoint((-l.x/2,-l.y/2,-l.z))
+        tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
+        blk = ifcfile.createIfcBlock(tpl, l.x, l.y, l.z)
+        csg = ifcfile.createIfcCsgSolid(blk)
+        reps = [csg]
+        repid = "Body"
+        reptype = "CSG"
     else:
         print("Unable to handle object",anno.Label)
         return None
