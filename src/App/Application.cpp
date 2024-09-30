@@ -452,38 +452,35 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 
 Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
 {
-    auto getNameAndLabel = [this](const char * Name, const char * UserName) -> std::tuple<std::string, std::string> {
-        bool defaultName = (!Name || Name[0] == '\0');
+    std::string name;
+    bool defaultName = (!Name || Name[0] == '\0');
+    // get a valid name anyway!
+    if (defaultName) {
+        name = "Unnamed";
+    }
+    else {
+        name = Name;
+    }
 
-        // get a valid name anyway!
-        if (defaultName) {
-            Name = "Unnamed";
-        }
+    std::string userName;
+    if (UserName && UserName[0] != '\0') {
+        userName = UserName;
+    }
+    else {
+        userName = defaultName ? QObject::tr("Unnamed").toStdString() : Name;
 
-        std::string userName;
-        if (UserName && UserName[0] != '\0') {
-            userName = UserName;
-        }
-        else {
-            userName = defaultName ? QObject::tr("Unnamed").toStdString() : Name;
-
-            std::vector<std::string> names;
-            names.reserve(DocMap.size());
+        if (!DocMap.empty()) {
+            // The assumption here is that there are not many documents and
+            // documents are rarely created so the cost
+            // of building this manager each time is inconsequential
+            Base::UniqueNameManager names;
             for (const auto& pos : DocMap) {
-                names.emplace_back(pos.second->Label.getValue());
+                names.addExactName(pos.second->Label.getValue());
             }
 
-            if (!names.empty()) {
-                userName = Base::Tools::getUniqueName(userName, names);
-            }
+            userName = names.makeUniqueName(userName);
         }
-
-        return std::make_tuple(std::string(Name), userName);
-    };
-
-    auto tuple = getNameAndLabel(Name, UserName);
-    std::string name = std::get<0>(tuple);
-    std::string userName = std::get<1>(tuple);
+    }
     name = getUniqueDocumentName(name.c_str(), tempDoc);
 
     // return the temporary document if it exists
@@ -491,7 +488,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         auto it = DocMap.find(name);
         if (it != DocMap.end() && it->second->testStatus(Document::TempDoc))
             return it->second;
-    }
+        }
 
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
@@ -629,13 +626,17 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
         return CleanName;
     }
     else {
-        std::vector<std::string> names;
-        names.reserve(DocMap.size());
-        for (pos = DocMap.begin(); pos != DocMap.end(); ++pos) {
-            if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
-                names.push_back(pos->first);
+        // The assumption here is that there are not many documents and
+        // documents are rarely created so the cost
+        // of building this manager each time is inconsequential
+        Base::UniqueNameManager names;
+        for (const auto& pos : DocMap) {
+            if (!tempDoc || !pos.second->testStatus(Document::TempDoc)) {
+                names.addExactName(pos.first);
+            }
         }
-        return Base::Tools::getUniqueName(CleanName, names);
+
+        return names.makeUniqueName(CleanName);
     }
 }
 

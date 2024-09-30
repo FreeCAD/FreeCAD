@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
+#include <base/Tools.h>
 #include <CXX/Objects.hxx>
 #include <boost/bimap.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -65,6 +66,9 @@ struct DocumentP
     std::vector<DocumentObject*> objectArray;
     std::unordered_set<App::DocumentObject*> touchedObjs;
     std::unordered_map<std::string, DocumentObject*> objectMap;
+    Base::UniqueNameManager objectNameManager;
+    Base::UniqueNameManager objectLabelManager;
+    std::unordered_map<std::string, int> objectLabelCounts;
     std::unordered_map<long, DocumentObject*> objectIdMap;
     std::unordered_map<std::string, bool> partialLoadObjects;
     std::vector<DocumentObjectT> pendingRemove;
@@ -129,6 +133,8 @@ struct DocumentP
 
     void clearDocument()
     {
+        objectLabelCounts.clear();
+        objectLabelManager.clear();
         objectArray.clear();
         for (auto& v : objectMap) {
             v.second->setStatus(ObjectStatus::Destroy, true);
@@ -136,6 +142,7 @@ struct DocumentP
             v.second = nullptr;
         }
         objectMap.clear();
+        objectNameManager.clear();
         objectIdMap.clear();
     }
 

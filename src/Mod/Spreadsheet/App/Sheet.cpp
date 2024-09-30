@@ -867,6 +867,20 @@ void Sheet::getPropertyNamedList(std::vector<std::pair<const char*, Property*>>&
     }
 }
 
+bool Sheet::visitProperties(std::function<bool(App::Property*)> visitor) const
+{
+    if (!DocumentObject::visitProperties(visitor)) {
+        return false;
+    }
+    for (auto& v : cells.aliasProp) {
+        auto prop = getProperty(v.first);
+        if (prop && !visitor(prop)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 void Sheet::touchCells(Range range)
 {
     do {
@@ -1129,7 +1143,7 @@ DocumentObjectExecReturn* Sheet::execute()
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
                 Base::Console().Error("Cyclic dependency detected in spreadsheet : %s\n",
-                                      *pcNameInDocument);
+                                      getNameInDocument());
                 std::ostringstream ss;
                 ss << "Cyclic dependency";
                 int count = 0;

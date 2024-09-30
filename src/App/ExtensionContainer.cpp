@@ -176,6 +176,18 @@ void ExtensionContainer::getPropertyMap(std::map<std::string, Property*>& Map) c
         entry.second->extensionGetPropertyMap(Map);
     }
 }
+bool ExtensionContainer::visitProperties(std::function<bool(Property*)> visitor) const
+{
+    if (!App::PropertyContainer::visitProperties(visitor)) {
+        return false;
+    }
+    for (const auto& entry : _extensions) {
+        if (!entry.second->extensionVisitProperties(visitor)) {
+            return false;
+        }
+    }
+    return true;
+}
 
 Property* ExtensionContainer::getPropertyByName(const char* name) const
 {

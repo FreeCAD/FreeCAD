@@ -3408,7 +3408,16 @@ void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map)
     }
 }
 
-void ViewProviderLink::getPropertyList(std::vector<App::Property*> &List) const {
+bool ViewProviderLink::visitProperties(std::function<bool(App::Property*)> visitor) const
+{
+    if (!inherited::visitProperties(visitor)) {
+        return false;
+    }
+    return !childVp || childVp->visitProperties(visitor);
+}
+
+void ViewProviderLink::getPropertyList(std::vector<App::Property*>& List) const
+{
     std::map<std::string,App::Property*> Map;
     getPropertyMap(Map);
     List.reserve(List.size()+Map.size());

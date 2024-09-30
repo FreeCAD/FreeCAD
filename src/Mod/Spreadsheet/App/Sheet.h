@@ -189,6 +189,8 @@ public:
     void
     getPropertyNamedList(std::vector<std::pair<const char*, App::Property*>>& List) const override;
 
+    bool visitProperties(std::function<bool(App::Property*)> visitor) const override;
+
     short mustExecute() const override;
 
     App::DocumentObjectExecReturn* execute() override;
