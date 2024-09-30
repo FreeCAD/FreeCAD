@@ -255,12 +255,7 @@ def create_object(ifcentity, document, ifcfile, shapemode=0, objecttype=None):
     s = "IFC: Created #{}: {}, '{}'\n".format(
         ifcentity.id(), ifcentity.is_a(), ifcentity.Name
     )
-    if not objecttype:
-        if ifcentity.is_a("IfcAnnotation"):
-            if ifc_export.get_dimension(ifcentity):
-                objecttype = "dimension"
-            elif ifc_export.get_text(ifcentity):
-                objecttype = "text"
+    objecttype = ifc_export.get_object_type(ifcentity, objecttype)
     FreeCAD.Console.PrintLog(s)
     obj = add_object(document, otype=objecttype)
     add_properties(obj, ifcfile, ifcentity, shapemode=shapemode)
@@ -399,6 +394,18 @@ def get_children(
     return result
 
 
+def get_freecad_children(obj):
+    """Returns the childen of this object that exist in the documemt"""
+
+    objs = []
+    children = get_children(obj)
+    for child in children:
+        childobj = get_object(child)
+        if childobj:
+            objs.extend(get_freecad_children(childobj))
+    return objs
+
+
 def get_object(element, document=None, ifcfile=None):
     """Returns the object that references this element, if any"""
 
@@ -484,11 +491,15 @@ def add_object(document, otype=None, oname="IfcObject"):
     'layer',
     'text',
     'dimension',
+    'sectionplane',
     or anything else for a standard IFC object"""
 
     if not document:
         return None
-    if otype == "dimension":
+    if otype == "sectionplane":
+        obj = Arch.makeSectionPlane()
+        obj.Proxy = ifc_objects.ifc_object(otype)
+    elif otype == "dimension":
         obj = Draft.make_dimension(FreeCAD.Vector(), FreeCAD.Vector(1,0,0))
         obj.Proxy = ifc_objects.ifc_object(otype)
         obj.removeProperty("Diameter")
@@ -652,31 +663,51 @@ def add_properties(
                 setattr(obj, attr, str(value))
     # annotation properties
     if ifcentity.is_a("IfcAnnotation"):
-        dim = ifc_export.get_dimension(ifcentity)
-        if dim and len(dim) >= 3:
-            if "Start" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyVectorDistance", "Start", "Base")
-            if "End" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyVectorDistance", "End", "Base")
-            if "Dimline" not in obj.PropertiesList:
-                obj.addProperty("App::PropertyVectorDistance", "Dimline", "Base")
-            obj.Start = dim[1]
-            obj.End = dim[2]
-            if len(dim) > 3:
-                obj.Dimline = dim[3]
-            else:
-                mid = obj.End.sub(obj.Start)
-                mid.multiply(0.5)
-                obj.Dimline = obj.Start.add(mid)
+        sectionplane = ifc_export.get_sectionplane(ifcentity)
+        if sectionplane:
+            if "Placement" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyPlacement", "Placement", "Base")
+            if "Depth" not in obj.PropertiesList:
+                obj.addProperty("App::PropertyLength","Depth","SectionPlane")
+            obj.Placement = sectionplane[0]
+            if len(sectionplane) > 3:
+                obj.Depth = sectionplane[3]
+            vobj = obj.ViewObject
+            if vobj:
+                if "DisplayLength" not in vobj.PropertiesList:
+                    vobj.addProperty("App::PropertyLength","DisplayLength","SectionPlane")
+                if "DisplayHeight" not in vobj.PropertiesList:
+                    vobj.addProperty("App::PropertyLength","DisplayHeight","SectionPlane")
+                if len(sectionplane) > 1:
+                    vobj.DisplayLength = sectionplane[1]
+                if len(sectionplane) > 2:
+                    vobj.DisplayHeight = sectionplane[2]
         else:
-            text = ifc_export.get_text(ifcentity)
-            if text:
-                if "Placement" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyPlacement", "Placement", "Base")
-                if "Text" not in obj.PropertiesList:
-                    obj.addProperty("App::PropertyStringList", "Text", "Base")
-                obj.Text = [text.Literal]
-                obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
+            dim = ifc_export.get_dimension(ifcentity)
+            if dim and len(dim) >= 3:
+                if "Start" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyVectorDistance", "Start", "Base")
+                if "End" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyVectorDistance", "End", "Base")
+                if "Dimline" not in obj.PropertiesList:
+                    obj.addProperty("App::PropertyVectorDistance", "Dimline", "Base")
+                obj.Start = dim[1]
+                obj.End = dim[2]
+                if len(dim) > 3:
+                    obj.Dimline = dim[3]
+                else:
+                    mid = obj.End.sub(obj.Start)
+                    mid.multiply(0.5)
+                    obj.Dimline = obj.Start.add(mid)
+            else:
+                text = ifc_export.get_text(ifcentity)
+                if text:
+                    if "Placement" not in obj.PropertiesList:
+                        obj.addProperty("App::PropertyPlacement", "Placement", "Base")
+                    if "Text" not in obj.PropertiesList:
+                        obj.addProperty("App::PropertyStringList", "Text", "Base")
+                    obj.Text = [text.Literal]
+                    obj.Placement = ifc_export.get_placement(ifcentity.ObjectPlacement, ifcfile)
 
     # link Label2 and Description
     if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
@@ -1113,7 +1144,7 @@ def get_ifctype(obj):
     if dtype in ["App::Part","Part::Compound","Array"]:
         return "IfcElementAssembly"
     if dtype in ["App::DocumentObjectGroup"]:
-        ifctype = "IfcGroup"
+        return "IfcGroup"
     return "IfcBuildingElementProxy"
 
 

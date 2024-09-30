@@ -89,6 +89,20 @@ def create_representation(obj, ifcfile):
     return representation, placement
 
 
+def get_object_type(ifcentity, objecttype=None):
+    """Determines a creation type for this object"""
+
+    if not objecttype:
+        if ifcentity.is_a("IfcAnnotation"):
+            if get_sectionplane(ifcentity):
+                objecttype = "sectionplane"
+            elif get_dimension(ifcentity):
+                objecttype = "dimension"
+            elif get_text(ifcentity):
+                objecttype = "text"
+    return objecttype
+
+
 def is_annotation(obj):
     """Determines if the given FreeCAD object should be saved as an IfcAnnotation"""
 
@@ -104,7 +118,8 @@ def is_annotation(obj):
                                 "Text",
                                 "Dimension",
                                 "LinearDimension",
-                                "AngularDimension"]:
+                                "AngularDimension",
+                                "SectionPlane"]:
         return True
     elif obj.isDerivedFrom("Part::Feature"):
         if obj.Shape and (not obj.Shape.Solids) and obj.Shape.Edges:
@@ -153,6 +168,26 @@ def get_dimension(annotation):
     return None
 
 
+def get_sectionplane(annotation):
+    """Determines if an IfcAnnotation is representing a section plane.
+    Returns a list containing a placement, and optionally an X dimension,
+    an Y dimension and a  depth dimension"""
+
+    if annotation.is_a("IfcAnnotation"):
+        if annotation.ObjectType == "DRAWING":
+            s = ifcopenshell.util.unit.calculate_unit_scale(annotation.file) * 1000
+            result = [get_placement(annotation.ObjectPlacement, scale=s)]
+            for rep in annotation.Representation.Representations:
+                for item in rep.Items:
+                    if item.is_a("IfcCsgSolid"):
+                        if item.TreeRootExpression.is_a("IfcBlock"):
+                            result.append(item.TreeRootExpression.XLength*s)
+                            result.append(item.TreeRootExpression.YLength*s)
+                            result.append(item.TreeRootExpression.ZLength*s)
+            return result
+    return None
+
+
 def create_annotation(obj, ifcfile):
     """Adds an IfcAnnotation from the given object to the given IFC file"""
 
@@ -183,16 +218,21 @@ def get_history(ifcfile):
     return history
 
 
-def get_placement(ifcelement, ifcfile):
+def get_placement(ifcelement, ifcfile=None, scale=None):
     """Returns a FreeCAD placement from an IFC placement"""
 
-    s = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
-    return importIFCHelper.getPlacement(ifcelement, scaling=s)
+    if not scale:
+        if not ifcfile:
+            ifcfile = ifcelement.file
+        scale = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
+    return importIFCHelper.getPlacement(ifcelement, scaling=scale)
 
 
-def get_scaled_point(point, ifcfile, is2d=False):
+def get_scaled_point(point, ifcfile=None, is2d=False):
     """Returns a scaled 2d or 3d point tuple form a FreeCAD point"""
 
+    if not ifcfile:
+        ifcfile = ifcelement.file
     s = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
     v = FreeCAD.Vector(point)
     v.multiply(s)
@@ -200,3 +240,9 @@ def get_scaled_point(point, ifcfile, is2d=False):
     if is2d:
         v = v[:2]
     return v
+
+def get_scaled_value(value, ifcfile):
+    """Returns a scaled dimension value"""
+
+    s = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
+    return value * s

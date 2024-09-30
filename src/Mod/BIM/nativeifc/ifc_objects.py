@@ -22,8 +22,10 @@
 
 """This module contains IFC object definitions"""
 
+import FreeCAD
+
 # the property groups below should not be treated as psets
-NON_PSETS = ["Base", "IFC", "", "Geometry", "Dimension", "Linear/radial dimension"]
+NON_PSETS = ["Base", "IFC", "", "Geometry", "Dimension", "Linear/radial dimension", "SectionPlane"]
 
 class ifc_object:
     """Base class for all IFC-based objects"""
@@ -56,7 +58,7 @@ class ifc_object:
             self.edit_schema(obj, obj.Schema)
         elif prop == "Group":
             self.edit_group(obj)
-        elif obj.getGroupOfProperty(prop) == "IFC":
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "IFC":
             if prop not in ["StepId"]:
                 self.edit_attribute(obj, prop)
         elif prop == "Label":
@@ -64,6 +66,8 @@ class ifc_object:
         elif prop == "Text":
             self.edit_annotation(obj, "Text", "\n".join(obj.Text))
         elif prop in ["Start", "End"]:
+            self.edit_annotation(obj, prop)
+        elif prop in ["DisplayLength","DisplayHeight","Depth"]:
             self.edit_annotation(obj, prop)
         elif prop == "Placement":
             if getattr(self, "virgin_placement", False):
@@ -74,9 +78,9 @@ class ifc_object:
         elif prop == "Modified":
             if obj.ViewObject:
                 obj.ViewObject.signalChangeIcon()
-        elif obj.getGroupOfProperty(prop) == "Geometry":
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Geometry":
             self.edit_geometry(obj, prop)
-        elif obj.getGroupOfProperty(prop) not in NON_PSETS:
+        elif hasattr(obj, prop) and obj.getGroupOfProperty(prop) not in NON_PSETS:
             # Treat all property groups outside the default ones as Psets
             # print("DEBUG: editinog pset prop",prop)
             self.edit_pset(obj, prop)
@@ -177,14 +181,15 @@ class ifc_object:
         from nativeifc import ifc_export
 
         if not value:
-            value = obj.getPropertyByName(attribute)
+            if hasattr(obj, attribute):
+                value = obj.getPropertyByName(attribute)
         ifcfile = ifc_tools.get_ifcfile(obj)
         elt = ifc_tools.get_ifc_element(obj, ifcfile)
         if elt:
             if attribute == "Text":
                 text = ifc_export.get_text(elt)
                 if text:
-                    result = ifc_tools.set_attribute(ifcfile, text, "Literal", value)
+                    ifc_tools.set_attribute(ifcfile, text, "Literal", value)
             elif attribute in ["Start", "End"]:
                 dim = ifc_export.get_dimension(elt)
                 if dim:
@@ -199,9 +204,29 @@ class ifc_object:
                                     value[0] = ifc_export.get_scaled_point(obj.Start, ifcfile, is2d)
                                 else:
                                     value[-1] = ifc_export.get_scaled_point(obj.End, ifcfile, is2d)
-                                result = ifc_tools.set_attribute(ifcfile, points, "CoordList", value)
+                                ifc_tools.set_attribute(ifcfile, points, "CoordList", value)
                             else:
                                 print("DEBUG: unknown dimension curve type:",sub)
+            elif attribute in ["DisplayLength","DisplayHeight","Depth"]:
+                l = w = h = 1000
+                if obj.ViewObject:
+                    if obj.ViewObject.DisplayLength.Value:
+                        l = ifc_export.get_scaled_value(obj.ViewObject.DisplayLength.Value)
+                    if obj.ViewObject.DisplayHeight.Value:
+                        w = ifc_export.get_scaled_value(obj.ViewObject.DisplayHeight.Value)
+                if obj.Depth.Value:
+                    h = ifc_export.get_scaled_value(obj.Depth.Value)
+                if elt.Representation.Representations:
+                    for rep in elt.Representation.Representations:
+                        for item in rep.Items:
+                            if item.is_a("IfcCsgSolid"):
+                                if item.TreeRootExpression.is_a("IfcBlock"):
+                                    block = item.TreeRootExpression
+                                    loc = block.Position.Location
+                                    ifc_tools.set_attribute(ifcfile, block, "XLength", l)
+                                    ifc_tools.set_attribute(ifcfile, block, "YLength", w)
+                                    ifc_tools.set_attribute(ifcfile, block, "ZLength", h)
+                                    ifc_tools.set_attribute(ifcfile, loc, "Coordinates", (-l/2, -h/2, -h))
 
     def edit_geometry(self, obj, prop):
         """Edits a geometry property of an object"""
@@ -284,6 +309,47 @@ class ifc_object:
                     ifc_layers.add_to_layer(child, obj)
             if newlist != obj.Group:
                 obj.Group = newlist
+
+    def get_section_data(self, obj):
+        """Returns two things: a list of objects and a cut plane"""
+
+        from nativeifc import ifc_tools  # lazy import
+        import Part
+
+        if not obj.IfcClass == "IfcAnnotation":
+            return None, None
+        if obj.ObjectType != "DRAWING":
+            return None, None
+        objs = getattr(obj, "Objects", [])
+        if not objs:
+            # no object defined, we automatically use the project
+            objs = []
+            proj = ifc_tools.get_project(obj)
+            if isinstance(proj, FreeCAD.DocumentObject):
+                objs.append(proj)
+            objs.extend(ifc_tools.get_freecad_children(proj))
+        if objs:
+            s = []
+            for o in objs:
+                # TODO print a better message
+                if o.ShapeMode != "Shape":
+                    s.append(o)
+            if s:
+                FreeCAD.Console.PrintLog("DEBUG: Generating shapes. This might take some time...\n")
+                for o in s:
+                        o.ShapeMode = "Shape"
+                        o.recompute()
+            l = 1
+            h = 1
+            if obj.ViewObject:
+                if hasattr(obj.ViewObject,"DisplayLength"):
+                    l = obj.ViewObject.DisplayLength.Value
+                    h = obj.ViewObject.DisplayHeight.Value
+            plane = Part.makePlane(l,h,FreeCAD.Vector(l/2,-h/2,0),FreeCAD.Vector(0,0,1))
+            plane.Placement = obj.Placement
+            return objs, plane
+        else:
+            return None, None
 
 
 class document_object:
