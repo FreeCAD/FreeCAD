@@ -260,32 +260,13 @@ def getGlobalPlacement(ref, targetObj=None):
 
     if targetObj is None:  # If no targetObj is given, we consider it's the getObject(ref)
         targetObj = getObject(ref)
-
-    if targetObj is None:
-        return App.Placement()
+        if targetObj is None:
+            return App.Placement()
 
     rootObj = ref[0]
-    names = ref[1][0].split(".")
+    subName = ref[1][0]
 
-    doc = rootObj.Document
-    plc = rootObj.Placement
-
-    for objName in names:
-        obj = doc.getObject(objName)
-        if not obj:
-            continue
-
-        plc = plc * obj.Placement
-
-        if obj == targetObj:
-            return plc
-
-        if isLink(obj):
-            linked_obj = obj.getLinkedObject()
-            doc = linked_obj.Document  # in case its an external link.
-
-    # If targetObj has not been found there's a problem
-    return App.Placement()
+    return App.GeoFeature.getGlobalPlacementOf(targetObj, rootObj, subName)
 
 
 def isThereOneRootAssembly():
