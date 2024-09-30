@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>474</width>
-    <height>424</height>
+    <width>700</width>
+    <height>810</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -444,6 +444,89 @@ can be a performance penalty in complex models.</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="gbBehaviour">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some combinations of OS and Navigation style key bindings may conflict with the default modifier keys for Ballon dragging and View snapping override.  You can make adjustments here to find a non-conflicting key binding.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="title">
+      <string>Behaviour Overrides</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="cbBalloonDefault">
+          <property name="toolTip">
+           <string>Check this box to use the default modifier keys.  Uncheck this box to set a different key combination.</string>
+          </property>
+          <property name="text">
+           <string>Use Default</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Balloon Drag</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="cbBalloonAlt">
+          <property name="toolTip">
+           <string>Check this box to include the Alt key in the modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Alt</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="cbBalloonShift">
+          <property name="toolTip">
+           <string>Check this box to include the Shift key in the modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Shift</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="cbBalloonMeta">
+          <property name="toolTip">
+           <string>Check this box to include the Meta/Start/Super key in the modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Meta</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="cbBalloonControl">
+          <property name="toolTip">
+           <string>Check this box to include the Control key in the modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Control</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_17">
      <property name="font">
       <font>
@@ -469,8 +552,8 @@ can be a performance penalty in complex models.</string>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>17</width>
-       <height>1</height>
+       <width>20</width>
+       <height>40</height>
       </size>
      </property>
     </spacer>

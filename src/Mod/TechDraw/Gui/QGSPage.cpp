@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QApplication>
 #include <QDomDocument>
 #include <QFile>
 #include <QGraphicsSceneEvent>
@@ -110,30 +111,20 @@ QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
 
 void QGSPage::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    constexpr int QGITemplateType{QGraphicsItem::UserType + 150};
-    constexpr int QGIDrawingTemplateType{QGraphicsItem::UserType + 151};
-    constexpr int QGISVGTemplateType{QGraphicsItem::UserType + 153};
-    // type 13 is the itemUnderMouse on a page outside of any views. It is not
-    // the template or background or foreground.  QGraphicsItem type = 13 is not
-    // documented and not found in QGraphicsItem.h.
-    constexpr int MysteryType{13};
-
     Qt::KeyboardModifiers originalModifiers = event->modifiers();
     auto itemUnderMouse = itemAt(event->scenePos().x(), event->scenePos().y(), QTransform());
 
     if (!itemUnderMouse ||
-        itemUnderMouse->type() == QGITemplateType ||
-        itemUnderMouse->type() == QGIDrawingTemplateType ||
-        itemUnderMouse->type() == QGISVGTemplateType ||
-        itemUnderMouse->type() == MysteryType) {
-        // click without item clears selection
+        itemClearsSelection(itemUnderMouse->type()) ) {
         Gui::Selection().clearSelection();
         QGraphicsScene::mousePressEvent(event);
         return;
     }
 
-    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
-        event->setModifiers(originalModifiers | Qt::ControlModifier);
+    if (event->button() == Qt::LeftButton &&
+        PreferencesGui::multiSelection() &&
+        (cleanModifierList(QApplication::keyboardModifiers()) == Preferences::multiselectModifiers()) ) {
+        event->setModifiers(originalModifiers | Preferences::multiselectModifiers());
     }
 
     QGraphicsScene::mousePressEvent(event);
@@ -147,10 +138,47 @@ void QGSPage::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     }
 
     QGraphicsScene::mouseReleaseEvent(event);
+}
 
-    // what does this do?  the event has already been propagated so this will have
-    // no effect?
-    event->setModifiers(originalModifiers);
+//! returns true if clicking on the item should clear the selection
+bool QGSPage::itemClearsSelection(int itemTypeIn)
+{
+    // type 13 is the itemUnderMouse on a page outside of any views. It is not
+    // the template or background or foreground.  QGraphicsItem type = 13 is not
+    // documented and not found in QGraphicsItem.h.
+    const std::vector<int> ClearingTypes { 13,                        // MysteryType
+                                     QGraphicsItem::UserType + 150,   // QGITemplateType
+                                     QGraphicsItem::UserType + 151,   // QGIDrawingTemplateType
+                                     QGraphicsItem::UserType + 153 }; // QGISVGTemplateType
+
+    for (auto& type : ClearingTypes) {
+        if (itemTypeIn == type) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+//! return only the modifiers that are relevant to snapping/balloon drag.
+//! this is a substitute for !modifiers (ie no modifiers in use) since keypad or group modifiers
+//! (which don't apply to snapping/dragging) would give a misleading result.
+Qt::KeyboardModifiers QGSPage::cleanModifierList(Qt::KeyboardModifiers mods)
+{
+    if (!mods) {
+        return mods;
+    }
+
+    // remove misleading modifiers if present
+    auto newMods = mods;
+    if (newMods & Qt::KeypadModifier) {
+        newMods = newMods & ~Qt::KeypadModifier;
+    }
+    if (newMods & Qt::GroupSwitchModifier) {
+        newMods = newMods & ~Qt::GroupSwitchModifier;
+    }
+
+    return newMods;
 }
 
 

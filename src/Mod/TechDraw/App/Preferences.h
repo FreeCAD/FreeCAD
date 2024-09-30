@@ -23,6 +23,7 @@
 #ifndef Preferences_h_
 #define Preferences_h_
 
+#include <Qt>
 #include <string>
 
 #include <Base/Parameter.h>
@@ -141,6 +142,11 @@ public:
 
     static bool SnapViews();
     static double SnapLimitFactor();
+
+    static Qt::KeyboardModifiers multiselectModifiers();
+
+    static Qt::KeyboardModifiers balloonDragModifiers();
+    static void setBalloonDragModifiers(Qt::KeyboardModifiers newModifiers);
 };
 
 
