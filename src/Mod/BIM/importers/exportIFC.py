@@ -2508,6 +2508,8 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     ovc = None
     zvc = None
     xvc = None
+    repid = "Annotation"
+    reptype = "Annotation2D"
     if anno.isDerivedFrom("Part::Feature"):
         if Draft.getType(anno) == "Hatch":
             objectType = "HATCH"

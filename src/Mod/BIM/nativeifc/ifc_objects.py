@@ -325,8 +325,6 @@ class ifc_object:
 
         ifc_types.edit_type(obj)
 
-
-
     def edit_quantity(self, obj, prop):
         """Edits the given quantity"""
         pass  # TODO implement
