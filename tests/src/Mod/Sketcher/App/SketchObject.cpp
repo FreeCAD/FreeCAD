@@ -1471,6 +1471,155 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     // TODO: Ensure shape is preserved
 }
 
+TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try decreasing mult to zero
+    // TODO: Knot should disappear
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a non-periodic spline
+}
+
+TEST_F(SketchObjectTest, testModifyKnotMultInPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try decreasing mult to zero
+    // TODO: Knot should disappear
+
+    // Act and Assert
+    // TODO: Try modifying such that resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Increase/decrease knot multiplicity normally
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a periodic spline
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInNonPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto nonPeriodicBSpline = createTypicalNonPeriodicBSpline();
+    assert(nonPeriodicBSpline);
+    int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try inserting knot with zero multiplicity
+    // TODO: zero multiplicity knot should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting knot with multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Add at a general position (where no knot exists)
+    // Assert
+    // TODO: This should add to both the knot and multiplicity "vectors"
+    // TODO: This should still be a non-periodic spline
+
+    // Act
+    // TODO: Add a knot at an existing knot
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a non-periodic spline
+}
+
+TEST_F(SketchObjectTest, testInsertKnotInPeriodicBSpline)
+{
+    // This should also cover as a representative of arc of conic
+
+    // Arrange
+    auto PeriodicBSpline = createTypicalPeriodicBSpline();
+    assert(PeriodicBSpline);
+    int geoId = getObject()->addGeometry(PeriodicBSpline.get());
+
+    // Act and Assert
+    // TODO: Try inserting knot with zero multiplicity
+    // TODO: zero multiplicity knot should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting knot with multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act and Assert
+    // TODO: Try inserting at an existing knot with resultant multiplicity > degree
+    // TODO: This should immediately throw exception
+
+    // Act
+    // TODO: Add at a general position (where no knot exists)
+    // Assert
+    // TODO: This should add to both the knot and multiplicity "vectors"
+    // TODO: This should still be a periodic spline
+
+    // Act
+    // TODO: Add a knot at an existing knot
+    // Assert
+    // TODO: This should not alter the sizes of knot and multiplicity vectors.
+    // TODO: This should increment the multiplicity.
+    // TODO: This should still be a periodic spline
+}
+
+TEST_F(SketchObjectTest, testJoinCurves)
+{
+    // Arrange
+    // TODO: Make two curves
+
+    // Act
+    // TODO: Join these curves
+
+    // Assert
+    // TODO: Check they are replaced
+    // TODO: Check the shape is conserved (how?)
+    // TODO: Check there is one C-0 knot
+}
+
+TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
+{
+    // Arrange
+    // TODO: Make two curves
+    // TODO: Add end-to-end tangent between these
+
+    // Act
+    // TODO: Join these curves
+
+    // Assert
+    // TODO: Check they are replaced
+    // TODO: Check the shape is conserved (how?)
+    // TODO: Check there is one C-1 knot
+}
+
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
 {
     std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("180 - 60");
