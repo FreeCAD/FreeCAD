@@ -92,6 +92,11 @@ class BIM_TDView:
             page.addView(view)
             if page.Scale:
                 view.Scale = page.Scale
+            if "ShapeMode" in draft.PropertiesList:
+                draft.ShapeMode = "Shape"
+            for child in draft.OutListRecursive:
+                if "ShapeMode" in child.PropertiesList:
+                    child.ShapeMode = "Shape"
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

@@ -843,6 +843,10 @@ class _SectionPlane:
                 # old objects
                 l = obj.ViewObject.DisplaySize.Value
                 h = obj.ViewObject.DisplaySize.Value
+        if not l:
+            l = 1
+        if not h:
+            h = 1
         p = Part.makePlane(l,h,Vector(l/2,-h/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
@@ -1018,6 +1022,10 @@ class _ViewProviderSectionPlane:
             if hasattr(vobj,"Transparency"):
                 self.mat2.transparency.setValue(vobj.Transparency/100.0)
         elif prop in ["DisplayLength","DisplayHeight","ArrowSize"]:
+            # for IFC objects: propagate to the object
+            if prop in ["DisplayLength","DisplayHeight"]:
+                if hasattr(vobj.Object.Proxy, "onChanged"):
+                    vobj.Object.Proxy.onChanged(vobj.Object, prop)
             if hasattr(vobj,"DisplayLength") and hasattr(vobj,"DisplayHeight"):
                 ld = vobj.DisplayLength.Value/2
                 hd = vobj.DisplayHeight.Value/2
