@@ -346,7 +346,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         std::vector<float> transparencies;
         transparencies.resize(static_cast<int>(colors.size()));
         for (int i = 0; i < static_cast<int>(colors.size()); i++) {
-            Base::Console().Log("%d: %f\n", i, colors[i].a);
             transparencies[i] = colors[i].a;
             colors[i].a = 1.0;
         }
