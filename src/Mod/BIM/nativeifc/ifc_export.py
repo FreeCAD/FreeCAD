@@ -31,18 +31,41 @@ from importers import importIFCHelper
 from nativeifc import ifc_tools
 
 
-def get_export_preferences(ifcfile):
-    """returns a preferences dict for exportIFC"""
+def get_export_preferences(ifcfile, preferred_context=None):
+    """returns a preferences dict for exportIFC.
+    Preferred context can either indicate a ContextType like 'Model' or 'Plan',
+    or a [ContextIdentifier,ContextType] list or tuple, for ex.
+    ('Annotation','Plan'). This function will do its best to find the most
+    appropriate context."""
 
     prefs = exportIFC.getPreferences()
     prefs["SCHEMA"] = ifcfile.wrapped_data.schema_name()
     s = ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
     # the above lines yields meter -> file unit scale factor. We need mm
     prefs["SCALE_FACTOR"] = 0.001 / s
-    context = ifcfile[
-        ifc_tools.get_body_context_ids(ifcfile)[0]
-    ]  # we take the first one (first found subcontext)
-    return prefs, context
+    cids = ifc_tools.get_body_context_ids(ifcfile)
+    contexts = [ifcfile[i] for i in cids]
+    best_context = None
+    if preferred_context:
+        if isinstance(preferred_context, str):
+            for context in contexts:
+                if context.ContextType == preferred_context:
+                    best_context = context
+                    break
+        elif isinstance(preferred_context, (list, tuple)):
+            second_choice = None
+            for context in contexts:
+                if context.ContextType == preferred_context[1]:
+                    second_choice = context
+                    if context.ContextIdentifier == preferred_context[0]:
+                        best_context = context
+                        break
+            else:
+                if second_choice:
+                    best_context = second_choice
+    if not best_context:
+        best_context = contexts[0]
+    return prefs, best_context
 
 
 def create_product(obj, parent, ifcfile, ifcclass=None):
@@ -198,7 +221,8 @@ def create_annotation(obj, ifcfile):
     exportIFC.curvestyles = {}
     exportIFC.ifcopenshell = ifcopenshell
     exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
-    prefs, context = get_export_preferences(ifcfile)
+    prefs, context = get_export_preferences(ifcfile, preferred_context="Plan")
+    prefs["BBIMDIMS"] = True # Save dimensions as 2-point polylines
     history = get_history(ifcfile)
     # TODO The following prints each edge as a separate IfcGeometricCurveSet
     # It should be refined to create polylines instead
