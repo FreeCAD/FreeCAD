@@ -1185,7 +1185,17 @@ def create_relationship(old_obj, obj, parent, element, ifcfile):
     parent_element = get_ifc_element(parent)
     # case 4: anything inside group
     if parent_element.is_a("IfcGroup"):
+        # special case: adding a section plane to a grouo turns it into a drawing
+        # and removes it from any containment
+        if element.is_a("IfcAnnotation") and element.ObjectType == "DRAWING":
+            parent.ObjectType = "DRAWING"
+            try:
+                api_run("spatial.unassign_container", ifcfile, products=[parent_element])
+            except:
+                # older version of IfcOpenShell
+                api_run("spatial.unassign_container", ifcfile, product=parent_element)
         # IFC objects can be part of multiple groups but we do the FreeCAD way here
+        # and remove from any previous group
         for assignment in getattr(element,"HasAssignments",[]):
             if assignment.is_a("IfcRelAssignsToGroup"):
                 if element in assignment.RelatedObjects:
