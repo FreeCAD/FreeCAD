@@ -118,6 +118,15 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
 DlgExpressionInput::~DlgExpressionInput()
 {
+    disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
+               this, &DlgExpressionInput::onCheckVarSets);
+    disconnect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
+               this, &DlgExpressionInput::onVarSetSelected);
+    disconnect(ui->lineEditGroup, &QLineEdit::textChanged,
+               this, &DlgExpressionInput::onTextChangedGroup);
+    disconnect(ui->lineEditPropNew, &QLineEdit::textChanged,
+               this, &DlgExpressionInput::namePropChanged);
+
     delete ui;
 }
 
