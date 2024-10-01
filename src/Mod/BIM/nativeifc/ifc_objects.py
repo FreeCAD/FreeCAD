@@ -211,11 +211,11 @@ class ifc_object:
                 l = w = h = 1000
                 if obj.ViewObject:
                     if obj.ViewObject.DisplayLength.Value:
-                        l = ifc_export.get_scaled_value(obj.ViewObject.DisplayLength.Value)
+                        l = ifc_export.get_scaled_value(obj.ViewObject.DisplayLength.Value, ifcfile)
                     if obj.ViewObject.DisplayHeight.Value:
-                        w = ifc_export.get_scaled_value(obj.ViewObject.DisplayHeight.Value)
+                        w = ifc_export.get_scaled_value(obj.ViewObject.DisplayHeight.Value, ifcfile)
                 if obj.Depth.Value:
-                    h = ifc_export.get_scaled_value(obj.Depth.Value)
+                    h = ifc_export.get_scaled_value(obj.Depth.Value, ifcfile)
                 if elt.Representation.Representations:
                     for rep in elt.Representation.Representations:
                         for item in rep.Items:
@@ -317,9 +317,9 @@ class ifc_object:
         import Part
 
         if not obj.IfcClass == "IfcAnnotation":
-            return None, None
+            return [], None
         if obj.ObjectType != "DRAWING":
-            return None, None
+            return [], None
         objs = getattr(obj, "Objects", [])
         if not objs:
             # no object defined, we automatically use the project
@@ -349,7 +349,8 @@ class ifc_object:
             plane.Placement = obj.Placement
             return objs, plane
         else:
-            return None, None
+            print("DEBUG: Section plane returned no objects")
+            return [], None
 
 
 class document_object:

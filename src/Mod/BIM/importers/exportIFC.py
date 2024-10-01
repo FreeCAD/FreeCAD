@@ -2455,6 +2455,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     ovc = None
     zvc = None
     xvc = None
+    reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
     if anno.isDerivedFrom("Part::Feature"):
@@ -2466,7 +2467,6 @@ def create_annotation(anno, ifcfile, context, history, preferences):
             objectType = "AREA"
         else:
             objectType = "LINEWORK"
-        reps = []
         sh = anno.Shape.copy()
         sh.scale(preferences['SCALE_FACTOR']) # to meters
         ehc = []
@@ -2511,24 +2511,13 @@ def create_annotation(anno, ifcfile, context, history, preferences):
         if FreeCAD.GuiUp:
             objectType = "DIMENSION"
             vp = anno.ViewObject.Proxy
-            reps = []
-            sh = Part.makePolygon([vp.p1,vp.p2,vp.p3,vp.p4])
+            if "BBIMDIMS" in preferences and preferences["BBIMDIMS"]:
+                sh = Part.makePolygon([vp.p2,vp.p3])
+            else:
+                sh = Part.makePolygon([vp.p1,vp.p2,vp.p3,vp.p4])
             sh.scale(preferences['SCALE_FACTOR']) # to meters
-            ehc = []
-            curves = []
-            for w in sh.Wires:
-                curves.append(createCurve(ifcfile,w))
-                for e in w.Edges:
-                    ehc.append(e.hashCode())
-            if curves:
-                reps.append(ifcfile.createIfcGeometricCurveSet(curves))
-            curves = []
-            # leftover edges
-            for e in sh.Edges:
-                if e.hashCode() not in ehc:
-                    curves.append(createCurve(ifcfile,e))
-            if curves:
-                reps.append(ifcfile.createIfcGeometricCurveSet(curves))
+            curve = createCurve(ifcfile,sh)
+            reps = [ifcfile.createIfcGeometricCurveSet([curve])]
             # Append text
             l = FreeCAD.Vector(vp.tbase).multiply(preferences['SCALE_FACTOR'])
             zdir = None
