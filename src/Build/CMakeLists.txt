@@ -20,7 +20,7 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Version.h.in)
     set_source_files_properties(version_file PROPERTIES SYMBOLIC true)
 
-    ADD_CUSTOM_TARGET(fc_version DEPENDS version_file ${CMAKE_CURRENT_BINARY_DIR}/Version.h)
+    ADD_CUSTOM_TARGET(fc_version DEPENDS version_file)
 
 else (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Version.h)
 
