@@ -2508,6 +2508,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     ovc = None
     zvc = None
     xvc = None
+    reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
     if anno.isDerivedFrom("Part::Feature"):
