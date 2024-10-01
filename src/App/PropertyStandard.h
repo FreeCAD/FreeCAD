@@ -1176,6 +1176,7 @@ public:
 
     float getTransparency() const;
     float getTransparency(int index) const;
+    std::vector<float> getTransparencies() const;
 
     PyObject* getPyObject() override;
 
