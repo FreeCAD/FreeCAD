@@ -5890,7 +5890,7 @@ usata per il solutore Elmer</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="275"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli alla lista.{}I seguenti elementi geometrici possono essere selezionati: {}{}{}{}</translation>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli alla lista.{}I seguenti elementi geometrici possono essere selezionati: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
