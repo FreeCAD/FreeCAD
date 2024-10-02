@@ -139,6 +139,10 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
 void FeaturePrimitive::onChanged(const App::Property* prop)
 {
+    if (prop == &AttachmentOffset){
+        this->touch();
+        return;
+    }
     FeatureAddSub::onChanged(prop);
 }
 
