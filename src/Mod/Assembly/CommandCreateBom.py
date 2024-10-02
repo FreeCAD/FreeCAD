@@ -327,6 +327,7 @@ class TaskAssemblyCreateBom(QtCore.QObject):
         Gui.addModule("UtilsAssembly")
         if assembly is not None:
             commands = (
+                "assembly = UtilsAssembly.activeAssembly()\n"
                 "bom_group = UtilsAssembly.getBomGroup(assembly)\n"
                 'bomObj = bom_group.newObject("Assembly::BomObject", "Bill of Materials")'
             )
