@@ -90,7 +90,7 @@ TaskDlgFeatureParameters::~TaskDlgFeatureParameters() = default;
 bool TaskDlgFeatureParameters::accept()
 {
     App::DocumentObject* feature = getObject();
-
+    bool isUpdateBlocked = false;
     try {
         // Iterate over parameter dialogs and apply all parameters from them
         for ( QWidget *wgt : Content ) {
@@ -100,6 +100,7 @@ bool TaskDlgFeatureParameters::accept()
 
             param->saveHistory ();
             param->apply ();
+            isUpdateBlocked |= param->isUpdateBlocked();
         }
         // Make sure the feature is what we are expecting
         // Should be fine but you never know...
@@ -107,7 +108,12 @@ bool TaskDlgFeatureParameters::accept()
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
-        Gui::cmdAppDocument(feature, "recompute()");
+        if(isUpdateBlocked){
+            Gui::cmdAppDocument(feature, "recompute()");
+        } else {
+            // object was already computed
+            Gui::cmdAppDocument(feature, "purgeTouched()");
+        }
 
         if (!feature->isValid()) {
             throw Base::RuntimeError(getObject()->getStatusString());
