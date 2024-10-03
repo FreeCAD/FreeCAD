@@ -67,7 +67,7 @@ QuickMeasure::~QuickMeasure()
 
 void QuickMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (canMeasureSelection(msg)) {
+    if (shouldMeasure(msg)) {
         if (!pendingProcessing) {
             selectionTimer->start(100);
         }
@@ -109,7 +109,7 @@ void QuickMeasure::tryMeasureSelection()
     printResult();
 }
 
-bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
+bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 {
     if (msg.Type == Gui::SelectionChanges::SetPreselect
         || msg.Type == Gui::SelectionChanges::RmvPreselect) {
@@ -120,21 +120,21 @@ bool QuickMeasure::canMeasureSelection(const Gui::SelectionChanges& msg) const
     return doc != nullptr;
 }
 
+bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
+{
+    if (!obj || !obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        return false;
+    }
+
+    std::string vpType = obj->getViewProviderName();
+    auto* vp = Gui::Application::Instance->getViewProvider(obj);
+    return !(vpType == "SketcherGui::ViewProviderSketch" && vp && vp->isEditing());
+}
+
 void QuickMeasure::addSelectionToMeasurement()
 {
     int count = 0;
     int limit = 100;
-
-    // Lambda function to check whether to continue
-    auto shouldSkip = [](App::DocumentObject* obj) {
-        std::string vpType = obj->getViewProviderName();
-        auto* vp = Gui::Application::Instance->getViewProvider(obj);
-        return (vpType == "SketcherGui::ViewProviderSketch" && vp->isEditing())
-            || vpType.find("Gui::ViewProviderOrigin") != std::string::npos
-            || vpType.find("Gui::ViewProviderPart") != std::string::npos
-            || vpType.find("SpreadsheetGui") != std::string::npos
-            || vpType.find("TechDrawGui") != std::string::npos;
-    };
 
     auto selObjs = Gui::Selection().getSelectionEx(nullptr,
                                                    App::DocumentObject::getClassTypeId(),
@@ -152,7 +152,7 @@ void QuickMeasure::addSelectionToMeasurement()
         }
 
         if (subNames.empty()) {
-            if (!shouldSkip(rootObj)) {
+            if (isObjAcceptable(rootObj)) {
                 measurement->addReference3D(rootObj, "");
             }
             continue;
@@ -161,7 +161,7 @@ void QuickMeasure::addSelectionToMeasurement()
         for (auto& subName : subNames) {
             App::DocumentObject* obj = rootObj->getSubObject(subName.c_str());
 
-            if (shouldSkip(obj)) {
+            if (!isObjAcceptable(obj)) {
                 continue;
             }
             measurement->addReference3D(rootObj, subName);
