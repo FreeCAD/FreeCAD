@@ -59,8 +59,8 @@ PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
 
 PyObject* GeoFeaturePy::getGlobalPlacementOf(PyObject * args) {
 
-    PyObject* pyTargetObj;
-    PyObject* pyRootObj;
+    PyObject* pyTargetObj {nullptr};
+    PyObject* pyRootObj {nullptr};
     char* pname;
 
     if (!PyArg_ParseTuple(args, "OOs", &pyTargetObj, &pyRootObj, &pname)) {
