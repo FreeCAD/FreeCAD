@@ -145,7 +145,10 @@ protected:
 
 public:
     void updateAttacherVals(bool base = false) const;
+    // This update both _props and _baseProps if base = false
     void updatePropertyStatus(bool attached, bool base = false);
+    // This update only _props if base = false
+    void updateSinglePropertyStatus(bool attached, bool base = false);
 
 private:
     struct _Properties: Properties
