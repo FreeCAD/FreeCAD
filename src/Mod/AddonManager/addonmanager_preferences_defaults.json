@@ -27,7 +27,7 @@
     "MacroUpdateStatsURL": "https://addons.freecad.org/macro_update_stats.json",
     "MacroWikiURL": "https://wiki.freecad.org/Macros_recipes",
     "NoProxyCheck": "",
-    "PackageTypeSelection": 1,
+    "PackageTypeSelection": 0,
     "PrimaryAddonsSubmoduleURL":
         "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules",
     "ProxyUrl": "",
