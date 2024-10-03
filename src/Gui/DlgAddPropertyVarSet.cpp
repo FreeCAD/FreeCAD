@@ -30,6 +30,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
 #include <App/PropertyUnits.h>
 #include <Base/Tools.h>
 
@@ -347,6 +348,14 @@ void DlgAddPropertyVarSet::checkName() {
                               QObject::tr("Invalid name"),
                               QObject::tr("The property name must only contain alpha numericals,\n"
                                           "underscore, and must not start with a digit."));
+        clearEditors(!CLEAR_NAME);
+        throw CreatePropertyException("Invalid name");
+    }
+
+    if(App::ExpressionParser::isTokenAUnit(name) || App::ExpressionParser::isTokenAConstant(name)) {
+        QMessageBox::critical(getMainWindow(),
+                              QObject::tr("Invalid name"),
+                              QObject::tr("The property name is a reserved word."));
         clearEditors(!CLEAR_NAME);
         throw CreatePropertyException("Invalid name");
     }

@@ -437,6 +437,11 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
         return false;
     }
 
+    if (ExpressionParser::isTokenAUnit(name) || ExpressionParser::isTokenAConstant(name)) {
+        message << name << " is a reserved word";
+        return false;
+    }
+
     auto prop = obj->getPropertyByName(name.c_str());
     if (prop && prop->getContainer() == obj) {
         message << name << " already exists";
